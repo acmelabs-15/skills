@@ -128,6 +128,17 @@ tags:
 - Pending user decision: decisions.2 D-Ns are NOT pre-defined (unlike decisions.1 where Q1-Q5 were locked via Step 5 AskUserQuestion before architect dispatch). ADR-002 (Adapter contract + plan schema) requires new architectural decision points to be enumerated — per-type adapter capability matrix, plan YAML schema field shape, adapter interface signatures, hash validation per-type extraction strategies, Zod schema modular structure
 - Surfacing meta-decision via AskUserQuestion: (a) analyst dispatch to enumerate D-Ns for per-question adjudication via /decisions per-D-N micro-cycle (heavier path, multiple AskUserQuestion rounds), (b) architect dispatch to author ADR-002 directly as design specification derived from ADR-001 + KICKOFF-BRIEF.md adapter specifics (lighter path, no per-D-N adjudication), (c) pause decisions.2 here for a future session
 
+## Event 13 — ADR-002 PROPOSED authored via brain:🧠-architect (decisions.2 Step 5)
+
+- Type agent-dispatch and state-change
+- Trigger /decisions Step 5 architect dispatch for decisions.2 (user path-choice: architect direct authoring — no per-D-N adjudication required)
+- Outcome ADR-002 authored at decisions/ADR-002-adapter-contract-and-plan-schema.md (548 lines, 5 D-N design sections)
+- Architect token usage 116K tokens, 16 tool calls, 512s duration
+- Per-D-N line counts D-1 (Plan YAML schema)=74, D-2 (Adapter interface contract)=86, D-3 (Per-type capability matrix)=34, D-4 (Hash validation per-type extraction)=26, D-5 (Plan YAML validator structure)=133. D-5 largest due to embedded Zod schema layout + error-reporting format + injectivity + path-containment refine rule examples
+- Pattern 2 three-phase write verified; permalink `-1` suffix remediated via find_replace by architect
+- ADR-002 builds on ADR-001 ACCEPTED — every D-N honors a locked decision (Zod for D-5; unified+remark for D-2 AST type; YAML for D-1; discriminated union for D-1; F-8 hash protocol for D-4)
+- Next /decisions Step 6 detail-parity spot-check (design-ADR style; lighter than transcription ADR) + Step 7 brain:---adr-review BLOCKING gate (per ADR-001 D-5 lock — applies to architecture ADRs; ADR-002 is design-level building on architectural decisions but adheres to the gate for full diligence)
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress
