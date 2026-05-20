@@ -448,10 +448,12 @@ Populated as /spec creates tasks.
 
 Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
-### spec.SPEC-002 — Simple Adapters: ANALYSIS + SESSION (IN_PROGRESS)
+### spec.SPEC-002 — Simple Adapters: ANALYSIS + SESSION (DONE)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: DONE
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+**Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+**Outcome**: [[SPEC-002: Simple Adapters: ANALYSIS + SESSION]] (ACCEPTED; ADR coverage + Gate A PASS + Gate B PASS unanimous; REQ-003 AC#2 refined for in-scope verifiability per Gate A finding)
 **Completing session**: —
 **Outcome**: — (will be SPEC-002 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-002-simple-adapters/)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
