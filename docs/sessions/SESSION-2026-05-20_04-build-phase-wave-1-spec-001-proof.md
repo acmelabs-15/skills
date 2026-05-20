@@ -84,6 +84,14 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - Progress Dashboard: build.SPEC-NNN IN_PROGRESS 1→0, DONE 0→1; Total visible DONE 13→14
 - Next-ready parts (Wave 2): build.SPEC-002, build.SPEC-003, build.SPEC-004, build.SPEC-007 — all READY (4-way parallel)
 
+## Event 09 — Wave 2 Dispatch (build.SPEC-002+003+004+007) IN_PROGRESS (2026-05-20)
+
+- User confirmed "Launch all 4 in parallel (Wave 2)" via AskUserQuestion (/plan PLAN-001 continue mode)
+- 4 parts transitioned READY → IN_PROGRESS: build.SPEC-002 (6 TASKs, 4d), build.SPEC-003 (5 TASKs, 3.5d), build.SPEC-004 (7 TASKs, 10d), build.SPEC-007 (13 TASKs, 10.5d)
+- PLAN-001 propagated: Progress Dashboard + Phase Progression + 4 H3 substatus sections + Decision Log + Progress Log
+- 4 agents dispatched in parallel with isolation:worktree (one branch per SPEC)
+- Wave 3 (build.SPEC-005) and Wave 4 (build.SPEC-006) remain READY pending Wave 2 completion
+
 ## Observations
 
 - [decision] 4-wave build plan confirmed: W1=SPEC-001 PROOF (sequential gate); W2=SPEC-002+003+004+007 (4-way parallel via agent-teams); W3=SPEC-005; W4=SPEC-006 #build-plan #wave-1 #parallelism
