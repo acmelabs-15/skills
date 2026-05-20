@@ -119,6 +119,15 @@ tags:
 - decisions.2 transitioned PENDING → READY (dependency decisions.1 now DONE)
 - Token budget for this entire turn 6 parallel reviewer dispatches ~395K input + ~3K output (concise return format), ADR refinement ~3 replace_section calls, CRIT authoring Pattern 2 three-phase, PLAN propagation ~7 edits
 
+## Event 12 — decisions.2 transition READY → IN_PROGRESS; pending path-choice for D-N adjudication
+
+- Type state-change + pending-user-decision
+- Trigger user invoked `/plan PLAN-001-skills-ecosystem` (continue mode)
+- Outcome decisions.2 substatus READY → IN_PROGRESS; owning_session bound to this SESSION
+- Branch policy current branch `feat/plan-001-skills-ecosystem` is non-main; /plan honored existing branch per skill branch policy (no new branch this invocation; staying on the same branch for session continuity across decisions.1 + decisions.2)
+- Pending user decision: decisions.2 D-Ns are NOT pre-defined (unlike decisions.1 where Q1-Q5 were locked via Step 5 AskUserQuestion before architect dispatch). ADR-002 (Adapter contract + plan schema) requires new architectural decision points to be enumerated — per-type adapter capability matrix, plan YAML schema field shape, adapter interface signatures, hash validation per-type extraction strategies, Zod schema modular structure
+- Surfacing meta-decision via AskUserQuestion: (a) analyst dispatch to enumerate D-Ns for per-question adjudication via /decisions per-D-N micro-cycle (heavier path, multiple AskUserQuestion rounds), (b) architect dispatch to author ADR-002 directly as design specification derived from ADR-001 + KICKOFF-BRIEF.md adapter specifics (lighter path, no per-D-N adjudication), (c) pause decisions.2 here for a future session
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress

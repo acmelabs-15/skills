@@ -256,10 +256,10 @@ graph TD
 
 All 5 open questions from `KICKOFF-BRIEF.md` ("Open design questions for early adjudication") surfaced via AskUserQuestion in Step 5 of the user-provided bootstrap. Adjudication unlocks ADR-001 authoring.
 
-### decisions.2 — Adapter contract + plan schema ADR (READY)
+### decisions.2 — Adapter contract + plan schema ADR (IN_PROGRESS)
 
-**Substatus**: READY
-**Owning session**: —
+**Substatus**: IN_PROGRESS
+**Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: —
 **Outcome**: — (will be [[ADR-002: Adapter Contract and Plan Schema]])
 **Source artifacts**: `KICKOFF-BRIEF.md` (Per-type adapter specifics), [[ADR-001: Composition Library Architecture]] (Q1-Q4 outcomes)
