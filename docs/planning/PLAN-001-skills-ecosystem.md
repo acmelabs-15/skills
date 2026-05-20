@@ -40,11 +40,11 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | research | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 2 | 2 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
-| spec.SPEC-NNN | 4 | 1 | 0 | 1 | 6 |
+| spec.SPEC-NNN | 1 | 4 | 0 | 1 | 6 |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **6** | **1** | **0** | **5** | **12** |
+| **Total visible** | **3** | **4** | **0** | **5** | **12** |
 
 ## Workflow Plan
 
@@ -58,16 +58,16 @@ Per-part workflow detail lives in each per-part H3 below.
 
 | Phase | Status | Output Artifact |
 |:--|:--|:--|
-| research | DONE | `KICKOFF-BRIEF.md` (project root file; not a Brain note) |
+| research | DONE | `KICKOFF-BRIEF.md` |
 | decisions.1 | DONE | [[ADR-001: Composition Library Architecture]] |
 | decisions.2 | DONE | [[ADR-002: Adapter Contract and Plan Schema]] |
 | spec-decomposition | DONE | [[ANALYSIS-001: SPEC Clustering]] |
 | spec.SPEC-001 | DONE | [[SPEC-001: Composition Core and ADR Adapter]] (ACCEPTED; ADR coverage + Gate A + Gate B all PASS) |
-| spec.SPEC-002 | IN_PROGRESS | SPEC-002 root + subtree (Simple Adapters: ANALYSIS + SESSION; /spec Stage 2 auto-routed this turn) |
-| spec.SPEC-003 | READY | SPEC-003 root + subtree (PLAN Adapter; regenerative content carve-out) |
-| spec.SPEC-004 | READY | SPEC-004 root + subtree (SPEC Subtree Adapter) |
-| spec.SPEC-005 | READY | SPEC-005 root + subtree (Decompose and Recompose Skills) |
-| spec.SPEC-006 | READY | SPEC-006 root + subtree (Defrag and Ingest Skills) |
+| spec.SPEC-002 | IN_PROGRESS | SPEC-002 subtree authored (14 notes); Gate A + Gate B + permalink cleanup pending |
+| spec.SPEC-003 | IN_PROGRESS | SPEC-003 PLAN Adapter; Wave A parallel architect dispatch this turn |
+| spec.SPEC-004 | IN_PROGRESS | SPEC-004 SPEC Subtree Adapter; Wave A parallel architect dispatch this turn |
+| spec.SPEC-005 | IN_PROGRESS | SPEC-005 Decompose+Recompose Skills; Wave A parallel architect dispatch this turn |
+| spec.SPEC-006 | PENDING | SPEC-006 Defrag+Ingest Skills (depends on SPEC-005 DONE; Wave B sequential) |
 | build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits (created post per-spec spec phase) |
 | review | PENDING | adversarial multi-axis review across feature surface |
 | end | PENDING | PR + final session-end checklist |
@@ -487,10 +487,10 @@ Populated as /spec creates tasks.
 
 Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
-### spec.SPEC-003 — PLAN Adapter (READY)
+### spec.SPEC-003 — PLAN Adapter (IN_PROGRESS)
 
-**Substatus**: READY
-**Owning session**: —
+**Substatus**: IN_PROGRESS
+**Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: —
 **Outcome**: — (will be SPEC-003 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-003-plan-adapter/)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
@@ -526,10 +526,10 @@ Populated as /spec creates tasks.
 
 Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
-### spec.SPEC-004 — SPEC Subtree Adapter (READY)
+### spec.SPEC-004 — SPEC Subtree Adapter (IN_PROGRESS)
 
-**Substatus**: READY
-**Owning session**: —
+**Substatus**: IN_PROGRESS
+**Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: —
 **Outcome**: — (will be SPEC-004 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-004-spec-subtree-adapter/)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
@@ -565,10 +565,10 @@ Populated as /spec creates tasks.
 
 Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
-### spec.SPEC-005 — Decompose and Recompose Skills (READY)
+### spec.SPEC-005 — Decompose and Recompose Skills (IN_PROGRESS)
 
-**Substatus**: READY
-**Owning session**: —
+**Substatus**: IN_PROGRESS
+**Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: —
 **Outcome**: — (will be SPEC-005 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-005-decompose-and-recompose-skills/)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
@@ -604,9 +604,9 @@ Populated as /spec creates tasks.
 
 Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
-### spec.SPEC-006 — Defrag and Ingest Skills (READY)
+### spec.SPEC-006 — Defrag and Ingest Skills (PENDING)
 
-**Substatus**: READY
+**Substatus**: PENDING (depends on SPEC-005 outcome; was incorrectly marked READY in initial 6-SPEC authoring; corrected 2026-05-19 when SPEC-005 transitioned to IN_PROGRESS)
 **Owning session**: —
 **Completing session**: —
 **Outcome**: — (will be SPEC-006 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-006-defrag-and-ingest-skills/)

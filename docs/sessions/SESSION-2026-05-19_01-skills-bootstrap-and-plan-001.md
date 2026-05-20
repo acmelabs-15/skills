@@ -272,6 +272,17 @@ tags:
 - Per user critical state-propagation rule applied SAME TURN PLAN Progress Dashboard (spec.SPEC-NNN row 4 DRAFT + 1 IP + 1 DONE; total visible 6/1/0/5); Phase Progression (spec.SPEC-002 IN_PROGRESS row); Cross-Part Deps Graph (spec_n updated to SPEC-002 🔄 + SPEC-001 ✅); spec.SPEC-002 H3 + Substatus + Owning session; Progress Log entry appended
 - Next architect dispatch for SPEC-002 Stage 2 Steps 1-6 (REQ + DESIGN + TASK + SPEC root subtree authoring at docs/specs/SPEC-002-simple-adapters/) + bi-directional relation closure on ADR-001 + ADR-002 (implemented_by SPEC-002). Then orchestrator runs Phase 3 + ADR coverage + Gate A + Gate B + compliance audit per user standards-inline directive
 
+## Event 25 — Wave A parallel dispatch: SPEC-003 + SPEC-004 + SPEC-005 architects + SPEC-002 Gate A + Gate B (5 simultaneous background agents)
+
+- Type state-change + parallel-dispatch + critical-rule-acknowledgment
+- Trigger user invoked `/plan PLAN-001-skills-ecosystem` continue mode; user asked about parallelism opportunities; orchestrator analyzed dependency graph + recommended Wave A (3 parallel architect dispatches for SPEC-003 + SPEC-004 + SPEC-005 + parallel SPEC-002 Gate A + Gate B); user adjudicated via AskUserQuestion selecting Full parallel
+- Dependency analysis SPEC-003 + SPEC-004 + SPEC-005 all depend only on SPEC-001 PROOF (DONE); independent file scopes (separate docs/specs/SPEC-XXX folders); parallel-safe per feedback_proactive_parallelism_check. SPEC-006 depends on SPEC-005 — Wave B sequential after SPEC-005 DONE
+- SPEC-006 correction substatus READY → PENDING (was incorrectly READY in initial 6-SPEC authoring; now correctly reflects dependency on SPEC-005)
+- Per user critical state-propagation rule applied SAME TURN PLAN Progress Dashboard (spec.SPEC-NNN row 1 PENDING + 4 IP + 1 DONE; total visible 3/4/0/5); Phase Progression (4 spec.SPEC parts IN_PROGRESS); spec.SPEC-003 + SPEC-004 + SPEC-005 H3 + Substatus + Owning session all updated
+- Race-condition mitigation architect briefs INSTRUCT to skip ADR-001 + ADR-002 Relations edits to avoid concurrent ADR Relations race; orchestrator batches the 3 implemented_by additions serially after all architects return
+- Risks acknowledged token cost ~600K for 3 parallel architects; API rate limiting moderate per feedback_api_rate_limit_recovery_protocol (5 simultaneous agents within safe band but watch for failures)
+- Next 5 background agent dispatches in single message (SPEC-002 Gate A analyst + SPEC-002 Gate B critic + SPEC-003 architect + SPEC-004 architect + SPEC-005 architect); on return orchestrator handles bi-directional ADR Relations batching + per-SPEC compliance audits + per-SPEC Gates + per-SPEC set-part-done
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress
