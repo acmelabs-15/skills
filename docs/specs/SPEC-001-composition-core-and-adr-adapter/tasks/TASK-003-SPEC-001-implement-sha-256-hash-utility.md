@@ -2,7 +2,7 @@
 title: 'TASK-003-SPEC-001: Implement SHA-256 Hash Utility'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-003-spec-001-implement-sha-256-hash-utility
-status: TODO
+status: DONE
 effort: S
 estimate: 0.25d
 tags:
@@ -71,6 +71,7 @@ Use Bun.hash("sha256", content) which returns a Uint8Array. Convert to hex strin
 - [constraint] Function must be synchronous as Bun.hash is sync #sync #performance
 
 ## Relations
+- validated_by [[TEST-REPORT-003-SPEC-001: SHA-256 Hash Utility]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-003-SPEC-001: SHA-256 Hash Utility]]

@@ -36,6 +36,18 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - TASK-001-SPEC-001 validated_by relation added; state propagation complete
 - Next: sync-jira push TASK-001, PLAN tick, atomic commit, then TIER_4 checkpoint with user before Wave 2
 
+## Event 04 — Wave 2 (TASK-002/003/006/007) DONE (2026-05-20)
+
+- 4 bun-ts-engineer agents dispatched in parallel; all returned DONE
+- TASK-002-SPEC-001 (core types + adapter interface): tsc --noEmit exit 0; types match DESIGN-002 exactly
+- TASK-003-SPEC-001 (SHA-256 hash): Bun.CryptoHasher; 5/5 tests pass
+- TASK-006-SPEC-001 (validators): 9/9 tests pass; containedPathSchema async with realpath CWE-22 mitigation
+- TASK-007-SPEC-001 (atomic write): 6/6 tests pass (20 assertions); all-or-nothing cluster confirmed
+- Biome post-fix: formatter + useLiteralKeys unsafe fix applied; biome check exits 0
+- Full suite: 21 pass, 0 fail, 40 expect() calls
+- QA: TEST-REPORT-002/003/006/007-SPEC-001 all PASS; validated_by relations added
+- Next: Wave 3 — TASK-004 (BaseMarkdownAdapter) + TASK-005 (Zod schemas) in parallel
+
 ## Observations
 
 - [decision] 4-wave build plan confirmed: W1=SPEC-001 PROOF (sequential gate); W2=SPEC-002+003+004+007 (4-way parallel via agent-teams); W3=SPEC-005; W4=SPEC-006 #build-plan #wave-1 #parallelism

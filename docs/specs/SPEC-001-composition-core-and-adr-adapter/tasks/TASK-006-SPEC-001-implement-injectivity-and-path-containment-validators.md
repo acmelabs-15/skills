@@ -2,7 +2,7 @@
 title: 'TASK-006-SPEC-001: Implement Injectivity and Path Containment Validators'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-006-spec-001-implement-injectivity-and-path-containment-validators
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -72,6 +72,7 @@ injectiveDisjointMap uses Set operations per ADR-002 D-5 spec. containedPathSche
 - [technique] Set operations for injectivity check are O(n) and trivially correct #set-operations #algorithm
 
 ## Relations
+- validated_by [[TEST-REPORT-006-SPEC-001: Injectivity and Path Containment Validators]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-005-SPEC-001: Injectivity and Path Containment Validators]]

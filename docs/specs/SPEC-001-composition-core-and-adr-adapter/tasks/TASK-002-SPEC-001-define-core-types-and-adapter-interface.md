@@ -2,7 +2,7 @@
 title: 'TASK-002-SPEC-001: Define Core Types and Adapter Interface'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-002-spec-001-define-core-types-and-adapter-interface
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -75,6 +75,7 @@ Types must exactly match the signatures in ADR-002 D-2. The Root type import com
 - [constraint] All methods synchronous per ADR-002 Axis 1 decision #sync #interface
 
 ## Relations
+- validated_by [[TEST-REPORT-002-SPEC-001: Core Types and Adapter Interface]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy]]
