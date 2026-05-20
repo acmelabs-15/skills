@@ -94,6 +94,18 @@ tags:
 - Branch policy current branch `feat/plan-001-skills-ecosystem` is non-main; /plan honored existing branch per skill branch policy (no new branch created this invocation)
 - Next per Contract 2 dispatch shape, auto-route to /decisions with `plan=PLAN-001 part=decisions.1`. /decisions will detect the 5 already-LOCKED D-Ns in PLAN-001's D-N substatus list, skip the per-D-N micro-cycle's AskUserQuestion phase, and proceed directly to brain:🧠-architect dispatch for composite ADR-001 authoring (with detail-parity mandate referencing the 8 KICKOFF-BRIEF locked design decisions plus the 5 LOCKED decisions). Then brain:---adr-review runs as BLOCKING gate per D-5 lock before ADR-001 flips PROPOSED → ACCEPTED.
 
+## Event 10 — ADR-001 PROPOSED authored via brain:🧠-architect (Step 5) + detail-parity audit PASS (Step 6)
+
+- Type agent-dispatch and state-change
+- Trigger /decisions Step 5 architect dispatch with detail-parity mandate
+- Outcome ADR-001 authored at decisions/ADR-001-composition-library-architecture.md (461 lines, 13 decision sections — 8 F-N foundational restatements from KICKOFF-BRIEF.md + 5 D-N architectural decisions from Step 5 lock)
+- Architect token usage 111K tokens, 18 tool calls, 386s duration
+- Architect self-check detail-parity PASS (each D-N section greater than or equal to corresponding SESSION Event 08 bullet detail)
+- Orchestrator Step 6 audit PASS — sampled D-1 (technical lib choice) and D-5 (process gate) against SESSION Event 08; both expanded from compressed pointer-ledger bullet (1 line) to full ADR per-D-N prose (5 sub-sections each: Decision + Rationale + Alternatives + Cross-cluster + Reversibility)
+- Per-D-N line counts F-1..F-8 = 8 lines each (foundational restatement); D-1..D-5 = 13-14 lines each (full architectural treatment)
+- Pattern 2 three-phase write verified by architect; permalink `-1` suffix remediated; ADR-specific frontmatter `date` + `updated` populated
+- Next /decisions Step 7 — dispatch brain:---adr-review as BLOCKING gate per D-5 lock; Phase 4 convergence PASS required (greater than or equal to 5 ACCEPT + zero BLOCK) before ADR-001 PROPOSED to ACCEPTED flip
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress
