@@ -1,0 +1,152 @@
+import { describe, expect, test } from "bun:test";
+import { planCompositionPlanSchema } from "../schemas/composition/plan.plan.schema.js";
+import { planDistributionPlanSchema } from "../schemas/distribution/plan.plan.schema.js";
+import { IntegrityFloorError, PlanAdapter } from "../src/adapters/plan.js";
+import type { MutationSpec } from "../src/core/types.js";
+
+describe("PlanAdapter integrity floor (TASK-002)", () => {
+  test("default integrity floor is 0.5", () => {
+    const adapter = new PlanAdapter();
+    expect(adapter.integrityFloor).toBe(0.5);
+  });
+
+  test("custom integrity floor is preserved", () => {
+    const adapter = new PlanAdapter(0.9);
+    expect(adapter.integrityFloor).toBe(0.9);
+  });
+
+  test("reverseMutations succeeds when preservation >= floor", () => {
+    const adapter = new PlanAdapter(0.5);
+    const content = `# PLAN-001: Example
+
+Line A preserved.
+Line B preserved.
+SPEC-001 reference.
+Line D preserved.
+Line E preserved.
+`;
+    const mutations: MutationSpec = {
+      renumber_map: { "SPEC-001": "SPEC-100" },
+      wikilink_map: {},
+    };
+    const mutated = adapter.applyMutations(content, mutations);
+    const restored = adapter.reverseMutations(mutated, mutations);
+    expect(restored).toBe(content);
+  });
+
+  test("integrity floor at 0.99 with substantial rewrite throws IntegrityFloorError", () => {
+    // Set a very high integrity floor; aggressively rewrite the content via a renumber map
+    // that touches every line so the recovered text cannot match the (mutated) input.
+    const adapter = new PlanAdapter(0.99);
+    const content = `# PLAN-001: Example
+
+Line A with SPEC-001.
+Line B with SPEC-001.
+Line C with SPEC-001.
+Line D with SPEC-001.
+Line E with SPEC-001.
+`;
+    const mutations: MutationSpec = {
+      renumber_map: { "SPEC-001": "SPEC-999" },
+      wikilink_map: {},
+    };
+    const mutated = adapter.applyMutations(content, mutations);
+    // The reverseMutations input is `mutated`; the recovered output equals the original.
+    // Since every non-trivial line in `mutated` differs from the corresponding line in
+    // the original (SPEC-999 vs SPEC-001), the recovered text shares few lines with
+    // `mutated`, breaching 99%.
+    expect(() => adapter.reverseMutations(mutated, mutations)).toThrow(IntegrityFloorError);
+  });
+
+  test("IntegrityFloorError exposes preservedRatio and floor", () => {
+    const err = new IntegrityFloorError(0.3, 0.5);
+    expect(err.preservedRatio).toBe(0.3);
+    expect(err.floor).toBe(0.5);
+    expect(err.name).toBe("IntegrityFloorError");
+    expect(err.message).toContain("30.0%");
+    expect(err.message).toContain("50%");
+  });
+});
+
+describe("PLAN Zod schemas (TASK-002)", () => {
+  test("valid distribution plan passes", () => {
+    const plan = {
+      plan_type: "distribution",
+      source_type: "plan",
+      source: {
+        path: "docs/planning/PLAN-001-example.md",
+        hash: "abc123",
+        range: { start: 1, end: -1 },
+      },
+      destinations: [{ path: "docs/planning/PLAN-001-part-a.md", content_hash: "def456" }],
+      mutations: {
+        renumber_map: { "SPEC-001": "SPEC-100" },
+        wikilink_map: {},
+        regenerated_sections: ["Progress Dashboard"],
+      },
+      integrity_floor: 0.5,
+    };
+    const result = planDistributionPlanSchema.safeParse(plan);
+    expect(result.success).toBe(true);
+  });
+
+  test("distribution plan defaults integrity_floor to 0.5", () => {
+    const plan = {
+      plan_type: "distribution",
+      source_type: "plan",
+      source: { path: "p.md", hash: "h", range: { start: 1, end: -1 } },
+      destinations: [{ path: "d.md", content_hash: "h2" }],
+      mutations: { renumber_map: {}, wikilink_map: {} },
+    };
+    const parsed = planDistributionPlanSchema.parse(plan);
+    expect(parsed.integrity_floor).toBe(0.5);
+  });
+
+  test("distribution plan rejects non-injective renumber_map", () => {
+    const plan = {
+      plan_type: "distribution",
+      source_type: "plan",
+      source: { path: "p.md", hash: "h", range: { start: 1, end: -1 } },
+      destinations: [{ path: "d.md", content_hash: "h2" }],
+      mutations: {
+        renumber_map: { A: "X", B: "X" }, // duplicate value
+        wikilink_map: {},
+      },
+    };
+    const result = planDistributionPlanSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("valid composition plan passes", () => {
+    const plan = {
+      plan_type: "composition",
+      source_type: "plan",
+      source: {
+        path: "docs/planning/PLAN-001-part-a.md",
+        hash: "abc",
+        range: { start: 1, end: -1 },
+        mutations: { renumber_map: { "SPEC-100": "SPEC-001" }, wikilink_map: {} },
+      },
+      destinations: [{ path: "docs/planning/PLAN-001-example.md", content_hash: "def" }],
+    };
+    const result = planCompositionPlanSchema.safeParse(plan);
+    expect(result.success).toBe(true);
+  });
+
+  test("composition plan rejects integrity_floor outside [0,1]", () => {
+    const plan = {
+      plan_type: "composition",
+      source_type: "plan",
+      source: {
+        path: "p.md",
+        hash: "h",
+        range: { start: 1, end: -1 },
+        mutations: { renumber_map: {}, wikilink_map: {} },
+      },
+      destinations: [{ path: "d.md", content_hash: "h2" }],
+      integrity_floor: 1.5,
+    };
+    const result = planCompositionPlanSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+});
