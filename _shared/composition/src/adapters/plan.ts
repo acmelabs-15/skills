@@ -163,10 +163,14 @@ export class PlanAdapter implements CompositionAdapter {
     let result = this.applySinglePassReplace(segment, renumberMap);
     result = this.applySinglePassReplace(result, wikilinkMap);
 
+    // frontmatter_map uses field-name semantics (keys are YAML field names, values
+    // are the new field values). The map does not record original values, so reverse
+    // mutations cannot algebraically restore them. On reverse, leave the frontmatter
+    // untouched — callers that need bit-exact restoration supply an explicit inverse
+    // spec via a second applyMutations call.
     const fmMap = mutations.frontmatter_map;
-    if (fmMap && Object.keys(fmMap).length > 0) {
-      const directionalFm = reverse ? this.invertMap(fmMap) : fmMap;
-      result = this.applyFrontmatterMutations(result, directionalFm);
+    if (!reverse && fmMap && Object.keys(fmMap).length > 0) {
+      result = this.applyFrontmatterMutations(result, fmMap);
     }
     return result;
   }
