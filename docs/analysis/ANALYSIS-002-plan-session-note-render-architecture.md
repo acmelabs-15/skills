@@ -425,8 +425,6 @@ Key properties of the SESSION template:
 - Each event has typed-field bullets at the start (Type, Part, Transition, Outcome, Decision IDs, Task, Agent, Verdict, Tally, P0/P1/P2) followed by free-text prose body.
 - Event numbers are continuous starting at 1; first event must be session-start.
 
-
-
 ## Status summary
 
 - Locked direction: D-1..D-11 above
@@ -1594,3 +1592,4 @@ This sequence avoids the bulk migration-then-build cost. The new tooling matures
 - relates_to [[ADR-002: Adapter Contract and Plan Schema]]
 - inspired_by [[ANALYSIS-001: SPEC Clustering]]
 - pairs_with [[brain:---adr-review]]
+- implemented_by [[SPEC-007: Plan/Session Render Implementation]]

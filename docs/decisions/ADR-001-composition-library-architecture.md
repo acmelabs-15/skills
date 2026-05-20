@@ -54,11 +54,13 @@ This composite ADR captures 8 foundational locked design decisions established i
 JSON Schema is portable across languages and LLM-friendly for generation. It is a well-known standard with broad tooling support.
 
 **Pros:**
+
 - Language-agnostic; works with any JSON Schema validator
 - LLMs have extensive training data for JSON Schema generation
 - Can be consumed by non-TypeScript tooling in the future
 
 **Cons:**
+
 - Requires maintaining separate type definitions in TypeScript and separate JSON Schema files, creating sync drift between the two
 - No type inference from schema to TypeScript types
 - Verbose syntax for discriminated unions
@@ -69,12 +71,14 @@ JSON Schema is portable across languages and LLM-friendly for generation. It is 
 Zod is a TypeScript-native validation library providing runtime validation with compile-time type inference from a single schema definition.
 
 **Pros:**
+
 - Single source of truth: TS types and runtime validation derive from the same Zod schema
 - Type inference eliminates separate type definitions and the sync drift between types and schemas
 - Discriminated unions are first-class via z.discriminatedUnion()
 - Battle-tested in the TypeScript ecosystem; MIT license; ubiquitous adoption
 
 **Cons:**
+
 - TypeScript-only; not portable to non-TS consumers
 - Adds a runtime dependency (~50KB)
 
@@ -83,9 +87,11 @@ Zod is a TypeScript-native validation library providing runtime validation with 
 Combines Zod for TS-native authoring with zod-to-json-schema for external portability.
 
 **Pros:**
+
 - Gets both TS type inference and JSON Schema portability
 
 **Cons:**
+
 - Extra build step and dependency for portability that this local-only TS project does not need
 - Adds maintenance surface for marginal benefit
 
@@ -96,10 +102,12 @@ Combines Zod for TS-native authoring with zod-to-json-schema for external portab
 Build a regex-based parser targeting the specific H2/H3 structure of Brain notes.
 
 **Pros:**
+
 - Zero dependencies; simpler for ADR-only scope (structured H2/H3 sections)
 - Full control over parsing behavior
 
 **Cons:**
+
 - Brittle when handling SPEC subtree notes (recursive child notes with frontmatter, varied heading depths, nested code blocks containing markdown-like content)
 - Maintaining two parsing strategies (regex for simple types, AST for complex types) doubles the testing surface
 - Edge cases in markdown (indented code blocks, HTML comments, YAML frontmatter boundaries) require progressively more complex regex
@@ -109,12 +117,14 @@ Build a regex-based parser targeting the specific H2/H3 structure of Brain notes
 The unified ecosystem provides a battle-tested markdown AST (mdast) with plugin-based frontmatter extraction.
 
 **Pros:**
+
 - Battle-tested AST required for SPEC subtree accuracy (recursive child notes with cross-cluster wikilink rewrites)
 - Frontmatter extraction via remark-frontmatter handles YAML boundary edge cases
 - AST manipulation is deterministic and auditable (tree transformations, not string surgery)
 - Extensible via the unified plugin pipeline for future adapter needs
 
 **Cons:**
+
 - Dependency footprint: unified + remark-parse + remark-stringify + remark-frontmatter (~4 packages)
 - Learning curve for the unified/mdast API (mitigated by strong documentation and widespread usage)
 
@@ -123,9 +133,11 @@ The unified ecosystem provides a battle-tested markdown AST (mdast) with plugin-
 Use regex parsing for ADR, ANALYSIS, SESSION; use AST for PLAN and SPEC subtree.
 
 **Pros:**
+
 - Minimal dependencies for simple adapters
 
 **Cons:**
+
 - Two parsing strategies to maintain creates inconsistency in the adapter contract
 - Harder to reason about round-trip guarantees when source and destination may use different parsers
 - Less rigorous overall; the round-trip property test must exercise both paths
@@ -135,10 +147,12 @@ Use regex parsing for ADR, ANALYSIS, SESSION; use AST for PLAN and SPEC subtree.
 #### Option A: JSON
 
 **Pros:**
+
 - Native to JavaScript/TypeScript; no parser needed (JSON.parse)
 - Strict syntax eliminates ambiguity
 
 **Cons:**
+
 - Less readable for humans (no comments, awkward multiline strings, verbose nesting)
 - Harder for LLMs to produce cleanly (trailing commas, missing brackets)
 - Not friendly for user adjudication before execution
@@ -148,12 +162,14 @@ Use regex parsing for ADR, ANALYSIS, SESSION; use AST for PLAN and SPEC subtree.
 YAML plan files live at docs/_restructure/{decompose,recompose}-{id}-plan.yaml, authored by LLM, adjudicated by user, consumed by script.
 
 **Pros:**
+
 - Human-readable format supports user adjudication workflow (comments, clean multiline, compact syntax)
 - LLM-friendly authoring (LLMs produce valid YAML more reliably than JSON for structured plans)
 - Comments allowed (documenting rationale inline in the plan)
 - Strict Zod validation on load mitigates YAML type coercion quirks (e.g., "yes"/"no" as booleans, unquoted strings)
 
 **Cons:**
+
 - YAML type coercion quirks require defensive Zod validation on load
 - Requires a YAML parser dependency (js-yaml or similar)
 - Indentation-sensitive format can cause subtle parse failures
@@ -163,9 +179,11 @@ YAML plan files live at docs/_restructure/{decompose,recompose}-{id}-plan.yaml, 
 Embed the plan as a markdown table inside the PLAN note's body.
 
 **Pros:**
+
 - No additional file format; stays within the Brain note ecosystem
 
 **Cons:**
+
 - Mixes plan data with prose content in the PLAN note, violating separation of concerns
 - Harder to schema-validate (must parse markdown to extract table, then validate table content)
 - Table format constrains expressiveness for complex plan structures (nested sections, conditional mappings)
@@ -177,10 +195,12 @@ Embed the plan as a markdown table inside the PLAN note's body.
 Separate Zod schemas per source type (adrPlanSchema, analysisPlanSchema, etc.).
 
 **Pros:**
+
 - Each adapter's plan is self-contained; easier to understand in isolation
 - Allows adapter-specific fields without compromise
 
 **Cons:**
+
 - Code duplication across shared fields (source metadata, hash validation, output manifest)
 - Adding a new adapter means creating an entirely new schema from scratch
 - Harder to enforce consistency across adapters (shared fields may drift)
@@ -190,12 +210,14 @@ Separate Zod schemas per source type (adrPlanSchema, analysisPlanSchema, etc.).
 A single Zod schema using z.discriminatedUnion("source_type", [...]) with a shared base and per-adapter extensions.
 
 **Pros:**
+
 - Clean type narrowing per adapter via TypeScript discriminated union pattern
 - Shared fields (source metadata, hash validation config, output manifest) are defined once
 - Single extension point for adding new adapters (add a variant to the union)
 - Consistency across adapters is structural, not conventional
 
 **Cons:**
+
 - Union schema is more complex to read initially than flat per-adapter schemas
 - All adapters must share the base shape, which may require optional fields for type-specific data
 
@@ -206,11 +228,13 @@ A single Zod schema using z.discriminatedUnion("source_type", [...]) with a shar
 /brain:---adr-review PASS verdict required before ADR-001 (and subsequent architecture ADRs) can transition from PROPOSED to ACCEPTED. No spec, plan, or implementation work proceeds until the gate passes.
 
 **Pros:**
+
 - Catches architectural issues early, before they propagate into specs and code
 - Adheres to the adr-review-blocking-gate memory rule already established in the orchestrator protocol
 - Multi-agent debate (architect, critic, independent-thinker, security, analyst, high-level-advisor) provides thorough stress-testing
 
 **Cons:**
+
 - Adds latency to the decisions pipeline (debate rounds take time)
 - Potential for false-negative blocks on time-sensitive decisions
 
@@ -219,9 +243,11 @@ A single Zod schema using z.discriminatedUnion("source_type", [...]) with a shar
 adr-review runs but findings are non-blocking; ADR can flip to ACCEPTED regardless.
 
 **Pros:**
+
 - Faster pipeline; no blocking on review
 
 **Cons:**
+
 - Findings get ignored under schedule pressure (defeats the purpose of review)
 - No enforcement mechanism for acting on findings
 
@@ -230,9 +256,11 @@ adr-review runs but findings are non-blocking; ADR can flip to ACCEPTED regardle
 No adr-review on architecture ADRs.
 
 **Pros:**
+
 - Zero overhead
 
 **Cons:**
+
 - Bypasses the quality gate entirely; no multi-agent stress-testing before locking architectural choices
 - Contradicts the established protocol
 
@@ -326,6 +354,7 @@ The source files are never mutated until ALL destinations validate AND rename su
 **Rationale**: Zod provides TypeScript-native runtime validation with compile-time type inference from a single schema definition. This eliminates the sync drift between separate TypeScript type definitions and separate JSON Schema files that would be required with JSON Schema. For a local-only TypeScript project using Bun, the portability benefit of JSON Schema does not justify the maintenance overhead of keeping two representations synchronized. Zod's z.discriminatedUnion() directly supports the unified plan schema shape decided in D-4.
 
 **Alternatives Considered**:
+
 - **JSON Schema**: Rejected because it requires maintaining separate type definitions in TypeScript alongside the schema, creating sync drift. JSON Schema's language-agnosticism is not needed for a TS-only local project.
 - **Zod + JSON Schema Export** (via zod-to-json-schema): Rejected because it adds an extra build step and dependency for portability that this project does not need.
 
@@ -340,6 +369,7 @@ The source files are never mutated until ALL destinations validate AND rename su
 **Rationale**: The SPEC subtree adapter requires recursive parsing of child notes with cross-cluster wikilink rewrites across frontmatter, headings, body text, and relations sections. A regex-based parser handles the simple cases (ADR H3 sections, ANALYSIS H2 findings) but becomes brittle when facing SPEC subtree edge cases: nested code blocks containing markdown-like content, YAML frontmatter boundaries, indented lists with embedded wikilinks, and HTML comments. The unified/mdast AST provides deterministic tree transformations that are auditable and testable, and remark-frontmatter handles YAML boundary extraction reliably. All 5 adapters use the same parser, ensuring the round-trip property test exercises a single code path.
 
 **Alternatives Considered**:
+
 - **Custom regex parser**: Rejected because it becomes brittle for SPEC subtree notes with recursive child structures, nested code blocks, and varied heading depths. Maintaining regex for all 5 source types would require progressively complex patterns that are harder to audit for correctness.
 - **Hybrid** (regex for simple types, AST for complex types): Rejected because maintaining two parsing strategies doubles the testing surface and creates inconsistency in the adapter contract. The round-trip guarantee is harder to reason about when source and destination may use different parsers.
 
@@ -354,6 +384,7 @@ The source files are never mutated until ALL destinations validate AND rename su
 **Rationale**: YAML is human-readable and supports the three-phase workflow where the LLM authors a plan, the user reviews it via AskUserQuestion, and the script consumes it. Comments are allowed in YAML (unlike JSON), enabling inline rationale documentation within plan files. LLMs produce valid YAML more reliably than valid JSON for structured plans (fewer trailing-comma and bracket-matching errors). YAML's type coercion quirks (bare "yes"/"no" as booleans, unquoted numbers) are mitigated by strict Zod validation on load (D-1), which rejects malformed values before the script touches any content.
 
 **Alternatives Considered**:
+
 - **JSON**: Rejected because it is less readable for human review, does not support comments, and has awkward multiline string handling. LLMs also produce more JSON syntax errors (trailing commas, missing brackets) than YAML errors for structured plan data.
 - **Sidecar markdown table in PLAN body**: Rejected because it mixes plan data with prose content in the PLAN note, violating separation of concerns. Schema-validating a markdown table requires parsing the markdown first, then validating the extracted table content, adding an unnecessary layer of indirection. Table format also constrains expressiveness for complex plan structures.
 
@@ -368,6 +399,7 @@ The source files are never mutated until ALL destinations validate AND rename su
 **Rationale**: A unified discriminated union provides clean type narrowing per adapter via TypeScript's type system. When the script reads a plan YAML and parses it through the Zod schema, TypeScript automatically narrows the type based on source_type, giving each adapter access to its type-specific fields without casting. Shared fields (source file path, source hash, output manifest, hash validation config) are defined once in the base, eliminating duplication. Adding a new adapter means adding a variant to the union and implementing the adapter interface, both in a single extension point.
 
 **Alternatives Considered**:
+
 - **Per-adapter schemas**: Rejected because shared fields (source metadata, hash validation, output manifest) would be duplicated across 5 schemas. Adding a new adapter means creating an entirely new schema from scratch and manually ensuring it shares the correct base fields. Consistency across adapters becomes conventional rather than structural.
 
 **Cross-cluster implications**: D-4 depends on D-1 (Zod) for z.discriminatedUnion() as the implementation mechanism. D-4 directly shapes the adapter contract: each adapter implements the parse/extract/renumber/wikilink-rewrite/serialize interface, and the plan schema's discriminated union determines which adapter is invoked. D-4 interacts with D-2 (unified/remark) because the per-adapter extensions in the union schema reference AST node types that the parser produces.
@@ -381,6 +413,7 @@ The source files are never mutated until ALL destinations validate AND rename su
 **Rationale**: The adr-review skill orchestrates a multi-agent debate (architect, critic, independent-thinker, security, analyst, high-level-advisor) in structured rounds until consensus. This catches architectural issues before they propagate into specs and code, where the cost of correction is 5-10x higher. The BLOCKING gate adheres to the adr-review-blocking-gate memory rule already established in the orchestrator protocol. For a project whose explicit mission is to prevent architectural drift, skipping the review gate would be self-contradictory.
 
 **Alternatives Considered**:
+
 - **ADVISORY** (findings non-blocking): Rejected because non-blocking findings get ignored under schedule pressure, defeating the purpose of multi-agent review. The bootstrapping incident that motivated this project demonstrates the cost of proceeding without adequate review.
 - **SKIP** (no adr-review): Rejected because it bypasses the quality gate entirely. No multi-agent stress-testing before locking architectural choices contradicts the established protocol.
 
@@ -391,6 +424,7 @@ The source files are never mutated until ALL destinations validate AND rename su
 ## Technology Stack
 
 ### Runtime Dependencies
+
 - **Bun**: Runtime, test runner, package manager (per F-6)
 - **Zod**: Plan validation with TS type inference (per D-1)
 - **unified + remark-parse + remark-stringify**: Markdown AST parsing and serialization (per D-2)
@@ -398,15 +432,18 @@ The source files are never mutated until ALL destinations validate AND rename su
 - **js-yaml** (or equivalent): YAML parsing for plan files (per D-3, implied by YAML format choice)
 
 ### Dev Dependencies
+
 - **biome**: Lint and format (per F-6)
 - **bun test**: Built-in test runner (per F-6)
 
 ### Removed
+
 - None (greenfield project)
 
 ## Consequences
 
 ### Positive
+
 - Zero-drift guarantee: round-trip property test (SHA-256(original) === SHA-256(decompose then recompose(original))) makes content drift mathematically impossible for every adapter
 - Per-type adapter contract provides clean extension: adding a new source type means implementing the adapter interface and adding a variant to the discriminated union schema
 - Auditable plan artifact at docs/_restructure/ enables human review before any script execution
@@ -414,12 +451,14 @@ The source files are never mutated until ALL destinations validate AND rename su
 - Single source of truth for TS types and validation via Zod removes sync drift between schemas and type definitions
 
 ### Negative
+
 - Dependency footprint: unified ecosystem (~4 packages) plus Zod plus js-yaml adds ~6 runtime dependencies to a greenfield project
 - YAML type coercion quirks require defensive Zod validation on load (mitigated by D-1)
 - Learning curve for the unified/mdast API for contributors unfamiliar with AST-based markdown processing
 - Bun-native APIs (F-6) create medium lock-in: migrating to Node.js requires replacing ~15-20 call sites
 
 ### Neutral
+
 - TypeScript-only constraint from D-1 (Zod) and F-6 (Bun + TS): the project is already TypeScript-only by design, so this is not a new restriction
 
 ## Vendor Lock-in Assessment
@@ -459,8 +498,8 @@ SHA-256 is a NIST standard cryptographic primitive available in every runtime. B
 ## Clarifications
 
 - **2026-05-19**: brain:---adr-review Phase 4 convergence completed (round 1). Verdict tally 5 ACCEPT + 1 CONCERNS (independent-thinker) + 0 BLOCK. P1 themes 1-4 RESOLVED in this ADR refinement (hash protocol formal spec + rollback mechanism added to F-8; security hardening + LOC scope clarification added to Confirmation). P1 themes 5-6 (SHA-256 vs xxHash; unified+remark vs hybrid parser) DEFERRED with rationale documented in CRIT-001-ADR-001 — both challenge already-LOCKED decisions (F-8 and D-2) where re-adjudication would require user re-opening locked decisions. Revisit triggers: (Theme 5) revisit SHA-256 vs xxHash if profiling reveals hash compute dominates round-trip latency on real-world note sizes; (Theme 6) revisit unified vs hybrid parser if ADR adapter implementation exceeds 350 LOC (40% overshoot of ~250 estimate). P2 items documented in CRIT-001 for tracking. Independent-thinker CONCERNS verdict accepted as Disagree-and-Commit position with documented dissent.
-- **2026-05-20**: F-4 evolution — remote added at git@github.com:loriensleafs/skills.git (private GitHub repo, loriensleafs namespace). The "(no remote initially)" qualifier of F-4 was the bootstrap-state escape hatch documented in the original locking on 2026-05-19; this clarification records the transition from local-only to remote-tracked. Migration path: Option C (keep feat/plan-001-skills-ecosystem as working branch; create main from current HEAD as the long-lived integration branch; push both; main becomes GitHub default branch). Branch convention going forward: feat/plan-NNN-work-unit branches off main; PRs merge to main via gh pr create. /end pipeline's PR-creation step (Step 4f) becomes APPLICABLE going forward and runs AUTOMATICALLY without per-session opt-out (locked 2026-05-20 user direction). brain:---adr-review NOT re-run for this Clarifications entry — Clarifications updates are documentation evolutions of already-ACCEPTED decisions per CONVENTIONS Section 3.1, not new architectural decisions; the F-4 reversibility assessment ("Adding a remote is a single git remote add command. No architectural impact.") explicitly anticipated this transition. Pairs with SESSION-2026-05-20_01 (event 12) and PLAN-001 Decision Log entry of same date.
-- **2026-05-20**: F-4 evolution continued — remote relocated from loriensleafs/skills to acmelabs-15/skills (org-owned). User executed gh api -X POST /repos/loriensleafs/skills/transfer -f new_owner=acmelabs-15 in a separate terminal (gh repo transfer subcommand does not exist in gh CLI; gh api direct call is the working path). Transfer auto-accepted because user owns both loriensleafs (personal) and acmelabs-15 (org) — no notification dance required. Old URL https://github.com/loriensleafs/skills returns HTTP 301 redirect to new location indefinitely. Local remote updated via git remote set-url origin git@github.com:acmelabs-15/skills.git; verified git remote -v shows acmelabs-15/skills.git for fetch + push; verified git fetch origin + git log --oneline -3 origin/main shows full history preserved through PR #1 merge commit 4535414. Standalone repo under the org (not nested into a larger monorepo); the broader monorepo restructure (per ANALYSIS-002 Appendix G — packages/composition + decompose-recompose + defrag + ingest) stays deferred to ADR-004 when 2nd package starts. brain:---adr-review NOT re-run on this evolution — same Clarifications-only rationale as the prior 2026-05-20 entry (URL/owner change is not an architectural decision; F-4's reversibility assessment anticipated remote transitions). Pairs with SESSION-2026-05-20_02 (Event 02) and PLAN-001 Decision Log entry of same date.
+- **2026-05-20**: F-4 evolution — remote added at <git@github.com>:loriensleafs/skills.git (private GitHub repo, loriensleafs namespace). The "(no remote initially)" qualifier of F-4 was the bootstrap-state escape hatch documented in the original locking on 2026-05-19; this clarification records the transition from local-only to remote-tracked. Migration path: Option C (keep feat/plan-001-skills-ecosystem as working branch; create main from current HEAD as the long-lived integration branch; push both; main becomes GitHub default branch). Branch convention going forward: feat/plan-NNN-work-unit branches off main; PRs merge to main via gh pr create. /end pipeline's PR-creation step (Step 4f) becomes APPLICABLE going forward and runs AUTOMATICALLY without per-session opt-out (locked 2026-05-20 user direction). brain:---adr-review NOT re-run for this Clarifications entry — Clarifications updates are documentation evolutions of already-ACCEPTED decisions per CONVENTIONS Section 3.1, not new architectural decisions; the F-4 reversibility assessment ("Adding a remote is a single git remote add command. No architectural impact.") explicitly anticipated this transition. Pairs with SESSION-2026-05-20_01 (event 12) and PLAN-001 Decision Log entry of same date.
+- **2026-05-20**: F-4 evolution continued — remote relocated from loriensleafs/skills to acmelabs-15/skills (org-owned). User executed gh api -X POST /repos/loriensleafs/skills/transfer -f new_owner=acmelabs-15 in a separate terminal (gh repo transfer subcommand does not exist in gh CLI; gh api direct call is the working path). Transfer auto-accepted because user owns both loriensleafs (personal) and acmelabs-15 (org) — no notification dance required. Old URL <https://github.com/loriensleafs/skills> returns HTTP 301 redirect to new location indefinitely. Local remote updated via git remote set-url origin <git@github.com>:acmelabs-15/skills.git; verified git remote -v shows acmelabs-15/skills.git for fetch + push; verified git fetch origin + git log --oneline -3 origin/main shows full history preserved through PR #1 merge commit 4535414. Standalone repo under the org (not nested into a larger monorepo); the broader monorepo restructure (per ANALYSIS-002 Appendix G — packages/composition + decompose-recompose + defrag + ingest) stays deferred to ADR-004 when 2nd package starts. brain:---adr-review NOT re-run on this evolution — same Clarifications-only rationale as the prior 2026-05-20 entry (URL/owner change is not an architectural decision; F-4's reversibility assessment anticipated remote transitions). Pairs with SESSION-2026-05-20_02 (Event 02) and PLAN-001 Decision Log entry of same date.
 
 ## Observations
 
@@ -487,3 +526,4 @@ SHA-256 is a NIST standard cryptographic primitive available in every runtime. B
 - implemented_by [[SPEC-004: SPEC Subtree Adapter]]
 - implemented_by [[SPEC-005: Decompose and Recompose Skills]]
 - implemented_by [[SPEC-006: Defrag and Ingest Skills]]
+- implemented_by [[SPEC-007: Plan/Session Render Implementation]]

@@ -599,3 +599,4 @@ _No clarifications yet._
 - extends [[ADR-001: Composition Library Architecture]]
 - pairs_with [[ADR-002: Adapter Contract and Plan Schema]]
 - relates_to [[PLAN-001: Skills Ecosystem]]
+- implemented_by [[SPEC-007: Plan/Session Render Implementation]]
