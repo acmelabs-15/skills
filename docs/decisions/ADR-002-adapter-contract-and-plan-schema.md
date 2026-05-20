@@ -869,3 +869,4 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - implemented_by [[SPEC-003: PLAN Adapter]]
 - implemented_by [[SPEC-004: SPEC Subtree Adapter]]
 - implemented_by [[SPEC-005: Decompose and Recompose Skills]]
+- implemented_by [[SPEC-006: Defrag and Ingest Skills]]
