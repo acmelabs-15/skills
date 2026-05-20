@@ -2,7 +2,7 @@
 title: 'SPEC-006: Defrag and Ingest Skills'
 type: spec
 status: ACCEPTED
-permalink: specs/spec-006-defrag-and-ingest-skills/spec-006-defrag-and-ingest-skills-1
+permalink: specs/spec-006-defrag-and-ingest-skills/spec-006-defrag-and-ingest-skills
 tags:
 - spec
 - defrag

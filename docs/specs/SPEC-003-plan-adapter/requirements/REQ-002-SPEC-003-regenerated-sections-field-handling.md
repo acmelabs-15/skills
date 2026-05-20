@@ -2,7 +2,7 @@
 title: 'REQ-002-SPEC-003: Regenerated Sections Field Handling'
 type: requirement
 status: DRAFT
-permalink: specs/spec-003-plan-adapter/requirements/req-002-spec-003-regenerated-sections-field-handling-1
+permalink: specs/spec-003-plan-adapter/requirements/req-002-spec-003-regenerated-sections-field-handling
 tags:
 - requirement
 - spec-003

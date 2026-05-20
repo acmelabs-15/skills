@@ -2,7 +2,7 @@
 title: 'REQ-006-SPEC-004: SPEC Subtree Adapter Round-Trip Property Test'
 type: requirement
 status: DRAFT
-permalink: specs/spec-004-spec-subtree-adapter/requirements/req-006-spec-004-spec-subtree-adapter-round-trip-property-test-1
+permalink: specs/spec-004-spec-subtree-adapter/requirements/req-006-spec-004-spec-subtree-adapter-round-trip-property-test
 tags:
 - requirement
 - spec-004

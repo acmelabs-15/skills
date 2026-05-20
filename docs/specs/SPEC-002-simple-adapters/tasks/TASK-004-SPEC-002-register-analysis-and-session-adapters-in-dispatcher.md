@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 1d
-permalink: specs/spec-002-simple-adapters/tasks/task-004-spec-002-register-analysis-and-session-adapters-in-dispatcher-1
+permalink: specs/spec-002-simple-adapters/tasks/task-004-spec-002-register-analysis-and-session-adapters-in-dispatcher
 tags:
 - task
 - spec-002

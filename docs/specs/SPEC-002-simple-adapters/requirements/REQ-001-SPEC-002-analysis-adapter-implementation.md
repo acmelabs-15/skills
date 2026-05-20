@@ -2,7 +2,7 @@
 title: 'REQ-001-SPEC-002: ANALYSIS Adapter Implementation'
 type: requirement
 status: DRAFT
-permalink: specs/spec-002-simple-adapters/requirements/req-001-spec-002-analysis-adapter-implementation-1
+permalink: specs/spec-002-simple-adapters/requirements/req-001-spec-002-analysis-adapter-implementation
 tags:
 - requirement
 - spec-002

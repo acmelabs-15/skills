@@ -2,7 +2,7 @@
 title: 'DESIGN-001-SPEC-003: PLAN Adapter Architecture'
 type: design
 status: DRAFT
-permalink: specs/spec-003-plan-adapter/design/design-001-spec-003-plan-adapter-architecture-1
+permalink: specs/spec-003-plan-adapter/design/design-001-spec-003-plan-adapter-architecture
 tags:
 - design
 - spec-003

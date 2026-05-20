@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 1d
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-005-spec-004-implement-spec-subtree-manifest-schema-zod-validator-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-005-spec-004-implement-spec-subtree-manifest-schema-zod-validator
 tags:
 - task
 - spec-004

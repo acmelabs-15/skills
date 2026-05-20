@@ -2,7 +2,7 @@
 title: 'REQ-004-SPEC-003: PLAN Frontmatter Mutations'
 type: requirement
 status: DRAFT
-permalink: specs/spec-003-plan-adapter/requirements/req-004-spec-003-plan-frontmatter-mutations-1
+permalink: specs/spec-003-plan-adapter/requirements/req-004-spec-003-plan-frontmatter-mutations
 tags:
 - requirement
 - spec-003

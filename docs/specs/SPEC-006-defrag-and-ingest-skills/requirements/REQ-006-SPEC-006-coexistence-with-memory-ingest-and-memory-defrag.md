@@ -2,7 +2,7 @@
 title: 'REQ-006-SPEC-006: Coexistence with Memory-Ingest and Memory-Defrag'
 type: requirement
 status: DRAFT
-permalink: specs/spec-006-defrag-and-ingest-skills/requirements/req-006-spec-006-coexistence-with-memory-ingest-and-memory-defrag-1
+permalink: specs/spec-006-defrag-and-ingest-skills/requirements/req-006-spec-006-coexistence-with-memory-ingest-and-memory-defrag
 tags:
 - requirement
 - coexistence

@@ -2,7 +2,7 @@
 title: 'TASK-004-SPEC-006: Implement Ingest CLI and Skill Structure'
 type: task
 status: TODO
-permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-004-spec-006-implement-ingest-cli-and-skill-structure-1
+permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-004-spec-006-implement-ingest-cli-and-skill-structure
 tags:
 - task
 - ingest

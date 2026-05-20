@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 1d
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-006-spec-004-spec-subtree-test-fixtures-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-006-spec-004-spec-subtree-test-fixtures
 tags:
 - task
 - spec-004

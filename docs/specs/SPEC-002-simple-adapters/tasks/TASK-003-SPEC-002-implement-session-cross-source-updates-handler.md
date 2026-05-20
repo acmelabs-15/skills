@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 0.5d
-permalink: specs/spec-002-simple-adapters/tasks/task-003-spec-002-implement-session-cross-source-updates-handler-1
+permalink: specs/spec-002-simple-adapters/tasks/task-003-spec-002-implement-session-cross-source-updates-handler
 tags:
 - task
 - spec-002

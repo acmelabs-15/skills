@@ -2,7 +2,7 @@
 title: 'DESIGN-001-SPEC-005: Skill Architecture'
 type: design
 status: DRAFT
-permalink: specs/spec-005-decompose-and-recompose-skills/design/design-001-spec-005-skill-architecture-1
+permalink: specs/spec-005-decompose-and-recompose-skills/design/design-001-spec-005-skill-architecture
 tags:
 - design
 - skill-architecture

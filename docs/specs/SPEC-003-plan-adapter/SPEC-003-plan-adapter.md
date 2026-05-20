@@ -2,7 +2,7 @@
 title: 'SPEC-003: PLAN Adapter'
 type: spec
 status: ACCEPTED
-permalink: specs/spec-003-plan-adapter/spec-003-plan-adapter-1
+permalink: specs/spec-003-plan-adapter/spec-003-plan-adapter
 tags:
 - spec
 - plan-adapter

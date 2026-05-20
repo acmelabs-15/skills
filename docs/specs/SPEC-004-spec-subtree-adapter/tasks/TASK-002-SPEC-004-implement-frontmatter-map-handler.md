@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 1d
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-002-spec-004-implement-frontmatter-map-handler-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-002-spec-004-implement-frontmatter-map-handler
 tags:
 - task
 - spec-004

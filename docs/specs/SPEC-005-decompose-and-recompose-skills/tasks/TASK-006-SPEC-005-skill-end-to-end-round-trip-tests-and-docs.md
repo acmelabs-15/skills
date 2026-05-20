@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: M
 estimate: 2d
-permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-006-spec-005-skill-end-to-end-round-trip-tests-and-docs-1
+permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-006-spec-005-skill-end-to-end-round-trip-tests-and-docs
 tags:
 - task
 - round-trip

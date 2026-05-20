@@ -2,7 +2,7 @@
 title: 'REQ-001-SPEC-003: PLAN Adapter Implementation'
 type: requirement
 status: DRAFT
-permalink: specs/spec-003-plan-adapter/requirements/req-001-spec-003-plan-adapter-implementation-1
+permalink: specs/spec-003-plan-adapter/requirements/req-001-spec-003-plan-adapter-implementation
 tags:
 - requirement
 - spec-003

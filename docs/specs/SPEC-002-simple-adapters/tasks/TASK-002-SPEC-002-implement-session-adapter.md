@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 0.5d
-permalink: specs/spec-002-simple-adapters/tasks/task-002-spec-002-implement-session-adapter-1
+permalink: specs/spec-002-simple-adapters/tasks/task-002-spec-002-implement-session-adapter
 tags:
 - task
 - spec-002

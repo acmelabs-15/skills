@@ -2,7 +2,7 @@
 title: 'REQ-004-SPEC-004: Per-File Hash Validation'
 type: requirement
 status: DRAFT
-permalink: specs/spec-004-spec-subtree-adapter/requirements/req-004-spec-004-per-file-hash-validation-1
+permalink: specs/spec-004-spec-subtree-adapter/requirements/req-004-spec-004-per-file-hash-validation
 tags:
 - requirement
 - spec-004

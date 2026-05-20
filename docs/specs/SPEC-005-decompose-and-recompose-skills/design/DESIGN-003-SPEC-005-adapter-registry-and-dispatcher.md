@@ -2,7 +2,7 @@
 title: 'DESIGN-003-SPEC-005: Adapter Registry and Dispatcher'
 type: design
 status: DRAFT
-permalink: specs/spec-005-decompose-and-recompose-skills/design/design-003-spec-005-adapter-registry-and-dispatcher-1
+permalink: specs/spec-005-decompose-and-recompose-skills/design/design-003-spec-005-adapter-registry-and-dispatcher
 tags:
 - design
 - adapter-registry

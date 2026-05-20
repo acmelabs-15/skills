@@ -2,7 +2,7 @@
 title: 'REQ-004-SPEC-002: Adapter Registry Extension'
 type: requirement
 status: DRAFT
-permalink: specs/spec-002-simple-adapters/requirements/req-004-spec-002-adapter-registry-extension-1
+permalink: specs/spec-002-simple-adapters/requirements/req-004-spec-002-adapter-registry-extension
 tags:
 - requirement
 - spec-002
