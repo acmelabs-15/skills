@@ -44,7 +44,8 @@ export function injectiveDisjointMap(
  * SKILLS_DOCS_ROOT must be set as an environment variable.
  */
 export async function containedPathSchema(value: string, ctx: z.RefinementCtx): Promise<void> {
-  const root = process.env.SKILLS_DOCS_ROOT;
+  // biome-ignore lint/complexity/useLiteralKeys: noPropertyAccessFromIndexSignature requires bracket notation
+  const root = process.env["SKILLS_DOCS_ROOT"];
   if (!root) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,

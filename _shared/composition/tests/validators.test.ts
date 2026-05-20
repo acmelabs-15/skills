@@ -6,6 +6,8 @@ import path from "node:path";
 import { z } from "zod";
 import { containedPathSchema, injectiveDisjointMap } from "../src/core/validators.js";
 
+const ENV_KEY = "SKILLS_DOCS_ROOT" as const;
+
 describe("injectiveDisjointMap", () => {
   const schema = z.record(z.string(), z.string()).superRefine(injectiveDisjointMap("renumber_map"));
 
@@ -41,7 +43,7 @@ describe("injectiveDisjointMap", () => {
 describe("containedPathSchema", () => {
   let tempRoot: string;
   let insideFile: string;
-  const originalEnv = process.env.SKILLS_DOCS_ROOT;
+  const originalEnv = process.env[ENV_KEY];
 
   const schema = z.string().superRefine(containedPathSchema);
 
@@ -57,35 +59,34 @@ describe("containedPathSchema", () => {
   afterAll(() => {
     rmSync(tempRoot, { recursive: true, force: true });
     if (originalEnv === undefined) {
-      delete process.env.SKILLS_DOCS_ROOT;
+      delete process.env[ENV_KEY];
     } else {
-      process.env.SKILLS_DOCS_ROOT = originalEnv;
+      process.env[ENV_KEY] = originalEnv;
     }
   });
 
   afterEach(() => {
     if (originalEnv === undefined) {
-      delete process.env.SKILLS_DOCS_ROOT;
+      delete process.env[ENV_KEY];
     } else {
-      process.env.SKILLS_DOCS_ROOT = originalEnv;
+      process.env[ENV_KEY] = originalEnv;
     }
   });
 
   test("path inside root passes", async () => {
-    process.env.SKILLS_DOCS_ROOT = tempRoot;
+    process.env[ENV_KEY] = tempRoot;
     const result = await schema.safeParseAsync(insideFile);
     expect(result.success).toBe(true);
   });
 
   test("nested path inside root passes", async () => {
-    process.env.SKILLS_DOCS_ROOT = tempRoot;
+    process.env[ENV_KEY] = tempRoot;
     const result = await schema.safeParseAsync(path.join(tempRoot, "subdir", "nested.txt"));
     expect(result.success).toBe(true);
   });
 
   test("path outside root rejected", async () => {
-    process.env.SKILLS_DOCS_ROOT = tempRoot;
-    // tmpdir() itself is the parent of tempRoot, so it's outside
+    process.env[ENV_KEY] = tempRoot;
     const outside = tmpdir();
     const result = await schema.safeParseAsync(outside);
     expect(result.success).toBe(false);
@@ -96,7 +97,7 @@ describe("containedPathSchema", () => {
   });
 
   test("nonexistent path rejected", async () => {
-    process.env.SKILLS_DOCS_ROOT = tempRoot;
+    process.env[ENV_KEY] = tempRoot;
     const result = await schema.safeParseAsync(path.join(tempRoot, "does-not-exist.txt"));
     expect(result.success).toBe(false);
     if (!result.success) {
@@ -106,7 +107,7 @@ describe("containedPathSchema", () => {
   });
 
   test("missing SKILLS_DOCS_ROOT env var rejected", async () => {
-    delete process.env.SKILLS_DOCS_ROOT;
+    delete process.env[ENV_KEY];
     const result = await schema.safeParseAsync(insideFile);
     expect(result.success).toBe(false);
     if (!result.success) {

@@ -1,0 +1,109 @@
+import { describe, expect, test } from "bun:test";
+import { BaseMarkdownAdapter } from "../src/core/base-markdown-adapter.js";
+import type { MutationSpec } from "../src/core/types.js";
+
+class TestAdapter extends BaseMarkdownAdapter {
+  readonly sourceType = "test";
+  protected readonly sectionDelimiter = "## ";
+  protected readonly identifierPattern = /D-(\d+)/;
+}
+
+const adapter = new TestAdapter();
+
+describe("parse", () => {
+  test("returns Root AST with children", () => {
+    const content = "# Hello\n\nA paragraph.\n";
+    const ast = adapter.parse(content);
+    expect(ast.type).toBe("root");
+    expect(Array.isArray(ast.children)).toBe(true);
+    expect(ast.children.length).toBeGreaterThan(0);
+  });
+});
+
+describe("extractByRange", () => {
+  const fiveLine = "line1\nline2\nline3\nline4\nline5";
+
+  test("extracts middle range (1-indexed, inclusive)", () => {
+    const result = adapter.extractByRange(fiveLine, { start: 2, end: 4 });
+    expect(result).toBe("line2\nline3\nline4");
+  });
+
+  test("end=-1 extracts to end of file", () => {
+    const result = adapter.extractByRange(fiveLine, { start: 3, end: -1 });
+    expect(result).toBe("line3\nline4\nline5");
+  });
+});
+
+describe("applyMutations", () => {
+  test("single-pass renumber_map does not cascade", () => {
+    const content = "D-1 and D-2";
+    const mutations: MutationSpec = {
+      renumber_map: { "D-1": "D-2", "D-2": "D-3" },
+      wikilink_map: {},
+    };
+    const result = adapter.applyMutations(content, mutations);
+    // Must produce "D-2 and D-3", NOT "D-3 and D-3" (cascade)
+    expect(result).toBe("D-2 and D-3");
+  });
+
+  test("frontmatter_map updates frontmatter only, not body", () => {
+    const content = "---\ntitle: old\nstatus: DRAFT\n---\n# Body\n\ntitle: old in body\n";
+    const mutations: MutationSpec = {
+      renumber_map: {},
+      wikilink_map: {},
+      frontmatter_map: { title: "new" },
+    };
+    const result = adapter.applyMutations(content, mutations);
+    expect(result).toContain("title: new");
+    expect(result).toContain("status: DRAFT");
+    expect(result).toContain("title: old in body");
+    expect(result).not.toMatch(/^title: old$/m);
+  });
+
+  test("applies wikilink_map", () => {
+    const content = "See [[OldNote]] for details.";
+    const mutations: MutationSpec = {
+      renumber_map: {},
+      wikilink_map: { "[[OldNote]]": "[[NewNote]]" },
+    };
+    expect(adapter.applyMutations(content, mutations)).toBe("See [[NewNote]] for details.");
+  });
+});
+
+describe("reverseMutations", () => {
+  test("inverse property: reverse(apply(c, m), m) === c", () => {
+    const content = "D-1 references D-2 and links to [[OldNote]].";
+    const mutations: MutationSpec = {
+      renumber_map: { "D-1": "D-5", "D-2": "D-6" },
+      wikilink_map: { "[[OldNote]]": "[[NewNote]]" },
+    };
+    const mutated = adapter.applyMutations(content, mutations);
+    const restored = adapter.reverseMutations(mutated, mutations);
+    expect(restored).toBe(content);
+  });
+
+  test("inverse property covers identifier and wikilink mutations across markdown body", () => {
+    const content =
+      "# Heading\n\nParagraph references D-1 and D-2.\n\n- See [[OldNote]]\n- And [[OtherNote]]\n";
+    const mutations: MutationSpec = {
+      renumber_map: { "D-1": "D-10", "D-2": "D-20" },
+      wikilink_map: { "[[OldNote]]": "[[RenamedNote]]", "[[OtherNote]]": "[[AnotherNote]]" },
+    };
+    const mutated = adapter.applyMutations(content, mutations);
+    expect(mutated).not.toBe(content);
+    const restored = adapter.reverseMutations(mutated, mutations);
+    expect(restored).toBe(content);
+  });
+});
+
+describe("serialize", () => {
+  test("parse → serialize returns a string", () => {
+    const content = "# Hello\n\nWorld.\n";
+    const ast = adapter.parse(content);
+    const result = adapter.serialize(ast);
+    expect(typeof result).toBe("string");
+    expect(result.length).toBeGreaterThan(0);
+    expect(result).toContain("Hello");
+    expect(result).toContain("World");
+  });
+});

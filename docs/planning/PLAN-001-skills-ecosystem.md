@@ -1030,8 +1030,8 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 | TASK-001-SPEC-001 Scaffold Composition Project | DONE | TEST-REPORT-001-SPEC-001 PASS |
 | TASK-002-SPEC-001 Core Types and Adapter Interface | DONE | TEST-REPORT-002-SPEC-001 PASS |
 | TASK-003-SPEC-001 SHA-256 Hash Utility | DONE | TEST-REPORT-003-SPEC-001 PASS |
-| TASK-004-SPEC-001 BaseMarkdownAdapter | TODO | — |
-| TASK-005-SPEC-001 Zod Plan Schemas | TODO | — |
+| TASK-004-SPEC-001 BaseMarkdownAdapter | DONE | TEST-REPORT-004-SPEC-001 PASS |
+| TASK-005-SPEC-001 Zod Plan Schemas | DONE | TEST-REPORT-005-SPEC-001 PASS |
 | TASK-006-SPEC-001 Injectivity and Path-Containment Validators | DONE | TEST-REPORT-006-SPEC-001 PASS |
 | TASK-007-SPEC-001 Atomic Write Helper | DONE | TEST-REPORT-007-SPEC-001 PASS |
 | TASK-008-SPEC-001 ADR Adapter | TODO | — |

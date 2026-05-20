@@ -48,6 +48,16 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - QA: TEST-REPORT-002/003/006/007-SPEC-001 all PASS; validated_by relations added
 - Next: Wave 3 — TASK-004 (BaseMarkdownAdapter) + TASK-005 (Zod schemas) in parallel
 
+## Event 05 — Wave 3 (TASK-004/005) DONE (2026-05-20)
+
+- TASK-004-SPEC-001 (BaseMarkdownAdapter): `base-markdown-adapter.ts` — abstract class with unified/remark pipeline; single-pass regex alternation for mutations; 9/9 tests pass
+- TASK-005-SPEC-001 (Zod schemas): `schemas/base.ts` + `schemas/index.ts` — lineRangeSchema, mutationSpecSchema, planSchema (z.union not z.discriminatedUnion — Zod nested limitation); 8/8 tests pass
+- Cross-cutting fix applied: `biome.json` `includes` → `include` (key typo); unused biome-ignore comment removed from validators.test.ts; long-line formatting fixed in base-markdown-adapter.ts
+- Full suite post-fix: 38 pass, 0 fail, 75 expect() calls; biome check clean; tsc --noEmit clean
+- QA: TEST-REPORT-004-SPEC-001 (BaseMarkdownAdapter) and TEST-REPORT-005-SPEC-001 (Zod Plan Schemas) both DONE
+- TASK-004 + TASK-005 Brain status: TODO → DONE; validated_by relations added
+- Next: Wave 4 — TASK-008 (AdrAdapter extends BaseMarkdownAdapter)
+
 ## Observations
 
 - [decision] 4-wave build plan confirmed: W1=SPEC-001 PROOF (sequential gate); W2=SPEC-002+003+004+007 (4-way parallel via agent-teams); W3=SPEC-005; W4=SPEC-006 #build-plan #wave-1 #parallelism

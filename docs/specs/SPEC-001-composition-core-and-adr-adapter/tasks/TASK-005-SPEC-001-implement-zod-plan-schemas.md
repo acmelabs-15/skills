@@ -2,7 +2,7 @@
 title: 'TASK-005-SPEC-001: Implement Zod Plan Schemas'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-005-spec-001-implement-zod-plan-schemas
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -79,6 +79,7 @@ The nested discriminated union assembles plan_type (outer) x source_type (inner)
 
 ## Relations
 
+- validated_by [[TEST-REPORT-005-SPEC-001: Zod Plan Schemas]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-003-SPEC-001: Zod Plan Schema Modular Layout]]
 - implements [[REQ-004-SPEC-001: Zod Plan Validator Base]]

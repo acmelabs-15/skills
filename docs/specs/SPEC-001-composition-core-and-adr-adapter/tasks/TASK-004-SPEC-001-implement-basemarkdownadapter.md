@@ -2,7 +2,7 @@
 title: 'TASK-004-SPEC-001: Implement BaseMarkdownAdapter'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-004-spec-001-implement-basemarkdownadapter
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -77,6 +77,7 @@ Configure unified().use(remarkParse).use(remarkFrontmatter, ['yaml']).use(remark
 
 ## Relations
 
+- validated_by [[TEST-REPORT-004-SPEC-001: BaseMarkdownAdapter]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy]]
 - implements [[REQ-002-SPEC-001: BaseMarkdownAdapter Base Class]]
