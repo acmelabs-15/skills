@@ -139,6 +139,18 @@ tags:
 - ADR-002 builds on ADR-001 ACCEPTED — every D-N honors a locked decision (Zod for D-5; unified+remark for D-2 AST type; YAML for D-1; discriminated union for D-1; F-8 hash protocol for D-4)
 - Next /decisions Step 6 detail-parity spot-check (design-ADR style; lighter than transcription ADR) + Step 7 brain:---adr-review BLOCKING gate (per ADR-001 D-5 lock — applies to architecture ADRs; ADR-002 is design-level building on architectural decisions but adheres to the gate for full diligence)
 
+## Event 14 — brain:---adr-review ADR-002 Phase 4 convergence FAIL round 1 (3 ACCEPT + 3 CONCERNS + 0 BLOCK); CRIT-002 authored; resolution path pending user adjudication
+
+- Type debate-result and pending-user-decision
+- Trigger /decisions Step 7 brain:---adr-review BLOCKING gate on ADR-002 PROPOSED
+- Outcome 6-agent debate complete; 3 ACCEPT (architect + independent-thinker + advisor) + 3 CONCERNS (critic + security + analyst) + 0 BLOCK; below ≥5 ACCEPT convergence threshold
+- P0 issues 0 across all 6 reviewers (no architectural objections; consensus on architectural soundness; ADR-002 builds correctly on ADR-001 locks)
+- P1 themes 12 raw findings deduplicated to 10 themes A-J: MutationSpec frontmatter_map gap; cross_source_updates schema undefined; SPEC subtree manifest schema undefined; discriminatedUnion + plan_type axis 10-variants; AST/string call-sequence ambiguity; regenerative-section stripping mechanism gap; path containment symlink bypass; injectivity key-value disjointness; hash trivial wrapper ceremony; BaseMarkdownAdapter pattern recommendation
+- All 10 themes are FIXABLE forward-compatible refinements; none challenge ADR-001 locks; none require D-N renumber or architectural rework
+- CRIT-002-ADR-002 authored at critique/CRIT-002-ADR-002-adapter-contract-and-plan-schema-debate-log.md capturing all findings + Points of Consensus + 13 P2 items
+- Resolution path options surfaced to user via next AskUserQuestion (re-dispatch architect round 2 vs orchestrator-inline refinement vs pause for future session)
+- Per /decisions Step 7 iteration budget rounds 2 and 3 remain available before HALT (max 3 iterations)
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress
