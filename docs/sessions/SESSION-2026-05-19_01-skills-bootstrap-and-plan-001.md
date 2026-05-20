@@ -73,6 +73,19 @@ tags:
 - Batch policy up to 4 questions per AskUserQuestion call per ask protocol; Q1-Q4 batched in one call; Q5 surfaced in a second call (back-to-back per overflow rule)
 - After adjudication locked answers feed directly into decisions.1 D-1 through D-5 (decision-critic stress-test plus verbatim echo plus diff-approval plus 2-step edit cycles per D-N micro-cycle) → composite ADR-001 authored → brain:---adr-review gates ACCEPTED (if Q5 = YES)
 
+## Event 08 — 5 decisions LOCKED via AskUserQuestion (Step 5)
+
+- Type decision-lock
+- Trigger user-bootstrap Step 5 (AskUserQuestion call 1 with Q1-Q4 batched, call 2 with Q5 follow-up)
+- Outcome 5 decisions LOCKED with Recommended options selected verbatim per the decision-binding-echo rule
+- D-1 LOCKED Zod for plan validation (TS-native, type inference, single source of truth between TS types and validation)
+- D-2 LOCKED unified + remark + remark-frontmatter for markdown AST (battle-tested AST required for SPEC subtree accuracy)
+- D-3 LOCKED YAML at docs/_restructure/*.yaml for plan files (human-readable, LLM-friendly authoring; strict Zod validation on load mitigates YAML quirks)
+- D-4 LOCKED Unified discriminated union on source_type for plan schema (clean type narrowing per adapter; single place to add new adapters)
+- D-5 LOCKED YES — /brain:---adr-review BLOCKING gate (adr-review PASS verdict required for ADR ACCEPTED status; adheres to the adr-review-blocking-gate memory rule)
+- PLAN-001 updated DoD checkboxes Q1-Q5 checked; D-N substatus table 5 rows PENDING → LOCKED with verbatim locked-decision text; Decision Log + Progress Log entries appended
+- Next ADR-001 authoring via brain:🧠-architect dispatch with detail-parity mandate + brain:---adr-review gate per D-5; paused per bootstrap directive awaiting user confirmation to proceed
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress

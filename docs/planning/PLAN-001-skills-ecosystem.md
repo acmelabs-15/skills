@@ -121,10 +121,12 @@ graph TD
 - **2026-05-19** — research part marked DONE upfront with `KICKOFF-BRIEF.md` (project root file) as outcome reference (file-path, not wikilink — the brief is a project-config file under the binary-rule, not a Brain note). Justification: user explicitly directed "skip /research dispatch — KICKOFF-BRIEF.md IS the research output". Deviation from outcome-wikilink convention documented here.
 - **2026-05-19** — Heavy /plan create dispatches (analyst first-principles + pre-mortem + critic) were SKIPPED for the bootstrap turn. KICKOFF-BRIEF.md contains baked-in first-principles answers, an explicit post-mortem of the prior drift incident, and an explicit critique target via the 5 open questions adjudicated in Step 5 AskUserQuestion. Per the iterative-phase-reentry rule, validation phases can re-enter if gaps surface during decisions.1 adjudication or later.
 - **2026-05-19** — complexity_tier set to TIER_4 (multi-skill ecosystem ~1,200 LOC across 5 adapters + 4 skills + composition library with cryptographic invariant). Re-evaluate at spec-decomposition if SPEC count exceeds 6.
+- **2026-05-19** — Q1-Q5 of decisions.1 LOCKED via AskUserQuestion (all Recommended options selected). D-1 Zod for plan validation; D-2 unified + remark + remark-frontmatter for markdown AST; D-3 YAML at docs/_restructure/*.yaml for plan files; D-4 unified discriminated union on source_type for plan schema; D-5 YES — /brain:---adr-review BLOCKING gate before ACCEPTED. DoD checkboxes Q1-Q5 checked; D-N substatus table updated. ADR-001 authoring unblocked; awaiting user confirmation per bootstrap pause directive.
 
 ## Progress Log
 
 - **2026-05-19** — Bootstrap session started. Branch + docs/ subtree created (Step 1). Brain MCP project created and activated (Step 2). `KICKOFF-BRIEF.md` written verbatim (Step 3). PLAN-001 authored (Step 4). Pending: 5 open design question adjudication via AskUserQuestion (Step 5).
+- **2026-05-19** — Step 5 complete: 5 open design questions adjudicated via AskUserQuestion (Q1-Q4 batched + Q5 follow-up). All Recommended options selected. PLAN updated with locked decisions in DoD checkboxes + D-N substatus table + Decision Log. Paused per bootstrap directive; ready to proceed to ADR-001 authoring via brain:🧠-architect dispatch + brain:---adr-review BLOCKING gate on user confirmation.
 
 ## Blockers
 
@@ -179,11 +181,11 @@ None.
 
 **DoD**:
 
-- [ ] Q1 resolved: JSON Schema vs Zod for plan validation
-- [ ] Q2 resolved: Markdown AST library (unified/remark) vs custom regex parser
-- [ ] Q3 resolved: Plan file format (YAML vs JSON vs sidecar markdown table)
-- [ ] Q4 resolved: Plan schema shape (unified discriminated union vs per-adapter)
-- [ ] Q5 resolved: /brain:---adr-review gate on architecture ADRs as BLOCKING
+- [x] Q1 LOCKED — **Zod** for plan validation
+- [x] Q2 LOCKED — **unified + remark + remark-frontmatter** for markdown AST
+- [x] Q3 LOCKED — **YAML at docs/_restructure/*.yaml** for plan files
+- [x] Q4 LOCKED — **Unified discriminated union on source_type** for plan schema
+- [x] Q5 LOCKED — **YES — /brain:---adr-review BLOCKING gate** on architecture ADRs
 - [ ] All 8 locked design decisions from KICKOFF-BRIEF.md restated verbatim in ADR-001
 - [ ] ADR-001 frontmatter `status: ACCEPTED`; `date` + `updated` populated
 - [ ] /brain:---adr-review PASS verdict before downstream phases (if Q5 = YES)
@@ -230,11 +232,11 @@ graph TD
 
 | ID | Status | Topic |
 |:--|:--|:--|
-| D-1 | PENDING | Q1 — JSON Schema vs Zod for plan validation |
-| D-2 | PENDING | Q2 — Markdown AST (unified/remark) vs custom regex parser |
-| D-3 | PENDING | Q3 — Plan file format (YAML / JSON / sidecar markdown) |
-| D-4 | PENDING | Q4 — Unified discriminated-union plan schema vs per-adapter |
-| D-5 | PENDING | Q5 — Run /brain:---adr-review on architecture ADRs (BLOCKING) |
+| D-1 | LOCKED | Q1 → **Zod** (TS-native, type inference, single source of truth) |
+| D-2 | LOCKED | Q2 → **unified + remark + remark-frontmatter** (AST required for SPEC subtree accuracy) |
+| D-3 | LOCKED | Q3 → **YAML at docs/_restructure/*.yaml** (human-readable, LLM-friendly authoring) |
+| D-4 | LOCKED | Q4 → **Unified discriminated union on source_type** (clean type narrowing per adapter) |
+| D-5 | LOCKED | Q5 → **YES — BLOCKING gate** (adr-review PASS required for ACCEPTED status) |
 
 #### Editor Mirror IDs (for decisions.1)
 
@@ -396,7 +398,6 @@ Pending — SPEC decomposition shape surfaced post decisions.2.
 - [risk] SPEC subtree adapter is the hardest (~500 LOC, recursive rewrite); deferred behind ADR PROOF to validate architecture first #adapter-complexity
 
 ## Relations
-
 - contains [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 - pairs_with [[brain:---adr-review]]
 - pairs_with [[sync-jira]]
