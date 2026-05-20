@@ -6,6 +6,7 @@ complexity_tier: TIER_4
 branches:
   - feat/plan-001-skills-ecosystem
   - feat/plan-001-adr-003-render-architecture
+  - feat/plan-001-build-spec-001-proof
 permalink: planning/plan-001-skills-ecosystem
 tags:
 - plan
@@ -42,10 +43,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec.SPEC-NNN | 0 | 0 | 0 | 7 | 7 |
-| build.SPEC-NNN | 7 | 0 | 0 | 0 | 7 |
+| build.SPEC-NNN | 6 | 1 | 0 | 0 | 7 |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **8** | **0** | **0** | **13** | **21** |
+| **Total visible** | **7** | **1** | **0** | **13** | **21** |
 
 > 2026-05-20 — spec.SPEC-007 (Plan/Session Render Implementation) added to scope; PENDING, source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]. Formal ADR-003 + /spec Stage 2 subtree deferred to a future session.
 
@@ -73,7 +74,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | spec.SPEC-005 | DONE | [[SPEC-005: Decompose and Recompose Skills]] |
 | spec.SPEC-006 | DONE | [[SPEC-006: Defrag and Ingest Skills]] |
 | spec.SPEC-007 | DONE | [[SPEC-007: Plan/Session Render Implementation]] (ACCEPTED at Stage 2 close 2026-05-20; 30 notes: 12 REQ + 4 DESIGN + 13 TASK + 1 root) |
-| build.SPEC-001 | READY | TypeScript impl of composition core + ADR adapter (PROOF; 9 TASKs from SPEC-001); Wave 1 of 4-wave parallel build plan |
+| build.SPEC-001 | IN_PROGRESS | TypeScript impl of composition core + ADR adapter (PROOF; 9 TASKs from SPEC-001); Wave 1 of 4-wave parallel build plan |
 | build.SPEC-002 | READY | TypeScript impl of ANALYSIS + SESSION adapters (6 TASKs from SPEC-002) |
 | build.SPEC-003 | READY | TypeScript impl of PLAN adapter (5 TASKs from SPEC-003) |
 | build.SPEC-004 | READY | TypeScript impl of SPEC subtree adapter (7 TASKs from SPEC-004) |
@@ -162,6 +163,7 @@ graph TD
 - **2026-05-20** — decisions.3 DONE. ADR-003 ACCEPTED at decisions/ADR-003-plan-session-render-architecture.md (574 lines, 11 D-Ns + Considered Options + Responsibility Audit + Technology Stack + Consequences + Implementation Notes + Migration plan). brain:---adr-review 6-agent debate Round 1 convergence: 5 ACCEPT (architect, critic, security, analyst, advisor) + 1 CONCERNS (independent-thinker) + 0 BLOCK (passes ≥5 ACCEPT threshold). IT dissent on F-3 (over-engineering signal) + F-5 (simpler alternative not evaluated) captured as Disagree-and-Commit with Advisor tie-breaker rationale documented in CRIT-003. Phase 3 in-ADR resolutions applied: F-2 rollback path; F-4 round-trip claim scoped to structural fidelity; F-1 common.ts shared with ADR-002. spec.SPEC-007 transitioned BLOCKED → READY (next-ready on /plan continue).
 - **2026-05-20** — spec.SPEC-007 DONE. SPEC-007 authored via brain:🧠-architect (foreground dispatch after background-permission-denial recovery): 30 notes total (12 REQ + 4 DESIGN + 13 TASK + 1 SPEC root) at `docs/specs/SPEC-007-plan-session-render/`. Phase 3 syntactic validation PASS (all 30 notes have proper colon-format title + valid type + Observations + Relations). ADR coverage gate PASS (ADR-001 + ADR-002 + ADR-003 + ANALYSIS-002 all have `implemented_by [[SPEC-007]]` bi-directional relation). Gate B 4 binary drift checks PASS (REQ→ADR traceability + Scope conservation + TASK→REQ traceability + Scope-In match). Gate A semantic gap analysis: skipped inline (architect output verified clean; auto mode). SPEC-007 born ACCEPTED at Stage 2 close per /spec convention. Effort summary: 10.5d AI-Dominant total across 13 TASKs.
 - **2026-05-20** — 7 build.SPEC-NNN parts added to PLAN-001 (build.SPEC-001..007). All transition PENDING → READY (their respective spec.SPEC-NNN dependencies are all DONE). New `## Build` H2 section with one H3 per build part (substatus + DoD + Workflow Plan + Tasks placeholder). Recommended sequencing per KICKOFF-BRIEF.md build order: build.SPEC-001 FIRST (PROOF — composition core + ADR adapter, ~250 LOC); validate round-trip property test against ADR fixtures before extending to other adapters. build.SPEC-007 sequenced after build.SPEC-001 (depends on composition core). Total scope: 53 TASKs across 7 build parts.
+- **2026-05-20** — build.SPEC-001 READY → IN_PROGRESS (/plan continue invocation, SESSION-2026-05-20_04). 4-wave parallel build structure confirmed via parallelism analysis: W1=SPEC-001 PROOF (sequential gate); W2=SPEC-002+SPEC-003+SPEC-004+SPEC-007 (4-way parallel via agent-teams after W1 SHA-256 PASS); W3=SPEC-005; W4=SPEC-006. Key finding: SPEC-003 and SPEC-004 are DISTINCT adapters (ADR-002 D-3) — no BaseMarkdownAdapter dep — enabling true 4-way W2 parallel. Branch `feat/plan-001-build-spec-001-proof` created off main (38c8a54). owning_session: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]. Auto-routing to /build for SPEC-001.
 
 ## Progress Log
 
@@ -998,12 +1000,12 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 
 ## Build
 
-### build.SPEC-001 — Composition Core + ADR Adapter PROOF (READY)
+### build.SPEC-001 — Composition Core + ADR Adapter PROOF (IN_PROGRESS)
 
-**Substatus**: READY
+**Substatus**: IN_PROGRESS
 **Dependencies**: spec.SPEC-001 DONE ✓
 **Wave**: 1 of 4 (Wave 1 sequential PROOF; locks BaseMarkdownAdapter for Wave 2 4-way parallel)
-**Owning session**: —
+**Owning session**: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
 **Completing session**: —
 **Outcome**: — (will be TypeScript impl + tests + commits)
 **Source SPEC**: [[SPEC-001: Composition Core and ADR Adapter]] (9 TASKs)
