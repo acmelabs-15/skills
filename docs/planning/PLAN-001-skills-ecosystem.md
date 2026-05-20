@@ -58,7 +58,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | decisions.1 | DONE | [[ADR-001: Composition Library Architecture]] |
 | decisions.2 | DONE | [[ADR-002: Adapter Contract and Plan Schema]] (ACCEPTED 2026-05-19 via brain:---adr-review round-2 unanimous PASS) |
 | spec-decomposition | DONE | [[ANALYSIS-001: SPEC Clustering]] (ACCEPTED 2026-05-19; 6 SPECs locked post user adjudication, SPEC-003 split applied) |
-| spec.SPEC-001 | READY | SPEC-001 root + REQ + DESIGN + TASK subtree (Composition Core and ADR Adapter; PROOF) |
+| spec.SPEC-001 | IN_PROGRESS | SPEC-001 root + REQ + DESIGN + TASK subtree (Composition Core and ADR Adapter; PROOF; /spec Stage 2 auto-routed this turn) |
 | spec.SPEC-002 | READY | SPEC-002 root + subtree (Simple Adapters: ANALYSIS + SESSION) |
 | spec.SPEC-003 | READY | SPEC-003 root + subtree (PLAN Adapter; regenerative content carve-out) |
 | spec.SPEC-004 | READY | SPEC-004 root + subtree (SPEC Subtree Adapter; recursive multi-file + frontmatter + filename rewrite) |
@@ -95,7 +95,7 @@ graph TD
 
   subgraph SB ["Spec + Build (per SPEC)"]
     direction TB
-    spec_n("<b>spec.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>post decomposition</span>")
+    spec_n("🔄 <b>spec.SPEC-001</b><br/><span style='color:#6b7280;font-size:11px'>Composition Core PROOF (1 of 6)</span>")
     build_n("<b>build.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>post spec</span>")
     spec_n --> build_n
   end
@@ -144,6 +144,7 @@ graph TD
 - **2026-05-19** — decisions.2 closed out via /decisions Steps 7-9: brain:---adr-review round-2 dispatch (6 parallel reviewers) → all ACCEPT unanimous → ADR-002 ACCEPTED flip → decisions.2 IN_PROGRESS → DONE + completing_session bound + outcome wikilink. CRIT-002 Round 2 outcome section appended with R1→R2 verdict transitions + 12/12 P1 resolution confirmation. PLAN-001 comprehensive propagation applied same turn per user's critical rule (Progress Dashboard decisions row DONE 2/2; Phase Progression decisions.2 DONE + spec-decomposition READY; Cross-Part Deps Graph d2 ✅; decisions.2 H3 + DoD + Tasks + Pending User Decisions all updated; spec-decomposition H3 + substatus transitioned READY). Decisions phase fully complete; next-ready part is spec-decomposition.
 - **2026-05-19** — spec-decomposition IN_PROGRESS (continuation invocation of /plan PLAN-001). Auto-routing to /spec Stage 1 with source_adrs=ADR-001 + ADR-002 (both ACCEPTED). Expected Stage 1 output: analyst-proposed SPEC clustering + conditional CVA + user adjudication via AskUserQuestion locking 4-6 SPEC clusters aligned to KICKOFF-BRIEF.md build order.
 - **2026-05-19** — spec-decomposition DONE. /spec Stage 1 closed out (Steps 1-7 executed): analyst dispatch → ANALYSIS-001 5-SPEC proposal; CVA + critic + decision-critic review; AskUserQuestion locked 6 SPECs (SPEC-003 split applied per critic recommendation); /plan added 6 spec.SPEC-NNN parts under new ## Spec H2; set-part-done outcome ANALYSIS-001 (ACCEPTED). Next-ready parts: spec.SPEC-001 through spec.SPEC-006 all READY simultaneously. User picks first SPEC to author via /plan continue invocation (multiple READY parts → AskUserQuestion).
+- **2026-05-19** — spec.SPEC-001 IN_PROGRESS. User selected SPEC-001 Composition Core and ADR Adapter (PROOF) via AskUserQuestion (Recommended default per /plan lowest-numbered rule + KICKOFF-BRIEF.md build order). Auto-routing to /spec Stage 2 to author SPEC-001 subtree (REQ → DESIGN → TASK → SPEC root).
 
 ## Blockers
 

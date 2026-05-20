@@ -230,6 +230,14 @@ tags:
 - /spec Stage 1 pipeline complete (Steps 0-7 all executed); decisions phase + spec-decomposition phase both DONE
 - Next user resumes via /plan PLAN-001-skills-ecosystem (continue mode); 6 READY parts → AskUserQuestion which SPEC to author first (recommend SPEC-001 Composition Core PROOF per KICKOFF-BRIEF.md build order)
 
+## Event 21 — spec.SPEC-001 transition READY → IN_PROGRESS; auto-routing to /spec Stage 2
+
+- Type state-change
+- Trigger user invoked `/plan PLAN-001-skills-ecosystem` (continue mode); AskUserQuestion surfaced 6 READY spec.SPEC-NNN parts; user selected SPEC-001 Composition Core and ADR Adapter (Recommended default per /plan lowest-numbered rule + KICKOFF-BRIEF.md build order PROOF-first principle)
+- Outcome spec.SPEC-001 substatus READY → IN_PROGRESS; owning_session bound to this SESSION
+- Per user critical state-propagation rule applied SAME TURN PLAN Progress Dashboard (spec.SPEC-NNN row 5 DRAFT + 1 IP; total visible 7/1/0/4); Phase Progression (spec.SPEC-001 IN_PROGRESS row updated with auto-route note; other 5 spec.SPEC-NNN rows stay READY); Cross-Part Deps Graph (spec_n placeholder updated to show SPEC-001 🔄 1 of 6); spec.SPEC-001 H3 + Substatus + Owning session updated; Decision Log + Progress Log entries appended
+- Next per Contract 2 dispatch shape auto-route to /spec Stage 2 with plan=PLAN-001 part=spec.SPEC-001 spec=SPEC-001 source_adrs=ADR-001 + ADR-002 + ANALYSIS-001 SPEC Clustering. /spec Stage 2 runs Steps 1-6 (create SPEC folder; author REQ then DESIGN then TASK then SPEC root in that order — non-negotiable per /spec skill; bi-directional relation closure on ADR Relations) + Phase 3 validation + ADR coverage gate + Gate A semantic gap analysis + Gate B 4 binary drift checks. On all-PASS SPEC-001 root DRAFT → ACCEPTED + set-part-done
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress
