@@ -38,10 +38,12 @@ Create the adapter registry module at _shared/composition/src/registry.ts that m
 ## Scope
 
 **In Scope**:
+
 - _shared/composition/src/registry.ts
 - Unit tests for getAdapter()
 
 **Out of Scope**:
+
 - Adapter class implementations (SPEC-001 through SPEC-004)
 - Modifications to existing adapter files
 

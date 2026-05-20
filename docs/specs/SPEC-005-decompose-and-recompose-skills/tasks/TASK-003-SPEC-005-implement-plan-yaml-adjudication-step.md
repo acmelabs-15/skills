@@ -34,11 +34,13 @@ Implement the AskUserQuestion integration within the /decompose and /recompose S
 ## Scope
 
 **In Scope**:
+
 - AskUserQuestion integration in decompose/SKILL.md and recompose/SKILL.md
 - Plan summary formatter (can be a shared utility or inline in SKILL.md instructions)
 - Rejected plan file rename logic
 
 **Out of Scope**:
+
 - AskUserQuestion runtime implementation (provided by Claude Code)
 - CLI entry point modifications (TASK-001, TASK-002 handle those)
 

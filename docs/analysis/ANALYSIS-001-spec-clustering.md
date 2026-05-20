@@ -39,6 +39,7 @@ The clustering was derived through three analysis passes.
 **Feature-themed slug**: `SPEC-001: Composition Core and ADR Adapter`
 
 **Scope (in)**:
+
 - Core library at `_shared/composition/src/core/` (types.ts, adapter.ts, hash.ts, parse.ts, validate.ts, write.ts)
 - Zod base schema at `_shared/composition/schemas/base.ts` (common envelope, shared types, injectivity validators, path containment validator)
 - ADR-specific Zod schemas (distribution + composition variants) at `_shared/composition/schemas/distribution/adr.plan.schema.ts` and `_shared/composition/schemas/composition/adr.plan.schema.ts`
@@ -54,6 +55,7 @@ The clustering was derived through three analysis passes.
 **LOC estimate**: ~450 (core library ~200 + ADR adapter ~150 + base adapter ~50 + project scaffolding ~50)
 
 **Source ADRs**:
+
 - ADR-001 F-1 (symlinks), F-4 (local-only git), F-5 (naming), F-6 (Bun+TS), F-7 (YAML plans), F-8 (SHA-256 hash protocol + rollback), D-1 (Zod), D-2 (unified+remark), D-3 (YAML plan files), D-4 (discriminated union)
 - ADR-002 D-1 (plan YAML schema -- ADR variant), D-2 (CompositionAdapter interface), D-3 (ADR adapter capability), D-4 (ADR hash extraction strategy), D-5 (Zod validator structure -- base + ADR modules)
 
@@ -66,6 +68,7 @@ The clustering was derived through three analysis passes.
 **Feature-themed slug**: `SPEC-002: Simple Adapters`
 
 **Scope (in)**:
+
 - ANALYSIS adapter at `_shared/composition/src/adapters/analysis.ts` extending BaseMarkdownAdapter
 - SESSION adapter at `_shared/composition/src/adapters/session.ts` extending BaseMarkdownAdapter
 - ANALYSIS-specific Zod schemas (distribution + composition)
@@ -79,6 +82,7 @@ The clustering was derived through three analysis passes.
 **LOC estimate**: ~200 delta (ANALYSIS ~50 + SESSION ~100 + schemas ~50)
 
 **Source ADRs**:
+
 - ADR-001 F-6 (Bun+TS), F-8 (hash protocol)
 - ADR-002 D-1 (plan YAML schema -- ANALYSIS + SESSION variants + cross_source_updates), D-2 (CompositionAdapter interface), D-3 (ANALYSIS + SESSION capability, BaseMarkdownAdapter pattern), D-4 (ANALYSIS + SESSION hash extraction strategies), D-5 (per-type schema modules for ANALYSIS + SESSION)
 
@@ -91,6 +95,7 @@ The clustering was derived through three analysis passes.
 **Feature-themed slug**: `SPEC-003: Complex Adapters`
 
 **Scope (in)**:
+
 - PLAN adapter at `_shared/composition/src/adapters/plan.ts` (distinct implementation; regenerative content handling)
 - SPEC subtree adapter at `_shared/composition/src/adapters/spec.ts` (distinct implementation; recursive subtree mutations, per-file hash validation, frontmatter_map reversal)
 - PLAN-specific Zod schemas (distribution + composition) including regenerated_sections with 50% integrity floor
@@ -105,6 +110,7 @@ The clustering was derived through three analysis passes.
 **LOC estimate**: ~800 delta (PLAN ~250 + SPEC subtree ~500 + schemas ~50)
 
 **Source ADRs**:
+
 - ADR-001 F-6 (Bun+TS), F-8 (hash protocol + rollback)
 - ADR-002 D-1 (plan YAML schema -- PLAN + SPEC variants + subtree_manifest + regenerated_sections), D-2 (CompositionAdapter interface + MutationSpec frontmatter_map + regenerated_sections), D-3 (PLAN + SPEC capability; PLAN regenerative content; SPEC recursive subtree; both distinct implementations), D-4 (PLAN + SPEC hash extraction strategies; PLAN regenerative-section carve-out; SPEC per-file validation), D-5 (per-type schema modules for PLAN + SPEC + integrity floor)
 
@@ -117,6 +123,7 @@ The clustering was derived through three analysis passes.
 **Feature-themed slug**: `SPEC-004: Decompose and Recompose Skills`
 
 **Scope (in)**:
+
 - /decompose skill: `decompose/SKILL.md` (Claude Code skill definition)
 - /recompose skill: `recompose/SKILL.md` (Claude Code skill definition)
 - CLI entry points: `_shared/composition/src/decompose.ts` and `_shared/composition/src/recompose.ts` (script runner that loads plan YAML, validates via Zod, dispatches to adapter, executes hash-validated write)
@@ -130,6 +137,7 @@ The clustering was derived through three analysis passes.
 **LOC estimate**: ~200 (decompose.ts ~80 + recompose.ts ~80 + SKILL.md x2 ~40)
 
 **Source ADRs**:
+
 - ADR-001 F-1 (symlink install), F-3 (coexistence), F-5 (naming: decompose/recompose), F-7 (plan artifacts at docs/_restructure/), D-5 (adr-review gate on architecture changes detected by /decompose)
 - ADR-002 D-1 (plan YAML schema consumed by entry points), D-5 (error reporting format)
 
@@ -142,6 +150,7 @@ The clustering was derived through three analysis passes.
 **Feature-themed slug**: `SPEC-005: Defrag and Ingest Skills`
 
 **Scope (in)**:
+
 - /defrag skill: `defrag/SKILL.md` (periodic curator; cron-runnable)
 - /ingest skill: `ingest/SKILL.md` (outside-to-graph; verbatim source preservation)
 - /defrag heuristics engine: audits memory state per CONVENTIONS Section 6 thresholds; identifies split candidates (delegates to /decompose), merge candidates (delegates to /recompose), stale entries (native delete after confirmation)
@@ -154,6 +163,7 @@ The clustering was derived through three analysis passes.
 **LOC estimate**: ~300 (defrag SKILL.md ~80 + defrag heuristics ~120 + ingest SKILL.md ~60 + ingest Brain-awareness ~40)
 
 **Source ADRs**:
+
 - ADR-001 F-1 (symlink install), F-2 (Brain-first with Basic Memory subset), F-3 (coexistence with existing skills)
 
 **Dependencies**: SPEC-004 (/defrag delegates to /decompose and /recompose primitives). SPEC-001 (library utilities for heuristic evaluation). /ingest is semi-independent (uses Brain MCP directly for note creation, not the composition library), but shares the install infrastructure.
@@ -259,11 +269,13 @@ The TIER_4 complexity tier makes CVA mandatory when 2+ similar SPECs are propose
 Bundle all adapter work (ADR + ANALYSIS + SESSION + PLAN + SPEC subtree) into a single large SPEC alongside the core library.
 
 **Pros:**
+
 - Reduces SPEC count from 5 to 3 (one library SPEC, one skills SPEC, one higher-level skills SPEC)
 - No incremental schema index.ts extension needed; full discriminated union authored once
 - Simpler dependency graph
 
 **Cons:**
+
 - The single adapter SPEC would be ~1,250 LOC with L+ effort (8-12d), making it too large for a single spec/build cycle
 - Loses the PROOF validation principle: the ADR adapter must validate the architecture before the SPEC subtree (~500 LOC) is attempted
 - Contradicts the locked "simplest first" build order from KICKOFF-BRIEF.md
@@ -276,10 +288,12 @@ Bundle all adapter work (ADR + ANALYSIS + SESSION + PLAN + SPEC subtree) into a 
 Each of the 5 adapters gets its own SPEC (7 SPECs total with skills).
 
 **Pros:**
+
 - Maximum granularity; each adapter independently spec'd, built, and reviewed
 - Matches the 5-item build order exactly
 
 **Cons:**
+
 - ANALYSIS adapter is ~50 LOC delta; a full SPEC for 50 lines is overhead-heavy
 - SESSION adapter is ~100 LOC delta; marginal for a standalone SPEC
 - 7 SPECs for ~1,950 LOC is a high SPEC-to-LOC ratio that increases planning/tracking overhead

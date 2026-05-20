@@ -18,6 +18,7 @@ tags:
 Validates the architectural PROOF gate for the composition library: that decomposing an ADR into per-decision fragments and recomposing them produces a bit-exact replica of the original. This is the correctness foundation every downstream consumer depends on.
 
 **Files under test**:
+
 - `tests/round-trip.test.ts` — 4 property tests using Bun.file() for fixture loading
 - `tests/fixtures/adr-sample.md` — 170-line realistic ADR with frontmatter, D-1..D-4 H3 decision sections (prose, bullets, wikilinks, code block, nested bullets, table), Clarifications, Observations, Relations
 - `tests/fixtures/adr-distribution.plan.yaml` — decomposition plan (D-1..D-4 mapped to D-100..D-201)

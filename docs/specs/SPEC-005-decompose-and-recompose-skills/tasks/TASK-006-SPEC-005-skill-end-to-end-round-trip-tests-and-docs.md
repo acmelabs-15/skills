@@ -39,11 +39,13 @@ Create end-to-end round-trip tests that exercise /decompose followed by /recompo
 ## Scope
 
 **In Scope**:
+
 - Fixture files (ADR note, distribution plan YAML, composition plan YAML)
 - End-to-end test file
 - README.md documentation updates
 
 **Out of Scope**:
+
 - Adapter-level unit tests (covered in SPEC-001)
 - LLM integration tests (manual verification via Claude Code)
 

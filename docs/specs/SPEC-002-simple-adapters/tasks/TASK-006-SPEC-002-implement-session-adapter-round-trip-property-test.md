@@ -38,11 +38,13 @@ Create the round-trip property test and fixtures for the SESSION adapter. The te
 ## Scope
 
 **In Scope**:
+
 - _shared/composition/tests/fixtures/session/sample-session.md (Create)
 - _shared/composition/tests/fixtures/session/sample-session-plan.yaml (Create)
 - _shared/composition/tests/session-round-trip.test.ts (Create)
 
 **Out of Scope**:
+
 - ANALYSIS round-trip test (TASK-005-SPEC-002)
 - Full PLAN adapter integration test (deferred to SPEC-003)
 

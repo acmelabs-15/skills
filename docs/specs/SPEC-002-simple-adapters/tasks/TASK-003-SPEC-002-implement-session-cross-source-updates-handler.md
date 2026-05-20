@@ -37,10 +37,12 @@ Implement the cross_source_updates handler including the CrossSourceUpdate Zod s
 ## Scope
 
 **In Scope**:
+
 - _shared/composition/src/core/cross-source.ts (Create)
 - Unit tests at _shared/composition/tests/cross-source.test.ts (Create)
 
 **Out of Scope**:
+
 - PLAN adapter implementation (SPEC-003)
 - Full integration test with PLAN adapter (deferred to SPEC-003)
 

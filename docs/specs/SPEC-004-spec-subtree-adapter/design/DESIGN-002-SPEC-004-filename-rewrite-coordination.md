@@ -47,12 +47,14 @@ function rollbackFilenameRewrites(
 ```
 
 **Responsibilities**:
+
 - Iterates children entries with non-empty filename_rewrite_map
 - Renames each file from source name to target name within the destination directory
 - Tracks completed rewrites for rollback capability
 - On failure: rolls back all completed rewrites in reverse order
 
 **Interfaces**:
+
 - Consumed by: SubtreeOrchestrator (DESIGN-001-SPEC-004) after hash validation pass
 - Composes with: Bun filesystem APIs (fs.rename or equivalent)
 
@@ -70,6 +72,7 @@ function validateFilenameRewrites(
 ```
 
 **Responsibilities**:
+
 - Checks that no target filename already exists at the destination
 - Checks that no two rewrites target the same filename (injectivity)
 - Checks that target filenames pass path containment validation

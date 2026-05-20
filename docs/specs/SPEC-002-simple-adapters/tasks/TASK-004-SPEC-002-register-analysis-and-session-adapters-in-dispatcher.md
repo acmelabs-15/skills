@@ -37,6 +37,7 @@ Extend the adapter dispatcher established in SPEC-001 to register AnalysisAdapte
 ## Scope
 
 **In Scope**:
+
 - _shared/composition/src/core/dispatcher.ts (Modify -- add registrations)
 - _shared/composition/schemas/distribution/analysis.plan.schema.ts (Create)
 - _shared/composition/schemas/distribution/session.plan.schema.ts (Create)
@@ -45,6 +46,7 @@ Extend the adapter dispatcher established in SPEC-001 to register AnalysisAdapte
 - _shared/composition/schemas/index.ts (Modify -- extend discriminated union)
 
 **Out of Scope**:
+
 - Adapter implementation (TASK-001, TASK-002)
 - Round-trip tests (TASK-005, TASK-006)
 

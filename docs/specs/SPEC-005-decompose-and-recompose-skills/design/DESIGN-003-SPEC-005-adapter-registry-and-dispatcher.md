@@ -57,6 +57,7 @@ const adapterSpecMap: Record<string, string> = {
 ```
 
 **Responsibilities**:
+
 - Hold the source_type-to-adapter mapping
 - Hold the source_type-to-SPEC mapping for error messages on unregistered types
 
@@ -87,6 +88,7 @@ export function getAdapter(sourceType: string): CompositionAdapter {
 ```
 
 **Responsibilities**:
+
 - Return the adapter if registered
 - Throw with SPEC reference if source_type is known but unregistered
 - Throw with valid types list if source_type is entirely unknown
@@ -96,6 +98,7 @@ export function getAdapter(sourceType: string): CompositionAdapter {
 **Purpose**: Adding a new adapter requires exactly two changes: import the adapter class and add it to the registry Record.
 
 **Responsibilities**:
+
 - No framework, no dynamic discovery, no plugin interface
 - The extension point is a single module file (_shared/composition/src/registry.ts)
 - Registration is verified by TypeScript: the Record value type is CompositionAdapter, so only valid implementations can register

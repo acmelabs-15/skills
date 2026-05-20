@@ -43,11 +43,13 @@ interface MutationSpec {
 ```
 
 **Responsibilities**:
+
 - Lists section heading names (e.g., "Progress Dashboard", "Cross-Part Dependency Graph") whose content is derived and should be excluded from hash scope
 - Consumed by the PLAN adapter's extractByRange and reverseMutations methods
 - Empty array or undefined means no exclusions (full hash validation)
 
 **Interfaces**:
+
 - Defined in: core/types.ts (already exists from SPEC-001)
 - Consumed by: PlanAdapter, Zod validator
 
@@ -87,11 +89,13 @@ export const planDistributionSchema = basePlanSchema.extend({
 ```
 
 **Responsibilities**:
+
 - Validates regenerated_sections at schema level (max 10 entries heuristic)
 - Provides plan_type + source_type discriminant for the PLAN variant
 - Extends the base plan schema with PLAN-specific fields
 
 **Interfaces**:
+
 - Consumed by: schema index.ts discriminated union
 - Depends on: base.ts (basePlanSchema, mutationSpecSchema)
 
@@ -109,12 +113,14 @@ function validateIntegrityFloor(
 ```
 
 **Responsibilities**:
+
 - Measures the line count of each regenerated section in the source content
 - Computes total regenerated line count as a percentage of total source lines
 - Returns validation result with coverage percentage for error reporting
 - Called at script execution time after source file loading but before extraction
 
 **Interfaces**:
+
 - Consumed by: decompose.ts and recompose.ts script entry points (for PLAN source_type only)
 - Internal to the composition library
 

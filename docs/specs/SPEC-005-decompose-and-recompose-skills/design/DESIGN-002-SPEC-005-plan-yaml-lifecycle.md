@@ -30,6 +30,7 @@ The refinement loop on user rejection is the key UX pattern. When the user rejec
 **Purpose**: The LLM reads source note(s), classifies the source_type, performs cognitive analysis, and authors a plan YAML.
 
 **Responsibilities**:
+
 - Read source note content via Brain MCP or direct file access
 - Classify source_type from frontmatter type field (auto-detect)
 - For /decompose: identify cluster seams (section boundaries suitable for splitting), propose destination paths, author renumber and wikilink maps
@@ -42,6 +43,7 @@ The refinement loop on user rejection is the key UX pattern. When the user rejec
 **Purpose**: Present the plan to the user for review and approval.
 
 **Responsibilities**:
+
 - Format a human-readable summary of the plan: source path(s), destination path(s), renumber map summary, wikilink map summary, type-specific fields
 - Present via AskUserQuestion with three options: Approve, Reject with feedback, Abort
 - On Approve: pass control to script consumption phase
@@ -53,6 +55,7 @@ The refinement loop on user rejection is the key UX pattern. When the user rejec
 **Purpose**: The CLI entry point loads, validates, and executes the approved plan.
 
 **Responsibilities**:
+
 - Read approved plan YAML from disk
 - Parse YAML with FAILSAFE_SCHEMA
 - Validate via Zod planSchema.parseAsync()

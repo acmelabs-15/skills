@@ -2,7 +2,7 @@
 title: 'SPEC-001: Composition Core and ADR Adapter'
 type: spec
 permalink: specs/spec-001-composition-core-and-adr-adapter/spec-001-composition-core-and-adr-adapter
-status: ACCEPTED
+status: DONE
 tags:
 - spec
 - composition

@@ -56,7 +56,7 @@ The PLAN round-trip test uses a fixture PLAN YAML plan (not an LLM-authored plan
 
 ## Implementation Notes
 
-The test fixture is a representative PLAN note placed at _shared/composition/tests/fixtures/plan-sample.md. It must contain realistic content: phase sections (research, decisions, spec, build phases), Progress Dashboard table, Cross-Part Dependency Graph Mermaid block, branches[] frontmatter, and inter-note wikilinks. The fixture plan YAMLs (distribution and composition) live alongside at _shared/composition/tests/fixtures/plan-distribution-plan.yaml and plan-composition-plan.yaml.
+The test fixture is a representative PLAN note placed at _shared/composition/tests/fixtures/plan-sample.md. It must contain realistic content: phase sections (research, decisions, spec, build phases), Progress Dashboard table, Cross-Part Dependency Graph Mermaid block, branches[] frontmatter, and inter-note wikilinks. The fixture plan YAMLs (distribution and composition) live alongside at_shared/composition/tests/fixtures/plan-distribution-plan.yaml and plan-composition-plan.yaml.
 
 ## Observations
 

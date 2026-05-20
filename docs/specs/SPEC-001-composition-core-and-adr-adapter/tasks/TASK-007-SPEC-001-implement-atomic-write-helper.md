@@ -73,6 +73,7 @@ Uses Bun.write for staging (ADR-001 F-6). Uses fs.renameSync for POSIX atomic re
 - [constraint] Must handle stale .tmp files from previous crashed runs #crash-recovery #cleanup
 
 ## Relations
+
 - validated_by [[TEST-REPORT-007-SPEC-001: Atomic Write Helper]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

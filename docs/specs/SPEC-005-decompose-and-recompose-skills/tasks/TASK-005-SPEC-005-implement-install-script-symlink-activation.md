@@ -35,10 +35,12 @@ Extend the existing install.sh script (scaffolded in SPEC-001) to create symlink
 ## Scope
 
 **In Scope**:
+
 - install.sh modifications (2 additional symlink entries)
 - Smoke test documentation
 
 **Out of Scope**:
+
 - install.sh core logic (maintained in SPEC-001)
 - Skill directory contents (TASK-001, TASK-002)
 

@@ -68,7 +68,7 @@ ADR-001 D-4 locks the discriminated union on source_type, meaning the script dis
 
 ## Implementation Notes
 
-The interface lives at _shared/composition/src/core/adapter.ts. Supporting types (LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec) live at _shared/composition/src/core/types.ts per ADR-002 D-2. The Root type is imported from mdast. All methods are synchronous per ADR-002 Considered Options Axis 1 (markdown parsing is CPU-bound with no I/O).
+The interface lives at _shared/composition/src/core/adapter.ts. Supporting types (LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec) live at_shared/composition/src/core/types.ts per ADR-002 D-2. The Root type is imported from mdast. All methods are synchronous per ADR-002 Considered Options Axis 1 (markdown parsing is CPU-bound with no I/O).
 
 ## Consumer Implementation Pattern
 

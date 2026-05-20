@@ -74,7 +74,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | spec.SPEC-005 | DONE | [[SPEC-005: Decompose and Recompose Skills]] |
 | spec.SPEC-006 | DONE | [[SPEC-006: Defrag and Ingest Skills]] |
 | spec.SPEC-007 | DONE | [[SPEC-007: Plan/Session Render Implementation]] (ACCEPTED at Stage 2 close 2026-05-20; 30 notes: 12 REQ + 4 DESIGN + 13 TASK + 1 root) |
-| build.SPEC-001 | IN_PROGRESS | TypeScript impl of composition core + ADR adapter (PROOF; 9 TASKs from SPEC-001); Wave 1 of 4-wave parallel build plan |
+| build.SPEC-001 | DONE | [[SPEC-001: Composition Core and ADR Adapter]] — 47/47 tests, SHA-256 PROOF PASS |
 | build.SPEC-002 | READY | TypeScript impl of ANALYSIS + SESSION adapters (6 TASKs from SPEC-002) |
 | build.SPEC-003 | READY | TypeScript impl of PLAN adapter (5 TASKs from SPEC-003) |
 | build.SPEC-004 | READY | TypeScript impl of SPEC subtree adapter (7 TASKs from SPEC-004) |

@@ -52,6 +52,7 @@ This separation ensures the SKILL.md files contain only skill interface definiti
 **Purpose**: Claude Code skill interface for note decomposition (1-to-N split).
 
 **Responsibilities**:
+
 - Define trigger phrases ("decompose this note", "split this ADR", etc.)
 - Instruct LLM to: read source note, classify source_type, identify cluster seams, author distribution plan YAML at docs/_restructure/decompose-{id}-plan.yaml
 - Instruct LLM to present plan via AskUserQuestion (REQ-003)
@@ -63,6 +64,7 @@ This separation ensures the SKILL.md files contain only skill interface definiti
 **Purpose**: Claude Code skill interface for note recomposition (N-to-1 merge).
 
 **Responsibilities**:
+
 - Define trigger phrases ("recompose these notes", "merge these ADRs", etc.)
 - Instruct LLM to: read N source notes, classify source_type, determine merge order, author composition plan YAML at docs/_restructure/recompose-{id}-plan.yaml
 - Instruct LLM to present plan via AskUserQuestion (REQ-003)
@@ -74,6 +76,7 @@ This separation ensures the SKILL.md files contain only skill interface definiti
 **Purpose**: Deterministic script that loads a distribution plan YAML, validates it, dispatches to the adapter, and executes the decomposition.
 
 **Responsibilities**:
+
 - Parse CLI arguments (--plan path)
 - Read plan YAML file via Bun.file
 - Parse YAML via js-yaml
@@ -88,6 +91,7 @@ This separation ensures the SKILL.md files contain only skill interface definiti
 **Purpose**: Deterministic script that loads a composition plan YAML, validates it, dispatches to the adapter, and executes the recomposition.
 
 **Responsibilities**:
+
 - Same pipeline as decompose.ts but operating on plural sources and singular destination per ADR-002 D-1 composition plan schema
 - Read multiple source files, extract from each by range, concatenate per plan order, apply mutations, hash-validate, write via temp-then-rename
 - Emit audit log for the merged destination file
@@ -97,6 +101,7 @@ This separation ensures the SKILL.md files contain only skill interface definiti
 **Purpose**: Add /decompose and /recompose symlink targets to the existing install script.
 
 **Responsibilities**:
+
 - Create symlink ~/.claude/skills/decompose -> ~/Dev/skills/decompose
 - Create symlink ~/.claude/skills/recompose -> ~/Dev/skills/recompose
 - Idempotent: skip if symlinks already exist and point to correct targets

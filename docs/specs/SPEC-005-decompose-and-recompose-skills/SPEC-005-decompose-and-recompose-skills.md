@@ -57,15 +57,18 @@ Key architectural constraints from ADR-001: the LLM never touches content bytes 
 Phase 1 delivers the /decompose and /recompose skill definitions, CLI entry points, and adapter dispatcher. After this phase, both skills can execute plans end-to-end with the ADR adapter.
 
 #### Requirements
+
 - [ ] REQ-001-SPEC-005: Decompose Skill Implementation
 - [ ] REQ-002-SPEC-005: Recompose Skill Implementation
 - [ ] REQ-004-SPEC-005: Adapter Registry Dispatcher
 
 #### Design
+
 - [ ] DESIGN-001-SPEC-005: Skill Architecture
 - [ ] DESIGN-003-SPEC-005: Adapter Registry and Dispatcher
 
 #### Tasks
+
 - [ ] TASK-001-SPEC-005: Implement Decompose CLI Entry Point and Skill Structure (S, 1d)
 - [ ] TASK-002-SPEC-005: Implement Recompose CLI Entry Point and Skill Structure (S, 1d)
 - [ ] TASK-004-SPEC-005: Implement Adapter Dispatcher with Incremental Registration (S, 0.5d)
@@ -75,14 +78,17 @@ Phase 1 delivers the /decompose and /recompose skill definitions, CLI entry poin
 Phase 2 adds the AskUserQuestion adjudication step, symlink activation, and end-to-end round-trip tests. After this phase, the skills are fully functional and validated.
 
 #### Requirements
+
 - [ ] REQ-003-SPEC-005: Plan YAML Adjudication via AskUserQuestion
 - [ ] REQ-005-SPEC-005: Symlink Activation via Install Script
 - [ ] REQ-006-SPEC-005: Skill Round-Trip Tests
 
 #### Design
+
 - [ ] DESIGN-002-SPEC-005: Plan YAML Lifecycle
 
 #### Tasks
+
 - [ ] TASK-003-SPEC-005: Implement Plan YAML Adjudication Step (S, 0.5d)
 - [ ] TASK-005-SPEC-005: Implement Install Script Symlink Activation (S, 0.25d)
 - [ ] TASK-006-SPEC-005: Skill End-to-End Round-Trip Tests and Docs (M, 2d)

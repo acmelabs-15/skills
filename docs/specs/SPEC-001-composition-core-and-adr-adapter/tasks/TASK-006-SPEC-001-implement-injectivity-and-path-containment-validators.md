@@ -72,6 +72,7 @@ injectiveDisjointMap uses Set operations per ADR-002 D-5 spec. containedPathSche
 - [technique] Set operations for injectivity check are O(n) and trivially correct #set-operations #algorithm
 
 ## Relations
+
 - validated_by [[TEST-REPORT-006-SPEC-001: Injectivity and Path Containment Validators]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

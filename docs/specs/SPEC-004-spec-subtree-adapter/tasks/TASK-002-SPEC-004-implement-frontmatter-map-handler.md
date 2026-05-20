@@ -25,6 +25,7 @@ Implement the applyFrontmatterMap() and reverseFrontmatterMap() functions that h
 ## Scope
 
 **In Scope**:
+
 - applyFrontmatterMap(content, map) function
 - reverseFrontmatterMap(content, map) function
 - Integration with SpecSubtreeAdapter.applyMutations and reverseMutations methods
@@ -32,12 +33,13 @@ Implement the applyFrontmatterMap() and reverseFrontmatterMap() functions that h
 - Preservation of all non-targeted frontmatter fields
 
 **Out of Scope**:
+
 - Full YAML parse/serialize (uses line-level regex to preserve formatting)
 - Frontmatter fields beyond title and permalink (tags, type, status are not mutated)
 
 ## Implementation Notes
 
-Use line-level regex targeting specific YAML keys (e.g., /^title:\s*['"]?(.*)['"]?$/) rather than full js-yaml parse/serialize. Full YAML round-trip could alter whitespace, quoting style, or field order, breaking char-identity. The regex approach targets only the specified fields and leaves all other lines untouched.
+Use line-level regex targeting specific YAML keys (e.g., /^title:\s*['"]?[.*]('")?$/) rather than full js-yaml parse/serialize. Full YAML round-trip could alter whitespace, quoting style, or field order, breaking char-identity. The regex approach targets only the specified fields and leaves all other lines untouched.
 
 The inverse frontmatter_map is computed by swapping keys and values. For the frontmatter_map {title: "SPEC-003: Brain Reorg"} where the original title was "SPEC-001: Brain", the inverse maps "SPEC-003: Brain Reorg" back to "SPEC-001: Brain".
 

@@ -43,10 +43,12 @@ type CrossSourceUpdate = z.infer<typeof crossSourceUpdateSchema>;
 ```
 
 **Responsibilities**:
+
 - Validates cross_source_updates entries at plan load time via Zod
 - Provides type-safe access to update fields
 
 **Interfaces**:
+
 - Consumed by: execution engine, PLAN adapter
 - Produced by: SESSION adapter during plan processing
 
@@ -74,12 +76,14 @@ interface CrossSourceCoordinator {
 ```
 
 **Responsibilities**:
+
 - Resolves target adapter from target_note's source type
 - Validates target PLAN part exists before applying
 - Applies updates atomically (all or none)
 - Supports reverse for recomposition
 
 **Interfaces**:
+
 - Consumed by: decompose.ts, recompose.ts (execution engine)
 - Depends on: adapter dispatcher for PLAN adapter resolution
 
@@ -106,11 +110,13 @@ class GracefulDegradationHandler implements CrossSourceCoordinator {
 ```
 
 **Responsibilities**:
+
 - Logs warning when PLAN adapter is unavailable
 - Allows SESSION operations to proceed without cross-source support
 - Ensures SPEC-002 can ship independently of SPEC-003
 
 **Interfaces**:
+
 - Registered as fallback CrossSourceCoordinator when PLAN adapter is absent
 
 ## Technology Decisions

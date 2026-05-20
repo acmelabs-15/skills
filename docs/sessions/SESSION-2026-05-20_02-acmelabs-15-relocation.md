@@ -43,9 +43,10 @@ User direction: relocate skills repo to acmelabs-15 org. Standalone repo at acme
 User executed gh api -X POST /repos/loriensleafs/skills/transfer -f new_owner=acmelabs-15 in a separate terminal (outside Claude Code per permissions.deny rules). Transfer auto-accepted because user owns both loriensleafs (personal) and acmelabs-15 (org) — no notification dance required.
 
 Verifications performed:
+
 - gh repo view acmelabs-15/skills succeeded; repo exists at new location with full history
-- curl returned HTTP 301 redirect: https://github.com/loriensleafs/skills → https://github.com/acmelabs-15/skills
-- Local remote updated via git remote set-url origin git@github.com:acmelabs-15/skills.git
+- curl returned HTTP 301 redirect: <https://github.com/loriensleafs/skills> → <https://github.com/acmelabs-15/skills>
+- Local remote updated via git remote set-url origin <git@github.com>:acmelabs-15/skills.git
 - git remote -v confirms acmelabs-15/skills.git for both fetch + push
 - git log --oneline -3 origin/main shows: 4535414 (HEAD -> main, origin/main, origin/HEAD) docs(session): record initial push... (#1); 6887f2d docs(adr): ADR-001 F-4 evolution; cbaccad feat(plan): persist plan/session render architecture exploration
 
@@ -56,6 +57,7 @@ Verifications performed:
 - Target: ADR-001, PLAN-001, ANALYSIS-002 (Brain notes)
 
 Four Brain note artifacts updated via Brain MCP edit_note to reflect new remote URL acmelabs-15/skills:
+
 1. ADR-001 F-4 Clarifications section — appended 2026-05-20 entry recording the transfer; updated frontmatter date refreshed.
 2. PLAN-001 Decision Log — entry appended documenting relocation.
 3. ANALYSIS-002 Appendix G monorepo restructure proposal — URL replaced from loriensleafs/skills to acmelabs-15/skills in the migration mapping section.

@@ -71,6 +71,7 @@ Use Bun.hash("sha256", content) which returns a Uint8Array. Convert to hex strin
 - [constraint] Function must be synchronous as Bun.hash is sync #sync #performance
 
 ## Relations
+
 - validated_by [[TEST-REPORT-003-SPEC-001: SHA-256 Hash Utility]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

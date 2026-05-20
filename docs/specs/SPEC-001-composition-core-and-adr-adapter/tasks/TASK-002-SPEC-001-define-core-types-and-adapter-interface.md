@@ -25,11 +25,13 @@ Define CompositionAdapter interface, LineRange, RenumberMap, WikilinkMap, Frontm
 ## Scope
 
 **In Scope**:
+
 - types.ts with all 5 shared types (LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec)
 - adapter.ts with CompositionAdapter interface (5 methods + sourceType property)
 - JSDoc comments on all types and methods matching ADR-002 D-2 specification
 
 **Out of Scope**:
+
 - Implementation of the interface (handled by TASK-004 BaseMarkdownAdapter and TASK-008 ADR adapter)
 
 ## Implementation Notes
@@ -75,6 +77,7 @@ Types must exactly match the signatures in ADR-002 D-2. The Root type import com
 - [constraint] All methods synchronous per ADR-002 Axis 1 decision #sync #interface
 
 ## Relations
+
 - validated_by [[TEST-REPORT-002-SPEC-001: Core Types and Adapter Interface]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

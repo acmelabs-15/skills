@@ -34,11 +34,13 @@ Create the /decompose skill definition (SKILL.md) and the decompose.ts CLI entry
 ## Scope
 
 **In Scope**:
+
 - decompose/SKILL.md
 - _shared/composition/src/decompose.ts
 - Unit tests for decompose.ts
 
 **Out of Scope**:
+
 - recompose.ts (TASK-002-SPEC-005)
 - AskUserQuestion implementation within SKILL.md (the SKILL.md describes it; Claude Code runtime provides it)
 - Adapter implementations (SPEC-001 through SPEC-004)

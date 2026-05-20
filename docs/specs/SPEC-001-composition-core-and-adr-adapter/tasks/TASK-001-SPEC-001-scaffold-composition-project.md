@@ -25,6 +25,7 @@ Create the _shared/composition/ project directory with package.json, tsconfig.js
 ## Scope
 
 **In Scope**:
+
 - package.json with runtime deps (zod, unified, remark-parse, remark-stringify, remark-frontmatter, js-yaml) and dev deps (biome, @types/mdast)
 - tsconfig.json with strict mode, target ES2022, moduleResolution bundler
 - biome.json with lint + format config
@@ -34,6 +35,7 @@ Create the _shared/composition/ project directory with package.json, tsconfig.js
 - bun test + biome lint scripts in package.json
 
 **Out of Scope**:
+
 - Source code implementation (handled by TASK-002 through TASK-008)
 - CI pipeline configuration (handled by SPEC-005)
 
@@ -93,6 +95,7 @@ Use bun init or manual creation. Ensure all Bun-native APIs are available. The p
 - [constraint] All dependencies must be Bun-compatible per ADR-001 F-6 #bun #compatibility
 
 ## Relations
+
 - validated_by [[TEST-REPORT-001-SPEC-001: Scaffold Composition Project]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

@@ -25,6 +25,7 @@ Implement the Zod schema for the SPEC subtree manifest (specSubtreeManifestSchem
 ## Scope
 
 **In Scope**:
+
 - specSubtreeManifestSchema Zod type at _shared/composition/schemas/
 - _shared/composition/schemas/distribution/spec.plan.schema.ts
 - _shared/composition/schemas/composition/spec.plan.schema.ts
@@ -32,6 +33,7 @@ Implement the Zod schema for the SPEC subtree manifest (specSubtreeManifestSchem
 - Reuse of injectiveDisjointMap and containedPathSchema from base.ts
 
 **Out of Scope**:
+
 - Adapter implementation (TASK-001 through TASK-004)
 - Other per-type schemas (ADR, ANALYSIS, SESSION, PLAN already covered by SPEC-001/002/003)
 
