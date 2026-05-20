@@ -1035,7 +1035,7 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 | TASK-006-SPEC-001 Injectivity and Path-Containment Validators | DONE | TEST-REPORT-006-SPEC-001 PASS |
 | TASK-007-SPEC-001 Atomic Write Helper | DONE | TEST-REPORT-007-SPEC-001 PASS |
 | TASK-008-SPEC-001 ADR Adapter | DONE | TEST-REPORT-008-SPEC-001 PASS |
-| TASK-009-SPEC-001 Round-Trip Property Test (THE PROOF) | TODO | — |
+| TASK-009-SPEC-001 Round-Trip Property Test (THE PROOF) | DONE | TEST-REPORT-009-SPEC-001 PASS ✓ THE PROOF |
 
 #### Pending User Decisions (for build.SPEC-001)
 

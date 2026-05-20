@@ -2,7 +2,7 @@
 title: 'TASK-009-SPEC-001: Implement Round-Trip Property Test and ADR Fixtures'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-009-spec-001-implement-round-trip-property-test-and-adr-fixtures
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -79,6 +79,7 @@ The ADR fixture should be 200-500 lines with multiple D-N sections, wikilinks, Y
 
 ## Relations
 
+- validated_by [[TEST-REPORT-009-SPEC-001: Round-Trip Property Test]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-008-SPEC-001: Round-Trip Property Test for ADR Adapter]]
 - implements [[REQ-003-SPEC-001: SHA-256 Hash Utility]]

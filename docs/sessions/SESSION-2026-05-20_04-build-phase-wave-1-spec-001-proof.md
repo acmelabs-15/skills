@@ -66,6 +66,15 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - TASK-008 Brain status: TODO → DONE
 - Next: Wave 5 — TASK-009 (Round-trip PROOF) — depends on TASK-003 (SHA-256) + TASK-008 (AdrAdapter)
 
+## Event 07 — Wave 5 (TASK-009) DONE — THE PROOF PASSES (2026-05-20)
+
+- TASK-009-SPEC-001 (Round-Trip Property Test): `tests/round-trip.test.ts` + fixtures (adr-sample.md 170 lines + adr-distribution/composition.plan.yaml)
+- 4 tests: parse/serialize idempotency, applyMutations↔reverseMutations identity, D-N renumber verification, **THE PROOF: SHA-256(original) === SHA-256(decompose → recompose)** — ALL PASS
+- Full suite: 47 pass, 0 fail, 99 expect() calls across 8 files; biome + tsc clean
+- QA: TEST-REPORT-009-SPEC-001 DONE; TASK-009 Brain status: TODO → DONE; validated_by added
+- build.SPEC-001 Stage A COMPLETE — all 9 TASKs DONE
+- Next: Stage B spec-level QA sweep + Stage C propagation + 4 exit gates + set-part-done
+
 ## Observations
 
 - [decision] 4-wave build plan confirmed: W1=SPEC-001 PROOF (sequential gate); W2=SPEC-002+003+004+007 (4-way parallel via agent-teams); W3=SPEC-005; W4=SPEC-006 #build-plan #wave-1 #parallelism
