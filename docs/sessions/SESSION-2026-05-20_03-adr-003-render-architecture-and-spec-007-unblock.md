@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-20_03: ADR-003 Render Architecture and SPEC-007 Unblock'
 type: session
 permalink: sessions/session-2026-05-20-03-adr-003-render-architecture-and-spec-007-unblock
-status: IN_PROGRESS
+status: DONE
 tags:
 - session
 - adr-003
@@ -72,6 +72,26 @@ User invoked `/plan continue` with 0 READY parts. Orchestrator added build.SPEC-
 ## Event 14 — Parallelism analysis + Wave 1 dispatch (build.SPEC-001)
 
 User invoked `/plan continue` with 7 READY build parts. Asked for parallelism analysis instead of single-track AskUserQuestion. Orchestrator analyzed hard dependencies vs sequencing preferences: build.SPEC-001 is sequential PROOF (locks BaseMarkdownAdapter); Wave 2 parallelizes build.SPEC-002 + 003 + 004 + 007 (all depend on SPEC-001 only, file-disjoint, 4-way agent-teams territory per `feedback_proactive_parallelism_check`); Wave 3 build.SPEC-005 (needs adapter registry); Wave 4 build.SPEC-006 (needs SPEC-005). Wall-clock savings: 53 TASKs serial → 35 TASKs with Wave 2 parallel = ~34% reduction. User selected "Wave 1 now, plan Wave 2 after". build.SPEC-001 READY → IN_PROGRESS; owning_session bound. PLAN-001 propagation: Progress Dashboard build row READY 7→6 + IP 0→1; Total visible DRAFT 8→7 + IP 0→1; Phase Progression build.SPEC-001 row IN_PROGRESS; build.SPEC-001 H3 substatus + Wave annotation. Auto-routing to /build with spec=SPEC-001.
+
+## Event 15 — Session close; build.SPEC-001 reverted to READY; fresh session next
+
+User invoked /build for build.SPEC-001; /build Step 1+2 ran inline (PLAN frontmatter `complexity_tier=TIER_4` verified; SPEC-001 status ACCEPTED verified; SPEC-001 subtree complete per Artifact Status). At Step 2.5 TIER_4 oversight gate (mandatory user approval of implementation approach BEFORE first TASK + PoC TASK first), user picked "Start fresh session for /build" — session length is substantial after decisions.3 + ADR-003 ACCEPTED + SPEC-007 30-note authoring + 7 build parts + parallelism analysis. build.SPEC-001 reverted IN_PROGRESS → READY (no actual build work done this session); owning_session unbound. Session SESSION-2026-05-20_03 status IN_PROGRESS → DONE. Next session: invoke /plan PLAN-001-skills-ecosystem; will surface 7 READY builds with build.SPEC-001 as recommended default; /build will resume at Step 3 (pre-mortem) → Step 2.5 (TIER_4 PoC approval) → Step 4 STAGE A.
+
+## Session deliverables (2026-05-20)
+
+This session shipped 6 commits on `feat/plan-001-adr-003-render-architecture`:
+
+- 79c4fa9 — PLAN-001 decisions.3 part added
+- bed3a44 — session pause Event 03 (Brain MCP read blocked)
+- 18d86ec — Brain MCP basic-memory cleanup (69 -1 permalinks stripped, project root fixed)
+- 726a563 — ADR-003 deduplication (parallel-session race recovery)
+- 888c0bd — decisions.3 DONE + ADR-003 ACCEPTED + CRIT-003 debate log
+- e58dc1e — spec.SPEC-007 IN_PROGRESS
+- 5901c1f — spec.SPEC-007 DONE + SPEC-007 ACCEPTED (30 notes)
+- c24f71c — 7 build.SPEC-NNN parts added (READY)
+- 6a8dac6 — build.SPEC-001 IN_PROGRESS (reverted in this Event)
+
+PLAN-001 state: 13/21 visible parts DONE (research + decisions.1/2/3 + spec-decomposition + 7 spec.SPEC-NNN); 7 READY (all build.SPEC-NNN); 1 PENDING (review); 0 IN_PROGRESS; 0 BLOCKED.
 
 ## Observations
 
