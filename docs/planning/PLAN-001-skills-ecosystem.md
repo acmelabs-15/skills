@@ -1025,7 +1025,17 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 
 #### Tasks (for build.SPEC-001)
 
-Populated by /build dispatch (references the 9 TASK notes in SPEC-001 subtree).
+| Task | Status | QA |
+|---|---|---|
+| TASK-001-SPEC-001 Scaffold Composition Project | DONE | TEST-REPORT-001-SPEC-001 PASS |
+| TASK-002-SPEC-001 Core Types and Adapter Interface | TODO | — |
+| TASK-003-SPEC-001 SHA-256 Hash Utility | TODO | — |
+| TASK-004-SPEC-001 BaseMarkdownAdapter | TODO | — |
+| TASK-005-SPEC-001 Zod Plan Schemas | TODO | — |
+| TASK-006-SPEC-001 Injectivity and Path-Containment Validators | TODO | — |
+| TASK-007-SPEC-001 Atomic Write Helper | TODO | — |
+| TASK-008-SPEC-001 ADR Adapter | TODO | — |
+| TASK-009-SPEC-001 Round-Trip Property Test (THE PROOF) | TODO | — |
 
 #### Pending User Decisions (for build.SPEC-001)
 

@@ -21,6 +21,21 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - build.SPEC-001 transitioning READY → IN_PROGRESS (next: PLAN-001 propagation)
 - [[PLAN-001: Skills Ecosystem]] build.SPEC-001 part: READY → IN_PROGRESS
 
+## Event 02 — TASK-001 DONE (2026-05-20)
+
+- Dispatched bun-ts-engineer for TASK-001-SPEC-001 (Scaffold Composition Project)
+- Status: TODO → IN_PROGRESS → DONE
+- Files created: `_shared/composition/package.json`, `tsconfig.json`, `biome.json`, `bunfig.toml`, `README.md`, `.gitkeep` placeholders for 5 directories, `tests/scaffold.test.ts` (sentinel)
+- Deviations resolved: (1) `bun-types` devDep + `tsconfig.json` `types: [bun-types]` — fixes `bun:test` TS diagnostic; (2) `biome.json` migrated to v2.3.13 schema (`organizeImports` removed, `files.ignore` → `files.includes`); (3) sentinel test required — `bun test` exits 1 on zero test files
+- DoD gates: `bun install` exit 0 | `bun test` 1 pass exit 0 | `biome check` exit 0 — all PASS
+
+## Event 03 — QA TASK-001 PASS (2026-05-20)
+
+- brain:🧠-qa dispatched for TASK-001-SPEC-001; verdict: PASS
+- TEST-REPORT-001-SPEC-001-scaffold-composition-project written to docs/qa/ via Pattern 2
+- TASK-001-SPEC-001 validated_by relation added; state propagation complete
+- Next: sync-jira push TASK-001, PLAN tick, atomic commit, then TIER_4 checkpoint with user before Wave 2
+
 ## Observations
 
 - [decision] 4-wave build plan confirmed: W1=SPEC-001 PROOF (sequential gate); W2=SPEC-002+003+004+007 (4-way parallel via agent-teams); W3=SPEC-005; W4=SPEC-006 #build-plan #wave-1 #parallelism

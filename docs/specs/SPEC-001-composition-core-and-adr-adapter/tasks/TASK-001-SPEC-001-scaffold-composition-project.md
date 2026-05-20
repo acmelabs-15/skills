@@ -2,7 +2,7 @@
 title: 'TASK-001-SPEC-001: Scaffold Composition Project'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-001-spec-001-scaffold-composition-project
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -93,6 +93,7 @@ Use bun init or manual creation. Ensure all Bun-native APIs are available. The p
 - [constraint] All dependencies must be Bun-compatible per ADR-001 F-6 #bun #compatibility
 
 ## Relations
+- validated_by [[TEST-REPORT-001-SPEC-001: Scaffold Composition Project]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-001-SPEC-001: Composition Library Module Structure]]
