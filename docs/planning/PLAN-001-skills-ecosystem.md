@@ -40,11 +40,13 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | research | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 2 | 2 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
-| spec.SPEC-NNN | 0 | 0 | 0 | 6 | 6 |
+| spec.SPEC-NNN | 1 | 0 | 0 | 6 | 7 |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **2** | **0** | **0** | **10** | **12** |
+| **Total visible** | **3** | **0** | **0** | **10** | **13** |
+
+> 2026-05-20 — spec.SPEC-007 (Plan/Session Render Implementation) added to scope; PENDING, source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]. Formal ADR-003 + /spec Stage 2 subtree deferred to a future session.
 
 ## Workflow Plan
 
@@ -68,6 +70,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | spec.SPEC-004 | DONE | [[SPEC-004: SPEC Subtree Adapter]] |
 | spec.SPEC-005 | DONE | [[SPEC-005: Decompose and Recompose Skills]] |
 | spec.SPEC-006 | DONE | [[SPEC-006: Defrag and Ingest Skills]] |
+| spec.SPEC-007 | PENDING | planned — Plan/Session Render Implementation; source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]; awaits ADR-003 formalization + /spec Stage 2 subtree authoring in a future session |
 | build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits (6 build parts will be created post-spec; READY when each spec.SPEC-NNN DONE + user wants to start build) |
 | review | PENDING | adversarial multi-axis review across feature surface (post build) |
 | end | PENDING | PR + final session-end checklist |
@@ -100,8 +103,11 @@ graph TD
   subgraph SB ["Spec + Build (per SPEC)"]
     direction TB
     spec_n("✅ <b>spec.SPEC-001..006</b><br/><span style='color:#6b7280;font-size:11px'>ALL 6 SPECs DONE (12/12 gates PASS)</span>")
-    build_n("<b>build.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>6 build phases pending</span>")
+    spec_007("<b>spec.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Impl PENDING (ANALYSIS-002)</span>")
+    build_n("<b>build.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>build phases pending</span>")
+    spec_n --> spec_007
     spec_n --> build_n
+    spec_007 --> build_n
   end
 
   subgraph RE ["Review + End"]
@@ -118,7 +124,7 @@ graph TD
   build_n --> review
 
   class research,d1,d2,sd,spec_n done
-  class build_n,review,fin pending
+  class spec_007,build_n,review,fin pending
 
   linkStyle 0,1,2,3,4 stroke:#9ca3af,stroke-width:1.5px
   linkStyle 5 stroke:#3b82f6,stroke-width:2px
@@ -149,9 +155,11 @@ graph TD
 - **2026-05-19** — spec-decomposition IN_PROGRESS (continuation invocation of /plan PLAN-001). Auto-routing to /spec Stage 1 with source_adrs=ADR-001 + ADR-002 (both ACCEPTED). Expected Stage 1 output: analyst-proposed SPEC clustering + conditional CVA + user adjudication via AskUserQuestion locking 4-6 SPEC clusters aligned to KICKOFF-BRIEF.md build order.
 - **2026-05-19** — spec-decomposition DONE. /spec Stage 1 closed out (Steps 1-7 executed): analyst dispatch → ANALYSIS-001 5-SPEC proposal; CVA + critic + decision-critic review; AskUserQuestion locked 6 SPECs (SPEC-003 split applied per critic recommendation); /plan added 6 spec.SPEC-NNN parts under new ## Spec H2; set-part-done outcome ANALYSIS-001 (ACCEPTED). Next-ready parts: spec.SPEC-001 through spec.SPEC-006 all READY simultaneously. User picks first SPEC to author via /plan continue invocation (multiple READY parts → AskUserQuestion).
 - **2026-05-19** — spec.SPEC-001 IN_PROGRESS. User selected SPEC-001 Composition Core and ADR Adapter (PROOF) via AskUserQuestion (Recommended default per /plan lowest-numbered rule + KICKOFF-BRIEF.md build order). Auto-routing to /spec Stage 2 to author SPEC-001 subtree (REQ → DESIGN → TASK → SPEC root).
+- **2026-05-20** — PLAN-001 drift remediation complete (commit f280c0f post-/end). Substantial design exploration of plan/session note render architecture; 11 locked architectural decisions (D-1..D-11) captured in ANALYSIS-002 Plan/Session Note Render Architecture (see Relations). Net direction: markdown is authoritative state; deterministic Bun + TS render scripts replace LLM-authored find_replace cycles; PLAN owns forward state including tasks (Active/Backlog/Archive consolidated at top level); SESSION is pure append-only event ledger; T-NN tasks become plan-scoped; Mermaid as separate render concern; round-trip property test gates correctness. spec.SPEC-007 (Plan/Session Render Implementation) added to PLAN-001 scope as PENDING. ADR-003 formalization + /spec Stage 2 subtree authoring deferred to a future session. Monorepo restructure (packages/composition + decompose-recompose + defrag + ingest) proposed; deferred to ADR-004 when 2nd package starts.
 - **2026-05-19** — /spec Stage 2 Steps 1-6 complete. brain:🧠-architect dispatch authored SPEC-001 subtree (21 notes 8 REQ + 3 DESIGN + 9 TASK + 1 SPEC root; 2012 lines total; Pattern 2 three-phase write for each; bi-directional relations added to ADR-001 + ADR-002 + ANALYSIS-001). Per user critical-rule directive on standards inline-ness, compliance audit ran post-dispatch; 20 notes had `type: note` drift (per CONVENTIONS Section 3 forbidden generic type) corrected to canonical types (requirement / design / task). Verified Observations min 3, Relations min 2, final-two-sections invariant, status + effort + estimate fields, ADR coverage gate (both ACCEPTED ADRs have implemented_by SPEC-001). Stage 2 Steps 7-10 pending Gate A semantic gap + Gate B 4 binary drift checks before set-part-done.
 - **2026-05-19** — spec.SPEC-001 DONE. /spec Stage 2 fully closed out (Steps 7-10): Gate A semantic gap analysis PASS (6 of 8 REQs VERIFIABLE; 2 REQs refined per NEEDS_REFINEMENT findings — REQ-002 extractByRange boundary semantics clarified, REQ-007 heading-inclusion convention specified); Gate B 4 binary drift checks all PASS (REQ-to-ADR + scope conservation + TASK-to-REQ + Scope-In match; no P1 issues from critic); SPEC-001 root born ACCEPTED per /spec invariant; set-part-done executed inline (substatus IN_PROGRESS → DONE; outcome wikilink resolved; completing_session bound). spec.SPEC-002..SPEC-006 remain READY simultaneously for /plan continue invocation.
 - **2026-05-19** — spec.SPEC-002 IN_PROGRESS (user selected SPEC-002 Simple Adapters via AskUserQuestion per /plan lowest-numbered rule). Owning session bound. Auto-routing to /spec Stage 2 (Contract 2 dispatch with spec=SPEC-002 source_adrs=ADR-001 + ADR-002 source_clustering=ANALYSIS-001 + source_proof=SPEC-001 BaseMarkdownAdapter).
+- **2026-05-20** — Post-/end design exploration session (SESSION-2026-05-20_01). Drift remediation of PLAN-001 H4 subsections (commit f280c0f). Plan/session note render architecture explored end-to-end; ANALYSIS-002 authored capturing 11 locked decisions + full schema + parser + renderer + mutation API drafts in Appendices A-I. PLAN-001 amendments applied this turn: Progress Dashboard updated (spec.SPEC-NNN row 1 PENDING + 6 DONE = 7 total; total visible 3/0/0/10 = 13); Phase Progression added spec.SPEC-007 PENDING row; Cross-Part Deps Graph added spec_007 node; spec.SPEC-007 H3 part section authored under ## Spec with PENDING substatus + 8-item DoD + source artifact pointer to ANALYSIS-002. Decisions phase did NOT re-enter (D-1..D-11 LOCKED in ANALYSIS-002; formal ADR-003 + brain:---adr-review cycle is procedural, deferred to a future session). Monorepo restructure proposal documented in ANALYSIS-002 Appendix G; deferred to ADR-004 when 2nd package starts.
 
 ## Blockers
 
@@ -838,6 +846,45 @@ graph TD
 
 None — spec.SPEC-006 part DONE 2026-05-19. Gate A 6/6 VERIFIABLE (no flagged REQs); Gate B PASS unanimous (no P1). REQ-005 /ingest Brain-awareness non-ADR scope correctly documented per critic P1-2 amendment (sourced from KICKOFF-BRIEF.md lines 117-119; ADR coverage gate distinguishes ADR-derived from non-ADR-derived requirements). SPEC-006 root born ACCEPTED per /spec invariant. **MILESTONE**: all 6 spec.SPEC-NNN parts DONE — entire SPEC phase complete; build.SPEC-NNN phases pending future sessions.
 
+### spec.SPEC-007 — Plan/Session Render Implementation (PENDING)
+
+**Substatus**: PENDING
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be SPEC-007 root note + REQ/DESIGN/TASK subtree at docs/specs/SPEC-007-plan-session-render/)
+**Source artifacts**: [[ANALYSIS-002: Plan/Session Note Render Architecture]] (locks D-1..D-11 architectural direction; full schema + parser + renderer drafts in Appendices A-I)
+
+**DoD**:
+
+- [ ] ADR-003 authored capturing D-1..D-11 with rationale + alternatives; brain:---adr-review Phase 4 convergence PASS
+- [ ] Zod schemas authored at _shared/composition/src/schemas/ (common.ts + plan-note.ts + session-note.ts) per ANALYSIS-002 Appendix C
+- [ ] Parser drafts at _shared/composition/src/parsers/ (ast-helpers.ts + plan-note.ts + session-note.ts) per ANALYSIS-002 Appendix D
+- [ ] Renderer at _shared/composition/src/renderers/ (plan-note.ts + session-note.ts + mermaid.ts) per ANALYSIS-002 Appendix E
+- [ ] Mutation API at _shared/composition/src/plan-mutations.ts + session-mutations.ts per ANALYSIS-002 Appendix F
+- [ ] Round-trip property test passes on PLAN-001 + a SESSION fixture per ANALYSIS-002 Appendix H
+- [ ] /plan and /session skills updated to use the new mutation API
+- [ ] PLAN-001 re-authored in trimmed form using the new tooling (dogfood)
+
+#### Workflow Plan (for spec.SPEC-007)
+
+/spec Stage 2 per-SPEC authoring (REQ → DESIGN → TASK → SPEC root; order non-negotiable per /spec invariant). Scope: deterministic Bun + TS render pipeline for plan and session Brain notes. Implementation closely follows the schema + parser + renderer + mutation drafts in ANALYSIS-002 Appendix C-F. Dependencies: composition library infrastructure from SPEC-001 (unified + remark stack, schemas pattern, project layout). Round-trip property test on PLAN-001 is the PROOF gate.
+
+#### Tasks (for spec.SPEC-007)
+
+Populated by /spec Stage 2 dispatch on /plan continue.
+
+#### Intra-part Deps Graph (for spec.SPEC-007)
+
+Populated by /spec Stage 2 dispatch.
+
+#### Editor Mirror IDs (for spec.SPEC-007)
+
+Populated as /spec creates tasks.
+
+#### Pending User Decisions (for spec.SPEC-007)
+
+None pending. ADR-003 formalization required first (D-1..D-11 already locked in ANALYSIS-002; ADR formalization is procedural).
+
 ## Review
 
 ### review — Multi-axis adversarial review (PENDING)
@@ -904,6 +951,7 @@ None — spec.SPEC-006 part DONE 2026-05-19. Gate A 6/6 VERIFIABLE (no flagged R
 
 ## Relations
 - contains [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+- contains [[SESSION-2026-05-20_01: PLAN-001 Drift Remediation and Plan Session Render Architecture]]
+- relates_to [[ANALYSIS-002: Plan/Session Note Render Architecture]]
 - pairs_with [[brain:---adr-review]]
 - pairs_with [[sync-jira]]
-
