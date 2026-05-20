@@ -40,11 +40,11 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | research | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 2 | 2 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
-| spec.SPEC-NNN | 0 | 1 | 0 | 5 | 6 |
+| spec.SPEC-NNN | 0 | 0 | 0 | 6 | 6 |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **2** | **1** | **0** | **9** | **12** |
+| **Total visible** | **2** | **0** | **0** | **10** | **12** |
 
 ## Workflow Plan
 
@@ -67,9 +67,9 @@ Per-part workflow detail lives in each per-part H3 below.
 | spec.SPEC-003 | DONE | [[SPEC-003: PLAN Adapter]] |
 | spec.SPEC-004 | DONE | [[SPEC-004: SPEC Subtree Adapter]] |
 | spec.SPEC-005 | DONE | [[SPEC-005: Decompose and Recompose Skills]] |
-| spec.SPEC-006 | PENDING | SPEC-006 Defrag+Ingest Skills (depends on SPEC-005 DONE; now READY) |
-| build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits |
-| review | PENDING | adversarial multi-axis review across feature surface |
+| spec.SPEC-006 | DONE | [[SPEC-006: Defrag and Ingest Skills]] |
+| build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits (6 build parts will be created post-spec; READY when each spec.SPEC-NNN DONE + user wants to start build) |
+| review | PENDING | adversarial multi-axis review across feature surface (post build) |
 | end | PENDING | PR + final session-end checklist |
 
 ## Cross-Part Dependency Graph
@@ -612,10 +612,12 @@ Populated as /spec creates tasks.
 
 Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
-### spec.SPEC-006 — Defrag and Ingest Skills (IN_PROGRESS)
+### spec.SPEC-006 — Defrag and Ingest Skills (DONE)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: DONE
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+**Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+**Outcome**: [[SPEC-006: Defrag and Ingest Skills]] (ACCEPTED; ADR coverage + Gate A 6/6 VERIFIABLE + Gate B 4/4 PASS unanimous; P1-2 amendment on /ingest Brain-awareness non-ADR scope correctly documented in SPEC root + REQ-005)
 **Owning session**: —
 **Completing session**: —
 **Outcome**: — (will be SPEC-006 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-006-defrag-and-ingest-skills/)
