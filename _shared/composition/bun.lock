@@ -6,6 +6,7 @@
       "name": "@acmelabs/composition",
       "dependencies": {
         "js-yaml": "^4.1.0",
+        "mdast-util-to-string": "^4.0.0",
         "remark-frontmatter": "^5.0.0",
         "remark-parse": "^11.0.0",
         "remark-stringify": "^11.0.0",
