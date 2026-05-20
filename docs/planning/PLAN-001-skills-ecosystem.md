@@ -171,10 +171,10 @@ None.
 
 ## Decisions
 
-### decisions.1 — Composition library architecture ADR (READY)
+### decisions.1 — Composition library architecture ADR (IN_PROGRESS)
 
-**Substatus**: READY
-**Owning session**: —
+**Substatus**: IN_PROGRESS
+**Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: —
 **Outcome**: — (will be [[ADR-001: Composition Library Architecture]])
 **Source artifacts**: `KICKOFF-BRIEF.md` (sections: Architecture, LLM-script division of labor, Constraints, Open design questions Q1-Q5)

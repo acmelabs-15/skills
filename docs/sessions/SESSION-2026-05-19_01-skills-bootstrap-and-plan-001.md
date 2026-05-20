@@ -86,6 +86,14 @@ tags:
 - PLAN-001 updated DoD checkboxes Q1-Q5 checked; D-N substatus table 5 rows PENDING → LOCKED with verbatim locked-decision text; Decision Log + Progress Log entries appended
 - Next ADR-001 authoring via brain:🧠-architect dispatch with detail-parity mandate + brain:---adr-review gate per D-5; paused per bootstrap directive awaiting user confirmation to proceed
 
+## Event 09 — decisions.1 transition READY → IN_PROGRESS; auto-routing to /decisions
+
+- Type state-change
+- Trigger user invoked `/plan PLAN-001-skills-ecosystem` (continue mode)
+- Outcome decisions.1 substatus READY → IN_PROGRESS; owning_session bound to this SESSION
+- Branch policy current branch `feat/plan-001-skills-ecosystem` is non-main; /plan honored existing branch per skill branch policy (no new branch created this invocation)
+- Next per Contract 2 dispatch shape, auto-route to /decisions with `plan=PLAN-001 part=decisions.1`. /decisions will detect the 5 already-LOCKED D-Ns in PLAN-001's D-N substatus list, skip the per-D-N micro-cycle's AskUserQuestion phase, and proceed directly to brain:🧠-architect dispatch for composite ADR-001 authoring (with detail-parity mandate referencing the 8 KICKOFF-BRIEF locked design decisions plus the 5 LOCKED decisions). Then brain:---adr-review runs as BLOCKING gate per D-5 lock before ADR-001 flips PROPOSED → ACCEPTED.
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress
