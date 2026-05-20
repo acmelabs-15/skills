@@ -2,7 +2,7 @@
 title: 'ADR-003: Plan/Session Render Architecture'
 type: decision
 permalink: decisions/adr-003-plan-session-render-architecture
-status: PROPOSED
+status: ACCEPTED
 date: 2026-05-20
 updated: 2026-05-20
 tags:
@@ -16,7 +16,7 @@ tags:
 
 ## Status
 
-PROPOSED -- pending brain:---adr-review Phase 4 convergence PASS.
+ACCEPTED 2026-05-20 — brain:---adr-review Phase 4 convergence Round 1: 5 ACCEPT + 1 CONCERNS + 0 BLOCK (passes ≥5 ACCEPT threshold). Independent Thinker dissent on F-3 (over-engineering signal) + F-5 (simpler alternative not evaluated) captured as Disagree-and-Commit; High-Level Advisor tie-breaker sided with ACCEPT on strategic-fit (Core capability; every SPEC build pays drift tax until shipped). Phase 3 resolutions applied in-ADR: F-2 (rollback path documented in Consequences); F-4 (round-trip claim scoped to structural fidelity in D-8); F-1 (common.ts shared with ADR-002 noted in Implementation Notes). Full debate log: [[CRIT-003-ADR-003: Plan/Session Render Architecture Debate Log]].
 
 ## Context and Problem Statement
 
@@ -65,10 +65,12 @@ The foundational invariant, captured verbatim from the user's framing:
 A YAML file holds the canonical state; markdown is regenerated from it on every state change.
 
 **Pros:**
+
 - Clean separation between state and presentation
 - YAML is easier to parse/validate programmatically than markdown
 
 **Cons:**
+
 - Creates a dual-truth problem: if .md and .yaml diverge, which wins?
 - basic-memory's binary rule (CONVENTIONS Section 1.7.1) establishes markdown as canonical for Brain notes -- adding a second authoritative source contradicts this
 - The drift problem we are solving would reappear one layer down (YAML-to-markdown divergence)
@@ -79,12 +81,14 @@ A YAML file holds the canonical state; markdown is regenerated from it on every 
 The markdown files in docs/** are the single source of truth. No parallel state.yaml.
 
 **Pros:**
+
 - Aligns with basic-memory's existing canonical model
 - Single source of truth eliminates dual-truth divergence
 - Git history captures state evolution in human-readable form
 - basic-memory indexing, search, and wikilink resolution all work against the .md files directly
 
 **Cons:**
+
 - Markdown is harder to parse programmatically than YAML (mitigated by the unified + remark parser layer per D-9)
 - Schema validation requires parsing markdown first (but this is the parser layer's job)
 
@@ -95,10 +99,12 @@ The markdown files in docs/** are the single source of truth. No parallel state.
 Keep the current approach but write more careful find_replace anchoring and more explicit LLM instructions.
 
 **Pros:**
+
 - Zero new code; works today
 - No dependency on render scripts
 
 **Cons:**
+
 - Failure modes are inherent to incremental editing without full-document state-then-render propagation
 - basic-memory replace_section silent appending at H4 targets is a platform bug, not a prompting problem
 - 30+ sequential edits per propagation cycle remains architecturally expensive regardless of prompt quality
@@ -109,6 +115,7 @@ Keep the current approach but write more careful find_replace anchoring and more
 Plan and session note mutations go through Bun + TypeScript scripts that: parse markdown into a typed in-memory model, apply typed mutations, re-emit the entire document deterministically, validate against the Zod schema, write atomically. The LLM provides intent (which mutation, with what parameters) and any dynamic prose content; the script applies state and content to produce canonical markdown.
 
 **Pros:**
+
 - Full-document propagation eliminates every drift surface identified in the problem framing
 - Single disk write per mutation (atomic)
 - Side-channel propagation (Progress Dashboard rollup, Cross-Part Deps Graph, status consistency checks) all happen automatically as derived views during render
@@ -116,6 +123,7 @@ Plan and session note mutations go through Bun + TypeScript scripts that: parse 
 - Testable via round-trip property test
 
 **Cons:**
+
 - Requires building parser + renderer + mutation API (~500-700 LOC estimated)
 - Adds Bun + TS toolchain dependency for plan/session maintenance
 - Render script must be maintained as plan/session template evolves
@@ -127,10 +135,12 @@ Plan and session note mutations go through Bun + TypeScript scripts that: parse 
 Keep T-NN session-scoped per existing feedback_session_protocol guidance. Cross-session references use a session-prefixed form.
 
 **Pros:**
+
 - Consistent with existing convention
 - Session boundary provides natural namespace
 
 **Cons:**
+
 - Cross-session task references are cumbersome (SESSION-2026-05-19_01:T-12 is verbose)
 - Tasks are state living in PLAN, not events living in SESSION; session-scoping their IDs contradicts the responsibility split
 
@@ -139,11 +149,13 @@ Keep T-NN session-scoped per existing feedback_session_protocol guidance. Cross-
 Task IDs use T-NN where NN is a plan-global counter (2+ digits), continuous across sessions of the same workflow.
 
 **Pros:**
+
 - Unambiguous cross-session task references (T-42 means one task regardless of which session created it)
 - Aligns with the D-2 decision that tasks are PLAN state, not SESSION events
 - Continuous numbering across sessions makes the task ledger coherent
 
 **Cons:**
+
 - Breaks existing T-NN session-scoping convention (migration: existing PLAN-001 T-IDs are already plan-global continuous T-01..T-57; no renumbering needed)
 
 ### Axis 4: Consolidation strategy for per-part sections
@@ -153,10 +165,12 @@ Task IDs use T-NN where NN is a plan-global counter (2+ digits), continuous acro
 Retain the existing structure where each part has its own Tasks, Pending User Decisions, and Editor Mirror IDs sub-sections.
 
 **Pros:**
+
 - No structural migration needed
 - Part-scoped view when reading a single part
 
 **Cons:**
+
 - Primary bloat source: same table headers repeated x N parts
 - Event commentary embedded in task rows (violates state/event split)
 - Cross-part task queries require reading N sections
@@ -166,12 +180,14 @@ Retain the existing structure where each part has its own Tasks, Pending User De
 A single Tasks section at PLAN top level contains three sub-tables: Active (IN_PROGRESS), Backlog (PENDING), Archive (DONE). PUD and Editor Mirror IDs also at top level. Each task row has a Part column for filtering.
 
 **Pros:**
+
 - Eliminates per-part duplication (about 70% bulk reduction)
 - Matches the existing three-table hybrid pattern, relocated from SESSION to PLAN where state belongs
 - Active/Backlog/Archive split keeps visible PLAN size manageable at 100+ tasks
 - Cross-part queries are a single table scan
 
 **Cons:**
+
 - Loses the per-part visual grouping (mitigated by the Part column filter)
 
 ## Decision
@@ -217,6 +233,7 @@ This ADR captures 11 locked architectural decisions (D-1 through D-11) establish
 **Alternative considered**: JSON Schema. Rejected per ADR-001 D-1 reasoning (Zod is TS-native, single source of truth between types and validation; JSON Schema requires maintaining separate type definitions, creating sync drift).
 
 **Schema design decisions baked in** (per ANALYSIS-002 Appendix C):
+
 1. Strict objects throughout (.strict()) -- unknown fields fail validation. Schema is single source of truth for shape.
 2. Discriminated union for events -- every event has a type field; event-type-specific fields are statically typed.
 3. Cross-field invariants in superRefine -- task-to-part, depends_on-to-part, status consistency, event-number continuity, first-event-is-session-start.
@@ -262,7 +279,9 @@ This ADR captures 11 locked architectural decisions (D-1 through D-11) establish
 
 **Decision**: render(parse(md)) === md (SHA-256 char-identity, modulo intentional template normalization) is a CI gate for the plan/session render pipeline. PLAN-001 itself becomes the first round-trip fixture.
 
-**Rationale**: Same hash-validation principle as the composition library's adapter contract per ADR-001 F-8. Drift becomes mathematically impossible inside the structural portion of any rendered plan/session note. Once the parser + renderer pair achieves round-trip for the dogfood fixtures, the mutation API can be built on top with confidence that no incidental change to the markdown occurs from a no-op operation.
+**Rationale**: Same hash-validation principle as the composition library's adapter contract per ADR-001 F-8. The invariant applies to STRUCTURAL template content (frontmatter shape, section ordering, table schemas, Mermaid graph derivation, observation/relation formatting) — drift becomes structurally drift-resistant inside the rendered plan/session note. LLM-authored prose sections (Scope, DoD text, blocker descriptions, observation/event bodies) are expected to mutate — they propagate through deterministic re-render after Zod schema validation. Once the parser + renderer pair achieves round-trip for the dogfood fixtures, the mutation API can be built on top with confidence that no incidental structural change to the markdown occurs from a no-op operation.
+
+**Scope of the invariant** (per CRIT-003 F-4 resolution): `render(parse(md)) === md` is the gate for STRUCTURAL fidelity. Prose mutations break char-identity by design (the LLM is intentionally changing prose content); the gate fires when the structural diff is non-zero on a no-op mutation, indicating parser/renderer regression rather than intended content change.
 
 **Round-trip test design** (per ANALYSIS-002 Appendix H):
 
@@ -383,13 +402,17 @@ Net effect of the fix: about 70% bulk reduction in PLAN markdown; SESSION grows 
 
 ### Positive
 
-- Zero-drift for structural content: round-trip property test (SHA-256 char-identity) makes structural drift mathematically impossible inside the rendered plan/session note
+- Structural drift-resistance: round-trip property test (SHA-256 char-identity) gates structural fidelity (frontmatter shape, section ordering, table schemas, Mermaid graph) in the rendered plan/session note. Prose mutations propagate intentionally through Zod-validated re-render; the invariant fires on no-op mutations producing non-zero structural diff (regression signal), not on intended prose changes (see D-8 Scope of the invariant)
 - Single disk write per mutation replaces 30+ sequential edit_note calls per state propagation cycle
 - Mermaid graph styling is generated, not hand-maintained, eliminating the most painful manual drift surface
 - About 70% PLAN bulk reduction from consolidation (D-6) and responsibility-split enforcement (D-10, D-11)
 - Typed mutation API gives LLMs a narrow, validated interface instead of free-form find_replace
 - Cross-field invariants (DONE part must have outcome; task.part must reference valid part; continuous event numbering) caught at schema boundary rather than silently violated
 - Plan/session templates become mechanically enforceable rather than conventionally enforced
+
+### Rollback path
+
+If the render scripts introduce bugs that corrupt plan/session notes: (1) git revert the offending commit (notes restored to last-good state); (2) resume manual edit_note workflow until the regression is fixed; (3) the round-trip property test in CI gates regressions before they merge. Per the atomic write-to-temp-then-rename protocol inherited from ADR-001 F-8, no partial-write corruption can occur — a crash mid-write leaves source untouched and a recoverable `.tmp` artifact. This rollback path applies to all 11 D-Ns; no decision here is irreversible.
 
 ### Negative
 
@@ -429,6 +452,8 @@ No new vendor lock-in beyond what ADR-001 already assessed. The plan/session ren
 
 Three files: common.ts (shared IDs, enums, observation/relation schemas), plan-note.ts (PlanNoteSchema with PlanFrontmatterSchema, PartSchema, TaskSchema, PendingDecisionSchema, EditorMirrorEntrySchema), session-note.ts (SessionNoteSchema with SessionFrontmatterSchema, EventSchema discriminated union with 10 event types).
 
+**common.ts is shared with ADR-002's composition schemas** (per CRIT-003 F-1 resolution). The shared enums (status enums, observation category enum, relation verb enum, EntityIdSchema regex, WikilinkSchema) live in `_shared/composition/src/schemas/common.ts` and are imported by both ADR-002's plan-schema.ts and ADR-003's plan-note.ts + session-note.ts. DRY single source of truth; no duplicate schema definitions for overlapping types. SPEC-007 authoring will detail the import structure.
+
 Full Zod schema drafts are in ANALYSIS-002 Appendix C. Key design points:
 
 **common.ts** defines: EntityIdSchema (regex matching all 16 canonical entity prefixes), PartIdSchema (regex matching research|decisions.N|spec-decomposition|spec.SPEC-NNN|build.SPEC-NNN|review|end), TaskIdSchema (T-NN), DecisionIdSchema (D-N or F-N), EventNumberSchema (positive int), SessionIdSchema (SESSION-YYYY-MM-DD_NN). Status enums: PartSubstatusEnum (PENDING|READY|IN_PROGRESS|DONE|DEFERRED|ABANDONED|BLOCKED), TaskStatusEnum (PENDING|IN_PROGRESS|DONE|DEFERRED|ABANDONED|BLOCKED), PlanStatusEnum (IN_PROGRESS|DONE|PAUSED), SessionStatusEnum (IN_PROGRESS|PAUSED|DONE), DecisionStatusEnum (PENDING|LOCKED|REJECTED|DEFERRED), EffortEnum (XS|S|M|L|XL), ComplexityTierEnum (TIER_1..TIER_5|TBD), PhaseEnum (research|decisions|spec-decomposition|spec|build|review|end). WikilinkSchema as { ref: string }. OutcomeSchema as discriminated union on kind: file|wikilink. ObservationSchema with category enum (10 valid categories per CONVENTIONS Section 4.2) + text + tags[1-3]. RelationSchema with verb enum (16 valid verbs per CONVENTIONS Section 4.4) + target.
@@ -450,6 +475,7 @@ Full parser drafts are in ANALYSIS-002 Appendix D. Key design points:
 **parseSessionNote** flow: same AST pipeline. sectionizeH2 for Scope, Bound PLAN, Events, Observations, Relations. parseBoundPlans extracts wikilink ref + worked_parts from bullet pattern. parseEvents uses sectionizeH3 for "Event NN -- title" headings; bulletFieldMap extracts typed fields (Type, Part, Transition, Outcome, Decision IDs, Task, Agent, Verdict, Tally, P0/P1/P2); discriminated union narrowing happens at Zod validation via EventSchema.parse(). Final SessionNoteSchema.parse() validates event-number continuity and first-event-is-session-start.
 
 **Parser design decisions baked in** (10 items from ANALYSIS-002):
+
 1. Headings are the index -- H2 sections are top-level; H3 sub-sections walked separately.
 2. Derived sections are skipped, not parsed -- Progress Dashboard and Cross-Part Dependency Graph are regenerated by the renderer.
 3. Wikilink as { ref } object -- preserves the wikilink-vs-plain distinction through the model.
@@ -462,6 +488,7 @@ Full parser drafts are in ANALYSIS-002 Appendix D. Key design points:
 10. ParseError carries a path array -- gives Zod-style locality for error messages.
 
 **Parser edge cases surfaced** (5 items from ANALYSIS-002):
+
 1. Pending User Decisions body shape -- stubbed to return [] for the common "None -- ..." case; real PUD body shape locks when first real use case emerges.
 2. Bullet field map vs paragraph body ordering in events -- parser assumes bullets-first, paragraphs-after. Renderer enforces this order.
 3. details collapse in Tasks archive -- depends on remark's HTML handling. Fallback: drop the collapse, use plain H3 + table.

@@ -1,7 +1,7 @@
 ---
 title: 'SESSION-2026-05-20_03: ADR-003 Render Architecture and SPEC-007 Unblock'
 type: session
-permalink: docs/sessions/session-2026-05-20-03-adr-003-render-architecture-and-spec-007-unblock
+permalink: sessions/session-2026-05-20-03-adr-003-render-architecture-and-spec-007-unblock
 status: IN_PROGRESS
 tags:
 - session
@@ -28,6 +28,26 @@ PLAN-001 propagation applied: branches frontmatter list (+ feat/plan-001-adr-003
 ## Event 03 — /decisions Step 1 BLOCKED on Brain MCP read failure; session paused
 
 /decisions skill executed Step 1 (read PLAN-001 decisions.3 part — already in context). G2 resume: D-1..D-11 all LOCKED in d_n_substatus → skip Step 2 micro-cycle. Step 1 also requires reading source_analyses ANALYSIS-002. Brain MCP `read_note` + `view_note` for ANALYSIS-002 return "Not Found" despite the file existing on disk at `docs/analysis/ANALYSIS-002-plan-session-note-render-architecture.md` AND search returning the permalink `analysis/analysis-002-plan-session-note-render-architecture`. Related symptom: pre-existing git status shows `-1` permalink suffix drift on `docs/decisions/ADR-001-...md` + `docs/analysis/ANALYSIS-002-...md` (basic-memory index stale). User adjudicated path via AskUserQuestion: "Stop here; fix MCP index manually". Session paused IN_PROGRESS. Resume: user restarts Brain MCP / clears stale index in separate terminal, then re-invokes `/plan PLAN-001-skills-ecosystem` to continue from /decisions Step 1.
+
+## Event 04 — Brain MCP basic-memory cleanup (commit 18d86ec)
+
+Diagnosed root cause of recurring `-1` permalink drift: 6 parallel basic-memory MCP servers racing on `UNIQUE(permalink, project_id)` constraint + skills project root misconfigured to repo root instead of `docs/` subdir. Fix: killed all 6 MCPs (`pkill -f "basic-memory mcp"`); updated `~/.basic-memory/config.json` skills path to `/Users/peter.kloss/Dev/ACMElabs/skills/docs`; UPDATE basic-memory.db project row to docs/ subdir; DELETE 8 duplicate entity rows (with docs/ prefix in file_path); UPDATE 69 permalinks stripping `-1` suffix; sed-strip 69 file frontmatter permalinks. 113→105 entities. Backups at `~/.basic-memory/memory.db.backup-20260520-114801` and `config.json.backup-20260520-114803`. User restarted Claude Code; fresh MCP picked up clean state; ANALYSIS-002 readable via clean permalink.
+
+## Event 05 — Parallel architect dispatch produced ADR-003 duplicates (commit 726a563)
+
+While orchestrator was preparing the architect dispatch, a parallel Claude Code session (PID 1868, since-exited) dispatched its own architect and produced two ADR-003 files: `ADR-003 Plan Session Render Architecture.md` (32KB, -1 permalink) and `ADR-003 Plan-Session Render Architecture.md` (50KB, clean permalink). Both had spaces in filenames (Pattern 2 Phase 3 skipped). Cleanup: deleted 32KB duplicate file + DB row 3796; renamed 50KB canonical to kebab `ADR-003-plan-session-render-architecture.md`; fixed frontmatter title and H1 to colon format `ADR-003: Plan/Session Render Architecture`; DB row 3795 updated. Single canonical ADR-003 PROPOSED at `decisions/ADR-003-plan-session-render-architecture.md` (573 lines, 11 D-Ns + Considered Options + Responsibility Audit + Technology Stack + Consequences + Implementation Notes + Migration plan).
+
+## Event 06 — brain:---adr-review 6-agent debate Round 1 convergence
+
+Phase 0: gh issue/PR scan (0 issues, 3 merged PRs — no related work). Phase 1: 6 parallel agent dispatches (architect, critic, independent-thinker, security, analyst, high-level-advisor) — all background. Verdicts: architect ACCEPT (1 P1 + 4 P2), critic ACCEPT (1 P1 + 4 P2), independent-thinker CONCERNS (3 P1 + 2 P2), security ACCEPT (1 P1 + 6 P2), analyst ACCEPT (1 P1 + 6 P2), high-level-advisor ACCEPT (2 P1 + 3 P2). Total: 5 ACCEPT + 1 CONCERNS + 0 BLOCK — passes ≥5 ACCEPT threshold. IT dissent on F-3 (over-engineering signal: 11 decisions for note-formatting routing around single basic-memory bug) and F-5 (simpler alternative not evaluated: D-6+D-10+D-11 template simplification alone gets 70% benefit zero code) tie-broken by Advisor on strategic-fit (Core capability; every SPEC build pays drift tax until shipped). Captured as Disagree-and-Commit in CRIT-003 debate log.
+
+## Event 07 — Phase 3 in-ADR resolutions + ADR-003 PROPOSED → ACCEPTED
+
+CRIT-003-ADR-003 debate log authored at `docs/critique/CRIT-003-ADR-003-plan-session-render-architecture-debate-log.md` (7 P1 findings F-1..F-7 documented with disposition: 2 resolved in-ADR, 4 deferred to SPEC-007, 2 D&C). Phase 3 in-ADR revisions applied: F-2 explicit rollback statement added to Consequences ("git revert + resume edit_note; atomic temp-rename inherited from ADR-001 F-8"); F-4 round-trip claim scoped to STRUCTURAL fidelity in D-8 + Consequences (prose mutations expected to propagate through Zod-validated re-render; gate fires on no-op mutations with non-zero structural diff = regression signal); F-1 common.ts shared with ADR-002 schemas noted in Implementation Notes. ADR-003 frontmatter `status: PROPOSED → ACCEPTED`; Status section updated with debate convergence summary + CRIT-003 wikilink.
+
+## Event 08 — PLAN-001 set-part-done + comprehensive propagation
+
+decisions.3 transitioned IN_PROGRESS → DONE with outcome `[[ADR-003: Plan/Session Render Architecture]]` and completing_session bound. Progress Dashboard decisions row IN_PROGRESS 1→0 + DONE 2→3 + Total visible 14 unchanged (DRAFT 3→2 + DONE 10→12). Phase Progression decisions.3 row DONE; spec.SPEC-007 row BLOCKED → READY. Cross-Part Deps Graph d3 node class inprogress → done (✅ ACCEPTED label). spec.SPEC-007 H3 substatus BLOCKED → READY. Blockers section updated. decisions.3 H3 substatus + completing_session + outcome wikilink; 6 DoD checkboxes flipped [x]. spec.SPEC-007 DoD item 1 (ADR-003 authored + adr-review PASS) flipped [x]. Decision Log + Progress Log entries appended. Next-ready part: spec.SPEC-007.
 
 ## Observations
 

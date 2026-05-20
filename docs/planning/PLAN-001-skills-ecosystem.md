@@ -39,13 +39,13 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | Phase | DRAFT | IN_PROGRESS | BLOCKED | DONE | Total |
 |:--|:--|:--|:--|:--|:--|
 | research | 0 | 0 | 0 | 1 | 1 |
-| decisions | 0 | 1 | 0 | 2 | 3 |
+| decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec.SPEC-NNN | 1 | 0 | 0 | 6 | 7 |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **3** | **1** | **0** | **10** | **14** |
+| **Total visible** | **2** | **0** | **0** | **12** | **14** |
 
 > 2026-05-20 — spec.SPEC-007 (Plan/Session Render Implementation) added to scope; PENDING, source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]. Formal ADR-003 + /spec Stage 2 subtree deferred to a future session.
 
@@ -64,7 +64,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | research | DONE | `KICKOFF-BRIEF.md` |
 | decisions.1 | DONE | [[ADR-001: Composition Library Architecture]] |
 | decisions.2 | DONE | [[ADR-002: Adapter Contract and Plan Schema]] |
-| decisions.3 | IN_PROGRESS | planned — ADR-003 formalizing D-1..D-11 from [[ANALYSIS-002: Plan/Session Note Render Architecture]]; gates spec.SPEC-007 |
+| decisions.3 | DONE | [[ADR-003: Plan/Session Render Architecture]] |
 | spec-decomposition | DONE | [[ANALYSIS-001: SPEC Clustering]] |
 | spec.SPEC-001 | DONE | [[SPEC-001: Composition Core and ADR Adapter]] |
 | spec.SPEC-002 | DONE | [[SPEC-002: Simple Adapters]] |
@@ -72,7 +72,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | spec.SPEC-004 | DONE | [[SPEC-004: SPEC Subtree Adapter]] |
 | spec.SPEC-005 | DONE | [[SPEC-005: Decompose and Recompose Skills]] |
 | spec.SPEC-006 | DONE | [[SPEC-006: Defrag and Ingest Skills]] |
-| spec.SPEC-007 | BLOCKED | planned — Plan/Session Render Implementation; source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]; depends on decisions.3 (ADR-003 ACCEPTED) before /spec Stage 2 |
+| spec.SPEC-007 | READY | planned — Plan/Session Render Implementation; source artifacts [[ANALYSIS-002: Plan/Session Note Render Architecture]] + [[ADR-003: Plan/Session Render Architecture]]; ready for /spec Stage 2 |
 | build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits (6 build parts will be created post-spec; READY when each spec.SPEC-NNN DONE + user wants to start build) |
 | review | PENDING | adversarial multi-axis review across feature surface (post build) |
 | end | PENDING | PR + final session-end checklist |
@@ -95,7 +95,7 @@ graph TD
     direction TB
     d1("✅ <b>decisions.1</b><br/><span style='color:#6b7280;font-size:11px'>ADR-001 ACCEPTED</span>")
     d2("✅ <b>decisions.2</b><br/><span style='color:#6b7280;font-size:11px'>ADR-002 ACCEPTED</span>")
-    d3("🟡 <b>decisions.3</b><br/><span style='color:#6b7280;font-size:11px'>ADR-003 IN_PROGRESS (D-1..D-11 from ANALYSIS-002)</span>")
+    d3("✅ <b>decisions.3</b><br/><span style='color:#6b7280;font-size:11px'>ADR-003 ACCEPTED (D-1..D-11)</span>")
     d2 --> d3
   end
 
@@ -129,7 +129,7 @@ graph TD
   build_n --> review
 
   class research,d1,d2,sd,spec_n done
-  class d3 inprogress
+  class d3 done
   class spec_007,build_n,review,fin pending
   classDef inprogress fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12,rx:14,ry:14
 
@@ -152,6 +152,7 @@ graph TD
 - **2026-05-19** — spec-decomposition transitioned READY → IN_PROGRESS (continuation invocation of /plan PLAN-001). Owning session bound to SESSION-2026-05-19_01. Auto-routing to /spec Stage 1 (Contract 2 dispatch shape with source_adrs ADR-001 + ADR-002 — both ACCEPTED architectural ADRs).
 - **2026-05-19** — /spec Stage 1 complete. ANALYSIS-001 SPEC Clustering authored by brain:🧠-analyst (Step 1+2; 5-SPEC initial proposal). CVA executed inline (Step 3; validated BaseMarkdownAdapter pattern per ADR-002 D-3; no new abstractions). brain:🧠-critic dispatched (Step 4; ACCEPT verdict + SPEC-003 SPLIT recommendation + 2 P1 amendments). decision-critic stress-test inline (Step 4; SPEC-003 split surfacing recommended). AskUserQuestion adjudication (Step 5; user chose 6 SPECs with SPEC-003 split). spec-decomposition substatus IN_PROGRESS → DONE; outcome ANALYSIS-001 (ACCEPTED). 6 spec.SPEC-NNN parts added to PLAN under new ## Spec phase (Step 6); all READY (dependency spec-decomposition DONE).
 - **2026-05-20** — decisions phase re-entered via new `decisions.3` PLAN part to formalize ADR-003 capturing D-1..D-11 from ANALYSIS-002. Per iterative-phase-reentry rule (decisions phase re-entering after spec phase started is the documented pattern). User adjudicated path via AskUserQuestion ("ADR-003 + spec.SPEC-007 (Recommended)"). spec.SPEC-007 transitioned PENDING → BLOCKED on decisions.3 completion. ADR-003 authoring delegated to brain:🧠-architect with detail-parity mandate against ANALYSIS-002 Appendices A-I; D-1..D-11 pre-LOCKED so no per-D-N adjudication needed (procedural capture of rationale + alternatives + consequences).
+- **2026-05-20** — decisions.3 DONE. ADR-003 ACCEPTED at decisions/ADR-003-plan-session-render-architecture.md (574 lines, 11 D-Ns + Considered Options + Responsibility Audit + Technology Stack + Consequences + Implementation Notes + Migration plan). brain:---adr-review 6-agent debate Round 1 convergence: 5 ACCEPT (architect, critic, security, analyst, advisor) + 1 CONCERNS (independent-thinker) + 0 BLOCK (passes ≥5 ACCEPT threshold). IT dissent on F-3 (over-engineering signal) + F-5 (simpler alternative not evaluated) captured as Disagree-and-Commit with Advisor tie-breaker rationale documented in CRIT-003. Phase 3 in-ADR resolutions applied: F-2 rollback path; F-4 round-trip claim scoped to structural fidelity; F-1 common.ts shared with ADR-002. spec.SPEC-007 transitioned BLOCKED → READY (next-ready on /plan continue).
 
 ## Progress Log
 
@@ -168,6 +169,9 @@ graph TD
 - **2026-05-20** — Initial push to remote completed (user executed Option C commands in separate terminal outside Claude Code per permissions.deny rules). main and feat/plan-001-skills-ecosystem both pushed (370 objects, 321 KiB); both tracking origin; both pointing at the same commit at push time (no PR yet). F-4 evolution is now operational. Deferred cleanup: .gitignore for .DS_Store; README.md; explicit gh repo edit --default-branch main; permissions.deny adjustments to allow /end Step 4f auto-PR going forward.
 - **2026-05-20** — Repo relocated from loriensleafs/skills to acmelabs-15/skills (org-owned). Transfer executed via gh api POST /repos/loriensleafs/skills/transfer -f new_owner=acmelabs-15 (auto-accepted since user owns both accounts). HTTP 301 redirect from old URL active; full history preserved through PR #1 merge commit (4535414); local remote updated to acmelabs-15/skills.git. Standalone repo under the org (not nested into a larger monorepo — monorepo restructure remains deferred to ADR-004 per ANALYSIS-002 Appendix G). ADR-001 F-4 Clarifications entry appended (Clarifications-only update; brain:---adr-review NOT re-run per the same rationale as the prior 2026-05-20 F-4 evolution).
 - **2026-05-20** — decisions.3 IN_PROGRESS (iterative phase re-entry via /plan PLAN-001 continue invocation). User selected "ADR-003 + spec.SPEC-007 (Recommended)" path via AskUserQuestion. Branch `feat/plan-001-adr-003-render-architecture` created off main (5edc739). New session SESSION-2026-05-20_03 created (initially misplaced at project-root `sessions/` due to `directory="sessions"` arg, then moved to `docs/sessions/` to match prior session locations; Brain MCP index has stale `-1` permalink suffix — wikilinks resolve by title). PLAN-001 propagation applied this turn: branches frontmatter list (+ new branch); Progress Dashboard (decisions row IP 0→1, Total visible 13→14); Phase Progression (added decisions.3 IN_PROGRESS row); Cross-Part Deps Graph (added d3 node + d2→d3→spec_007 edges + inprogress classDef); spec.SPEC-007 transitioned PENDING → BLOCKED on decisions.3; full decisions.3 H3 part section authored with DoD + Workflow Plan + Tasks T-22..T-27 + Intra-part Deps Graph + D-N substatus list + Pending User Decisions.
+- **2026-05-20** — Brain MCP basic-memory cleanup committed (18d86ec). 6 parallel MCP servers racing on UNIQUE(permalink, project_id) constraint + skills project root misconfigured (was `/skills`, should be `/skills/docs`) produced -1 permalink drift across 69 notes + 8 duplicate entity rows. Fix: killed MCPs, updated config.json + DB project row to docs/ subdir, DELETE 8 duplicates, UPDATE 69 permalinks stripping -1, sed strip in file frontmatter. 113→105 entities. Backups at ~/.basic-memory/memory.db.backup-*.
+- **2026-05-20** — ADR-003 cleanup committed (726a563). Two ADR-003 files were authored by a parallel Claude Code session racing with this one. Deleted 32KB duplicate with -1 permalink; renamed 50KB canonical file from spaces to kebab; fixed frontmatter title + H1 to use colon format; DB row 3796 deleted + row 3795 updated.
+- **2026-05-20** — decisions.3 DONE (this turn). /decisions Steps 5-9 executed: architect dispatched (composite ADR-003 authored 574 lines from ANALYSIS-002); brain:---adr-review 6-agent debate Round 1 convergence (5 ACCEPT + 1 CONCERNS + 0 BLOCK); CRIT-003-ADR-003 debate log authored capturing all P1 findings + IT dissent for D&C; Phase 3 in-ADR resolutions (F-2 rollback + F-4 round-trip scope + F-1 common.ts shared); ADR-003 PROPOSED → ACCEPTED flip; PLAN-001 comprehensive propagation (Progress Dashboard decisions row 1 IP→0 + 2 DONE→3; Phase Progression decisions.3 DONE; Cross-Part Deps Graph d3 inprogress→done; spec.SPEC-007 BLOCKED→READY; decisions.3 H3 substatus + completing_session + outcome; 6 DoD checkboxes flipped; spec.SPEC-007 DoD item 1 flipped). Next-ready part: spec.SPEC-007.
 - **2026-05-19** — /spec Stage 2 Steps 1-6 complete. brain:🧠-architect dispatch authored SPEC-001 subtree (21 notes 8 REQ + 3 DESIGN + 9 TASK + 1 SPEC root; 2012 lines total; Pattern 2 three-phase write for each; bi-directional relations added to ADR-001 + ADR-002 + ANALYSIS-001). Per user critical-rule directive on standards inline-ness, compliance audit ran post-dispatch; 20 notes had `type: note` drift (per CONVENTIONS Section 3 forbidden generic type) corrected to canonical types (requirement / design / task). Verified Observations min 3, Relations min 2, final-two-sections invariant, status + effort + estimate fields, ADR coverage gate (both ACCEPTED ADRs have implemented_by SPEC-001). Stage 2 Steps 7-10 pending Gate A semantic gap + Gate B 4 binary drift checks before set-part-done.
 - **2026-05-19** — spec.SPEC-001 DONE. /spec Stage 2 fully closed out (Steps 7-10): Gate A semantic gap analysis PASS (6 of 8 REQs VERIFIABLE; 2 REQs refined per NEEDS_REFINEMENT findings — REQ-002 extractByRange boundary semantics clarified, REQ-007 heading-inclusion convention specified); Gate B 4 binary drift checks all PASS (REQ-to-ADR + scope conservation + TASK-to-REQ + Scope-In match; no P1 issues from critic); SPEC-001 root born ACCEPTED per /spec invariant; set-part-done executed inline (substatus IN_PROGRESS → DONE; outcome wikilink resolved; completing_session bound). spec.SPEC-002..SPEC-006 remain READY simultaneously for /plan continue invocation.
 - **2026-05-19** — spec.SPEC-002 IN_PROGRESS (user selected SPEC-002 Simple Adapters via AskUserQuestion per /plan lowest-numbered rule). Owning session bound. Auto-routing to /spec Stage 2 (Contract 2 dispatch with spec=SPEC-002 source_adrs=ADR-001 + ADR-002 source_clustering=ANALYSIS-001 + source_proof=SPEC-001 BaseMarkdownAdapter).
@@ -175,7 +179,7 @@ graph TD
 
 ## Blockers
 
-**spec.SPEC-007 BLOCKED on decisions.3** (ADR-003 ACCEPTED). decisions.3 is the only IN_PROGRESS part as of 2026-05-20. Outstanding for future sessions (deferred, not blocking): SPEC-002 REQ-003 AC#2 graceful-degradation refinement; ~95 permalink `-1` suffix cleanups across 6 SPEC subtrees (cosmetic; wikilinks resolve by title); 6 build.SPEC-NNN phases (TypeScript implementation work + tests + commits); review phase (post-build multi-axis adversarial review); end phase (post-build PR + session-end). All other prior parts (research + decisions.1 + decisions.2 + spec-decomposition + 6 spec.SPEC-NNN) DONE.
+**spec.SPEC-007 READY** (decisions.3 DONE; ADR-003 ACCEPTED). No IN_PROGRESS parts as of 2026-05-20. Outstanding for future sessions (deferred, not blocking): SPEC-002 REQ-003 AC#2 graceful-degradation refinement; ~95 permalink `-1` suffix cleanups across 6 SPEC subtrees (cosmetic; wikilinks resolve by title); 6 build.SPEC-NNN phases (TypeScript implementation work + tests + commits); review phase (post-build multi-axis adversarial review); end phase (post-build PR + session-end). All other prior parts (research + decisions.1 + decisions.2 + spec-decomposition + 6 spec.SPEC-NNN) DONE.
 
 ## Analysis
 
@@ -381,22 +385,22 @@ graph TD
 
 None — decisions.2 part DONE 2026-05-19. ADR-002 ACCEPTED via brain:---adr-review round-2 unanimous PASS (6 ACCEPT + 0 BLOCK). Path-choices resolved 2026-05-19 during this session: (1) architect direct authoring (no per-D-N adjudication); (2) re-dispatch architect round 2 with consolidated revision brief. Both via AskUserQuestion. Decisions phase fully complete; spec-decomposition is the next-ready part on /plan continue invocation.
 
-### decisions.3 — ADR-003 Plan/Session Render Architecture (IN_PROGRESS)
+### decisions.3 — ADR-003 Plan/Session Render Architecture (DONE)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: DONE
 **Owning session**: [[SESSION-2026-05-20_03: ADR-003 Render Architecture and SPEC-007 Unblock]]
-**Completing session**: —
-**Outcome**: — (will be ADR-003 at `docs/decisions/ADR-003-plan-session-render-architecture.md`)
+**Completing session**: [[SESSION-2026-05-20_03: ADR-003 Render Architecture and SPEC-007 Unblock]]
+**Outcome**: [[ADR-003: Plan/Session Render Architecture]] (ACCEPTED 2026-05-20; brain:---adr-review Round 1: 5 ACCEPT + 1 CONCERNS + 0 BLOCK; CRIT-003 debate log [[CRIT-003-ADR-003: Plan/Session Render Architecture Debate Log]])
 **Source artifacts**: [[ANALYSIS-002: Plan/Session Note Render Architecture]] (D-1..D-11 LOCKED + full schema + parser + renderer + mutation API drafts in Appendices A-I)
 
 **DoD**:
 
-- [ ] ADR-003 PROPOSED authored capturing D-1..D-11 with rationale + alternatives + consequences per CONVENTIONS Section 4.10
-- [ ] brain:---adr-review Phase 4 convergence PASS (≥5 ACCEPT verdicts)
-- [ ] ADR-003 frontmatter `status: ACCEPTED`; `date` + `updated` populated
-- [ ] Bi-directional relations added on ADR-003 ↔ ANALYSIS-002 + PLAN-001
-- [ ] spec.SPEC-007 transitioned BLOCKED → READY post ADR-003 ACCEPTED
-- [ ] PLAN-001 spec.SPEC-007 DoD item 1 (ADR-003 authored + adr-review PASS) checked
+- [x] ADR-003 PROPOSED authored capturing D-1..D-11 with rationale + alternatives + consequences per CONVENTIONS Section 4.10
+- [x] brain:---adr-review Phase 4 convergence PASS (5 ACCEPT + 1 CONCERNS + 0 BLOCK; IT dissent on F-3+F-5 captured as D&C per CRIT-003)
+- [x] ADR-003 frontmatter `status: ACCEPTED`; `date` + `updated` populated
+- [x] Bi-directional relations added on ADR-003 ↔ ANALYSIS-002 + PLAN-001
+- [x] spec.SPEC-007 transitioned BLOCKED → READY post ADR-003 ACCEPTED
+- [x] PLAN-001 spec.SPEC-007 DoD item 1 (ADR-003 authored + adr-review PASS) checked
 
 #### Workflow Plan (for decisions.3)
 
@@ -942,7 +946,7 @@ graph TD
 
 None — spec.SPEC-006 part DONE 2026-05-19. Gate A 6/6 VERIFIABLE (no flagged REQs); Gate B PASS unanimous (no P1). REQ-005 /ingest Brain-awareness non-ADR scope correctly documented per critic P1-2 amendment (sourced from KICKOFF-BRIEF.md lines 117-119; ADR coverage gate distinguishes ADR-derived from non-ADR-derived requirements). SPEC-006 root born ACCEPTED per /spec invariant. **MILESTONE**: all 6 spec.SPEC-NNN parts DONE — entire SPEC phase complete; build.SPEC-NNN phases pending future sessions.
 
-### spec.SPEC-007 — Plan/Session Render Implementation (BLOCKED)
+### spec.SPEC-007 — Plan/Session Render Implementation (READY)
 
 **Substatus**: BLOCKED
 **Blocked on**: decisions.3 (ADR-003 ACCEPTED) — see [[ANALYSIS-002: Plan/Session Note Render Architecture]] D-1..D-11 awaiting ADR formalization
@@ -953,7 +957,7 @@ None — spec.SPEC-006 part DONE 2026-05-19. Gate A 6/6 VERIFIABLE (no flagged R
 
 **DoD**:
 
-- [ ] ADR-003 authored capturing D-1..D-11 with rationale + alternatives; brain:---adr-review Phase 4 convergence PASS
+- [x] ADR-003 authored capturing D-1..D-11 with rationale + alternatives; brain:---adr-review Phase 4 convergence PASS
 - [ ] Zod schemas authored at _shared/composition/src/schemas/ (common.ts + plan-note.ts + session-note.ts) per ANALYSIS-002 Appendix C
 - [ ] Parser drafts at _shared/composition/src/parsers/ (ast-helpers.ts + plan-note.ts + session-note.ts) per ANALYSIS-002 Appendix D
 - [ ] Renderer at _shared/composition/src/renderers/ (plan-note.ts + session-note.ts + mermaid.ts) per ANALYSIS-002 Appendix E
