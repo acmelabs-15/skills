@@ -969,13 +969,12 @@ None — spec.SPEC-006 part DONE 2026-05-19. Gate A 6/6 VERIFIABLE (no flagged R
 **DoD**:
 
 - [x] ADR-003 authored capturing D-1..D-11 with rationale + alternatives; brain:---adr-review Phase 4 convergence PASS
-- [ ] Zod schemas authored at _shared/composition/src/schemas/ (common.ts + plan-note.ts + session-note.ts) per ANALYSIS-002 Appendix C
-- [ ] Parser drafts at _shared/composition/src/parsers/ (ast-helpers.ts + plan-note.ts + session-note.ts) per ANALYSIS-002 Appendix D
-- [ ] Renderer at _shared/composition/src/renderers/ (plan-note.ts + session-note.ts + mermaid.ts) per ANALYSIS-002 Appendix E
-- [ ] Mutation API at _shared/composition/src/plan-mutations.ts + session-mutations.ts per ANALYSIS-002 Appendix F
-- [ ] Round-trip property test passes on PLAN-001 + a SESSION fixture per ANALYSIS-002 Appendix H
-- [ ] /plan and /session skills updated to use the new mutation API
-- [ ] PLAN-001 re-authored in trimmed form using the new tooling (dogfood)
+- [x] SPEC-007 subtree authored at `docs/specs/SPEC-007-plan-session-render/` (12 REQ + 4 DESIGN + 13 TASK + 1 root = 30 notes)
+- [x] Phase 3 syntactic validation PASS (all 30 notes proper title/type/Observations/Relations)
+- [x] ADR coverage gate PASS (ADR-001 + ADR-002 + ADR-003 + ANALYSIS-002 have `implemented_by [[SPEC-007]]`)
+- [x] Gate B 4 binary drift checks PASS (REQ→ADR + scope conservation + TASK→REQ + Scope-In match)
+- [x] SPEC-007 root born ACCEPTED at Stage 2 close per /spec convention
+- [~] BUILD deliverables (Zod schemas, parsers, renderers, mutation API, round-trip test, skill updates, PLAN-001 dogfood migration) transferred to [[build.SPEC-007]] DoD — see build.SPEC-007 H3 part section (these are implementation work, not SPEC authoring)
 
 #### Workflow Plan (for spec.SPEC-007)
 
