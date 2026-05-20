@@ -75,6 +75,15 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - build.SPEC-001 Stage A COMPLETE — all 9 TASKs DONE
 - Next: Stage B spec-level QA sweep + Stage C propagation + 4 exit gates + set-part-done
 
+## Event 08 — set-part-done build.SPEC-001 DONE (2026-05-20)
+
+- /plan set-part-done executed: build.SPEC-001 IN_PROGRESS → DONE
+- Outcome: [[SPEC-001: Composition Core and ADR Adapter]] — 47/47 tests, SHA-256 PROOF PASS
+- Completing session bound: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
+- DoD checkboxes all [x] in build.SPEC-001 H3 section
+- Progress Dashboard: build.SPEC-NNN IN_PROGRESS 1→0, DONE 0→1; Total visible DONE 13→14
+- Next-ready parts (Wave 2): build.SPEC-002, build.SPEC-003, build.SPEC-004, build.SPEC-007 — all READY (4-way parallel)
+
 ## Observations
 
 - [decision] 4-wave build plan confirmed: W1=SPEC-001 PROOF (sequential gate); W2=SPEC-002+003+004+007 (4-way parallel via agent-teams); W3=SPEC-005; W4=SPEC-006 #build-plan #wave-1 #parallelism

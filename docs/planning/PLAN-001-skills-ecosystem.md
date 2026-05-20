@@ -43,10 +43,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec.SPEC-NNN | 0 | 0 | 0 | 7 | 7 |
-| build.SPEC-NNN | 6 | 1 | 0 | 0 | 7 |
+| build.SPEC-NNN | 6 | 0 | 0 | 1 | 7 |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **7** | **1** | **0** | **13** | **21** |
+| **Total visible** | **7** | **0** | **0** | **14** | **21** |
 
 > 2026-05-20 — spec.SPEC-007 (Plan/Session Render Implementation) added to scope; PENDING, source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]. Formal ADR-003 + /spec Stage 2 subtree deferred to a future session.
 
@@ -1000,24 +1000,24 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 
 ## Build
 
-### build.SPEC-001 — Composition Core + ADR Adapter PROOF (IN_PROGRESS)
+### build.SPEC-001 — Composition Core + ADR Adapter PROOF (DONE)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: DONE
 **Dependencies**: spec.SPEC-001 DONE ✓
 **Wave**: 1 of 4 (Wave 1 sequential PROOF; locks BaseMarkdownAdapter for Wave 2 4-way parallel)
 **Owning session**: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
-**Completing session**: —
-**Outcome**: — (will be TypeScript impl + tests + commits)
+**Completing session**: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
+**Outcome**: [[SPEC-001: Composition Core and ADR Adapter]] — 47/47 tests, SHA-256 PROOF PASS
 **Source SPEC**: [[SPEC-001: Composition Core and ADR Adapter]] (9 TASKs)
 
 **DoD**:
 
-- [ ] All 9 TASKs from SPEC-001 implemented (TASK-001..009-SPEC-001)
-- [ ] Round-trip property test (TASK-009) passes on ADR fixtures (SHA-256 char-identity)
-- [ ] Per-task QA gate PASS
-- [ ] Final spec-level coverage matrix PASS
-- [ ] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint
-- [ ] SPEC-001 status flipped IN_PROGRESS → DONE post-build
+- [x] All 9 TASKs from SPEC-001 implemented (TASK-001..009-SPEC-001)
+- [x] Round-trip property test (TASK-009) passes on ADR fixtures (SHA-256 char-identity)
+- [x] Per-task QA gate PASS
+- [x] Final spec-level coverage matrix PASS
+- [x] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint
+- [x] SPEC-001 status flipped IN_PROGRESS → DONE post-build
 
 #### Workflow Plan (for build.SPEC-001)
 
