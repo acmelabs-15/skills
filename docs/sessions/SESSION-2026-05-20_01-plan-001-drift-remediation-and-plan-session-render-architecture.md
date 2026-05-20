@@ -116,9 +116,22 @@ Authored via Brain MCP write_note (initial seed: Overview + Problem framing + Re
 
 Added spec.SPEC-007 to PLAN-001 scope as a PENDING part. Progress Dashboard updated (spec.SPEC-NNN row 1 PENDING + 6 DONE = 7 total; total visible 3/0/0/10 = 13). Phase Progression added spec.SPEC-007 PENDING row. Cross-Part Dependency Graph added spec_007 node + edges (spec_n to spec_007; spec_007 to build_n). spec.SPEC-007 H3 part section authored under ## Spec with PENDING substatus + 8-item DoD (ADR-003 authored; Zod schemas authored; Parser drafts; Renderer; Mutation API; Round-trip property test passes; /plan + /session skills updated; PLAN-001 re-authored in trimmed form using new tooling as dogfood). Source artifact: ANALYSIS-002.
 
+### Event 12 — ADR-001 F-4 evolution: remote added; auto PR creation locked
+
+- Type: state-change
+- Scope: artifact
+- Target: ADR-001
+
+User directed transition from F-4 locked state ("Standalone local-only git repo (no remote initially)") to remote-tracked. Remote chosen: git@github.com:loriensleafs/skills.git (private GitHub repo, loriensleafs namespace). Migration path: Option C (keep feat/plan-001-skills-ecosystem as working branch; create main from current HEAD as long-lived integration branch; push both; main becomes GitHub default). User directive: /end pipeline's PR-creation step (Step 4f) runs AUTOMATICALLY going forward, no per-session opt-out.
+
+ADR-001 Clarifications section updated with the F-4 evolution entry; frontmatter updated field refreshed from 2026-05-19 to 2026-05-20. brain:---adr-review NOT re-run — Clarifications updates are documentation evolutions of already-ACCEPTED decisions per CONVENTIONS Section 3.1, not new architectural decisions. The F-4 reversibility assessment ("Adding a remote is a single git remote add command. No architectural impact.") explicitly anticipated this transition.
+
+Operational consequence: claude/settings.json permissions.deny rules still block git push/pull/fetch/clone/remote from within Claude Code sessions for the duration of the user-imposed pause; the actual git remote add + initial push of feat branch + main branch will be executed by the user in a separate terminal outside Claude Code. After that initial push lands, the deny rules can be lifted to allow subsequent /end pipeline runs to execute Step 4f gh pr create automatically.
+
 ## Observations
 
 - [outcome] Drift remediation of PLAN-001 H4 subsection placeholders complete via commit f280c0f; 24 subsections populated across 6 spec.SPEC-NNN parts + 3 fixes to decisions.1 + 1 fix to decisions.2 + 2 fixes to spec-decomposition + top-level Blockers + Cross-Part Deps Graph #drift-remediation #plan-001
+- [decision] ADR-001 F-4 evolved: remote added at git@github.com:loriensleafs/skills.git; auto PR creation locked for /end Step 4f going forward; Clarifications-entry-only update (no adr-review re-run) per F-4's anticipated-transition rationale #adr-evolution #remote-added #auto-pr
 - [decision] 11 architectural decisions locked for plan/session note render architecture; captured in ANALYSIS-002 with full rationale + alternatives; formal ADR-003 + brain:---adr-review cycle deferred #adr-pending
 - [insight] basic-memory edit_note replace_section silently appends new H2 sections at file bottom when targeting H4 subsections; required sed truncation as binary-rule exception per CONVENTIONS Section 1.7.1 #brain-mcp-quirk #remediation
 - [insight] basic-memory bullet parser strict validation rejects any prose bullet containing double-bracket wikilink syntax; workaround is plain-text title references in prose + wikilinks reserved for Relations section #brain-mcp-bullet-parser

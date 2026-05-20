@@ -3,7 +3,7 @@ title: 'ADR-001: Composition Library Architecture'
 type: decision
 status: ACCEPTED
 date: 2026-05-19
-updated: 2026-05-19
+updated: 2026-05-20
 permalink: decisions/adr-001-composition-library-architecture
 tags:
 - decision
@@ -459,6 +459,7 @@ SHA-256 is a NIST standard cryptographic primitive available in every runtime. B
 ## Clarifications
 
 - **2026-05-19**: brain:---adr-review Phase 4 convergence completed (round 1). Verdict tally 5 ACCEPT + 1 CONCERNS (independent-thinker) + 0 BLOCK. P1 themes 1-4 RESOLVED in this ADR refinement (hash protocol formal spec + rollback mechanism added to F-8; security hardening + LOC scope clarification added to Confirmation). P1 themes 5-6 (SHA-256 vs xxHash; unified+remark vs hybrid parser) DEFERRED with rationale documented in CRIT-001-ADR-001 — both challenge already-LOCKED decisions (F-8 and D-2) where re-adjudication would require user re-opening locked decisions. Revisit triggers: (Theme 5) revisit SHA-256 vs xxHash if profiling reveals hash compute dominates round-trip latency on real-world note sizes; (Theme 6) revisit unified vs hybrid parser if ADR adapter implementation exceeds 350 LOC (40% overshoot of ~250 estimate). P2 items documented in CRIT-001 for tracking. Independent-thinker CONCERNS verdict accepted as Disagree-and-Commit position with documented dissent.
+- **2026-05-20**: F-4 evolution — remote added at git@github.com:loriensleafs/skills.git (private GitHub repo, loriensleafs namespace). The "(no remote initially)" qualifier of F-4 was the bootstrap-state escape hatch documented in the original locking on 2026-05-19; this clarification records the transition from local-only to remote-tracked. Migration path: Option C (keep feat/plan-001-skills-ecosystem as working branch; create main from current HEAD as the long-lived integration branch; push both; main becomes GitHub default branch). Branch convention going forward: feat/plan-NNN-work-unit branches off main; PRs merge to main via gh pr create. /end pipeline's PR-creation step (Step 4f) becomes APPLICABLE going forward and runs AUTOMATICALLY without per-session opt-out (locked 2026-05-20 user direction). brain:---adr-review NOT re-run for this Clarifications entry — Clarifications updates are documentation evolutions of already-ACCEPTED decisions per CONVENTIONS Section 3.1, not new architectural decisions; the F-4 reversibility assessment ("Adding a remote is a single git remote add command. No architectural impact.") explicitly anticipated this transition. Pairs with SESSION-2026-05-20_01 (event 12) and PLAN-001 Decision Log entry of same date.
 
 ## Observations
 
