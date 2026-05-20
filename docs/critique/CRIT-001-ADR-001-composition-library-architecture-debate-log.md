@@ -1,6 +1,7 @@
 ---
 title: 'CRIT-001-ADR-001: Composition Library Architecture Debate Log'
 type: critique
+status: ACCEPTED
 permalink: critique/crit-001-adr-001-composition-library-architecture-debate-log
 tags:
 - critique

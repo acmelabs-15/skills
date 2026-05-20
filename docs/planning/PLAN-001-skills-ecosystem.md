@@ -1,6 +1,10 @@
 ---
 title: 'PLAN-001: Skills Ecosystem'
 type: plan
+status: IN_PROGRESS
+complexity_tier: TIER_4
+branches:
+  - feat/plan-001-skills-ecosystem
 permalink: planning/plan-001-skills-ecosystem
 tags:
 - plan

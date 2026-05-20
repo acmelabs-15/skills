@@ -1,6 +1,7 @@
 ---
 title: 'CRIT-002-ADR-002: Adapter Contract and Plan Schema Debate Log'
 type: critique
+status: ACCEPTED
 permalink: critique/crit-002-adr-002-adapter-contract-and-plan-schema-debate-log
 tags:
 - critique

@@ -1,6 +1,7 @@
 ---
 title: 'SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001'
 type: session
+status: IN_PROGRESS
 permalink: sessions/session-2026-05-19_01-skills-bootstrap-and-plan-001
 tags:
 - session
