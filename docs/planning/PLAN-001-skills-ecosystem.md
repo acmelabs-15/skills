@@ -99,8 +99,8 @@ graph TD
 
   subgraph SB ["Spec + Build (per SPEC)"]
     direction TB
-    spec_n("🔄 <b>spec.SPEC-002</b><br/><span style='color:#6b7280;font-size:11px'>Simple Adapters IN_PROGRESS (2 of 6; SPEC-001 ✅)</span>")
-    build_n("<b>build.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>post spec</span>")
+    spec_n("✅ <b>spec.SPEC-001..006</b><br/><span style='color:#6b7280;font-size:11px'>ALL 6 SPECs DONE (12/12 gates PASS)</span>")
+    build_n("<b>build.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>6 build phases pending</span>")
     spec_n --> build_n
   end
 
@@ -117,8 +117,8 @@ graph TD
   sd --> spec_n
   build_n --> review
 
-  class research,d1,d2,sd done
-  class spec_n,build_n,review,fin pending
+  class research,d1,d2,sd,spec_n done
+  class build_n,review,fin pending
 
   linkStyle 0,1,2,3,4 stroke:#9ca3af,stroke-width:1.5px
   linkStyle 5 stroke:#3b82f6,stroke-width:2px
@@ -155,7 +155,7 @@ graph TD
 
 ## Blockers
 
-None. Awaiting user adjudication on 5 open design questions before decisions.1 can proceed.
+None — all owning parts DONE through SPEC-006 (research + decisions.1 + decisions.2 + spec-decomposition + 6 spec.SPEC-NNN). Outstanding for future sessions (deferred, not blocking): SPEC-002 REQ-003 AC#2 graceful-degradation refinement; ~95 permalink `-1` suffix cleanups across 6 SPEC subtrees (cosmetic; wikilinks resolve by title); 6 build.SPEC-NNN phases (TypeScript implementation work + tests + commits); review phase (post-build multi-axis adversarial review); end phase (post-build PR + session-end).
 
 ## Analysis
 
@@ -180,19 +180,19 @@ Research-by-substitution: user provided KICKOFF-BRIEF.md as pre-baked research o
 
 #### Tasks (for research)
 
-None — research part is DONE.
+Research-by-substitution model — no /research dispatch was run; KICKOFF-BRIEF.md substituted for analyst output per explicit user direction. Bootstrap activity tracked via SESSION Events 02-05 (filesystem + git setup; Brain MCP project create + activate; KICKOFF-BRIEF.md write; PLAN-001 + SESSION authoring) without per-task T-IDs since these are session-init operations not workflow tasks. The PRD-equivalent content lives in `KICKOFF-BRIEF.md` (project root file; not a Brain note — see Decision Log).
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for research)
 
-N/A — single-step part.
+N/A — research-by-substitution model; no per-task graph since bootstrap activity was a linear pre-workflow init sequence (SESSION Events 02-05). The KICKOFF-BRIEF.md outcome substitutes for analyst output and gates the entire downstream PLAN.
 
-#### Editor Mirror IDs
+#### Editor Mirror IDs (for research)
 
-N/A — no tasks to mirror.
+N/A — no per-task T-IDs to mirror (research-by-substitution).
 
-#### Pending User Decisions
+#### Pending User Decisions (for research)
 
-None.
+None — research part DONE 2026-05-19. KICKOFF-BRIEF.md was user-provided as a pre-baked PRD-equivalent; no analyst dispatch was required. Per the iterative-phase-reentry rule, validation phases can re-enter if gaps surface during later phases — none surfaced through decisions / spec.
 
 ## Decisions
 
@@ -211,9 +211,9 @@ None.
 - [x] Q3 LOCKED — **YAML at docs/_restructure/*.yaml** for plan files
 - [x] Q4 LOCKED — **Unified discriminated union on source_type** for plan schema
 - [x] Q5 LOCKED — **YES — /brain:---adr-review BLOCKING gate** on architecture ADRs
-- [ ] All 8 locked design decisions from KICKOFF-BRIEF.md restated verbatim in ADR-001
-- [ ] ADR-001 frontmatter `status: ACCEPTED`; `date` + `updated` populated
-- [ ] /brain:---adr-review PASS verdict before downstream phases (if Q5 = YES)
+- [x] All 8 locked design decisions from KICKOFF-BRIEF.md restated verbatim in ADR-001 (F-1..F-8)
+- [x] ADR-001 frontmatter `status: ACCEPTED`; `date` + `updated` populated (flipped 2026-05-19 post adr-review round-1 PASS)
+- [x] /brain:---adr-review PASS verdict before downstream phases (Q5 = YES; round-1 convergence 5 ACCEPT + 1 D&C + 0 BLOCK; documented in CRIT-001-ADR-001 debate log)
 
 #### Workflow Plan (for decisions.1)
 
@@ -231,26 +231,26 @@ Per-D-N micro-cycle: decision-critic stress-test → AskUserQuestion (one decisi
 | T-06 | ADR auth | Author ADR-001 (composite) | brain:🧠-architect | `docs/decisions/ADR-001-skills-ecosystem.md` | M | (this PLAN) |
 | T-07 | ADR gate | Run brain:---adr-review on ADR-001 | brain:---adr-review | — | S | (this PLAN) |
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for decisions.1)
 
 ```mermaid
 %%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px'}}}%%
 graph TD
-  classDef pending fill:#fafafa,stroke:#d1d5db,stroke-width:1px,color:#6b7280,stroke-dasharray:3 3,rx:14,ry:14
-  T01("<b>T-01</b><br/><span style='color:#6b7280;font-size:11px'>Q1 schema lib</span>")
-  T02("<b>T-02</b><br/><span style='color:#6b7280;font-size:11px'>Q2 parser</span>")
-  T03("<b>T-03</b><br/><span style='color:#6b7280;font-size:11px'>Q3 plan format</span>")
-  T04("<b>T-04</b><br/><span style='color:#6b7280;font-size:11px'>Q4 schema shape</span>")
-  T05("<b>T-05</b><br/><span style='color:#6b7280;font-size:11px'>Q5 adr-review</span>")
-  T06("<b>T-06</b><br/><span style='color:#6b7280;font-size:11px'>author ADR-001</span>")
-  T07("<b>T-07</b><br/><span style='color:#6b7280;font-size:11px'>adr-review gate</span>")
+  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
+  T01("✅ <b>T-01</b><br/><span style='color:#6b7280;font-size:11px'>Q1 schema lib</span>")
+  T02("✅ <b>T-02</b><br/><span style='color:#6b7280;font-size:11px'>Q2 parser</span>")
+  T03("✅ <b>T-03</b><br/><span style='color:#6b7280;font-size:11px'>Q3 plan format</span>")
+  T04("✅ <b>T-04</b><br/><span style='color:#6b7280;font-size:11px'>Q4 schema shape</span>")
+  T05("✅ <b>T-05</b><br/><span style='color:#6b7280;font-size:11px'>Q5 adr-review</span>")
+  T06("✅ <b>T-06</b><br/><span style='color:#6b7280;font-size:11px'>author ADR-001</span>")
+  T07("✅ <b>T-07</b><br/><span style='color:#6b7280;font-size:11px'>adr-review gate</span>")
   T01 --> T06
   T02 --> T06
   T03 --> T06
   T04 --> T06
   T05 --> T06
   T06 --> T07
-  class T01,T02,T03,T04,T05,T06,T07 pending
+  class T01,T02,T03,T04,T05,T06,T07 done
 ```
 
 #### D-N substatus list (for decisions.1)
@@ -267,17 +267,17 @@ graph TD
 
 | T-ID | CC-ID | Cursor-ID | Last synced |
 |:--|:--|:--|:--|
-| T-01 | — | — | not yet |
-| T-02 | — | — | not yet |
-| T-03 | — | — | not yet |
-| T-04 | — | — | not yet |
-| T-05 | — | — | not yet |
-| T-06 | — | — | not yet |
-| T-07 | — | — | not yet |
+| T-01 | — | — | archived (orchestrator-internal task ID; no editor TaskList mirror used this session) |
+| T-02 | — | — | archived |
+| T-03 | — | — | archived |
+| T-04 | — | — | archived |
+| T-05 | — | — | archived |
+| T-06 | — | — | archived |
+| T-07 | — | — | archived |
 
 #### Pending User Decisions (for decisions.1)
 
-All 5 open questions from `KICKOFF-BRIEF.md` ("Open design questions for early adjudication") surfaced via AskUserQuestion in Step 5 of the user-provided bootstrap. Adjudication unlocks ADR-001 authoring.
+None — decisions.1 part DONE 2026-05-19. All 5 open questions (Q1-Q5) adjudicated via AskUserQuestion in Step 5 of bootstrap (all Recommended options selected verbatim per decision-binding-echo protocol). Composite ADR-001 authored via brain:🧠-architect dispatch with detail-parity mandate; brain:---adr-review Phase 4 convergence PASS round 1 (5 ACCEPT + 1 D&C + 0 BLOCK); ADR-001 PROPOSED → ACCEPTED.
 
 ### decisions.2 — Adapter contract + plan schema ADR (DONE)
 
@@ -314,25 +314,23 @@ Path-choice: architect direct authoring (user-adjudicated 2026-05-19 via AskUser
 | T-15 | ACCEPTED flip | Flip ADR-002 PROPOSED → ACCEPTED post round 2 PASS | orchestrator | `docs/decisions/ADR-002-adapter-contract-and-plan-schema.md` | XS | Event 16 | Event 16 |
 | T-16 | propagation | Propagate decisions.2 DONE state across PLAN sections | orchestrator | `docs/planning/PLAN-001-skills-ecosystem.md` + `docs/sessions/SESSION-2026-05-19_01-...md` + CRIT-002 | S | Event 16 | Event 16 (this turn) |
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for decisions.2)
 
 ```mermaid
 %%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px'}}}%%
 graph TD
   classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
-  classDef pending fill:#fafafa,stroke:#d1d5db,stroke-width:1px,color:#6b7280,stroke-dasharray:3 3,rx:14,ry:14
   T08("✅ <b>T-08</b><br/><span style='color:#6b7280;font-size:11px'>r1 path-choice</span>")
   T09("✅ <b>T-09</b><br/><span style='color:#6b7280;font-size:11px'>ADR-002 PROPOSED</span>")
   T10("✅ <b>T-10</b><br/><span style='color:#6b7280;font-size:11px'>adr-review r1 FAIL</span>")
   T11("✅ <b>T-11</b><br/><span style='color:#6b7280;font-size:11px'>CRIT-002 auth</span>")
   T12("✅ <b>T-12</b><br/><span style='color:#6b7280;font-size:11px'>r2 path-choice</span>")
   T13("✅ <b>T-13</b><br/><span style='color:#6b7280;font-size:11px'>architect r2 revision</span>")
-  T14("<b>T-14</b><br/><span style='color:#6b7280;font-size:11px'>adr-review r2</span>")
-  T15("<b>T-15</b><br/><span style='color:#6b7280;font-size:11px'>ACCEPTED flip</span>")
-  T16("<b>T-16</b><br/><span style='color:#6b7280;font-size:11px'>propagation</span>")
+  T14("✅ <b>T-14</b><br/><span style='color:#6b7280;font-size:11px'>adr-review r2 PASS</span>")
+  T15("✅ <b>T-15</b><br/><span style='color:#6b7280;font-size:11px'>ACCEPTED flip</span>")
+  T16("✅ <b>T-16</b><br/><span style='color:#6b7280;font-size:11px'>propagation</span>")
   T08 --> T09 --> T10 --> T11 --> T12 --> T13 --> T14 --> T15 --> T16
-  class T08,T09,T10,T11,T12,T13 done
-  class T14,T15,T16 pending
+  class T08,T09,T10,T11,T12,T13,T14,T15,T16 done
 ```
 
 #### D-N substatus list (for decisions.2)
@@ -355,9 +353,9 @@ graph TD
 | T-11 | — | — | Event 14 (archived) |
 | T-12 | — | — | Event 14 (archived) |
 | T-13 | — | — | Event 15 (archived) |
-| T-14 | — | — | not yet |
-| T-15 | — | — | not yet |
-| T-16 | — | — | not yet |
+| T-14 | — | — | archived |
+| T-15 | — | — | archived |
+| T-16 | — | — | archived |
 
 #### Pending User Decisions (for decisions.2)
 
@@ -375,11 +373,11 @@ None — decisions.2 part DONE 2026-05-19. ADR-002 ACCEPTED via brain:---adr-rev
 
 **DoD**:
 
-- [ ] All ACCEPTED ADRs analyzed for coverage clustering
-- [ ] SPEC decomposition surfaced via AskUserQuestion before locking
-- [ ] N SPEC root notes authored (one per feature cluster)
-- [ ] ADR coverage gate passes (every accepted ADR D-N is referenced by at least one SPEC)
-- [ ] Conditional CVA dispatched if 3+ similar adapters share variability matrix
+- [x] All ACCEPTED ADRs analyzed for coverage clustering (ADR-001 + ADR-002; all 18 decisions mapped per ANALYSIS-001)
+- [x] SPEC decomposition surfaced via AskUserQuestion before locking (Step 5 adjudication; user chose 6 SPECs with SPEC-003 split)
+- [x] N SPEC root notes authored (one per feature cluster) — 6 SPEC roots created in spec.SPEC-001..006 parts (authored in /spec Stage 2 per-SPEC)
+- [x] ADR coverage gate passes (every accepted ADR D-N is referenced by at least one SPEC) — ADR-001 + ADR-002 both have `implemented_by` for all 6 SPECs
+- [x] Conditional CVA dispatched if 3+ similar adapters share variability matrix — CVA executed inline (Quick tier); 7×5 matrix; validated BaseMarkdownAdapter pattern from ADR-002 D-3
 
 #### Workflow Plan (for spec-decomposition)
 
@@ -395,13 +393,30 @@ Stage 1 of /spec: analyst clustering dispatch + conditional CVA analysis → pro
 | T-20 | AskUserQuestion | Stage 1 Step 5 user adjudication of SPEC clustering | orchestrator | — | XS | Event 20 | Event 20 (6 SPECs chosen; SPEC-003 split applied) |
 | T-21 | set-part-done | Stage 1 Step 6+7: add 6 spec.SPEC-NNN parts + set-part-done | orchestrator | `docs/planning/PLAN-001-skills-ecosystem.md` | S | Event 20 | Event 20 (this turn) |
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for spec-decomposition)
 
-Populated by /spec on auto-route this turn — analyst dispatch → conditional CVA → AskUserQuestion SPEC clustering → SPEC root authoring per cluster. Mermaid graph rendered when task set is known.
+```mermaid
+%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px'}}}%%
+graph TD
+  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
+  T17("✅ <b>T-17</b><br/><span style='color:#6b7280;font-size:11px'>analyst dispatch</span>")
+  T18("✅ <b>T-18</b><br/><span style='color:#6b7280;font-size:11px'>CVA + decision-critic inline</span>")
+  T19("✅ <b>T-19</b><br/><span style='color:#6b7280;font-size:11px'>critic dispatch</span>")
+  T20("✅ <b>T-20</b><br/><span style='color:#6b7280;font-size:11px'>AskUserQuestion adjudication</span>")
+  T21("✅ <b>T-21</b><br/><span style='color:#6b7280;font-size:11px'>add 6 SPEC parts + set-part-done</span>")
+  T17 --> T18 --> T19 --> T20 --> T21
+  class T17,T18,T19,T20,T21 done
+```
 
 #### Editor Mirror IDs (for spec-decomposition)
 
-Populated as /spec creates tasks (T-17, T-18, ...). Initial state: empty.
+| T-ID | CC-ID | Cursor-ID | Last synced |
+|:--|:--|:--|:--|
+| T-17 | — | — | archived |
+| T-18 | — | — | archived |
+| T-19 | — | — | archived |
+| T-20 | — | — | archived |
+| T-21 | — | — | archived |
 
 #### Pending User Decisions (for spec-decomposition)
 
@@ -434,19 +449,49 @@ None — spec-decomposition part DONE 2026-05-19. ANALYSIS-001 SPEC Clustering a
 
 #### Tasks (for spec.SPEC-001)
 
-Populated by /spec Stage 2 dispatch on /plan continue (REQ + DESIGN + TASK authoring per Steps 2-4).
+| T-ID | Group | Subject | Agent | Files | Effort | Created | Resolved |
+|:--|:--|:--|:--|:--|:--|:--|:--|
+| T-22 | state-change | spec.SPEC-001 READY → IN_PROGRESS; owning session bound | orchestrator | PLAN-001 | XS | Event 21 | Event 21 |
+| T-23 | architect | Author SPEC-001 subtree (8 REQ + 3 DESIGN + 9 TASK + 1 SPEC root) via brain:🧠-architect dispatch with Pattern 2 three-phase write | brain:🧠-architect | `docs/specs/SPEC-001-composition-core-and-adr-adapter/` (21 notes) | M | Event 22 | Event 22 (2012 lines; 195K tokens, 127 tool calls, 1659s) |
+| T-24 | orchestrator | Post-dispatch compliance audit (20 type-field corrections from generic `note` to canonical `requirement`/`design`/`task`); bi-directional relation closure on ADR-001 + ADR-002 + ANALYSIS-001 | orchestrator | ADR-001/ADR-002/ANALYSIS-001 Relations; 20 SPEC-001 subtree notes | S | Event 22 | Event 22 |
+| T-25 | Gate A | Semantic gap analysis (analyst as requirements reviewer) — verifiability per REQ | brain:🧠-analyst | — | M | Event 23 | Event 23 (6 of 8 VERIFIABLE; 2 NEEDS_REFINEMENT — REQ-002 + REQ-007 refined inline; 75K tokens) |
+| T-26 | Gate B | 4 binary drift checks (REQ→ADR; scope conservation; TASK→REQ; Scope-In match) | brain:🧠-critic | — | M | Event 23 | Event 23 (PASS unanimous; no P1; 128K tokens) |
+| T-27 | set-part-done | spec.SPEC-001 IN_PROGRESS → DONE; outcome [[SPEC-001: Composition Core and ADR Adapter]]; completing_session bound; PLAN propagation | orchestrator | PLAN-001 | S | Event 23 | Event 23 |
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for spec.SPEC-001)
 
-Populated by /spec Stage 2 dispatch.
+```mermaid
+%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px'}}}%%
+graph TD
+  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
+  T22("✅ <b>T-22</b><br/><span style='color:#6b7280;font-size:11px'>READY → IP</span>")
+  T23("✅ <b>T-23</b><br/><span style='color:#6b7280;font-size:11px'>architect (21 notes)</span>")
+  T24("✅ <b>T-24</b><br/><span style='color:#6b7280;font-size:11px'>compliance + bi-dir</span>")
+  T25("✅ <b>T-25</b><br/><span style='color:#6b7280;font-size:11px'>Gate A 6/8 + 2 refined</span>")
+  T26("✅ <b>T-26</b><br/><span style='color:#6b7280;font-size:11px'>Gate B 4/4 PASS</span>")
+  T27("✅ <b>T-27</b><br/><span style='color:#6b7280;font-size:11px'>set-part-done</span>")
+  T22 --> T23 --> T24
+  T24 --> T25
+  T24 --> T26
+  T25 --> T27
+  T26 --> T27
+  class T22,T23,T24,T25,T26,T27 done
+```
 
 #### Editor Mirror IDs (for spec.SPEC-001)
 
-Populated as /spec creates tasks.
+| T-ID | CC-ID | Cursor-ID | Last synced |
+|:--|:--|:--|:--|
+| T-22 | — | — | archived (orchestrator-internal task ID; no editor TaskList mirror used this session) |
+| T-23 | — | — | archived |
+| T-24 | — | — | archived |
+| T-25 | — | — | archived |
+| T-26 | — | — | archived |
+| T-27 | — | — | archived |
 
 #### Pending User Decisions (for spec.SPEC-001)
 
-Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+None — spec.SPEC-001 part DONE 2026-05-19. Gate A surfaced 2 REQs as NEEDS_REFINEMENT (REQ-002 extractByRange boundary + REQ-007 heading-inclusion); both refined inline by orchestrator without requiring user adjudication (single-line clarifications per analyst recommendation). No P0 / P1 from Gate B. SPEC-001 root born ACCEPTED per /spec invariant. PROOF gate satisfied — downstream adapter SPECs unlocked.
 
 ### spec.SPEC-002 — Simple Adapters: ANALYSIS + SESSION (DONE)
 
@@ -454,8 +499,6 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Outcome**: [[SPEC-002: Simple Adapters: ANALYSIS + SESSION]] (ACCEPTED; ADR coverage + Gate A PASS + Gate B PASS unanimous; REQ-003 AC#2 refined for in-scope verifiability per Gate A finding)
-**Completing session**: —
-**Outcome**: — (will be SPEC-002 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-002-simple-adapters/)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
 
 **DoD**:
@@ -475,19 +518,49 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 #### Tasks (for spec.SPEC-002)
 
-Populated by /spec Stage 2 dispatch.
+| T-ID | Group | Subject | Agent | Files | Effort | Created | Resolved |
+|:--|:--|:--|:--|:--|:--|:--|:--|
+| T-28 | state-change | spec.SPEC-002 READY → IN_PROGRESS; owning session bound | orchestrator | PLAN-001 | XS | Event 24 | Event 24 |
+| T-29 | architect | Author SPEC-002 subtree (5 REQ + 2 DESIGN + 6 TASK + 1 SPEC root) via brain:🧠-architect (pre-Wave A standalone dispatch) with Pattern 2 three-phase write | brain:🧠-architect | `docs/specs/SPEC-002-simple-adapters/` (14 notes) | M | Event 24 | Event 24-25 |
+| T-30 | orchestrator | Compliance audit (16 status-field corrections on REQ + DESIGN notes) + bi-directional relation closure (implemented_by SPEC-002 on ADR-001 + ADR-002) | orchestrator | ADR-001/ADR-002 Relations; 9 SPEC-002 subtree notes | S | Event 25 | Event 25 |
+| T-31 | Gate A | Semantic gap analysis (Wave A parallel dispatch with SPEC-003/4/5 architects) | brain:🧠-analyst | — | M | Event 25 | Event 26 (REQ-003 AC#2 graceful-degradation flagged; non-blocking refinement deferred) |
+| T-32 | Gate B | 4 binary drift checks (Wave A parallel dispatch) | brain:🧠-critic | — | M | Event 25 | Event 26 (PASS unanimous; no P1) |
+| T-33 | set-part-done | spec.SPEC-002 IN_PROGRESS → DONE; outcome [[SPEC-002: Simple Adapters]]; completing_session bound; PLAN propagation | orchestrator | PLAN-001 | S | Event 26 | Event 26 |
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for spec.SPEC-002)
 
-Populated by /spec Stage 2 dispatch.
+```mermaid
+%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px'}}}%%
+graph TD
+  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
+  T28("✅ <b>T-28</b><br/><span style='color:#6b7280;font-size:11px'>READY → IP</span>")
+  T29("✅ <b>T-29</b><br/><span style='color:#6b7280;font-size:11px'>architect (14 notes)</span>")
+  T30("✅ <b>T-30</b><br/><span style='color:#6b7280;font-size:11px'>compliance + bi-dir</span>")
+  T31("✅ <b>T-31</b><br/><span style='color:#6b7280;font-size:11px'>Gate A (Wave A)</span>")
+  T32("✅ <b>T-32</b><br/><span style='color:#6b7280;font-size:11px'>Gate B (Wave A)</span>")
+  T33("✅ <b>T-33</b><br/><span style='color:#6b7280;font-size:11px'>set-part-done</span>")
+  T28 --> T29 --> T30
+  T30 --> T31
+  T30 --> T32
+  T31 --> T33
+  T32 --> T33
+  class T28,T29,T30,T31,T32,T33 done
+```
 
 #### Editor Mirror IDs (for spec.SPEC-002)
 
-Populated as /spec creates tasks.
+| T-ID | CC-ID | Cursor-ID | Last synced |
+|:--|:--|:--|:--|
+| T-28 | — | — | archived |
+| T-29 | — | — | archived |
+| T-30 | — | — | archived |
+| T-31 | — | — | archived |
+| T-32 | — | — | archived |
+| T-33 | — | — | archived |
 
 #### Pending User Decisions (for spec.SPEC-002)
 
-Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+None — spec.SPEC-002 part DONE 2026-05-19. Gate A surfaced REQ-003 AC#2 (graceful-degradation behavior on partial subtree mutation) as a non-blocking refinement; deferred for future session per critic non-P1 categorization. No P0 from Gate B. SPEC-002 root born ACCEPTED per /spec invariant.
 
 ### spec.SPEC-003 — PLAN Adapter (DONE)
 
@@ -495,8 +568,6 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Outcome**: [[SPEC-003: PLAN Adapter]] (ACCEPTED; ADR coverage + Gate A 5/5 VERIFIABLE + Gate B 4/4 PASS unanimous)
-**Completing session**: —
-**Outcome**: — (will be SPEC-003 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-003-plan-adapter/)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
 
 **DoD**:
@@ -516,19 +587,49 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 #### Tasks (for spec.SPEC-003)
 
-Populated by /spec Stage 2 dispatch.
+| T-ID | Group | Subject | Agent | Files | Effort | Created | Resolved |
+|:--|:--|:--|:--|:--|:--|:--|:--|
+| T-34 | state-change | spec.SPEC-003 READY → IN_PROGRESS (Wave A); owning session bound | orchestrator | PLAN-001 | XS | Event 25 | Event 25 |
+| T-35 | architect | Author SPEC-003 subtree (5 REQ + 2 DESIGN + 5 TASK + 1 SPEC root) via brain:🧠-architect (Wave A parallel) | brain:🧠-architect | `docs/specs/SPEC-003-plan-adapter/` (12 notes) | M | Event 25 | Event 25 |
+| T-36 | orchestrator | Compliance audit (7 status-field corrections) + bi-directional relation closure (implemented_by SPEC-003 on ADR-001 + ADR-002 — orchestrator-batched serial after Wave A return) | orchestrator | ADR-001/ADR-002 Relations; 7 SPEC-003 subtree notes | S | Event 26 | Event 26 |
+| T-37 | Gate A | Semantic gap analysis (Wave A return gates parallel) | brain:🧠-analyst | — | M | Event 26 | Event 26 (5/5 REQs VERIFIABLE; no flagged; 73K tokens) |
+| T-38 | Gate B | 4 binary drift checks (Wave A return gates parallel) | brain:🧠-critic | — | M | Event 26 | Event 26 (PASS unanimous; no P1; 105K tokens) |
+| T-39 | set-part-done | spec.SPEC-003 IN_PROGRESS → DONE; outcome [[SPEC-003: PLAN Adapter]]; completing_session bound; PLAN propagation | orchestrator | PLAN-001 | S | Event 26 | Event 26 |
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for spec.SPEC-003)
 
-Populated by /spec Stage 2 dispatch.
+```mermaid
+%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px'}}}%%
+graph TD
+  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
+  T34("✅ <b>T-34</b><br/><span style='color:#6b7280;font-size:11px'>READY → IP (Wave A)</span>")
+  T35("✅ <b>T-35</b><br/><span style='color:#6b7280;font-size:11px'>architect (12 notes)</span>")
+  T36("✅ <b>T-36</b><br/><span style='color:#6b7280;font-size:11px'>compliance + bi-dir</span>")
+  T37("✅ <b>T-37</b><br/><span style='color:#6b7280;font-size:11px'>Gate A 5/5</span>")
+  T38("✅ <b>T-38</b><br/><span style='color:#6b7280;font-size:11px'>Gate B 4/4</span>")
+  T39("✅ <b>T-39</b><br/><span style='color:#6b7280;font-size:11px'>set-part-done</span>")
+  T34 --> T35 --> T36
+  T36 --> T37
+  T36 --> T38
+  T37 --> T39
+  T38 --> T39
+  class T34,T35,T36,T37,T38,T39 done
+```
 
 #### Editor Mirror IDs (for spec.SPEC-003)
 
-Populated as /spec creates tasks.
+| T-ID | CC-ID | Cursor-ID | Last synced |
+|:--|:--|:--|:--|
+| T-34 | — | — | archived |
+| T-35 | — | — | archived |
+| T-36 | — | — | archived |
+| T-37 | — | — | archived |
+| T-38 | — | — | archived |
+| T-39 | — | — | archived |
 
 #### Pending User Decisions (for spec.SPEC-003)
 
-Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+None — spec.SPEC-003 part DONE 2026-05-19. Gate A 5/5 VERIFIABLE (no flagged REQs); Gate B PASS unanimous (no P1). SPEC-003 root born ACCEPTED per /spec invariant.
 
 ### spec.SPEC-004 — SPEC Subtree Adapter (DONE)
 
@@ -536,8 +637,6 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Outcome**: [[SPEC-004: SPEC Subtree Adapter]] (ACCEPTED; ADR coverage + Gate A 6/6 VERIFIABLE + Gate B 4/4 PASS unanimous)
-**Completing session**: —
-**Outcome**: — (will be SPEC-004 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-004-spec-subtree-adapter/)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
 
 **DoD**:
@@ -557,19 +656,49 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 #### Tasks (for spec.SPEC-004)
 
-Populated by /spec Stage 2 dispatch.
+| T-ID | Group | Subject | Agent | Files | Effort | Created | Resolved |
+|:--|:--|:--|:--|:--|:--|:--|:--|
+| T-40 | state-change | spec.SPEC-004 READY → IN_PROGRESS (Wave A); owning session bound | orchestrator | PLAN-001 | XS | Event 25 | Event 25 |
+| T-41 | architect | Author SPEC-004 subtree (6 REQ + 3 DESIGN + 7 TASK + 1 SPEC root) via brain:🧠-architect (Wave A parallel) — the HARDEST adapter with recursive multi-file scope | brain:🧠-architect | `docs/specs/SPEC-004-spec-subtree-adapter/` (17 notes) | M | Event 25 | Event 25 |
+| T-42 | orchestrator | Compliance audit (9 status-field corrections) + bi-directional relation closure (implemented_by SPEC-004 on ADR-001 + ADR-002) | orchestrator | ADR-001/ADR-002 Relations; 9 SPEC-004 subtree notes | S | Event 26 | Event 26 |
+| T-43 | Gate A | Semantic gap analysis (Wave A return gates parallel) | brain:🧠-analyst | — | M | Event 26 | Event 26 (6/6 REQs VERIFIABLE; no flagged; 77K tokens) |
+| T-44 | Gate B | 4 binary drift checks (Wave A return gates parallel) | brain:🧠-critic | — | M | Event 26 | Event 26 (PASS unanimous; no P1; 134K tokens) |
+| T-45 | set-part-done | spec.SPEC-004 IN_PROGRESS → DONE; outcome [[SPEC-004: SPEC Subtree Adapter]]; completing_session bound; PLAN propagation | orchestrator | PLAN-001 | S | Event 26 | Event 26 |
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for spec.SPEC-004)
 
-Populated by /spec Stage 2 dispatch.
+```mermaid
+%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px'}}}%%
+graph TD
+  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
+  T40("✅ <b>T-40</b><br/><span style='color:#6b7280;font-size:11px'>READY → IP (Wave A)</span>")
+  T41("✅ <b>T-41</b><br/><span style='color:#6b7280;font-size:11px'>architect (17 notes — hardest)</span>")
+  T42("✅ <b>T-42</b><br/><span style='color:#6b7280;font-size:11px'>compliance + bi-dir</span>")
+  T43("✅ <b>T-43</b><br/><span style='color:#6b7280;font-size:11px'>Gate A 6/6</span>")
+  T44("✅ <b>T-44</b><br/><span style='color:#6b7280;font-size:11px'>Gate B 4/4</span>")
+  T45("✅ <b>T-45</b><br/><span style='color:#6b7280;font-size:11px'>set-part-done</span>")
+  T40 --> T41 --> T42
+  T42 --> T43
+  T42 --> T44
+  T43 --> T45
+  T44 --> T45
+  class T40,T41,T42,T43,T44,T45 done
+```
 
 #### Editor Mirror IDs (for spec.SPEC-004)
 
-Populated as /spec creates tasks.
+| T-ID | CC-ID | Cursor-ID | Last synced |
+|:--|:--|:--|:--|
+| T-40 | — | — | archived |
+| T-41 | — | — | archived |
+| T-42 | — | — | archived |
+| T-43 | — | — | archived |
+| T-44 | — | — | archived |
+| T-45 | — | — | archived |
 
 #### Pending User Decisions (for spec.SPEC-004)
 
-Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+None — spec.SPEC-004 part DONE 2026-05-19. Gate A 6/6 VERIFIABLE (no flagged REQs); Gate B PASS unanimous (no P1). SPEC-004 root born ACCEPTED per /spec invariant. SPEC-004 is the HARDEST adapter (~500 LOC delta with recursive multi-file scope) per KICKOFF-BRIEF.md; per-file char-identity hash validation strategy locked via ADR-002 D-4.
 
 ### spec.SPEC-005 — Decompose and Recompose Skills (DONE)
 
@@ -577,8 +706,6 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Outcome**: [[SPEC-005: Decompose and Recompose Skills]] (ACCEPTED; ADR coverage + Gate A 6/6 VERIFIABLE + Gate B 4/4 PASS unanimous; P1 amendment on incremental adapter registration documented in SPEC body + REQ-004 + TASK-004 per critic finding from ANALYSIS-001)
-**Completing session**: —
-**Outcome**: — (will be SPEC-005 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-005-decompose-and-recompose-skills/)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
 
 **DoD**:
@@ -598,19 +725,49 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 #### Tasks (for spec.SPEC-005)
 
-Populated by /spec Stage 2 dispatch.
+| T-ID | Group | Subject | Agent | Files | Effort | Created | Resolved |
+|:--|:--|:--|:--|:--|:--|:--|:--|
+| T-46 | state-change | spec.SPEC-005 READY → IN_PROGRESS (Wave A); owning session bound | orchestrator | PLAN-001 | XS | Event 25 | Event 25 |
+| T-47 | architect | Author SPEC-005 subtree (6 REQ + 3 DESIGN + 6 TASK + 1 SPEC root) via brain:🧠-architect (Wave A parallel); P1 amendment on incremental adapter registration documented in SPEC body + REQ-004 + TASK-004 per critic ANALYSIS-001 finding | brain:🧠-architect | `docs/specs/SPEC-005-decompose-and-recompose-skills/` (16 notes) | M | Event 25 | Event 25 |
+| T-48 | orchestrator | Compliance audit + bi-directional relation closure (implemented_by SPEC-005 on ADR-001 + ADR-002) | orchestrator | ADR-001/ADR-002 Relations | S | Event 26 | Event 26 |
+| T-49 | Gate A | Semantic gap analysis (Wave A return gates parallel) | brain:🧠-analyst | — | M | Event 26 | Event 26 (6/6 REQs VERIFIABLE; no flagged) |
+| T-50 | Gate B | 4 binary drift checks (Wave A return gates parallel) | brain:🧠-critic | — | M | Event 26 | Event 26 (PASS unanimous; no P1) |
+| T-51 | set-part-done | spec.SPEC-005 IN_PROGRESS → DONE; outcome [[SPEC-005: Decompose and Recompose Skills]]; SPEC-006 PENDING → READY | orchestrator | PLAN-001 | S | Event 26 | Event 26 |
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for spec.SPEC-005)
 
-Populated by /spec Stage 2 dispatch.
+```mermaid
+%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px'}}}%%
+graph TD
+  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
+  T46("✅ <b>T-46</b><br/><span style='color:#6b7280;font-size:11px'>READY → IP (Wave A)</span>")
+  T47("✅ <b>T-47</b><br/><span style='color:#6b7280;font-size:11px'>architect (16 notes)</span>")
+  T48("✅ <b>T-48</b><br/><span style='color:#6b7280;font-size:11px'>compliance + bi-dir</span>")
+  T49("✅ <b>T-49</b><br/><span style='color:#6b7280;font-size:11px'>Gate A 6/6</span>")
+  T50("✅ <b>T-50</b><br/><span style='color:#6b7280;font-size:11px'>Gate B 4/4</span>")
+  T51("✅ <b>T-51</b><br/><span style='color:#6b7280;font-size:11px'>set-part-done (SPEC-006 → READY)</span>")
+  T46 --> T47 --> T48
+  T48 --> T49
+  T48 --> T50
+  T49 --> T51
+  T50 --> T51
+  class T46,T47,T48,T49,T50,T51 done
+```
 
 #### Editor Mirror IDs (for spec.SPEC-005)
 
-Populated as /spec creates tasks.
+| T-ID | CC-ID | Cursor-ID | Last synced |
+|:--|:--|:--|:--|
+| T-46 | — | — | archived |
+| T-47 | — | — | archived |
+| T-48 | — | — | archived |
+| T-49 | — | — | archived |
+| T-50 | — | — | archived |
+| T-51 | — | — | archived |
 
 #### Pending User Decisions (for spec.SPEC-005)
 
-Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+None — spec.SPEC-005 part DONE 2026-05-19. Gate A 6/6 VERIFIABLE (no flagged REQs); Gate B PASS unanimous (no P1). Critic P1 amendment on incremental adapter registration captured in SPEC body + REQ-004 + TASK-004 per ANALYSIS-001 critic finding (adapter registration is incremental; /decompose + /recompose work for ADR adapter at SPEC-005 ship; broader coverage gated on SPEC-002/003/004 completion). SPEC-005 root born ACCEPTED per /spec invariant. SPEC-006 dependency satisfied — PENDING → READY transition triggered.
 
 ### spec.SPEC-006 — Defrag and Ingest Skills (DONE)
 
@@ -618,9 +775,6 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Outcome**: [[SPEC-006: Defrag and Ingest Skills]] (ACCEPTED; ADR coverage + Gate A 6/6 VERIFIABLE + Gate B 4/4 PASS unanimous; P1-2 amendment on /ingest Brain-awareness non-ADR scope correctly documented in SPEC root + REQ-005)
-**Owning session**: —
-**Completing session**: —
-**Outcome**: — (will be SPEC-006 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-006-defrag-and-ingest-skills/)
 **Source artifacts**: KICKOFF-BRIEF.md (Brain-awareness requirements per critic P1 amendment) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome + spec.SPEC-005 outcome (/decompose + /recompose primitives)
 
 **DoD**:
@@ -640,19 +794,49 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 #### Tasks (for spec.SPEC-006)
 
-Populated by /spec Stage 2 dispatch.
+| T-ID | Group | Subject | Agent | Files | Effort | Created | Resolved |
+|:--|:--|:--|:--|:--|:--|:--|:--|
+| T-52 | state-change | spec.SPEC-006 READY → IN_PROGRESS (post Wave A; dep SPEC-005 satisfied) | orchestrator | PLAN-001 | XS | Event 26 | Event 27 |
+| T-53 | architect | Author SPEC-006 subtree (6 REQ + 3 DESIGN + 7 TASK + 1 SPEC root); REQ-005 captures /ingest Brain-awareness non-ADR scope per critic P1-2 amendment | brain:🧠-architect | `docs/specs/SPEC-006-defrag-and-ingest-skills/` (17 notes) | M | Event 27 | Event 27 |
+| T-54 | orchestrator | Compliance audit + bi-directional relation closure (implemented_by SPEC-006 on ADR-001 + ADR-002) | orchestrator | ADR-001/ADR-002 Relations | S | Event 27 | Event 27 |
+| T-55 | Gate A | Semantic gap analysis | brain:🧠-analyst | — | M | Event 27 | Event 27 (6/6 REQs VERIFIABLE; no flagged; REQ-005 Brain-awareness AC traced to KICKOFF-BRIEF.md) |
+| T-56 | Gate B | 4 binary drift checks (REQ-005 non-ADR scope verified documented) | brain:🧠-critic | — | M | Event 27 | Event 27 (PASS unanimous; no P1) |
+| T-57 | set-part-done | spec.SPEC-006 IN_PROGRESS → DONE; outcome [[SPEC-006: Defrag and Ingest Skills]]; MILESTONE: all 6 SPECs DONE — entire SPEC phase complete | orchestrator | PLAN-001 | S | Event 27 | Event 27 |
 
-#### Intra-part Deps Graph
+#### Intra-part Deps Graph (for spec.SPEC-006)
 
-Populated by /spec Stage 2 dispatch.
+```mermaid
+%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px'}}}%%
+graph TD
+  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
+  T52("✅ <b>T-52</b><br/><span style='color:#6b7280;font-size:11px'>READY → IP (post Wave A)</span>")
+  T53("✅ <b>T-53</b><br/><span style='color:#6b7280;font-size:11px'>architect (17 notes)</span>")
+  T54("✅ <b>T-54</b><br/><span style='color:#6b7280;font-size:11px'>compliance + bi-dir</span>")
+  T55("✅ <b>T-55</b><br/><span style='color:#6b7280;font-size:11px'>Gate A 6/6</span>")
+  T56("✅ <b>T-56</b><br/><span style='color:#6b7280;font-size:11px'>Gate B 4/4</span>")
+  T57("✅ <b>T-57</b><br/><span style='color:#6b7280;font-size:11px'>set-part-done MILESTONE</span>")
+  T52 --> T53 --> T54
+  T54 --> T55
+  T54 --> T56
+  T55 --> T57
+  T56 --> T57
+  class T52,T53,T54,T55,T56,T57 done
+```
 
 #### Editor Mirror IDs (for spec.SPEC-006)
 
-Populated as /spec creates tasks.
+| T-ID | CC-ID | Cursor-ID | Last synced |
+|:--|:--|:--|:--|
+| T-52 | — | — | archived |
+| T-53 | — | — | archived |
+| T-54 | — | — | archived |
+| T-55 | — | — | archived |
+| T-56 | — | — | archived |
+| T-57 | — | — | archived |
 
 #### Pending User Decisions (for spec.SPEC-006)
 
-Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+None — spec.SPEC-006 part DONE 2026-05-19. Gate A 6/6 VERIFIABLE (no flagged REQs); Gate B PASS unanimous (no P1). REQ-005 /ingest Brain-awareness non-ADR scope correctly documented per critic P1-2 amendment (sourced from KICKOFF-BRIEF.md lines 117-119; ADR coverage gate distinguishes ADR-derived from non-ADR-derived requirements). SPEC-006 root born ACCEPTED per /spec invariant. **MILESTONE**: all 6 spec.SPEC-NNN parts DONE — entire SPEC phase complete; build.SPEC-NNN phases pending future sessions.
 
 ## Review
 
@@ -722,3 +906,4 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 - contains [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 - pairs_with [[brain:---adr-review]]
 - pairs_with [[sync-jira]]
+
