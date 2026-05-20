@@ -42,10 +42,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec.SPEC-NNN | 0 | 0 | 0 | 7 | 7 |
-| build.SPEC-NNN | 7 | 0 | 0 | 0 | 7 |
+| build.SPEC-NNN | 6 | 1 | 0 | 0 | 7 |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **8** | **0** | **0** | **13** | **21** |
+| **Total visible** | **7** | **1** | **0** | **13** | **21** |
 
 > 2026-05-20 — spec.SPEC-007 (Plan/Session Render Implementation) added to scope; PENDING, source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]. Formal ADR-003 + /spec Stage 2 subtree deferred to a future session.
 
@@ -73,7 +73,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | spec.SPEC-005 | DONE | [[SPEC-005: Decompose and Recompose Skills]] |
 | spec.SPEC-006 | DONE | [[SPEC-006: Defrag and Ingest Skills]] |
 | spec.SPEC-007 | DONE | [[SPEC-007: Plan/Session Render Implementation]] (ACCEPTED at Stage 2 close 2026-05-20; 30 notes: 12 REQ + 4 DESIGN + 13 TASK + 1 root) |
-| build.SPEC-001 | READY | TypeScript impl of composition core + ADR adapter (PROOF; 9 TASKs from SPEC-001) |
+| build.SPEC-001 | IN_PROGRESS | TypeScript impl of composition core + ADR adapter (PROOF; 9 TASKs from SPEC-001); Wave 1 of 4-wave parallel build plan |
 | build.SPEC-002 | READY | TypeScript impl of ANALYSIS + SESSION adapters (6 TASKs from SPEC-002) |
 | build.SPEC-003 | READY | TypeScript impl of PLAN adapter (5 TASKs from SPEC-003) |
 | build.SPEC-004 | READY | TypeScript impl of SPEC subtree adapter (7 TASKs from SPEC-004) |
@@ -999,11 +999,12 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 
 ## Build
 
-### build.SPEC-001 — Composition Core + ADR Adapter PROOF (READY)
+### build.SPEC-001 — Composition Core + ADR Adapter PROOF (IN_PROGRESS)
 
-**Substatus**: READY
+**Substatus**: IN_PROGRESS
 **Dependencies**: spec.SPEC-001 DONE ✓
-**Owning session**: —
+**Wave**: 1 of 4 (Wave 1 sequential PROOF; locks BaseMarkdownAdapter for Wave 2 4-way parallel)
+**Owning session**: [[SESSION-2026-05-20_03: ADR-003 Render Architecture and SPEC-007 Unblock]]
 **Completing session**: —
 **Outcome**: — (will be TypeScript impl + tests + commits)
 **Source SPEC**: [[SPEC-001: Composition Core and ADR Adapter]] (9 TASKs)

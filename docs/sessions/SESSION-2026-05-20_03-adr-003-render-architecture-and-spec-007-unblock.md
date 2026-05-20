@@ -69,6 +69,10 @@ Phase 3 syntactic validation inline: all 30 notes have colon-format title + vali
 
 User invoked `/plan continue` with 0 READY parts. Orchestrator added build.SPEC-001..007 to PLAN-001 (under new ## Build H2), all READY (dependencies on respective spec.SPEC-NNN all DONE). PLAN-001 propagation: Progress Dashboard build.SPEC-NNN row 0→7 READY; Total visible DRAFT 1→8 + Total 14→21; Phase Progression +7 rows; Cross-Part Deps Graph build_n node label updated to "7 build phases READY"; 7 H3 part sections authored (each with substatus + DoD + Workflow Plan + Tasks placeholder + Pending User Decisions = None). Recommended sequencing per KICKOFF-BRIEF.md: build.SPEC-001 FIRST as PROOF (~250 LOC; validates round-trip property test architecture against ADR fixtures before extending to other adapters). Total scope: 53 TASKs across 7 build parts. Next-ready: 7 READY parts (AskUserQuestion on /plan continue picks first).
 
+## Event 14 — Parallelism analysis + Wave 1 dispatch (build.SPEC-001)
+
+User invoked `/plan continue` with 7 READY build parts. Asked for parallelism analysis instead of single-track AskUserQuestion. Orchestrator analyzed hard dependencies vs sequencing preferences: build.SPEC-001 is sequential PROOF (locks BaseMarkdownAdapter); Wave 2 parallelizes build.SPEC-002 + 003 + 004 + 007 (all depend on SPEC-001 only, file-disjoint, 4-way agent-teams territory per `feedback_proactive_parallelism_check`); Wave 3 build.SPEC-005 (needs adapter registry); Wave 4 build.SPEC-006 (needs SPEC-005). Wall-clock savings: 53 TASKs serial → 35 TASKs with Wave 2 parallel = ~34% reduction. User selected "Wave 1 now, plan Wave 2 after". build.SPEC-001 READY → IN_PROGRESS; owning_session bound. PLAN-001 propagation: Progress Dashboard build row READY 7→6 + IP 0→1; Total visible DRAFT 8→7 + IP 0→1; Phase Progression build.SPEC-001 row IN_PROGRESS; build.SPEC-001 H3 substatus + Wave annotation. Auto-routing to /build with spec=SPEC-001.
+
 ## Observations
 
 - [decision] Re-enter decisions phase via new `decisions.3` PLAN part to formalize ADR-003 from D-1..D-11 LOCKED in ANALYSIS-002 #iterative-phase-reentry #adr-003
