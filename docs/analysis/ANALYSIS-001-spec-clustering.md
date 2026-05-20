@@ -1,7 +1,7 @@
 ---
 title: 'ANALYSIS-001: SPEC Clustering'
 type: analysis
-status: DRAFT
+status: ACCEPTED
 permalink: analysis/analysis-001-spec-clustering
 tags:
 - analysis
@@ -285,6 +285,41 @@ Each of the 5 adapters gets its own SPEC (7 SPECs total with skills).
 - 7 SPECs for ~1,950 LOC is a high SPEC-to-LOC ratio that increases planning/tracking overhead
 
 **Verdict**: Deferred. If SPEC-002 (Simple Adapters bundle) proves too complex during Stage 2 spec authoring, it can be split into SPEC-002a (ANALYSIS) and SPEC-002b (SESSION). The proposed 5-SPEC clustering provides a reasonable middle ground.
+
+## Adjudication Outcome (2026-05-19)
+
+User adjudicated this clustering proposal via AskUserQuestion at /spec Stage 1 Step 5 on 2026-05-19. Outcome: **6 SPECs final** (SPEC-003 SPLIT applied per critic + analyst recommendation).
+
+### Final SPEC set (6)
+
+| # | SPEC | Was (5-SPEC proposal) | Now (6-SPEC final) |
+|:--|:--|:--|:--|
+| 1 | SPEC-001 Composition Core and ADR Adapter | (unchanged) | (unchanged) |
+| 2 | SPEC-002 Simple Adapters (ANALYSIS + SESSION) | (unchanged) | (unchanged) |
+| 3 | SPEC-003 PLAN Adapter | was bundled with SPEC subtree as SPEC-003 Complex Adapters (~800 LOC L) | SPLIT — PLAN Adapter only (~250 LOC M) |
+| 4 | SPEC-004 SPEC Subtree Adapter | was SPEC-003b in analyst's flagged split option | new SPEC-004 (~500 LOC M) |
+| 5 | SPEC-005 Decompose and Recompose Skills | was SPEC-004 | renumbered to SPEC-005 |
+| 6 | SPEC-006 Defrag and Ingest Skills | was SPEC-005 | renumbered to SPEC-006 |
+
+### Split rationale (per critic agent)
+
+SPEC-003 split was recommended for: (a) PLAN adapter and SPEC subtree adapter share zero implementation code (both are "distinct implementations" per ADR-002 D-3 capability matrix — only the CompositionAdapter interface in common, which every adapter shares); (b) combined L effort (6-8d) exceeds next-largest SPEC by 2x and dominates uncertainty in the effort rollup; (c) splitting produces two independently-reviewable M-sized SPECs with no dependency between them; (d) bundling adds review-gate granularity loss without proportionate benefit since they ship independently anyway.
+
+### P1 amendments applied (per critic findings)
+
+**P1-1: SPEC-005 (was SPEC-004) dependency understated.** Finding 4 of this analysis stated SPEC-005 is "fully functional with only SPEC-001." Critic flagged this is inaccurate — SPEC-005 ships /decompose + /recompose CLI entry points that dispatch to adapter via source_type discriminator. If only SPEC-001 ADR adapter is complete, /decompose + /recompose work for ADR adapter ONLY. Broader coverage is incremental as additional adapter SPECs (SPEC-002, SPEC-003, SPEC-004) complete. Amendment: SPEC-005 Workflow Plan in PLAN-001 explicitly documents incremental adapter registration; SPEC-005 ships with ADR-only coverage if other adapter SPECs incomplete at its ship time.
+
+**P1-2: SPEC-006 (was SPEC-005) /ingest Brain-awareness requirements are non-ADR scope.** KICKOFF-BRIEF.md specifies /ingest is Brain-aware with concrete requirements (CONVENTIONS, Pattern 2 three-phase write, 16 canonical entity types, observation [category] prefix + #tags, final-two-sections invariant). Critic correctly noted these are NOT covered by any ADR D-N — they derive from KICKOFF-BRIEF.md directly. This analysis's claim "all 18 ADR decisions mapped" is accurate for ADR coverage, but /ingest's full scope includes non-ADR requirements. Amendment: SPEC-006 source_artifacts in PLAN-001 explicitly includes KICKOFF-BRIEF.md alongside the ANALYSIS reference; SPEC-006 ADR coverage gate evaluates only the ADR-scoped requirements; non-ADR requirements documented separately in SPEC-006 scope.
+
+### Review verdict synthesis
+
+| Channel | Verdict | SPEC-003 |
+|:--|:--|:--|
+| CVA (orchestrator inline) | Validates ADR-002 D-3 BaseMarkdownAdapter pattern; no new abstractions warranted | (no opinion) |
+| decision-critic (orchestrator inline) | 5-SPEC sound; surface SPEC-003 split decision to user | Surface |
+| critic (brain:🧠-critic agent) | ACCEPT with 2 P1 amendments | SPLIT |
+
+Status flipped DRAFT → ACCEPTED post user adjudication.
 
 ## Observations
 

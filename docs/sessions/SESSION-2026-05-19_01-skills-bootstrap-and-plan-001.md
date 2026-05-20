@@ -219,6 +219,17 @@ tags:
 - Synthesis 5-SPEC clustering is sound. Primary decision for user SPEC-003 split (6 SPECs total with SPEC-003a PLAN + SPEC-003b SPEC subtree) vs keep bundled (5 SPECs total). P1 amendments applied regardless of split decision.
 - Next /spec Stage 1 Step 5 AskUserQuestion surfacing SPEC-003 split decision; on approval Step 6 /plan adds one spec.SPEC-NNN part per approved SPEC; Step 7 set-part-done outcome=ANALYSIS-001
 
+## Event 20 — /spec Stage 1 Steps 5-7 complete; 6 SPECs locked; spec-decomposition DONE; 6 spec.SPEC-NNN parts added to PLAN
+
+- Type debate-resolution + state-change + multi-section-propagation
+- Trigger Step 5 AskUserQuestion adjudication of SPEC clustering
+- Outcome user chose 6 SPECs (SPEC-003 split applied per critic + analyst recommendation); ANALYSIS-001 status flipped DRAFT → ACCEPTED; spec-decomposition substatus IN_PROGRESS → DONE; outcome wikilink to ANALYSIS-001; 6 new spec.SPEC-NNN parts added to PLAN under new ## Spec H2; all 6 parts READY simultaneously (dependency spec-decomposition DONE)
+- Final SPEC set SPEC-001 Composition Core and ADR Adapter (PROOF); SPEC-002 Simple Adapters (ANALYSIS + SESSION); SPEC-003 PLAN Adapter; SPEC-004 SPEC Subtree Adapter; SPEC-005 Decompose and Recompose Skills; SPEC-006 Defrag and Ingest Skills
+- Critic P1 amendments applied SPEC-005 incremental adapter registration caveat documented in Workflow Plan; SPEC-006 /ingest Brain-awareness scope as non-ADR per KICKOFF-BRIEF.md documented in Workflow Plan + DoD
+- Per user critical state-propagation rule applied SAME TURN PLAN Progress Dashboard (spec.SPEC-NNN row 6 DRAFT; total visible 8/0/0/4); Phase Progression (spec-decomposition DONE + outcome wikilink; 6 spec.SPEC-001..006 READY rows); Cross-Part Deps Graph (sd ✅ + label updated); spec-decomposition H3 + state lines + DoD + Tasks + Pending User Decisions all updated; ## Spec H2 inserted with 6 H3 sub-parts (Substatus + Source artifacts + 8 DoD checkboxes + 5 subsection placeholders each); Decision Log + Progress Log entries appended; ANALYSIS-001 status flipped
+- /spec Stage 1 pipeline complete (Steps 0-7 all executed); decisions phase + spec-decomposition phase both DONE
+- Next user resumes via /plan PLAN-001-skills-ecosystem (continue mode); 6 READY parts → AskUserQuestion which SPEC to author first (recommend SPEC-001 Composition Core PROOF per KICKOFF-BRIEF.md build order)
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress

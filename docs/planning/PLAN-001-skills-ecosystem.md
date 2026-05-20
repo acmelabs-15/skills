@@ -35,12 +35,12 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 |:--|:--|:--|:--|:--|:--|
 | research | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 2 | 2 |
-| spec-decomposition | 0 | 1 | 0 | 0 | 1 |
-| spec.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post spec-decomposition) |
+| spec-decomposition | 0 | 0 | 0 | 1 | 1 |
+| spec.SPEC-NNN | 6 | 0 | 0 | 0 | 6 |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **2** | **1** | **0** | **3** | **6** |
+| **Total visible** | **8** | **0** | **0** | **4** | **12** |
 
 ## Workflow Plan
 
@@ -57,9 +57,14 @@ Per-part workflow detail lives in each per-part H3 below.
 | research | DONE | `KICKOFF-BRIEF.md` (project root file; not a Brain note) |
 | decisions.1 | DONE | [[ADR-001: Composition Library Architecture]] |
 | decisions.2 | DONE | [[ADR-002: Adapter Contract and Plan Schema]] (ACCEPTED 2026-05-19 via brain:---adr-review round-2 unanimous PASS) |
-| spec-decomposition | IN_PROGRESS | N×[[SPEC-XXX ...]] root notes + decomposition rationale (auto-routed to /spec Stage 1 this turn) |
-| spec.SPEC-NNN | PENDING | per-SPEC REQ/DESIGN/TASK subtree (created post spec-decomposition) |
-| build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits |
+| spec-decomposition | DONE | [[ANALYSIS-001: SPEC Clustering]] (ACCEPTED 2026-05-19; 6 SPECs locked post user adjudication, SPEC-003 split applied) |
+| spec.SPEC-001 | READY | SPEC-001 root + REQ + DESIGN + TASK subtree (Composition Core and ADR Adapter; PROOF) |
+| spec.SPEC-002 | READY | SPEC-002 root + subtree (Simple Adapters: ANALYSIS + SESSION) |
+| spec.SPEC-003 | READY | SPEC-003 root + subtree (PLAN Adapter; regenerative content carve-out) |
+| spec.SPEC-004 | READY | SPEC-004 root + subtree (SPEC Subtree Adapter; recursive multi-file + frontmatter + filename rewrite) |
+| spec.SPEC-005 | READY | SPEC-005 root + subtree (Decompose and Recompose Skills) |
+| spec.SPEC-006 | READY | SPEC-006 root + subtree (Defrag and Ingest Skills) |
+| build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits (created post per-spec spec phase) |
 | review | PENDING | adversarial multi-axis review across feature surface |
 | end | PENDING | PR + final session-end checklist |
 
@@ -85,7 +90,7 @@ graph TD
 
   subgraph S ["Spec-Decomposition"]
     direction TB
-    sd("🔄 <b>spec-decomposition</b><br/><span style='color:#6b7280;font-size:11px'>/spec Stage 1 dispatched</span>")
+    sd("✅ <b>spec-decomposition</b><br/><span style='color:#6b7280;font-size:11px'>ANALYSIS-001 ACCEPTED (6 SPECs)</span>")
   end
 
   subgraph SB ["Spec + Build (per SPEC)"]
@@ -128,6 +133,7 @@ graph TD
 - **2026-05-19** — ADR-002 round-2 architect revision applied. 10 P1 themes A-J resolved in-ADR: P1-A MutationSpec frontmatter_map; P1-B cross_source_updates Zod shape; P1-C SPEC subtree manifest Zod shape; P1-D nested discriminatedUnion plan_type × source_type; P1-E JSDoc adapter call sequence; P1-F regenerated_sections declarative + 50% integrity floor; P1-G containedPathSchema realpath + path.sep; P1-H injectivity key-value domain disjointness; P1-I hash extracted to shared utility (5-method interface); P1-J BaseMarkdownAdapter pattern documented. ADR-002 line count 548 → 865 (+317 lines, +58%). Status PROPOSED pending round-2 brain:---adr-review re-verification.
 - **2026-05-19** — decisions.2 DONE. ADR-002 ACCEPTED at decisions/ADR-002-adapter-contract-and-plan-schema.md after brain:---adr-review Phase 4 convergence PASS round 2 unanimous (6 ACCEPT + 0 CONCERNS + 0 BLOCK + 0 P0 + 0 NEW P1/P2). All 10 round-1 P1 themes A-J confirmed resolved per CRIT-002 Round 2 outcome section. CONCERNS-issuing reviewers from round 1 (critic + security + analyst) all converted to ACCEPT verdict. spec-decomposition transitioned PENDING → READY (decisions.2 dependency now DONE).
 - **2026-05-19** — spec-decomposition transitioned READY → IN_PROGRESS (continuation invocation of /plan PLAN-001). Owning session bound to SESSION-2026-05-19_01. Auto-routing to /spec Stage 1 (Contract 2 dispatch shape with source_adrs ADR-001 + ADR-002 — both ACCEPTED architectural ADRs).
+- **2026-05-19** — /spec Stage 1 complete. ANALYSIS-001 SPEC Clustering authored by brain:🧠-analyst (Step 1+2; 5-SPEC initial proposal). CVA executed inline (Step 3; validated BaseMarkdownAdapter pattern per ADR-002 D-3; no new abstractions). brain:🧠-critic dispatched (Step 4; ACCEPT verdict + SPEC-003 SPLIT recommendation + 2 P1 amendments). decision-critic stress-test inline (Step 4; SPEC-003 split surfacing recommended). AskUserQuestion adjudication (Step 5; user chose 6 SPECs with SPEC-003 split). spec-decomposition substatus IN_PROGRESS → DONE; outcome ANALYSIS-001 (ACCEPTED). 6 spec.SPEC-NNN parts added to PLAN under new ## Spec phase (Step 6); all READY (dependency spec-decomposition DONE).
 
 ## Progress Log
 
@@ -137,6 +143,7 @@ graph TD
 - **2026-05-19** — decisions.2 IN_PROGRESS (continuation invocation of /plan PLAN-001). Owning session bound to SESSION-2026-05-19_01. Path-choice + ADR-002 PROPOSED + round-1 adr-review FAIL + CRIT-002 auth + round-2 architect revision all completed this turn; per the user's critical state-propagation rule applied this turn — PLAN-001 sections fully propagated (Progress Dashboard decisions row IP 0→1; Phase Progression decisions.2 IN_PROGRESS; decisions.2 H3 subsections Workflow Plan / Tasks / Intra-part Deps Graph / D-N substatus list / Editor Mirror IDs / Pending User Decisions all updated; DoD checkboxes 4 of 6 flipped [x]; Cross-Part Deps Graph d1+d2 class updates).
 - **2026-05-19** — decisions.2 closed out via /decisions Steps 7-9: brain:---adr-review round-2 dispatch (6 parallel reviewers) → all ACCEPT unanimous → ADR-002 ACCEPTED flip → decisions.2 IN_PROGRESS → DONE + completing_session bound + outcome wikilink. CRIT-002 Round 2 outcome section appended with R1→R2 verdict transitions + 12/12 P1 resolution confirmation. PLAN-001 comprehensive propagation applied same turn per user's critical rule (Progress Dashboard decisions row DONE 2/2; Phase Progression decisions.2 DONE + spec-decomposition READY; Cross-Part Deps Graph d2 ✅; decisions.2 H3 + DoD + Tasks + Pending User Decisions all updated; spec-decomposition H3 + substatus transitioned READY). Decisions phase fully complete; next-ready part is spec-decomposition.
 - **2026-05-19** — spec-decomposition IN_PROGRESS (continuation invocation of /plan PLAN-001). Auto-routing to /spec Stage 1 with source_adrs=ADR-001 + ADR-002 (both ACCEPTED). Expected Stage 1 output: analyst-proposed SPEC clustering + conditional CVA + user adjudication via AskUserQuestion locking 4-6 SPEC clusters aligned to KICKOFF-BRIEF.md build order.
+- **2026-05-19** — spec-decomposition DONE. /spec Stage 1 closed out (Steps 1-7 executed): analyst dispatch → ANALYSIS-001 5-SPEC proposal; CVA + critic + decision-critic review; AskUserQuestion locked 6 SPECs (SPEC-003 split applied per critic recommendation); /plan added 6 spec.SPEC-NNN parts under new ## Spec H2; set-part-done outcome ANALYSIS-001 (ACCEPTED). Next-ready parts: spec.SPEC-001 through spec.SPEC-006 all READY simultaneously. User picks first SPEC to author via /plan continue invocation (multiple READY parts → AskUserQuestion).
 
 ## Blockers
 
@@ -350,12 +357,12 @@ None — decisions.2 part DONE 2026-05-19. ADR-002 ACCEPTED via brain:---adr-rev
 
 ## Spec-Decomposition
 
-### spec-decomposition — Cluster ADRs into SPECs (IN_PROGRESS)
+### spec-decomposition — Cluster ADRs into SPECs (DONE)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: DONE
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
-**Completing session**: —
-**Outcome**: — (will be N×[[SPEC-XXX ...]] root notes)
+**Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+**Outcome**: [[ANALYSIS-001: SPEC Clustering]] (6 SPECs locked post user adjudication; SPEC-003 split applied per critic + analyst recommendation)
 **Source artifacts**: [[ADR-001: Composition Library Architecture]], [[ADR-002: Adapter Contract and Plan Schema]] (both pending authorship)
 
 **DoD**:
@@ -372,7 +379,13 @@ Stage 1 of /spec: analyst clustering dispatch + conditional CVA analysis → pro
 
 #### Tasks (for spec-decomposition)
 
-Populated by /spec Stage 1 (analyst clustering dispatch + conditional CVA + AskUserQuestion for SPEC clustering proposal) and Stage 2 (per-SPEC subtree authoring) on auto-route this turn. Initial tasks anticipated: T-17 analyst clustering dispatch, T-18 CVA conditional dispatch (if 3+ similar adapters share variability matrix per KICKOFF-BRIEF.md), T-19 SPEC clustering proposal AskUserQuestion, T-20..T-NN per-SPEC root note authoring (Pattern 2 three-phase write per SPEC). Full task table updated by /spec as each task is created.
+| T-ID | Group | Subject | Agent | Files | Effort | Created | Resolved |
+|:--|:--|:--|:--|:--|:--|:--|:--|
+| T-17 | analyst | Dispatch brain:🧠-analyst for SPEC clustering (Stage 1 Step 1+2) | brain:🧠-analyst | `docs/analysis/ANALYSIS-001-spec-clustering.md` | M | Event 18 | Event 18 (~320 lines, 5 SPECs proposed) |
+| T-18 | CVA + decision-critic | CVA + decision-critic inline (Stage 1 Step 3+4) | orchestrator | — | S | Event 19 | Event 19 (CVA validated; SPEC-003 split surfaced) |
+| T-19 | critic | Dispatch brain:🧠-critic (Stage 1 Step 4) | brain:🧠-critic | — | M | Event 19 | Event 19 (ACCEPT verdict; SPEC-003 SPLIT recommendation) |
+| T-20 | AskUserQuestion | Stage 1 Step 5 user adjudication of SPEC clustering | orchestrator | — | XS | Event 20 | Event 20 (6 SPECs chosen; SPEC-003 split applied) |
+| T-21 | set-part-done | Stage 1 Step 6+7: add 6 spec.SPEC-NNN parts + set-part-done | orchestrator | `docs/planning/PLAN-001-skills-ecosystem.md` | S | Event 20 | Event 20 (this turn) |
 
 #### Intra-part Deps Graph
 
@@ -384,7 +397,243 @@ Populated as /spec creates tasks (T-17, T-18, ...). Initial state: empty.
 
 #### Pending User Decisions (for spec-decomposition)
 
-SPEC decomposition shape — surfaced via AskUserQuestion by /spec Stage 1 this turn (analyst-clustering proposal → user adjudicates 4-6 SPEC clusters → per-SPEC root notes authored in Stage 2). Expected clusters per KICKOFF-BRIEF.md build order: SPEC-001 composition core + ADR adapter PROOF; subsequent SPECs cover /decompose, /recompose, remaining 4 adapters (ANALYSIS + SESSION + PLAN + SPEC subtree), /defrag, /ingest. Actual cluster count + boundaries to be locked via user adjudication.
+None — spec-decomposition part DONE 2026-05-19. ANALYSIS-001 SPEC Clustering authored + reviewed (CVA + critic + decision-critic) + adjudicated via AskUserQuestion. User chose 6 SPECs (SPEC-003 split into SPEC-003 PLAN + SPEC-004 SPEC subtree). ANALYSIS-001 status flipped DRAFT → ACCEPTED. 6 spec.SPEC-NNN parts now READY (all depend on spec-decomposition DONE). User picks first SPEC to author via /plan continue (multiple READY parts → AskUserQuestion).
+
+## Spec
+
+### spec.SPEC-001 — Composition Core and ADR Adapter (READY)
+
+**Substatus**: READY
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be SPEC-001 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-001-composition-core-and-adr-adapter/)
+**Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED)
+
+**DoD**:
+
+- [ ] SPEC-001 root note authored at docs/specs/SPEC-001-composition-core-and-adr-adapter/SPEC-001-composition-core-and-adr-adapter.md
+- [ ] REQ notes authored at requirements/
+- [ ] DESIGN note(s) authored at design/
+- [ ] TASK notes authored at tasks/
+- [ ] ADR coverage gate PASS (every implemented ADR D-N has implemented_by relation on SPEC-001 root)
+- [ ] Gate A semantic gap analysis PASS
+- [ ] Gate B 4 binary drift checks PASS
+- [ ] SPEC-001 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+
+#### Workflow Plan (for spec.SPEC-001)
+
+/spec Stage 2 per-SPEC authoring (REQ → DESIGN → TASK → SPEC root; order non-negotiable). Scope: composition library core (CompositionAdapter 5-method interface, BaseMarkdownAdapter base class with config-only overrides, sha256 shared utility, Zod plan validator base with nested discriminatedUnion, atomic write-to-temp-then-rename rollback) + ADR adapter (PROOF; ~250 LOC). Round-trip property test SHA-256(original) === SHA-256(recomposed) for ADR adapter is the PROOF gate. PROOF outcome unlocks downstream adapter SPECs.
+
+#### Tasks (for spec.SPEC-001)
+
+Populated by /spec Stage 2 dispatch on /plan continue (REQ + DESIGN + TASK authoring per Steps 2-4).
+
+#### Intra-part Deps Graph
+
+Populated by /spec Stage 2 dispatch.
+
+#### Editor Mirror IDs (for spec.SPEC-001)
+
+Populated as /spec creates tasks.
+
+#### Pending User Decisions (for spec.SPEC-001)
+
+Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+
+### spec.SPEC-002 — Simple Adapters: ANALYSIS + SESSION (READY)
+
+**Substatus**: READY
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be SPEC-002 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-002-simple-adapters/)
+**Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
+
+**DoD**:
+
+- [ ] SPEC-002 root note authored at docs/specs/SPEC-002-simple-adapters/SPEC-002-simple-adapters.md
+- [ ] REQ notes authored at requirements/
+- [ ] DESIGN note(s) authored at design/
+- [ ] TASK notes authored at tasks/
+- [ ] ADR coverage gate PASS
+- [ ] Gate A semantic gap analysis PASS
+- [ ] Gate B 4 binary drift checks PASS
+- [ ] SPEC-002 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+
+#### Workflow Plan (for spec.SPEC-002)
+
+/spec Stage 2 per-SPEC authoring. Scope: ANALYSIS adapter (~50 LOC delta extending BaseMarkdownAdapter with section_delimiter `## ` + item-N identifier) + SESSION adapter (~100 LOC delta extending BaseMarkdownAdapter with section_delimiter `## Event ` + Event-NN identifier + cross_source_updates field per ADR-002 D-3 for PLAN coordination). Both extend the BaseMarkdownAdapter base class from SPEC-001; SESSION adds cross-source-mutation capability.
+
+#### Tasks (for spec.SPEC-002)
+
+Populated by /spec Stage 2 dispatch.
+
+#### Intra-part Deps Graph
+
+Populated by /spec Stage 2 dispatch.
+
+#### Editor Mirror IDs (for spec.SPEC-002)
+
+Populated as /spec creates tasks.
+
+#### Pending User Decisions (for spec.SPEC-002)
+
+Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+
+### spec.SPEC-003 — PLAN Adapter (READY)
+
+**Substatus**: READY
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be SPEC-003 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-003-plan-adapter/)
+**Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
+
+**DoD**:
+
+- [ ] SPEC-003 root note authored at docs/specs/SPEC-003-plan-adapter/SPEC-003-plan-adapter.md
+- [ ] REQ notes authored at requirements/
+- [ ] DESIGN note(s) authored at design/
+- [ ] TASK notes authored at tasks/
+- [ ] ADR coverage gate PASS
+- [ ] Gate A semantic gap analysis PASS
+- [ ] Gate B 4 binary drift checks PASS
+- [ ] SPEC-003 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+
+#### Workflow Plan (for spec.SPEC-003)
+
+/spec Stage 2 per-SPEC authoring. Scope: PLAN adapter (~250 LOC delta; distinct implementation NOT extending BaseMarkdownAdapter due to regenerative content). Per ADR-002 D-3 capability matrix: section_delimiter `### {phase}.{part-id}` + phase+part-id identifier + regenerated_sections field with 50% integrity floor per ADR-002 D-5. Regenerative sections (Progress Dashboard, Cross-Part Dependency Graph Mermaid) skipped from hash validation per ADR-002 D-4 PLAN extraction strategy. branches[] frontmatter mutation handled via frontmatter_map field per ADR-002 D-2 MutationSpec.
+
+#### Tasks (for spec.SPEC-003)
+
+Populated by /spec Stage 2 dispatch.
+
+#### Intra-part Deps Graph
+
+Populated by /spec Stage 2 dispatch.
+
+#### Editor Mirror IDs (for spec.SPEC-003)
+
+Populated as /spec creates tasks.
+
+#### Pending User Decisions (for spec.SPEC-003)
+
+Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+
+### spec.SPEC-004 — SPEC Subtree Adapter (READY)
+
+**Substatus**: READY
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be SPEC-004 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-004-spec-subtree-adapter/)
+**Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
+
+**DoD**:
+
+- [ ] SPEC-004 root note authored at docs/specs/SPEC-004-spec-subtree-adapter/SPEC-004-spec-subtree-adapter.md
+- [ ] REQ notes authored at requirements/
+- [ ] DESIGN note(s) authored at design/
+- [ ] TASK notes authored at tasks/
+- [ ] ADR coverage gate PASS
+- [ ] Gate A semantic gap analysis PASS
+- [ ] Gate B 4 binary drift checks PASS
+- [ ] SPEC-004 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+
+#### Workflow Plan (for spec.SPEC-004)
+
+/spec Stage 2 per-SPEC authoring. Scope: SPEC subtree adapter (~500 LOC delta; the HARDEST adapter). Per ADR-002 D-3 capability matrix: recursive multi-file scope (root + children); frontmatter_map mutation surface (title + permalink); filename_rewrite_map per child. Per ADR-002 D-4 hash protocol: per-file char-identity validation (each REQ + DESIGN + TASK + SPEC root file independently). Per ADR-002 D-1 schema shape: specSubtreeManifestSchema with explicit root + children distinction.
+
+#### Tasks (for spec.SPEC-004)
+
+Populated by /spec Stage 2 dispatch.
+
+#### Intra-part Deps Graph
+
+Populated by /spec Stage 2 dispatch.
+
+#### Editor Mirror IDs (for spec.SPEC-004)
+
+Populated as /spec creates tasks.
+
+#### Pending User Decisions (for spec.SPEC-004)
+
+Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+
+### spec.SPEC-005 — Decompose and Recompose Skills (READY)
+
+**Substatus**: READY
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be SPEC-005 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-005-decompose-and-recompose-skills/)
+**Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
+
+**DoD**:
+
+- [ ] SPEC-005 root note authored at docs/specs/SPEC-005-decompose-and-recompose-skills/SPEC-005-decompose-and-recompose-skills.md
+- [ ] REQ notes authored at requirements/
+- [ ] DESIGN note(s) authored at design/
+- [ ] TASK notes authored at tasks/
+- [ ] ADR coverage gate PASS
+- [ ] Gate A semantic gap analysis PASS
+- [ ] Gate B 4 binary drift checks PASS
+- [ ] SPEC-005 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+
+#### Workflow Plan (for spec.SPEC-005)
+
+/spec Stage 2 per-SPEC authoring. Scope: /decompose + /recompose Claude Code skills. Each skill is a thin orchestrator — LLM authors plan YAML, user adjudicates plan via AskUserQuestion, deterministic composition library script consumes plan and executes mutations per ADR-002 D-2 adapter interface. CLI entry points + incremental adapter registration (per critic P1 amendment: adapter registration is incremental; /decompose and /recompose work for ADR adapter at SPEC-005 ship; other adapter types require their respective SPECs SPEC-002 + SPEC-003 + SPEC-004 to complete first for broader coverage).
+
+#### Tasks (for spec.SPEC-005)
+
+Populated by /spec Stage 2 dispatch.
+
+#### Intra-part Deps Graph
+
+Populated by /spec Stage 2 dispatch.
+
+#### Editor Mirror IDs (for spec.SPEC-005)
+
+Populated as /spec creates tasks.
+
+#### Pending User Decisions (for spec.SPEC-005)
+
+Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
+
+### spec.SPEC-006 — Defrag and Ingest Skills (READY)
+
+**Substatus**: READY
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be SPEC-006 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-006-defrag-and-ingest-skills/)
+**Source artifacts**: KICKOFF-BRIEF.md (Brain-awareness requirements per critic P1 amendment) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome + spec.SPEC-005 outcome (/decompose + /recompose primitives)
+
+**DoD**:
+
+- [ ] SPEC-006 root note authored at docs/specs/SPEC-006-defrag-and-ingest-skills/SPEC-006-defrag-and-ingest-skills.md
+- [ ] REQ notes authored at requirements/
+- [ ] DESIGN note(s) authored at design/
+- [ ] TASK notes authored at tasks/
+- [ ] ADR coverage gate PASS (Brain-awareness scope is non-ADR per critic P1 amendment; KICKOFF-BRIEF.md sourced)
+- [ ] Gate A semantic gap analysis PASS
+- [ ] Gate B 4 binary drift checks PASS
+- [ ] SPEC-006 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+
+#### Workflow Plan (for spec.SPEC-006)
+
+/spec Stage 2 per-SPEC authoring. Scope: /defrag (periodic curator skill that audits memory state and delegates to /decompose + /recompose for split + merge candidates; native delete after confirmation for stale entries; cron-runnable) + /ingest (outside → graph; Brain-aware variant of memory-ingest with verbatim source preservation; coexists with existing ~/Dev/basic-memory-skills/memory-ingest per locked design decision F-3). Per critic P1 amendment: /ingest Brain-awareness requirements (CONVENTIONS, Pattern 2 three-phase write, 16 canonical entity types, observation category prefix + tags, final-two-sections invariant) derive from KICKOFF-BRIEF.md not ADRs. These requirements are NON-ADR scope; documented as such per critic recommendation. ADR coverage gate evaluates the SPEC against ADRs; non-ADR requirements are documented separately in SPEC scope.
+
+#### Tasks (for spec.SPEC-006)
+
+Populated by /spec Stage 2 dispatch.
+
+#### Intra-part Deps Graph
+
+Populated by /spec Stage 2 dispatch.
+
+#### Editor Mirror IDs (for spec.SPEC-006)
+
+Populated as /spec creates tasks.
+
+#### Pending User Decisions (for spec.SPEC-006)
+
+Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 ## Review
 
