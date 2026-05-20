@@ -2,7 +2,7 @@
 title: 'TASK-008-SPEC-001: Implement ADR Adapter'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-008-spec-001-implement-adr-adapter
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -76,6 +76,7 @@ The ADR adapter overrides only configuration properties per ADR-002 D-3. The H3 
 
 ## Relations
 
+- validated_by [[TEST-REPORT-008-SPEC-001: ADR Adapter]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-007-SPEC-001: ADR Adapter Implementation]]
 - implements [[DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy]]

@@ -58,6 +58,14 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - TASK-004 + TASK-005 Brain status: TODO → DONE; validated_by relations added
 - Next: Wave 4 — TASK-008 (AdrAdapter extends BaseMarkdownAdapter)
 
+## Event 06 — Wave 4 (TASK-008) DONE (2026-05-20)
+
+- TASK-008-SPEC-001 (AdrAdapter): `src/adapters/adr.ts` — concrete class extending BaseMarkdownAdapter; sourceType="adr", sectionDelimiter="### ", identifierPattern=/D-(\d+)/; no method overrides; 5/5 tests pass
+- Full suite: 43 pass, 0 fail, 90 expect() calls; biome + tsc clean
+- QA: TEST-REPORT-008-SPEC-001 DONE; validated_by relation added to TASK-008
+- TASK-008 Brain status: TODO → DONE
+- Next: Wave 5 — TASK-009 (Round-trip PROOF) — depends on TASK-003 (SHA-256) + TASK-008 (AdrAdapter)
+
 ## Observations
 
 - [decision] 4-wave build plan confirmed: W1=SPEC-001 PROOF (sequential gate); W2=SPEC-002+003+004+007 (4-way parallel via agent-teams); W3=SPEC-005; W4=SPEC-006 #build-plan #wave-1 #parallelism
