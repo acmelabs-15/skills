@@ -1277,3 +1277,4 @@ None — all decisions LOCKED in ADR-003.
 - relates_to [[ANALYSIS-002: Plan/Session Note Render Architecture]]
 - pairs_with [[brain:---adr-review]]
 - pairs_with [[sync-jira]]
+- relates_to [[RETRO-001: SESSION-2026-05-20_03 Render Architecture Retrospective]]

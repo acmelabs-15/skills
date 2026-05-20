@@ -127,7 +127,7 @@ P1 resolution summary:
 
 ## Relations
 
-- reviews [[ADR-003: Plan/Session Render Architecture]]
+- relates_to [[ADR-003: Plan/Session Render Architecture]]
 - relates_to [[ANALYSIS-002: Plan/Session Note Render Architecture]]
 - pairs_with [[ADR-001: Composition Library Architecture]]
 - pairs_with [[ADR-002: Adapter Contract and Plan Schema]]
