@@ -12,7 +12,7 @@ tags:
 # SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001
 
 **Scope**: Bootstrap the `skills` Brain project per user-provided 6-step instructions. Create filesystem + git, register Brain MCP project, write KICKOFF-BRIEF.md (project root file), invoke `/plan create` with `--name skills-ecosystem`, surface 5 open design questions from KICKOFF-BRIEF.md via AskUserQuestion as Step 5. Bound to PLAN-001 Skills Ecosystem (see Relations); this session drives the bootstrap (Steps 1-4) and the start of decisions.1 (Step 5).
-**State**: Bootstrap + decisions.1 fully closed out (ADR-001 ACCEPTED at SHA fb700b3; CRIT-001 authored). decisions.2 IN_PROGRESS with ADR-002 PROPOSED at 865 lines post round-2 architect revision (SHA 6c2a92b); round-2 brain:---adr-review re-verification pending; per Step 7 iteration budget rounds 2 of 3 available before HALT. PLAN-001 Progress Dashboard: 3 DRAFT + 1 IN_PROGRESS + 0 BLOCKED + 2 DONE. Branch feat/plan-001-skills-ecosystem at 9 commits. Session IN_PROGRESS. Per user's critical rule (state changes MUST propagate the entire PLAN+SESSION note in same turn): comprehensive propagation applied this turn covering Progress Dashboard, Phase Progression, decisions.2 subsections, DoD checkboxes, Cross-Part Deps Graph, Decision Log + Progress Log, Intra-part Deps Graph.
+**State**: Decisions phase fully complete (decisions.1 DONE + ADR-001 ACCEPTED; decisions.2 DONE + ADR-002 ACCEPTED 2026-05-19 via brain:---adr-review round-2 unanimous PASS 6A+0C+0B+0P0). CRIT-001 + CRIT-002 debate logs archived. spec-decomposition transitions PENDING → READY (next-ready part on /plan continue invocation). PLAN-001 Progress Dashboard: 3 DRAFT + 0 IN_PROGRESS + 0 BLOCKED + 3 DONE. Branch feat/plan-001-skills-ecosystem accumulating commits. Session IN_PROGRESS. Per user's critical state-propagation rule applied each turn going forward — full-note audit covers H3 status flags, Progress Dashboard, Phase Progression, Cross-Part Deps Graph, per-part subsections, DoD checkboxes, Decision Log + Progress Log, SESSION State + Events.
 
 ## Event 01 — Session started
 
@@ -172,6 +172,20 @@ tags:
 - User interjection critical state-propagation rule: state updates MUST propagate the entire PLAN+SESSION note in same turn; one part of the note CANNOT be in different state than another; rule applied this turn to remediate all drift accumulated since Event 12 (decisions.2 transition)
 - Comprehensive propagation this turn PLAN Progress Dashboard (decisions row updated IP 0→1); PLAN Phase Progression (decisions.2 IN_PROGRESS); PLAN Cross-Part Deps Graph (d1 done class + ✅; d2 done class + 🔄); PLAN decisions.2 subsections all updated (Workflow Plan, Tasks T-08..T-16, Intra-part Deps Graph Mermaid, D-N substatus list 5 LOCKED rows, Editor Mirror IDs, Pending User Decisions); PLAN DoD checkboxes 4 of 6 flipped [x]; PLAN Decision Log + Progress Log entries; SESSION State header line refreshed
 - Next /decisions Step 7 round-2 brain:---adr-review re-dispatch (6 parallel reviewers); per Step 7 iteration budget rounds 2 of 3 available before HALT
+
+## Event 16 — brain:---adr-review ADR-002 Phase 4 convergence PASS round 2 unanimous (6 ACCEPT + 0 CONCERNS + 0 BLOCK) + ADR-002 ACCEPTED + decisions.2 DONE + spec-decomposition READY
+
+- Type debate-result + state-change + multi-section-propagation
+- Trigger /decisions Step 7 round-2 brain:---adr-review re-dispatch on revised ADR-002 (865 lines post round-1 P1 resolution)
+- Outcome 6 reviewers all returned ACCEPT verdict; all 10 round-1 P1 themes A-J confirmed resolved with concrete YES evidence per reviewer; 0 NEW P0/P1/P2 introduced by round-2 revision
+- Round-2 verdict tally architect ACCEPT, critic ACCEPT, independent-thinker ACCEPT, security ACCEPT, analyst ACCEPT, high-level-advisor ACCEPT (was 3 ACCEPT + 3 CONCERNS round 1 — full conversion of CONCERNS → ACCEPT after round-2 revision)
+- Per-reviewer P1 resolution confirmation architect (2/2 JSDoc + nested discriminator); critic (4/4 cross_source_updates + subtree_manifest + double discriminant + frontmatter_map); independent-thinker (2/2 hash extracted + BaseMarkdownAdapter); security (2/2 realpath + key-value disjointness); analyst (2/2 frontmatter_map + regenerated_sections); high-level-advisor (strategic alignment maintained + no second-system effect)
+- Convergence achieved on iteration 2 of 3 (within /decisions Step 7 budget; 1 iteration spare)
+- /decisions Step 8 executed ADR-002 status flipped PROPOSED → ACCEPTED (frontmatter line + body Status section); body Status now attributes round-2 convergence + cites CRIT-002 for verdict tally
+- /decisions Step 9 executed inline (orchestrator state propagation; formal /plan set-part-done skipped in favor of inline since functionally equivalent) PLAN decisions.2 substatus IN_PROGRESS → DONE; completing_session bound; outcome wikilink to ADR-002 resolved; DoD checkboxes 2 remaining flipped [x] (ACCEPTED + adr-review PASS)
+- Downstream state propagation spec-decomposition transitions PENDING → READY (decisions.2 dep satisfied); next-ready part on /plan continue invocation
+- Per user's critical rule applied this turn comprehensive PLAN+SESSION propagation across Progress Dashboard (decisions row DONE 2/2; spec-decomposition stays READY in DRAFT col); Phase Progression (decisions.2 DONE + outcome; spec-decomposition READY); Cross-Part Deps Graph (d2 ✅ + class done; sd stays pending dashed for READY); decisions.2 H3 + subsections (Tasks T-14/T-15 done + T-16 done; Pending User Decisions cleared); spec-decomposition H3 + state lines; Decision Log + Progress Log entries; CRIT-002 tag round-2-pass + Round 2 outcome section appended
+- Next user resumes via /plan PLAN-001-skills-ecosystem (continue mode auto-routes to spec-decomposition READY part) → /spec Stage 1 (SPEC decomposition proposal via analyst clustering + conditional CVA + user adjudication via AskUserQuestion)
 
 ## Observations
 

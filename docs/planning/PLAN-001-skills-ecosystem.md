@@ -34,13 +34,13 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | Phase | DRAFT | IN_PROGRESS | BLOCKED | DONE | Total |
 |:--|:--|:--|:--|:--|:--|
 | research | 0 | 0 | 0 | 1 | 1 |
-| decisions | 0 | 1 | 0 | 1 | 2 |
+| decisions | 0 | 0 | 0 | 2 | 2 |
 | spec-decomposition | 1 | 0 | 0 | 0 | 1 |
 | spec.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post spec-decomposition) |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **3** | **1** | **0** | **2** | **6** |
+| **Total visible** | **3** | **0** | **0** | **3** | **6** |
 
 ## Workflow Plan
 
@@ -56,8 +56,8 @@ Per-part workflow detail lives in each per-part H3 below.
 |:--|:--|:--|
 | research | DONE | `KICKOFF-BRIEF.md` (project root file; not a Brain note) |
 | decisions.1 | DONE | [[ADR-001: Composition Library Architecture]] |
-| decisions.2 | IN_PROGRESS | [[ADR-002: Adapter Contract and Plan Schema]] (PROPOSED at 865 lines post round-2 architect revision; round-2 brain:---adr-review re-verification pending) |
-| spec-decomposition | PENDING | N×[[SPEC-XXX ...]] root notes + decomposition rationale |
+| decisions.2 | DONE | [[ADR-002: Adapter Contract and Plan Schema]] (ACCEPTED 2026-05-19 via brain:---adr-review round-2 unanimous PASS) |
+| spec-decomposition | READY | N×[[SPEC-XXX ...]] root notes + decomposition rationale (decisions.2 dependency satisfied; next-ready part) |
 | spec.SPEC-NNN | PENDING | per-SPEC REQ/DESIGN/TASK subtree (created post spec-decomposition) |
 | build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits |
 | review | PENDING | adversarial multi-axis review across feature surface |
@@ -80,7 +80,7 @@ graph TD
   subgraph D ["Decisions"]
     direction TB
     d1("✅ <b>decisions.1</b><br/><span style='color:#6b7280;font-size:11px'>ADR-001 ACCEPTED</span>")
-    d2("🔄 <b>decisions.2</b><br/><span style='color:#6b7280;font-size:11px'>ADR-002 PROPOSED (r2)</span>")
+    d2("✅ <b>decisions.2</b><br/><span style='color:#6b7280;font-size:11px'>ADR-002 ACCEPTED</span>")
   end
 
   subgraph S ["Spec-Decomposition"]
@@ -126,6 +126,7 @@ graph TD
 - **2026-05-19** — decisions.2 IN_PROGRESS. Path-choice: architect direct authoring (no per-D-N AskUserQuestion adjudication) selected via AskUserQuestion. ADR-002 PROPOSED authored at decisions/ADR-002-adapter-contract-and-plan-schema.md (548 lines, 5 D-N design sections — Plan YAML schema, Adapter interface, Capability matrix, Hash extraction strategies, Validator structure).
 - **2026-05-19** — ADR-002 round-1 brain:---adr-review FAIL (3 ACCEPT + 3 CONCERNS + 0 BLOCK; below ≥5 ACCEPT threshold). 12 raw P1 findings deduplicated to 10 themes A-J (interface gaps + schema gaps + security refinements + pattern guidance). CRIT-002-ADR-002 authored. Round-2 resolution path-choice: re-dispatch architect with consolidated revision brief (selected via AskUserQuestion).
 - **2026-05-19** — ADR-002 round-2 architect revision applied. 10 P1 themes A-J resolved in-ADR: P1-A MutationSpec frontmatter_map; P1-B cross_source_updates Zod shape; P1-C SPEC subtree manifest Zod shape; P1-D nested discriminatedUnion plan_type × source_type; P1-E JSDoc adapter call sequence; P1-F regenerated_sections declarative + 50% integrity floor; P1-G containedPathSchema realpath + path.sep; P1-H injectivity key-value domain disjointness; P1-I hash extracted to shared utility (5-method interface); P1-J BaseMarkdownAdapter pattern documented. ADR-002 line count 548 → 865 (+317 lines, +58%). Status PROPOSED pending round-2 brain:---adr-review re-verification.
+- **2026-05-19** — decisions.2 DONE. ADR-002 ACCEPTED at decisions/ADR-002-adapter-contract-and-plan-schema.md after brain:---adr-review Phase 4 convergence PASS round 2 unanimous (6 ACCEPT + 0 CONCERNS + 0 BLOCK + 0 P0 + 0 NEW P1/P2). All 10 round-1 P1 themes A-J confirmed resolved per CRIT-002 Round 2 outcome section. CONCERNS-issuing reviewers from round 1 (critic + security + analyst) all converted to ACCEPT verdict. spec-decomposition transitioned PENDING → READY (decisions.2 dependency now DONE).
 
 ## Progress Log
 
@@ -133,6 +134,7 @@ graph TD
 - **2026-05-19** — Step 5 complete: 5 open design questions adjudicated via AskUserQuestion (Q1-Q4 batched + Q5 follow-up). All Recommended options selected. PLAN updated with locked decisions in DoD checkboxes + D-N substatus table + Decision Log. Paused per bootstrap directive; ready to proceed to ADR-001 authoring via brain:🧠-architect dispatch + brain:---adr-review BLOCKING gate on user confirmation.
 - **2026-05-19** — Step 6 (decisions.1 ADR-001 ACCEPTED) complete: /decisions Steps 5-9 executed (architect dispatch + detail-parity audit + 6-agent adr-review debate + Phase 3 P1 resolutions + CRIT authoring + ACCEPTED flip + state propagation). ADR-001 at decisions/ADR-001-composition-library-architecture.md (501 lines after Phase 3 refinements). decisions.2 READY; next-ready part on resume.
 - **2026-05-19** — decisions.2 IN_PROGRESS (continuation invocation of /plan PLAN-001). Owning session bound to SESSION-2026-05-19_01. Path-choice + ADR-002 PROPOSED + round-1 adr-review FAIL + CRIT-002 auth + round-2 architect revision all completed this turn; per the user's critical state-propagation rule applied this turn — PLAN-001 sections fully propagated (Progress Dashboard decisions row IP 0→1; Phase Progression decisions.2 IN_PROGRESS; decisions.2 H3 subsections Workflow Plan / Tasks / Intra-part Deps Graph / D-N substatus list / Editor Mirror IDs / Pending User Decisions all updated; DoD checkboxes 4 of 6 flipped [x]; Cross-Part Deps Graph d1+d2 class updates).
+- **2026-05-19** — decisions.2 closed out via /decisions Steps 7-9: brain:---adr-review round-2 dispatch (6 parallel reviewers) → all ACCEPT unanimous → ADR-002 ACCEPTED flip → decisions.2 IN_PROGRESS → DONE + completing_session bound + outcome wikilink. CRIT-002 Round 2 outcome section appended with R1→R2 verdict transitions + 12/12 P1 resolution confirmation. PLAN-001 comprehensive propagation applied same turn per user's critical rule (Progress Dashboard decisions row DONE 2/2; Phase Progression decisions.2 DONE + spec-decomposition READY; Cross-Part Deps Graph d2 ✅; decisions.2 H3 + DoD + Tasks + Pending User Decisions all updated; spec-decomposition H3 + substatus transitioned READY). Decisions phase fully complete; next-ready part is spec-decomposition.
 
 ## Blockers
 
@@ -260,12 +262,12 @@ graph TD
 
 All 5 open questions from `KICKOFF-BRIEF.md` ("Open design questions for early adjudication") surfaced via AskUserQuestion in Step 5 of the user-provided bootstrap. Adjudication unlocks ADR-001 authoring.
 
-### decisions.2 — Adapter contract + plan schema ADR (IN_PROGRESS)
+### decisions.2 — Adapter contract + plan schema ADR (DONE)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: DONE
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
-**Completing session**: —
-**Outcome**: — (will be [[ADR-002: Adapter Contract and Plan Schema]])
+**Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+**Outcome**: [[ADR-002: Adapter Contract and Plan Schema]]
 **Source artifacts**: `KICKOFF-BRIEF.md` (Per-type adapter specifics), [[ADR-001: Composition Library Architecture]] (Q1-Q4 outcomes)
 
 **DoD**:
@@ -274,8 +276,8 @@ All 5 open questions from `KICKOFF-BRIEF.md` ("Open design questions for early a
 - [x] Adapter interface contract specified (parse / extract-by-range / renumber / wikilink-rewrite / serialize) — ADR-002 D-2 (CompositionAdapter 5-method interface; hash extracted to shared utility; MutationSpec extended with frontmatter_map + regenerated_sections)
 - [x] Per-type adapter capability matrix (ADR / ANALYSIS / SESSION / PLAN / SPEC subtree) — ADR-002 D-3 (5 adapters with LOC + complexity; BaseMarkdownAdapter pattern for 3 simple types; PLAN + SPEC distinct)
 - [x] Hash-validation invariant codified (pre-mutation source hash vs post-reverse-mutation destination hash) — ADR-002 D-4 refines ADR-001 F-8 per-type (single-pass replacement + key-value disjointness + PLAN regenerative-section carve-out)
-- [ ] ADR-002 frontmatter `status: ACCEPTED`; `date` + `updated` populated
-- [ ] /brain:---adr-review PASS verdict before downstream phases (if Q5 = YES from decisions.1)
+- [x] ADR-002 frontmatter status: ACCEPTED; date + updated populated (flipped 2026-05-19 post round-2 brain:---adr-review PASS)
+- [x] /brain:---adr-review PASS verdict before downstream phases — Round 2 PASS 6 ACCEPT + 0 BLOCK + 0 P0 + 0 NEW P1/P2 unanimous; all 10 round-1 P1 themes A-J confirmed resolved per CRIT-002 Round 2 outcome section
 
 #### Workflow Plan (for decisions.2)
 
@@ -291,9 +293,9 @@ Path-choice: architect direct authoring (user-adjudicated 2026-05-19 via AskUser
 | T-11 | CRIT auth | Author CRIT-002-ADR-002 debate log capturing 10 P1 themes | orchestrator | `docs/critique/CRIT-002-ADR-002-...md` | S | Event 14 | Event 14 |
 | T-12 | resolution path | AskUserQuestion: architect-r2 vs orchestrator-inline vs pause | orchestrator | — | XS | Event 14 | Event 14 (architect-r2 chosen) |
 | T-13 | revision r2 | Re-dispatch architect round 2 with 10 P1 themes | brain:🧠-architect | `docs/decisions/ADR-002-adapter-contract-and-plan-schema.md` | M | Event 15 | Event 15 (865 lines) |
-| T-14 | ADR gate r2 | Dispatch 6-agent adr-review round 2 (parallel) | 6× brain:🧠-* | — | M | Event 16 (planned) | pending |
-| T-15 | ACCEPTED flip | Flip ADR-002 PROPOSED → ACCEPTED post round 2 PASS | orchestrator | — | XS | — | blocked-by T-14 |
-| T-16 | propagation | Propagate decisions.2 DONE state across PLAN sections | orchestrator | — | XS | — | blocked-by T-15 |
+| T-14 | ADR gate r2 | Dispatch 6-agent adr-review round 2 (parallel) | 6× brain:🧠-* | — | M | Event 16 | Event 16 (PASS 6A+0C+0B unanimous) |
+| T-15 | ACCEPTED flip | Flip ADR-002 PROPOSED → ACCEPTED post round 2 PASS | orchestrator | `docs/decisions/ADR-002-adapter-contract-and-plan-schema.md` | XS | Event 16 | Event 16 |
+| T-16 | propagation | Propagate decisions.2 DONE state across PLAN sections | orchestrator | `docs/planning/PLAN-001-skills-ecosystem.md` + `docs/sessions/SESSION-2026-05-19_01-...md` + CRIT-002 | S | Event 16 | Event 16 (this turn) |
 
 #### Intra-part Deps Graph
 
@@ -342,13 +344,13 @@ graph TD
 
 #### Pending User Decisions (for decisions.2)
 
-Path-choice resolved 2026-05-19 via AskUserQuestion: architect direct authoring (no per-D-N AskUserQuestion adjudication). Round-1 resolution path-choice resolved 2026-05-19 via AskUserQuestion: re-dispatch architect round 2 with consolidated revision brief. Currently NONE pending — awaiting round-2 brain:---adr-review re-verification (6-agent debate; same pattern as round 1; per /decisions Step 7 iteration budget rounds 2 of 3 available before HALT).
+None — decisions.2 part DONE 2026-05-19. ADR-002 ACCEPTED via brain:---adr-review round-2 unanimous PASS (6 ACCEPT + 0 BLOCK). Path-choices resolved 2026-05-19 during this session: (1) architect direct authoring (no per-D-N adjudication); (2) re-dispatch architect round 2 with consolidated revision brief. Both via AskUserQuestion. Decisions phase fully complete; spec-decomposition is the next-ready part on /plan continue invocation.
 
 ## Spec-Decomposition
 
-### spec-decomposition — Cluster ADRs into SPECs (PENDING)
+### spec-decomposition — Cluster ADRs into SPECs (READY)
 
-**Substatus**: PENDING
+**Substatus**: READY
 **Owning session**: —
 **Completing session**: —
 **Outcome**: — (will be N×[[SPEC-XXX ...]] root notes)

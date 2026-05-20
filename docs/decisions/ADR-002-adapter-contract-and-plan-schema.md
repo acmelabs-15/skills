@@ -1,7 +1,7 @@
 ---
 title: 'ADR-002: Adapter Contract and Plan Schema'
 type: decision
-status: PROPOSED
+status: ACCEPTED
 date: 2026-05-19
 updated: 2026-05-19
 permalink: decisions/adr-002-adapter-contract-and-plan-schema
@@ -17,7 +17,7 @@ tags:
 
 ## Status
 
-PROPOSED (2026-05-19)
+ACCEPTED (2026-05-19; brain:---adr-review Phase 4 convergence PASS round 2 unanimous 6 ACCEPT + 0 BLOCK + 0 P0 + 0 NEW P1/P2 across all 6 reviewers — architect + critic + independent-thinker + security + analyst + high-level-advisor; all 12 round-1 P1 findings / 10 deduplicated themes confirmed resolved per CRIT-002-ADR-002 round-2 verdict tally + updated Clarifications)
 
 ## Context and Problem Statement
 
