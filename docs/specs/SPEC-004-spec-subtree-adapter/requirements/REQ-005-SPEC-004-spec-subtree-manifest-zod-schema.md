@@ -2,7 +2,7 @@
 title: 'REQ-005-SPEC-004: SPEC Subtree Manifest Zod Schema'
 type: requirement
 status: DRAFT
-permalink: specs/spec-004-spec-subtree-adapter/requirements/req-005-spec-004-spec-subtree-manifest-zod-schema-1
+permalink: specs/spec-004-spec-subtree-adapter/requirements/req-005-spec-004-spec-subtree-manifest-zod-schema
 tags:
 - requirement
 - spec-004

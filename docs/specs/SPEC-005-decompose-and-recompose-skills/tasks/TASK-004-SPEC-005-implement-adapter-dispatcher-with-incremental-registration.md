@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 0.5d
-permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-004-spec-005-implement-adapter-dispatcher-with-incremental-registration-1
+permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-004-spec-005-implement-adapter-dispatcher-with-incremental-registration
 tags:
 - task
 - adapter-registry

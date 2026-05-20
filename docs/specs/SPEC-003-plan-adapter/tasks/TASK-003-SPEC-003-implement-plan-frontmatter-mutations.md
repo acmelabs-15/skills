@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 0.5d
-permalink: specs/spec-003-plan-adapter/tasks/task-003-spec-003-implement-plan-frontmatter-mutations-1
+permalink: specs/spec-003-plan-adapter/tasks/task-003-spec-003-implement-plan-frontmatter-mutations
 tags:
 - task
 - spec-003

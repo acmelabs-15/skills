@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: M
 estimate: 1d
-permalink: specs/spec-003-plan-adapter/tasks/task-001-spec-003-implement-plan-adapter-base-1
+permalink: specs/spec-003-plan-adapter/tasks/task-001-spec-003-implement-plan-adapter-base
 tags:
 - task
 - spec-003

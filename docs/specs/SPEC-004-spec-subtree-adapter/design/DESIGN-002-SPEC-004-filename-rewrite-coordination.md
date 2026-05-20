@@ -2,7 +2,7 @@
 title: 'DESIGN-002-SPEC-004: Filename Rewrite Coordination'
 type: design
 status: DRAFT
-permalink: specs/spec-004-spec-subtree-adapter/design/design-002-spec-004-filename-rewrite-coordination-1
+permalink: specs/spec-004-spec-subtree-adapter/design/design-002-spec-004-filename-rewrite-coordination
 tags:
 - design
 - spec-004

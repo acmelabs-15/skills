@@ -3,7 +3,7 @@ title: 'SPEC-004: SPEC Subtree Adapter'
 type: spec
 status: ACCEPTED
 date: 2026-05-19
-permalink: specs/spec-004-spec-subtree-adapter/spec-004-spec-subtree-adapter-1
+permalink: specs/spec-004-spec-subtree-adapter/spec-004-spec-subtree-adapter
 tags:
 - spec
 - spec-subtree

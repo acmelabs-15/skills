@@ -2,7 +2,7 @@
 title: 'TASK-002-SPEC-006: Implement Defrag Memory Audit'
 type: task
 status: TODO
-permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-002-spec-006-implement-defrag-memory-audit-1
+permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-002-spec-006-implement-defrag-memory-audit
 tags:
 - task
 - defrag

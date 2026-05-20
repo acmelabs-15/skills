@@ -2,7 +2,7 @@
 title: 'TASK-007-SPEC-006: Document Defrag and Ingest Skill UX in README'
 type: task
 status: TODO
-permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-007-spec-006-document-defrag-and-ingest-skill-ux-in-readme-1
+permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-007-spec-006-document-defrag-and-ingest-skill-ux-in-readme
 tags:
 - task
 - documentation

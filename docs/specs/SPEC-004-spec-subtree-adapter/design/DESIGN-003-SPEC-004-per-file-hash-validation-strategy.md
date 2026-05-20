@@ -2,7 +2,7 @@
 title: 'DESIGN-003-SPEC-004: Per-File Hash Validation Strategy'
 type: design
 status: DRAFT
-permalink: specs/spec-004-spec-subtree-adapter/design/design-003-spec-004-per-file-hash-validation-strategy-1
+permalink: specs/spec-004-spec-subtree-adapter/design/design-003-spec-004-per-file-hash-validation-strategy
 tags:
 - design
 - spec-004

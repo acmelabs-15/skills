@@ -2,7 +2,7 @@
 title: 'DESIGN-003-SPEC-006: Skill Coexistence Strategy'
 type: design
 status: DRAFT
-permalink: specs/spec-006-defrag-and-ingest-skills/design/design-003-spec-006-skill-coexistence-strategy-1
+permalink: specs/spec-006-defrag-and-ingest-skills/design/design-003-spec-006-skill-coexistence-strategy
 tags:
 - design
 - coexistence

@@ -2,7 +2,7 @@
 title: 'TASK-006-SPEC-006: Defrag and Ingest Tests'
 type: task
 status: TODO
-permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-006-spec-006-defrag-and-ingest-tests-1
+permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-006-spec-006-defrag-and-ingest-tests
 tags:
 - task
 - testing

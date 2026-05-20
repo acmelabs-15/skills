@@ -2,7 +2,7 @@
 title: 'REQ-005-SPEC-002: Round-Trip Property Tests for ANALYSIS and SESSION'
 type: requirement
 status: DRAFT
-permalink: specs/spec-002-simple-adapters/requirements/req-005-spec-002-round-trip-property-tests-for-analysis-and-session-1
+permalink: specs/spec-002-simple-adapters/requirements/req-005-spec-002-round-trip-property-tests-for-analysis-and-session
 tags:
 - requirement
 - spec-002

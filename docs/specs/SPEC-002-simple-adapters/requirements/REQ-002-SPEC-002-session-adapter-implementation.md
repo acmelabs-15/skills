@@ -2,7 +2,7 @@
 title: 'REQ-002-SPEC-002: SESSION Adapter Implementation'
 type: requirement
 status: DRAFT
-permalink: specs/spec-002-simple-adapters/requirements/req-002-spec-002-session-adapter-implementation-1
+permalink: specs/spec-002-simple-adapters/requirements/req-002-spec-002-session-adapter-implementation
 tags:
 - requirement
 - spec-002

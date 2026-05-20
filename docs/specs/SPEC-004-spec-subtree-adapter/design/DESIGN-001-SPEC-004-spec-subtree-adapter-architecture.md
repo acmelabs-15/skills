@@ -2,7 +2,7 @@
 title: 'DESIGN-001-SPEC-004: SPEC Subtree Adapter Architecture'
 type: design
 status: DRAFT
-permalink: specs/spec-004-spec-subtree-adapter/design/design-001-spec-004-spec-subtree-adapter-architecture-1
+permalink: specs/spec-004-spec-subtree-adapter/design/design-001-spec-004-spec-subtree-adapter-architecture
 tags:
 - design
 - spec-004

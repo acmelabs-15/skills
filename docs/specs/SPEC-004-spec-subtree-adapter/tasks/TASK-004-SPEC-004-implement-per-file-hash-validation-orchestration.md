@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: M
 estimate: 2d
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-004-spec-004-implement-per-file-hash-validation-orchestration-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-004-spec-004-implement-per-file-hash-validation-orchestration
 tags:
 - task
 - spec-004

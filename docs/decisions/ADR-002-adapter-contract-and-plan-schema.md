@@ -48,12 +48,14 @@ This ADR specifies the adapter contract, plan YAML schema, per-type capability m
 All adapter methods (parse, extractByRange, applyMutations, reverseMutations, serialize, hash) are synchronous.
 
 **Pros:**
+
 - Markdown parsing is CPU-bound string processing with no I/O; async adds overhead without benefit
 - Deterministic script invariant is easier to reason about when all operations are synchronous
 - No need for Promise.all coordination or error propagation across async boundaries
 - Bun.hash("sha256", ...) is synchronous; Bun.file().text() can be called at the script entry point and the result passed as a string argument to sync adapter methods
 
 **Cons:**
+
 - If a future adapter needs async I/O (e.g., fetching a remote note), the interface must be extended
 - Large notes (>1 MB) could block the event loop during parse; mitigated by the 1 MB file-size guard in ADR-001 Confirmation
 
@@ -62,10 +64,12 @@ All adapter methods (parse, extractByRange, applyMutations, reverseMutations, se
 All adapter methods return Promises.
 
 **Pros:**
+
 - Future-proof for adapters that may need I/O
 - Consistent with the broader Bun/Node.js async ecosystem
 
 **Cons:**
+
 - Adds unnecessary complexity for CPU-bound markdown operations
 - Every caller must await; error handling requires try/catch in async context
 - Makes the round-trip property test harder to read and debug (async assertion chains)
@@ -77,12 +81,14 @@ All adapter methods return Promises.
 Each file in the SPEC subtree (root, each REQ, each DESIGN, each TASK) is hash-validated independently.
 
 **Pros:**
+
 - Pinpoints exactly which file has drift; error messages identify the drifting file
 - Rollback granularity matches file granularity (write-to-temp-then-rename is per-file)
 - Simpler implementation: the same hash protocol that works for ADR/ANALYSIS/SESSION works for each SPEC child file
 - Composable: the SPEC adapter iterates over its children and delegates to the per-file hash protocol
 
 **Cons:**
+
 - More hash computations (N+1 for a SPEC with N children); mitigated by SHA-256 being sub-millisecond for note-sized files
 
 #### Option B: Per-Subtree Hash Validation
@@ -90,9 +96,11 @@ Each file in the SPEC subtree (root, each REQ, each DESIGN, each TASK) is hash-v
 Hash the entire serialized subtree (root + all children concatenated in deterministic order) as a single blob.
 
 **Pros:**
+
 - Single hash comparison for the entire SPEC
 
 **Cons:**
+
 - Cannot pinpoint which file drifted; error message says "SPEC subtree hash mismatch" without identifying the culprit
 - Requires deterministic concatenation order (filename sort); an implementation bug in ordering silently breaks the hash chain
 - Does not align with the per-file write-to-temp-then-rename rollback mechanism from ADR-001 F-8
@@ -104,9 +112,11 @@ Hash the entire serialized subtree (root + all children concatenated in determin
 Single file containing all Zod schemas (base + all 5 per-type extensions + discriminated union).
 
 **Pros:**
+
 - No import graph to manage; everything in one place
 
 **Cons:**
+
 - File grows to 500+ lines as adapters are added
 - All adapters coupled in a single module; changing one type's schema requires navigating all types
 - Does not align with the per-type adapter file layout in _shared/composition/src/adapters/
@@ -116,11 +126,13 @@ Single file containing all Zod schemas (base + all 5 per-type extensions + discr
 Base discriminator schema in base.plan.schema.ts; per-type extension schemas in {type}.plan.schema.ts; composed into the discriminated union in index.ts.
 
 **Pros:**
+
 - Per-type schema files mirror the per-type adapter files in src/adapters/
 - Adding a new adapter type means adding one schema file and one line in the union composition
 - Each schema file is self-contained and testable independently
 
 **Cons:**
+
 - Import graph across 6+ files; mitigated by a single index.ts re-export
 
 ## Decision
@@ -128,6 +140,7 @@ Base discriminator schema in base.plan.schema.ts; per-type extension schemas in 
 This ADR specifies the adapter contract and plan YAML schema as 5 composite design decisions building on the locked choices in ADR-001. Together they define the complete design-level interface between the plan YAML (LLM-authored, user-adjudicated) and the deterministic script (adapter-dispatched, hash-validated).
 
 ### D-1: Plan YAML Schema Shape
+
 The plan YAML uses a nested discriminated union: outer discriminant on `plan_type` (distribution vs composition), inner discriminant on `source_type` per ADR-001 D-4. Distribution plans operate on a singular `source` (1 to N split, used by /decompose). Composition plans operate on plural `sources` (N to 1 merge, used by /recompose). Both share a common envelope with per-type extensions.
 
 **Common envelope fields:**
@@ -286,20 +299,24 @@ subtree_manifest:
 ```
 
 The root vs children distinction ensures the SPEC root note and each child note have independent mutation specifications, enabling per-file hash validation per Considered Options Axis 2.
-# ... common envelope ...
+
+# ... common envelope
+
 destinations:
-  - id: "cluster-1"
+
+- id: "cluster-1"
     output_path: "docs/decisions/ADR-001a-brain.md"
     line_range: { start: 45, end: 120 }
     mutations:
       renumber_map: { "D-1": "D-1", "D-2": "D-2" }
       wikilink_map: {}
-  - id: "cluster-2"
+- id: "cluster-2"
     output_path: "docs/decisions/ADR-001b-brain.md"
     line_range: { start: 121, end: 250 }
     mutations:
       renumber_map: { "D-3": "D-1", "D-4": "D-2" }
       wikilink_map: {}
+
 ```
 
 **Composition plan (recompose: N to 1):**
@@ -337,6 +354,7 @@ For `source_type: "plan"`, the extension adds `regenerated_sections: string[]` l
 For `source_type: "spec"`, the extension adds a `subtree` manifest field containing an array of child file entries, each with its own `renumber_map`, `wikilink_map`, and `filename_rewrite_map`. The `renumber_map` keys use `{ENTITY}-{NNN}` format (e.g., "REQ-001" to "REQ-003").
 
 ### D-2: Adapter Interface Contract
+
 Every per-type adapter implements the following TypeScript interface. The interface is synchronous per the Considered Options Axis 1 decision. The `hash()` utility is NOT part of the adapter interface; it is a shared utility at `_shared/composition/src/core/hash.ts` exporting `function sha256(content: string): string { return Bun.hash("sha256", content) }`. Adapters compose with this utility via import, not via polymorphism (see P1-I resolution in Clarifications).
 
 ```typescript
@@ -468,7 +486,9 @@ The applyMutations/reverseMutations inverse contract requires that for every ada
 The frontmatter_map inverse contract requires that for every adapter, applying frontmatter_map then its inverse (swapping keys and values) recovers the original frontmatter field values. This is critical for the SPEC subtree adapter where title and permalink must be reverse-mutated before hash-comparison.
 
 The regenerated_sections stripping contract requires that sections listed in `regenerated_sections` are excluded from BOTH the source extraction hash AND the destination reverse-mutation hash. The integrity floor (50% maximum coverage) is enforced at the Zod schema level (D-5), not at the adapter level.
+
 ### D-3: Per-Type Capability Matrix
+
 Each adapter handles a specific source type with varying capabilities based on the structural characteristics of that note type.
 
 **ADR adapter (~250 LOC; build order 1, PROOF)**
@@ -502,7 +522,9 @@ Unlike the other 4 adapters which operate on a single file, the SPEC adapter ope
 | SESSION | Yes | Yes | Yes (emits PLAN update instructions) | No | No | No | ~100 delta | 3 |
 | PLAN | Yes | Yes | No | Yes (Dashboard, Mermaid) | No | No | ~250 delta | 4 |
 | SPEC subtree | Yes | Yes | Yes (cross-spec relation rewrite) | No | Yes (root + children) | Yes (title, permalink) | ~500 delta | 5 |
+
 ### D-4: Hash Validation Per-Type Extraction Strategies
+
 ADR-001 F-8 defines the abstract 4-step hash protocol. This section specifies how each adapter maps to that protocol.
 
 Notation: S = source extraction (pre-mutation). D = destination content (post-write). D' = reverse-mutated destination. S_hash = SHA-256(S). D'_hash = SHA-256(D').
@@ -534,7 +556,9 @@ Extract S by `### {phase}.{part-id}` section line range for structural/narrative
 **SPEC subtree**
 
 Per-file extraction. Each file (SPEC root, each REQ, each DESIGN, each TASK) is extracted independently by its full content (line_range start=1, end=-1 for whole-file). Mutations per file include entity identifier renumber (e.g., REQ-001-SPEC-001 to REQ-003-SPEC-002), frontmatter title/permalink update via frontmatter_map, intra-spec relation preservation, and cross-spec relation rewrite. Filename rewrite is handled at the filesystem level (via move_note) and is not part of content hash. Reverse-mutate D to D' per-file by applying inverse renumber plus inverse wikilink plus inverse frontmatter_map (swap keys and values on frontmatter fields before hash-comparison). Compare per-file S_hash === D'_hash. Each file validated independently. A single file mismatch triggers ROLLBACK of the entire SPEC cluster (all .tmp files removed per ADR-001 F-8 rollback protocol).
+
 ### D-5: Plan YAML Validator Structure
+
 The Zod validator is modular, mirroring the per-type adapter layout per Considered Options Axis 3. The top-level schema uses a nested discriminated union: outer discriminant on `plan_type`, inner discriminant on `source_type`, per P1-D resolution.
 
 **File layout:**
@@ -793,6 +817,7 @@ interface PlanValidationError {
 ```
 
 Zod's native `ZodError.issues` array is mapped to this format. No raw `_errors` blob is ever surfaced to the user. Warnings are used for non-blocking advisories (e.g., "renumber_map is empty; no renumbering will occur"). Errors are BLOCKING and prevent script execution.
+
 ## Technology Stack
 
 No new dependencies beyond what ADR-001 specifies. This ADR is design-level, defining contracts and schemas that are implemented using the technology stack locked in ADR-001:
@@ -839,6 +864,7 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - [ ] Error reporting surfaces structured PlanValidationError array, not raw Zod _errors blob
 
 ## Clarifications
+
 - **2026-05-19**: ADR-002 round 2 revision applied per CRIT-002 round-1 findings. 10 P1 themes A-J resolved in-ADR: MutationSpec extended with frontmatter_map + regenerated_sections + integrity floor (50%); cross_source_updates + SPEC subtree manifest Zod shapes defined; nested discriminatedUnion (plan_type x source_type) refactored; CompositionAdapter JSDoc clarifies AST/string call sequence; hash extracted to shared utility (5-method interface); BaseMarkdownAdapter pattern documented; containedPathSchema uses realpath + path.sep; injectivity validator enforces key-value domain disjointness for order-independent single-pass replacement. P2 items deferred to spec phase per CRIT-002 documentation. Status remains PROPOSED pending round-2 adr-review re-verification.
 
 ## Observations
@@ -870,3 +896,4 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - implemented_by [[SPEC-004: SPEC Subtree Adapter]]
 - implemented_by [[SPEC-005: Decompose and Recompose Skills]]
 - implemented_by [[SPEC-006: Defrag and Ingest Skills]]
+- implemented_by [[SPEC-007: Plan/Session Render Implementation]]

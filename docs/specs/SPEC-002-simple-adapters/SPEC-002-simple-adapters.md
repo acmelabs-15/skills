@@ -2,7 +2,7 @@
 title: 'SPEC-002: Simple Adapters'
 type: spec
 status: ACCEPTED
-permalink: specs/spec-002-simple-adapters/spec-002-simple-adapters-1
+permalink: specs/spec-002-simple-adapters/spec-002-simple-adapters
 tags:
 - spec
 - simple-adapters

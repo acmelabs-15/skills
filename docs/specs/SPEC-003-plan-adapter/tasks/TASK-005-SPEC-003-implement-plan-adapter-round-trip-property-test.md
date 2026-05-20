@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 0.5d
-permalink: specs/spec-003-plan-adapter/tasks/task-005-spec-003-implement-plan-adapter-round-trip-property-test-1
+permalink: specs/spec-003-plan-adapter/tasks/task-005-spec-003-implement-plan-adapter-round-trip-property-test
 tags:
 - task
 - spec-003

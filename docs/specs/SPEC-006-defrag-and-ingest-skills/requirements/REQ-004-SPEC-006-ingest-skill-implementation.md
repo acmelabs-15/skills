@@ -2,7 +2,7 @@
 title: 'REQ-004-SPEC-006: Ingest Skill Implementation'
 type: requirement
 status: DRAFT
-permalink: specs/spec-006-defrag-and-ingest-skills/requirements/req-004-spec-006-ingest-skill-implementation-1
+permalink: specs/spec-006-defrag-and-ingest-skills/requirements/req-004-spec-006-ingest-skill-implementation
 tags:
 - requirement
 - ingest

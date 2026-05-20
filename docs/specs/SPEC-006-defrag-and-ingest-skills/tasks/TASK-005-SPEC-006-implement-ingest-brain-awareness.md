@@ -2,7 +2,7 @@
 title: 'TASK-005-SPEC-006: Implement Ingest Brain-Awareness'
 type: task
 status: TODO
-permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-005-spec-006-implement-ingest-brain-awareness-1
+permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-005-spec-006-implement-ingest-brain-awareness
 tags:
 - task
 - ingest

@@ -2,7 +2,7 @@
 title: 'DESIGN-001-SPEC-006: Defrag Skill Architecture'
 type: design
 status: DRAFT
-permalink: specs/spec-006-defrag-and-ingest-skills/design/design-001-spec-006-defrag-skill-architecture-1
+permalink: specs/spec-006-defrag-and-ingest-skills/design/design-001-spec-006-defrag-skill-architecture
 tags:
 - design
 - defrag

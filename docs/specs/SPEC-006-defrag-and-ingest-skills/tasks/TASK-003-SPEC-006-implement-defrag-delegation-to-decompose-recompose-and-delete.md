@@ -3,7 +3,7 @@ title: 'TASK-003-SPEC-006: Implement Defrag Delegation to Decompose Recompose an
   Delete'
 type: task
 status: TODO
-permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-003-spec-006-implement-defrag-delegation-to-decompose-recompose-and-delete-1
+permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-003-spec-006-implement-defrag-delegation-to-decompose-recompose-and-delete
 tags:
 - task
 - defrag

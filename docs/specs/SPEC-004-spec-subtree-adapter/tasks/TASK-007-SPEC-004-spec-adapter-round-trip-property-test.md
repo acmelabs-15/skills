@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: M
 estimate: 2d
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-007-spec-004-spec-adapter-round-trip-property-test-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-007-spec-004-spec-adapter-round-trip-property-test
 tags:
 - task
 - spec-004

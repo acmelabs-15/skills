@@ -2,7 +2,7 @@
 title: 'REQ-005-SPEC-003: PLAN Adapter Round-Trip Property Test'
 type: requirement
 status: DRAFT
-permalink: specs/spec-003-plan-adapter/requirements/req-005-spec-003-plan-adapter-round-trip-property-test-1
+permalink: specs/spec-003-plan-adapter/requirements/req-005-spec-003-plan-adapter-round-trip-property-test
 tags:
 - requirement
 - spec-003

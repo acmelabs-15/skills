@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 0.5d
-permalink: specs/spec-003-plan-adapter/tasks/task-004-spec-003-create-plan-adapter-test-fixtures-1
+permalink: specs/spec-003-plan-adapter/tasks/task-004-spec-003-create-plan-adapter-test-fixtures
 tags:
 - task
 - spec-003

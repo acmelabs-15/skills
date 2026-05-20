@@ -4,7 +4,7 @@ type: task
 status: TODO
 effort: S
 estimate: 1d
-permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-001-spec-005-implement-decompose-cli-entry-point-and-skill-structure-1
+permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-001-spec-005-implement-decompose-cli-entry-point-and-skill-structure
 tags:
 - task
 - decompose

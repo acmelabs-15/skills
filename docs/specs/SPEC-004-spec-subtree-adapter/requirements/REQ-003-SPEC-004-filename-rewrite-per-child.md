@@ -2,7 +2,7 @@
 title: 'REQ-003-SPEC-004: Filename Rewrite Per Child'
 type: requirement
 status: DRAFT
-permalink: specs/spec-004-spec-subtree-adapter/requirements/req-003-spec-004-filename-rewrite-per-child-1
+permalink: specs/spec-004-spec-subtree-adapter/requirements/req-003-spec-004-filename-rewrite-per-child
 tags:
 - requirement
 - spec-004
