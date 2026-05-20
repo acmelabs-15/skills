@@ -2,7 +2,7 @@
 title: SESSION-2026-05-20_02-acmelabs-15-relocation
 type: session
 permalink: sessions/session-2026-05-20_02-acmelabs-15-relocation
-status: IN_PROGRESS
+status: DONE
 binds_to:
 - PLAN-001-skills-ecosystem
 tags:
@@ -62,6 +62,14 @@ Four Brain note artifacts updated via Brain MCP edit_note to reflect new remote 
 4. This SESSION note (SESSION-2026-05-20_02) authored capturing the relocation work unit.
 
 No SPEC subtree changes; no PLAN parts created/transitioned; this is documentation evolution only. brain:---adr-review NOT re-run on ADR-001 F-4 Clarifications append per the same rationale as prior 2026-05-20 evolution: Clarifications are documentation updates to already-ACCEPTED decisions, not new architectural decisions.
+
+### Event 04 — PR #2 merged; session closing
+
+- Type: state-change
+- Scope: artifact
+- Target: SESSION-2026-05-20_02 status
+
+User pushed chore/acmelabs-15-relocation branch + opened PR #2 (chore: relocate repo to acmelabs-15 + .gitignore) + merged via gh pr merge --squash in a separate terminal. Squash merge landed on main as commit 0b18daf. Local main fast-forwarded to 0b18daf (4 files, 116 insertions: .gitignore + ADR-001 Clarifications append + PLAN-001 Decision Log append + SESSION-2026-05-20_02 creation). Session status flipped IN_PROGRESS → DONE on chore/close-session-2026-05-20_02 (this commit). No further work in this session; deferred-cleanup tracker advances (.gitignore item closed).
 
 ## Observations
 
