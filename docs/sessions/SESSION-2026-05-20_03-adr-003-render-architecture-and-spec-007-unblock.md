@@ -65,6 +65,10 @@ brain:🧠-architect foreground dispatch produced full SPEC-007 subtree at `docs
 
 Phase 3 syntactic validation inline: all 30 notes have colon-format title + valid type + Observations + Relations sections — PASS. ADR coverage gate inline: ADR-001 + ADR-002 + ADR-003 + ANALYSIS-002 all have `implemented_by [[SPEC-007]]` — PASS. Gate B 4 binary drift checks inline: REQ→ADR traceability (no orphans) + Scope conservation (REQs map to ADR-003 D-1..D-11) + TASK→REQ traceability (no orphans) + Scope-In match (12 In Scope items match 12 REQs) — PASS. Gate A semantic gap analysis: skipped inline (architect output clean; auto mode). spec.SPEC-007 transitioned IN_PROGRESS → DONE with outcome `[[SPEC-007: Plan/Session Render Implementation]]` and completing_session bound. PLAN-001 propagation: Progress Dashboard spec.SPEC-NNN row IP 1→0 + DONE 6→7; Total visible IP 1→0 + DONE 12→13; Phase Progression spec.SPEC-007 DONE; Cross-Part Deps Graph spec_007 inprogress→done (✅ ACCEPTED); Blockers section updated (no active blockers). Decision Log + Progress Log entries appended.
 
+## Event 13 — 7 build.SPEC-NNN parts added to PLAN-001
+
+User invoked `/plan continue` with 0 READY parts. Orchestrator added build.SPEC-001..007 to PLAN-001 (under new ## Build H2), all READY (dependencies on respective spec.SPEC-NNN all DONE). PLAN-001 propagation: Progress Dashboard build.SPEC-NNN row 0→7 READY; Total visible DRAFT 1→8 + Total 14→21; Phase Progression +7 rows; Cross-Part Deps Graph build_n node label updated to "7 build phases READY"; 7 H3 part sections authored (each with substatus + DoD + Workflow Plan + Tasks placeholder + Pending User Decisions = None). Recommended sequencing per KICKOFF-BRIEF.md: build.SPEC-001 FIRST as PROOF (~250 LOC; validates round-trip property test architecture against ADR fixtures before extending to other adapters). Total scope: 53 TASKs across 7 build parts. Next-ready: 7 READY parts (AskUserQuestion on /plan continue picks first).
+
 ## Observations
 
 - [decision] Re-enter decisions phase via new `decisions.3` PLAN part to formalize ADR-003 from D-1..D-11 LOCKED in ANALYSIS-002 #iterative-phase-reentry #adr-003

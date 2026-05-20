@@ -42,10 +42,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec.SPEC-NNN | 0 | 0 | 0 | 7 | 7 |
-| build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
+| build.SPEC-NNN | 7 | 0 | 0 | 0 | 7 |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **1** | **0** | **0** | **13** | **14** |
+| **Total visible** | **8** | **0** | **0** | **13** | **21** |
 
 > 2026-05-20 — spec.SPEC-007 (Plan/Session Render Implementation) added to scope; PENDING, source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]. Formal ADR-003 + /spec Stage 2 subtree deferred to a future session.
 
@@ -73,7 +73,13 @@ Per-part workflow detail lives in each per-part H3 below.
 | spec.SPEC-005 | DONE | [[SPEC-005: Decompose and Recompose Skills]] |
 | spec.SPEC-006 | DONE | [[SPEC-006: Defrag and Ingest Skills]] |
 | spec.SPEC-007 | DONE | [[SPEC-007: Plan/Session Render Implementation]] (ACCEPTED at Stage 2 close 2026-05-20; 30 notes: 12 REQ + 4 DESIGN + 13 TASK + 1 root) |
-| build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits (6 build parts will be created post-spec; READY when each spec.SPEC-NNN DONE + user wants to start build) |
+| build.SPEC-001 | READY | TypeScript impl of composition core + ADR adapter (PROOF; 9 TASKs from SPEC-001) |
+| build.SPEC-002 | READY | TypeScript impl of ANALYSIS + SESSION adapters (6 TASKs from SPEC-002) |
+| build.SPEC-003 | READY | TypeScript impl of PLAN adapter (5 TASKs from SPEC-003) |
+| build.SPEC-004 | READY | TypeScript impl of SPEC subtree adapter (7 TASKs from SPEC-004) |
+| build.SPEC-005 | READY | TypeScript impl of /decompose + /recompose skills (6 TASKs from SPEC-005) |
+| build.SPEC-006 | READY | TypeScript impl of /defrag + /ingest skills (7 TASKs from SPEC-006) |
+| build.SPEC-007 | READY | TypeScript impl of plan/session render pipeline (13 TASKs from SPEC-007) |
 | review | PENDING | adversarial multi-axis review across feature surface (post build) |
 | end | PENDING | PR + final session-end checklist |
 
@@ -108,7 +114,7 @@ graph TD
     direction TB
     spec_n("✅ <b>spec.SPEC-001..006</b><br/><span style='color:#6b7280;font-size:11px'>ALL 6 SPECs DONE (12/12 gates PASS)</span>")
     spec_007("✅ <b>spec.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>SPEC-007 ACCEPTED (30 notes)</span>")
-    build_n("<b>build.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>build phases pending</span>")
+    build_n("<b>build.SPEC-001..007</b><br/><span style='color:#6b7280;font-size:11px'>7 build phases READY</span>")
     spec_n --> spec_007
     spec_n --> build_n
     spec_007 --> build_n
@@ -155,6 +161,7 @@ graph TD
 - **2026-05-20** — decisions phase re-entered via new `decisions.3` PLAN part to formalize ADR-003 capturing D-1..D-11 from ANALYSIS-002. Per iterative-phase-reentry rule (decisions phase re-entering after spec phase started is the documented pattern). User adjudicated path via AskUserQuestion ("ADR-003 + spec.SPEC-007 (Recommended)"). spec.SPEC-007 transitioned PENDING → BLOCKED on decisions.3 completion. ADR-003 authoring delegated to brain:🧠-architect with detail-parity mandate against ANALYSIS-002 Appendices A-I; D-1..D-11 pre-LOCKED so no per-D-N adjudication needed (procedural capture of rationale + alternatives + consequences).
 - **2026-05-20** — decisions.3 DONE. ADR-003 ACCEPTED at decisions/ADR-003-plan-session-render-architecture.md (574 lines, 11 D-Ns + Considered Options + Responsibility Audit + Technology Stack + Consequences + Implementation Notes + Migration plan). brain:---adr-review 6-agent debate Round 1 convergence: 5 ACCEPT (architect, critic, security, analyst, advisor) + 1 CONCERNS (independent-thinker) + 0 BLOCK (passes ≥5 ACCEPT threshold). IT dissent on F-3 (over-engineering signal) + F-5 (simpler alternative not evaluated) captured as Disagree-and-Commit with Advisor tie-breaker rationale documented in CRIT-003. Phase 3 in-ADR resolutions applied: F-2 rollback path; F-4 round-trip claim scoped to structural fidelity; F-1 common.ts shared with ADR-002. spec.SPEC-007 transitioned BLOCKED → READY (next-ready on /plan continue).
 - **2026-05-20** — spec.SPEC-007 DONE. SPEC-007 authored via brain:🧠-architect (foreground dispatch after background-permission-denial recovery): 30 notes total (12 REQ + 4 DESIGN + 13 TASK + 1 SPEC root) at `docs/specs/SPEC-007-plan-session-render/`. Phase 3 syntactic validation PASS (all 30 notes have proper colon-format title + valid type + Observations + Relations). ADR coverage gate PASS (ADR-001 + ADR-002 + ADR-003 + ANALYSIS-002 all have `implemented_by [[SPEC-007]]` bi-directional relation). Gate B 4 binary drift checks PASS (REQ→ADR traceability + Scope conservation + TASK→REQ traceability + Scope-In match). Gate A semantic gap analysis: skipped inline (architect output verified clean; auto mode). SPEC-007 born ACCEPTED at Stage 2 close per /spec convention. Effort summary: 10.5d AI-Dominant total across 13 TASKs.
+- **2026-05-20** — 7 build.SPEC-NNN parts added to PLAN-001 (build.SPEC-001..007). All transition PENDING → READY (their respective spec.SPEC-NNN dependencies are all DONE). New `## Build` H2 section with one H3 per build part (substatus + DoD + Workflow Plan + Tasks placeholder). Recommended sequencing per KICKOFF-BRIEF.md build order: build.SPEC-001 FIRST (PROOF — composition core + ADR adapter, ~250 LOC); validate round-trip property test against ADR fixtures before extending to other adapters. build.SPEC-007 sequenced after build.SPEC-001 (depends on composition core). Total scope: 53 TASKs across 7 build parts.
 
 ## Progress Log
 
@@ -175,6 +182,7 @@ graph TD
 - **2026-05-20** — ADR-003 cleanup committed (726a563). Two ADR-003 files were authored by a parallel Claude Code session racing with this one. Deleted 32KB duplicate with -1 permalink; renamed 50KB canonical file from spaces to kebab; fixed frontmatter title + H1 to use colon format; DB row 3796 deleted + row 3795 updated.
 - **2026-05-20** — decisions.3 DONE (this turn). /decisions Steps 5-9 executed: architect dispatched (composite ADR-003 authored 574 lines from ANALYSIS-002); brain:---adr-review 6-agent debate Round 1 convergence (5 ACCEPT + 1 CONCERNS + 0 BLOCK); CRIT-003-ADR-003 debate log authored capturing all P1 findings + IT dissent for D&C; Phase 3 in-ADR resolutions (F-2 rollback + F-4 round-trip scope + F-1 common.ts shared); ADR-003 PROPOSED → ACCEPTED flip; PLAN-001 comprehensive propagation (Progress Dashboard decisions row 1 IP→0 + 2 DONE→3; Phase Progression decisions.3 DONE; Cross-Part Deps Graph d3 inprogress→done; spec.SPEC-007 BLOCKED→READY; decisions.3 H3 substatus + completing_session + outcome; 6 DoD checkboxes flipped; spec.SPEC-007 DoD item 1 flipped). Next-ready part: spec.SPEC-007.
 - **2026-05-20** — spec.SPEC-007 READY → IN_PROGRESS → DONE (this turn). /plan continue marked IN_PROGRESS; /spec Stage 2 dispatched brain:🧠-architect FOREGROUND (after background dispatch hit Write permission denials per feedback_foreground_permission_tools); architect authored 30-note SPEC-007 subtree using Write tool (Brain MCP write_note Pattern 2 bypassed per pragmatic-MCP-fallback adopted this session); Phase 3 + ADR coverage gate + Gate B 4 binary drift checks all PASS inline; SPEC-007 root born ACCEPTED. PLAN-001 propagation: Progress Dashboard spec.SPEC-NNN row IP 1→0 + DONE 6→7; Total visible IP 1→0 + DONE 12→13; Phase Progression spec.SPEC-007 DONE; Cross-Part Deps Graph spec_007 node inprogress→done; spec.SPEC-007 H3 substatus + completing_session + outcome wikilink; Blockers section updated (no active blockers). Next-ready part: NONE (build.SPEC-NNN parts not yet created; will be added on /plan continue invocation when user starts build phase).
+- **2026-05-20** — 7 build.SPEC-NNN parts added to PLAN-001 (this turn). User invoked `/plan continue` with 0 READY parts; orchestrator added build.SPEC-001..007 under new ## Build H2 (each as READY since spec.SPEC-NNN dependencies all DONE). Progress Dashboard build.SPEC-NNN row DRAFT 0→7 + Total 0→7; Total visible DRAFT 1→8 + Total 14→21. Phase Progression added 7 rows (one per build part). Cross-Part Deps Graph build_n node updated to "7 build phases READY". Each H3 part section: substatus + DoD + Workflow Plan + Tasks placeholder (to be populated by /build dispatch). Recommended sequencing: build.SPEC-001 FIRST (PROOF). User picks first build via next /plan continue invocation (multiple READY parts → AskUserQuestion default = lowest-numbered = build.SPEC-001).
 - **2026-05-19** — /spec Stage 2 Steps 1-6 complete. brain:🧠-architect dispatch authored SPEC-001 subtree (21 notes 8 REQ + 3 DESIGN + 9 TASK + 1 SPEC root; 2012 lines total; Pattern 2 three-phase write for each; bi-directional relations added to ADR-001 + ADR-002 + ANALYSIS-001). Per user critical-rule directive on standards inline-ness, compliance audit ran post-dispatch; 20 notes had `type: note` drift (per CONVENTIONS Section 3 forbidden generic type) corrected to canonical types (requirement / design / task). Verified Observations min 3, Relations min 2, final-two-sections invariant, status + effort + estimate fields, ADR coverage gate (both ACCEPTED ADRs have implemented_by SPEC-001). Stage 2 Steps 7-10 pending Gate A semantic gap + Gate B 4 binary drift checks before set-part-done.
 - **2026-05-19** — spec.SPEC-001 DONE. /spec Stage 2 fully closed out (Steps 7-10): Gate A semantic gap analysis PASS (6 of 8 REQs VERIFIABLE; 2 REQs refined per NEEDS_REFINEMENT findings — REQ-002 extractByRange boundary semantics clarified, REQ-007 heading-inclusion convention specified); Gate B 4 binary drift checks all PASS (REQ-to-ADR + scope conservation + TASK-to-REQ + Scope-In match; no P1 issues from critic); SPEC-001 root born ACCEPTED per /spec invariant; set-part-done executed inline (substatus IN_PROGRESS → DONE; outcome wikilink resolved; completing_session bound). spec.SPEC-002..SPEC-006 remain READY simultaneously for /plan continue invocation.
 - **2026-05-19** — spec.SPEC-002 IN_PROGRESS (user selected SPEC-002 Simple Adapters via AskUserQuestion per /plan lowest-numbered rule). Owning session bound. Auto-routing to /spec Stage 2 (Contract 2 dispatch with spec=SPEC-002 source_adrs=ADR-001 + ADR-002 source_clustering=ANALYSIS-001 + source_proof=SPEC-001 BaseMarkdownAdapter).
@@ -988,6 +996,215 @@ Populated as /spec creates tasks.
 #### Pending User Decisions (for spec.SPEC-007)
 
 None pending. ADR-003 formalization required first (D-1..D-11 already locked in ANALYSIS-002; ADR formalization is procedural).
+
+## Build
+
+### build.SPEC-001 — Composition Core + ADR Adapter PROOF (READY)
+
+**Substatus**: READY
+**Dependencies**: spec.SPEC-001 DONE ✓
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be TypeScript impl + tests + commits)
+**Source SPEC**: [[SPEC-001: Composition Core and ADR Adapter]] (9 TASKs)
+
+**DoD**:
+
+- [ ] All 9 TASKs from SPEC-001 implemented (TASK-001..009-SPEC-001)
+- [ ] Round-trip property test (TASK-009) passes on ADR fixtures (SHA-256 char-identity)
+- [ ] Per-task QA gate PASS
+- [ ] Final spec-level coverage matrix PASS
+- [ ] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint
+- [ ] SPEC-001 status flipped IN_PROGRESS → DONE post-build
+
+#### Workflow Plan (for build.SPEC-001)
+
+/build skill: per-TASK atomic cycle (Stage A implementer→qa→state propagation→sync-jira→PLAN tick→commit) + final spec-level QA sweep (Stage B) + EPIC propagation (Stage C) + 4 exit gates.
+
+#### Tasks (for build.SPEC-001)
+
+Populated by /build dispatch (references the 9 TASK notes in SPEC-001 subtree).
+
+#### Pending User Decisions (for build.SPEC-001)
+
+None — implementation is mechanical execution of SPEC-001.
+
+### build.SPEC-002 — Simple Adapters Build (READY)
+
+**Substatus**: READY
+**Dependencies**: spec.SPEC-002 DONE ✓ + build.SPEC-001 (recommended sequencing per KICKOFF-BRIEF.md build order — ADR adapter PROOF before extending pattern)
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be TypeScript impl + tests)
+**Source SPEC**: [[SPEC-002: Simple Adapters]] (6 TASKs)
+
+**DoD**:
+
+- [ ] All 6 TASKs from SPEC-002 implemented (ANALYSIS + SESSION adapters)
+- [ ] Round-trip property tests pass for ANALYSIS + SESSION fixtures
+- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [ ] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint
+- [ ] SPEC-002 IN_PROGRESS → DONE
+
+#### Workflow Plan (for build.SPEC-002)
+
+/build skill default flow.
+
+#### Tasks (for build.SPEC-002)
+
+Populated by /build dispatch.
+
+#### Pending User Decisions (for build.SPEC-002)
+
+None.
+
+### build.SPEC-003 — PLAN Adapter Build (READY)
+
+**Substatus**: READY
+**Dependencies**: spec.SPEC-003 DONE ✓ + build.SPEC-001 + build.SPEC-002 (recommended sequencing)
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be TypeScript impl + tests)
+**Source SPEC**: [[SPEC-003: PLAN Adapter]] (5 TASKs)
+
+**DoD**:
+
+- [ ] All 5 TASKs from SPEC-003 implemented
+- [ ] Round-trip property test passes for PLAN fixtures
+- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [ ] 4 mandatory exit gates pass
+- [ ] SPEC-003 IN_PROGRESS → DONE
+
+#### Workflow Plan (for build.SPEC-003)
+
+/build skill default flow.
+
+#### Tasks (for build.SPEC-003)
+
+Populated by /build dispatch.
+
+#### Pending User Decisions (for build.SPEC-003)
+
+None.
+
+### build.SPEC-004 — SPEC Subtree Adapter Build (READY)
+
+**Substatus**: READY
+**Dependencies**: spec.SPEC-004 DONE ✓ + build.SPEC-001..003 (recommended sequencing — SPEC subtree is the hardest adapter, ~500 LOC recursive)
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be TypeScript impl + tests)
+**Source SPEC**: [[SPEC-004: SPEC Subtree Adapter]] (7 TASKs)
+
+**DoD**:
+
+- [ ] All 7 TASKs from SPEC-004 implemented (recursive subtree rewrite + per-file hash validation)
+- [ ] Round-trip property test passes for SPEC subtree fixtures
+- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [ ] 4 mandatory exit gates pass
+- [ ] SPEC-004 IN_PROGRESS → DONE
+
+#### Workflow Plan (for build.SPEC-004)
+
+/build skill default flow.
+
+#### Tasks (for build.SPEC-004)
+
+Populated by /build dispatch.
+
+#### Pending User Decisions (for build.SPEC-004)
+
+None.
+
+### build.SPEC-005 — Decompose + Recompose Skills Build (READY)
+
+**Substatus**: READY
+**Dependencies**: spec.SPEC-005 DONE ✓ + build.SPEC-001..004 (recommended; skills wrap adapter library)
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be Bun + TS skill scripts + tests)
+**Source SPEC**: [[SPEC-005: Decompose and Recompose Skills]] (6 TASKs)
+
+**DoD**:
+
+- [ ] All 6 TASKs from SPEC-005 implemented (decompose CLI + recompose CLI + plan YAML adjudication + dispatcher + symlink install + tests)
+- [ ] /decompose and /recompose skills operational against ADR notes (PROOF)
+- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [ ] 4 mandatory exit gates pass
+- [ ] SPEC-005 IN_PROGRESS → DONE
+
+#### Workflow Plan (for build.SPEC-005)
+
+/build skill default flow.
+
+#### Tasks (for build.SPEC-005)
+
+Populated by /build dispatch.
+
+#### Pending User Decisions (for build.SPEC-005)
+
+None.
+
+### build.SPEC-006 — Defrag + Ingest Skills Build (READY)
+
+**Substatus**: READY
+**Dependencies**: spec.SPEC-006 DONE ✓ + build.SPEC-005 (recommended; defrag delegates to decompose/recompose)
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be Bun + TS skill scripts + tests)
+**Source SPEC**: [[SPEC-006: Defrag and Ingest Skills]] (7 TASKs)
+
+**DoD**:
+
+- [ ] All 7 TASKs from SPEC-006 implemented (defrag CLI + memory audit + delegation + ingest CLI + Brain-awareness + tests + README)
+- [ ] /defrag operational as periodic curator
+- [ ] /ingest auto-detects Brain vs Basic Memory from frontmatter
+- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [ ] 4 mandatory exit gates pass
+- [ ] SPEC-006 IN_PROGRESS → DONE
+
+#### Workflow Plan (for build.SPEC-006)
+
+/build skill default flow.
+
+#### Tasks (for build.SPEC-006)
+
+Populated by /build dispatch.
+
+#### Pending User Decisions (for build.SPEC-006)
+
+None.
+
+### build.SPEC-007 — Plan/Session Render Implementation Build (READY)
+
+**Substatus**: READY
+**Dependencies**: spec.SPEC-007 DONE ✓ + build.SPEC-001 (depends on composition core foundation)
+**Owning session**: —
+**Completing session**: —
+**Outcome**: — (will be TypeScript impl of render pipeline + tests + dogfood migration of PLAN-001)
+**Source SPEC**: [[SPEC-007: Plan/Session Render Implementation]] (13 TASKs, 10.5d AI-Dominant effort)
+
+**DoD**:
+
+- [ ] All 13 TASKs from SPEC-007 implemented (common.ts + plan-note.ts + session-note.ts schemas + parsers + renderers + mermaid + plan-mutations + session-mutations + round-trip test + PLAN-001 dogfood migration)
+- [ ] Round-trip property test passes for PLAN-001 + SESSION fixtures (SHA-256 char-identity on structural content)
+- [ ] PLAN-001 successfully re-authored in trimmed form using new tooling
+- [ ] /plan and /session skills updated to use new mutation API
+- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [ ] 4 mandatory exit gates pass
+- [ ] SPEC-007 IN_PROGRESS → DONE
+
+#### Workflow Plan (for build.SPEC-007)
+
+/build skill default flow.
+
+#### Tasks (for build.SPEC-007)
+
+Populated by /build dispatch.
+
+#### Pending User Decisions (for build.SPEC-007)
+
+None — all decisions LOCKED in ADR-003.
 
 ## Review
 
