@@ -34,13 +34,13 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | Phase | DRAFT | IN_PROGRESS | BLOCKED | DONE | Total |
 |:--|:--|:--|:--|:--|:--|
 | research | 0 | 0 | 0 | 1 | 1 |
-| decisions | 2 | 0 | 0 | 0 | 2 |
+| decisions | 1 | 0 | 0 | 1 | 2 |
 | spec-decomposition | 1 | 0 | 0 | 0 | 1 |
 | spec.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post spec-decomposition) |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **5** | **0** | **0** | **1** | **6** |
+| **Total visible** | **4** | **0** | **0** | **2** | **6** |
 
 ## Workflow Plan
 
@@ -55,8 +55,8 @@ Per-part workflow detail lives in each per-part H3 below.
 | Phase | Status | Output Artifact |
 |:--|:--|:--|
 | research | DONE | `KICKOFF-BRIEF.md` (project root file; not a Brain note) |
-| decisions.1 | READY | [[ADR-001: Composition Library Architecture]] (to be authored) |
-| decisions.2 | PENDING | [[ADR-002: Adapter Contract and Plan Schema]] (to be authored) |
+| decisions.1 | DONE | [[ADR-001: Composition Library Architecture]] |
+| decisions.2 | READY | [[ADR-002: Adapter Contract and Plan Schema]] (to be authored) |
 | spec-decomposition | PENDING | N×[[SPEC-XXX ...]] root notes + decomposition rationale |
 | spec.SPEC-NNN | PENDING | per-SPEC REQ/DESIGN/TASK subtree (created post spec-decomposition) |
 | build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits |
@@ -122,11 +122,13 @@ graph TD
 - **2026-05-19** — Heavy /plan create dispatches (analyst first-principles + pre-mortem + critic) were SKIPPED for the bootstrap turn. KICKOFF-BRIEF.md contains baked-in first-principles answers, an explicit post-mortem of the prior drift incident, and an explicit critique target via the 5 open questions adjudicated in Step 5 AskUserQuestion. Per the iterative-phase-reentry rule, validation phases can re-enter if gaps surface during decisions.1 adjudication or later.
 - **2026-05-19** — complexity_tier set to TIER_4 (multi-skill ecosystem ~1,200 LOC across 5 adapters + 4 skills + composition library with cryptographic invariant). Re-evaluate at spec-decomposition if SPEC count exceeds 6.
 - **2026-05-19** — Q1-Q5 of decisions.1 LOCKED via AskUserQuestion (all Recommended options selected). D-1 Zod for plan validation; D-2 unified + remark + remark-frontmatter for markdown AST; D-3 YAML at docs/_restructure/*.yaml for plan files; D-4 unified discriminated union on source_type for plan schema; D-5 YES — /brain:---adr-review BLOCKING gate before ACCEPTED. DoD checkboxes Q1-Q5 checked; D-N substatus table updated. ADR-001 authoring unblocked; awaiting user confirmation per bootstrap pause directive.
+- **2026-05-19** — decisions.1 DONE. ADR-001 ACCEPTED at decisions/ADR-001-composition-library-architecture.md after brain:---adr-review Phase 4 convergence PASS round 1 (5 ACCEPT + 1 D&C + 0 BLOCK). P1 themes 1-4 resolved in-ADR refinement (hash protocol formal spec + rollback mechanism + security hardening + LOC scope); P1 themes 5-6 deferred with rationale + quantitative revisit triggers in CRIT-001-ADR-001 debate log. decisions.2 transitioned PENDING → READY.
 
 ## Progress Log
 
 - **2026-05-19** — Bootstrap session started. Branch + docs/ subtree created (Step 1). Brain MCP project created and activated (Step 2). `KICKOFF-BRIEF.md` written verbatim (Step 3). PLAN-001 authored (Step 4). Pending: 5 open design question adjudication via AskUserQuestion (Step 5).
 - **2026-05-19** — Step 5 complete: 5 open design questions adjudicated via AskUserQuestion (Q1-Q4 batched + Q5 follow-up). All Recommended options selected. PLAN updated with locked decisions in DoD checkboxes + D-N substatus table + Decision Log. Paused per bootstrap directive; ready to proceed to ADR-001 authoring via brain:🧠-architect dispatch + brain:---adr-review BLOCKING gate on user confirmation.
+- **2026-05-19** — Step 6 (decisions.1 ADR-001 ACCEPTED) complete: /decisions Steps 5-9 executed (architect dispatch + detail-parity audit + 6-agent adr-review debate + Phase 3 P1 resolutions + CRIT authoring + ACCEPTED flip + state propagation). ADR-001 at decisions/ADR-001-composition-library-architecture.md (501 lines after Phase 3 refinements). decisions.2 READY; next-ready part on resume.
 
 ## Blockers
 
@@ -171,12 +173,12 @@ None.
 
 ## Decisions
 
-### decisions.1 — Composition library architecture ADR (IN_PROGRESS)
+### decisions.1 — Composition library architecture ADR (DONE)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: DONE
 **Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
-**Completing session**: —
-**Outcome**: — (will be [[ADR-001: Composition Library Architecture]])
+**Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+**Outcome**: [[ADR-001: Composition Library Architecture]]
 **Source artifacts**: `KICKOFF-BRIEF.md` (sections: Architecture, LLM-script division of labor, Constraints, Open design questions Q1-Q5)
 
 **DoD**:
@@ -254,9 +256,9 @@ graph TD
 
 All 5 open questions from `KICKOFF-BRIEF.md` ("Open design questions for early adjudication") surfaced via AskUserQuestion in Step 5 of the user-provided bootstrap. Adjudication unlocks ADR-001 authoring.
 
-### decisions.2 — Adapter contract + plan schema ADR (PENDING)
+### decisions.2 — Adapter contract + plan schema ADR (READY)
 
-**Substatus**: PENDING
+**Substatus**: READY
 **Owning session**: —
 **Completing session**: —
 **Outcome**: — (will be [[ADR-002: Adapter Contract and Plan Schema]])

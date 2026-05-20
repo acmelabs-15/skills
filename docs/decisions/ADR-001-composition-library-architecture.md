@@ -1,7 +1,7 @@
 ---
 title: 'ADR-001: Composition Library Architecture'
 type: decision
-status: PROPOSED
+status: ACCEPTED
 date: 2026-05-19
 updated: 2026-05-19
 permalink: decisions/adr-001-composition-library-architecture
@@ -17,7 +17,7 @@ tags:
 
 ## Status
 
-PROPOSED (2026-05-19)
+ACCEPTED (2026-05-19; brain:---adr-review Phase 4 convergence PASS round 1, 5 ACCEPT + 1 D&C + 0 BLOCK; see CRIT-001-ADR-001 debate log + ADR Clarifications for P1 resolution + deferral rationale)
 
 ## Context and Problem Statement
 
@@ -302,6 +302,21 @@ This ADR composites 8 foundational locked design decisions from the KICKOFF-BRIE
 
 **Rationale**: This is the core anti-drift mechanism. The hash check guarantees that the script's output is character-identical to the input (modulo the two permitted deterministic mutations: identifier renumbering and wikilink substitution). If any byte differs unexpectedly, the script stops and rolls back. This makes content drift mathematically impossible rather than conventionally discouraged.
 
+**Hash protocol** (formal specification per Phase 3 review resolution to critic + analyst P1):
+
+1. **Source-side extraction (S)**: extract source content by the line range specified in the plan YAML. Compute `S_hash = SHA-256(S)`.
+2. **Destination-side extraction (D)**: after the script writes destination content, extract that content. Apply the inverse renumber map and inverse wikilink-substitution map specified in the plan YAML to produce the de-mutated form `D'`. Compute `D'_hash = SHA-256(D')`.
+3. **Compare**: `S_hash === D'_hash`. If not equal, the script aborts the entire operation and triggers ROLLBACK.
+4. **Injectivity constraint** (BLOCKING validator gate): the plan YAML's renumber map and wikilink-substitution map MUST be injective — no two source IDs map to the same target ID; no two source wikilinks map to the same target wikilink. The Zod validator REJECTS non-injective plans at script entry. Without injectivity, the inverse maps are non-unique and the hash check has silent collision classes.
+
+**Rollback mechanism** (formal specification per Phase 3 review resolution to critic P1): atomicity via write-to-temp-then-rename. For each destination file:
+
+1. **Stage**: write content to `<dest-path>.tmp` (sibling file with `.tmp` suffix).
+2. **Hash-validate**: compute the hash protocol above on the staged content. On mismatch, abort.
+3. **Per-cluster all-or-nothing**: only after ALL destinations in the cluster have passed hash validation, atomically rename each `<dest-path>.tmp` to `<dest-path>` (POSIX filesystem rename is atomic). If any destination fails, remove ALL `.tmp` files for the cluster; source files remain untouched.
+
+The source files are never mutated until ALL destinations validate AND rename successfully. A crash mid-rename leaves a recoverable state (some `.tmp` files present, source intact; rerun the plan).
+
 **Reversibility**: [WARNING] -- Removing the hash check removes the zero-drift guarantee. The check is the architectural reason this project exists. Disabling it would regress to the pre-incident state where LLM drift is undetectable.
 
 ### D-1: Zod for Plan Validation
@@ -432,14 +447,18 @@ SHA-256 is a NIST standard cryptographic primitive available in every runtime. B
 ## Confirmation
 
 - [ ] Round-trip property test passes for ADR adapter: SHA-256(original) === SHA-256(recomposed after decompose then recompose)
-- [ ] Hash mismatch triggers ROLLBACK with no partial write state
+- [ ] Hash mismatch triggers ROLLBACK with no partial write state (write-to-temp-then-rename atomicity per F-8 rollback protocol)
+- [ ] Plan YAML validator enforces injectivity of renumber and wikilink-substitution maps (BLOCKING gate per F-8 hash protocol)
 - [ ] Zod validation rejects malformed plan YAMLs at script entry point (missing required fields, wrong source_type, invalid line ranges)
-- [ ] unified AST parses all 5 source-type sample fixtures without content loss (parse then stringify round-trip preserves char-identity)
-- [ ] /brain:---adr-review PASS verdict on this ADR before any code lands
+- [ ] **Security: YAML hardening** — `yaml.load(input, { schema: yaml.FAILSAFE_SCHEMA })` (or equivalent strict parser config) with max file-size guard (1 MB) before parse, mitigating billion-laughs / YAML-bomb DoS via untrusted plan files (CWE-502, CWE-400)
+- [ ] **Security: path containment** — Zod schema validates all destination file paths via `path.resolve()` containment check; paths must resolve within `docs/` (CWE-22 path traversal mitigation for LLM-authored plan injection)
+- [ ] unified AST parses all 5 source-type sample fixtures without content loss (parse then stringify round-trip preserves char-identity; remark-stringify whitespace-normalization risks tracked per Phase 3 review)
+- [ ] /brain:---adr-review PASS verdict on this ADR before any code lands (process gate per D-5; separate from technical verification above)
+- [ ] **LOC scope note**: the ~1,200 LOC estimate covers the 5 adapter implementations only. Total project including tests, CLI entry points, plan schema definitions, and Zod validation layer is estimated 2x-3x larger (~2,500-3,600 LOC). Track actuals after ADR adapter PROOF ships; recalibrate before SPEC subtree if overshoot exceeds 50%.
 
 ## Clarifications
 
-_No clarifications yet._
+- **2026-05-19**: brain:---adr-review Phase 4 convergence completed (round 1). Verdict tally 5 ACCEPT + 1 CONCERNS (independent-thinker) + 0 BLOCK. P1 themes 1-4 RESOLVED in this ADR refinement (hash protocol formal spec + rollback mechanism added to F-8; security hardening + LOC scope clarification added to Confirmation). P1 themes 5-6 (SHA-256 vs xxHash; unified+remark vs hybrid parser) DEFERRED with rationale documented in CRIT-001-ADR-001 — both challenge already-LOCKED decisions (F-8 and D-2) where re-adjudication would require user re-opening locked decisions. Revisit triggers: (Theme 5) revisit SHA-256 vs xxHash if profiling reveals hash compute dominates round-trip latency on real-world note sizes; (Theme 6) revisit unified vs hybrid parser if ADR adapter implementation exceeds 350 LOC (40% overshoot of ~250 estimate). P2 items documented in CRIT-001 for tracking. Independent-thinker CONCERNS verdict accepted as Disagree-and-Commit position with documented dissent.
 
 ## Observations
 

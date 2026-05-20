@@ -106,6 +106,19 @@ tags:
 - Pattern 2 three-phase write verified by architect; permalink `-1` suffix remediated; ADR-specific frontmatter `date` + `updated` populated
 - Next /decisions Step 7 — dispatch brain:---adr-review as BLOCKING gate per D-5 lock; Phase 4 convergence PASS required (greater than or equal to 5 ACCEPT + zero BLOCK) before ADR-001 PROPOSED to ACCEPTED flip
 
+## Event 11 — brain:---adr-review Phase 4 convergence PASS + ADR-001 ACCEPTED + decisions.1 DONE (/decisions Steps 7-9)
+
+- Type debate-resolution and state-change
+- Trigger /decisions Step 7 brain:---adr-review BLOCKING gate; 6-agent debate dispatched in parallel
+- Reviewer verdicts architect ACCEPT (0/0/2), critic ACCEPT (0/2/2), independent-thinker CONCERNS (0/2/2), security ACCEPT (0/2/1), analyst ACCEPT (0/2/1), high-level-advisor ACCEPT (0/0/1). Tally 5 ACCEPT + 1 CONCERNS + 0 BLOCK; meets ≥5 ACCEPT + 0 BLOCK convergence threshold (round 1)
+- P1 themes deduplicated to 6; themes 1-4 RESOLVED in-ADR refinement (F-8 hash protocol + rollback mechanism; Confirmation security hardening + LOC scope clarification); themes 5-6 DEFERRED with documented rationale + quantitative revisit triggers (independent-thinker CONCERNS = Disagree-and-Commit with documented dissent)
+- P0 issues 0 surfaced from any reviewer
+- CRIT-001-ADR-001 authored at critique/CRIT-001-ADR-001-composition-library-architecture-debate-log.md (debate log + verdict tally + P0/P1/P2 + Points of Consensus + Disagree-and-Commit dissent capture). Pattern 2 three-phase write applied; permalink `-1` suffix remediated
+- ADR-001 frontmatter status flipped PROPOSED → ACCEPTED (line 4) + body Status section flipped with attribution to round-1 convergence + CRIT pointer
+- /decisions Step 8 ADR ACCEPTED achieved; /decisions Step 9 set-part-done propagated inline (PLAN decisions.1 substatus IN_PROGRESS → DONE, completing_session bound, outcome wikilink to ADR-001 resolved). Formal /plan set-part-done callback skipped in favor of inline orchestrator state propagation (functionally equivalent)
+- decisions.2 transitioned PENDING → READY (dependency decisions.1 now DONE)
+- Token budget for this entire turn 6 parallel reviewer dispatches ~395K input + ~3K output (concise return format), ADR refinement ~3 replace_section calls, CRIT authoring Pattern 2 three-phase, PLAN propagation ~7 edits
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress
