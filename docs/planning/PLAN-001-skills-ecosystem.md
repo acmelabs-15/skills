@@ -40,11 +40,11 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | research | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 2 | 2 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
-| spec.SPEC-NNN | 6 | 0 | 0 | 0 | 6 |
+| spec.SPEC-NNN | 5 | 0 | 0 | 1 | 6 |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **8** | **0** | **0** | **4** | **12** |
+| **Total visible** | **7** | **0** | **0** | **5** | **12** |
 
 ## Workflow Plan
 
@@ -62,7 +62,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | decisions.1 | DONE | [[ADR-001: Composition Library Architecture]] |
 | decisions.2 | DONE | [[ADR-002: Adapter Contract and Plan Schema]] (ACCEPTED 2026-05-19 via brain:---adr-review round-2 unanimous PASS) |
 | spec-decomposition | DONE | [[ANALYSIS-001: SPEC Clustering]] (ACCEPTED 2026-05-19; 6 SPECs locked post user adjudication, SPEC-003 split applied) |
-| spec.SPEC-001 | IN_PROGRESS | SPEC-001 root + REQ + DESIGN + TASK subtree (Composition Core and ADR Adapter; PROOF; /spec Stage 2 auto-routed this turn) |
+| spec.SPEC-001 | DONE | [[SPEC-001: Composition Core and ADR Adapter]] (ACCEPTED 2026-05-19; 21-note subtree + ADR coverage + Gate A + Gate B PASS) |
 | spec.SPEC-002 | READY | SPEC-002 root + subtree (Simple Adapters: ANALYSIS + SESSION) |
 | spec.SPEC-003 | READY | SPEC-003 root + subtree (PLAN Adapter; regenerative content carve-out) |
 | spec.SPEC-004 | READY | SPEC-004 root + subtree (SPEC Subtree Adapter; recursive multi-file + frontmatter + filename rewrite) |
@@ -99,7 +99,7 @@ graph TD
 
   subgraph SB ["Spec + Build (per SPEC)"]
     direction TB
-    spec_n("🔄 <b>spec.SPEC-001</b><br/><span style='color:#6b7280;font-size:11px'>Composition Core PROOF (1 of 6)</span>")
+    spec_n("✅ <b>spec.SPEC-001</b><br/><span style='color:#6b7280;font-size:11px'>Composition Core ACCEPTED (1 of 6)</span>")
     build_n("<b>build.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>post spec</span>")
     spec_n --> build_n
   end
@@ -150,6 +150,7 @@ graph TD
 - **2026-05-19** — spec-decomposition DONE. /spec Stage 1 closed out (Steps 1-7 executed): analyst dispatch → ANALYSIS-001 5-SPEC proposal; CVA + critic + decision-critic review; AskUserQuestion locked 6 SPECs (SPEC-003 split applied per critic recommendation); /plan added 6 spec.SPEC-NNN parts under new ## Spec H2; set-part-done outcome ANALYSIS-001 (ACCEPTED). Next-ready parts: spec.SPEC-001 through spec.SPEC-006 all READY simultaneously. User picks first SPEC to author via /plan continue invocation (multiple READY parts → AskUserQuestion).
 - **2026-05-19** — spec.SPEC-001 IN_PROGRESS. User selected SPEC-001 Composition Core and ADR Adapter (PROOF) via AskUserQuestion (Recommended default per /plan lowest-numbered rule + KICKOFF-BRIEF.md build order). Auto-routing to /spec Stage 2 to author SPEC-001 subtree (REQ → DESIGN → TASK → SPEC root).
 - **2026-05-19** — /spec Stage 2 Steps 1-6 complete. brain:🧠-architect dispatch authored SPEC-001 subtree (21 notes 8 REQ + 3 DESIGN + 9 TASK + 1 SPEC root; 2012 lines total; Pattern 2 three-phase write for each; bi-directional relations added to ADR-001 + ADR-002 + ANALYSIS-001). Per user critical-rule directive on standards inline-ness, compliance audit ran post-dispatch; 20 notes had `type: note` drift (per CONVENTIONS Section 3 forbidden generic type) corrected to canonical types (requirement / design / task). Verified Observations min 3, Relations min 2, final-two-sections invariant, status + effort + estimate fields, ADR coverage gate (both ACCEPTED ADRs have implemented_by SPEC-001). Stage 2 Steps 7-10 pending Gate A semantic gap + Gate B 4 binary drift checks before set-part-done.
+- **2026-05-19** — spec.SPEC-001 DONE. /spec Stage 2 fully closed out (Steps 7-10): Gate A semantic gap analysis PASS (6 of 8 REQs VERIFIABLE; 2 REQs refined per NEEDS_REFINEMENT findings — REQ-002 extractByRange boundary semantics clarified, REQ-007 heading-inclusion convention specified); Gate B 4 binary drift checks all PASS (REQ-to-ADR + scope conservation + TASK-to-REQ + Scope-In match; no P1 issues from critic); SPEC-001 root born ACCEPTED per /spec invariant; set-part-done executed inline (substatus IN_PROGRESS → DONE; outcome wikilink resolved; completing_session bound). spec.SPEC-002..SPEC-006 remain READY simultaneously for /plan continue invocation.
 
 ## Blockers
 
@@ -417,14 +418,14 @@ None — spec-decomposition part DONE 2026-05-19. ANALYSIS-001 SPEC Clustering a
 
 **DoD**:
 
-- [ ] SPEC-001 root note authored at docs/specs/SPEC-001-composition-core-and-adr-adapter/SPEC-001-composition-core-and-adr-adapter.md
-- [ ] REQ notes authored at requirements/
-- [ ] DESIGN note(s) authored at design/
-- [ ] TASK notes authored at tasks/
-- [ ] ADR coverage gate PASS (every implemented ADR D-N has implemented_by relation on SPEC-001 root)
-- [ ] Gate A semantic gap analysis PASS
-- [ ] Gate B 4 binary drift checks PASS
-- [ ] SPEC-001 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+- [x] SPEC-001 root note authored at docs/specs/SPEC-001-composition-core-and-adr-adapter/SPEC-001-composition-core-and-adr-adapter.md (ACCEPTED at creation per /spec invariant)
+- [x] REQ notes authored at requirements/ — 8 notes (REQ-001..REQ-008)
+- [x] DESIGN note(s) authored at design/ — 3 notes (DESIGN-001..DESIGN-003)
+- [x] TASK notes authored at tasks/ — 9 notes (TASK-001..TASK-009)
+- [x] ADR coverage gate PASS — ADR-001 + ADR-002 both have implemented_by SPEC-001
+- [x] Gate A semantic gap analysis PASS — 6 of 8 REQs VERIFIABLE; 2 (REQ-002 + REQ-007) refined per analyst NEEDS_REFINEMENT findings (extractByRange boundary semantics + heading-inclusion clarification)
+- [x] Gate B 4 binary drift checks PASS — all 4 (REQ→ADR; scope conservation; TASK→REQ; Scope-In match) verified by critic with no P1 issues
+- [x] SPEC-001 root status ACCEPTED (born so per /spec invariant; not flipped from DRAFT)
 
 #### Workflow Plan (for spec.SPEC-001)
 

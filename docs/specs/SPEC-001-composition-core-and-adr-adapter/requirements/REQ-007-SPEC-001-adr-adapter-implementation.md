@@ -44,7 +44,7 @@ ADR-002 D-4 specifies the ADR hash extraction strategy: extract S by H3 line ran
 
 - [ ] GIVEN a valid ADR markdown file with multiple D-N sections under ## Decision
       WHEN extractByRange is called with a line range spanning one D-N section
-      THEN the extracted content matches the exact lines from section start to next section start (exclusive)
+      THEN the extracted content INCLUDES the section heading line (e.g., `### D-N: Title`) at the start AND EXCLUDES the next section heading line at the end (boundary convention: inclusive-of-own-heading, exclusive-of-next-heading; the trailing newline before the next heading IS included in the extracted content. Clarified per Gate A semantic gap finding 2026-05-19)
 
 - [ ] GIVEN extracted ADR content with D-N identifiers
       WHEN applyMutations is called with renumber_map {"D-3": "D-100", "D-4": "D-101"}

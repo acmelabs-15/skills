@@ -44,7 +44,7 @@ The base class implements all 5 CompositionAdapter methods using unified/remark 
 
 - [ ] GIVEN BaseMarkdownAdapter
       WHEN a subclass provides section_delimiter and identifier_pattern
-      THEN extractByRange correctly parses line ranges bounded by the section_delimiter pattern
+      THEN extractByRange returns raw line slices (line-number-bounded; the base class extractByRange is purely line-number-based per Implementation Notes — subclasses that need section-aware extraction implement that logic via overridden methods or external dispatchers, NOT via the base class extractByRange. Clarified per Gate A semantic gap finding 2026-05-19)
 
 - [ ] GIVEN BaseMarkdownAdapter with unified/remark pipeline
       WHEN parse is called with valid markdown including YAML frontmatter
