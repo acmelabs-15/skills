@@ -49,6 +49,10 @@ CRIT-003-ADR-003 debate log authored at `docs/critique/CRIT-003-ADR-003-plan-ses
 
 decisions.3 transitioned IN_PROGRESS → DONE with outcome `[[ADR-003: Plan/Session Render Architecture]]` and completing_session bound. Progress Dashboard decisions row IN_PROGRESS 1→0 + DONE 2→3 + Total visible 14 unchanged (DRAFT 3→2 + DONE 10→12). Phase Progression decisions.3 row DONE; spec.SPEC-007 row BLOCKED → READY. Cross-Part Deps Graph d3 node class inprogress → done (✅ ACCEPTED label). spec.SPEC-007 H3 substatus BLOCKED → READY. Blockers section updated. decisions.3 H3 substatus + completing_session + outcome wikilink; 6 DoD checkboxes flipped [x]. spec.SPEC-007 DoD item 1 (ADR-003 authored + adr-review PASS) flipped [x]. Decision Log + Progress Log entries appended. Next-ready part: spec.SPEC-007.
 
+## Event 09 — spec.SPEC-007 READY → IN_PROGRESS; /spec Stage 2 dispatched
+
+User invoked `/plan PLAN-001-skills-ecosystem` (continue mode). Only READY part: spec.SPEC-007 (Plan/Session Render Implementation). Branch policy: non-main → stay on `feat/plan-001-adr-003-render-architecture` (branch name historical; serves spec.SPEC-007 work going forward). PLAN-001 propagation: Progress Dashboard spec.SPEC-NNN row DRAFT 1→0 + IP 0→1; Total visible DRAFT 2→1 + IP 0→1; Phase Progression spec.SPEC-007 READY → IN_PROGRESS; Cross-Part Deps Graph spec_007 node pending → inprogress (🟡 IN_PROGRESS label); spec.SPEC-007 H3 substatus + owning_session bound; Blockers section updated. Auto-routing to /spec Stage 2 with `spec=SPEC-007 source_adrs=[[ADR-003: Plan/Session Render Architecture]] source_analyses=[[ANALYSIS-002: Plan/Session Note Render Architecture]]`.
+
 ## Observations
 
 - [decision] Re-enter decisions phase via new `decisions.3` PLAN part to formalize ADR-003 from D-1..D-11 LOCKED in ANALYSIS-002 #iterative-phase-reentry #adr-003

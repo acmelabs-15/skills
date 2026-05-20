@@ -41,11 +41,11 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | research | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
-| spec.SPEC-NNN | 1 | 0 | 0 | 6 | 7 |
+| spec.SPEC-NNN | 0 | 1 | 0 | 6 | 7 |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **2** | **0** | **0** | **12** | **14** |
+| **Total visible** | **1** | **1** | **0** | **12** | **14** |
 
 > 2026-05-20 — spec.SPEC-007 (Plan/Session Render Implementation) added to scope; PENDING, source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]. Formal ADR-003 + /spec Stage 2 subtree deferred to a future session.
 
@@ -72,7 +72,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | spec.SPEC-004 | DONE | [[SPEC-004: SPEC Subtree Adapter]] |
 | spec.SPEC-005 | DONE | [[SPEC-005: Decompose and Recompose Skills]] |
 | spec.SPEC-006 | DONE | [[SPEC-006: Defrag and Ingest Skills]] |
-| spec.SPEC-007 | READY | planned — Plan/Session Render Implementation; source artifacts [[ANALYSIS-002: Plan/Session Note Render Architecture]] + [[ADR-003: Plan/Session Render Architecture]]; ready for /spec Stage 2 |
+| spec.SPEC-007 | IN_PROGRESS | Plan/Session Render Implementation; source artifacts [[ANALYSIS-002: Plan/Session Note Render Architecture]] + [[ADR-003: Plan/Session Render Architecture]]; /spec Stage 2 dispatched 2026-05-20 |
 | build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits (6 build parts will be created post-spec; READY when each spec.SPEC-NNN DONE + user wants to start build) |
 | review | PENDING | adversarial multi-axis review across feature surface (post build) |
 | end | PENDING | PR + final session-end checklist |
@@ -107,7 +107,7 @@ graph TD
   subgraph SB ["Spec + Build (per SPEC)"]
     direction TB
     spec_n("✅ <b>spec.SPEC-001..006</b><br/><span style='color:#6b7280;font-size:11px'>ALL 6 SPECs DONE (12/12 gates PASS)</span>")
-    spec_007("<b>spec.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Impl BLOCKED on decisions.3</span>")
+    spec_007("🟡 <b>spec.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Impl IN_PROGRESS</span>")
     build_n("<b>build.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>build phases pending</span>")
     spec_n --> spec_007
     spec_n --> build_n
@@ -130,7 +130,8 @@ graph TD
 
   class research,d1,d2,sd,spec_n done
   class d3 done
-  class spec_007,build_n,review,fin pending
+  class spec_007 inprogress
+  class build_n,review,fin pending
   classDef inprogress fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12,rx:14,ry:14
 
   linkStyle 0,1,2,3,4 stroke:#9ca3af,stroke-width:1.5px
@@ -179,7 +180,7 @@ graph TD
 
 ## Blockers
 
-**spec.SPEC-007 READY** (decisions.3 DONE; ADR-003 ACCEPTED). No IN_PROGRESS parts as of 2026-05-20. Outstanding for future sessions (deferred, not blocking): SPEC-002 REQ-003 AC#2 graceful-degradation refinement; ~95 permalink `-1` suffix cleanups across 6 SPEC subtrees (cosmetic; wikilinks resolve by title); 6 build.SPEC-NNN phases (TypeScript implementation work + tests + commits); review phase (post-build multi-axis adversarial review); end phase (post-build PR + session-end). All other prior parts (research + decisions.1 + decisions.2 + spec-decomposition + 6 spec.SPEC-NNN) DONE.
+**spec.SPEC-007 IN_PROGRESS** (/spec Stage 2 dispatched 2026-05-20). decisions.3 DONE; ADR-003 ACCEPTED. Outstanding for future sessions (deferred, not blocking): SPEC-002 REQ-003 AC#2 graceful-degradation refinement; ~95 permalink `-1` suffix cleanups across 6 SPEC subtrees (cosmetic; wikilinks resolve by title); 6 build.SPEC-NNN phases (TypeScript implementation work + tests + commits); review phase (post-build multi-axis adversarial review); end phase (post-build PR + session-end). All other prior parts (research + decisions.1 + decisions.2 + spec-decomposition + 6 spec.SPEC-NNN) DONE.
 
 ## Analysis
 
@@ -946,11 +947,10 @@ graph TD
 
 None — spec.SPEC-006 part DONE 2026-05-19. Gate A 6/6 VERIFIABLE (no flagged REQs); Gate B PASS unanimous (no P1). REQ-005 /ingest Brain-awareness non-ADR scope correctly documented per critic P1-2 amendment (sourced from KICKOFF-BRIEF.md lines 117-119; ADR coverage gate distinguishes ADR-derived from non-ADR-derived requirements). SPEC-006 root born ACCEPTED per /spec invariant. **MILESTONE**: all 6 spec.SPEC-NNN parts DONE — entire SPEC phase complete; build.SPEC-NNN phases pending future sessions.
 
-### spec.SPEC-007 — Plan/Session Render Implementation (READY)
+### spec.SPEC-007 — Plan/Session Render Implementation (IN_PROGRESS)
 
-**Substatus**: BLOCKED
-**Blocked on**: decisions.3 (ADR-003 ACCEPTED) — see [[ANALYSIS-002: Plan/Session Note Render Architecture]] D-1..D-11 awaiting ADR formalization
-**Owning session**: —
+**Substatus**: IN_PROGRESS
+**Owning session**: [[SESSION-2026-05-20_03: ADR-003 Render Architecture and SPEC-007 Unblock]]
 **Completing session**: —
 **Outcome**: — (will be SPEC-007 root note + REQ/DESIGN/TASK subtree at docs/specs/SPEC-007-plan-session-render/)
 **Source artifacts**: [[ANALYSIS-002: Plan/Session Note Render Architecture]] (locks D-1..D-11 architectural direction; full schema + parser + renderer drafts in Appendices A-I); ADR-003 (pending decisions.3 completion)
