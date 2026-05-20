@@ -460,14 +460,14 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 **DoD**:
 
-- [ ] SPEC-002 root note authored at docs/specs/SPEC-002-simple-adapters/SPEC-002-simple-adapters.md
-- [ ] REQ notes authored at requirements/
-- [ ] DESIGN note(s) authored at design/
-- [ ] TASK notes authored at tasks/
-- [ ] ADR coverage gate PASS
-- [ ] Gate A semantic gap analysis PASS
-- [ ] Gate B 4 binary drift checks PASS
-- [ ] SPEC-002 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+- [x] SPEC-002 root note authored at docs/specs/SPEC-002-simple-adapters/SPEC-002-simple-adapters.md — 14-note subtree
+- [x] REQ notes authored at requirements/ — 5 notes
+- [x] DESIGN note(s) authored at design/ — 2 notes
+- [x] TASK notes authored at tasks/ — 6 notes
+- [x] ADR coverage gate PASS — ADR-001 + ADR-002 have implemented_by SPEC-002
+- [x] Gate A semantic gap analysis PASS — REQ-003 AC#2 graceful-degradation refinement deferred (non-blocking)
+- [x] Gate B 4 binary drift checks PASS — all 4 checks unanimous; no P1
+- [x] SPEC-002 root status ACCEPTED (born so per /spec invariant)
 
 #### Workflow Plan (for spec.SPEC-002)
 
@@ -501,14 +501,14 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 **DoD**:
 
-- [ ] SPEC-003 root note authored at docs/specs/SPEC-003-plan-adapter/SPEC-003-plan-adapter.md
-- [ ] REQ notes authored at requirements/
-- [ ] DESIGN note(s) authored at design/
-- [ ] TASK notes authored at tasks/
-- [ ] ADR coverage gate PASS
-- [ ] Gate A semantic gap analysis PASS
-- [ ] Gate B 4 binary drift checks PASS
-- [ ] SPEC-003 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+- [x] SPEC-003 root note authored at docs/specs/SPEC-003-plan-adapter/SPEC-003-plan-adapter.md — 12-note subtree
+- [x] REQ notes authored at requirements/ — 5 notes
+- [x] DESIGN note(s) authored at design/ — 2 notes
+- [x] TASK notes authored at tasks/ — 5 notes
+- [x] ADR coverage gate PASS — ADR-001 + ADR-002 have implemented_by SPEC-003
+- [x] Gate A semantic gap analysis PASS — 5/5 REQs VERIFIABLE; no flagged
+- [x] Gate B 4 binary drift checks PASS — all 4 checks unanimous; no P1
+- [x] SPEC-003 root status ACCEPTED (born so per /spec invariant)
 
 #### Workflow Plan (for spec.SPEC-003)
 
@@ -542,14 +542,14 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 **DoD**:
 
-- [ ] SPEC-004 root note authored at docs/specs/SPEC-004-spec-subtree-adapter/SPEC-004-spec-subtree-adapter.md
-- [ ] REQ notes authored at requirements/
-- [ ] DESIGN note(s) authored at design/
-- [ ] TASK notes authored at tasks/
-- [ ] ADR coverage gate PASS
-- [ ] Gate A semantic gap analysis PASS
-- [ ] Gate B 4 binary drift checks PASS
-- [ ] SPEC-004 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+- [x] SPEC-004 root note authored at docs/specs/SPEC-004-spec-subtree-adapter/SPEC-004-spec-subtree-adapter.md — 17-note subtree
+- [x] REQ notes authored at requirements/ — 6 notes
+- [x] DESIGN note(s) authored at design/ — 3 notes
+- [x] TASK notes authored at tasks/ — 7 notes
+- [x] ADR coverage gate PASS — ADR-001 + ADR-002 have implemented_by SPEC-004
+- [x] Gate A semantic gap analysis PASS — 6/6 REQs VERIFIABLE; no flagged
+- [x] Gate B 4 binary drift checks PASS — all 4 checks unanimous; no P1
+- [x] SPEC-004 root status ACCEPTED (born so per /spec invariant)
 
 #### Workflow Plan (for spec.SPEC-004)
 
@@ -583,14 +583,14 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 **DoD**:
 
-- [ ] SPEC-005 root note authored at docs/specs/SPEC-005-decompose-and-recompose-skills/SPEC-005-decompose-and-recompose-skills.md
-- [ ] REQ notes authored at requirements/
-- [ ] DESIGN note(s) authored at design/
-- [ ] TASK notes authored at tasks/
-- [ ] ADR coverage gate PASS
-- [ ] Gate A semantic gap analysis PASS
-- [ ] Gate B 4 binary drift checks PASS
-- [ ] SPEC-005 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+- [x] SPEC-005 root note authored at docs/specs/SPEC-005-decompose-and-recompose-skills/SPEC-005-decompose-and-recompose-skills.md — 16-note subtree
+- [x] REQ notes authored at requirements/ — 6 notes
+- [x] DESIGN note(s) authored at design/ — 3 notes
+- [x] TASK notes authored at tasks/ — 6 notes
+- [x] ADR coverage gate PASS — ADR-001 + ADR-002 have implemented_by SPEC-005
+- [x] Gate A semantic gap analysis PASS — 6/6 REQs VERIFIABLE; no flagged
+- [x] Gate B 4 binary drift checks PASS — all 4 checks unanimous; no P1
+- [x] SPEC-005 root status ACCEPTED (born so per /spec invariant)
 
 #### Workflow Plan (for spec.SPEC-005)
 
@@ -625,14 +625,14 @@ Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
 **DoD**:
 
-- [ ] SPEC-006 root note authored at docs/specs/SPEC-006-defrag-and-ingest-skills/SPEC-006-defrag-and-ingest-skills.md
-- [ ] REQ notes authored at requirements/
-- [ ] DESIGN note(s) authored at design/
-- [ ] TASK notes authored at tasks/
-- [ ] ADR coverage gate PASS (Brain-awareness scope is non-ADR per critic P1 amendment; KICKOFF-BRIEF.md sourced)
-- [ ] Gate A semantic gap analysis PASS
-- [ ] Gate B 4 binary drift checks PASS
-- [ ] SPEC-006 root status DRAFT → ACCEPTED post Gate A + Gate B PASS
+- [x] SPEC-006 root note authored at docs/specs/SPEC-006-defrag-and-ingest-skills/SPEC-006-defrag-and-ingest-skills.md — 17-note subtree
+- [x] REQ notes authored at requirements/ — 6 notes (REQ-005 /ingest Brain-awareness non-ADR scope per critic P1-2; sourced from KICKOFF-BRIEF.md)
+- [x] DESIGN note(s) authored at design/ — 3 notes
+- [x] TASK notes authored at tasks/ — 7 notes
+- [x] ADR coverage gate PASS — ADR-001 + ADR-002 have implemented_by SPEC-006; non-ADR scope documented per critic P1-2 amendment
+- [x] Gate A semantic gap analysis PASS — 6/6 REQs VERIFIABLE; no flagged; REQ-005 Brain-awareness AC traced to KICKOFF-BRIEF.md lines 117-119
+- [x] Gate B 4 binary drift checks PASS — all 4 checks unanimous; no P1
+- [x] SPEC-006 root status ACCEPTED (born so per /spec invariant)
 
 #### Workflow Plan (for spec.SPEC-006)
 

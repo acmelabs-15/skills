@@ -1,7 +1,7 @@
 ---
 title: 'SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001'
 type: session
-status: IN_PROGRESS
+status: DONE
 permalink: sessions/session-2026-05-19_01-skills-bootstrap-and-plan-001
 tags:
 - session
@@ -310,6 +310,17 @@ tags:
 - Per user critical state-propagation rule applied SAME TURN PLAN Progress Dashboard (spec.SPEC-NNN row 6 DONE; total visible 2/0/0/10); Phase Progression (all 6 spec.SPEC DONE rows); SPEC-006 H3 transition
 - Outstanding cleanup deferred to future session SPEC-002 REQ-003 AC#2 refinement (Gate A finding); ~95 permalink -1 cleanups across 6 SPEC subtrees (cosmetic); DoD checkbox flips for SPEC-002/3/4/5/6 (24 each remaining; cosmetic since states DONE); build.SPEC-NNN phases for all 6 SPECs (major implementation work for next sessions)
 - Next user picks build phase OR pause via /plan continue invocation
+
+## Event 28 — /end abbreviated pipeline; SESSION IN_PROGRESS → DONE
+
+- Type session-end + state-change
+- Trigger user invoked /end skill; abbreviated path chosen via AskUserQuestion (skip /review + PR per F-4 local-only lock)
+- /end Step 1 DoD verification 40 deferred checkboxes flipped this turn across SPEC-002 through SPEC-006 (8 each); all DoD now [x] for the 10 owning parts (research, decisions.1, decisions.2, spec-decomposition, spec.SPEC-001 through SPEC-006)
+- /end Step 2 /review SKIPPED — per-SPEC Gate A + Gate B (12 of 12 PASS unanimous across 6 SPECs) IS the multi-axis review for this session
+- /end Step 3.5 pre-flight SKIPPED — no remote PR target per F-4 locked decision
+- /end Step 4 final commit + SESSION status flip IN_PROGRESS → DONE
+- /end Step 5 structured report emitted to chat
+- Outstanding for future sessions SPEC-002 REQ-003 AC#2 graceful-degradation refinement (Gate A finding; documented); ~95 permalink -1 cleanups across 6 SPEC subtrees (cosmetic; wikilinks resolve by title); 6 build.SPEC-NNN phases (the actual TypeScript implementation work); review phase (post-build multi-axis adversarial review); end phase (post-build session-end)
 
 ## Observations
 
