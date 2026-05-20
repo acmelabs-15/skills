@@ -196,6 +196,18 @@ tags:
 - Per user critical state-propagation rule applied SAME TURN PLAN-001 Progress Dashboard (decisions row DONE 2 of 2; spec-decomposition row IP 1; total visible 2 of 1 of 0 of 3); Phase Progression (spec-decomposition IN_PROGRESS); Cross-Part Deps Graph (sd 🔄 emoji + done class); spec-decomposition H3 subsections updated (Tasks anticipates T-17 through T-NN; Intra-part Deps Graph awaiting /spec; Editor Mirror IDs initial empty; Pending User Decisions surfaces SPEC clustering shape); Decision Log + Progress Log entries appended
 - Next per Contract 2 dispatch shape, auto-route to /spec with plan=PLAN-001 part=spec-decomposition source_adrs ADR-001 + ADR-002 (both ACCEPTED architectural ADRs). /spec runs Stage 1 analyst clustering dispatch + conditional CVA (per the rubrics-are-starting-frameworks rule, analyst extends rubric dimensions for this specific domain) → proposed SPEC decomposition → user adjudication via AskUserQuestion → SPEC root notes authored per cluster (Stage 2 per-SPEC follows in subsequent invocations)
 
+## Event 18 — ANALYSIS-001 SPEC Clustering authored via brain:🧠-analyst (/spec Stage 1 Steps 1-2)
+
+- Type agent-dispatch + state-change
+- Trigger /spec Stage 1 Step 1 analyst dispatch with ACCEPTED ADRs + KICKOFF-BRIEF.md adapter specs + Prior Specs Context (greenfield; no prior SPECs)
+- Outcome ANALYSIS-001 authored at analysis/ANALYSIS-001-spec-clustering.md (~320 lines, 5 proposed SPECs)
+- Analyst token usage 123K tokens, 15 tool calls, 298s duration
+- Proposed SPECs SPEC-001 Composition Core and ADR Adapter (PROOF); SPEC-002 Simple Adapters (ANALYSIS + SESSION ~150 LOC); SPEC-003 Complex Adapters (PLAN + SPEC subtree ~800 LOC; possible split candidate); SPEC-004 Decompose and Recompose Skills; SPEC-005 Defrag and Ingest Skills
+- ADR coverage all 18 decisions mapped (8 ADR-001 F-N + 5 ADR-001 D-N + 5 ADR-002 D-N); 0 uncovered
+- CVA Step 3 trigger recommendation YES — 3 adapter SPECs share CompositionAdapter interface + BaseMarkdownAdapter pattern from ADR-002 D-3; TIER_4 makes CVA mandatory when 2+ similar SPECs exist
+- Open issue from analyst SPEC-003 is largest at ~800 LOC (L effort 6-8d). Natural split: SPEC-003a (PLAN adapter ~250 LOC) + SPEC-003b (SPEC subtree adapter ~500 LOC). Decision deferred to critic review (Step 4) + user adjudication (Step 5)
+- Next /spec Stage 1 Step 3 CVA conditional (mandatory per TIER_4 + 3 similar adapter SPECs); Step 4 critic + decision-critic review of clustering; Step 5 AskUserQuestion adjudication; Step 6 /plan adds one spec.SPEC-NNN part per approved SPEC; Step 7 set-part-done. Path-choice for Stage 1 remainder will be surfaced to user before running heavy agent gates (full pipeline vs streamlined vs pause)
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress
