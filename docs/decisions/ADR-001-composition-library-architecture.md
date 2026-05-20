@@ -479,3 +479,4 @@ SHA-256 is a NIST standard cryptographic primitive available in every runtime. B
 - relates_to [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 - leads_to [[ADR-002: Adapter Contract and Plan Schema]]
 - pairs_with [[brain:---adr-review]]
+- implemented_by [[SPEC-001: Composition Core and ADR Adapter]]

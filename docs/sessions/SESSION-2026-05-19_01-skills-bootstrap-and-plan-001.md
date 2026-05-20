@@ -238,6 +238,19 @@ tags:
 - Per user critical state-propagation rule applied SAME TURN PLAN Progress Dashboard (spec.SPEC-NNN row 5 DRAFT + 1 IP; total visible 7/1/0/4); Phase Progression (spec.SPEC-001 IN_PROGRESS row updated with auto-route note; other 5 spec.SPEC-NNN rows stay READY); Cross-Part Deps Graph (spec_n placeholder updated to show SPEC-001 🔄 1 of 6); spec.SPEC-001 H3 + Substatus + Owning session updated; Decision Log + Progress Log entries appended
 - Next per Contract 2 dispatch shape auto-route to /spec Stage 2 with plan=PLAN-001 part=spec.SPEC-001 spec=SPEC-001 source_adrs=ADR-001 + ADR-002 + ANALYSIS-001 SPEC Clustering. /spec Stage 2 runs Steps 1-6 (create SPEC folder; author REQ then DESIGN then TASK then SPEC root in that order — non-negotiable per /spec skill; bi-directional relation closure on ADR Relations) + Phase 3 validation + ADR coverage gate + Gate A semantic gap analysis + Gate B 4 binary drift checks. On all-PASS SPEC-001 root DRAFT → ACCEPTED + set-part-done
 
+## Event 22 — SPEC-001 subtree authored via brain:🧠-architect (/spec Stage 2 Steps 1-6); compliance audit + 20 type-field corrections; user critical-rule directive on standards inline-ness
+
+- Type agent-dispatch + state-change + compliance-audit + critical-rule-acknowledgment
+- Trigger /spec Stage 2 Steps 1-6 architect dispatch for SPEC-001 Composition Core and ADR Adapter (PROOF) + user mid-turn directive re ALL agents/notes inline with ALL standards in ~/AGENTS.md + referenced files + auto-memories
+- Architect outcome 21 notes authored at docs/specs/SPEC-001-composition-core-and-adr-adapter/ (8 REQ + 3 DESIGN + 9 TASK + 1 SPEC root) totaling 2012 lines. Bi-directional relations added to ADR-001 + ADR-002 (implemented_by SPEC-001) + ANALYSIS-001 (relates_to SPEC-001). Pattern 2 three-phase write executed for all 21 notes; 7 permalink -1 suffixes remediated inline by architect
+- Architect token usage 195K tokens, 127 tool calls, 1659s duration
+- Compliance audit (orchestrator post-dispatch per user directive)
+- Drift found 20 notes had type colon note instead of canonical types (8 REQ + 3 DESIGN + 9 TASK) — per CONVENTIONS Section 3 forbidden generic type
+- Drift corrected 20 find_replace edits applied in parallel; verified 0 type colon note remaining
+- Compliance VERIFIED Observations count minimum 3 per note (range 3-5) per CONVENTIONS Section 6; Relations count minimum 2 per note (range 2-24); final-two-sections invariant Observations then Relations at end of every note; status fields present (SPEC root ACCEPTED; REQ + DESIGN DRAFT; TASK TODO); TASK frontmatter effort + estimate fields present per CONVENTIONS Section 4.8; filenames CAPS prefix + kebab body; no double-bracket wikilinks in prose bullets
+- ADR coverage gate cognitive verification ADR-001 Relations has implemented_by SPEC-001 Composition Core and ADR Adapter; ADR-002 Relations has implemented_by SPEC-001; both ACCEPTED ADRs covered by SPEC-001
+- Next /spec Stage 2 Gate A semantic gap analysis (analyst dispatch reviewing every REQ for verifiability) + Gate B 4 binary drift checks (critic dispatch verifying REQ to ADR + scope conservation + TASK to REQ + Scope-In match); on both PASS SPEC-001 set-part-done
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress

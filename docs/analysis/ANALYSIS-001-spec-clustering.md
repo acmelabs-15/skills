@@ -336,3 +336,4 @@ Status flipped DRAFT → ACCEPTED post user adjudication.
 - relates_to [[ADR-001: Composition Library Architecture]]
 - relates_to [[ADR-002: Adapter Contract and Plan Schema]]
 - part_of [[PLAN-001: Skills Ecosystem]]
+- relates_to [[SPEC-001: Composition Core and ADR Adapter]]
