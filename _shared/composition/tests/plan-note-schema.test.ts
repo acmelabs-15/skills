@@ -62,10 +62,6 @@ function minimalPlan(): PlanNote {
 describe("PlanNoteSchema", () => {
   test("accepts a minimal valid plan", () => {
     const result = PlanNoteSchema.safeParse(minimalPlan());
-    if (!result.success) {
-      // biome-ignore lint/suspicious/noConsole: aid for debugging test failure
-      console.error(result.error.issues);
-    }
     expect(result.success).toBe(true);
   });
 
