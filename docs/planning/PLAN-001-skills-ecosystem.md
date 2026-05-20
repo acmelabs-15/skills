@@ -408,12 +408,12 @@ None — spec-decomposition part DONE 2026-05-19. ANALYSIS-001 SPEC Clustering a
 
 ## Spec
 
-### spec.SPEC-001 — Composition Core and ADR Adapter (READY)
+### spec.SPEC-001 — Composition Core and ADR Adapter (DONE)
 
-**Substatus**: READY
-**Owning session**: —
-**Completing session**: —
-**Outcome**: — (will be SPEC-001 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-001-composition-core-and-adr-adapter/)
+**Substatus**: DONE
+**Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+**Completing session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+**Outcome**: [[SPEC-001: Composition Core and ADR Adapter]] (ACCEPTED at creation per /spec invariant; 21-note subtree authored 2026-05-19; ADR coverage + Gate A + Gate B all PASS)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED)
 
 **DoD**:
