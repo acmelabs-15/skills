@@ -208,6 +208,17 @@ tags:
 - Open issue from analyst SPEC-003 is largest at ~800 LOC (L effort 6-8d). Natural split: SPEC-003a (PLAN adapter ~250 LOC) + SPEC-003b (SPEC subtree adapter ~500 LOC). Decision deferred to critic review (Step 4) + user adjudication (Step 5)
 - Next /spec Stage 1 Step 3 CVA conditional (mandatory per TIER_4 + 3 similar adapter SPECs); Step 4 critic + decision-critic review of clustering; Step 5 AskUserQuestion adjudication; Step 6 /plan adds one spec.SPEC-NNN part per approved SPEC; Step 7 set-part-done. Path-choice for Stage 1 remainder will be surfaced to user before running heavy agent gates (full pipeline vs streamlined vs pause)
 
+## Event 19 — /spec Stage 1 Step 3 CVA + Step 4 critic + decision-critic reviews complete; ready for Step 5 user adjudication
+
+- Type review-result
+- Trigger /spec Stage 1 Step 3 CVA conditional (mandatory TIER_4 + 3 similar adapter SPECs) + Step 4 critic + decision-critic review of ANALYSIS-001 SPEC clustering
+- CVA executed inline Quick tier — 7×5 matrix (commonality × adapter type). Pattern emerged 3 natural groups: simple (ADR + ANALYSIS + SESSION) → BaseMarkdownAdapter with config-only overrides; PLAN → distinct (regenerative content); SPEC subtree → distinct (recursive multi-file + frontmatter + filename rewrite). CVA conclusion 5-SPEC clustering validated; no new abstractions discovered beyond ADR-002 D-3 BaseMarkdownAdapter pattern already locked. BaseMarkdownAdapter belongs in SPEC-001 Composition Core.
+- decision-critic executed inline — stress-tested 3 bundlings: SPEC-002 ANALYSIS+SESSION necessity (REJECTED folding into SPEC-001; SPEC-001 is PROOF); SPEC-003 PLAN+SPEC subtree split (SURFACE to user; natural split candidate per critic + analyst); SPEC-004/SPEC-005 separation (CORRECT; different abstraction layers).
+- critic agent returned ACCEPT verdict with SPLIT recommendation on SPEC-003 (PLAN and SPEC subtree have zero shared implementation per ADR-002 D-3; combined 6-8d L effort dominates uncertainty; independent reviewability post-split). 2 P1 amendments to ANALYSIS-001 SPEC-004 dependency caveat (incremental adapter registration; only ADR-coverage at SPEC-004 ship, not "fully functional"); SPEC-005 /ingest Brain-awareness requirements (CONVENTIONS + Pattern 2 + 16 entity types + observation [category] prefix + final-two-sections invariant) derive from KICKOFF-BRIEF.md not ADRs (ADR-to-SPEC mapping table claim "all 18 ADR decisions mapped" is accurate but /ingest scope has non-ADR requirements). 2 P2 SPEC-002 SESSION more complex than ANALYSIS (cross_source_updates); effort range uncertainty driven by SPEC-003.
+- critic token usage 95K tokens, 6 tool calls, 82s duration
+- Synthesis 5-SPEC clustering is sound. Primary decision for user SPEC-003 split (6 SPECs total with SPEC-003a PLAN + SPEC-003b SPEC subtree) vs keep bundled (5 SPECs total). P1 amendments applied regardless of split decision.
+- Next /spec Stage 1 Step 5 AskUserQuestion surfacing SPEC-003 split decision; on approval Step 6 /plan adds one spec.SPEC-NNN part per approved SPEC; Step 7 set-part-done outcome=ANALYSIS-001
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress
