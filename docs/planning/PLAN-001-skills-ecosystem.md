@@ -40,11 +40,11 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | research | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 2 | 2 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
-| spec.SPEC-NNN | 1 | 0 | 0 | 5 | 6 |
+| spec.SPEC-NNN | 0 | 1 | 0 | 5 | 6 |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **3** | **0** | **0** | **9** | **12** |
+| **Total visible** | **2** | **1** | **0** | **9** | **12** |
 
 ## Workflow Plan
 
@@ -612,9 +612,10 @@ Populated as /spec creates tasks.
 
 Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
-### spec.SPEC-006 — Defrag and Ingest Skills (READY)
+### spec.SPEC-006 — Defrag and Ingest Skills (IN_PROGRESS)
 
-**Substatus**: READY (SPEC-005 dependency satisfied 2026-05-19; transitioned PENDING → READY post SPEC-005 set-part-done)
+**Substatus**: IN_PROGRESS
+**Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Owning session**: —
 **Completing session**: —
 **Outcome**: — (will be SPEC-006 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-006-defrag-and-ingest-skills/)
