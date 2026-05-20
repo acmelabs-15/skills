@@ -12,7 +12,7 @@ tags:
 # SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001
 
 **Scope**: Bootstrap the `skills` Brain project per user-provided 6-step instructions. Create filesystem + git, register Brain MCP project, write KICKOFF-BRIEF.md (project root file), invoke `/plan create` with `--name skills-ecosystem`, surface 5 open design questions from KICKOFF-BRIEF.md via AskUserQuestion as Step 5. Bound to PLAN-001 Skills Ecosystem (see Relations); this session drives the bootstrap (Steps 1-4) and the start of decisions.1 (Step 5).
-**State**: Step 5 AskUserQuestion adjudication pending user response. PLAN-001 is authored; decisions.1 part is READY; this session is IN_PROGRESS.
+**State**: Bootstrap + decisions.1 fully closed out (ADR-001 ACCEPTED at SHA fb700b3; CRIT-001 authored). decisions.2 IN_PROGRESS with ADR-002 PROPOSED at 865 lines post round-2 architect revision (SHA 6c2a92b); round-2 brain:---adr-review re-verification pending; per Step 7 iteration budget rounds 2 of 3 available before HALT. PLAN-001 Progress Dashboard: 3 DRAFT + 1 IN_PROGRESS + 0 BLOCKED + 2 DONE. Branch feat/plan-001-skills-ecosystem at 9 commits. Session IN_PROGRESS. Per user's critical rule (state changes MUST propagate the entire PLAN+SESSION note in same turn): comprehensive propagation applied this turn covering Progress Dashboard, Phase Progression, decisions.2 subsections, DoD checkboxes, Cross-Part Deps Graph, Decision Log + Progress Log, Intra-part Deps Graph.
 
 ## Event 01 — Session started
 
@@ -150,6 +150,28 @@ tags:
 - CRIT-002-ADR-002 authored at critique/CRIT-002-ADR-002-adapter-contract-and-plan-schema-debate-log.md capturing all findings + Points of Consensus + 13 P2 items
 - Resolution path options surfaced to user via next AskUserQuestion (re-dispatch architect round 2 vs orchestrator-inline refinement vs pause for future session)
 - Per /decisions Step 7 iteration budget rounds 2 and 3 remain available before HALT (max 3 iterations)
+
+## Event 15 — ADR-002 round-2 architect revision applied (10 P1 themes A-J resolved in-ADR) + comprehensive PLAN+SESSION state propagation
+
+- Type agent-dispatch + state-change + critical-rule-acknowledgment
+- Trigger /decisions Step 7 round-2 architect dispatch with consolidated revision brief per CRIT-002 round-1 findings; mid-turn user interjection emphasizing critical state-propagation rule applied to remediation
+- Outcome ADR-002 revised in-place from 548 → 865 lines (+317, +58%); all 10 P1 themes A-J resolved in-ADR
+- Architect token usage 109K tokens, 24 tool calls, 443s duration
+- P1-A MutationSpec extended with frontmatter_map field (D-2 + D-5)
+- P1-B cross_source_updates Zod shape defined (D-1 SESSION + D-5 crossSourceUpdateSchema)
+- P1-C SPEC subtree manifest Zod shape defined (D-1 SPEC + D-5 specSubtreeManifestSchema)
+- P1-D Nested discriminatedUnion plan_type × source_type (D-1 intro + D-5 file layout split distribution / composition subdirs)
+- P1-E CompositionAdapter JSDoc documenting 5-step canonical call sequence
+- P1-F regenerated_sections field on MutationSpec + 50% integrity floor in D-5
+- P1-G containedPathSchema refactored to use async realpath + resolvedBase + path.sep (F-1 symlink relevance)
+- P1-H Single-pass replacement semantics + injectivity key-value domain disjointness constraint
+- P1-I hash() removed from CompositionAdapter; documented as shared utility; interface now 5 methods
+- P1-J BaseMarkdownAdapter pattern documented for ADR + ANALYSIS + SESSION; PLAN + SPEC remain distinct
+- Per-section line counts D-1 (74→209), D-2 (86→132), D-3 (34 unchanged), D-4 (26→32), D-5 (133→259)
+- Clarifications section updated with 2026-05-19 round-2 revision entry; Relations section adds CRIT-002 backlink
+- User interjection critical state-propagation rule: state updates MUST propagate the entire PLAN+SESSION note in same turn; one part of the note CANNOT be in different state than another; rule applied this turn to remediate all drift accumulated since Event 12 (decisions.2 transition)
+- Comprehensive propagation this turn PLAN Progress Dashboard (decisions row updated IP 0→1); PLAN Phase Progression (decisions.2 IN_PROGRESS); PLAN Cross-Part Deps Graph (d1 done class + ✅; d2 done class + 🔄); PLAN decisions.2 subsections all updated (Workflow Plan, Tasks T-08..T-16, Intra-part Deps Graph Mermaid, D-N substatus list 5 LOCKED rows, Editor Mirror IDs, Pending User Decisions); PLAN DoD checkboxes 4 of 6 flipped [x]; PLAN Decision Log + Progress Log entries; SESSION State header line refreshed
+- Next /decisions Step 7 round-2 brain:---adr-review re-dispatch (6 parallel reviewers); per Step 7 iteration budget rounds 2 of 3 available before HALT
 
 ## Observations
 
