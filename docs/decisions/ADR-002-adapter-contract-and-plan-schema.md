@@ -865,3 +865,4 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - pairs_with [[brain:---adr-review]]
 - relates_to [[CRIT-002-ADR-002: Adapter Contract and Plan Schema Debate Log]]
 - implemented_by [[SPEC-001: Composition Core and ADR Adapter]]
+- implemented_by [[SPEC-002: Simple Adapters]]
