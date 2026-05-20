@@ -12,7 +12,7 @@ tags:
 # SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001
 
 **Scope**: Bootstrap the `skills` Brain project per user-provided 6-step instructions. Create filesystem + git, register Brain MCP project, write KICKOFF-BRIEF.md (project root file), invoke `/plan create` with `--name skills-ecosystem`, surface 5 open design questions from KICKOFF-BRIEF.md via AskUserQuestion as Step 5. Bound to PLAN-001 Skills Ecosystem (see Relations); this session drives the bootstrap (Steps 1-4) and the start of decisions.1 (Step 5).
-**State**: Decisions phase fully complete (decisions.1 DONE + ADR-001 ACCEPTED; decisions.2 DONE + ADR-002 ACCEPTED 2026-05-19 via brain:---adr-review round-2 unanimous PASS 6A+0C+0B+0P0). CRIT-001 + CRIT-002 debate logs archived. spec-decomposition transitions PENDING → READY (next-ready part on /plan continue invocation). PLAN-001 Progress Dashboard: 3 DRAFT + 0 IN_PROGRESS + 0 BLOCKED + 3 DONE. Branch feat/plan-001-skills-ecosystem accumulating commits. Session IN_PROGRESS. Per user's critical state-propagation rule applied each turn going forward — full-note audit covers H3 status flags, Progress Dashboard, Phase Progression, Cross-Part Deps Graph, per-part subsections, DoD checkboxes, Decision Log + Progress Log, SESSION State + Events.
+**State**: Decisions phase complete (decisions.1 + decisions.2 DONE; ADR-001 + ADR-002 ACCEPTED). spec-decomposition transitioned READY → IN_PROGRESS this turn; auto-routing to /spec Stage 1 with source_adrs=ADR-001 + ADR-002. PLAN-001 Progress Dashboard: 2 DRAFT + 1 IN_PROGRESS + 0 BLOCKED + 3 DONE. Branch feat/plan-001-skills-ecosystem accumulating commits. Session IN_PROGRESS. Per user's critical state-propagation rule applied each turn — full-note audit covers H3 status flags, Progress Dashboard, Phase Progression, Cross-Part Deps Graph, per-part subsections, DoD checkboxes, Decision Log + Progress Log, SESSION State + Events.
 
 ## Event 01 — Session started
 
@@ -186,6 +186,15 @@ tags:
 - Downstream state propagation spec-decomposition transitions PENDING → READY (decisions.2 dep satisfied); next-ready part on /plan continue invocation
 - Per user's critical rule applied this turn comprehensive PLAN+SESSION propagation across Progress Dashboard (decisions row DONE 2/2; spec-decomposition stays READY in DRAFT col); Phase Progression (decisions.2 DONE + outcome; spec-decomposition READY); Cross-Part Deps Graph (d2 ✅ + class done; sd stays pending dashed for READY); decisions.2 H3 + subsections (Tasks T-14/T-15 done + T-16 done; Pending User Decisions cleared); spec-decomposition H3 + state lines; Decision Log + Progress Log entries; CRIT-002 tag round-2-pass + Round 2 outcome section appended
 - Next user resumes via /plan PLAN-001-skills-ecosystem (continue mode auto-routes to spec-decomposition READY part) → /spec Stage 1 (SPEC decomposition proposal via analyst clustering + conditional CVA + user adjudication via AskUserQuestion)
+
+## Event 17 — spec-decomposition transition READY → IN_PROGRESS; auto-routing to /spec Stage 1
+
+- Type state-change
+- Trigger user invoked `/plan PLAN-001-skills-ecosystem` (continue mode)
+- Outcome spec-decomposition substatus READY → IN_PROGRESS; owning_session bound to this SESSION
+- Branch policy current branch `feat/plan-001-skills-ecosystem` is non-main; /plan honored existing branch per skill branch policy (no new branch this invocation; staying on same branch for session continuity through spec-decomposition)
+- Per user critical state-propagation rule applied SAME TURN PLAN-001 Progress Dashboard (decisions row DONE 2 of 2; spec-decomposition row IP 1; total visible 2 of 1 of 0 of 3); Phase Progression (spec-decomposition IN_PROGRESS); Cross-Part Deps Graph (sd 🔄 emoji + done class); spec-decomposition H3 subsections updated (Tasks anticipates T-17 through T-NN; Intra-part Deps Graph awaiting /spec; Editor Mirror IDs initial empty; Pending User Decisions surfaces SPEC clustering shape); Decision Log + Progress Log entries appended
+- Next per Contract 2 dispatch shape, auto-route to /spec with plan=PLAN-001 part=spec-decomposition source_adrs ADR-001 + ADR-002 (both ACCEPTED architectural ADRs). /spec runs Stage 1 analyst clustering dispatch + conditional CVA (per the rubrics-are-starting-frameworks rule, analyst extends rubric dimensions for this specific domain) → proposed SPEC decomposition → user adjudication via AskUserQuestion → SPEC root notes authored per cluster (Stage 2 per-SPEC follows in subsequent invocations)
 
 ## Observations
 

@@ -35,12 +35,12 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 |:--|:--|:--|:--|:--|:--|
 | research | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 2 | 2 |
-| spec-decomposition | 1 | 0 | 0 | 0 | 1 |
+| spec-decomposition | 0 | 1 | 0 | 0 | 1 |
 | spec.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post spec-decomposition) |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **3** | **0** | **0** | **3** | **6** |
+| **Total visible** | **2** | **1** | **0** | **3** | **6** |
 
 ## Workflow Plan
 
@@ -57,7 +57,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | research | DONE | `KICKOFF-BRIEF.md` (project root file; not a Brain note) |
 | decisions.1 | DONE | [[ADR-001: Composition Library Architecture]] |
 | decisions.2 | DONE | [[ADR-002: Adapter Contract and Plan Schema]] (ACCEPTED 2026-05-19 via brain:---adr-review round-2 unanimous PASS) |
-| spec-decomposition | READY | N×[[SPEC-XXX ...]] root notes + decomposition rationale (decisions.2 dependency satisfied; next-ready part) |
+| spec-decomposition | IN_PROGRESS | N×[[SPEC-XXX ...]] root notes + decomposition rationale (auto-routed to /spec Stage 1 this turn) |
 | spec.SPEC-NNN | PENDING | per-SPEC REQ/DESIGN/TASK subtree (created post spec-decomposition) |
 | build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits |
 | review | PENDING | adversarial multi-axis review across feature surface |
@@ -85,7 +85,7 @@ graph TD
 
   subgraph S ["Spec-Decomposition"]
     direction TB
-    sd("<b>spec-decomposition</b><br/><span style='color:#6b7280;font-size:11px'>cluster ADRs into SPECs</span>")
+    sd("🔄 <b>spec-decomposition</b><br/><span style='color:#6b7280;font-size:11px'>/spec Stage 1 dispatched</span>")
   end
 
   subgraph SB ["Spec + Build (per SPEC)"]
@@ -108,8 +108,8 @@ graph TD
   sd --> spec_n
   build_n --> review
 
-  class research,d1,d2 done
-  class sd,spec_n,build_n,review,fin pending
+  class research,d1,d2,sd done
+  class spec_n,build_n,review,fin pending
 
   linkStyle 0,1,2,3,4 stroke:#9ca3af,stroke-width:1.5px
   linkStyle 5 stroke:#3b82f6,stroke-width:2px
@@ -127,6 +127,7 @@ graph TD
 - **2026-05-19** — ADR-002 round-1 brain:---adr-review FAIL (3 ACCEPT + 3 CONCERNS + 0 BLOCK; below ≥5 ACCEPT threshold). 12 raw P1 findings deduplicated to 10 themes A-J (interface gaps + schema gaps + security refinements + pattern guidance). CRIT-002-ADR-002 authored. Round-2 resolution path-choice: re-dispatch architect with consolidated revision brief (selected via AskUserQuestion).
 - **2026-05-19** — ADR-002 round-2 architect revision applied. 10 P1 themes A-J resolved in-ADR: P1-A MutationSpec frontmatter_map; P1-B cross_source_updates Zod shape; P1-C SPEC subtree manifest Zod shape; P1-D nested discriminatedUnion plan_type × source_type; P1-E JSDoc adapter call sequence; P1-F regenerated_sections declarative + 50% integrity floor; P1-G containedPathSchema realpath + path.sep; P1-H injectivity key-value domain disjointness; P1-I hash extracted to shared utility (5-method interface); P1-J BaseMarkdownAdapter pattern documented. ADR-002 line count 548 → 865 (+317 lines, +58%). Status PROPOSED pending round-2 brain:---adr-review re-verification.
 - **2026-05-19** — decisions.2 DONE. ADR-002 ACCEPTED at decisions/ADR-002-adapter-contract-and-plan-schema.md after brain:---adr-review Phase 4 convergence PASS round 2 unanimous (6 ACCEPT + 0 CONCERNS + 0 BLOCK + 0 P0 + 0 NEW P1/P2). All 10 round-1 P1 themes A-J confirmed resolved per CRIT-002 Round 2 outcome section. CONCERNS-issuing reviewers from round 1 (critic + security + analyst) all converted to ACCEPT verdict. spec-decomposition transitioned PENDING → READY (decisions.2 dependency now DONE).
+- **2026-05-19** — spec-decomposition transitioned READY → IN_PROGRESS (continuation invocation of /plan PLAN-001). Owning session bound to SESSION-2026-05-19_01. Auto-routing to /spec Stage 1 (Contract 2 dispatch shape with source_adrs ADR-001 + ADR-002 — both ACCEPTED architectural ADRs).
 
 ## Progress Log
 
@@ -135,6 +136,7 @@ graph TD
 - **2026-05-19** — Step 6 (decisions.1 ADR-001 ACCEPTED) complete: /decisions Steps 5-9 executed (architect dispatch + detail-parity audit + 6-agent adr-review debate + Phase 3 P1 resolutions + CRIT authoring + ACCEPTED flip + state propagation). ADR-001 at decisions/ADR-001-composition-library-architecture.md (501 lines after Phase 3 refinements). decisions.2 READY; next-ready part on resume.
 - **2026-05-19** — decisions.2 IN_PROGRESS (continuation invocation of /plan PLAN-001). Owning session bound to SESSION-2026-05-19_01. Path-choice + ADR-002 PROPOSED + round-1 adr-review FAIL + CRIT-002 auth + round-2 architect revision all completed this turn; per the user's critical state-propagation rule applied this turn — PLAN-001 sections fully propagated (Progress Dashboard decisions row IP 0→1; Phase Progression decisions.2 IN_PROGRESS; decisions.2 H3 subsections Workflow Plan / Tasks / Intra-part Deps Graph / D-N substatus list / Editor Mirror IDs / Pending User Decisions all updated; DoD checkboxes 4 of 6 flipped [x]; Cross-Part Deps Graph d1+d2 class updates).
 - **2026-05-19** — decisions.2 closed out via /decisions Steps 7-9: brain:---adr-review round-2 dispatch (6 parallel reviewers) → all ACCEPT unanimous → ADR-002 ACCEPTED flip → decisions.2 IN_PROGRESS → DONE + completing_session bound + outcome wikilink. CRIT-002 Round 2 outcome section appended with R1→R2 verdict transitions + 12/12 P1 resolution confirmation. PLAN-001 comprehensive propagation applied same turn per user's critical rule (Progress Dashboard decisions row DONE 2/2; Phase Progression decisions.2 DONE + spec-decomposition READY; Cross-Part Deps Graph d2 ✅; decisions.2 H3 + DoD + Tasks + Pending User Decisions all updated; spec-decomposition H3 + substatus transitioned READY). Decisions phase fully complete; next-ready part is spec-decomposition.
+- **2026-05-19** — spec-decomposition IN_PROGRESS (continuation invocation of /plan PLAN-001). Auto-routing to /spec Stage 1 with source_adrs=ADR-001 + ADR-002 (both ACCEPTED). Expected Stage 1 output: analyst-proposed SPEC clustering + conditional CVA + user adjudication via AskUserQuestion locking 4-6 SPEC clusters aligned to KICKOFF-BRIEF.md build order.
 
 ## Blockers
 
@@ -348,10 +350,10 @@ None — decisions.2 part DONE 2026-05-19. ADR-002 ACCEPTED via brain:---adr-rev
 
 ## Spec-Decomposition
 
-### spec-decomposition — Cluster ADRs into SPECs (READY)
+### spec-decomposition — Cluster ADRs into SPECs (IN_PROGRESS)
 
-**Substatus**: READY
-**Owning session**: —
+**Substatus**: IN_PROGRESS
+**Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: —
 **Outcome**: — (will be N×[[SPEC-XXX ...]] root notes)
 **Source artifacts**: [[ADR-001: Composition Library Architecture]], [[ADR-002: Adapter Contract and Plan Schema]] (both pending authorship)
@@ -370,19 +372,19 @@ Stage 1 of /spec: analyst clustering dispatch + conditional CVA analysis → pro
 
 #### Tasks (for spec-decomposition)
 
-Pending — defined post decisions.2.
+Populated by /spec Stage 1 (analyst clustering dispatch + conditional CVA + AskUserQuestion for SPEC clustering proposal) and Stage 2 (per-SPEC subtree authoring) on auto-route this turn. Initial tasks anticipated: T-17 analyst clustering dispatch, T-18 CVA conditional dispatch (if 3+ similar adapters share variability matrix per KICKOFF-BRIEF.md), T-19 SPEC clustering proposal AskUserQuestion, T-20..T-NN per-SPEC root note authoring (Pattern 2 three-phase write per SPEC). Full task table updated by /spec as each task is created.
 
 #### Intra-part Deps Graph
 
-Pending.
+Populated by /spec on auto-route this turn — analyst dispatch → conditional CVA → AskUserQuestion SPEC clustering → SPEC root authoring per cluster. Mermaid graph rendered when task set is known.
 
 #### Editor Mirror IDs (for spec-decomposition)
 
-None yet.
+Populated as /spec creates tasks (T-17, T-18, ...). Initial state: empty.
 
 #### Pending User Decisions (for spec-decomposition)
 
-Pending — SPEC decomposition shape surfaced post decisions.2.
+SPEC decomposition shape — surfaced via AskUserQuestion by /spec Stage 1 this turn (analyst-clustering proposal → user adjudicates 4-6 SPEC clusters → per-SPEC root notes authored in Stage 2). Expected clusters per KICKOFF-BRIEF.md build order: SPEC-001 composition core + ADR adapter PROOF; subsequent SPECs cover /decompose, /recompose, remaining 4 adapters (ANALYSIS + SESSION + PLAN + SPEC subtree), /defrag, /ingest. Actual cluster count + boundaries to be locked via user adjudication.
 
 ## Review
 
