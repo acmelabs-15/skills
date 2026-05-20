@@ -264,6 +264,14 @@ tags:
 - Per user critical state-propagation rule applied SAME TURN PLAN Progress Dashboard (spec.SPEC-NNN row 5 DRAFT + 1 DONE; total visible 7/0/0/5); Phase Progression (spec.SPEC-001 DONE + outcome wikilink); Cross-Part Deps Graph (spec_n node updated to ACCEPTED ✅); spec.SPEC-001 H3 + state lines + 8 DoD checkboxes all flipped; Decision Log + Progress Log entries appended; SESSION Event 23 + State header refresh
 - Next-ready parts spec.SPEC-002, SPEC-003, SPEC-004, SPEC-005, SPEC-006 all READY simultaneously (PROOF gate satisfied; downstream SPECs unlocked). User picks next SPEC to author via /plan continue invocation (multiple READY → AskUserQuestion)
 
+## Event 24 — spec.SPEC-002 transition READY → IN_PROGRESS; auto-routing to /spec Stage 2 (Simple Adapters)
+
+- Type state-change
+- Trigger user invoked `/plan PLAN-001-skills-ecosystem` (continue mode); 5 SPECs READY simultaneously; AskUserQuestion surfaced; user selected SPEC-002 Simple Adapters (lowest-numbered per /plan rule)
+- Outcome spec.SPEC-002 substatus READY → IN_PROGRESS; owning_session bound
+- Per user critical state-propagation rule applied SAME TURN PLAN Progress Dashboard (spec.SPEC-NNN row 4 DRAFT + 1 IP + 1 DONE; total visible 6/1/0/5); Phase Progression (spec.SPEC-002 IN_PROGRESS row); Cross-Part Deps Graph (spec_n updated to SPEC-002 🔄 + SPEC-001 ✅); spec.SPEC-002 H3 + Substatus + Owning session; Progress Log entry appended
+- Next architect dispatch for SPEC-002 Stage 2 Steps 1-6 (REQ + DESIGN + TASK + SPEC root subtree authoring at docs/specs/SPEC-002-simple-adapters/) + bi-directional relation closure on ADR-001 + ADR-002 (implemented_by SPEC-002). Then orchestrator runs Phase 3 + ADR coverage + Gate A + Gate B + compliance audit per user standards-inline directive
+
 ## Observations
 
 - [outcome] Bootstrap Steps 1-4 complete; PLAN-001 + SESSION-2026-05-19_01 authored; awaiting user adjudication on 5 open design questions #bootstrap-progress

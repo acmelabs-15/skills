@@ -40,11 +40,11 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | research | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 2 | 2 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
-| spec.SPEC-NNN | 5 | 0 | 0 | 1 | 6 |
+| spec.SPEC-NNN | 4 | 1 | 0 | 1 | 6 |
 | build.SPEC-NNN | 0 | 0 | 0 | 0 | 0 (created post per-spec spec phase) |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **7** | **0** | **0** | **5** | **12** |
+| **Total visible** | **6** | **1** | **0** | **5** | **12** |
 
 ## Workflow Plan
 
@@ -60,12 +60,12 @@ Per-part workflow detail lives in each per-part H3 below.
 |:--|:--|:--|
 | research | DONE | `KICKOFF-BRIEF.md` (project root file; not a Brain note) |
 | decisions.1 | DONE | [[ADR-001: Composition Library Architecture]] |
-| decisions.2 | DONE | [[ADR-002: Adapter Contract and Plan Schema]] (ACCEPTED 2026-05-19 via brain:---adr-review round-2 unanimous PASS) |
-| spec-decomposition | DONE | [[ANALYSIS-001: SPEC Clustering]] (ACCEPTED 2026-05-19; 6 SPECs locked post user adjudication, SPEC-003 split applied) |
-| spec.SPEC-001 | DONE | [[SPEC-001: Composition Core and ADR Adapter]] (ACCEPTED 2026-05-19; 21-note subtree + ADR coverage + Gate A + Gate B PASS) |
-| spec.SPEC-002 | READY | SPEC-002 root + subtree (Simple Adapters: ANALYSIS + SESSION) |
+| decisions.2 | DONE | [[ADR-002: Adapter Contract and Plan Schema]] |
+| spec-decomposition | DONE | [[ANALYSIS-001: SPEC Clustering]] |
+| spec.SPEC-001 | DONE | [[SPEC-001: Composition Core and ADR Adapter]] (ACCEPTED; ADR coverage + Gate A + Gate B all PASS) |
+| spec.SPEC-002 | IN_PROGRESS | SPEC-002 root + subtree (Simple Adapters: ANALYSIS + SESSION; /spec Stage 2 auto-routed this turn) |
 | spec.SPEC-003 | READY | SPEC-003 root + subtree (PLAN Adapter; regenerative content carve-out) |
-| spec.SPEC-004 | READY | SPEC-004 root + subtree (SPEC Subtree Adapter; recursive multi-file + frontmatter + filename rewrite) |
+| spec.SPEC-004 | READY | SPEC-004 root + subtree (SPEC Subtree Adapter) |
 | spec.SPEC-005 | READY | SPEC-005 root + subtree (Decompose and Recompose Skills) |
 | spec.SPEC-006 | READY | SPEC-006 root + subtree (Defrag and Ingest Skills) |
 | build.SPEC-NNN | PENDING | per-SPEC implementation + tests + commits (created post per-spec spec phase) |
@@ -99,7 +99,7 @@ graph TD
 
   subgraph SB ["Spec + Build (per SPEC)"]
     direction TB
-    spec_n("✅ <b>spec.SPEC-001</b><br/><span style='color:#6b7280;font-size:11px'>Composition Core ACCEPTED (1 of 6)</span>")
+    spec_n("🔄 <b>spec.SPEC-002</b><br/><span style='color:#6b7280;font-size:11px'>Simple Adapters IN_PROGRESS (2 of 6; SPEC-001 ✅)</span>")
     build_n("<b>build.SPEC-NNN</b><br/><span style='color:#6b7280;font-size:11px'>post spec</span>")
     spec_n --> build_n
   end
@@ -151,6 +151,7 @@ graph TD
 - **2026-05-19** — spec.SPEC-001 IN_PROGRESS. User selected SPEC-001 Composition Core and ADR Adapter (PROOF) via AskUserQuestion (Recommended default per /plan lowest-numbered rule + KICKOFF-BRIEF.md build order). Auto-routing to /spec Stage 2 to author SPEC-001 subtree (REQ → DESIGN → TASK → SPEC root).
 - **2026-05-19** — /spec Stage 2 Steps 1-6 complete. brain:🧠-architect dispatch authored SPEC-001 subtree (21 notes 8 REQ + 3 DESIGN + 9 TASK + 1 SPEC root; 2012 lines total; Pattern 2 three-phase write for each; bi-directional relations added to ADR-001 + ADR-002 + ANALYSIS-001). Per user critical-rule directive on standards inline-ness, compliance audit ran post-dispatch; 20 notes had `type: note` drift (per CONVENTIONS Section 3 forbidden generic type) corrected to canonical types (requirement / design / task). Verified Observations min 3, Relations min 2, final-two-sections invariant, status + effort + estimate fields, ADR coverage gate (both ACCEPTED ADRs have implemented_by SPEC-001). Stage 2 Steps 7-10 pending Gate A semantic gap + Gate B 4 binary drift checks before set-part-done.
 - **2026-05-19** — spec.SPEC-001 DONE. /spec Stage 2 fully closed out (Steps 7-10): Gate A semantic gap analysis PASS (6 of 8 REQs VERIFIABLE; 2 REQs refined per NEEDS_REFINEMENT findings — REQ-002 extractByRange boundary semantics clarified, REQ-007 heading-inclusion convention specified); Gate B 4 binary drift checks all PASS (REQ-to-ADR + scope conservation + TASK-to-REQ + Scope-In match; no P1 issues from critic); SPEC-001 root born ACCEPTED per /spec invariant; set-part-done executed inline (substatus IN_PROGRESS → DONE; outcome wikilink resolved; completing_session bound). spec.SPEC-002..SPEC-006 remain READY simultaneously for /plan continue invocation.
+- **2026-05-19** — spec.SPEC-002 IN_PROGRESS (user selected SPEC-002 Simple Adapters via AskUserQuestion per /plan lowest-numbered rule). Owning session bound. Auto-routing to /spec Stage 2 (Contract 2 dispatch with spec=SPEC-002 source_adrs=ADR-001 + ADR-002 source_clustering=ANALYSIS-001 + source_proof=SPEC-001 BaseMarkdownAdapter).
 
 ## Blockers
 
@@ -447,10 +448,10 @@ Populated as /spec creates tasks.
 
 Pending — surfaced by /spec Stage 2 if REQ/DESIGN refinements needed.
 
-### spec.SPEC-002 — Simple Adapters: ANALYSIS + SESSION (READY)
+### spec.SPEC-002 — Simple Adapters: ANALYSIS + SESSION (IN_PROGRESS)
 
-**Substatus**: READY
-**Owning session**: —
+**Substatus**: IN_PROGRESS
+**Owning session**: [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 **Completing session**: —
 **Outcome**: — (will be SPEC-002 root note + REQ + DESIGN + TASK subtree at docs/specs/SPEC-002-simple-adapters/)
 **Source artifacts**: ADR-001 + ADR-002 (both ACCEPTED) + ANALYSIS-001 SPEC Clustering (ACCEPTED) + spec.SPEC-001 PROOF outcome
