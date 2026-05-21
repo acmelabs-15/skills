@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-002-SPEC-005: Plan YAML Lifecycle'
 type: design
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-005-decompose-and-recompose-skills/design/design-002-spec-005-plan-yaml-lifecycle
 tags:
 - design

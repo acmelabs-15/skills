@@ -1,7 +1,7 @@
 ---
 title: 'REQ-005-SPEC-005: Symlink Activation via Install Script'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-005-decompose-and-recompose-skills/requirements/req-005-spec-005-symlink-activation-via-install-script
 tags:
 - requirement

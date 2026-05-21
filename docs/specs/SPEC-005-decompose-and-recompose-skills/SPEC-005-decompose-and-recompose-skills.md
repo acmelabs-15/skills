@@ -1,7 +1,7 @@
 ---
 title: 'SPEC-005: Decompose and Recompose Skills'
 type: spec
-status: ACCEPTED
+status: DONE
 date: 2026-05-19
 permalink: specs/spec-005-decompose-and-recompose-skills/spec-005-decompose-and-recompose-skills
 tags:
@@ -133,6 +133,7 @@ Phase 2 adds the AskUserQuestion adjudication step, symlink activation, and end-
 - [constraint] At ship time, /decompose and /recompose work for ADR adapter ONLY; broader coverage incremental per P1 amendment #incremental #p1-amendment
 - [constraint] Three-phase workflow (LLM authors plan, user adjudicates, script executes) is locked from KICKOFF-BRIEF.md #workflow #locked
 - [insight] Estimated 5.25d AI-Dominant effort for ~200 LOC across CLI entry points, SKILL.md files, adapter dispatcher, and tests #effort #estimation
+- [outcome] SPEC-005 DONE 2026-05-21 -- all 6 TASKs PASS + 6 REQs ACCEPTED + 3 DESIGNs ACCEPTED per QA-039 verdict #spec-complete #qa-pass
 
 ## Relations
 
@@ -156,3 +157,4 @@ Phase 2 adds the AskUserQuestion adjudication step, symlink activation, and end-
 - contains [[TASK-004-SPEC-005: Implement Adapter Dispatcher with Incremental Registration]]
 - contains [[TASK-005-SPEC-005: Implement Install Script Symlink Activation]]
 - contains [[TASK-006-SPEC-005: Skill End-to-End Round-Trip Tests and Docs]]
+- validated_by [[QA-039-SPEC-005: Batched Build Revalidation]]

@@ -1,7 +1,7 @@
 ---
 title: 'REQ-001-SPEC-005: Decompose Skill Implementation'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-005-decompose-and-recompose-skills/requirements/req-001-spec-005-decompose-skill-implementation
 tags:
 - requirement

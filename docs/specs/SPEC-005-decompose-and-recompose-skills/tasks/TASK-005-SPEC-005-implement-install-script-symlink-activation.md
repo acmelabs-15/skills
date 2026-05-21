@@ -69,3 +69,4 @@ Extend the existing install.sh script (scaffolded in SPEC-001) to create symlink
 - implements [[REQ-005-SPEC-005: Symlink Activation via Install Script]]
 - part_of [[SPEC-005: Decompose and Recompose Skills]]
 - depends_on [[SPEC-001: Composition Core and ADR Adapter]]
+- validated_by [[QA-039-SPEC-005: Batched Build Revalidation]]

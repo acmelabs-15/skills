@@ -1,7 +1,7 @@
 ---
 title: 'REQ-004-SPEC-005: Adapter Registry Dispatcher'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-005-decompose-and-recompose-skills/requirements/req-004-spec-005-adapter-registry-dispatcher
 tags:
 - requirement

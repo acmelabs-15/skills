@@ -73,3 +73,4 @@ Create the adapter registry module at _shared/composition/src/registry.ts that m
 - implements [[REQ-004-SPEC-005: Adapter Registry Dispatcher]]
 - part_of [[SPEC-005: Decompose and Recompose Skills]]
 - depends_on [[SPEC-001: Composition Core and ADR Adapter]]
+- validated_by [[QA-039-SPEC-005: Batched Build Revalidation]]

@@ -72,3 +72,4 @@ Create the /decompose skill definition (SKILL.md) and the decompose.ts CLI entry
 - implements [[REQ-001-SPEC-005: Decompose Skill Implementation]]
 - part_of [[SPEC-005: Decompose and Recompose Skills]]
 - leads_to [[TASK-003-SPEC-005: Implement Plan YAML Adjudication Step]]
+- validated_by [[QA-039-SPEC-005: Batched Build Revalidation]]

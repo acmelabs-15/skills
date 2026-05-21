@@ -71,3 +71,4 @@ Implement the AskUserQuestion integration within the /decompose and /recompose S
 - part_of [[SPEC-005: Decompose and Recompose Skills]]
 - depends_on [[TASK-001-SPEC-005: Implement Decompose CLI Entry Point and Skill Structure]]
 - depends_on [[TASK-002-SPEC-005: Implement Recompose CLI Entry Point and Skill Structure]]
+- validated_by [[QA-039-SPEC-005: Batched Build Revalidation]]

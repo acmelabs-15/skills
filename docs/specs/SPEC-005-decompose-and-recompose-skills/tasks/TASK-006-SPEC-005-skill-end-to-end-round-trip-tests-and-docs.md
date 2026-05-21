@@ -81,3 +81,4 @@ Create end-to-end round-trip tests that exercise /decompose followed by /recompo
 - depends_on [[TASK-001-SPEC-005: Implement Decompose CLI Entry Point and Skill Structure]]
 - depends_on [[TASK-002-SPEC-005: Implement Recompose CLI Entry Point and Skill Structure]]
 - depends_on [[TASK-004-SPEC-005: Implement Adapter Dispatcher with Incremental Registration]]
+- validated_by [[QA-039-SPEC-005: Batched Build Revalidation]]

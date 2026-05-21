@@ -1,7 +1,7 @@
 ---
 title: 'REQ-003-SPEC-005: Plan YAML Adjudication via AskUserQuestion'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-005-decompose-and-recompose-skills/requirements/req-003-spec-005-plan-yaml-adjudication-via-ask-user-question
 tags:
 - requirement
