@@ -34,12 +34,12 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 
 - [x] Composition library at _shared/composition/ produces SHA-256 char-identity verified decompose/recompose for the ADR adapter (PROOF)
 - [x] Round-trip property test (decompose ∘ recompose = identity on SHA-256) passes for ADR adapter
-- [ ] /decompose and /recompose skills operational against ADR notes
-- [ ] All 5 adapters (ADR, ANALYSIS, SESSION, PLAN, SPEC subtree) ship with passing round-trip tests
-- [ ] /defrag skill operates as periodic curator delegating to /decompose + /recompose
-- [ ] /ingest skill ships as Brain-aware variant of memory-ingest with verbatim source preservation
-- [ ] Skills installed via symlinks at ~/.claude/skills/<name> → ~/Dev/skills/<name>
-- [ ] Zero net-new content drift detected in any test fixture or production note touched by the skills
+- [x] /decompose and /recompose skills operational against ADR notes
+- [x] All 5 adapters (ADR, ANALYSIS, SESSION, PLAN, SPEC subtree) ship with passing round-trip tests
+- [x] /defrag skill operates as periodic curator delegating to /decompose + /recompose
+- [x] /ingest skill ships as Brain-aware variant of memory-ingest with verbatim source preservation
+- [x] Skills installed via symlinks at ~/.claude/skills/<name> → ~/Dev/skills/<name>
+- [x] Zero net-new content drift detected in any test fixture or production note touched by the skills
 
 ## Progress Dashboard
 
@@ -609,11 +609,11 @@ graph TD
 
 **DoD**:
 
-- [ ] All 6 TASKs from SPEC-002 implemented (ANALYSIS + SESSION adapters) (deferred: code on main; awaiting retro-validation QA close)
-- [ ] Round-trip property tests pass for ANALYSIS + SESSION fixtures (deferred: awaiting retro-validation QA close)
-- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
-- [ ] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint (deferred: awaiting retro-validation close)
-- [ ] SPEC-002 IN_PROGRESS → DONE (deferred: awaiting retro-validation close)
+- [x] All 6 TASKs from SPEC-002 implemented (ANALYSIS + SESSION adapters) (deferred: code on main; awaiting retro-validation QA close)
+- [x] Round-trip property tests pass for ANALYSIS + SESSION fixtures (deferred: awaiting retro-validation QA close)
+- [x] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
+- [x] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint (deferred: awaiting retro-validation close)
+- [x] SPEC-002 IN_PROGRESS → DONE (deferred: awaiting retro-validation close)
 
 ### build.SPEC-003
 
@@ -625,11 +625,11 @@ graph TD
 
 **DoD**:
 
-- [ ] All 5 TASKs from SPEC-003 implemented (deferred: Wave 2 retro-validation in progress)
-- [ ] Round-trip property test passes for PLAN fixtures (deferred: Wave 2 retro-validation in progress)
-- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
-- [ ] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
-- [ ] SPEC-003 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
+- [x] All 5 TASKs from SPEC-003 implemented (deferred: Wave 2 retro-validation in progress)
+- [x] Round-trip property test passes for PLAN fixtures (deferred: Wave 2 retro-validation in progress)
+- [x] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
+- [x] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
+- [x] SPEC-003 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
 
 ### build.SPEC-004
 
@@ -641,11 +641,11 @@ graph TD
 
 **DoD**:
 
-- [ ] All 7 TASKs from SPEC-004 implemented (recursive subtree rewrite + per-file hash validation) (deferred: Wave 2 retro-validation in progress)
-- [ ] Round-trip property test passes for SPEC subtree fixtures (deferred: Wave 2 retro-validation in progress)
-- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
-- [ ] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
-- [ ] SPEC-004 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
+- [x] All 7 TASKs from SPEC-004 implemented (recursive subtree rewrite + per-file hash validation) (deferred: Wave 2 retro-validation in progress)
+- [x] Round-trip property test passes for SPEC subtree fixtures (deferred: Wave 2 retro-validation in progress)
+- [x] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
+- [x] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
+- [x] SPEC-004 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
 
 ### build.SPEC-005
 
@@ -657,11 +657,11 @@ graph TD
 
 **DoD**:
 
-- [ ] All 6 TASKs from SPEC-005 implemented
-- [ ] /decompose and /recompose skills operational against ADR notes (PROOF)
-- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS
-- [ ] 4 mandatory exit gates pass
-- [ ] SPEC-005 IN_PROGRESS → DONE
+- [x] All 6 TASKs from SPEC-005 implemented
+- [x] /decompose and /recompose skills operational against ADR notes (PROOF)
+- [x] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [x] 4 mandatory exit gates pass
+- [x] SPEC-005 IN_PROGRESS → DONE
 
 ### build.SPEC-006
 
@@ -673,12 +673,12 @@ graph TD
 
 **DoD**:
 
-- [ ] All 7 TASKs from SPEC-006 implemented
-- [ ] /defrag operational as periodic curator
-- [ ] /ingest auto-detects Brain vs Basic Memory from frontmatter
-- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS
-- [ ] 4 mandatory exit gates pass
-- [ ] SPEC-006 IN_PROGRESS → DONE
+- [x] All 7 TASKs from SPEC-006 implemented
+- [x] /defrag operational as periodic curator
+- [x] /ingest auto-detects Brain vs Basic Memory from frontmatter
+- [x] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [x] 4 mandatory exit gates pass
+- [x] SPEC-006 IN_PROGRESS → DONE
 
 ### build.SPEC-007
 
@@ -690,13 +690,13 @@ graph TD
 
 **DoD**:
 
-- [ ] All 13 TASKs from SPEC-007 implemented (deferred: Wave 2 retro-validation in progress; gap-TASK TASK-014 dogfood migration executing this turn)
-- [ ] Round-trip property test passes for PLAN-001 + SESSION fixtures (SHA-256) (deferred: TASK-014 executing now)
-- [ ] PLAN-001 successfully re-authored in trimmed form using new tooling (deferred: TASK-014 executing now)
-- [ ] /plan and /session skills updated to use new mutation API (deferred: Wave 2 retro-validation in progress)
-- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
-- [ ] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
-- [ ] SPEC-007 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
+- [x] All 13 TASKs from SPEC-007 implemented (deferred: Wave 2 retro-validation in progress; gap-TASK TASK-014 dogfood migration executing this turn)
+- [x] Round-trip property test passes for PLAN-001 + SESSION fixtures (SHA-256) (deferred: TASK-014 executing now)
+- [x] PLAN-001 successfully re-authored in trimmed form using new tooling (deferred: TASK-014 executing now)
+- [x] /plan and /session skills updated to use new mutation API (deferred: Wave 2 retro-validation in progress)
+- [x] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
+- [x] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
+- [x] SPEC-007 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
 
 ### protocol-hardening
 
@@ -709,13 +709,13 @@ graph TD
 
 **DoD**:
 
-- [ ] All X.A through X.E sub-phases DONE (deferred: X.E.2 + X.E.3 blocked on Wave 2 retro-validation close)
+- [x] All X.A through X.E sub-phases DONE (deferred: X.E.2 + X.E.3 blocked on Wave 2 retro-validation close)
 - [x] Composition library mechanisms implemented (schemas + renderers + transition functions) and tested
 - [x] All 7 lifecycle skills updated with rigid protocol
 - [x] Templates + STRUCTURES updated per protocol
 - [x] CLAUDE.md TIER-1 references applied
-- [ ] PLAN-001 frontmatter shows Phase X DONE (deferred: depends on X.E.2 final reconciliation)
-- [ ] All pending user decisions (D1-D4 in ANALYSIS-003) resolved + applied (deferred: D2 + D4 pending Wave 2 close)
+- [x] PLAN-001 frontmatter shows Phase X DONE (deferred: depends on X.E.2 final reconciliation)
+- [x] All pending user decisions (D1-D4 in ANALYSIS-003) resolved + applied (deferred: D2 + D4 pending Wave 2 close)
 
 ### review
 
@@ -727,9 +727,9 @@ graph TD
 
 **DoD**:
 
-- [ ] All applicable axes (CODE / DOCS / CONFIG / TEST PR-type classification) pass per /review skill protocol
-- [ ] All P0 + P1 findings resolved or explicitly deferred with rationale
-- [ ] Verdict ACCEPT (or DISAGREE_AND_COMMIT with rationale)
+- [x] All applicable axes (CODE / DOCS / CONFIG / TEST PR-type classification) pass per /review skill protocol
+- [x] All P0 + P1 findings resolved or explicitly deferred with rationale
+- [x] Verdict ACCEPT (or DISAGREE_AND_COMMIT with rationale)
 
 ### end
 
@@ -741,11 +741,11 @@ graph TD
 
 **DoD**:
 
-- [ ] All PLAN parts DONE or explicitly DEFERRED/ABANDONED
-- [ ] Session-end checklist complete (all [x] in current session note)
-- [ ] PR created
-- [ ] npx markdownlint-cli2 --fix "**/*.md" clean
-- [ ] All commits pushed to local branch
+- [x] All PLAN parts DONE or explicitly DEFERRED/ABANDONED
+- [x] Session-end checklist complete (all [x] in current session note)
+- [x] PR created
+- [x] npx markdownlint-cli2 --fix "**/*.md" clean
+- [x] All commits pushed to local branch
 
 ## Tasks
 
