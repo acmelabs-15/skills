@@ -2,7 +2,7 @@
 title: 'TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-014-spec-007-execute-plan-001-migration-to-trimmed-template
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -56,25 +56,27 @@ Apply the SPEC-007 render pipeline to `docs/planning/PLAN-001-skills-ecosystem.m
 
 ## Definition of Done
 
-- [ ] `## Workflow Plan` absent from PLAN-001
-- [ ] `## Decision Log` absent from PLAN-001
-- [ ] `## Progress Log` absent from PLAN-001
-- [ ] No per-part Tasks subsection inside Parts; Tasks consolidated at top level with Part column
-- [ ] Top-level Editor Mirror IDs section present
-- [ ] Top-level Pending User Decisions section present
-- [ ] `PlanNoteSchema.parse(parsePlanNote(migrated))` succeeds
-- [ ] `sha256(renderPlanNote(parsePlanNote(migrated))) === sha256(migrated)` (round-trip)
-- [ ] All part substatuses preserved (verify by spot check against pre-migration content)
-- [ ] All task statuses preserved
-- [ ] All outcomes + DoD checkbox states preserved
-- [ ] git diff shows structural changes only — no data loss
+- [x] `## Workflow Plan` absent from PLAN-001
+- [x] `## Decision Log` absent from PLAN-001
+- [x] `## Progress Log` absent from PLAN-001
+- [x] No per-part Tasks subsection inside Parts; Tasks consolidated at top level with Part column
+- [x] Top-level Editor Mirror IDs section present
+- [x] Top-level Pending User Decisions section present
+- [x] `PlanNoteSchema.parse(parsePlanNote(migrated))` succeeds
+- [x] `sha256(renderPlanNote(parsePlanNote(migrated))) === sha256(migrated)` (round-trip)
+- [x] All part substatuses preserved (verify by spot check against pre-migration content)
+- [x] All task statuses preserved
+- [x] All outcomes + DoD checkbox states preserved
+- [x] git diff shows structural changes only — no data loss
+
 
 ## ADR Compliance
 
-- [ ] Honors ADR-003 D-6: consolidated tasks at top level
-- [ ] Honors ADR-003 D-9: PUD and Editor Mirror at top level
-- [ ] Honors ADR-003 D-10: no Decision Log or Progress Log
-- [ ] Honors ADR-003 D-11: no Workflow Plan prose
+- [x] Honors ADR-003 D-6: consolidated tasks at top level
+- [x] Honors ADR-003 D-9: PUD and Editor Mirror at top level
+- [x] Honors ADR-003 D-10: no Decision Log or Progress Log
+- [x] Honors ADR-003 D-11: no Workflow Plan prose
+
 
 ## Observations
 
@@ -90,3 +92,5 @@ Apply the SPEC-007 render pipeline to `docs/planning/PLAN-001-skills-ecosystem.m
 - caused_by [[QA-022-SPEC-007: Dogfood PLAN-001 Migration]]
 - [decision] Supersedes TASK-013 which was BLOCKED by QA-022 FAIL; gap-TASK ready for build dispatch #supersedes #gap-task
 - supersedes [[TASK-013-SPEC-007: Dogfood PLAN-001 Migration]]
+
+- validated_by [[QA-021-SPEC-007: Implement Round-Trip Property Test]]

@@ -2,7 +2,7 @@
 title: 'SPEC-007: Plan/Session Render Implementation'
 type: spec
 permalink: specs/spec-007-plan-session-render/spec-007-plan-session-render
-status: ACCEPTED
+status: DONE
 tags:
 - spec
 - plan-session
