@@ -62,6 +62,10 @@ PLAN-001 Decision Log entry 2026-05-21 captures both cleanups. Convention file u
 
 Tests reduction directive: write only the minimum tests required for next implementation work; circle back to full test suite later today. Parallelism directive: maximize parallel work where possible without putting work at risk (per prior 5-stream wave structure mapped against shared-resource dispatcher.ts as the sequentialization point).
 
+## Event 09
+
+[2026-05-21] Wave 3 Gap-TASK Build Wave dispatched. User directive: SPEED + minimum tests + max parallel + atomic granular state transitions in PLAN. PLAN-001 new section `## Wave 3 Gap-TASK Build Wave` authored with 7-stream dispatch table; all 7 streams transition PENDING → IN_PROGRESS this turn (single-edit batch since all share this session as owning_session). Streams: A (TASK-006-SPEC-003 dispatcher.ts); B (TASK-007-SPEC-002 analysis.ts); C (TASK-008-SPEC-002 session.ts); D (batched TASK-007/008/009-SPEC-003 plan.ts); E (TASK-010-SPEC-002 fixtures); F (TASK-010-SPEC-003 fixtures + YAML); G (/decisions ADR-004 Cross-Source Coordinator). TASK-009-SPEC-002 (large Cross-Source Coordinator impl) NOT in this wave — gated on G's ADR-004 outcome. Minimum tests directive embedded in every impl brief.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

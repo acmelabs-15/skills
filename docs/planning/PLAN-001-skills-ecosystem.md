@@ -364,6 +364,30 @@ After all TASKs in `{{SPEC_ID}}` validated:
 - `Bash` for `bun test <path>` execution + read-only git/rg/grep/find commands. Forbidden: any state-changing git command, any file modification command, any network call
 - NEVER `Edit` / `Write` / `Glob` / `Grep` on files under `docs/**`
 
+## Wave 3 Gap-TASK Build Wave
+
+> Dispatch 2026-05-21. Owning session: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]. 7 parallel streams. Minimum tests directive (per user 2026-05-21 mid-session): impl agents write only essential tests (1 per AC, no exhaustive coverage); full test suite expansion deferred to later today.
+
+| Stream | Item | Status | File ownership | Notes |
+|---|---|---|---|---|
+| A | impl-TASK-006-SPEC-003 (register PlanAdapter in dispatcher) | IN_PROGRESS | `_shared/composition/src/core/dispatcher.ts` | P0 small (~5 LOC) |
+| B | impl-TASK-007-SPEC-002 (ANALYSIS adapter DESIGN-001 drift) | IN_PROGRESS | `_shared/composition/src/adapters/analysis.ts` | small drift fix |
+| C | impl-TASK-008-SPEC-002 (SESSION adapter DESIGN-001 drift) | IN_PROGRESS | `_shared/composition/src/adapters/session.ts` | small drift fix |
+| D | impl-batched-SPEC-003 (TASK-007 + 008 + 009 — section-aware extractByRange + integrity floor + frontmatter inverse) | IN_PROGRESS | `_shared/composition/src/adapters/plan.ts` + schemas | 3 TASKs same file -> single agent |
+| E | impl-TASK-010-SPEC-002 (round-trip fixtures + YAML) | IN_PROGRESS | `_shared/composition/tests/fixtures/` analysis + session | small fixture work |
+| F | impl-TASK-010-SPEC-003 (plan composition YAML + frontmatter_map fixtures) | IN_PROGRESS | `_shared/composition/tests/fixtures/` plan | small fixture work |
+| G | decisions ADR-004 (Cross-Source Coordinator strategic call) | IN_PROGRESS | `docs/decisions/ADR-004-*` | /decisions per-D-N cycle; gates TASK-009-SPEC-002 (LARGE) |
+
+**Exit criteria for this wave**:
+
+- All 6 impl streams return `## State Changes` with code committed + minimum tests passing
+- Decisions stream returns ADR-004 PROPOSED with brain:---adr-review queued
+- Orchestrator applies status transitions per agent returns
+- Wave-level QA sweep deferred (per minimum-tests directive; circle back later today)
+- Aggregate commit + push
+
+**Sequencing**: B/C share no files; D batches 3 SPEC-003 TASKs into one agent (all touch plan.ts); A/B/C/D/E/F dispatched in parallel; G is /decisions path running concurrently. TASK-009-SPEC-002 (Cross-Source Coordinator impl) NOT dispatched this wave — gated on ADR-004 outcome.
+
 ## Blockers
 
 **Active**: build.SPEC-005 + build.SPEC-006 remain BLOCKED transitively on Wave 2 retro-validation completion (build.SPEC-002/003/004/007). Phase X.E.2 + X.E.3 (final PLAN reconciliation + phase close) BLOCKED on Wave 2 retro-validation completion. Review + end phases BLOCKED on Wave 2 close.
