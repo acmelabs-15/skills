@@ -1,7 +1,7 @@
 ---
-title: QA-036-SPEC-004 TASK-008 Barrel and sourceType Alignment Revalidation
+title: 'QA-036-SPEC-004: TASK-008 Barrel and sourceType Alignment Revalidation'
 type: test-report
-permalink: qa/qa-036-spec-004-task-008-barrel-sourcetype-revalidation
+permalink: qa/qa-036-spec-004-task-008-barrel-and-sourcetype-alignment-revalidation
 status: DONE
 verdict: PASS
 tests_run: 475
@@ -17,7 +17,7 @@ tags:
 - revalidation
 ---
 
-# QA-036-SPEC-004 TASK-008 Barrel and sourceType Alignment Revalidation
+# QA-036-SPEC-004: TASK-008 Barrel and sourceType Alignment Revalidation
 
 ## Scope
 

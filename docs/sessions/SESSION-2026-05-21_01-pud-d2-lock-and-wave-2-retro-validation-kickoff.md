@@ -290,6 +290,18 @@ In-flight (5 + 3 QA + 1 impl-012 = 9): SPEC-007 state propagation, impl-TASK-011
 
 [2026-05-21] TASK-014 SPEC-007 user-adjudicated: **Dispatch-now with mitigation** (wait for in-flight). Queued. TASK-008/009/010 returned DONE; 3 QA agents dispatched. In-flight: 6 agents (SPEC-007 state propagation + impl TASK-011/012 + QA-008/009/010).
 
+## Event 39
+
+[2026-05-21] Triple return: (a) SPEC-007 state propagation memory agent DONE — 32 transitions applied (12 TASKs DONE + 11 REQs ACCEPTED + 4 DESIGNs ACCEPTED + TASK-013 BLOCKED + TASK-014 ready); (b) TASK-011-SPEC-004 impl DONE — schema reshaped per ADR-002 D-5 (manifest→subtree_manifest; per-entry mutations; 3-surface CWE-22 guard; 475/475 tests); (c) QA-009-SPEC-004 PASS (QA-034; 5/5 DoD; TOCTOU-safe pre-flight order; LIFO rollback verified).
+
+## Event 40
+
+[2026-05-21] TASK-012-SPEC-004 (the LARGE Implement-as-spec) returned DONE. New files: cluster-rollback.ts + subtree-orchestrator.ts + spec-subtree-orchestration.test.ts (9 tests). Adapter `processSubtree()` delegates to orchestrator. DESIGN-001 + DESIGN-003 honored verbatim. 484/484 full suite + tsc clean.
+
+QA-008 returned (QA-036 filename had spaces - retroactively renamed kebab via Bash mv). QA-011 + QA-012 dispatched.
+
+Pre-existing drift flag from QA-009: `_shared/composition/biome.json:30` uses `files.include` (Biome 2.x expects `files.includes`). Non-blocking; tracked.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid
