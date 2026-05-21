@@ -2,7 +2,7 @@
 title: 'REQ-012-SPEC-007: PLAN-001 Dogfood Migration'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-012-spec-007-plan-001-dogfood-migration
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007
