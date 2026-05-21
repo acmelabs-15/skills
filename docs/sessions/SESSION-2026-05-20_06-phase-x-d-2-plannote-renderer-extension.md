@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-20_06: Phase X.D.2 PlanNote Renderer Extension'
 type: session
 permalink: sessions/session-2026-05-20_06-phase-x-d-2-plannote-renderer-extension
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - phase-x
@@ -231,6 +231,51 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - X.E wrap-up: docs DONE; PLAN-001 final reconciliation BLOCKED on D2
 
 Composition library: 6 note-type schemas + 6 parsers + 4 renderers + 13 mutations + 6 claim validators + 7 lifecycle SKILL.md files + 3 user-level standards + 3 TIER-1 BLOCKING auto-memories + CLAUDE.md pre-flight table integration. Defense in depth across every enforcement layer the protocol specifies.
+
+## Event 13
+
+**Type**: pr-lifecycle | x-phase-merged-to-main | 2026-05-21
+
+- PR #6 opened against main: "Phase X protocol hardening — composition library mechanism completion + lifecycle skill updates"
+- 17 commits, full Phase X.D + X.C + X.E docs work
+- Branch pushed to origin `feat/plan-001-x-d-2-plan-renderer`
+- User merged PR #6 into main; merge commit `2f049fd` on main
+- Local main pulled to current with origin/main
+- Branch `feat/plan-001-x-d-2-plan-renderer` can be deleted post-merge
+
+### User-locked decisions captured in conversation (carried forward as PUD-D2 entry in PLAN)
+
+- Hybrid disposition recommended for Wave 2 retro-validation (SPEC-002 / 003 / 004 / 007). Reasoning: existing code passes 444 tests; throw-out wasteful; pure salvage rubber-stamps; Hybrid uses claim validators landed in PR #6 to find genuine gaps + drives only gaps through rigid cycle. Estimated 6-10 hours, parallelizable as 4-SPEC swarm
+- User accepted PR merge as the bookmark; D2 disposition deferred to follow-up session
+
+## Event 14
+
+**Type**: recovery-test-readiness | plan-and-session-hygiene | 2026-05-21
+
+User asked whether the PLAN + session note are in a state where a fresh `/plan PLAN-001-skills-ecosystem` invocation will correctly identify next-ready work. Audit found 5 recovery-critical gaps + 3 hygiene gaps. Recovery-critical fixes applied on new branch `chore/plan-001-d2-pud-recovery-test-readiness` off updated main:
+
+- **build.SPEC-002**: row was stale-marked DONE from SESSION-_05 brain:memory dispatch — corrected to BLOCKED on PUD-D2 with truthful note about code-on-main vs Brain-notes-reverted divergence
+- **build.SPEC-003 / 004 / 007**: substatus IN_PROGRESS (stale Wave 2 drift) → BLOCKED on PUD-D2 with same divergence note
+- **build.SPEC-005 / 006**: substatus READY → BLOCKED on PUD-D2 transitively (depend on adapter SPECs being D2-resolved)
+- **`## Pending User Decisions` section**: previously empty — added PUD-D2 entry with 4 options + Hybrid recommendation + rationale, structured per CONVENTIONS Section 4.6 PUD schema
+- **`## Blockers` section**: rewritten to reflect PUD-D2 as the active blocker chain
+- **Progress Dashboard**: counts reconciled (build.SPEC-NNN row: 0 DRAFT / 0 IN_PROGRESS / 6 BLOCKED / 1 DONE; Total visible 22). Annotated with next-ready ranking
+- Session status: IN_PROGRESS → PAUSED (continuing in future session for D2 disposition)
+
+### Recovery test after fixes (what /plan PLAN-001 will now see)
+
+- One protocol-hardening part IN_PROGRESS (Phase X — X.E.2 + X.E.3 open, blocked on D2)
+- 6 build.SPEC-NNN parts BLOCKED on PUD-D2; PUD-D2 entry surfaces in `## Pending User Decisions` with Hybrid recommendation
+- No part substatus READY (correct — nothing can proceed before D2 resolves)
+- Decision Log entries for prior locked decisions intact
+
+A fresh /plan invocation will: read PLAN-001, find protocol-hardening IN_PROGRESS, see PUD-D2 surfaced as the blocker for everything else, surface the PUD to the user as the gating decision, and request Hybrid / Throw-out / Salvage / Defer adjudication before proceeding.
+
+### Carried forward (not blocking recovery test)
+
+- Pre-existing PLAN-001 Pydantic relation-parser noise on every edit (long Progress Log bullets parse as overlong relation_types). Edits land on disk; response noise documented in SESSION-_05 Event 14. Cleanup of those bullets is its own deferred task
+- Session note Scope at top still describes "Pick up at sub-phase X.D.2" — actual session covered X.D.2-7 + X.C + X.E docs + PR lifecycle. Hygiene only; not recovery-critical
+- Local feature branch `feat/plan-001-x-d-2-plan-renderer` not yet deleted post-merge
 
 ## Observations
 
