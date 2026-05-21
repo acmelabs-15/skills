@@ -36,15 +36,15 @@ Out of Scope: PlanAdapter implementation changes; SPEC-002/004/007 dispatcher en
 
 ## Definition of Done
 
-- [ ] dispatcher.ts imports PlanAdapter
-- [ ] dispatcher.ts registry contains ["plan", new PlanAdapter()]
-- [ ] dispatcher.test.ts asserts getAdapter("plan") returns instance whose sourceType === "plan"
-- [ ] All existing dispatcher.test.ts cases still pass
-- [ ] listAdapters() includes "plan"
+- [x] dispatcher.ts imports PlanAdapter
+- [x] dispatcher.ts registry contains ["plan", new PlanAdapter()]
+- [x] dispatcher.test.ts asserts getAdapter("plan") returns instance whose sourceType === "plan"
+- [x] All existing dispatcher.test.ts cases still pass
+- [x] listAdapters() includes "plan"
 
 ## ADR Compliance
 
-- [ ] Honors ADR-002 D-3: PLAN registers as source_type "plan" in dispatcher
+- [x] Honors ADR-002 D-3: PLAN registers as source_type "plan" in dispatcher
 
 ## Observations
 
