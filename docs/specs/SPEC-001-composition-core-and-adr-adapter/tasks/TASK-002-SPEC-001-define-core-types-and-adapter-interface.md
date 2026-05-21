@@ -51,13 +51,17 @@ Types must exactly match the signatures in ADR-002 D-2. The Root type import com
 - A stub class implementing CompositionAdapter compiles successfully
 
 ## Definition of Done
+
 - [x] types.ts exports LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec matching ADR-002 D-2
 - [x] adapter.ts exports CompositionAdapter interface with all 5 methods + sourceType
 - [x] JSDoc on all types and methods per ADR-002 D-2 specification
 - [x] tsc --noEmit passes
+
 ## ADR Compliance
+
 - [x] Honors ADR-002 D-2: interface matches specification exactly
 - [x] Honors ADR-001 D-2: Root type from mdast
+
 ## Effort Summary
 
 | Tier | Estimate | Notes |

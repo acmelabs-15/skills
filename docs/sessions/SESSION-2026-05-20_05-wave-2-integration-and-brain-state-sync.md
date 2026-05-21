@@ -21,6 +21,7 @@ Integrate the 4 Wave 2 parallel build branches (SPEC-002 + SPEC-003 + SPEC-004 +
 ## State
 
 Session resumed from compacted context. All 4 Wave 2 build agents had returned DONE before resume:
+
 - build.SPEC-002 (ANALYSIS + SESSION adapters) — 27 tests, both round-trip PROOFs PASS
 - build.SPEC-003 (PLAN adapter) — 31 tests, PLAN round-trip PROOF PASS
 - build.SPEC-004 (SPEC subtree adapter) — 27 tests, per-file SHA-256 PROOF PASS
@@ -111,7 +112,6 @@ Branches present: feat/plan-001-build-spec-002, -003, -004, -007 (each off the W
 - implements [[SPEC-004: SPEC Subtree Adapter]]
 - implements [[SPEC-007: Plan/Session Render Implementation]]
 
-
 ## Event 09 — Reflect capture: assumption-substitution pattern + comprehensive drift audit initiated (2026-05-20)
 
 **Type**: reflect-capture | user-flagged-drift
@@ -123,22 +123,24 @@ Branches present: feat/plan-001-build-spec-002, -003, -004, -007 (each off the W
 - Action: pause all forward motion, execute comprehensive drift audit covering PLAN-001 partial-update damage, all 7 SPECs + subtrees, all session notes, ADRs, QA, git/Brain divergence, forbidden-pattern greps. NO agent dispatches until audit done + user approves revised plan.
 - Next: full audit then present comprehensive drift inventory + revised Phase 0 plan
 
-
 ## Event 10 — Protocol architecture locked: rigor at every layer + checkbox-as-contract + PLAN-as-dispatch-brief-source (2026-05-20)
 
 **Type**: protocol-lock | architecture-decision
 
 This Event captures verbatim, per user instruction, the protocol architecture locked across 5 conversation turns. Two auto-memories will be written immediately after this Event:
+
 - [[feedback_per_task_build_qa_cycle]]: the specific rigid build+qa per-TASK protocol
 - [[feedback_workflow_phase_rigor_at_every_layer]]: the meta-rule that every workflow phase must embed rigor at every enforcement layer
 
 ### Core protocol (rigidly systematic per-TASK build+qa cycle)
 
 For each spec to be implemented, the PLAN MUST contain `## Implement SPEC-NNN` subsection with explicit per-TASK items:
+
 - impl-TASK-NNN-SPEC-MMM (status: PENDING | IN_PROGRESS | DONE | BLOCKED | FAILED)
 - qa-TASK-NNN-SPEC-MMM (status: same)
 
 Orchestrator follows rigid sequence per TASK (NO step may be skipped or reordered):
+
 - (a) PLAN transition: impl-TASK-N PENDING → IN_PROGRESS (FIRST action)
 - (b) Session note Event appended capturing transition
 - (c) Git commit
@@ -179,6 +181,7 @@ When dispatching QA: brief MUST quote the TASK DoD + linked REQ Acceptance Crite
 QA's responsibility: signal `FAILED + [[TEST-REPORT-NNN]]` — nothing more. The TEST-REPORT is the contract document.
 
 Orchestrator's responsibility: TRANSLATE the QA findings into an unambiguous implementer fix-brief by:
+
 1. Reading TEST-REPORT-NNN-SPEC-NNN-{task-slug} in full
 2. Identifying each [ ] unchecked item across the task's TASK + linked REQs + linked DESIGNs
 3. Building the implementer fix-brief that QUOTES each unchecked item VERBATIM + cites the QA note evidence (file:line, test name, etc.)
@@ -191,6 +194,7 @@ The implementer cannot claim ambiguity. The orchestrator's brief makes it crysta
 The protocol gets enforced WITHOUT touching agent files because the PLAN note itself contains the rendered instructions for every impl + qa item. The PlanNote Zod schema mandates this structure; the plan-note renderer generates it deterministically from the linked spec subtree.
 
 For each TASK in a spec, the renderer produces an impl item block containing:
+
 1. Status state
 2. Full implementer instructions (rendered verbatim from template)
 3. DoD checkboxes pulled verbatim from the linked TASK note
@@ -199,6 +203,7 @@ For each TASK in a spec, the renderer produces an impl item block containing:
 6. Explicit per-step protocol expectations (read entire subtree, implement only this TASK, mark [x] as satisfied)
 
 And a qa item block containing:
+
 1. Status state
 2. Full QA instructions (rendered verbatim from template)
 3. Same DoD + AC + compliance checkboxes rendered for validation
@@ -211,6 +216,7 @@ Orchestrator's dispatch brief = verbatim copy of the rendered item block. Agents
 ### Programmatic schema validation of agent claims
 
 Zod schemas verify agent claims mechanically:
+
 - Implementer claim "TASK done" → schema parses TASK note, requires every `## Definition of Done` item to be [x]. If any [ ], reject the claim
 - QA claim "validation PASSED" → schema parses linked REQ + DESIGN + TASK notes, requires every checkbox covered by this TASK's scope to be [x]. If any [ ], reject the claim
 - Schema-rejected claim → orchestrator re-engages the agent with the specific failing item
@@ -251,7 +257,6 @@ A workflow phase missing ANY of these layers is incomplete — it WILL be bypass
 
 The protocol enforces itself via surface area produced by templates + schemas + renderers + skills. Agents receive their instructions from rendered PLAN content. Lying agents are caught by schema-validated claim checking. Orchestrator drift is caught by tier-1 auto-memories + CLAUDE.md references. Defense in depth at multiple layers means single-layer failures cannot bypass the protocol.
 
-
 ## Event 11 — Phase X.A complete: memories written + indexed (2026-05-20)
 
 **Type**: protocol-bootstrap-complete
@@ -260,7 +265,6 @@ The protocol enforces itself via surface area produced by templates + schemas + 
 - Memory 2 written: `~/.claude/memory/feedback_workflow_phase_rigor_at_every_layer.md` — TIER-1 BLOCKING; meta-rule for rigor at every enforcement layer
 - `~/.claude/memory/MEMORY.md` index updated: both memories added at TOP of "Protocol memories" section with TIER-1 BLOCKING markers
 - Next: scope-decision question on composition library mechanism completion (Phase X.D vs deferred to Wave 2 rebuild). Phase X.B audit + Phase X.C skill/template updates can proceed in parallel either way.
-
 
 ## Event 12 — Phase X state-capture memory written (resumption anchor) (2026-05-20)
 
@@ -271,7 +275,6 @@ The protocol enforces itself via surface area produced by templates + schemas + 
 - Designed for resumability: fresh agent / post-compaction can read this memory + the two TIER-1 memories + SESSION-_05 + PLAN-001 and pick up exactly where work left off
 - Phase X.A.6 (state-capture memory) DONE
 - Next: pending user decisions D1-D4 before Phase X.B audit can start
-
 
 ## Event 13 — Brain note mirror of state-capture written (2026-05-20)
 
@@ -284,7 +287,6 @@ The protocol enforces itself via surface area produced by templates + schemas + 
 - Phase X.A.7 (Brain note mirror) DONE
 - User reinforced architecture in two messages mid-write: (a) composition library mechanisms are the deterministic enforcement that /plan and other lifecycle skills LEVERAGE (not just docs/skills updates); (b) deterministic plan-state-transition script must REQUIRE session note reference as input — throws error if missing — mechanically enforcing the protocol step-by-step
 - Next: address user's architecture reinforcement, confirm Phase X.D scope (decision D1 leaning toward 'include tonight' or partial), then begin Phase X.B audit
-
 
 ## Event 14 — PLAN-001 partial reconciliation + Phase X structure added (2026-05-20)
 
@@ -299,7 +301,6 @@ The protocol enforces itself via surface area produced by templates + schemas + 
 - DEFERRED until D2 (throw-out vs salvage): reverting Wave 2 false-DONE statuses on 4 SPEC roots + 30 TASKs + 28 REQs + 12 DESIGNs. Phase Progression for those still shows IN_PROGRESS — truthful pre-Wave-2-build state
 - Phase X.A complete (all 7 items DONE). Commit 15174d7 closes Phase X.A
 - Next: Phase X.B audit of 7 lifecycle skills plus composition library current state. Inline findings in this conversation
-
 
 ## Event 15 — Phase X.B audit complete (2026-05-20)
 
@@ -319,7 +320,6 @@ Audited 7 user-created lifecycle skills + composition library current state + NO
 
 15-item execution order locked covering Phase X.C + X.D. Next: begin item 1 (extend PlanNote schema with BuildWorkflowItemSchema for per-TASK impl+qa items).
 
-
 ## Event 16 — Phase X.D.1 schema extension complete (2026-05-20)
 
 **Type**: implementation | schema-extension
@@ -336,7 +336,6 @@ Audited 7 user-created lifecycle skills + composition library current state + NO
 - biome clean; tsc clean
 - Phase X.D.1 DONE. Next: X.D.2 (extend PlanNote renderer to generate rendered impl+qa instruction blocks)
 
-
 ## Event 17 — Architectural reinforcement captured verbatim (2026-05-20)
 
 **Type**: drift-prevention | content-persistence
@@ -345,7 +344,6 @@ Audited 7 user-created lifecycle skills + composition library current state + NO
 - Captured verbatim to ANALYSIS-003 in new section "Architectural reinforcement — composition library is THE enforcement layer"
 - Pattern reinforced: session note POINTS at the Brain note holding the durable content; post-compaction resume = read session → follow pointers → check PLAN state → carry on
 - See ANALYSIS-003 for the full verbatim quotes + what-this-means + why-this-is-doable
-
 
 ## Event 18 — Post-compaction rehydration protocol locked + persistence gaps closed (2026-05-20)
 
@@ -366,7 +364,6 @@ Now if compaction fires, the rehydration protocol fires, the orchestrator re-rea
 Outstanding follow-up:
 
 - CLAUDE.md needs a Tier-1 reference to the new rehydration protocol memory as a BLOCKING gate. Held for user approval since CLAUDE.md is the orchestrator contract.
-
 
 ## Event 19 — Checkpoint complete (Phase X paused for resume in new session) (2026-05-20)
 
@@ -397,7 +394,6 @@ User will invoke /plan PLAN-001-skills-ecosystem in a new session. /plan reads P
 
 This session note transitioning IN_PROGRESS → PAUSED (next edit). Session continues in a future invocation; not COMPLETE because Phase X is not done.
 
-
 ## Event 20 — Surgical revert of Wave 2 false-DONE statuses + SPEC-001 post-QA reconciliation committed (2026-05-20)
 
 **Type**: state-correction | working-tree-cleanup
@@ -413,7 +409,6 @@ Executed:
 
 Working tree status after this event: clean except for session note. Ready for /end protocol.
 
-
 ## Event 21 — /end Step 1 DoD HALT resolved via defer-with-rationale (2026-05-20)
 
 **Type**: end-skill-step | dod-deferral
@@ -424,3 +419,28 @@ Working tree status after this event: clean except for session note. Ready for /
 - PLAN-001 Decision Log entry added: "2026-05-20 — Phase X Exit Criteria deferral at session close" documents the deferral with cross-reference to ANALYSIS-003
 - Phase X carried forward state: X.C + X.D.2-7 + X.E + D2 (Wave 2 throw-out vs salvage) + D4 (PLAN-001 full reconciliation timing) all carried to next session via /plan PLAN-001 continue
 - Next: /end Step 2 — /review BLOCKING gate against feat/plan-001-wave-2-integration → main diff
+
+## Event 22 — /end Steps 2-3.5 complete: /review WARN + pre-flight results (2026-05-20)
+
+**Type**: end-skill-step | review-verdict + pre-flight
+
+/review verdict: **WARN** (self-review mode, TIER_4, CODE PR-type). All 8 axes ran or accounted for:
+
+- architect: WARN (cross-boundary imports, dispatcher gap, triplicated helpers)
+- qa: WARN (3 P1s: REQ-002-SPEC-007 AC-4 unimplemented, 3/9 mutations untested, no-op byte-identity untested; 2 P2s: 5/10 session event types uncovered, happy-path bias)
+- security: PASS (3 Low defense-in-depth items; no secrets, no PII, no shell/network)
+- code-qualities: WARN (encapsulation 4.8/10 across parsers/renderers)
+- incoherence: UNKNOWN (deferred for context)
+- orphan-ref: UNKNOWN (absent)
+- markdown-lint: WARN (MD013 line-length; auto-fixable)
+- biome: PASS
+
+Pre-flight results: Check 1 secret-scan PASS; Check 2 tests 194 pass / 16 expected-fail (deferred per user decision); Check 3 DISABLED; Check 4 no template; Check 5 no workflows.
+
+QA P1 findings tracked for next session's Phase X continuation:
+
+- REQ-002-SPEC-007 AC-4 (all-terminal-parts invariant) unimplemented
+- 3 of 9 plan mutation types untested (lock-decision, surface-pending-decision, clear-blockers)
+- REQ-011 AC-3 (no-op mutation byte-identity) untested
+
+Proceeding to /end Step 4 (commits + lint-fix + PR + session DONE).

@@ -35,6 +35,7 @@ Functional
 ADR-002 D-1 specifies the plan YAML schema shape with a nested discriminated union. ADR-002 D-5 specifies the modular Zod validator structure: base.ts defines common envelope fields and shared types; per-type schemas in distribution/ and composition/ subdirectories extend the base; index.ts assembles the nested discriminated union. The outer discriminant is plan_type (distribution vs composition). Each branch contains an inner z.discriminatedUnion("source_type", [...]) selecting per-type extensions. SPEC-001 scaffolds the base schema plus the ADR-specific extension (2 of 10 variants); SPEC-002 and SPEC-003 extend with additional source_type variants.
 
 ## Acceptance Criteria
+
 - [x] GIVEN a base Zod schema at _shared/composition/schemas/base.ts
       WHEN compiled
       THEN it exports lineRangeSchema, renumberMapSchema, wikilinkMapSchema, frontmatterMapSchema, mutationSpecSchema, validationSchema, sourceEntrySchema, and destinationEntrySchema
@@ -58,6 +59,7 @@ ADR-002 D-1 specifies the plan YAML schema shape with a nested discriminated uni
 - [x] GIVEN a plan YAML with non-injective renumber_map
       WHEN parsed
       THEN the injectivity validator rejects it with a descriptive error message
+
 ## Implementation Notes
 
 The schema uses parseAsync() due to the async path containment validator (realpath-based). All other validators are synchronous. The error reporting maps ZodError.issues to the PlanValidationError interface (path, message, severity) per ADR-002 D-5. SPEC-001 scaffolds index.ts with only the ADR variants; other source_type variants are added by SPEC-002 and SPEC-003.

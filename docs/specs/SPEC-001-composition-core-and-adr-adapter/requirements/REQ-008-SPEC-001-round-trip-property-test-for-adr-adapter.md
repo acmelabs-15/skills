@@ -37,6 +37,7 @@ KICKOFF-BRIEF.md specifies the round-trip property test as the key architectural
 The test framework uses bun test (ADR-001 F-6). Test fixtures include a real-world ADR sample and a corresponding fixture plan YAML that exercises D-N renumber, wikilink substitution, and multi-destination distribution.
 
 ## Acceptance Criteria
+
 - [x] GIVEN a test file at _shared/composition/tests/round-trip.test.ts
       WHEN bun test is run
       THEN the round-trip property test executes for the ADR adapter
@@ -60,6 +61,7 @@ The test framework uses bun test (ADR-001 F-6). Test fixtures include a real-wor
 - [x] GIVEN a fixture plan YAML with deliberately non-identity renumber (e.g., D-3 to D-100 to D-1)
       WHEN the round-trip completes
       THEN the final recomposed content is char-identical to the original despite identifier renumbering
+
 ## Implementation Notes
 
 The test framework is a bun test file that takes an adapter instance, a fixture markdown file, and a fixture plan YAML. It executes the full decompose-then-recompose cycle and asserts char-identity via SHA-256 comparison. The ADR test fixture should be a realistic ADR note (~200-500 lines) with multiple D-N sections, wikilinks, and YAML frontmatter. The fixture plan should exercise at least 2 destination clusters with non-trivial renumber_map entries.

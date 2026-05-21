@@ -158,7 +158,6 @@ Move to DONE when Phase X.E.3 done, all D1-D4 resolved + applied, PLAN-001 front
 - relates_to [[ADR-003: Plan/Session Render Architecture]]
 - relates_to [[SPEC-007: Plan/Session Render Implementation]]
 
-
 ## X.B Audit Findings (DONE 2026-05-20)
 
 7 lifecycle skills audited + composition library current state + NOTE-TEMPLATES. Per-skill gap-analysis summary:
@@ -178,7 +177,6 @@ Composition library state: PlanNote/SessionNote schemas/renderers/mutations pres
 NOTE-TEMPLATES: TASK/REQ/DESIGN templates have checkbox sections but no checkbox-as-contract language. TEST-REPORT template is STUB.
 
 15-item execution order locked for X.C + X.D. Next: begin item 1 (extend PlanNote schema with BuildWorkflowItemSchema).
-
 
 ## Architectural reinforcement — composition library is THE enforcement layer (user verbatim 2026-05-20)
 
@@ -210,7 +208,6 @@ The other lifecycle skills (/decisions, /spec, /build, /review, /end) all run UN
 ### Why this is doable
 
 The composition library schemas + renderers + mutations for PlanNote and SessionNote already exist (SPEC-001 + Wave 2 SPEC-007 work). Extending them with BuildWorkflowItem (Phase X.D.1 — DONE), 5 new note-type schemas (X.D.5-7), the renderer extension (X.D.2), and the transition functions (X.D.3) completes the enforcement layer. After that, the skill updates (X.C) just rewire the skills to call these functions instead of having agents do the work.
-
 
 ## 15-item ordered execution sequence (X.C + X.D combined)
 

@@ -46,13 +46,17 @@ injectiveDisjointMap uses Set operations per ADR-002 D-5 spec. containedPathSche
 - Symlink that escapes docs/ rejected via realpath
 
 ## Definition of Done
+
 - [x] injectiveDisjointMap exported and validates both injectivity and disjointness
 - [x] containedPathSchema exported with async realpath + path.sep containment check
 - [x] Error messages are descriptive per ADR-002 D-5
 - [x] Unit tests cover all edge cases (5+ test cases)
+
 ## ADR Compliance
+
 - [x] Honors ADR-001 F-8: Injectivity is BLOCKING validator gate
 - [x] Honors ADR-002 D-5: Validator structure matches specification
+
 ## Effort Summary
 
 | Tier | Estimate | Notes |

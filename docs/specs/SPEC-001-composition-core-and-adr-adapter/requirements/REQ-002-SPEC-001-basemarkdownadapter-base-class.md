@@ -37,6 +37,7 @@ ADR-002 D-3 documents that ADR, ANALYSIS, and SESSION adapters extend a shared B
 The base class implements all 5 CompositionAdapter methods using unified/remark for parse/serialize and string-based line operations for extractByRange/applyMutations/reverseMutations. Subclasses override only the configuration properties that differ per source type.
 
 ## Acceptance Criteria
+
 - [x] GIVEN a TypeScript abstract class BaseMarkdownAdapter at _shared/composition/src/core/base-markdown-adapter.ts
       WHEN compiled
       THEN it implements CompositionAdapter interface with concrete implementations of all 5 methods
@@ -56,6 +57,7 @@ The base class implements all 5 CompositionAdapter methods using unified/remark 
 - [x] GIVEN applyMutations with single-pass replacement semantics
       WHEN called with an injective renumber_map
       THEN all occurrences of each key are replaced with its value in one pass without cascading substitutions
+
 ## Implementation Notes
 
 The base class uses unified().use(remarkParse).use(remarkFrontmatter, ['yaml']).use(remarkStringify) as its processing pipeline per ADR-001 D-2. The remark-stringify configuration must preserve original formatting to maintain the char-identity contract. The extractByRange method operates on raw string lines (split by newline), not on the AST. The applyMutations and reverseMutations methods use single-pass string replacement with the key-value domain disjointness guarantee enforced by Zod validators at plan load time per ADR-002 D-5.

@@ -37,6 +37,7 @@ ADR-002 D-2 specifies the CompositionAdapter interface as a 5-method synchronous
 ADR-001 D-4 locks the discriminated union on source_type, meaning the script dispatches to the correct adapter based on plan YAML source_type field. The CompositionAdapter interface is the mechanism by which this dispatch produces uniform behavior across all 5 source types.
 
 ## Acceptance Criteria
+
 - [x] GIVEN a TypeScript file at _shared/composition/src/core/adapter.ts
       WHEN compiled with tsc strict mode
       THEN the CompositionAdapter interface exports all 5 methods plus sourceType property with correct signatures matching ADR-002 D-2
@@ -64,6 +65,7 @@ ADR-001 D-4 locks the discriminated union on source_type, meaning the script dis
 - [x] GIVEN the serialize method receives a remark Root AST
       WHEN called
       THEN it returns markdown string identical to the original content that produced the AST (serialize(parse(content)) === content)
+
 ## Implementation Notes
 
 The interface lives at _shared/composition/src/core/adapter.ts. Supporting types (LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec) live at_shared/composition/src/core/types.ts per ADR-002 D-2. The Root type is imported from mdast. All methods are synchronous per ADR-002 Considered Options Axis 1 (markdown parsing is CPU-bound with no I/O).

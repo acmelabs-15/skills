@@ -47,15 +47,19 @@ The ADR adapter overrides only configuration properties per ADR-002 D-3. The H3 
 - parse/serialize round-trip on ADR markdown
 
 ## Definition of Done
+
 - [x] AdrAdapter class exported from src/adapters/adr.ts
 - [x] Extends BaseMarkdownAdapter with section_delimiter="### " and identifier_pattern=/D-(\d+)/
 - [x] sourceType === "adr"
 - [x] H3 extraction under ## Decision works correctly
 - [x] Unit tests pass for all 5 inherited methods
 - [x] D-N renumber via applyMutations works with single-pass replacement
+
 ## ADR Compliance
+
 - [x] Honors ADR-002 D-3: ADR adapter capability matrix
 - [x] Honors ADR-002 D-4: ADR hash extraction strategy
+
 ## Effort Summary
 
 | Tier | Estimate | Notes |

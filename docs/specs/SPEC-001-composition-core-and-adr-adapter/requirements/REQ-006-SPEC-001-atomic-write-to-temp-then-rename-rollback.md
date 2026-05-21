@@ -35,6 +35,7 @@ Functional
 ADR-001 F-8 specifies the rollback mechanism formally. For each destination file: (1) Stage content to dest-path.tmp. (2) Hash-validate the staged content against source extraction. (3) Per-cluster all-or-nothing: only after ALL destinations pass, atomically rename each .tmp to final path (POSIX rename is atomic). If any destination fails, remove ALL .tmp files; source files remain untouched. A crash mid-rename leaves .tmp files present with source intact; rerunning the plan recovers.
 
 ## Acceptance Criteria
+
 - [x] GIVEN a plan with 3 destination files where all pass hash validation
       WHEN the script executes
       THEN all 3 .tmp files are created first, then all 3 are renamed atomically to final paths
@@ -54,6 +55,7 @@ ADR-001 F-8 specifies the rollback mechanism formally. For each destination file
 - [x] GIVEN the all-or-nothing rename phase
       WHEN rename is called for all staged files
       THEN it uses POSIX-compatible fs rename (not copy-then-delete) for atomicity
+
 ## Implementation Notes
 
 The atomic write module exports functions for stage (write .tmp), rename (move .tmp to final), and cleanup (remove .tmp). The all-or-nothing coordination lives in the script runner, not in the atomic write module. Bun.write is used for the staging step per ADR-001 F-6. The rename uses fs.renameSync (or Bun equivalent) which is atomic on POSIX filesystems.

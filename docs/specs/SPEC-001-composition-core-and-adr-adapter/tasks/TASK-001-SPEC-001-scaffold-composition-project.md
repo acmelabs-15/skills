@@ -66,16 +66,20 @@ Use bun init or manual creation. Ensure all Bun-native APIs are available. The p
 - tsc --noEmit passes with empty project
 
 ## Definition of Done
+
 - [x] package.json contains all required runtime and dev dependencies per ADR-001 F-6 + D-1 + D-2
 - [x] tsconfig.json compiles with strict mode enabled and no errors
 - [x] biome.json lint + format config present and passing
 - [x] All subdirectories created per DESIGN-001-SPEC-001 module structure
 - [x] README.md documents library purpose and adapter contract overview
 - [x] bun install + bun test + biome check all pass
+
 ## ADR Compliance
+
 - [x] Honors ADR-001 F-6: Bun + TypeScript with biome for lint/format
 - [x] Honors ADR-001 D-1: Zod listed as runtime dependency
 - [x] Honors ADR-001 D-2: unified + remark packages listed as runtime dependencies
+
 ## Effort Summary
 
 | Tier | Estimate | Notes |

@@ -46,14 +46,18 @@ Uses Bun.write for staging (ADR-001 F-6). Uses fs.renameSync for POSIX atomic re
 - Cluster rename: all succeed or all cleaned up
 
 ## Definition of Done
+
 - [x] stage, rename, cleanup exported from src/core/atomic-write.ts
 - [x] Uses Bun.write for staging per ADR-001 F-6
 - [x] POSIX rename for atomicity
 - [x] Cluster all-or-nothing helper function works correctly
 - [x] Unit tests pass
+
 ## ADR Compliance
+
 - [x] Honors ADR-001 F-8: Write-to-temp-then-rename rollback mechanism
 - [x] Honors ADR-001 F-6: Bun.write for file I/O
+
 ## Effort Summary
 
 | Tier | Estimate | Notes |

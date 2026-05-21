@@ -69,11 +69,13 @@ The following requirements are addressed by this SPEC:
 | AI-Assisted | 3.75d | Sum of TASK AI-Assisted estimates |
 
 ## Success Criteria
+
 - [x] All 8 REQs reach ACCEPTED via Gate A + Gate B
 - [x] All 9 TASKs reach DONE via /build per-TASK cycle
 - [x] Spec-level QA sweep passes (per /build Stage B)
 - [x] All 4 mandatory exit gates pass (per /build Step 7)
 - [x] Round-trip property test passes: SHA-256(original) === SHA-256(recomposed) for ADR adapter (THE PROOF)
+
 ## Artifact Status
 
 ### Requirements

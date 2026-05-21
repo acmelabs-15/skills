@@ -35,6 +35,7 @@ Functional
 ADR-002 D-2 P1-I resolution specifies that hash() is NOT part of the CompositionAdapter interface. It is a shared utility at _shared/composition/src/core/hash.ts. Adapters compose with this utility via import. The utility wraps Bun.hash("sha256", content) per ADR-001 F-6 (Bun-native APIs) and F-8 (SHA-256 char-identity invariant). SHA-256 is a NIST standard available in every runtime; the Bun wrapper is the only Bun-specific aspect.
 
 ## Acceptance Criteria
+
 - [x] GIVEN a string input
       WHEN sha256(input) is called
       THEN it returns the hex-encoded SHA-256 hash of the input
@@ -50,6 +51,7 @@ ADR-002 D-2 P1-I resolution specifies that hash() is NOT part of the Composition
 - [x] GIVEN the sha256 utility
       WHEN imported from _shared/composition/src/core/hash.ts
       THEN it uses Bun.hash("sha256", ...) internally per ADR-001 F-6
+
 ## Implementation Notes
 
 The utility is a single exported function. It should return the hex string representation of the hash for human-readable comparison and logging. The function is synchronous (Bun.hash is synchronous).

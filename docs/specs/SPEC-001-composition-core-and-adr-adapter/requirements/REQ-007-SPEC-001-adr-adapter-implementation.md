@@ -37,6 +37,7 @@ ADR-002 D-3 specifies the ADR adapter as the first adapter built (~250 LOC, buil
 ADR-002 D-4 specifies the ADR hash extraction strategy: extract S by H3 line range, apply D-N identifier renumber via single-pass string replacement scoped to extracted content plus cross-cluster wikilink substitution applied globally, reverse-mutate D to D' by inverse maps, compare S_hash === D'_hash.
 
 ## Acceptance Criteria
+
 - [x] GIVEN an ADR adapter class extending BaseMarkdownAdapter
       WHEN instantiated
       THEN sourceType === "adr" and section_delimiter === "### " and identifier_pattern matches /D-(\d+)/
@@ -60,6 +61,7 @@ ADR-002 D-4 specifies the ADR hash extraction strategy: extract S by H3 line ran
 - [x] GIVEN a full decompose operation on an ADR file via the ADR adapter
       WHEN hash validation runs on all destination files
       THEN S_hash === D'_hash for every destination
+
 ## Implementation Notes
 
 The ADR adapter lives at _shared/composition/src/adapters/adr.ts. It extends BaseMarkdownAdapter and overrides only the configuration properties. The H3 extraction logic scans for lines starting with "### " under the "## Decision" section and computes line ranges. The renumber_map keys are validated at Zod schema level to match the D-N pattern. The adapter handles both distribution (1 ADR to N sub-ADRs) and composition (N sub-ADRs to 1 merged ADR).

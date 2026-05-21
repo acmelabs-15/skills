@@ -46,6 +46,7 @@ Configure unified().use(remarkParse).use(remarkFrontmatter, ['yaml']).use(remark
 - Single-pass replacement does not cascade
 
 ## Definition of Done
+
 - [x] BaseMarkdownAdapter exported from src/core/base-markdown-adapter.ts
 - [x] parse returns Root AST from unified/remark pipeline
 - [x] serialize produces char-identical output (round-trip identity)
@@ -53,10 +54,13 @@ Configure unified().use(remarkParse).use(remarkFrontmatter, ['yaml']).use(remark
 - [x] applyMutations uses single-pass replacement with regex alternation
 - [x] reverseMutations(applyMutations(c, m), m) === c for all injective MutationSpecs
 - [x] Unit tests pass covering all 5 methods
+
 ## ADR Compliance
+
 - [x] Honors ADR-001 D-2: Uses unified + remark pipeline
 - [x] Honors ADR-002 D-2: Implements CompositionAdapter contract
 - [x] Honors ADR-002 D-3: Config-only override pattern for simple adapters
+
 ## Effort Summary
 
 | Tier | Estimate | Notes |
