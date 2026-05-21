@@ -2,7 +2,7 @@
 title: 'ANALYSIS-003: Phase X Protocol Hardening State'
 type: analysis
 permalink: analysis/analysis-003-phase-x-protocol-hardening-state
-status: IN_PROGRESS
+status: ACCEPTED
 tags:
 - analysis
 - phase-x
@@ -142,21 +142,101 @@ If picking up cold, read in this order:
 
 Move to DONE when Phase X.E.3 done, all D1-D4 resolved + applied, PLAN-001 frontmatter shows Phase X DONE, Wave 2 either fully thrown-out + rebuilt OR fully retro-validated + closed.
 
+## Status Update — Post-PR-#8 (2026-05-21)
+
+Phase X execution complete except for D2-blocked X.E.2 + X.E.3. All sections above this point are historical record of the planning + audit work as it stood on 2026-05-20. This section is the durable post-execution state.
+
+### Final phase status
+
+| Phase | Status | Outcome |
+|---|---|---|
+| X.A Bootstrap | DONE | Two TIER-1 protocol memories + ANALYSIS-003 + MEMORY.md index |
+| X.B Audit | DONE | 7-skill audit + composition library audit + NOTE-TEMPLATES audit. 15-item execution order locked |
+| X.C Skills + Templates + Structures | DONE | 10-agent parallel wave (7 SKILL.md + 3 deferred code items). PR #6 |
+| X.D Composition Library Mechanism | DONE | 7 of 7 sub-items via PR #6 |
+| X.E Wrap-up | PARTIAL DONE | Docs portion DONE (CLAUDE.md + NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md); X.E.2 + X.E.3 BLOCKED on PUD-D2 |
+
+### Composition library deliverables (PR #6 + #7 + #8)
+
+- **6 note-type schemas**: PlanNoteSchema (with BuildWorkflowItem), SessionNoteSchema, TaskNoteSchema, RequirementNoteSchema, DesignNoteSchema, SpecRootNoteSchema, TestReportNoteSchema
+- **6 parsers**: corresponding parser for each note type
+- **4 renderers**: PlanNote, SessionNote, SpecRoot semantic, TestReport byte-identical
+- **13 mutations**: 11 plan mutations including transition-impl-item + transition-qa-item (mandate session context, throw on missing) + applyCheckboxMutation (cross-note flip)
+- **6 claim validators**: validateTaskDoneClaim, validateRequirementAcClaim, validateDesignComplianceClaim, validateSpecDoneClaim, validateTestReportPassClaim, applyCheckboxMutation re-parse validation
+- **Test counts**: 200 pass / 16 fail (session start) to 444 pass / 0 fail (session end)
+
+### PRs landed
+
+| PR | Title | Merge commit |
+|---|---|---|
+| #6 | Phase X protocol hardening (X.D + X.C + X.E docs) | `2f049fd` |
+| #7 | Recovery-test readiness (PUD-D2 surfacing + BLOCKED transitions) | `8dc30f1` |
+| #8 | Session close (PAUSED to DONE + Event 15) | `ce3d726` |
+
+### Pending User Decisions resolved + remaining
+
+- **D1 Composition library scope** — RESOLVED (include with renderer-per-note-type scope; all 7 X.D items done)
+- **D2 Wave 2 retro-validation disposition** — STILL OPEN. Captured as PUD-D2 in PLAN-001. Hybrid recommended (use new claim validators to find gaps; file new TASKs only for genuine gaps; drive only gaps through rigid cycle). Blocks X.E.2 (PLAN-001 final reconciliation) + X.E.3 (final phase close) + all 6 build.SPEC-NNN parts
+- **D3 CLAUDE.md updates** — RESOLVED (TIER-1 references applied)
+- **D4 PLAN-001 reconciliation timing** — RESOLVED partial (recovery-readiness in PR #7; full reconciliation gated on D2)
+
+### Resume instructions (fresh session)
+
+A fresh `/plan PLAN-001-skills-ecosystem` invocation will:
+
+1. Run post-compaction rehydration checklist (TIER-1 BLOCKING)
+2. Read PLAN-001 - find protocol-hardening IN_PROGRESS + 6 BLOCKED build.SPEC-NNN parts
+3. See PUD-D2 in `## Pending User Decisions` as the gating decision
+4. Surface PUD-D2 with Hybrid as Recommended default
+5. After user adjudicates: D2 resolution unblocks build.SPEC-002/003/004/007 retro-validation chain (parallelizable as 4-SPEC swarm); resolving those unblocks build.SPEC-005/006 then review + end phases then X.E.2 + X.E.3
+
+### Retirement criteria revision
+
+This note transitioned from IN_PROGRESS to ACCEPTED on 2026-05-21. It will move to DEPRECATED when:
+
+- PUD-D2 is resolved AND applied (Wave 2 either retro-validated to closed state OR thrown-out + rebuilt)
+- PLAN-001 frontmatter shows Phase X status DONE
+- build.SPEC-NNN parts no longer reference PUD-D2 as blocker
+
+Until then it remains the canonical Brain knowledge-graph anchor for Phase X work.
+
 ## Observations
+
+### Planning + audit (2026-05-20, historical)
 
 - [decision] Phase X created to embed rigid implementation+QA protocol at every enforcement layer simultaneously after today's orchestrator + system-design failures #protocol #hardening
 - [fact] 37 distinct drift surfaces catalogued from today's work #drift #audit
 - [decision] Brain knowledge-graph mirror of orchestrator-private state-capture memory is intentional — different audiences and lifecycles #knowledge-graph #durability
-- [constraint] Phase X.D gated on user decision D1; D2 throw-out vs salvage gates Phase X.E.2 #decisions-pending
+- [constraint] Phase X.D originally gated on user decision D1; D2 throw-out vs salvage gates Phase X.E.2 #decisions-pending
 - [risk] If session compacts before decisions resolved, fresh agent reads this analysis to reactivate the decision surface #continuity #resumability
+
+### Post-execution (2026-05-21, current)
+
+- [outcome] Phase X.A + X.B + X.C + X.D completed end-to-end in SESSION-2026-05-20_06; X.E docs portion completed via 3-agent parallel wave; X.E.2 + X.E.3 BLOCKED on PUD-D2 #x-phase-execution
+- [fact] Composition library deliverables: 6 note-type schemas + 6 parsers + 4 renderers + 13 mutations + 6 claim validators across PLAN / SESSION / TASK / REQ / DESIGN / SPEC root / TEST-REPORT — defense in depth across schema + parser + renderer + mutation + validator + skill + auto-memory + CLAUDE.md + dispatch-brief layers #defense-in-depth
+- [fact] Test counts: 200 pass / 16 fail at session start → 444 pass / 0 fail at session end; +244 new tests #verification
+- [decision] D1 (composition library scope) RESOLVED include-with-renderer-per-note-type; D3 (CLAUDE.md updates) RESOLVED applied; D4 (PLAN-001 reconciliation timing) RESOLVED partial; D2 (Wave 2 disposition) STILL OPEN as PUD-D2 #decisions-status
+- [decision] Hybrid recommended for D2 — keep existing code as baseline; use new claim validators to find real gaps; file new TASKs only for genuine gaps; drive those through rigid cycle. Parallelizable 4-SPEC swarm. Estimated 6-10 hours #d2-recommendation
+- [insight] Parallel-wave-with-shared-protocol-block pattern worked well — pre-pass authors canonical inline block once + N agents inline verbatim. Avoids per-agent reinvention; produces consistent surface across files #parallelism #pattern
+- [problem] AGENTS.md required-reading was skipped in post-compaction rehydration step 1 (TIER-1 BLOCKING violation flagged by user 2026-05-21); session-note Observations + Relations were not refreshed across Events 02-15 (`feedback_session_note_full_hygiene_at_all_times` violation, same user flag) — corrective refresh applied to this note and SESSION-_06 in chore/analysis-003-post-pr-8-state branch #self-flagged-violation #remediation
 
 ## Relations
 
+### Plan + decision lineage
+
 - part_of [[PLAN-001: Skills Ecosystem]]
+- implements [[ADR-003: Plan/Session Render Architecture]]
+- extends [[SPEC-007: Plan/Session Render Implementation]]
+
+### Session ledger
+
 - relates_to [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]]
+- relates_to [[SESSION-2026-05-20_06: Phase X.D.2 PlanNote Renderer Extension]]
+
+### Related analyses
+
 - relates_to [[ANALYSIS-001: SPEC Clustering]]
-- relates_to [[ADR-003: Plan/Session Render Architecture]]
-- relates_to [[SPEC-007: Plan/Session Render Implementation]]
+- relates_to [[ANALYSIS-002: Plan/Session Note Render Architecture]]
 
 ## X.B Audit Findings (DONE 2026-05-20)
 
