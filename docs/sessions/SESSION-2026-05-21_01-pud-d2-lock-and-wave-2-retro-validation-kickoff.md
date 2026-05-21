@@ -113,6 +113,27 @@ Safety commit captured Streams A/E/F file landings before further state changes.
 - impl-batched-SPEC-003-plan-ts stays IN_PROGRESS (re-dispatch incoming)
 - decisions.4 stays IN_PROGRESS (re-dispatch incoming)
 
+## Event 16
+
+[2026-05-21] Wave 3 re-dispatch + first QA wave (7 parallel agents). After session-limit triage at Event 14-15:
+
+**Re-dispatch impl streams (B/C/D/G)** — same briefs as original Wave 3 with explicit "prior agent died at session limit" context + reference to commit 3d74348 carrying Stream A/E/F partial landings:
+
+- Stream B' (impl-TASK-007-SPEC-002 analysis.ts) — agent dispatched
+- Stream C' (impl-TASK-008-SPEC-002 session.ts) — agent dispatched
+- Stream D' (impl-batched-SPEC-003 plan.ts) — agent dispatched (user-approved batched)
+- Stream G' (decisions.4 ADR-004) — architect agent dispatched (mandates brain:---adr-review BLOCKING gate on return)
+
+**QA dispatches for completed impls (A/E/F)** — rigid cycle step m for each:
+
+- QA for TASK-006-SPEC-003 (Stream A impl) — agent dispatched
+- QA for TASK-010-SPEC-002 (Stream E impl) — agent dispatched
+- QA for TASK-010-SPEC-003 (Stream F impl) — agent dispatched
+
+All briefs include: Pattern 2 three-phase write requirement; min-tests directive; Brain MCP binary rule; schema-validated claim verification. QA briefs additionally mandate `validateTestReportPassClaim` self-validation before return.
+
+Per rigid cycle: next-action awaits return notifications. On each impl return: steps f-t per TASK. On each QA return: pass/fail processing per protocol (TASK note status flip + validated_by relation on PASS; impl→IN_PROGRESS + fix-brief on FAIL with 3-iteration cap).
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid
