@@ -40,7 +40,7 @@ stale / structural-fix candidates, then delegates the restructuring work to
 | (none) | Interactive mode: print report, confirm each candidate |
 | `--report-only` | Cron mode: write the report to `defrag/reports/defrag-YYYY-MM-DD.md` and exit |
 | `--project-root <dir>` | Set the project root (default: `cwd`) |
-| `--staleness <days>` | Staleness threshold in days (default: 180) |
+| `--staleness <days>` | Staleness threshold in days (default: 90) |
 | `--basic-memory` | Treat the project as basic-memory; skip CONVENTIONS-specific checks |
 
 ### Audit cycle

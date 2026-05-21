@@ -355,6 +355,16 @@ SPEC-006 still in flight. Partial files landed (root tsconfig/package.json/bunfi
 
 SPEC-005 QA dispatched with targeted test filter (avoids SPEC-006 partial test errors). QA validates: per-TASK DoD + REQ AC + DESIGN compliance + the 4 documented deviations.
 
+## Event 48
+
+[2026-05-21] QA-040 (SPEC-006 batched build revalidation) returned **PARTIAL_FAIL**. 3 blocking findings: (1) install.sh missing defrag+ingest symlinks — only decompose+recompose in SKILLS array; (2) biome check fails on biome.json — array-of-strings line-wrap drift; (3) staleness default mismatch — REQ-002 AC-5 says 90 days but impl + 2 docs use 180 days.
+
+4 non-blocking observations (deferred): MemoryAdapter dependency injection vs. Brain MCP direct calls (sensible test-seam deviation); detect.ts/assemble.ts retain pre-2026-05-21 `test-report` canonical key + filename prefix (ingest of a qa-note source would emit TEST-REPORT-*); placeholder `relates_to [[Ingested Source Content]]` in assemble.ts:226 (non-existent target); defrag.ts uses node:fs/promises for report write (Bun.write would auto-create parent dirs).
+
+Other validations: TASK-003 DelegationAdapter seam PASS, TASK-005 NoteWriter seam PASS, TASK-006 test coverage PASS (84 tests), CONVENTIONS Section 6 thresholds PASS in audit.ts.
+
+Fix iter-1 dispatched (agent a9...). On PASS: SPEC-006 state propagation can proceed. SPEC-005 QA (a36ca2e4) still in-flight in parallel.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

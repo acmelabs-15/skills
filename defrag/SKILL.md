@@ -59,7 +59,7 @@ bun defrag/scripts/defrag.ts --basic-memory   # treat as basic-memory context
    - More than 500 lines with multi-entity content → split-candidate
    - Fewer than 3 observations or fewer than 2 relations → merge-candidate
    - More than 12 relations without H3 type-grouping → structural-fix
-   - Last-modified more than the staleness threshold (default 180 days) and
+   - Last-modified more than the staleness threshold (default 90 days) and
      status not `DONE` / `DEPRECATED` → stale-candidate
 3. **Reporting and delegation.** Format the candidates as grouped markdown.
    In interactive mode, await user confirmation per candidate and delegate to

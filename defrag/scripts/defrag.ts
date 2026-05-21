@@ -73,7 +73,7 @@ export function parseArgs(argv: string[]): DefragOptions {
   const opts: DefragOptions = {
     reportOnly: false,
     projectRoot: process.cwd(),
-    stalenessDays: 180,
+    stalenessDays: 90,
     basicMemory: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -104,7 +104,7 @@ export function usage(): string {
     "Options:",
     "  --report-only         Run audit, write report, exit (no delegation; cron-safe)",
     "  --project-root <dir>  Project root (default: cwd)",
-    "  --staleness <days>    Staleness threshold in days (default: 180)",
+    "  --staleness <days>    Staleness threshold in days (default: 90)",
     "  --basic-memory        Treat project as basic-memory (skip CONVENTIONS checks)",
     "  -h, --help            Show this help",
     "",

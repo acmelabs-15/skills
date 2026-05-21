@@ -45,7 +45,7 @@ export interface AuditResult {
 
 export interface AuditOptions {
   projectRoot: string;
-  /** Staleness threshold in days (default 180). */
+  /** Staleness threshold in days (default 90, per REQ-002-SPEC-006 AC-5). */
   stalenessDays?: number;
   /** Adapter for file ops + git (default uses Bun + git). */
   adapter?: MemoryAdapter;
@@ -84,7 +84,7 @@ const REL_MAX = 12;
 const OBS_MIN = 3;
 const REL_MIN = 2;
 const LINE_MAX = 500;
-const DEFAULT_STALENESS_DAYS = 180;
+const DEFAULT_STALENESS_DAYS = 90;
 const TERMINAL_STATUSES = new Set(["DONE", "DEPRECATED"]);
 
 export async function audit(options: AuditOptions): Promise<AuditResult> {

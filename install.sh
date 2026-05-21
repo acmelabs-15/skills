@@ -7,6 +7,8 @@
 # Currently activates:
 #   - decompose  (SPEC-005)
 #   - recompose  (SPEC-005)
+#   - defrag     (SPEC-006)
+#   - ingest     (SPEC-006)
 #
 # Usage:
 #   ./install.sh              # symlink mode (default)
@@ -28,6 +30,8 @@ mkdir -p "${TARGET_ROOT}"
 SKILLS=(
   "decompose"
   "recompose"
+  "defrag"
+  "ingest"
 )
 
 for skill in "${SKILLS[@]}"; do

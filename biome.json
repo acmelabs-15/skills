@@ -30,7 +30,19 @@
     }
   },
   "files": {
-    "include": ["defrag/**", "ingest/**", "_shared/detect-context.ts", "_shared/detect-context.test.ts"],
-    "ignore": ["node_modules", "**/node_modules", "_shared/composition", "**/*.md", "defrag/reports/**", "test-fixtures/**"]
+    "include": [
+      "defrag/**",
+      "ingest/**",
+      "_shared/detect-context.ts",
+      "_shared/detect-context.test.ts"
+    ],
+    "ignore": [
+      "node_modules",
+      "**/node_modules",
+      "_shared/composition",
+      "**/*.md",
+      "defrag/reports/**",
+      "test-fixtures/**"
+    ]
   }
 }
