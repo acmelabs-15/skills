@@ -1,7 +1,7 @@
 ---
 title: 'SPEC-006: Defrag and Ingest Skills'
 type: spec
-status: ACCEPTED
+status: DONE
 permalink: specs/spec-006-defrag-and-ingest-skills/spec-006-defrag-and-ingest-skills
 tags:
 - spec
@@ -23,37 +23,37 @@ Per ANALYSIS-001 P1-2 amendment, /ingest Brain-awareness requirements (CONVENTIO
 
 ### Phase 1 -- Requirements (6 REQs)
 
-- [ ] REQ-001-SPEC-006: Defrag Skill Implementation
-- [ ] REQ-002-SPEC-006: Defrag Memory State Audit
-- [ ] REQ-003-SPEC-006: Defrag Delegation Protocol
-- [ ] REQ-004-SPEC-006: Ingest Skill Implementation
-- [ ] REQ-005-SPEC-006: Ingest Brain-Awareness
-- [ ] REQ-006-SPEC-006: Coexistence with Memory-Ingest and Memory-Defrag
+- [x] REQ-001-SPEC-006: Defrag Skill Implementation
+- [x] REQ-002-SPEC-006: Defrag Memory State Audit
+- [x] REQ-003-SPEC-006: Defrag Delegation Protocol
+- [x] REQ-004-SPEC-006: Ingest Skill Implementation
+- [x] REQ-005-SPEC-006: Ingest Brain-Awareness
+- [x] REQ-006-SPEC-006: Coexistence with Memory-Ingest and Memory-Defrag
 
 ### Phase 2 -- Design (3 DESIGNs)
 
-- [ ] DESIGN-001-SPEC-006: Defrag Skill Architecture
-- [ ] DESIGN-002-SPEC-006: Ingest Skill Architecture
-- [ ] DESIGN-003-SPEC-006: Skill Coexistence Strategy
+- [x] DESIGN-001-SPEC-006: Defrag Skill Architecture
+- [x] DESIGN-002-SPEC-006: Ingest Skill Architecture
+- [x] DESIGN-003-SPEC-006: Skill Coexistence Strategy
 
 ### Phase 3 -- Implementation (7 TASKs)
 
-- [ ] TASK-001-SPEC-006: Implement Defrag CLI and Skill Structure (S, 0.5d)
-- [ ] TASK-002-SPEC-006: Implement Defrag Memory Audit (M, 1.5d)
-- [ ] TASK-003-SPEC-006: Implement Defrag Delegation to Decompose Recompose and Delete (M, 1d)
-- [ ] TASK-004-SPEC-006: Implement Ingest CLI and Skill Structure (M, 1.5d)
-- [ ] TASK-005-SPEC-006: Implement Ingest Brain-Awareness (M, 1.5d)
-- [ ] TASK-006-SPEC-006: Defrag and Ingest Tests (M, 2d)
-- [ ] TASK-007-SPEC-006: Document Defrag and Ingest Skill UX in README (S, 0.5d)
+- [x] TASK-001-SPEC-006: Implement Defrag CLI and Skill Structure (S, 0.5d)
+- [x] TASK-002-SPEC-006: Implement Defrag Memory Audit (M, 1.5d)
+- [x] TASK-003-SPEC-006: Implement Defrag Delegation to Decompose Recompose and Delete (M, 1d)
+- [x] TASK-004-SPEC-006: Implement Ingest CLI and Skill Structure (M, 1.5d)
+- [x] TASK-005-SPEC-006: Implement Ingest Brain-Awareness (M, 1.5d)
+- [x] TASK-006-SPEC-006: Defrag and Ingest Tests (M, 2d)
+- [x] TASK-007-SPEC-006: Document Defrag and Ingest Skill UX in README (S, 0.5d)
 
 ## Artifact Status
 
 | Artifact | Count | Status |
 |:--|:--|:--|
-| REQ | 6 | DRAFT |
-| DESIGN | 3 | DRAFT |
-| TASK | 7 | TODO |
-| SPEC root | 1 | ACCEPTED |
+| REQ | 6 | ACCEPTED |
+| DESIGN | 3 | ACCEPTED |
+| TASK | 7 | DONE |
+| SPEC root | 1 | DONE |
 
 ## Effort Rollup
 
@@ -93,6 +93,7 @@ LOC estimate: ~300 (defrag SKILL.md ~80 + defrag scripts ~120 + ingest SKILL.md 
 - [spec] /ingest Brain-awareness is non-ADR scope per ANALYSIS-001 P1-2 amendment; sourced from KICKOFF-BRIEF.md #non-adr #p1-amendment
 - [constraint] /defrag preserves zero-drift guarantee by delegating to /decompose and /recompose rather than performing composition operations directly #zero-drift #delegation
 - [risk] /defrag audit cycle performance depends on Brain MCP list_directory and read_note latency across potentially large note collections; may need pagination or caching for projects with 500+ notes #performance #scalability
+- [outcome] SPEC-006 DONE 2026-05-21 -- all 7 TASKs PASS + 6 REQs ACCEPTED + 3 DESIGNs ACCEPTED per QA-041 (fix-iter-1 resolved 3 blocking findings from QA-040) #done #validated
 
 ## Relations
 
@@ -117,3 +118,5 @@ LOC estimate: ~300 (defrag SKILL.md ~80 + defrag scripts ~120 + ingest SKILL.md 
 - contains [[TASK-005-SPEC-006: Implement Ingest Brain-Awareness]]
 - contains [[TASK-006-SPEC-006: Defrag and Ingest Tests]]
 - contains [[TASK-007-SPEC-006: Document Defrag and Ingest Skill UX in README]]
+- validated_by [[QA-040-SPEC-006: Batched Build Revalidation]]
+- validated_by [[QA-041-SPEC-006: Fix Iter 1 Revalidation]]

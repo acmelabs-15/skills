@@ -2,7 +2,7 @@
 title: 'TASK-002-SPEC-007: Implement PlanNote Zod Schema'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-002-spec-007-implement-plan-note-schema
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -87,3 +87,4 @@ Create `_shared/composition/src/schemas/plan-note.ts` with PlanFrontmatterSchema
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-002-SPEC-007: PlanNote Zod Schema]]
 - depends_on [[TASK-001-SPEC-007: Implement Common Schema Module]]
+- validated_by [[QA-011-SPEC-007: Implement PlanNote Zod Schema]]

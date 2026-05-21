@@ -12,6 +12,7 @@ export abstract class BaseMarkdownAdapter implements CompositionAdapter {
   // Subclasses provide these for adapter-specific behavior
   protected abstract readonly sectionDelimiter: string;
   protected abstract readonly identifierPattern: RegExp;
+  protected abstract readonly identifierPrefix: string;
 
   private readonly processor = unified()
     .use(remarkParse)

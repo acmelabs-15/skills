@@ -1,0 +1,36 @@
+# Composition (recompose) plan — inverse of plan-distribution.plan.yaml.
+# This file is a documentation fixture; the round-trip test reads the
+# mutations directly as a TypeScript object, not by parsing this YAML.
+#
+# Round-trip semantics:
+#   distribution.mutations.renumber_map: { SPEC-001 -> SPEC-100, ... }
+#   composition.source.mutations.renumber_map: { SPEC-100 -> SPEC-001, ... }
+# i.e. composition keys == distribution values; composition values == distribution keys.
+plan_type: composition
+source_type: plan
+source:
+  path: tests/fixtures/plan-sample-renumbered.md
+  hash: "0000000000000000000000000000000000000000000000000000000000000000"
+  range:
+    start: 1
+    end: -1
+  mutations:
+    renumber_map:
+      SPEC-100: SPEC-001
+      SPEC-101: SPEC-002
+      SPEC-102: SPEC-003
+      SPEC-103: SPEC-004
+      SPEC-104: SPEC-005
+    wikilink_map: {}
+    # Frontmatter mutations applied during composition (inverse of distribution).
+    frontmatter_map:
+      title: "PLAN-001: Example"
+      permalink: planning/plan-001-example
+      branches: "[SPEC-001, SPEC-002, SPEC-003, SPEC-004, SPEC-005]"
+    regenerated_sections:
+      - Progress Dashboard
+      - Cross-Part Dependency Graph
+destinations:
+  - path: tests/fixtures/plan-sample.md
+    content_hash: "0000000000000000000000000000000000000000000000000000000000000000"
+integrity_floor: 0.5

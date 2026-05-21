@@ -2,7 +2,7 @@
 title: 'TASK-005-SPEC-007: Implement PlanNote Parser'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-005-spec-007-implement-plan-note-parser
-status: TODO
+status: DONE
 effort: L
 estimate: 1.5d
 tags:
@@ -91,3 +91,4 @@ Create `_shared/composition/src/parsers/plan-note.ts` implementing parsePlanNote
 - implements [[REQ-004-SPEC-007: PlanNote Markdown Parser]]
 - depends_on [[TASK-004-SPEC-007: Implement AST Helpers]]
 - depends_on [[TASK-002-SPEC-007: Implement PlanNote Zod Schema]]
+- validated_by [[QA-014-SPEC-007: Implement PlanNote Parser]]

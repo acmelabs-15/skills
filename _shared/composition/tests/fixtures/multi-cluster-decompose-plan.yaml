@@ -1,0 +1,39 @@
+plan_type: distribution
+source_type: adr
+source_path: multi-cluster-round-trip.md
+renumber_map:
+  "D-1": "D-700"
+  "D-2": "D-701"
+  "D-3": "D-702"
+wikilink_map: {}
+clusters:
+  cluster-a:
+    description: "frontmatter + context + D-1 section (lines 1-31)"
+    destination_path: multi-cluster-shard-a.md
+    decisions:
+      - "D-1"
+    renumbered_to:
+      - "D-700"
+    range:
+      start: 1
+      end: 31
+  cluster-b:
+    description: "D-2 section (lines 32-37)"
+    destination_path: multi-cluster-shard-b.md
+    decisions:
+      - "D-2"
+    renumbered_to:
+      - "D-701"
+    range:
+      start: 32
+      end: 37
+  cluster-c:
+    description: "D-3 + Observations + Relations (lines 38-EOF)"
+    destination_path: multi-cluster-shard-c.md
+    decisions:
+      - "D-3"
+    renumbered_to:
+      - "D-702"
+    range:
+      start: 38
+      end: -1

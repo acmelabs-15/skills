@@ -1,7 +1,7 @@
 ---
 title: 'REQ-002-SPEC-006: Defrag Memory State Audit'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-006-defrag-and-ingest-skills/requirements/req-002-spec-006-defrag-memory-state-audit
 tags:
 - requirement

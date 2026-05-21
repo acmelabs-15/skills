@@ -2,7 +2,7 @@
 title: 'TASK-011-SPEC-007: Implement Session Mutation API'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-011-spec-007-implement-session-mutation-api
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -84,3 +84,4 @@ Create `_shared/composition/src/session-mutations.ts` implementing applySessionM
 - implements [[DESIGN-003-SPEC-007: Mutation API and Invariant Enforcement]]
 - depends_on [[TASK-006-SPEC-007: Implement SessionNote Parser]]
 - depends_on [[TASK-008-SPEC-007: Implement SessionNote Renderer]]
+- validated_by [[QA-020-SPEC-007: Implement Session Mutation API]]

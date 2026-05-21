@@ -1,7 +1,7 @@
 ---
 title: 'TASK-007-SPEC-004: SPEC Adapter Round-Trip Property Test'
 type: task
-status: TODO
+status: DONE
 effort: M
 estimate: 2d
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-007-spec-004-spec-adapter-round-trip-property-test
@@ -71,7 +71,7 @@ The test uses bun:test. It reads fixture files from tests/fixtures/spec-subtree/
 
 ## Observations
 
-- [fact] Status: TODO #status
+- [fact] Status: DONE -- coverage gaps closed by gap-TASKs; validated by QA-027 aggregate #status
 - [fact] Size tier: M -- round-trip test with programmatic inverse generation, multi-file comparison, and diagnostic output #estimation
 - [technique] Programmatic inverse plan generation prevents hand-crafted inverse errors #test-design
 
@@ -84,3 +84,4 @@ The test uses bun:test. It reads fixture files from tests/fixtures/spec-subtree/
 - depends_on [[TASK-003-SPEC-004: Implement Filename Rewrite Handler]]
 - depends_on [[TASK-004-SPEC-004: Implement Per-File Hash Validation Orchestration]]
 - depends_on [[TASK-006-SPEC-004: SPEC Subtree Test Fixtures]]
+- validated_by [[QA-027-SPEC-004: Spec-Aggregate Retro-Validation]]

@@ -2,7 +2,7 @@
 title: 'DESIGN-004-SPEC-007: Mermaid Renderer and Auto-Derivation'
 type: design
 permalink: specs/spec-007-plan-session-render/design/design-004-spec-007-mermaid-auto-derivation
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-007

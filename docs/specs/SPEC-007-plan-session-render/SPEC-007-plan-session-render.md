@@ -2,7 +2,7 @@
 title: 'SPEC-007: Plan/Session Render Implementation'
 type: spec
 permalink: specs/spec-007-plan-session-render/spec-007-plan-session-render
-status: ACCEPTED
+status: DONE
 tags:
 - spec
 - plan-session
@@ -97,41 +97,42 @@ PLAN-001-skills-ecosystem.md is the first dogfood target: migrated to the trimme
 
 ### Requirements
 
-- [ ] REQ-001-SPEC-007: Schema Common Module
-- [ ] REQ-002-SPEC-007: PlanNote Zod Schema
-- [ ] REQ-003-SPEC-007: SessionNote Zod Schema
-- [ ] REQ-004-SPEC-007: PlanNote Markdown Parser
-- [ ] REQ-005-SPEC-007: SessionNote Markdown Parser
-- [ ] REQ-006-SPEC-007: PlanNote Markdown Renderer
-- [ ] REQ-007-SPEC-007: SessionNote Markdown Renderer
-- [ ] REQ-008-SPEC-007: Mermaid Renderer
-- [ ] REQ-009-SPEC-007: Plan Mutation API
-- [ ] REQ-010-SPEC-007: Session Mutation API
-- [ ] REQ-011-SPEC-007: Round-Trip Property Test
+- [x] REQ-001-SPEC-007: Schema Common Module
+- [x] REQ-002-SPEC-007: PlanNote Zod Schema
+- [x] REQ-003-SPEC-007: SessionNote Zod Schema
+- [x] REQ-004-SPEC-007: PlanNote Markdown Parser
+- [x] REQ-005-SPEC-007: SessionNote Markdown Parser
+- [x] REQ-006-SPEC-007: PlanNote Markdown Renderer
+- [x] REQ-007-SPEC-007: SessionNote Markdown Renderer
+- [x] REQ-008-SPEC-007: Mermaid Renderer
+- [x] REQ-009-SPEC-007: Plan Mutation API
+- [x] REQ-010-SPEC-007: Session Mutation API
+- [x] REQ-011-SPEC-007: Round-Trip Property Test
 - [ ] REQ-012-SPEC-007: PLAN-001 Dogfood Migration
 
 ### Designs
 
-- [ ] DESIGN-001-SPEC-007: Composition Layer Architecture
-- [ ] DESIGN-002-SPEC-007: Parser Renderer Round-Trip Strategy
-- [ ] DESIGN-003-SPEC-007: Mutation API and Invariant Enforcement
-- [ ] DESIGN-004-SPEC-007: Mermaid Renderer and Auto-Derivation
+- [x] DESIGN-001-SPEC-007: Composition Layer Architecture
+- [x] DESIGN-002-SPEC-007: Parser Renderer Round-Trip Strategy
+- [x] DESIGN-003-SPEC-007: Mutation API and Invariant Enforcement
+- [x] DESIGN-004-SPEC-007: Mermaid Renderer and Auto-Derivation
 
 ### Tasks
 
-- [ ] TASK-001-SPEC-007: Implement Common Schema Module
-- [ ] TASK-002-SPEC-007: Implement PlanNote Zod Schema
-- [ ] TASK-003-SPEC-007: Implement SessionNote Zod Schema
-- [ ] TASK-004-SPEC-007: Implement AST Helpers
-- [ ] TASK-005-SPEC-007: Implement PlanNote Parser
-- [ ] TASK-006-SPEC-007: Implement SessionNote Parser
-- [ ] TASK-007-SPEC-007: Implement PlanNote Renderer
-- [ ] TASK-008-SPEC-007: Implement SessionNote Renderer
-- [ ] TASK-009-SPEC-007: Implement Mermaid Renderer
-- [ ] TASK-010-SPEC-007: Implement Plan Mutation API
-- [ ] TASK-011-SPEC-007: Implement Session Mutation API
-- [ ] TASK-012-SPEC-007: Implement Round-Trip Property Test
-- [ ] TASK-013-SPEC-007: Dogfood PLAN-001 Migration
+- [x] TASK-001-SPEC-007: Implement Common Schema Module
+- [x] TASK-002-SPEC-007: Implement PlanNote Zod Schema
+- [x] TASK-003-SPEC-007: Implement SessionNote Zod Schema
+- [x] TASK-004-SPEC-007: Implement AST Helpers
+- [x] TASK-005-SPEC-007: Implement PlanNote Parser
+- [x] TASK-006-SPEC-007: Implement SessionNote Parser
+- [x] TASK-007-SPEC-007: Implement PlanNote Renderer
+- [x] TASK-008-SPEC-007: Implement SessionNote Renderer
+- [x] TASK-009-SPEC-007: Implement Mermaid Renderer
+- [x] TASK-010-SPEC-007: Implement Plan Mutation API
+- [x] TASK-011-SPEC-007: Implement Session Mutation API
+- [x] TASK-012-SPEC-007: Implement Round-Trip Property Test
+- [ ] TASK-013-SPEC-007: Dogfood PLAN-001 Migration (BLOCKED; superseded by TASK-014)
+- [ ] TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template (TODO; gap-TASK)
 
 ## ADR Cross-cutting Constraints
 
@@ -203,3 +204,6 @@ PLAN-001-skills-ecosystem.md is the first dogfood target: migrated to the trimme
 - contains [[TASK-011-SPEC-007: Implement Session Mutation API]]
 - contains [[TASK-012-SPEC-007: Implement Round-Trip Property Test]]
 - contains [[TASK-013-SPEC-007: Dogfood PLAN-001 Migration]]
+- [outcome] Wave 2 retro state propagation applied 2026-05-21: 12/13 TASKs DONE, 11/12 REQs ACCEPTED, 4/4 DESIGNs ACCEPTED; SPEC-007 stays ACCEPTED pending TASK-014 completion #state-propagation #partial
+- contains [[TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template]]
+- validated_by [[QA-033-SPEC-007: Spec Aggregate Retro Validation]]

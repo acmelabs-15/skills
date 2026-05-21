@@ -1,0 +1,7 @@
+plan_type: composition
+source_type: adr
+target_path: adr-round-trip.md
+renumber_map:
+  D-500: D-1
+  D-501: D-2
+wikilink_map: {}

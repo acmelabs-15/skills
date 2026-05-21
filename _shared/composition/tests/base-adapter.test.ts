@@ -5,6 +5,7 @@ import type { MutationSpec } from "../src/core/types.js";
 class TestAdapter extends BaseMarkdownAdapter {
   readonly sourceType = "test";
   protected readonly sectionDelimiter = "## ";
+  protected readonly identifierPrefix = "test-";
   protected readonly identifierPattern = /D-(\d+)/;
 }
 

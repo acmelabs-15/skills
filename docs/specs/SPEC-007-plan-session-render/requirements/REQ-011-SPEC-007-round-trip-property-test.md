@@ -2,7 +2,7 @@
 title: 'REQ-011-SPEC-007: Round-Trip Property Test'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-011-spec-007-round-trip-property-test
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007

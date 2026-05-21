@@ -19,26 +19,27 @@ tags:
 Body referencing SPEC-001.
 `;
 
-describe("PlanAdapter frontmatter mutations (TASK-003)", () => {
-  test("applyMutations rewrites title field via frontmatter_map", () => {
+describe("PlanAdapter frontmatter mutations (TASK-009 — old-value -> new-value semantics)", () => {
+  test("applyMutations rewrites title value via frontmatter_map (old-value -> new-value)", () => {
+    // Per REQ-004 AC-2: frontmatter_map keys are EXISTING values; values are the NEW values.
     const mutations: MutationSpec = {
       renumber_map: {},
       wikilink_map: {},
       frontmatter_map: {
-        title: '"PLAN-100: Renamed Plan"',
+        '"PLAN-001: Example Plan"': '"PLAN-100: Renamed Plan"',
       },
     };
     const mutated = adapter.applyMutations(planWithFrontmatter, mutations);
     expect(mutated).toContain('title: "PLAN-100: Renamed Plan"');
-    expect(mutated).not.toContain("PLAN-001: Example Plan\ntype:");
+    expect(mutated).not.toContain('title: "PLAN-001: Example Plan"');
   });
 
-  test("applyMutations rewrites permalink field", () => {
+  test("applyMutations rewrites permalink value", () => {
     const mutations: MutationSpec = {
       renumber_map: {},
       wikilink_map: {},
       frontmatter_map: {
-        permalink: "planning/plan-100-renamed",
+        "planning/plan-001-example": "planning/plan-100-renamed",
       },
     };
     const mutated = adapter.applyMutations(planWithFrontmatter, mutations);
@@ -46,12 +47,14 @@ describe("PlanAdapter frontmatter mutations (TASK-003)", () => {
     expect(mutated).not.toContain("permalink: planning/plan-001-example");
   });
 
-  test("applyMutations rewrites branches single-line array literal", () => {
+  test("branches[] value rendered as YAML inline array when entry value is a JSON array literal", () => {
+    // Per REQ-004 AC-5: array-valued frontmatter_map entry → YAML inline array.
     const mutations: MutationSpec = {
       renumber_map: {},
       wikilink_map: {},
       frontmatter_map: {
-        branches: "[feat/plan-001-build-spec-003]",
+        // Existing value of branches in fixture is `[]` — replace with a populated array.
+        "[]": '["feat/plan-001-build-spec-003"]',
       },
     };
     const mutated = adapter.applyMutations(planWithFrontmatter, mutations);
@@ -59,14 +62,14 @@ describe("PlanAdapter frontmatter mutations (TASK-003)", () => {
     expect(mutated).not.toMatch(/^branches: \[\]$/m);
   });
 
-  test("applyMutations rewrites multiple frontmatter fields at once", () => {
+  test("applyMutations rewrites multiple frontmatter values at once", () => {
     const mutations: MutationSpec = {
       renumber_map: {},
       wikilink_map: {},
       frontmatter_map: {
-        title: '"PLAN-200: Multi-Mutated"',
-        permalink: "planning/plan-200-multi",
-        status: "DONE",
+        '"PLAN-001: Example Plan"': '"PLAN-200: Multi-Mutated"',
+        "planning/plan-001-example": "planning/plan-200-multi",
+        IN_PROGRESS: "DONE",
       },
     };
     const mutated = adapter.applyMutations(planWithFrontmatter, mutations);
@@ -75,54 +78,21 @@ describe("PlanAdapter frontmatter mutations (TASK-003)", () => {
     expect(mutated).toContain("status: DONE");
   });
 
-  test("reverseMutations leaves forward-applied frontmatter fields intact (field-name semantics)", () => {
-    // frontmatter_map uses field-name semantics (consistent with BaseMarkdownAdapter):
-    // keys are YAML field names, values are the NEW field values. The map does not
-    // record the original values, so reverseMutations cannot algebraically restore them.
-    // Per the contract, frontmatter_map mutations are forward-only — round-trip callers
-    // that need bit-exact restoration MUST omit frontmatter_map from both passes (or
-    // supply an explicit inverse spec). This test pins that semantic: after reverse,
-    // the FORWARD frontmatter values are still present.
+  test("reverseMutations algebraically restores original frontmatter values (inverse contract)", () => {
+    // Per REQ-004 AC-2 + TASK-009 DoD: apply-then-reverse is identity for frontmatter
+    // because the map is inverted (new -> old) on reverse and re-applied to the mutated content.
     const mutations: MutationSpec = {
       renumber_map: {},
       wikilink_map: {},
       frontmatter_map: {
-        title: '"PLAN-100: Renamed Plan"',
-        permalink: "planning/plan-100-renamed",
-        status: "DONE",
+        '"PLAN-001: Example Plan"': '"PLAN-100: Renamed Plan"',
+        "planning/plan-001-example": "planning/plan-100-renamed",
+        IN_PROGRESS: "DONE",
       },
     };
     const mutated = adapter.applyMutations(planWithFrontmatter, mutations);
     const reversed = adapter.reverseMutations(mutated, mutations);
-    expect(reversed).toContain('title: "PLAN-100: Renamed Plan"');
-    expect(reversed).toContain("permalink: planning/plan-100-renamed");
-    expect(reversed).toContain("status: DONE");
-  });
-
-  test("reverseMutations with explicit inverse frontmatter_map restores original values", () => {
-    // Callers that need round-trip frontmatter restoration must supply the inverse
-    // spec explicitly. This documents the supported workflow.
-    const forward: MutationSpec = {
-      renumber_map: {},
-      wikilink_map: {},
-      frontmatter_map: {
-        title: '"PLAN-100: Renamed Plan"',
-        permalink: "planning/plan-100-renamed",
-        status: "DONE",
-      },
-    };
-    const inverse: MutationSpec = {
-      renumber_map: {},
-      wikilink_map: {},
-      frontmatter_map: {
-        title: '"PLAN-001: Example Plan"',
-        permalink: "planning/plan-001-example",
-        status: "IN_PROGRESS",
-      },
-    };
-    const mutated = adapter.applyMutations(planWithFrontmatter, forward);
-    const restored = adapter.applyMutations(mutated, inverse);
-    expect(restored).toBe(planWithFrontmatter);
+    expect(reversed).toBe(planWithFrontmatter);
   });
 
   test("frontmatter mutations only touch frontmatter, not body", () => {
@@ -138,7 +108,7 @@ This body also has title: "PLAN-001: Example" as text.
     const mutations: MutationSpec = {
       renumber_map: {},
       wikilink_map: {},
-      frontmatter_map: { title: '"PLAN-100: Renamed"' },
+      frontmatter_map: { '"PLAN-001: Example"': '"PLAN-100: Renamed"' },
     };
     const mutated = adapter.applyMutations(content, mutations);
     // Frontmatter mutated
@@ -148,8 +118,6 @@ This body also has title: "PLAN-001: Example" as text.
   });
 
   test("frontmatter mutations skipped inside regenerated section that contains body-level frontmatter-like text", () => {
-    // Regenerated sections only affect body, not frontmatter — verify they don't
-    // accidentally protect the frontmatter block.
     const content = `---
 title: "PLAN-001: Example"
 type: plan
@@ -164,7 +132,7 @@ This dashboard mentions title: "PLAN-001" in a row.
     const mutations: MutationSpec = {
       renumber_map: {},
       wikilink_map: {},
-      frontmatter_map: { title: '"PLAN-100: Renamed"' },
+      frontmatter_map: { '"PLAN-001: Example"': '"PLAN-100: Renamed"' },
       regenerated_sections: ["Progress Dashboard"],
     };
     const mutated = adapter.applyMutations(content, mutations);

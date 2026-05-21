@@ -1,0 +1,20 @@
+# Composition (recompose) plan for session-sample.md
+# Inverse of session-distribution.plan.yaml — re-merges the renumbered Events
+# back to their original identifiers, producing the SHA-256 identity that the
+# round-trip property test asserts.
+# This file is a documentation fixture; the test reads the inverse map directly.
+plan_type: composition
+source_type: session
+source_path: tests/fixtures/session-sample.md
+renumber_map:
+  Event-100: Event-01
+  Event-101: Event-02
+  Event-200: Event-03
+  Event-201: Event-04
+wikilink_map: {}
+# Inverse cross-source update — restores the prior PLAN frontmatter state.
+cross_source_updates:
+  - target_source_type: plan
+    target_path: docs/planning/PLAN-001.md
+    frontmatter_map:
+      status: ACCEPTED

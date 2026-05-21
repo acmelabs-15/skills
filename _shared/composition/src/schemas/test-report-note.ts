@@ -2,21 +2,30 @@ import { z } from "zod";
 import { ObservationSchema, RelationSchema, TestReportIdSchema } from "./common.js";
 
 /**
- * TestReportNote Zod schema (Phase X.D.7, 2026-05-21).
+ * TestReportNote Zod schema (Phase X.D.7, 2026-05-21; widened for QA rename
+ * 2026-05-21 Wave 4 retro).
  *
- * Mirrors the canonical TEST-REPORT note structure per example
- * docs/qa/TEST-REPORT-007-SPEC-001-atomic-write-helper.md.
+ * Mirrors the canonical QA contract document. Originally authored against the
+ * TEST-REPORT-NNN-SPEC-NNN convention; on 2026-05-21 the user-locked rename
+ * `test-report` → `qa` (CONVENTIONS Section 3 canonical 16-type list)
+ * established `qa` as the canonical type and `QA-NNN-SPEC-NNN` as the file
+ * prefix. Schema accepts BOTH forms for backward compatibility:
+ *   - title:     `TEST-REPORT-NNN-SPEC-NNN:` OR `QA-NNN-SPEC-NNN:`
+ *   - type:      `"test-report"` (legacy) OR `"qa"` (current)
+ *   - permalink: `qa/test-report-NNN-spec-NNN...` OR `qa/qa-NNN-spec-NNN...`
  *
- * TEST-REPORT is the QA contract document — when QA returns PASS/FAIL on a
- * TASK, the verdict is recorded here with per-test evidence. Schema must
- * enforce structure so a QA claim "verdict PASS" is mechanically verifiable
- * against the per-row test_results data. The cross-field invariants below
- * make verdict mismatches reject at parse time: PASS requires zero failed
- * rows AND tests_run > 0; tests_run must equal passed+failed+skipped.
+ * Pre-rename example fixture: docs/qa/TEST-REPORT-007-SPEC-001-atomic-write-helper.md
+ * Post-rename example notes: docs/qa/QA-040-SPEC-006-..., docs/qa/QA-041-SPEC-006-...
  *
- * Status enum is intentionally narrow (DRAFT | DONE): TEST-REPORTs are
- * typically authored in one shot when QA returns; DRAFT covers in-progress
- * authoring.
+ * QA is the contract document — when QA returns PASS/FAIL on a TASK, the
+ * verdict is recorded here with per-test evidence. Schema must enforce
+ * structure so a QA claim "verdict PASS" is mechanically verifiable against
+ * the per-row test_results data. The cross-field invariants below make
+ * verdict mismatches reject at parse time: PASS requires zero failed rows
+ * AND tests_run > 0; tests_run must equal passed+failed+skipped.
+ *
+ * Status enum is intentionally narrow (DRAFT | DONE): QA notes are typically
+ * authored in one shot when QA returns; DRAFT covers in-progress authoring.
  *
  * Renderer companion: src/renderers/test-report-note.ts.
  */
@@ -25,9 +34,9 @@ export const TestReportNoteStatusEnum = z.enum(["DRAFT", "DONE"]);
 
 const TestReportFrontmatterSchema = z
   .object({
-    title: z.string().regex(/^TEST-REPORT-\d{3,}-SPEC-\d{3,}:/),
-    type: z.literal("test-report"),
-    permalink: z.string().regex(/^qa\/test-report-\d{3,}-spec-\d{3,}/),
+    title: z.string().regex(/^(TEST-REPORT|QA)-\d{3,}-SPEC-\d{3,}:/),
+    type: z.enum(["test-report", "qa"]),
+    permalink: z.string().regex(/^qa\/(test-report|qa)-\d{3,}-spec-\d{3,}/),
     status: TestReportNoteStatusEnum,
     tags: z.array(z.string()).min(2).max(5),
   })
@@ -82,16 +91,17 @@ export const TestReportNoteSchema = z
   })
   .strict()
   .superRefine((data, ctx) => {
-    // Cross-field invariant 1: derived TEST-REPORT id (from frontmatter
-    // title) must be valid per TestReportIdSchema.
-    const titleMatch = data.frontmatter.title.match(/^(TEST-REPORT-\d{3,}-SPEC-\d{3,}):/);
+    // Cross-field invariant 1: derived QA/TEST-REPORT id (from frontmatter
+    // title) must be valid per TestReportIdSchema. Both prefixes accepted
+    // per the 2026-05-21 rename (see file header).
+    const titleMatch = data.frontmatter.title.match(/^((?:TEST-REPORT|QA)-\d{3,}-SPEC-\d{3,}):/);
     if (titleMatch?.[1]) {
       const derivedId = titleMatch[1];
       const idParse = TestReportIdSchema.safeParse(derivedId);
       if (!idParse.success) {
         ctx.addIssue({
           code: "custom",
-          message: `Frontmatter title yields TEST-REPORT id ${derivedId} which fails TestReportIdSchema`,
+          message: `Frontmatter title yields QA/TEST-REPORT id ${derivedId} which fails TestReportIdSchema`,
         });
       }
     }

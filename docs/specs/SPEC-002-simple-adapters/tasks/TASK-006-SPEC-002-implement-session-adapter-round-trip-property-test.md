@@ -25,8 +25,8 @@ Create the round-trip property test and fixtures for the SESSION adapter. The te
 
 ## Definition of Done
 
-- [ ] SESSION fixture note at _shared/composition/tests/fixtures/session/ following CONVENTIONS with Event-NN entries
-- [ ] SESSION fixture plan YAML (hand-crafted distribution plan with cross_source_updates entries)
+- [x] SESSION fixture note at _shared/composition/tests/fixtures/session-sample.md following CONVENTIONS with Event-NN entries (flat layout — sanctioned by TASK-010-SPEC-002)
+- [x] SESSION fixture plan YAMLs at _shared/composition/tests/fixtures/session-{distribution,composition}.plan.yaml (hand-crafted distribution plan with cross_source_updates + inverse composition plan; documentation fixtures — round-trip test reads renumber_map + cross_source_updates as inline TS literal, mirroring the ADR convention)
 - [ ] Round-trip property test: parse fixture, decompose with plan, recompose with inverse plan
 - [ ] Assertion: SHA-256(original) === SHA-256(recomposed)
 - [ ] Assertion: decompose output includes cross_source_updates array with correct target_note, part_id, field_name, new_value

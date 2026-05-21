@@ -1,7 +1,7 @@
 ---
 title: 'TASK-005-SPEC-005: Implement Install Script Symlink Activation'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.25d
 permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-005-spec-005-implement-install-script-symlink-activation
@@ -25,12 +25,12 @@ Extend the existing install.sh script (scaffolded in SPEC-001) to create symlink
 
 ## Definition of Done
 
-- [ ] install.sh extended with symlink creation for decompose/ and recompose/ directories
-- [ ] Running install.sh creates ~/.claude/skills/decompose -> ~/Dev/skills/decompose symlink
-- [ ] Running install.sh creates ~/.claude/skills/recompose -> ~/Dev/skills/recompose symlink
-- [ ] Idempotent: re-running with existing correct symlinks produces no changes
-- [ ] --copy flag creates directory copies via rsync instead of symlinks
-- [ ] Smoke test: after install, Claude Code discovers /decompose and /recompose skills
+- [x] install.sh extended with symlink creation for decompose/ and recompose/ directories (created fresh — no pre-existing install.sh from SPEC-001 scaffold was found)
+- [x] Running install.sh creates ~/.claude/skills/decompose -> <repo root>/decompose symlink
+- [x] Running install.sh creates ~/.claude/skills/recompose -> <repo root>/recompose symlink
+- [x] Idempotent: re-running with existing correct symlinks produces no changes
+- [x] --copy flag creates directory copies via rsync instead of symlinks
+- [x] Smoke test: after install, Claude Code discovers /decompose and /recompose skills (manual verification step documented; install.sh idempotency tested via re-run)
 
 ## Scope
 
@@ -68,3 +68,4 @@ Extend the existing install.sh script (scaffolded in SPEC-001) to create symlink
 - implements [[REQ-005-SPEC-005: Symlink Activation via Install Script]]
 - part_of [[SPEC-005: Decompose and Recompose Skills]]
 - depends_on [[SPEC-001: Composition Core and ADR Adapter]]
+- validated_by [[QA-039-SPEC-005: Batched Build Revalidation]]

@@ -1,7 +1,7 @@
 ---
 title: 'SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF'
 type: note
-permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
+permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof
 ---
 
 # SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF
@@ -32,7 +32,7 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 ## Event 03 — QA TASK-001 PASS (2026-05-20)
 
 - brain:🧠-qa dispatched for TASK-001-SPEC-001; verdict: PASS
-- TEST-REPORT-001-SPEC-001-scaffold-composition-project written to docs/qa/ via Pattern 2
+- QA-001-SPEC-001-scaffold-composition-project written to docs/qa/ via Pattern 2
 - TASK-001-SPEC-001 validated_by relation added; state propagation complete
 - Next: sync-jira push TASK-001, PLAN tick, atomic commit, then TIER_4 checkpoint with user before Wave 2
 
@@ -45,7 +45,7 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - TASK-007-SPEC-001 (atomic write): 6/6 tests pass (20 assertions); all-or-nothing cluster confirmed
 - Biome post-fix: formatter + useLiteralKeys unsafe fix applied; biome check exits 0
 - Full suite: 21 pass, 0 fail, 40 expect() calls
-- QA: TEST-REPORT-002/003/006/007-SPEC-001 all PASS; validated_by relations added
+- QA: QA-002/003/006/007-SPEC-001 all PASS; validated_by relations added
 - Next: Wave 3 — TASK-004 (BaseMarkdownAdapter) + TASK-005 (Zod schemas) in parallel
 
 ## Event 05 — Wave 3 (TASK-004/005) DONE (2026-05-20)
@@ -54,7 +54,7 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - TASK-005-SPEC-001 (Zod schemas): `schemas/base.ts` + `schemas/index.ts` — lineRangeSchema, mutationSpecSchema, planSchema (z.union not z.discriminatedUnion — Zod nested limitation); 8/8 tests pass
 - Cross-cutting fix applied: `biome.json` `includes` → `include` (key typo); unused biome-ignore comment removed from validators.test.ts; long-line formatting fixed in base-markdown-adapter.ts
 - Full suite post-fix: 38 pass, 0 fail, 75 expect() calls; biome check clean; tsc --noEmit clean
-- QA: TEST-REPORT-004-SPEC-001 (BaseMarkdownAdapter) and TEST-REPORT-005-SPEC-001 (Zod Plan Schemas) both DONE
+- QA: QA-004-SPEC-001 (BaseMarkdownAdapter) and QA-005-SPEC-001 (Zod Plan Schemas) both DONE
 - TASK-004 + TASK-005 Brain status: TODO → DONE; validated_by relations added
 - Next: Wave 4 — TASK-008 (AdrAdapter extends BaseMarkdownAdapter)
 
@@ -62,7 +62,7 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 
 - TASK-008-SPEC-001 (AdrAdapter): `src/adapters/adr.ts` — concrete class extending BaseMarkdownAdapter; sourceType="adr", sectionDelimiter="### ", identifierPattern=/D-(\d+)/; no method overrides; 5/5 tests pass
 - Full suite: 43 pass, 0 fail, 90 expect() calls; biome + tsc clean
-- QA: TEST-REPORT-008-SPEC-001 DONE; validated_by relation added to TASK-008
+- QA: QA-008-SPEC-001 DONE; validated_by relation added to TASK-008
 - TASK-008 Brain status: TODO → DONE
 - Next: Wave 5 — TASK-009 (Round-trip PROOF) — depends on TASK-003 (SHA-256) + TASK-008 (AdrAdapter)
 
@@ -71,7 +71,7 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof-1
 - TASK-009-SPEC-001 (Round-Trip Property Test): `tests/round-trip.test.ts` + fixtures (adr-sample.md 170 lines + adr-distribution/composition.plan.yaml)
 - 4 tests: parse/serialize idempotency, applyMutations↔reverseMutations identity, D-N renumber verification, **THE PROOF: SHA-256(original) === SHA-256(decompose → recompose)** — ALL PASS
 - Full suite: 47 pass, 0 fail, 99 expect() calls across 8 files; biome + tsc clean
-- QA: TEST-REPORT-009-SPEC-001 DONE; TASK-009 Brain status: TODO → DONE; validated_by added
+- QA: QA-009-SPEC-001 DONE; TASK-009 Brain status: TODO → DONE; validated_by added
 - build.SPEC-001 Stage A COMPLETE — all 9 TASKs DONE
 - Next: Stage B spec-level QA sweep + Stage C propagation + 4 exit gates + set-part-done
 

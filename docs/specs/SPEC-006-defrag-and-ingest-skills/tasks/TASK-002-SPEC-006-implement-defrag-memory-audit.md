@@ -1,7 +1,7 @@
 ---
 title: 'TASK-002-SPEC-006: Implement Defrag Memory Audit'
 type: task
-status: TODO
+status: DONE
 permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-002-spec-006-implement-defrag-memory-audit
 tags:
 - task
@@ -18,16 +18,16 @@ Implement the defrag audit engine at defrag/scripts/audit.ts. This module perfor
 
 ## Definition of Done
 
-- [ ] defrag/scripts/audit.ts exports an audit function accepting a project root path and staleness threshold
-- [ ] Discovery phase enumerates all notes under docs/** via Brain MCP list_directory (depth 2+)
-- [ ] For each note, reads frontmatter and content via Brain MCP read_note
-- [ ] Evaluation checks observation count (flag split at more than 15 without H3 grouping, flag merge at fewer than 3)
-- [ ] Evaluation checks relation count (flag structural-fix at more than 12 without H3 type-grouping, flag merge at fewer than 2)
-- [ ] Evaluation checks line count (flag split at more than 500 lines with multi-entity content)
-- [ ] Evaluation checks git last-modified date (flag stale when exceeding threshold and status not DONE/DEPRECATED)
-- [ ] Returns structured audit result with candidates grouped by action type with specific violation evidence
-- [ ] Unit tests cover each threshold boundary condition
-- [ ] biome lint passes
+- [x] defrag/scripts/audit.ts exports an audit function accepting a project root path and staleness threshold
+- [x] Discovery phase enumerates all notes under docs/** via Brain MCP list_directory (depth 2+)
+- [x] For each note, reads frontmatter and content via Brain MCP read_note
+- [x] Evaluation checks observation count (flag split at more than 15 without H3 grouping, flag merge at fewer than 3)
+- [x] Evaluation checks relation count (flag structural-fix at more than 12 without H3 type-grouping, flag merge at fewer than 2)
+- [x] Evaluation checks line count (flag split at more than 500 lines with multi-entity content)
+- [x] Evaluation checks git last-modified date (flag stale when exceeding threshold and status not DONE/DEPRECATED)
+- [x] Returns structured audit result with candidates grouped by action type with specific violation evidence
+- [x] Unit tests cover each threshold boundary condition
+- [x] biome lint passes
 
 ## Files Affected
 
@@ -55,3 +55,5 @@ estimate: 1.5d
 - part_of [[SPEC-006: Defrag and Ingest Skills]]
 - implements [[REQ-002-SPEC-006: Defrag Memory State Audit]]
 - implements [[DESIGN-001-SPEC-006: Defrag Skill Architecture]]
+- validated_by [[QA-040-SPEC-006: Batched Build Revalidation]]
+- validated_by [[QA-041-SPEC-006: Fix Iter 1 Revalidation]]

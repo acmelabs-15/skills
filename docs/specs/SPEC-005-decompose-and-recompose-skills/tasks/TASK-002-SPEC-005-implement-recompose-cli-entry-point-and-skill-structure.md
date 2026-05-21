@@ -1,7 +1,7 @@
 ---
 title: 'TASK-002-SPEC-005: Implement Recompose CLI Entry Point and Skill Structure'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-002-spec-005-implement-recompose-cli-entry-point-and-skill-structure
@@ -25,11 +25,11 @@ Create the /recompose skill definition (SKILL.md) and the recompose.ts CLI entry
 
 ## Definition of Done
 
-- [ ] recompose/SKILL.md created with trigger phrases, LLM instructions for composition plan authoring, AskUserQuestion integration, and execution command
-- [ ] _shared/composition/src/recompose.ts created with: CLI arg parsing (--plan), YAML loading with FAILSAFE_SCHEMA, Zod validation via planSchema.parseAsync(), adapter dispatch via getAdapter(), multi-source extract/concatenate/mutate/hash-validate/write pipeline, audit log emission, structured error reporting
-- [ ] recompose.ts exits with code 0 on success, code 1 on validation error, code 2 on hash mismatch
-- [ ] Unit test: recompose.ts rejects invalid --plan argument with usage message
-- [ ] Unit test: recompose.ts rejects plan YAML that fails Zod validation with structured PlanValidationError
+- [x] recompose/SKILL.md created with trigger phrases, LLM instructions for composition plan authoring, AskUserQuestion integration, and execution command
+- [x] _shared/composition/src/recompose.ts created with: CLI arg parsing (--plan), YAML loading with FAILSAFE_SCHEMA, Zod validation via planSchema.parseAsync(), adapter dispatch via getAdapter(), multi-source extract/concatenate/mutate/hash-validate/write pipeline, audit log emission, structured error reporting
+- [x] recompose.ts exits with code 0 on success, code 1 on validation error, code 2 on hash mismatch
+- [x] Unit test: recompose.ts rejects invalid --plan argument with usage message
+- [x] Unit test: recompose.ts rejects plan YAML that fails Zod validation with structured PlanValidationError
 
 ## Scope
 
@@ -70,3 +70,4 @@ Create the /recompose skill definition (SKILL.md) and the recompose.ts CLI entry
 - implements [[REQ-002-SPEC-005: Recompose Skill Implementation]]
 - part_of [[SPEC-005: Decompose and Recompose Skills]]
 - leads_to [[TASK-003-SPEC-005: Implement Plan YAML Adjudication Step]]
+- validated_by [[QA-039-SPEC-005: Batched Build Revalidation]]

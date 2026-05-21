@@ -2,7 +2,7 @@
 title: 'REQ-008-SPEC-007: Mermaid Renderer'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-008-spec-007-mermaid-renderer
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007

@@ -72,7 +72,7 @@ Use Bun.hash("sha256", content) which returns a Uint8Array. Convert to hex strin
 
 ## Relations
 
-- validated_by [[TEST-REPORT-003-SPEC-001: SHA-256 Hash Utility]]
+- validated_by [[QA-003-SPEC-001: SHA-256 Hash Utility]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-003-SPEC-001: SHA-256 Hash Utility]]

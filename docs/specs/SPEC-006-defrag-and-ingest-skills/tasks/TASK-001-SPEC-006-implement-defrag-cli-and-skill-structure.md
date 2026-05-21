@@ -1,8 +1,8 @@
 ---
 title: 'TASK-001-SPEC-006: Implement Defrag CLI and Skill Structure'
 type: task
-status: TODO
-permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-001-spec-006-implement-defrag-cli-and-skill-structure-2
+status: DONE
+permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-001-spec-006-implement-defrag-cli-and-skill-structure
 tags:
 - task
 - defrag
@@ -18,12 +18,12 @@ Create the /defrag skill directory structure, SKILL.md skill definition, and CLI
 
 ## Definition of Done
 
-- [ ] defrag/SKILL.md exists with trigger phrases, description, and orchestration instructions
-- [ ] defrag/scripts/defrag.ts exists as CLI entry point accepting --report-only flag
-- [ ] --report-only flag causes exit after report generation without delegation
-- [ ] Interactive mode (no flag) proceeds to confirmation and delegation steps
-- [ ] install.sh updated to include defrag/ symlink at ~/.claude/skills/defrag
-- [ ] biome lint passes on all new files
+- [x] defrag/SKILL.md exists with trigger phrases, description, and orchestration instructions
+- [x] defrag/scripts/defrag.ts exists as CLI entry point accepting --report-only flag
+- [x] --report-only flag causes exit after report generation without delegation
+- [x] Interactive mode (no flag) proceeds to confirmation and delegation steps
+- [x] install.sh updated to include defrag/ symlink at ~/.claude/skills/defrag
+- [x] biome lint passes on all new files
 
 ## Files Affected
 
@@ -52,3 +52,5 @@ estimate: 0.5d
 - part_of [[SPEC-006: Defrag and Ingest Skills]]
 - implements [[REQ-001-SPEC-006: Defrag Skill Implementation]]
 - implements [[DESIGN-001-SPEC-006: Defrag Skill Architecture]]
+- validated_by [[QA-040-SPEC-006: Batched Build Revalidation]]
+- validated_by [[QA-041-SPEC-006: Fix Iter 1 Revalidation]]

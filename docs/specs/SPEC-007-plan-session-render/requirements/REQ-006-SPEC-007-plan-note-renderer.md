@@ -2,7 +2,7 @@
 title: 'REQ-006-SPEC-007: PlanNote Markdown Renderer'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-006-spec-007-plan-note-renderer
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007

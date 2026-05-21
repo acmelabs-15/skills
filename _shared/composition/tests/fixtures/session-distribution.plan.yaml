@@ -1,0 +1,39 @@
+# Distribution (decompose) plan for session-sample.md
+# This file is a documentation fixture; the round-trip test reads the
+# renumber_map directly as a TypeScript object, not by parsing this YAML.
+# Layout convention: flat (matches adr-*.plan.yaml + analysis-*.plan.yaml).
+plan_type: distribution
+source_type: session
+source_path: tests/fixtures/session-sample.md
+clusters:
+  cluster_a:
+    description: First cluster — early Events (bootstrap + dispatch)
+    events:
+      - Event-01
+      - Event-02
+    renumbered_to:
+      - Event-100
+      - Event-101
+  cluster_b:
+    description: Second cluster — later Events (post-incident + recovery)
+    events:
+      - Event-03
+      - Event-04
+    renumbered_to:
+      - Event-200
+      - Event-201
+renumber_map:
+  Event-01: Event-100
+  Event-02: Event-101
+  Event-03: Event-200
+  Event-04: Event-201
+wikilink_map: {}
+# Cross-source updates demonstrate the SESSION → PLAN frontmatter propagation
+# pattern. The round-trip test exercises this via the cross_source_updates
+# field on SessionDistributionPlan; the test loads the field inline rather
+# than parsing this YAML.
+cross_source_updates:
+  - target_source_type: plan
+    target_path: docs/planning/PLAN-001.md
+    frontmatter_map:
+      status: IN_PROGRESS

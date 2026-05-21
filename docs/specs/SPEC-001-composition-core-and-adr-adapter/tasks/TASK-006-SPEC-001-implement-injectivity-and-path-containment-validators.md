@@ -73,7 +73,7 @@ injectiveDisjointMap uses Set operations per ADR-002 D-5 spec. containedPathSche
 
 ## Relations
 
-- validated_by [[TEST-REPORT-006-SPEC-001: Injectivity and Path Containment Validators]]
+- validated_by [[QA-006-SPEC-001: Injectivity and Path Containment Validators]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-005-SPEC-001: Injectivity and Path Containment Validators]]

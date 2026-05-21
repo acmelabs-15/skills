@@ -116,3 +116,80 @@ describe("PlanAdapter (TASK-001 base)", () => {
     expect(restored).toBe(planFixture);
   });
 });
+
+describe("PlanAdapter public surface (TASK-007 — REQ-001 AC-1)", () => {
+  test("section_delimiter is exposed and equals '### '", () => {
+    expect(adapter.section_delimiter).toBe("### ");
+  });
+
+  test("identifier_pattern matches phase.part-id formats", () => {
+    expect(adapter.identifier_pattern.test("research.1")).toBe(true);
+    expect(adapter.identifier_pattern.test("decisions.2")).toBe(true);
+    expect(adapter.identifier_pattern.test("spec.SPEC-001")).toBe(true);
+    expect(adapter.identifier_pattern.test("build.SPEC-003")).toBe(true);
+    // Negative cases
+    expect(adapter.identifier_pattern.test("Research.1")).toBe(false);
+    expect(adapter.identifier_pattern.test("spec.spec-001")).toBe(false);
+    expect(adapter.identifier_pattern.test("noPhase")).toBe(false);
+  });
+});
+
+describe("PlanAdapter section-aware extractByRange (TASK-007 — REQ-001 AC-2)", () => {
+  const planWithBuildParts = `# PLAN-001
+
+## Build Parts
+
+### build.SPEC-001
+
+First spec body.
+
+### build.SPEC-002
+
+Second spec body.
+
+## Other Section
+
+Tail content.
+`;
+
+  test("extractByRange with {section} returns inclusive-of-heading exclusive-of-next-heading", () => {
+    const extracted = adapter.extractByRange(planWithBuildParts, { section: "build.SPEC-001" });
+    expect(extracted).toContain("### build.SPEC-001");
+    expect(extracted).toContain("First spec body.");
+    expect(extracted).not.toContain("### build.SPEC-002");
+    expect(extracted).not.toContain("Second spec body.");
+  });
+
+  test("extractByRange section-aware closes on next H2 (higher level)", () => {
+    const extracted = adapter.extractByRange(planWithBuildParts, { section: "build.SPEC-002" });
+    expect(extracted).toContain("### build.SPEC-002");
+    expect(extracted).toContain("Second spec body.");
+    expect(extracted).not.toContain("## Other Section");
+  });
+
+  test("extractByRange strips regenerated_sections from output when provided", () => {
+    const content = `# Plan
+
+## Body Heading
+
+Body content one.
+
+## Progress Dashboard
+
+| col |
+| --- |
+| row |
+
+## Body Heading Two
+
+Body content two.
+`;
+    const extracted = adapter.extractByRange(content, { start: 1, end: -1 }, [
+      "Progress Dashboard",
+    ]);
+    expect(extracted).toContain("Body content one.");
+    expect(extracted).toContain("Body content two.");
+    expect(extracted).not.toContain("Progress Dashboard");
+    expect(extracted).not.toContain("| col |");
+  });
+});

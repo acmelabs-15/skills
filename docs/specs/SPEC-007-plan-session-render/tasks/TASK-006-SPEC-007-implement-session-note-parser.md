@@ -2,7 +2,7 @@
 title: 'TASK-006-SPEC-007: Implement SessionNote Parser'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-006-spec-007-implement-session-note-parser
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -87,3 +87,4 @@ Create `_shared/composition/src/parsers/session-note.ts` implementing parseSessi
 - implements [[REQ-005-SPEC-007: SessionNote Markdown Parser]]
 - depends_on [[TASK-004-SPEC-007: Implement AST Helpers]]
 - depends_on [[TASK-003-SPEC-007: Implement SessionNote Zod Schema]]
+- validated_by [[QA-015-SPEC-007: Implement SessionNote Parser]]

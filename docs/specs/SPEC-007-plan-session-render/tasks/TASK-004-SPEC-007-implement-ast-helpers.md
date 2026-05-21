@@ -2,7 +2,7 @@
 title: 'TASK-004-SPEC-007: Implement AST Helpers'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-004-spec-007-implement-ast-helpers
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -82,3 +82,4 @@ Create `_shared/composition/src/parsers/ast-helpers.ts` with shared AST parsing 
 - implements [[REQ-004-SPEC-007: PlanNote Markdown Parser]]
 - implements [[REQ-005-SPEC-007: SessionNote Markdown Parser]]
 - implements [[DESIGN-001-SPEC-007: Composition Layer Architecture]]
+- validated_by [[QA-013-SPEC-007: Implement AST Helpers]]

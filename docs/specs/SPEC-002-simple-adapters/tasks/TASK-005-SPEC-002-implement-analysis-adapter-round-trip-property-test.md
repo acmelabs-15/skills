@@ -24,8 +24,8 @@ Create the round-trip property test and fixtures for the ANALYSIS adapter. The t
 
 ## Definition of Done
 
-- [ ] ANALYSIS fixture note at _shared/composition/tests/fixtures/analysis/ following CONVENTIONS
-- [ ] ANALYSIS fixture plan YAML (hand-crafted distribution plan for the fixture note)
+- [x] ANALYSIS fixture note at _shared/composition/tests/fixtures/analysis-sample.md following CONVENTIONS (flat layout — sanctioned by TASK-010-SPEC-002)
+- [x] ANALYSIS fixture plan YAMLs at _shared/composition/tests/fixtures/analysis-{distribution,composition}.plan.yaml (hand-crafted distribution + composition plans; documentation fixtures — round-trip test reads renumber_map as inline TS literal, mirroring the ADR convention)
 - [ ] Round-trip property test: parse fixture, decompose with plan, recompose with inverse plan
 - [ ] Assertion: SHA-256(original) === SHA-256(recomposed)
 - [ ] Test passes via bun test

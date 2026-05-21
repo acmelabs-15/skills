@@ -2,7 +2,7 @@
 title: 'TASK-003-SPEC-007: Implement SessionNote Zod Schema'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-003-spec-007-implement-session-note-schema
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -84,3 +84,4 @@ Create `_shared/composition/src/schemas/session-note.ts` with SessionFrontmatter
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-003-SPEC-007: SessionNote Zod Schema]]
 - depends_on [[TASK-001-SPEC-007: Implement Common Schema Module]]
+- validated_by [[QA-012-SPEC-007: Implement SessionNote Zod Schema]]

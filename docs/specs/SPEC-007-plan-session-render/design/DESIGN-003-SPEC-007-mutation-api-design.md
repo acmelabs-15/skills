@@ -2,7 +2,7 @@
 title: 'DESIGN-003-SPEC-007: Mutation API and Invariant Enforcement'
 type: design
 permalink: specs/spec-007-plan-session-render/design/design-003-spec-007-mutation-api-design
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-007

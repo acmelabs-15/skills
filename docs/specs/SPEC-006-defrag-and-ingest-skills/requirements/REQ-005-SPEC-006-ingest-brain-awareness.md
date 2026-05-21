@@ -1,7 +1,7 @@
 ---
 title: 'REQ-005-SPEC-006: Ingest Brain-Awareness'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-006-defrag-and-ingest-skills/requirements/req-005-spec-006-ingest-brain-awareness
 tags:
 - requirement

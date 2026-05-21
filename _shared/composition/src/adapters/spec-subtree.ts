@@ -1,12 +1,36 @@
-import { dirname, join } from "node:path";
+import { dirname, isAbsolute, join, resolve } from "node:path";
 import type { Root } from "mdast";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import type { CompositionAdapter } from "../core/adapter.js";
+import {
+  type HashValidationEntry,
+  type HashValidationResult,
+  type SubtreeFileForValidation,
+  rollbackCluster,
+  validateSubtreeHashes,
+} from "../core/cluster-rollback.js";
 import { sha256 } from "../core/hash.js";
+import {
+  type ProcessResult,
+  type SubtreeFileIO,
+  type SubtreeProcessInput,
+  defaultSubtreeFileIO,
+  processSubtree as orchestrateSubtree,
+} from "../core/subtree-orchestrator.js";
 import type { LineRange, MutationSpec } from "../core/types.js";
+
+export type {
+  HashValidationEntry,
+  HashValidationResult,
+  ProcessResult,
+  SubtreeFileForValidation,
+  SubtreeFileIO,
+  SubtreeProcessInput,
+};
+export { rollbackCluster, validateSubtreeHashes, defaultSubtreeFileIO };
 
 export interface SubtreeChild {
   /** Path relative to the SPEC root directory (e.g. "requirements/REQ-001-...md"). */
@@ -62,7 +86,7 @@ export class SubtreeHashValidationError extends Error {
  * subtree.
  */
 export class SpecSubtreeAdapter implements CompositionAdapter {
-  readonly sourceType = "spec-subtree";
+  readonly sourceType = "spec";
 
   private readonly processor = unified()
     .use(remarkParse)
@@ -114,6 +138,25 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
   }
 
   // --- Additional subtree methods ---
+
+  /**
+   * Manifest-driven full-subtree orchestration entry point per
+   * DESIGN-001 Component 1.
+   *
+   * Delegates to the SubtreeOrchestrator (DESIGN-001 Component 2) which
+   * runs the stage-all -> validate-all -> rename-all pipeline with
+   * cluster `.tmp` rollback on any failure. Returns a structured
+   * `ProcessResult` with per-file hash diagnostics on validation
+   * failure; throws only on unexpected filesystem errors during stage
+   * or rename phases (those throws are accompanied by rollback of any
+   * in-progress staged/renamed files).
+   */
+  async processSubtree(
+    input: SubtreeProcessInput,
+    fileIO: SubtreeFileIO = defaultSubtreeFileIO,
+  ): Promise<ProcessResult> {
+    return orchestrateSubtree(this, input, fileIO);
+  }
 
   /**
    * Applies mutations to every file in the subtree (root + children).
@@ -181,6 +224,27 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
   async applyFilenameRewrites(rootDir: string, rewrites: FilenameRewriteSpec[]): Promise<void> {
     if (rewrites.length === 0) return;
 
+    // Pre-flight: path-containment check on every target path.
+    // Reject absolute paths, paths containing ".." traversal segments, and
+    // paths that resolve outside rootDir.
+    for (const rw of rewrites) {
+      this.assertContainedRelativePath(rw.newRelativePath, rootDir);
+    }
+
+    // Pre-flight: injectivity — no two rewrites may target the same
+    // newRelativePath. Detected before any rename executes (the dst-exists
+    // check below would otherwise only catch this AFTER the first succeeded,
+    // triggering rollback rather than pre-flight rejection).
+    const targetSet = new Set<string>();
+    for (const rw of rewrites) {
+      if (targetSet.has(rw.newRelativePath)) {
+        throw new Error(
+          `Filename rewrite injectivity violation: duplicate target ${rw.newRelativePath}`,
+        );
+      }
+      targetSet.add(rw.newRelativePath);
+    }
+
     // Pre-flight: every source path must exist.
     for (const rw of rewrites) {
       const srcAbs = join(rootDir, rw.relativePath);
@@ -231,6 +295,31 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
         }
       }
       throw err;
+    }
+  }
+
+  /**
+   * Validates that a relative path is safe for use as a rewrite target:
+   * not absolute, no ".." traversal segments, and resolves to a location
+   * within rootDir.
+   */
+  private assertContainedRelativePath(relativePath: string, rootDir: string): void {
+    if (relativePath.length === 0) {
+      throw new Error("Filename rewrite path-containment violation: empty path");
+    }
+    if (isAbsolute(relativePath)) {
+      throw new Error(`Filename rewrite path-containment violation: absolute path ${relativePath}`);
+    }
+    const segments = relativePath.split(/[/\\]/);
+    if (segments.includes("..")) {
+      throw new Error(`Filename rewrite path-containment violation: traversal in ${relativePath}`);
+    }
+    const rootAbs = resolve(rootDir);
+    const targetAbs = resolve(rootAbs, relativePath);
+    if (targetAbs !== rootAbs && !targetAbs.startsWith(`${rootAbs}/`)) {
+      throw new Error(
+        `Filename rewrite path-containment violation: escapes rootDir: ${relativePath}`,
+      );
     }
   }
 

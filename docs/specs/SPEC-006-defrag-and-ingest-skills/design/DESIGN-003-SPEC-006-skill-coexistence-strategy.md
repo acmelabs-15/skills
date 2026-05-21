@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-003-SPEC-006: Skill Coexistence Strategy'
 type: design
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-006-defrag-and-ingest-skills/design/design-003-spec-006-skill-coexistence-strategy
 tags:
 - design
@@ -26,7 +26,7 @@ The new skills use distinct names from the existing ones. /defrag (new) vs memor
 
 The auto-detection mechanism determines whether the active project uses Brain or Basic Memory. It is shared between /defrag and /ingest and lives at _shared/detect-context.ts.
 
-Detection criteria for Brain context (all must be true): (1) a docs/ directory exists at the project root, (2) at least one markdown file under docs/ contains YAML frontmatter with a type field matching one of the 16 canonical entity types (decision, session, requirement, design, task, analysis, feature, epic, critique, test-report, security, retrospective, skill, spec, plan, prd).
+Detection criteria for Brain context (all must be true): (1) a docs/ directory exists at the project root, (2) at least one markdown file under docs/ contains YAML frontmatter with a type field matching one of the 16 canonical entity types (decision, session, requirement, design, task, analysis, feature, epic, critique, qa, security, retrospective, skill, spec, plan, prd).
 
 Detection criteria for Basic Memory context: the project does not meet Brain context criteria, OR the user provides an explicit --basic-memory flag.
 

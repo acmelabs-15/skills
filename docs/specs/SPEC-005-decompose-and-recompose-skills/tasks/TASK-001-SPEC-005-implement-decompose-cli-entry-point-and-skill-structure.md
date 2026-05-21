@@ -1,7 +1,7 @@
 ---
 title: 'TASK-001-SPEC-005: Implement Decompose CLI Entry Point and Skill Structure'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-001-spec-005-implement-decompose-cli-entry-point-and-skill-structure
@@ -25,11 +25,11 @@ Create the /decompose skill definition (SKILL.md) and the decompose.ts CLI entry
 
 ## Definition of Done
 
-- [ ] decompose/SKILL.md created with trigger phrases, LLM instructions for plan authoring, AskUserQuestion integration, and execution command
-- [ ] _shared/composition/src/decompose.ts created with: CLI arg parsing (--plan), YAML loading with FAILSAFE_SCHEMA, Zod validation via planSchema.parseAsync(), adapter dispatch via getAdapter(), per-destination extract/mutate/hash-validate/write pipeline, audit log emission, structured error reporting
-- [ ] decompose.ts exits with code 0 on success, code 1 on validation error, code 2 on hash mismatch
-- [ ] Unit test: decompose.ts rejects invalid --plan argument with usage message
-- [ ] Unit test: decompose.ts rejects plan YAML that fails Zod validation with structured PlanValidationError
+- [x] decompose/SKILL.md created with trigger phrases, LLM instructions for plan authoring, AskUserQuestion integration, and execution command
+- [x] _shared/composition/src/decompose.ts created with: CLI arg parsing (--plan), YAML loading with FAILSAFE_SCHEMA, Zod validation via planSchema.parseAsync(), adapter dispatch via getAdapter(), per-destination extract/mutate/hash-validate/write pipeline, audit log emission, structured error reporting
+- [x] decompose.ts exits with code 0 on success, code 1 on validation error, code 2 on hash mismatch
+- [x] Unit test: decompose.ts rejects invalid --plan argument with usage message
+- [x] Unit test: decompose.ts rejects plan YAML that fails Zod validation with structured PlanValidationError
 
 ## Scope
 
@@ -71,3 +71,4 @@ Create the /decompose skill definition (SKILL.md) and the decompose.ts CLI entry
 - implements [[REQ-001-SPEC-005: Decompose Skill Implementation]]
 - part_of [[SPEC-005: Decompose and Recompose Skills]]
 - leads_to [[TASK-003-SPEC-005: Implement Plan YAML Adjudication Step]]
+- validated_by [[QA-039-SPEC-005: Batched Build Revalidation]]

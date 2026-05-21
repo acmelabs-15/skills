@@ -2,7 +2,7 @@
 title: 'REQ-002-SPEC-007: PlanNote Zod Schema'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-002-spec-007-plan-note-zod-schema
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007

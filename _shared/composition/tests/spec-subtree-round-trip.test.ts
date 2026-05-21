@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
+import { specSubtreeCompositionPlanSchema } from "../schemas/composition/spec-subtree.plan.schema.js";
 import {
   specSubtreeDistributionPlanSchema,
   specSubtreeManifestSchema,
@@ -22,6 +23,9 @@ const req001Content = await Bun.file(
 const req002Content = await Bun.file(
   join(fixtureDir, "requirements", "REQ-002-SPEC-001-hash-utility.md"),
 ).text();
+const design001Content = await Bun.file(
+  join(fixtureDir, "design", "DESIGN-001-SPEC-001-adapter-architecture.md"),
+).text();
 const task001Content = await Bun.file(
   join(fixtureDir, "tasks", "TASK-001-SPEC-001-scaffold.md"),
 ).text();
@@ -41,6 +45,11 @@ const manifest: SubtreeManifest = {
       identifier: "REQ-002",
     },
     {
+      relativePath: "design/DESIGN-001-SPEC-001-adapter-architecture.md",
+      content: design001Content,
+      identifier: "DESIGN-001",
+    },
+    {
       relativePath: "tasks/TASK-001-SPEC-001-scaffold.md",
       content: task001Content,
       identifier: "TASK-001",
@@ -52,6 +61,7 @@ const distributionSpec: MutationSpec = {
   renumber_map: {
     "REQ-001": "REQ-100",
     "REQ-002": "REQ-101",
+    "DESIGN-001": "DESIGN-100",
     "TASK-001": "TASK-100",
     "SPEC-001": "SPEC-100",
   },
@@ -59,13 +69,15 @@ const distributionSpec: MutationSpec = {
     "[[SPEC-001: Composition Core]]": "[[SPEC-100: Composition Core]]",
     "[[REQ-001-SPEC-001: Adapter Interface]]": "[[REQ-100-SPEC-100: Adapter Interface]]",
     "[[REQ-002-SPEC-001: Hash Utility]]": "[[REQ-101-SPEC-100: Hash Utility]]",
+    "[[DESIGN-001-SPEC-001: Adapter Architecture]]":
+      "[[DESIGN-100-SPEC-100: Adapter Architecture]]",
     "[[TASK-001-SPEC-001: Scaffold Adapter]]": "[[TASK-100-SPEC-100: Scaffold Adapter]]",
   },
 };
 
 describe("SPEC subtree round-trip property tests", () => {
-  test("sourceType is 'spec-subtree'", () => {
-    expect(adapter.sourceType).toBe("spec-subtree");
+  test("sourceType is 'spec'", () => {
+    expect(adapter.sourceType).toBe("spec");
   });
 
   test("single-file applyMutations + reverseMutations is identity", () => {
@@ -77,9 +89,10 @@ describe("SPEC subtree round-trip property tests", () => {
 
   test("applySubtreeMutations applies mutations to root + all children", () => {
     const mutated = adapter.applySubtreeMutations(manifest, distributionSpec);
-    expect(mutated.children).toHaveLength(3);
+    expect(mutated.children).toHaveLength(4);
     expect(mutated.rootContent).toContain("SPEC-100");
     expect(mutated.rootContent).toContain("REQ-100");
+    expect(mutated.rootContent).toContain("DESIGN-100");
     expect(mutated.rootContent).toContain("TASK-100");
     expect(mutated.rootContent).not.toContain("SPEC-001");
     for (const child of mutated.children) {
@@ -139,68 +152,113 @@ describe("SPEC subtree round-trip property tests", () => {
     );
   });
 
-  test("schema validates a valid spec-subtree manifest derived from fixture content", () => {
+  // Schema-shape tests below exercise the ADR-002 D-5 manifest shape
+  // (root + children, per-entry mutations, optional filename_rewrite_map).
+  // Per-AC coverage and rejection cases live in spec-subtree-schema.test.ts;
+  // these tests anchor the schema against real fixture content.
+
+  test("schema validates a manifest derived from fixture content (ADR-002 D-5 shape)", () => {
     const validManifest = {
-      root_path: "SPEC-001-composition-core.md",
-      root_hash: sha256(rootContent),
+      root: {
+        source_path: `docs/specs/SPEC-001-composition-core/${manifest.rootPath}`,
+        mutations: distributionSpec,
+      },
       children: manifest.children.map((c) => ({
-        relative_path: c.relativePath,
-        hash: sha256(c.content),
-        identifier: c.identifier,
+        source_path: `docs/specs/SPEC-001-composition-core/${c.relativePath}`,
+        dest_path: `docs/specs/SPEC-100-composition-core/${c.relativePath.replace(/SPEC-001/g, "SPEC-100").replace(/-001-/g, "-100-")}`,
+        mutations: distributionSpec,
       })),
     };
     const result = specSubtreeManifestSchema.safeParse(validManifest);
     expect(result.success).toBe(true);
   });
 
-  test("schema rejects non-injective relative_path entries (duplicates)", () => {
-    const invalid = {
-      root_path: "SPEC-001-foo.md",
-      root_hash: "abc",
-      children: [
-        { relative_path: "x.md", hash: "h1", identifier: "REQ-001" },
-        { relative_path: "x.md", hash: "h2", identifier: "REQ-002" },
-      ],
-    };
-    const result = specSubtreeManifestSchema.safeParse(invalid);
-    expect(result.success).toBe(false);
-  });
-
-  test("schema rejects path traversal (..)", () => {
-    const invalid = {
-      root_path: "SPEC-001-foo.md",
-      root_hash: "abc",
-      children: [{ relative_path: "../escape.md", hash: "h1", identifier: "REQ-001" }],
-    };
-    const result = specSubtreeManifestSchema.safeParse(invalid);
-    expect(result.success).toBe(false);
-  });
-
   test("schema validates a full distribution plan derived from fixture content", () => {
     const plan = {
       plan_type: "distribution" as const,
-      source_type: "spec-subtree" as const,
-      manifest: {
-        root_path: "SPEC-001-composition-core.md",
-        root_hash: sha256(rootContent),
+      source_type: "spec" as const,
+      subtree_manifest: {
+        root: {
+          source_path: `docs/specs/SPEC-001-composition-core/${manifest.rootPath}`,
+          mutations: distributionSpec,
+        },
         children: manifest.children.map((c) => ({
-          relative_path: c.relativePath,
-          hash: sha256(c.content),
-          identifier: c.identifier,
+          source_path: `docs/specs/SPEC-001-composition-core/${c.relativePath}`,
+          dest_path: `docs/specs/SPEC-100-composition-core/${c.relativePath.replace(/SPEC-001/g, "SPEC-100").replace(/-001-/g, "-100-")}`,
+          mutations: distributionSpec,
         })),
       },
-      destinations: [
-        {
-          root_path: "SPEC-100-composition-core.md",
-          children: manifest.children.map((c) => ({
-            relative_path: c.relativePath.replace(/SPEC-001/g, "SPEC-100"),
-            new_identifier: c.identifier.replace(/001/g, "100"),
-          })),
-        },
-      ],
-      mutations: distributionSpec,
     };
     const result = specSubtreeDistributionPlanSchema.safeParse(plan);
     expect(result.success).toBe(true);
+  });
+
+  test("composition plan YAML fixture validates against specSubtreeCompositionPlanSchema", async () => {
+    const yaml = await import("js-yaml");
+    const yamlText = await Bun.file(
+      join(import.meta.dir, "fixtures", "spec-subtree-composition.plan.yaml"),
+    ).text();
+    const parsed = yaml.load(yamlText) as {
+      plan_type: string;
+      source_type: string;
+      subtree_manifest: { root: unknown; children: unknown[] };
+    };
+    const result = specSubtreeCompositionPlanSchema.safeParse(parsed);
+    expect(result.success).toBe(true);
+    expect(parsed.plan_type).toBe("composition");
+    expect(parsed.source_type).toBe("spec");
+    expect(parsed.subtree_manifest.children).toHaveLength(4);
+  });
+
+  test("distribution plan YAML fixture validates against specSubtreeDistributionPlanSchema", async () => {
+    const yaml = await import("js-yaml");
+    const yamlText = await Bun.file(
+      join(import.meta.dir, "fixtures", "spec-subtree-distribution.plan.yaml"),
+    ).text();
+    const parsed = yaml.load(yamlText) as {
+      plan_type: string;
+      source_type: string;
+      subtree_manifest: { root: unknown; children: unknown[] };
+    };
+    const result = specSubtreeDistributionPlanSchema.safeParse(parsed);
+    expect(result.success).toBe(true);
+    expect(parsed.plan_type).toBe("distribution");
+    expect(parsed.source_type).toBe("spec");
+    expect(parsed.subtree_manifest.children).toHaveLength(4);
+  });
+
+  test("composition plan YAML is the per-child mutations inverse of the distribution plan", async () => {
+    const yaml = await import("js-yaml");
+    type Plan = {
+      subtree_manifest: {
+        root: { mutations: { renumber_map: Record<string, string> } };
+        children: { mutations: { renumber_map: Record<string, string> } }[];
+      };
+    };
+    const dist = yaml.load(
+      await Bun.file(
+        join(import.meta.dir, "fixtures", "spec-subtree-distribution.plan.yaml"),
+      ).text(),
+    ) as Plan;
+    const comp = yaml.load(
+      await Bun.file(
+        join(import.meta.dir, "fixtures", "spec-subtree-composition.plan.yaml"),
+      ).text(),
+    ) as Plan;
+    // Per ADR-002 D-5: per-entry mutations. Distribution root K→V pairs
+    // with composition root V→K.
+    for (const [k, v] of Object.entries(dist.subtree_manifest.root.mutations.renumber_map)) {
+      expect(comp.subtree_manifest.root.mutations.renumber_map[v]).toBe(k);
+    }
+    // And per-child entries pair likewise.
+    expect(dist.subtree_manifest.children.length).toBe(comp.subtree_manifest.children.length);
+    for (let i = 0; i < dist.subtree_manifest.children.length; i++) {
+      const distChild = dist.subtree_manifest.children[i];
+      const compChild = comp.subtree_manifest.children[i];
+      if (!distChild || !compChild) continue;
+      for (const [k, v] of Object.entries(distChild.mutations.renumber_map)) {
+        expect(compChild.mutations.renumber_map[v]).toBe(k);
+      }
+    }
   });
 });

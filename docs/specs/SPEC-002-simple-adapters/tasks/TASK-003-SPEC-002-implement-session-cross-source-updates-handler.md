@@ -16,21 +16,22 @@ tags:
 
 ## Design Context
 
-- [[DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol]]: implements CrossSourceCoordinator interface and GracefulDegradationHandler
+- [[DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol]]: implements getCrossSourceUpdates pass-through method and crossSourceUpdateSchema (amended per ADR-004 D-2)
 
 ## Objective
 
-Implement the cross_source_updates handler including the CrossSourceUpdate Zod schema, the CrossSourceCoordinator interface, and the GracefulDegradationHandler fallback. This handler enables SESSION decomposition to emit structured updates targeting PLAN note parts (owning_session and completing_session fields) and coordinates with the PLAN adapter when available.
+Implement the cross_source_updates handler: the CrossSourceUpdate Zod schema and the SessionAdapter.getCrossSourceUpdates pass-through method. This handler enables SESSION decomposition to emit structured updates targeting sibling PLAN notes via the distribution pipeline's map-based transform model. The orchestrator dispatches application; the adapter only emits.
 
 ## Definition of Done
 
-- [ ] CrossSourceUpdate Zod schema defined and exported from _shared/composition/src/core/cross-source.ts
-- [ ] CrossSourceCoordinator interface defined with applyUpdates and reverseUpdates methods
-- [ ] GracefulDegradationHandler class implements CrossSourceCoordinator with warning log and proceed behavior
-- [ ] Coordinator resolves to GracefulDegradationHandler when PLAN adapter is not registered
-- [ ] cross_source_updates array validated by Zod at plan load time
-- [ ] Unit tests for CrossSourceUpdate schema validation (valid + invalid entries)
-- [ ] Unit test for GracefulDegradationHandler (logs warning, returns true)
+- [ ] crossSourceUpdateSchema defined and exported from _shared/composition/schemas/distribution/session.plan.schema.ts with shape: target_source_type (literal "plan"), target_path (string min 1), optional frontmatter_map, optional wikilink_map
+- [ ] CrossSourceUpdate type exported from the same file
+- [ ] SessionAdapter.getCrossSourceUpdates method implemented as pass-through returning distributionPlan.cross_source_updates or empty array
+- [ ] SessionAdapter.supportsCrossSourceUpdates flag set to true
+- [ ] cross_source_updates array validated by Zod at plan load time as optional array of crossSourceUpdateSchema
+- [ ] Unit tests for crossSourceUpdateSchema validation (valid + invalid entries)
+- [ ] Unit test for getCrossSourceUpdates returning plan entries when present
+- [ ] Unit test for getCrossSourceUpdates returning empty array when cross_source_updates absent
 - [ ] TypeScript compiles without errors
 - [ ] biome lint passes with no errors
 
@@ -38,20 +39,25 @@ Implement the cross_source_updates handler including the CrossSourceUpdate Zod s
 
 **In Scope**:
 
-- _shared/composition/src/core/cross-source.ts (Create)
-- Unit tests at _shared/composition/tests/cross-source.test.ts (Create)
+- _shared/composition/schemas/distribution/session.plan.schema.ts (crossSourceUpdateSchema and type)
+- _shared/composition/src/adapters/session.ts (getCrossSourceUpdates method)
+- Unit tests at _shared/composition/tests/session-cross-source.test.ts
 
 **Out of Scope**:
 
 - PLAN adapter implementation (SPEC-003)
+- CrossSourceCoordinator interface (deferred to SPEC-003 per ADR-004 D-2)
+- GracefulDegradationHandler class (deferred to SPEC-003 per ADR-004 D-2)
+- Rollback/reversal protocols (deferred to SPEC-003 per ADR-004 C-7)
 - Full integration test with PLAN adapter (deferred to SPEC-003)
 
 ## Files Affected
 
 | File | Action | Description |
 |------|--------|-------------|
-| _shared/composition/src/core/cross-source.ts | Create | CrossSourceUpdate schema, coordinator interface, degradation handler |
-| _shared/composition/tests/cross-source.test.ts | Create | Unit tests for schema and degradation handler |
+| _shared/composition/schemas/distribution/session.plan.schema.ts | Modify | crossSourceUpdateSchema and CrossSourceUpdate type |
+| _shared/composition/src/adapters/session.ts | Modify | getCrossSourceUpdates pass-through method |
+| _shared/composition/tests/session-cross-source.test.ts | Create/Modify | Unit tests for schema and pass-through method |
 
 ## Effort
 
@@ -62,9 +68,11 @@ Implement the cross_source_updates handler including the CrossSourceUpdate Zod s
 ## Observations
 
 - [fact] Status: TODO #status
-- [fact] Size tier: S -- schema definition + interface + fallback handler; approximately 80 LOC including tests #estimation
-- [decision] GracefulDegradationHandler ensures SPEC-002 ships independently of SPEC-003 PLAN adapter #independence
+- [fact] Size tier: S -- schema definition + pass-through method; approximately 50 LOC including tests #estimation
+- [decision] Pass-through model per ADR-004 D-2; no coordinator interface or handler class in SPEC-002 scope #pass-through #yagni
 - [constraint] cross_source_updates entries validated by Zod at plan load time per ADR-002 D-5 #validation
+- [fact] DoD amended 2026-05-21 per ADR-004 D-2 to match pass-through architecture; removed coordinator/handler DoD items #amendment
+- [fact] C-8 duplicate reconciliation: only one TASK-003-SPEC-002 file exists on disk; Brain MCP search duplicate hits were relation-edge entries not separate note files #reconciled
 
 ## Relations
 

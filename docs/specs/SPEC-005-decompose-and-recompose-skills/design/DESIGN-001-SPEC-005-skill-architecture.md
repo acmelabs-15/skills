@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-001-SPEC-005: Skill Architecture'
 type: design
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-005-decompose-and-recompose-skills/design/design-001-spec-005-skill-architecture
 tags:
 - design

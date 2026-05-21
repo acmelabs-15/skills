@@ -219,4 +219,57 @@ describe("TestReportNoteSchema", () => {
     good.acceptance_criteria_refs = ["ADR-001 F-1", "REQ-001-SPEC-001 AC-1"];
     expect(() => TestReportNoteSchema.parse(good)).not.toThrow();
   });
+
+  // ---------------------------------------------------------------------
+  // QA-NNN convention (post-2026-05-21 rename: test-report → qa)
+  // Schema must accept the new canonical form while retaining backward
+  // compatibility with legacy TEST-REPORT-NNN notes.
+  // ---------------------------------------------------------------------
+
+  test("accepts QA-NNN title prefix with type:qa and qa/ permalink", () => {
+    const good = makeMinimal();
+    good.frontmatter.title = "QA-041-SPEC-006: Fix Iter 1 Revalidation";
+    good.frontmatter.type = "qa";
+    good.frontmatter.permalink = "qa/qa-041-spec-006-fix-iter-1-revalidation";
+    expect(() => TestReportNoteSchema.parse(good)).not.toThrow();
+  });
+
+  test("accepts QA-NNN permalink with basic-memory dedup suffix (-1)", () => {
+    const good = makeMinimal();
+    good.frontmatter.title = "QA-039-SPEC-005: Batched Build Revalidation";
+    good.frontmatter.type = "qa";
+    good.frontmatter.permalink = "qa/qa-039-spec-005-batched-build-revalidation-1";
+    expect(() => TestReportNoteSchema.parse(good)).not.toThrow();
+  });
+
+  test("accepts mixed: QA title + legacy test-report type + qa permalink", () => {
+    // Real-world migration scenario: title flipped to QA but type field
+    // not yet updated — should pass since both type values are valid.
+    const good = makeMinimal();
+    good.frontmatter.title = "QA-100-SPEC-001: Migration Mix";
+    good.frontmatter.type = "test-report";
+    good.frontmatter.permalink = "qa/qa-100-spec-001-migration-mix";
+    expect(() => TestReportNoteSchema.parse(good)).not.toThrow();
+  });
+
+  test("rejects title with invalid prefix (e.g. REPORT-NNN- only)", () => {
+    const bad = makeMinimal();
+    bad.frontmatter.title = "REPORT-001-SPEC-001: Bad";
+    expect(() => TestReportNoteSchema.parse(bad)).toThrow();
+  });
+
+  test("rejects type field outside enum (e.g. 'test_report' with underscore)", () => {
+    const bad = makeMinimal();
+    // biome-ignore lint/suspicious/noExplicitAny: deliberate negative test
+    bad.frontmatter.type = "test_report" as any;
+    expect(() => TestReportNoteSchema.parse(bad)).toThrow();
+  });
+
+  test("rejects permalink outside qa/ folder", () => {
+    const bad = makeMinimal();
+    bad.frontmatter.title = "QA-001-SPEC-001: Sample";
+    bad.frontmatter.type = "qa";
+    bad.frontmatter.permalink = "test-report/qa-001-spec-001-sample";
+    expect(() => TestReportNoteSchema.parse(bad)).toThrow();
+  });
 });

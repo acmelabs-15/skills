@@ -1,7 +1,7 @@
 ---
 title: 'TASK-007-SPEC-006: Document Defrag and Ingest Skill UX in README'
 type: task
-status: TODO
+status: DONE
 permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-007-spec-006-document-defrag-and-ingest-skill-ux-in-readme
 tags:
 - task
@@ -18,13 +18,13 @@ Update the project README.md to document /defrag and /ingest skill usage, CLI fl
 
 ## Definition of Done
 
-- [ ] README.md updated with /defrag section: description, CLI flags (--report-only), operation modes (interactive, cron), usage examples
-- [ ] README.md updated with /ingest section: description, CLI flags (--type, --basic-memory), pipeline steps, usage examples
-- [ ] Coexistence section explains /defrag vs memory-defrag and /ingest vs memory-ingest
-- [ ] Install section updated to list all 4 skill symlinks (decompose, recompose, defrag, ingest)
-- [ ] Examples cover: interactive defrag, cron defrag, single-file ingest, directory batch ingest, Brain vs Basic Memory routing
-- [ ] Markdown renders correctly (no broken links, code blocks properly fenced)
-- [ ] biome lint passes (if README is in lint scope)
+- [x] README.md updated with /defrag section: description, CLI flags (--report-only), operation modes (interactive, cron), usage examples
+- [x] README.md updated with /ingest section: description, CLI flags (--type, --basic-memory), pipeline steps, usage examples
+- [x] Coexistence section explains /defrag vs memory-defrag and /ingest vs memory-ingest
+- [x] Install section updated to list all 4 skill symlinks (decompose, recompose, defrag, ingest)
+- [x] Examples cover: interactive defrag, cron defrag, single-file ingest, directory batch ingest, Brain vs Basic Memory routing
+- [x] Markdown renders correctly (no broken links, code blocks properly fenced)
+- [x] biome lint passes (if README is in lint scope)
 
 ## Files Affected
 
@@ -52,3 +52,5 @@ estimate: 0.5d
 - implements [[REQ-001-SPEC-006: Defrag Skill Implementation]]
 - implements [[REQ-004-SPEC-006: Ingest Skill Implementation]]
 - implements [[REQ-006-SPEC-006: Coexistence with Memory-Ingest and Memory-Defrag]]
+- validated_by [[QA-040-SPEC-006: Batched Build Revalidation]]
+- validated_by [[QA-041-SPEC-006: Fix Iter 1 Revalidation]]

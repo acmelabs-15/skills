@@ -19,7 +19,7 @@ Canonical project-knowledge-graph record for Phase X (Protocol Hardening) work o
 
 ## Why Phase X exists
 
-Today (2026-05-20) the orchestrator catastrophically failed during Wave 2 builds (build.SPEC-002 + 003 + 004 + 007). The orchestrator dispatched 4 single-agent builds without per-TASK QA gates. 30 TASK notes were flipped to DONE without any TEST-REPORT notes existing. 28 REQs + 12 DESIGNs flipped DRAFT to ACCEPTED prematurely. The session note SESSION-2026-05-20_05 was created retroactively from memory rather than lived as a ledger. 95 Brain note edits done today are uncommitted to git. PLAN-001 was partially damaged by a killed agent and is missing 5 branches in its frontmatter. 37 distinct drift surfaces have been catalogued — full inventory in SESSION-2026-05-20_05 Event 09.
+Today (2026-05-20) the orchestrator catastrophically failed during Wave 2 builds (build.SPEC-002 + 003 + 004 + 007). The orchestrator dispatched 4 single-agent builds without per-TASK QA gates. 30 TASK notes were flipped to DONE without any QA notes existing. 28 REQs + 12 DESIGNs flipped DRAFT to ACCEPTED prematurely. The session note SESSION-2026-05-20_05 was created retroactively from memory rather than lived as a ledger. 95 Brain note edits done today are uncommitted to git. PLAN-001 was partially damaged by a killed agent and is missing 5 branches in its frontmatter. 37 distinct drift surfaces have been catalogued — full inventory in SESSION-2026-05-20_05 Event 09.
 
 User analyzed root cause as a system-design failure, not just an execution failure. The protocol existed in fragments across many files but was not ENFORCED at the layers that matter (schemas, templates, renderers, skills). Even reading every memory and every standard, the orchestrator still bypassed the protocol because it was not mechanically enforceable.
 
@@ -37,8 +37,8 @@ Non-negotiables:
 - Implementer implements ONE TASK at a time; scope = ONLY that TASK
 - QA agent dispatched with the SAME TASK scope; also reads entire spec subtree
 - QA does scoped evaluation against TASK Definition of Done + linked REQ Acceptance Criteria + linked DESIGN compliance points
-- QA writes findings to a TEST-REPORT note with per-criterion PASS/FAIL/PARTIAL evidence
-- QA returns verdict only: PASS or FAILED + reference to TEST-REPORT
+- QA writes findings to a QA note with per-criterion PASS/FAIL/PARTIAL evidence
+- QA returns verdict only: PASS or FAILED + reference to QA
 - Implementer MUST go back and address problems — no exceptions
 - Fix cycle scope = ONLY the scoped problem area
 - 3-iteration cap then HALT to user
@@ -53,8 +53,8 @@ The PLAN note carries the dispatch instructions. The PLAN Zod schema mandates pe
 
 QA to orchestrator to implementer handoff translation (fail path):
 
-- QA signals FAILED + reference to the TEST-REPORT note — nothing more
-- Orchestrator reads the TEST-REPORT, identifies each unchecked item across TASK + linked REQs + linked DESIGNs
+- QA signals FAILED + reference to the QA note — nothing more
+- Orchestrator reads the QA, identifies each unchecked item across TASK + linked REQs + linked DESIGNs
 - Orchestrator builds the implementer fix-brief that QUOTES each unchecked item VERBATIM + cites the QA note evidence
 - Implementer cannot claim ambiguity — the brief literally quotes what is not done
 
@@ -88,7 +88,7 @@ The PLAN renderer is the load-bearing enforcement. It reads linked TASK DoD + RE
 | PLAN-001 damage | 7 | Partial damage; missing branches; false DONE; stale dashboard; bad wikilinks |
 | Session notes | 7 | Type/title/status frontmatter violations; PII paths; two IN_PROGRESS sessions |
 | SPEC-001 subtree | 5 | REQs/DESIGNs at ACCEPTED (should be DONE post-QA); derived view drift; Brain MCP edit bug |
-| Wave 2 SPECs | 7 | 4 SPEC roots false DONE; 30 TASKs false DONE; premature ACCEPTED; fake validated_by; 34 missing TEST-REPORTs |
+| Wave 2 SPECs | 7 | 4 SPEC roots false DONE; 30 TASKs false DONE; premature ACCEPTED; fake validated_by; 34 missing QAs |
 | QA note frontmatter | 4 | Duplicate type field; underscore in type; quote inconsistencies |
 | Other notes | 3 | ANALYSIS-002 kebab title; RETRO-001 + ADR-003 cross-contamination |
 | Code-vs-spec | 1 | Wave 2 code (200 tests pass) UNVALIDATED against REQ EARS / DESIGN constraints |
@@ -213,7 +213,7 @@ Until then it remains the canonical Brain knowledge-graph anchor for Phase X wor
 ### Post-execution (2026-05-21, current)
 
 - [outcome] Phase X.A + X.B + X.C + X.D completed end-to-end in SESSION-2026-05-20_06; X.E docs portion completed via 3-agent parallel wave; X.E.2 + X.E.3 BLOCKED on PUD-D2 #x-phase-execution
-- [fact] Composition library deliverables: 6 note-type schemas + 6 parsers + 4 renderers + 13 mutations + 6 claim validators across PLAN / SESSION / TASK / REQ / DESIGN / SPEC root / TEST-REPORT — defense in depth across schema + parser + renderer + mutation + validator + skill + auto-memory + CLAUDE.md + dispatch-brief layers #defense-in-depth
+- [fact] Composition library deliverables: 6 note-type schemas + 6 parsers + 4 renderers + 13 mutations + 6 claim validators across PLAN / SESSION / TASK / REQ / DESIGN / SPEC root / QA — defense in depth across schema + parser + renderer + mutation + validator + skill + auto-memory + CLAUDE.md + dispatch-brief layers #defense-in-depth
 - [fact] Test counts: 200 pass / 16 fail at session start → 444 pass / 0 fail at session end; +244 new tests #verification
 - [decision] D1 (composition library scope) RESOLVED include-with-renderer-per-note-type; D3 (CLAUDE.md updates) RESOLVED applied; D4 (PLAN-001 reconciliation timing) RESOLVED partial; D2 (Wave 2 disposition) STILL OPEN as PUD-D2 #decisions-status
 - [decision] Hybrid recommended for D2 — keep existing code as baseline; use new claim validators to find real gaps; file new TASKs only for genuine gaps; drive those through rigid cycle. Parallelizable 4-SPEC swarm. Estimated 6-10 hours #d2-recommendation
@@ -250,11 +250,11 @@ Until then it remains the canonical Brain knowledge-graph anchor for Phase X wor
 | /decisions | 257 | Per-D-N micro-cycle (closest decisions-side match) | lockDecision not formalized as deterministic function requiring context |
 | /research | 208 | Options-only; no-Open-Questions; no-deferral | convergencePass not schema-validated mechanically |
 | /review | 320 | 10-value verdict enum; diff-hash cache | No checkbox-vs-diff cross-check axis |
-| /end | 401 | Step 1 DoD halt-on-empty (closest end-of-phase gate) | Doesn't distinguish impl/QA marks; doesn't verify TEST-REPORT linkages for x claims |
+| /end | 401 | Step 1 DoD halt-on-empty (closest end-of-phase gate) | Doesn't distinguish impl/QA marks; doesn't verify QA linkages for x claims |
 
 Composition library state: PlanNote/SessionNote schemas/renderers/mutations present. Missing 5 schemas (TaskNote, RequirementNote, DesignNote, SpecRootNote, TestReportNote), 5 renderers, claim-validators, deterministic transition functions.
 
-NOTE-TEMPLATES: TASK/REQ/DESIGN templates have checkbox sections but no checkbox-as-contract language. TEST-REPORT template is STUB.
+NOTE-TEMPLATES: TASK/REQ/DESIGN templates have checkbox sections but no checkbox-as-contract language. QA template is STUB.
 
 15-item execution order locked for X.C + X.D. Next: begin item 1 (extend PlanNote schema with BuildWorkflowItemSchema).
 
@@ -303,12 +303,12 @@ The execution order locked 2026-05-20 after Phase X.B audit. Sequencing rational
 | 6 | Update /build SKILL.md | PENDING | Dispatch briefs = verbatim rendered PLAN content; schema-validates agent claims |
 | 7 | Add TaskNote schema + DoD claim validator | PENDING | Validates implementer TASK done claim |
 | 8 | Add RequirementNote + DesignNote schemas + AC/compliance claim validators | PENDING | Validates QA PASS claim |
-| 9 | Update /end SKILL.md | PENDING | Verifies impl+qa pairing + TEST-REPORT linkages at session close |
+| 9 | Update /end SKILL.md | PENDING | Verifies impl+qa pairing + QA linkages at session close |
 | 10 | Add SpecRootNote + TestReportNote schemas + renderers | PENDING | Completes the schema coverage |
 | 11 | Update /decisions SKILL.md with lockDecision reference | PENDING | Formalizes decision micro-cycle as deterministic |
 | 12 | Update /review SKILL.md with checkbox-vs-diff cross-check axis | PENDING | Self-review uses schema-based validation |
 | 13 | Update /research SKILL.md with convergencePass reference | PENDING | Lighter touch |
-| 14 | Update NOTE-TEMPLATES.md (TASK + REQ + DESIGN + TEST-REPORT + PLAN templates) | PENDING | Reinforces checkbox-as-contract; flesh out TEST-REPORT stub |
+| 14 | Update NOTE-TEMPLATES.md (TASK + REQ + DESIGN + QA + PLAN templates) | PENDING | Reinforces checkbox-as-contract; flesh out QA stub |
 | 15 | Update KNOWLEDGE-GRAPH-STRUCTURES.md (Sections 4.6/4.7/4.8/4.9) | PENDING | Embeds rigor in canonical spec |
 
 ## Per-skill detailed audit findings (X.B subagent return, verbatim)
@@ -355,7 +355,7 @@ Highest-leverage change: In self-review mode (when plan= arg present), add a "ch
 
 Existing rigor: Step 1 DoD verification reads every owning part's H3 part-id body and HALTs on any [ ] (lines 84-94); /review BLOCKING gate (Step 2) with strict verdict→action mapping (line 104 table); 5 pre-flight checks; 3-option AskUserQuestion FAIL branch with Recommended default + fix-target routing (lines 122-148); G2 resume per-step skip markers (lines 73-82); two-step edit + atomic commit ordering (Step 4); structured end-of-session report (Step 5); halt-block inventory.
 
-Highest-leverage change: Extend Step 1 to verify the impl-TASK-N + qa-TASK-N pairing — for every owning part, every TASK referenced must have BOTH (a) impl item status=DONE AND all DoD checkboxes [x], AND (b) qa item status=DONE AND linked TEST-REPORT exists with all REQ AC + DESIGN compliance checkboxes [x] + PASS verdict — making the session-close gate mechanically tied to the paired-item rigid protocol.
+Highest-leverage change: Extend Step 1 to verify the impl-TASK-N + qa-TASK-N pairing — for every owning part, every TASK referenced must have BOTH (a) impl item status=DONE AND all DoD checkboxes [x], AND (b) qa item status=DONE AND linked QA exists with all REQ AC + DESIGN compliance checkboxes [x] + PASS verdict — making the session-close gate mechanically tied to the paired-item rigid protocol.
 
 ## 3 next-move options (surfaced 2026-05-20)
 

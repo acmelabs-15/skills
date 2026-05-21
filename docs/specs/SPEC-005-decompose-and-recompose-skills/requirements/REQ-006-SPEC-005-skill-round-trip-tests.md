@@ -1,7 +1,7 @@
 ---
 title: 'REQ-006-SPEC-005: Skill Round-Trip Tests'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-005-decompose-and-recompose-skills/requirements/req-006-spec-005-skill-round-trip-tests
 tags:
 - requirement

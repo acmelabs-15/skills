@@ -155,8 +155,8 @@ Orchestrator follows rigid sequence per TASK (NO step may be skipped or reordere
 - (l) Git commit
 - (m) Orchestrator dispatches QA with brief = rendered qa item instructions verbatim
 - (n) QA reads full spec + evaluates each checkbox
-- (o) QA writes per-checkbox findings to TEST-REPORT-NNN-SPEC-MMM-{task-slug}.md (Pattern 2 three-phase write)
-- (p) QA returns verdict only: PASS / FAILED + see TEST-REPORT
+- (o) QA writes per-checkbox findings to QA-NNN-SPEC-MMM-{task-slug}.md (Pattern 2 three-phase write)
+- (p) QA returns verdict only: PASS / FAILED + see QA
 - (q) Session note Event
 - (r) Orchestrator updates TASK note with validated_by relation
 - (s) If PASS: PLAN qa-TASK-N IN_PROGRESS → DONE; TASK note status → DONE
@@ -174,15 +174,15 @@ The implementer and QA agents do NOT figure out from prose what counts as done. 
 
 When dispatching implementer: brief MUST quote the TASK DoD verbatim + link to linked REQs/DESIGNs + state "you implement against the checkboxes; you check [x] as each is satisfied".
 
-When dispatching QA: brief MUST quote the TASK DoD + linked REQ Acceptance Criteria + linked DESIGN checkboxes verbatim + state "you validate each checkbox individually with evidence; you mark [x] for satisfied items, leave [ ] for unsatisfied; per-item PASS/FAIL/PARTIAL evidence to TEST-REPORT".
+When dispatching QA: brief MUST quote the TASK DoD + linked REQ Acceptance Criteria + linked DESIGN checkboxes verbatim + state "you validate each checkbox individually with evidence; you mark [x] for satisfied items, leave [ ] for unsatisfied; per-item PASS/FAIL/PARTIAL evidence to QA".
 
 ### The QA → orchestrator → implementer handoff translation (fail path)
 
-QA's responsibility: signal `FAILED + [[TEST-REPORT-NNN]]` — nothing more. The TEST-REPORT is the contract document.
+QA's responsibility: signal `FAILED + [[QA-NNN]]` — nothing more. The QA is the contract document.
 
 Orchestrator's responsibility: TRANSLATE the QA findings into an unambiguous implementer fix-brief by:
 
-1. Reading TEST-REPORT-NNN-SPEC-NNN-{task-slug} in full
+1. Reading QA-NNN-SPEC-NNN-{task-slug} in full
 2. Identifying each [ ] unchecked item across the task's TASK + linked REQs + linked DESIGNs
 3. Building the implementer fix-brief that QUOTES each unchecked item VERBATIM + cites the QA note evidence (file:line, test name, etc.)
 4. Stating explicitly: "Fix ONLY these items. Do not refactor or improve anything else. Mark [x] as each is satisfied. Return when done."
@@ -243,7 +243,7 @@ A workflow phase missing ANY of these layers is incomplete — it WILL be bypass
   - Two memories (feedback_per_task_build_qa_cycle + feedback_workflow_phase_rigor_at_every_layer)
   - User-created lifecycle skills at ~/.claude/skills/{build,decisions,end,plan,research,review,spec}
   - Project artifacts at /Users/peter.kloss/Dev/ACMElabs/skills: ADR-003 amendment + SPEC-007 expansion (PlanNote schema + renderer + new TaskNote/RequirementNote/DesignNote/TestReportNote schemas)
-  - NOTE-TEMPLATES.md (PLAN, TASK, REQ, DESIGN, TEST-REPORT templates)
+  - NOTE-TEMPLATES.md (PLAN, TASK, REQ, DESIGN, QA templates)
   - KNOWLEDGE-GRAPH-STRUCTURES.md (Sections 4.6/4.7/4.8/4.9)
   - ~/CLAUDE.md tier-1 references
 
@@ -314,9 +314,9 @@ Audited 7 user-created lifecycle skills + composition library current state + NO
 - /decisions (257L): per-D-N micro-cycle closest decisions-side match; lockDecision not formalized as deterministic function
 - /research (208L): options-only + no-Open-Questions present; convergencePass not schema-validated
 - /review (320L): 10-value verdict enum; no checkbox-vs-diff axis
-- /end (401L): Step 1 DoD halt-on-empty present; doesn't distinguish impl/QA marks or verify TEST-REPORT linkages
+- /end (401L): Step 1 DoD halt-on-empty present; doesn't distinguish impl/QA marks or verify QA linkages
 - Composition library: PlanNote + SessionNote schemas/renderers/mutations exist; missing TaskNote/RequirementNote/DesignNote/SpecRootNote/TestReportNote schemas + renderers + claim-validators + deterministic transition functions
-- NOTE-TEMPLATES TASK template has DoD section but no checkbox-as-contract language; TEST-REPORT template is STUB; needs full development
+- NOTE-TEMPLATES TASK template has DoD section but no checkbox-as-contract language; QA template is STUB; needs full development
 
 15-item execution order locked covering Phase X.C + X.D. Next: begin item 1 (extend PlanNote schema with BuildWorkflowItemSchema for per-TASK impl+qa items).
 
@@ -444,7 +444,6 @@ QA P1 findings tracked for next session's Phase X continuation:
 - REQ-011 AC-3 (no-op mutation byte-identity) untested
 
 Proceeding to /end Step 4 (commits + lint-fix + PR + session DONE).
-
 
 ## Event 23 — Retrospective dispatched + RETRO-002 written (2026-05-20)
 

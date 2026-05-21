@@ -1,7 +1,7 @@
 ---
 title: 'SPEC-004: SPEC Subtree Adapter'
 type: spec
-status: ACCEPTED
+status: DONE
 date: 2026-05-19
 permalink: specs/spec-004-spec-subtree-adapter/spec-004-spec-subtree-adapter
 tags:
@@ -156,7 +156,8 @@ Implements per-file hash validation and the round-trip property test that proves
 
 ## Observations
 
-- [decision] SPEC-004 authored on 2026-05-19 covering 6 REQs + 3 DESIGNs + 7 TASKs #spec #status
+- [outcome] SPEC-004 DONE as of 2026-05-21: all 12 TASKs (7 original + 5 gap) DONE, 6 REQs ACCEPTED, 3 DESIGNs ACCEPTED #spec #closure
+- [decision] SPEC-004 authored on 2026-05-19 covering 6 REQs + 3 DESIGNs + 7 TASKs; 5 gap-TASKs (008-012) added post retro-validation #spec #provenance
 - [decision] Cluster source from ANALYSIS-001 Finding 4 (split from SPEC-003 per user adjudication) #provenance #clustering
 - [constraint] This is the HARDEST adapter (~500 LOC delta) with recursive multi-file scope, frontmatter mutations, filename rewrites, and per-file hash validation #complexity #hardest
 - [constraint] SpecSubtreeAdapter does NOT extend BaseMarkdownAdapter per ADR-002 D-3; distinct implementation due to multi-file orchestration #architecture #distinct
@@ -186,3 +187,14 @@ Implements per-file hash validation and the round-trip property test that proves
 - contains [[TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
 - contains [[TASK-006-SPEC-004: SPEC Subtree Test Fixtures]]
 - contains [[TASK-007-SPEC-004: SPEC Adapter Round-Trip Property Test]]
+- contains [[TASK-008-SPEC-004: Add Adapters Barrel and Align sourceType to spec]]
+- contains [[TASK-009-SPEC-004: Implement Filename Rewrite Unit Tests and Path Containment]]
+- contains [[TASK-010-SPEC-004: Add DESIGN Fixture and Composition Plan YAML]]
+- contains [[TASK-011-SPEC-004: Align Schema Shape to ADR-002 D-5 and REQ-005 AC]]
+- contains [[TASK-012-SPEC-004: Align Adapter Orchestration to DESIGN-001 and DESIGN-003]]
+- validated_by [[QA-027-SPEC-004: Spec-Aggregate Retro-Validation]]
+- validated_by [[QA-034-SPEC-004: Task 009 Filename Rewrite Tests Revalidation]]
+- validated_by [[QA-035-SPEC-004: Task 010 Design Fixture Revalidation]]
+- validated_by [[QA-036-SPEC-004: TASK-008 Barrel and sourceType Alignment Revalidation]]
+- validated_by [[QA-037-SPEC-004: TASK-011 Schema Shape Revalidation]]
+- validated_by [[QA-038-SPEC-004: TASK-012 Orchestrator Revalidation]]

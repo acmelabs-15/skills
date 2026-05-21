@@ -1,7 +1,7 @@
 ---
 title: 'REQ-003-SPEC-006: Defrag Delegation Protocol'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-006-defrag-and-ingest-skills/requirements/req-003-spec-006-defrag-delegation-protocol
 tags:
 - requirement

@@ -128,25 +128,25 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - bun-ts-engineer dispatched with scoped X.D.7 brief covering SpecRootNote (schema + parser; renderer deferred — body too varied) + TestReportNote (full schema + parser + renderer + semantic round-trip)
 - New files added under `_shared/composition/`:
   - `src/schemas/spec-root-note.ts` — SpecRootNoteSchema (Context + Scope In/Out + optional Phases array + optional success_criteria + optional artifact_status + opaque sections Record + Observations + Relations)
-  - `src/schemas/test-report-note.ts` — TestReportNoteSchema (Objective + Approach + Summary + Test Results table + observations/relations)
-  - `src/parsers/spec-root-note.ts` + `src/parsers/test-report-note.ts`
-  - `src/renderers/test-report-note.ts` (deterministic renderer; semantic round-trip)
-  - `src/validators/spec-claim-validator.ts` + `src/validators/test-report-claim-validator.ts`
+  - `src/schemas/qa-note.ts` — TestReportNoteSchema (Objective + Approach + Summary + Test Results table + observations/relations)
+  - `src/parsers/spec-root-note.ts` + `src/parsers/qa-note.ts`
+  - `src/renderers/qa-note.ts` (deterministic renderer; semantic round-trip)
+  - `src/validators/spec-claim-validator.ts` + `src/validators/qa-claim-validator.ts`
   - 7 new test files + 2 new fixtures
 - Refactor: `src/validators/types.ts` extended `ClaimResult.unsatisfied` to named `UnsatisfiedItem` interface with optional `section` field — forward-compatible; X.D.5/6 validators emit `section` undefined; all prior tests stay green
 - Cross-field invariants (superRefine):
   - SpecRootNote: title→SpecIdSchema; status DONE requires every success_criteria + artifact_status item satisfied when sections present; DONE unconditional when both gate sections absent
   - TestReportNote: title→TestReportIdSchema; `tests_run === passed + failed + skipped`; PASS verdict requires `failed===0` AND `tests_run>0` AND no FAIL rows in test_results
 - Test counts: 341 → **424 pass / 0 fail** (+83 tests). biome clean; tsc clean
-- Engineer notes: (a) canonical RelationVerbEnum does NOT include `validates` (used in exemplar TEST-REPORT-007) — fixture uses `relates_to` instead; exemplar TEST-REPORT-007 would actually fail RelationSchema parse today; (b) verdict derivation: PASS only when `failed===0 && tests_run>0`; introduces PARTIAL when `skipped>0 && failed===0`; otherwise FAIL; (c) Phases parsing kept loose (no req_refs constraint); (d) Success Criteria + Artifact Status both gate DONE additively; unsatisfied indices offset by `success_criteria.length` to keep globally distinct
+- Engineer notes: (a) canonical RelationVerbEnum does NOT include `validates` (used in exemplar QA-007) — fixture uses `relates_to` instead; exemplar QA-007 would actually fail RelationSchema parse today; (b) verdict derivation: PASS only when `failed===0 && tests_run>0`; introduces PARTIAL when `skipped>0 && failed===0`; otherwise FAIL; (c) Phases parsing kept loose (no req_refs constraint); (d) Success Criteria + Artifact Status both gate DONE additively; unsatisfied indices offset by `success_criteria.length` to keep globally distinct
 - Commit `47cb568 build(spec-007): X.D.7 SpecRoot + TestReport schemas + TestReport renderer` landed on branch `feat/plan-001-x-d-2-plan-renderer`
-- **Phase X.D composition library mechanism completion DONE 7 of 7** (X.D.1 BuildWorkflowItem schema + X.D.2 PlanNote renderer + X.D.3 transition mutations + X.D.4 parser/fixture + X.D.5 TaskNote + X.D.6 REQ/DESIGN + X.D.7 SpecRoot/TestReport). Mechanical protocol enforcement now spans schemas + parsers + renderers + mutations + claim validators across 6 note types (PLAN, SESSION, TASK, REQ, DESIGN, SPEC-root, TEST-REPORT)
+- **Phase X.D composition library mechanism completion DONE 7 of 7** (X.D.1 BuildWorkflowItem schema + X.D.2 PlanNote renderer + X.D.3 transition mutations + X.D.4 parser/fixture + X.D.5 TaskNote + X.D.6 REQ/DESIGN + X.D.7 SpecRoot/TestReport). Mechanical protocol enforcement now spans schemas + parsers + renderers + mutations + claim validators across 6 note types (PLAN, SESSION, TASK, REQ, DESIGN, SPEC-root, QA)
 
 ## Event 09
 
 **Type**: parallel-wave-dispatch | x-c-plus-deferred | 2026-05-21
 
-- Parallelism scan: 10 file-disjoint work units identified — 7 lifecycle SKILL.md updates + 3 deferred X.D code items (flip-build-workflow-item-checkbox mutation + SpecRootNote renderer + TEST-REPORT byte-identity round-trip)
+- Parallelism scan: 10 file-disjoint work units identified — 7 lifecycle SKILL.md updates + 3 deferred X.D code items (flip-build-workflow-item-checkbox mutation + SpecRootNote renderer + QA byte-identity round-trip)
 - Each agent owns exactly one file — no merge conflicts possible
 - Skill content cannot reference `~/.claude/memory/*` auto-memories per CONVENTIONS Section 5.3 — protocol-injection block inlined verbatim in each of 7 skill briefs (single canonical block, agents inline as-is)
 - Dispatched in one wave; expected return synthesis afterward + single integration commit covering all 10 outputs
@@ -170,8 +170,8 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - `~/.claude/skills/review/SKILL.md` — block inserted before Reference files (~line 316); /review-specific framing adds checkbox-vs-diff cross-check axis
 - `~/.claude/skills/end/SKILL.md` — block inserted before Anti-patterns (~line 364); /end-specific framing extends Step 1 DoD verification via composition-library claim validators
 - **Code: flip-checkbox cross-note mutation** — commit `c9585f2` — new `src/mutations/checkbox-mutations.ts` with `applyCheckboxMutation(markdown, mutation)` operating on TaskNote DoD / REQ AC / DESIGN compliance via markdown-string flip + re-parse validation. +9 tests. Surprises: REQ AC items are multi-line EARS prose requiring tolerant line-walker; DESIGN H2 disambiguation between Compliance + Architecture Compliance; deferred-rationale suffix preserved across flips
-- **Code: SpecRootNote renderer** — commit `e1bb056` — new `src/renderers/spec-root-note.ts` with semantic round-trip (parse→render→parse equivalent model). Kept `sections: Record<string, string>` — JS objects preserve string-key insertion order per ES2015+ spec; no schema refactor needed. +10 tests. Surprises: Scope rendered as H3 sub-headings (parser parseScope() switches buckets on H3 not bold markers); bun-ts-best-practices audit incorrectly moved sibling renderer file into **tests**/ (filename "test-report-note.ts" matched "test" substring heuristic); restored
-- **Code: TEST-REPORT byte-identity** — commit `8e1e095` — fixture normalized to canonical renderer-output form (dropped inline-code backticks; normalized Execution Time row's Target/Status cells to em-dash). Renderer itself emitted canonical form already — only fixture adjustments needed. +1 byte-identical round-trip test
+- **Code: SpecRootNote renderer** — commit `e1bb056` — new `src/renderers/spec-root-note.ts` with semantic round-trip (parse→render→parse equivalent model). Kept `sections: Record<string, string>` — JS objects preserve string-key insertion order per ES2015+ spec; no schema refactor needed. +10 tests. Surprises: Scope rendered as H3 sub-headings (parser parseScope() switches buckets on H3 not bold markers); bun-ts-best-practices audit incorrectly moved sibling renderer file into **tests**/ (filename "qa-note.ts" matched "test" substring heuristic); restored
+- **Code: QA byte-identity** — commit `8e1e095` — fixture normalized to canonical renderer-output form (dropped inline-code backticks; normalized Execution Time row's Target/Status cells to em-dash). Renderer itself emitted canonical form already — only fixture adjustments needed. +1 byte-identical round-trip test
 
 ### Cross-cutting notes
 
@@ -185,7 +185,7 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 **Type**: parallel-wave-dispatch | x-e-start | 2026-05-21
 
 - Phase X.E (Wrap-up) entered IN_PROGRESS
-- Pre-dispatch survey: none of the X.D mechanisms (composition library claim validators, BuildWorkflowItem, transition-impl-item / transition-qa-item, flip-checkbox, TaskNote/REQ/DESIGN/SpecRoot/TestReport schemas) referenced in `~/CLAUDE.md`, `~/NOTE-TEMPLATES.md`, or `~/KNOWLEDGE-GRAPH-STRUCTURES.md`. TEST-REPORT template at NOTE-TEMPLATES.md:1340 still marked stub
+- Pre-dispatch survey: none of the X.D mechanisms (composition library claim validators, BuildWorkflowItem, transition-impl-item / transition-qa-item, flip-checkbox, TaskNote/REQ/DESIGN/SpecRoot/TestReport schemas) referenced in `~/CLAUDE.md`, `~/NOTE-TEMPLATES.md`, or `~/KNOWLEDGE-GRAPH-STRUCTURES.md`. QA template at NOTE-TEMPLATES.md:1340 still marked stub
 - 3-agent parallel wave dispatched, file-disjoint (one user-level home file per agent)
 - X.E.2 PLAN-001 full reconciliation (Phase Progression for stale build.SPEC-002/003/004/007 IN_PROGRESS rows) remains blocked on D2 — that work waits
 
@@ -203,17 +203,17 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 
 ### ~/NOTE-TEMPLATES.md updates
 
-- Template index line 48: TEST-REPORT row updated from `Stub | qa/ | QA-NNN-{slug}.md` to `Full | qa/ | TEST-REPORT-NNN-SPEC-NNN-{slug}.md` (spec-coupled per X.D.7 schema)
+- Template index line 48: QA row updated from `Stub | qa/ | QA-NNN-{slug}.md` to `Full | qa/ | QA-NNN-SPEC-NNN-{slug}.md` (spec-coupled per X.D.7 schema)
 - Lines 318/446/503/579: added `**Schema-validated by**:` pointer blockquote on SPEC/REQ/DESIGN/TASK templates
-- Lines ~1342-1413: replaced TEST-REPORT stub with full canonical template — frontmatter + H1 + Objective + Approach + Results (Summary + Test Results by Category tables) + optional Findings + ≥3 obs + ≥2 relations + cross-field invariants summary block
+- Lines ~1342-1413: replaced QA stub with full canonical template — frontmatter + H1 + Objective + Approach + Results (Summary + Test Results by Category tables) + optional Findings + ≥3 obs + ≥2 relations + cross-field invariants summary block
 - TASK template DoD section validated against schema (no naming substitution); DESIGN template Compliance section flagged optional rather than inserted
 
 ### ~/KNOWLEDGE-GRAPH-STRUCTURES.md updates
 
-- "When to load this file" list: added bullet for new Section 4.13 TEST-REPORT
+- "When to load this file" list: added bullet for new Section 4.13 QA
 - Section 4.6 PLAN: new H4 `BuildWorkflowItem — per-TASK impl + qa items` inserted after "Plan ≠ Spec" closer. 9-field table + 4 cross-field invariants + renderer note + full impl+qa pair example with QA-fail-loop counters
 - Sections 4.7 SPEC + 4.8 TASK + 4.9 REQ: each gained `**Schema enforcement**` paragraph pointing at composition library schema file + validator function + relevant invariant
-- New Section 4.13 TEST-REPORT appended after 4.12 Mermaid palette (numbering choice avoids cascading Mermaid cross-reference rename). Cluster header `**Per-note-type structures (cont.)**` added to signal grouping with per-type sections
+- New Section 4.13 QA appended after 4.12 Mermaid palette (numbering choice avoids cascading Mermaid cross-reference rename). Cluster header `**Per-note-type structures (cont.)**` added to signal grouping with per-type sections
 
 ### X.E partial close
 
@@ -318,14 +318,14 @@ Fresh `/plan PLAN-001-skills-ecosystem` will:
 ### Execution outcomes (refreshed 2026-05-21 per session-full-hygiene rule)
 
 - [outcome] Phase X.D completed 7 of 7 sub-items in this session (X.D.1 BuildWorkflowItem schema; X.D.2 PlanNote renderer; X.D.3 transition mutations; X.D.4 parser + fixture; X.D.5 TaskNote; X.D.6 REQ + DESIGN; X.D.7 SpecRoot + TestReport) — composition library now provides 6 note-type schemas + 6 parsers + 4 renderers + 13 mutations + 6 claim validators #composition-library #x-d-done
-- [outcome] Phase X.C completed via 10-agent parallel wave (7 lifecycle SKILL.md updates + 3 deferred code items: flip-checkbox cross-note mutation + SpecRoot renderer + TEST-REPORT byte-identity) — file-disjoint, no merge conflicts #parallelism #x-c-done
+- [outcome] Phase X.C completed via 10-agent parallel wave (7 lifecycle SKILL.md updates + 3 deferred code items: flip-checkbox cross-note mutation + SpecRoot renderer + QA byte-identity) — file-disjoint, no merge conflicts #parallelism #x-c-done
 - [outcome] Phase X.E docs portion completed via 3-agent parallel wave updating ~/CLAUDE.md + ~/NOTE-TEMPLATES.md + ~/KNOWLEDGE-GRAPH-STRUCTURES.md (all saved-no-repo by design; ~/ not under git) #user-level-standards #x-e-docs
 - [fact] Test counts: 200 pass / 16 fail (session start) → 444 pass / 0 fail (session end) — +244 new tests; biome clean; tsc clean #verification #green
 - [fact] Three PRs merged to main in this session: PR #6 (2f049fd Phase X work), PR #7 (8dc30f1 recovery-readiness fixes), PR #8 (ce3d726 session close) #pr-lifecycle
 - [decision] D1 (composition library scope) + D3 (CLAUDE.md updates) + D4 (PLAN-001 reconciliation timing) RESOLVED; D2 (Wave 2 throw-out vs salvage) carried forward as PUD-D2 in PLAN-001 with Hybrid recommendation #decisions
 - [insight] Parallel-wave-with-shared-protocol-block pattern proved efficient — pre-pass to author the canonical inline block once + 10 agents inline verbatim, eliminating per-agent reinvention of the protocol phrasing #parallelism #pattern
 - [insight] Brain MCP edit_note response Pydantic relation-noise on long Progress Log bullets is persistent (documented since SESSION-_05 Event 14) — edits land on disk; responses error; future PLAN cleanup should refactor those bullets #brain-mcp #known-issue
-- [risk] Wave 2 code (SPEC-002/003/004/007) on main never ran through the rigid per-TASK protocol — 30 TASKs flipped DONE without TEST-REPORTs originally. PUD-D2 surfaces Hybrid as recommended disposition #wave-2-debt
+- [risk] Wave 2 code (SPEC-002/003/004/007) on main never ran through the rigid per-TASK protocol — 30 TASKs flipped DONE without QAs originally. PUD-D2 surfaces Hybrid as recommended disposition #wave-2-debt
 - [problem] Session note Observations + Relations were not refreshed across Events 02-15 — violated `feedback_session_note_full_hygiene_at_all_times`; user flagged and this section is the corrective refresh #self-flagged-violation #remediation
 
 ## Relations
