@@ -248,6 +248,12 @@ Fix dispatched: memory agent removes lines 99-192 from DESIGN-002 + appends form
 
 Next-ready parts: build.SPEC-005 + build.SPEC-006 (Wave 4 fresh skill builds — Decompose/Recompose + Defrag/Ingest) + outstanding partial Wave 2 SPECs (SPEC-004 + SPEC-007 retro-validation was deferred earlier this session — could re-spawn now or carry to next session).
 
+## Event 34
+
+[2026-05-21] Wave 2 retro re-engagement: build.SPEC-004 + build.SPEC-007 DEFERRED → IN_PROGRESS. Prior killed agents left substantial partial work: SPEC-004 has all 8 per-TASK QA notes (QA-020..027 incl. aggregate); SPEC-007 has 13 per-TASK QA notes (QA-010..022) but no aggregate. Plus 7 gap-TASKs already filed (SPEC-004: TASK-008/009/010/011/012; SPEC-007: TASK-013/014).
+
+Two parallel processor agents dispatched: (1) SPEC-004 retro state-change consolidator; (2) SPEC-007 aggregate author + state-change consolidator. Both read-only on existing artifacts; orchestrator applies state transitions after returns. On returns: gap-TASK impl + QA cycles per rigid protocol (parallel where file-disjoint).
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

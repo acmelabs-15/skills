@@ -1371,7 +1371,7 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-004 — SPEC Subtree Adapter Build (DEFERRED — agent killed mid-flight 2026-05-21)
+### build.SPEC-004 — SPEC Subtree Adapter Build (IN_PROGRESS — Wave 2 retro state propagation 2026-05-21)
 
 **Substatus**: BLOCKED
 **Blocker**: PUD-D2 (Wave 2 retro-validation disposition)
@@ -1462,7 +1462,7 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-007 — Plan/Session Render Implementation Build (DEFERRED — agent killed mid-flight 2026-05-21)
+### build.SPEC-007 — Plan/Session Render Implementation Build (IN_PROGRESS — Wave 2 retro aggregate + state propagation 2026-05-21)
 
 **Substatus**: BLOCKED
 **Blocker**: PUD-D2 (Wave 2 retro-validation disposition). Note: SPEC-007 code on main carries the Phase X.D protocol-hardening additions — BuildWorkflowItem schema, transition mutations, claim validators — which are validated under their OWN cycle but the SPEC-007 build itself never ran through the rigid per-TASK protocol
