@@ -189,6 +189,49 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - 3-agent parallel wave dispatched, file-disjoint (one user-level home file per agent)
 - X.E.2 PLAN-001 full reconciliation (Phase Progression for stale build.SPEC-002/003/004/007 IN_PROGRESS rows) remains blocked on D2 — that work waits
 
+## Event 12
+
+**Type**: parallel-wave-complete | x-e-docs-done | 2026-05-21
+
+3-agent parallel wave landed; ~/ not under git so all saves are saved-no-repo by design.
+
+### ~/CLAUDE.md updates (Composition library — schema-validated contract layer)
+
+- 3 new pre-flight table rows inserted at lines 16-18 (Build phase implementer/QA dispatch + PLAN state transition impl/qa + Cross-note checkbox flip) clustered with existing build-protocol TIER-1 rows
+- New H2 section "Composition library — schema-validated contract layer" inserted between Boundaries+Constraints and Agent Catalog (~lines 189-232). 3 sub-tables (Note-type schemas / Claim validators / Mutations) + When-to-use bullet list + protocol-ceiling / mechanical-floor framing
+- File modified by linter or user post-write; intentional changes preserved
+
+### ~/NOTE-TEMPLATES.md updates
+
+- Template index line 48: TEST-REPORT row updated from `Stub | qa/ | QA-NNN-{slug}.md` to `Full | qa/ | TEST-REPORT-NNN-SPEC-NNN-{slug}.md` (spec-coupled per X.D.7 schema)
+- Lines 318/446/503/579: added `**Schema-validated by**:` pointer blockquote on SPEC/REQ/DESIGN/TASK templates
+- Lines ~1342-1413: replaced TEST-REPORT stub with full canonical template — frontmatter + H1 + Objective + Approach + Results (Summary + Test Results by Category tables) + optional Findings + ≥3 obs + ≥2 relations + cross-field invariants summary block
+- TASK template DoD section validated against schema (no naming substitution); DESIGN template Compliance section flagged optional rather than inserted
+
+### ~/KNOWLEDGE-GRAPH-STRUCTURES.md updates
+
+- "When to load this file" list: added bullet for new Section 4.13 TEST-REPORT
+- Section 4.6 PLAN: new H4 `BuildWorkflowItem — per-TASK impl + qa items` inserted after "Plan ≠ Spec" closer. 9-field table + 4 cross-field invariants + renderer note + full impl+qa pair example with QA-fail-loop counters
+- Sections 4.7 SPEC + 4.8 TASK + 4.9 REQ: each gained `**Schema enforcement**` paragraph pointing at composition library schema file + validator function + relevant invariant
+- New Section 4.13 TEST-REPORT appended after 4.12 Mermaid palette (numbering choice avoids cascading Mermaid cross-reference rename). Cluster header `**Per-note-type structures (cont.)**` added to signal grouping with per-type sections
+
+### X.E partial close
+
+- X.E.1 CLAUDE.md TIER-1 protocol refs: DONE (additional refs landed beyond the 3 from prior session)
+- Templates + STRUCTURES updates (previously deferred from X.C.5-6): DONE
+- X.E.2 PLAN-001 full reconciliation (clean up stale build.SPEC-002/003/004/007 IN_PROGRESS rows in Phase Progression): **STILL BLOCKED on D2** (Wave 2 throw-out vs salvage)
+- X.E.3 Final commit + phase close: blocked on X.E.2 → D2
+
+### Phase X overall status
+
+- X.A bootstrap: DONE
+- X.B audit: DONE
+- X.C skills + templates + structures: DONE
+- X.D composition library mechanism completion (7 of 7): DONE
+- X.E wrap-up: docs DONE; PLAN-001 final reconciliation BLOCKED on D2
+
+Composition library: 6 note-type schemas + 6 parsers + 4 renderers + 13 mutations + 6 claim validators + 7 lifecycle SKILL.md files + 3 user-level standards + 3 TIER-1 BLOCKING auto-memories + CLAUDE.md pre-flight table integration. Defense in depth across every enforcement layer the protocol specifies.
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
