@@ -309,12 +309,37 @@ Fresh `/plan PLAN-001-skills-ecosystem` will:
 
 ## Observations
 
+### Session scope (set at start)
+
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
 - [fact] PLAN-001 X.D.1 DONE produced 18 pass schema tests + 16 EXPECTED FAILURES downstream waiting on X.D.2 renderer + X.D.3 transitions + X.D.4 fixture #status
 - [constraint] X.D.2 must produce rendered impl+qa blocks matching `BuildWorkflowItemSchema` so the 16 downstream tests can flip green when X.D.3-4 land #contract
 
+### Execution outcomes (refreshed 2026-05-21 per session-full-hygiene rule)
+
+- [outcome] Phase X.D completed 7 of 7 sub-items in this session (X.D.1 BuildWorkflowItem schema; X.D.2 PlanNote renderer; X.D.3 transition mutations; X.D.4 parser + fixture; X.D.5 TaskNote; X.D.6 REQ + DESIGN; X.D.7 SpecRoot + TestReport) — composition library now provides 6 note-type schemas + 6 parsers + 4 renderers + 13 mutations + 6 claim validators #composition-library #x-d-done
+- [outcome] Phase X.C completed via 10-agent parallel wave (7 lifecycle SKILL.md updates + 3 deferred code items: flip-checkbox cross-note mutation + SpecRoot renderer + TEST-REPORT byte-identity) — file-disjoint, no merge conflicts #parallelism #x-c-done
+- [outcome] Phase X.E docs portion completed via 3-agent parallel wave updating ~/CLAUDE.md + ~/NOTE-TEMPLATES.md + ~/KNOWLEDGE-GRAPH-STRUCTURES.md (all saved-no-repo by design; ~/ not under git) #user-level-standards #x-e-docs
+- [fact] Test counts: 200 pass / 16 fail (session start) → 444 pass / 0 fail (session end) — +244 new tests; biome clean; tsc clean #verification #green
+- [fact] Three PRs merged to main in this session: PR #6 (2f049fd Phase X work), PR #7 (8dc30f1 recovery-readiness fixes), PR #8 (ce3d726 session close) #pr-lifecycle
+- [decision] D1 (composition library scope) + D3 (CLAUDE.md updates) + D4 (PLAN-001 reconciliation timing) RESOLVED; D2 (Wave 2 throw-out vs salvage) carried forward as PUD-D2 in PLAN-001 with Hybrid recommendation #decisions
+- [insight] Parallel-wave-with-shared-protocol-block pattern proved efficient — pre-pass to author the canonical inline block once + 10 agents inline verbatim, eliminating per-agent reinvention of the protocol phrasing #parallelism #pattern
+- [insight] Brain MCP edit_note response Pydantic relation-noise on long Progress Log bullets is persistent (documented since SESSION-_05 Event 14) — edits land on disk; responses error; future PLAN cleanup should refactor those bullets #brain-mcp #known-issue
+- [risk] Wave 2 code (SPEC-002/003/004/007) on main never ran through the rigid per-TASK protocol — 30 TASKs flipped DONE without TEST-REPORTs originally. PUD-D2 surfaces Hybrid as recommended disposition #wave-2-debt
+- [problem] Session note Observations + Relations were not refreshed across Events 02-15 — violated `feedback_session_note_full_hygiene_at_all_times`; user flagged and this section is the corrective refresh #self-flagged-violation #remediation
+
 ## Relations
+
+### Session continuity
 
 - continues [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]]
 - part_of [[PLAN-001: Skills Ecosystem]]
+
+### Notes implemented or extended
+
 - implements [[ANALYSIS-003: Phase X Protocol Hardening State]]
+- extends [[SPEC-007: Plan/Session Render Implementation]]
+- relates_to [[ADR-003: Plan/Session Render Architecture]]
+- relates_to [[SPEC-002: Simple Adapters]]
+- relates_to [[SPEC-003: PLAN Adapter]]
+- relates_to [[SPEC-004: SPEC Subtree Adapter]]

@@ -202,19 +202,41 @@ Until then it remains the canonical Brain knowledge-graph anchor for Phase X wor
 
 ## Observations
 
+### Planning + audit (2026-05-20, historical)
+
 - [decision] Phase X created to embed rigid implementation+QA protocol at every enforcement layer simultaneously after today's orchestrator + system-design failures #protocol #hardening
 - [fact] 37 distinct drift surfaces catalogued from today's work #drift #audit
 - [decision] Brain knowledge-graph mirror of orchestrator-private state-capture memory is intentional — different audiences and lifecycles #knowledge-graph #durability
-- [constraint] Phase X.D gated on user decision D1; D2 throw-out vs salvage gates Phase X.E.2 #decisions-pending
+- [constraint] Phase X.D originally gated on user decision D1; D2 throw-out vs salvage gates Phase X.E.2 #decisions-pending
 - [risk] If session compacts before decisions resolved, fresh agent reads this analysis to reactivate the decision surface #continuity #resumability
+
+### Post-execution (2026-05-21, current)
+
+- [outcome] Phase X.A + X.B + X.C + X.D completed end-to-end in SESSION-2026-05-20_06; X.E docs portion completed via 3-agent parallel wave; X.E.2 + X.E.3 BLOCKED on PUD-D2 #x-phase-execution
+- [fact] Composition library deliverables: 6 note-type schemas + 6 parsers + 4 renderers + 13 mutations + 6 claim validators across PLAN / SESSION / TASK / REQ / DESIGN / SPEC root / TEST-REPORT — defense in depth across schema + parser + renderer + mutation + validator + skill + auto-memory + CLAUDE.md + dispatch-brief layers #defense-in-depth
+- [fact] Test counts: 200 pass / 16 fail at session start → 444 pass / 0 fail at session end; +244 new tests #verification
+- [decision] D1 (composition library scope) RESOLVED include-with-renderer-per-note-type; D3 (CLAUDE.md updates) RESOLVED applied; D4 (PLAN-001 reconciliation timing) RESOLVED partial; D2 (Wave 2 disposition) STILL OPEN as PUD-D2 #decisions-status
+- [decision] Hybrid recommended for D2 — keep existing code as baseline; use new claim validators to find real gaps; file new TASKs only for genuine gaps; drive those through rigid cycle. Parallelizable 4-SPEC swarm. Estimated 6-10 hours #d2-recommendation
+- [insight] Parallel-wave-with-shared-protocol-block pattern worked well — pre-pass authors canonical inline block once + N agents inline verbatim. Avoids per-agent reinvention; produces consistent surface across files #parallelism #pattern
+- [problem] AGENTS.md required-reading was skipped in post-compaction rehydration step 1 (TIER-1 BLOCKING violation flagged by user 2026-05-21); session-note Observations + Relations were not refreshed across Events 02-15 (`feedback_session_note_full_hygiene_at_all_times` violation, same user flag) — corrective refresh applied to this note and SESSION-_06 in chore/analysis-003-post-pr-8-state branch #self-flagged-violation #remediation
 
 ## Relations
 
+### Plan + decision lineage
+
 - part_of [[PLAN-001: Skills Ecosystem]]
+- implements [[ADR-003: Plan/Session Render Architecture]]
+- extends [[SPEC-007: Plan/Session Render Implementation]]
+
+### Session ledger
+
 - relates_to [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]]
+- relates_to [[SESSION-2026-05-20_06: Phase X.D.2 PlanNote Renderer Extension]]
+
+### Related analyses
+
 - relates_to [[ANALYSIS-001: SPEC Clustering]]
-- relates_to [[ADR-003: Plan/Session Render Architecture]]
-- relates_to [[SPEC-007: Plan/Session Render Implementation]]
+- relates_to [[ANALYSIS-002: Plan/Session Note Render Architecture]]
 
 ## X.B Audit Findings (DONE 2026-05-20)
 
