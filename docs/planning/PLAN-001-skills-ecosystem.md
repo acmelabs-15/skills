@@ -49,11 +49,13 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec.SPEC-NNN | 0 | 0 | 0 | 7 | 7 |
-| build.SPEC-NNN | 2 | 4 | 0 | 1 | 7 |
+| build.SPEC-NNN | 0 | 0 | 6 | 1 | 7 |
 | protocol-hardening | 0 | 1 | 0 | 0 | 1 |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total visible** | **3** | **4** | **0** | **14** | **21** |
+| **Total visible** | **2** | **1** | **6** | **13** | **22** |
+
+> 2026-05-21 — counts reconciled post-PR #6 merge. All 6 build.SPEC-NNN parts now BLOCKED on PUD-D2 (SPEC-001 remains DONE — Wave 1 legitimately validated per SESSION-_05 Event 20). protocol-hardening IN_PROGRESS (X.E.2 + X.E.3 blocked on D2). Next-ready ranking: PUD-D2 resolution unblocks build.SPEC-002/003/004/007 retro-validation → unblocks build.SPEC-005/006 → unblocks review + end.
 
 > 2026-05-20 — spec.SPEC-007 (Plan/Session Render Implementation) added to scope; PENDING, source artifact [[ANALYSIS-002: Plan/Session Note Render Architecture]]. Formal ADR-003 + /spec Stage 2 subtree deferred to a future session.
 
@@ -205,9 +207,29 @@ User adjudicated /end Step 1 HALT (DoD incomplete) via AskUserQuestion. Locked o
 - **2026-05-19** — spec.SPEC-002 IN_PROGRESS (user selected SPEC-002 Simple Adapters via AskUserQuestion per /plan lowest-numbered rule). Owning session bound. Auto-routing to /spec Stage 2 (Contract 2 dispatch with spec=SPEC-002 source_adrs=ADR-001 + ADR-002 source_clustering=ANALYSIS-001 + source_proof=SPEC-001 BaseMarkdownAdapter).
 - **2026-05-20** — Post-/end design exploration session (SESSION-2026-05-20_01). Drift remediation of PLAN-001 H4 subsections (commit f280c0f). Plan/session note render architecture explored end-to-end; ANALYSIS-002 authored capturing 11 locked decisions + full schema + parser + renderer + mutation API drafts in Appendices A-I. PLAN-001 amendments applied this turn: Progress Dashboard updated (spec.SPEC-NNN row 1 PENDING + 6 DONE = 7 total; total visible 3/0/0/10 = 13); Phase Progression added spec.SPEC-007 PENDING row; Cross-Part Deps Graph added spec_007 node; spec.SPEC-007 H3 part section authored under ## Spec with PENDING substatus + 8-item DoD + source artifact pointer to ANALYSIS-002. Decisions phase did NOT re-enter (D-1..D-11 LOCKED in ANALYSIS-002; formal ADR-003 + brain:---adr-review cycle is procedural, deferred to a future session). Monorepo restructure proposal documented in ANALYSIS-002 Appendix G; deferred to ADR-004 when 2nd package starts.
 
+## Pending User Decisions
+
+### PUD-D2
+
+- **Part**: build.SPEC-002 (also affects 003 / 004 / 007 directly; 005 / 006 transitively)
+- **Surfaced At Event**: 13 (SESSION-2026-05-20_06)
+- **Surfaced Session**: SESSION-2026-05-20_06
+- **Question**: How should the Wave 2 code (SPEC-002 / 003 / 004 / 007 — merged to main as `5299aea` Wave 2 integration + `2f049fd` PR #6 Phase X additions) be handled? It was never validated under the rigid per-TASK build+QA protocol; 30 TASKs were originally flipped DONE without TEST-REPORTs (that's what triggered Phase X). The Brain notes for the 4 SPEC subtrees were surgically reverted to pre-build state per SESSION-_05 Event 20, but the code is on main.
+
+**Options**:
+
+- **Hybrid (Recommended)**: Keep the existing code as a baseline. For each of the 4 SPECs, dispatch a QA agent per the rigid cycle: (1) read every TASK + linked REQ + linked DESIGN; (2) for every checkbox in DoD / AC / compliance, find evidence-or-gap in the existing code; (3) verify every existing `[x]` claim against actual code evidence; (4) write a TEST-REPORT per TASK with per-checkbox findings. For genuine gaps file new TASKs and drive them through the full rigid cycle. For everything that validates, flip Brain notes (TASK status → DONE with `validated_by` → TEST-REPORT; REQ → ACCEPTED; DESIGN → ACCEPTED; SPEC root → DONE). Parallelizable as 4-SPEC swarm. Estimated effort 6–10 hours.
+- **Throw out**: Reset the 4 SPECs' code state on main + rebuild from scratch through the rigid cycle. Highest trust outcome; significant clock cost; discards working code.
+- **Salvage**: Pure retro-QA pass against existing code without the gap-finding rigor. Faster but confirmation-bias risk — claim validators check note-internal consistency, not code-vs-spec alignment.
+- **Defer indefinitely**: Land further work without resolving D2; tech debt persists.
+
+**Recommendation rationale**: The X.D claim validators landed in PR #6 give the Hybrid path mechanical leverage. Throw out discards working tests. Salvage rubber-stamps. Hybrid uses the validators to find real gaps + applies the rigid cycle only where it actually adds trust.
+
 ## Blockers
 
-**No active blockers.** spec.SPEC-007 DONE 2026-05-20 (SPEC-007 ACCEPTED, 30 notes authored). All 7 SPECs ACCEPTED. Outstanding: 7 build.SPEC-NNN phases (TypeScript implementation work + tests + commits) NOT YET CREATED — will be added on /plan continue invocation when user starts build phase; review phase (post-build); end phase. Outstanding for future sessions (deferred, not blocking): SPEC-002 REQ-003 AC#2 graceful-degradation refinement; ~95 permalink `-1` suffix cleanups across 6 SPEC subtrees (cosmetic; wikilinks resolve by title); 6 build.SPEC-NNN phases (TypeScript implementation work + tests + commits); review phase (post-build multi-axis adversarial review); end phase (post-build PR + session-end). All other prior parts (research + decisions.1 + decisions.2 + spec-decomposition + 6 spec.SPEC-NNN) DONE.
+**Active**: PUD-D2 blocks 6 of 7 build.SPEC-NNN parts (002 / 003 / 004 / 007 directly; 005 / 006 transitively). Resolution unblocks build retro-validation → unblocks `## Review` + `## End` phases → unblocks Phase X.E.2 + X.E.3 (final PLAN reconciliation + phase close).
+
+**Resolved 2026-05-20**: spec.SPEC-007 DONE (SPEC-007 ACCEPTED, 30 notes authored). All 7 SPECs ACCEPTED. Outstanding: 7 build.SPEC-NNN phases (TypeScript implementation work + tests + commits) NOT YET CREATED — will be added on /plan continue invocation when user starts build phase; review phase (post-build); end phase. Outstanding for future sessions (deferred, not blocking): SPEC-002 REQ-003 AC#2 graceful-degradation refinement; ~95 permalink `-1` suffix cleanups across 6 SPEC subtrees (cosmetic; wikilinks resolve by title); 6 build.SPEC-NNN phases (TypeScript implementation work + tests + commits); review phase (post-build multi-axis adversarial review); end phase (post-build PR + session-end). All other prior parts (research + decisions.1 + decisions.2 + spec-decomposition + 6 spec.SPEC-NNN) DONE.
 
 ## Analysis
 
@@ -1056,14 +1078,15 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 
 None — implementation is mechanical execution of SPEC-001.
 
-### build.SPEC-002 — Simple Adapters Build (DONE)
+### build.SPEC-002 — Simple Adapters Build (BLOCKED)
 
-**Substatus**: DONE
+**Substatus**: BLOCKED
+**Blocker**: PUD-D2 (Wave 2 retro-validation disposition) — row previously marked DONE by SESSION-_05 brain:memory dispatch; Event 20 surgical revert restored SPEC-002 subtree files to pre-build state but this PLAN row was not corrected at the time. Truthful state: code on main (PR #5); SPEC-002 subtree Brain notes at pre-build state; awaiting D2 disposition for retro-validation
 **Dependencies**: spec.SPEC-002 DONE ✓ + build.SPEC-001 (recommended sequencing per KICKOFF-BRIEF.md build order — ADR adapter PROOF before extending pattern)
 **Wave**: 2 of 4 (Wave 2 parallel — 4-way dispatch with SPEC-003, SPEC-004, SPEC-007)
 **Owning session**: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
-**Completing session**: [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]]
-**Outcome**: [[SPEC-002: Simple Adapters]] — ANALYSIS + SESSION adapters implemented, integration tests green
+**Completing session**: —
+**Outcome**: — code on main (PR #5); Brain notes at pre-build state per SESSION-_05 Event 20 surgical revert; awaiting D2 disposition
 **Source SPEC**: [[SPEC-002: Simple Adapters]] (6 TASKs)
 
 **DoD**:
@@ -1086,13 +1109,14 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-003 — PLAN Adapter Build (IN_PROGRESS)
+### build.SPEC-003 — PLAN Adapter Build (BLOCKED)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: BLOCKED
+**Blocker**: PUD-D2 (Wave 2 retro-validation disposition)
 **Dependencies**: spec.SPEC-003 DONE ✓ + build.SPEC-001 + build.SPEC-002 (recommended sequencing)
 **Owning session**: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
 **Completing session**: —
-**Outcome**: — (will be TypeScript impl + tests)
+**Outcome**: — code on main (PR #5 + Wave 2 integration); Brain notes reverted to pre-build state per SESSION-_05 Event 20 surgical revert; awaiting D2 disposition
 **Source SPEC**: [[SPEC-003: PLAN Adapter]] (5 TASKs)
 
 **DoD**:
@@ -1115,13 +1139,14 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-004 — SPEC Subtree Adapter Build (IN_PROGRESS)
+### build.SPEC-004 — SPEC Subtree Adapter Build (BLOCKED)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: BLOCKED
+**Blocker**: PUD-D2 (Wave 2 retro-validation disposition)
 **Dependencies**: spec.SPEC-004 DONE ✓ + build.SPEC-001..003 (recommended sequencing — SPEC subtree is the hardest adapter, ~500 LOC recursive)
 **Owning session**: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
 **Completing session**: —
-**Outcome**: — (will be TypeScript impl + tests)
+**Outcome**: — code on main (PR #5 + Wave 2 integration); Brain notes reverted to pre-build state per SESSION-_05 Event 20 surgical revert; awaiting D2 disposition
 **Source SPEC**: [[SPEC-004: SPEC Subtree Adapter]] (7 TASKs)
 
 **DoD**:
@@ -1144,9 +1169,10 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-005 — Decompose + Recompose Skills Build (READY)
+### build.SPEC-005 — Decompose + Recompose Skills Build (BLOCKED)
 
-**Substatus**: READY
+**Substatus**: BLOCKED
+**Blocker**: PUD-D2 transitively (depends on build.SPEC-002/003/004 adapters being validated; those are blocked on D2)
 **Dependencies**: spec.SPEC-005 DONE ✓ + build.SPEC-001..004 (recommended; skills wrap adapter library)
 **Owning session**: —
 **Completing session**: —
@@ -1173,9 +1199,10 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-006 — Defrag + Ingest Skills Build (READY)
+### build.SPEC-006 — Defrag + Ingest Skills Build (BLOCKED)
 
-**Substatus**: READY
+**Substatus**: BLOCKED
+**Blocker**: PUD-D2 transitively (depends on build.SPEC-005 which is itself D2-blocked)
 **Dependencies**: spec.SPEC-006 DONE ✓ + build.SPEC-005 (recommended; defrag delegates to decompose/recompose)
 **Owning session**: —
 **Completing session**: —
@@ -1203,13 +1230,14 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-007 — Plan/Session Render Implementation Build (IN_PROGRESS)
+### build.SPEC-007 — Plan/Session Render Implementation Build (BLOCKED)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: BLOCKED
+**Blocker**: PUD-D2 (Wave 2 retro-validation disposition). Note: SPEC-007 code on main carries the Phase X.D protocol-hardening additions — BuildWorkflowItem schema, transition mutations, claim validators — which are validated under their OWN cycle but the SPEC-007 build itself never ran through the rigid per-TASK protocol
 **Dependencies**: spec.SPEC-007 DONE ✓ + build.SPEC-001 (depends on composition core foundation)
 **Owning session**: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
 **Completing session**: —
-**Outcome**: — (will be TypeScript impl of render pipeline + tests + dogfood migration of PLAN-001)
+**Outcome**: — code on main (PR #5 + Wave 2 integration + PR #6 Phase X additions); Brain notes reverted to pre-build state per SESSION-_05 Event 20; awaiting D2 disposition
 **Source SPEC**: [[SPEC-007: Plan/Session Render Implementation]] (13 TASKs, 10.5d AI-Dominant effort)
 
 **DoD**:
