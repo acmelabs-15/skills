@@ -142,6 +142,15 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - Commit `47cb568 build(spec-007): X.D.7 SpecRoot + TestReport schemas + TestReport renderer` landed on branch `feat/plan-001-x-d-2-plan-renderer`
 - **Phase X.D composition library mechanism completion DONE 7 of 7** (X.D.1 BuildWorkflowItem schema + X.D.2 PlanNote renderer + X.D.3 transition mutations + X.D.4 parser/fixture + X.D.5 TaskNote + X.D.6 REQ/DESIGN + X.D.7 SpecRoot/TestReport). Mechanical protocol enforcement now spans schemas + parsers + renderers + mutations + claim validators across 6 note types (PLAN, SESSION, TASK, REQ, DESIGN, SPEC-root, TEST-REPORT)
 
+## Event 09
+
+**Type**: parallel-wave-dispatch | x-c-plus-deferred | 2026-05-21
+
+- Parallelism scan: 10 file-disjoint work units identified — 7 lifecycle SKILL.md updates + 3 deferred X.D code items (flip-build-workflow-item-checkbox mutation + SpecRootNote renderer + TEST-REPORT byte-identity round-trip)
+- Each agent owns exactly one file — no merge conflicts possible
+- Skill content cannot reference `~/.claude/memory/*` auto-memories per CONVENTIONS Section 5.3 — protocol-injection block inlined verbatim in each of 7 skill briefs (single canonical block, agents inline as-is)
+- Dispatched in one wave; expected return synthesis afterward + single integration commit covering all 10 outputs
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock

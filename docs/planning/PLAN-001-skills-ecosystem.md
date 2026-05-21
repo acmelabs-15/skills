@@ -1250,7 +1250,7 @@ Two TIER-1 BLOCKING orchestrator-private memories written; MEMORY.md updated wit
 
 7 user-created lifecycle skills + NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md + composition library current state all audited. Gap inventory captured in ANALYSIS-003 H2 X.B Audit Findings + Per-skill detailed audit findings. 15-item ordered execution sequence locked for X.C + X.D in ANALYSIS-003. Commit 601d75f.
 
-#### X.C — Update skills + templates + structures (PENDING)
+#### X.C — Update skills + templates + structures (IN_PROGRESS 2026-05-21 — owning session SESSION-2026-05-20_06; 10-agent parallel wave covering 7 lifecycle SKILL.md files + 3 deferred X.D code items)
 
 Highest priority: /plan + /build + /spec SKILL.md files updated with rigid per-TASK protocol + checkbox-as-contract language. Lighter touch: /decisions + /research + /review + /end. NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md updated per audit findings.
 
