@@ -386,7 +386,7 @@ After all TASKs in `{{SPEC_ID}}` validated:
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/src/adapters/analysis.ts`
 **Scope**: TASK-007-SPEC-002
-**Paired QA**: qa-TASK-007-SPEC-002 (status IN_PROGRESS — dispatched 2026-05-21)
+**Paired QA**: qa-TASK-007-SPEC-002 (status FAILED iter 1 — tsc TS2515 errors: identifierPrefix abstract not propagated to AdrAdapter + TestAdapter; DESIGN-001 unilateral amendment + status flip flagged; fix-iter-1 dispatched 2026-05-21)
 
 ### impl-TASK-008-SPEC-002 — SESSION adapter DESIGN-001 drift reconciliation
 
