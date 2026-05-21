@@ -2,7 +2,7 @@
 title: 'TASK-009-SPEC-002: Implement Cross-Source Coordinator Architecture per DESIGN-002'
 type: task
 permalink: specs/spec-002-simple-adapters/tasks/task-009-spec-002-implement-cross-source-coordinator-architecture-per-design-002
-status: DRAFT
+status: CANCELLED
 effort: M
 estimate: 1.5d
 tags:
@@ -64,7 +64,8 @@ Out of Scope:
 
 - [fact] Gap discovered by Wave 2 retro-validation; evidence in QA-012-SPEC-002 #gap #retro
 - [problem] TASK-003 DoD prescribes architecture (interface, handler, file location) that is entirely unimplemented; current code is a different, simpler abstraction #scope #drift
-- [decision] Status: DRAFT pending strategic decision (build to spec vs amend spec to code) #status
+- [decision] Status: CANCELLED — resolved-by-amendment per ADR-004 D-2; coordinator architecture deferred to SPEC-003 per C-7 tracked pre-constraints #status #cancelled
+- [outcome] No code was written; decision locked as D-2 (amend-spec) making this task unnecessary #resolved
 - [risk] Decision blocks SPEC-003 PLAN-adapter integration design which assumes DESIGN-002 coordinator architecture #downstream
 
 ## Relations
