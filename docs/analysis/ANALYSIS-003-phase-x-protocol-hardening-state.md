@@ -1,5 +1,5 @@
 ---
-title: ANALYSIS-003-phase-x-protocol-hardening-state
+title: 'ANALYSIS-003: Phase X Protocol Hardening State'
 type: analysis
 permalink: analysis/analysis-003-phase-x-protocol-hardening-state
 status: IN_PROGRESS
@@ -11,7 +11,7 @@ tags:
 - active
 ---
 
-# ANALYSIS-003-phase-x-protocol-hardening-state
+# ANALYSIS-003: Phase X Protocol Hardening State
 
 ## Context
 

@@ -7,6 +7,11 @@ branches:
   - feat/plan-001-skills-ecosystem
   - feat/plan-001-adr-003-render-architecture
   - feat/plan-001-build-spec-001-proof
+  - feat/plan-001-build-spec-002
+  - feat/plan-001-build-spec-003
+  - feat/plan-001-build-spec-004
+  - feat/plan-001-build-spec-007
+  - feat/plan-001-wave-2-integration
 permalink: planning/plan-001-skills-ecosystem
 tags:
 - plan
@@ -44,6 +49,7 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec.SPEC-NNN | 0 | 0 | 0 | 7 | 7 |
 | build.SPEC-NNN | 2 | 4 | 0 | 1 | 7 |
+| protocol-hardening | 0 | 1 | 0 | 0 | 1 |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
 | **Total visible** | **3** | **4** | **0** | **14** | **21** |
@@ -81,6 +87,7 @@ Per-part workflow detail lives in each per-part H3 below.
 | build.SPEC-005 | READY | TypeScript impl of /decompose + /recompose skills (6 TASKs from SPEC-005) |
 | build.SPEC-006 | READY | TypeScript impl of /defrag + /ingest skills (7 TASKs from SPEC-006) |
 | build.SPEC-007 | IN_PROGRESS | TypeScript impl of plan/session render pipeline (13 TASKs from SPEC-007) |
+| protocol-hardening | IN_PROGRESS | [[ANALYSIS-003: Phase X Protocol Hardening State]] — drift remediation + mechanism enforcement (added 2026-05-20 after Wave 2 catastrophic drift) |
 | review | PENDING | adversarial multi-axis review across feature surface (post build) |
 | end | PENDING | PR + final session-end checklist |
 
@@ -1044,22 +1051,23 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 
 None — implementation is mechanical execution of SPEC-001.
 
-### build.SPEC-002 — Simple Adapters Build (IN_PROGRESS)
+### build.SPEC-002 — Simple Adapters Build (DONE)
 
-**Substatus**: IN_PROGRESS
+**Substatus**: DONE
 **Dependencies**: spec.SPEC-002 DONE ✓ + build.SPEC-001 (recommended sequencing per KICKOFF-BRIEF.md build order — ADR adapter PROOF before extending pattern)
+**Wave**: 2 of 4 (Wave 2 parallel — 4-way dispatch with SPEC-003, SPEC-004, SPEC-007)
 **Owning session**: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
-**Completing session**: —
-**Outcome**: — (will be TypeScript impl + tests)
+**Completing session**: [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]]
+**Outcome**: [[SPEC-002: Simple Adapters]] — ANALYSIS + SESSION adapters implemented, integration tests green
 **Source SPEC**: [[SPEC-002: Simple Adapters]] (6 TASKs)
 
 **DoD**:
 
-- [ ] All 6 TASKs from SPEC-002 implemented (ANALYSIS + SESSION adapters)
-- [ ] Round-trip property tests pass for ANALYSIS + SESSION fixtures
-- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS
-- [ ] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint
-- [ ] SPEC-002 IN_PROGRESS → DONE
+- [x] All 6 TASKs from SPEC-002 implemented (ANALYSIS + SESSION adapters)
+- [x] Round-trip property tests pass for ANALYSIS + SESSION fixtures
+- [x] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [x] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint
+- [x] SPEC-002 IN_PROGRESS → DONE
 
 #### Workflow Plan (for build.SPEC-002)
 
@@ -1220,6 +1228,53 @@ Populated by /build dispatch.
 #### Pending User Decisions (for build.SPEC-007)
 
 None — all decisions LOCKED in ADR-003.
+
+## Phase-X — Protocol Hardening (Drift Remediation)
+
+**Status**: IN_PROGRESS (added 2026-05-20)
+**Canonical work plan**: [[ANALYSIS-003: Phase X Protocol Hardening State]]
+**Trigger**: 2026-05-20 catastrophic drift in Wave 2 builds; 37 surfaces catalogued in [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] Event 09; root cause = system-design failure where rigid build+qa protocol existed in fragments across many files without mechanical enforcement.
+
+### Sub-phases
+
+#### X.A — Bootstrap (DONE)
+
+Two TIER-1 BLOCKING orchestrator-private memories written; MEMORY.md updated with TIER-1 entries; SESSION-2026-05-20_05 Events 09-13 captured; ANALYSIS-003 Brain-side mirror written. Commits: d28852f + c02ca27 + ca1fef3.
+
+#### X.B — Audit existing enforcement layers (PENDING)
+
+Audit 7 user-created lifecycle skills + NOTE-TEMPLATES.md (PLAN/TASK/REQ/DESIGN/TEST-REPORT templates) + KNOWLEDGE-GRAPH-STRUCTURES.md Sections 4.6/4.7/4.8/4.9 + composition library current schemas/renderer at `_shared/composition/`. Produce gap inventory inline.
+
+#### X.C — Update skills + templates + structures (PENDING)
+
+Highest priority: /plan + /build + /spec SKILL.md files updated with rigid per-TASK protocol + checkbox-as-contract language. Lighter touch: /decisions + /research + /review + /end. NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md updated per audit findings.
+
+#### X.D — Composition library mechanism completion (PENDING — gated on user decision D1)
+
+Extend PlanNote Zod schema to mandate per-TASK impl+qa structure with rendered instruction blocks. Extend PlanNote renderer to deterministically read linked TASK/REQ/DESIGN and generate rendered instructions inline. Add TaskNote + RequirementNote + DesignNote + SpecRootNote + TestReportNote schemas + renderers + claim-validators. Add deterministic state-transition functions that REQUIRE context (sessionNoteRef, reason, commit) and THROW on missing/invalid — the load-bearing enforcement.
+
+#### X.E — Wrap-up (PENDING)
+
+CLAUDE.md updated with TIER-1 BLOCKING protocol references. PLAN-001 final reconciliation (depends on D2 throw-out vs salvage decision for Wave 2). Final commit + phase close + set-part-done.
+
+### Exit Criteria
+
+- [ ] All X.A through X.E sub-phases DONE
+- [ ] Composition library mechanisms implemented (schemas + renderers + transition functions) and tested
+- [ ] All 7 lifecycle skills updated with rigid protocol
+- [ ] Templates + STRUCTURES updated per protocol
+- [ ] CLAUDE.md TIER-1 references applied
+- [ ] PLAN-001 frontmatter shows Phase X DONE
+- [ ] All pending user decisions (D1-D4 in [[ANALYSIS-003: Phase X Protocol Hardening State]]) resolved + applied
+
+### Blockers
+
+- D2 (Wave 2 throw-out vs salvage) pending; doesn't block Phase X.A-D execution; blocks Phase X.E.2 PLAN-001 final reconciliation
+- D1 (composition library scope) → user confirmed "include with renderer-per-note-type scope" 2026-05-20; no longer blocking
+
+### Owning session
+
+[[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]]
 
 ## Review
 
