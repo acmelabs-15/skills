@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-20_06: Phase X.D.2 PlanNote Renderer Extension'
 type: session
 permalink: sessions/session-2026-05-20_06-phase-x-d-2-plannote-renderer-extension
-status: PAUSED
+status: DONE
 tags:
 - session
 - phase-x
@@ -170,7 +170,7 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - `~/.claude/skills/review/SKILL.md` — block inserted before Reference files (~line 316); /review-specific framing adds checkbox-vs-diff cross-check axis
 - `~/.claude/skills/end/SKILL.md` — block inserted before Anti-patterns (~line 364); /end-specific framing extends Step 1 DoD verification via composition-library claim validators
 - **Code: flip-checkbox cross-note mutation** — commit `c9585f2` — new `src/mutations/checkbox-mutations.ts` with `applyCheckboxMutation(markdown, mutation)` operating on TaskNote DoD / REQ AC / DESIGN compliance via markdown-string flip + re-parse validation. +9 tests. Surprises: REQ AC items are multi-line EARS prose requiring tolerant line-walker; DESIGN H2 disambiguation between Compliance + Architecture Compliance; deferred-rationale suffix preserved across flips
-- **Code: SpecRootNote renderer** — commit `e1bb056` — new `src/renderers/spec-root-note.ts` with semantic round-trip (parse→render→parse equivalent model). Kept `sections: Record<string, string>` — JS objects preserve string-key insertion order per ES2015+ spec; no schema refactor needed. +10 tests. Surprises: Scope rendered as H3 sub-headings (parser parseScope() switches buckets on H3 not bold markers); bun-ts-best-practices audit incorrectly moved sibling renderer file into __tests__/ (filename "test-report-note.ts" matched "test" substring heuristic); restored
+- **Code: SpecRootNote renderer** — commit `e1bb056` — new `src/renderers/spec-root-note.ts` with semantic round-trip (parse→render→parse equivalent model). Kept `sections: Record<string, string>` — JS objects preserve string-key insertion order per ES2015+ spec; no schema refactor needed. +10 tests. Surprises: Scope rendered as H3 sub-headings (parser parseScope() switches buckets on H3 not bold markers); bun-ts-best-practices audit incorrectly moved sibling renderer file into **tests**/ (filename "test-report-note.ts" matched "test" substring heuristic); restored
 - **Code: TEST-REPORT byte-identity** — commit `8e1e095` — fixture normalized to canonical renderer-output form (dropped inline-code backticks; normalized Execution Time row's Target/Status cells to em-dash). Renderer itself emitted canonical form already — only fixture adjustments needed. +1 byte-identical round-trip test
 
 ### Cross-cutting notes
@@ -276,6 +276,36 @@ A fresh /plan invocation will: read PLAN-001, find protocol-hardening IN_PROGRES
 - Pre-existing PLAN-001 Pydantic relation-parser noise on every edit (long Progress Log bullets parse as overlong relation_types). Edits land on disk; response noise documented in SESSION-_05 Event 14. Cleanup of those bullets is its own deferred task
 - Session note Scope at top still describes "Pick up at sub-phase X.D.2" — actual session covered X.D.2-7 + X.C + X.E docs + PR lifecycle. Hygiene only; not recovery-critical
 - Local feature branch `feat/plan-001-x-d-2-plan-renderer` not yet deleted post-merge
+
+## Event 15
+
+**Type**: session-close | recovery-test-ready | 2026-05-21
+
+- PR #7 (recovery-readiness fixes) merged to main as commit `8dc30f1`. PR #6 + PR #7 both landed this session
+- Local main pulled to current with origin/main; both feature branches deleted locally and on origin (`feat/plan-001-x-d-2-plan-renderer`, `chore/plan-001-d2-pud-recovery-test-readiness`)
+- Session status transition: PAUSED → DONE — terminal close. D2 disposition is captured as PUD-D2 in PLAN-001, not as in-flight session work
+- PROJECT-STATE auto-memory `feedback_skills_phase_x_protocol_hardening_state.md` updated to reflect post-PR #7 state (X.A-X.D done; X.C done; X.E docs done; X.E.2 + X.E.3 blocked on PUD-D2 with Hybrid recommendation)
+
+### Session outcomes summary
+
+- **Commits to main**: 17 commits via PR #6 + 1 commit via PR #7 (squashed) = 18 logical changes landed
+- **Test counts**: 200 pass / 16 fail (start) → 444 pass / 0 fail (end) — +244 new tests
+- **Composition library**: 6 note-type schemas + 6 parsers + 4 renderers + 13 mutations + 6 claim validators added
+- **User-level standards updated**: `~/CLAUDE.md` + `~/NOTE-TEMPLATES.md` + `~/KNOWLEDGE-GRAPH-STRUCTURES.md` (all saved-no-repo by design)
+- **Lifecycle SKILL.md files updated**: 7 files at `~/.claude/skills/{plan,build,spec,decisions,research,review,end}/` (saved-no-repo by design)
+- **PLAN-001 state**: Phase X.A + X.B + X.C + X.D DONE; X.E docs DONE; X.E.2 + X.E.3 BLOCKED on PUD-D2; 6 of 7 build.SPEC-NNN parts BLOCKED on PUD-D2
+- **Open Pending User Decisions**: PUD-D2 (Wave 2 retro-validation disposition) — Hybrid recommended
+
+### Resume instructions for next conversation
+
+Fresh `/plan PLAN-001-skills-ecosystem` will:
+
+1. Run post-compaction rehydration checklist (TIER-1 BLOCKING per `feedback_post_compaction_rehydration_protocol`)
+2. Read this session note (last IN_PROGRESS / latest closed) + linked notes + PLAN
+3. See protocol-hardening IN_PROGRESS with X.E.2 + X.E.3 outstanding
+4. See PUD-D2 in PLAN's `## Pending User Decisions` as the gating decision
+5. Surface PUD-D2 to user with Hybrid as Recommended default
+6. After user adjudicates: D2 resolution unblocks build.SPEC-002/003/004/007 retro-validation chain
 
 ## Observations
 
