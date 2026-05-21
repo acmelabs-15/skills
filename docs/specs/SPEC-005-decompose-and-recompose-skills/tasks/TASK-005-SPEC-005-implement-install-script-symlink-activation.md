@@ -32,7 +32,6 @@ Extend the existing install.sh script (scaffolded in SPEC-001) to create symlink
 - [x] --copy flag creates directory copies via rsync instead of symlinks
 - [x] Smoke test: after install, Claude Code discovers /decompose and /recompose skills (manual verification step documented; install.sh idempotency tested via re-run)
 
-
 ## Scope
 
 **In Scope**:

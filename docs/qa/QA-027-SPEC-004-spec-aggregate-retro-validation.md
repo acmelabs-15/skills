@@ -8,10 +8,12 @@ type: qa
 permalink: qa/qa-027-spec-004-spec-aggregate-retro-validation
 status: DONE
 tags:
+
 - qa
 - spec-004
 - aggregate
 - retro-validation
+
 ---
 
 # QA-027-SPEC-004: Spec-Aggregate Retro-Validation

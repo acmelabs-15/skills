@@ -36,7 +36,6 @@ Create end-to-end round-trip tests that exercise /decompose followed by /recompo
 - [x] End-to-end test: decompose.ts with non-injective renumber_map exits code 1 with injectivity error
 - [x] README.md updated with /decompose and /recompose usage documentation
 
-
 ## Scope
 
 **In Scope**:

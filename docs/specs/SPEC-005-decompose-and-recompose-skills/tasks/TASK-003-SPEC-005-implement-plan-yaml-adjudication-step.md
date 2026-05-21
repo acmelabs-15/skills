@@ -31,7 +31,6 @@ Implement the AskUserQuestion integration within the /decompose and /recompose S
 - [x] Abort handler exits cleanly with no file I/O
 - [x] Integration test: fixture plan presented via summary formatter produces expected markdown output
 
-
 ## Scope
 
 **In Scope**:

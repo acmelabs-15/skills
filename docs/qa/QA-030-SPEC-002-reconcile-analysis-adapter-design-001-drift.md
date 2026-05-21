@@ -15,12 +15,14 @@ passed: 8
 failed: 0
 skipped: 0
 tags:
+
 - qa
 - spec-002
 - task-007
 - analysis-adapter
 - design-drift
 - retro
+
 ---
 
 # QA-030-SPEC-002: Reconcile ANALYSIS Adapter DESIGN-001 Drift
@@ -85,6 +87,7 @@ The impl agent added `protected abstract readonly identifierPrefix: string` to `
 Result: `bunx tsc --noEmit` fails with 2 TS2515 errors. Bun test runtime does not enforce abstract-member implementation, so the test suite passes — but the TypeScript type-check is broken. DoD line 7 (originally from TASK-001-SPEC-002 + inherited by retro-validation) states "TypeScript compiles". This is failing.
 
 Evidence:
+
 ```
 src/adapters/adr.ts(3,14): error TS2515: Non-abstract class 'AdrAdapter' does not implement inherited abstract member identifierPrefix from class 'BaseMarkdownAdapter'.
 tests/base-adapter.test.ts(5,7): error TS2515: Non-abstract class 'TestAdapter' does not implement inherited abstract member identifierPrefix from class 'BaseMarkdownAdapter'.

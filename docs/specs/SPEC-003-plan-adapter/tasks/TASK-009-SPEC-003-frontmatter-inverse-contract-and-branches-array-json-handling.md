@@ -46,11 +46,9 @@ Out of Scope: dispatcher; integrity floor; extractByRange; fixture YAML files (c
 - [x] plan-round-trip.test.ts distributionSpec includes frontmatter_map; SHA-256 identity still holds
 - [x] REQ-004 AC-1 through AC-5 all pass
 
-
 ## ADR Compliance
 
 - [x] Honors ADR-002 D-2: MutationSpec frontmatter_map field plus inverse contract
-
 
 ## Observations
 

@@ -69,14 +69,12 @@ Apply the SPEC-007 render pipeline to `docs/planning/PLAN-001-skills-ecosystem.m
 - [x] All outcomes + DoD checkbox states preserved
 - [x] git diff shows structural changes only — no data loss
 
-
 ## ADR Compliance
 
 - [x] Honors ADR-003 D-6: consolidated tasks at top level
 - [x] Honors ADR-003 D-9: PUD and Editor Mirror at top level
 - [x] Honors ADR-003 D-10: no Decision Log or Progress Log
 - [x] Honors ADR-003 D-11: no Workflow Plan prose
-
 
 ## Observations
 

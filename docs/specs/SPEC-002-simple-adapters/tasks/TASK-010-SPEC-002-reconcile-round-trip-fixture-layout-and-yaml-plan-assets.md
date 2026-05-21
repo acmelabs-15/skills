@@ -34,11 +34,13 @@ Gaps:
 ## Scope
 
 In Scope:
+
 - `_shared/composition/tests/fixtures/{analysis-sample.md,session-sample.md}` (move if nested-path chosen)
 - `_shared/composition/tests/{analysis-round-trip,session-round-trip}.test.ts` (modify if YAML loader added)
 - TASK-005-SPEC-002, TASK-006-SPEC-002 DoDs (amend if flat-path sanctioned)
 
 Out of Scope:
+
 - Cross-source schema/coordinator gaps (handled by TASK-009)
 
 ## Observations

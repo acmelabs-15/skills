@@ -102,16 +102,19 @@ The three TIER-1 BLOCKING memories from SESSION-_05 + composition library schema
 ## Carry-Forward Recommendations
 
 Immediate:
+
 - Surface PUD-D2 to user (Hybrid recommended). Unblocks 6 build.SPEC-NNN parts
 - Track Brain MCP Pydantic relation-noise as a filed issue
 - Persist learnings L1-L3 via skillbook
 
 Medium-term:
+
 - PostToolUse hook on session-note edits for Observations/Relations refresh
 - bun-ts-best-practices project-convention discovery gate
 - Formalize recovery-test readiness as /end SKILL.md step
 
 Structural:
+
 - Phase X remediation worked. Continue defense-in-depth architecture
 - Remaining gap: rigid per-TASK protocol unproven on real build work. D2 Hybrid retro-validation will be the first test
 

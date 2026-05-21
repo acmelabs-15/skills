@@ -50,6 +50,7 @@ Concrete gaps:
 ## Scope
 
 In Scope:
+
 - `_shared/composition/src/core/cross-source.ts` (Create if as-spec path)
 - `_shared/composition/src/adapters/session.ts` (Modify to use coordinator)
 - `_shared/composition/tests/cross-source.test.ts` (Create if as-spec path)
@@ -57,6 +58,7 @@ In Scope:
 - `docs/specs/SPEC-002-simple-adapters/requirements/REQ-003-SPEC-002-session-cross-source-updates-handling.md` (amend if amend-spec path)
 
 Out of Scope:
+
 - Full PLAN-adapter integration (SPEC-003)
 - Renaming `tests/session-cross-source.test.ts` (test stays as-is until coordinator architecture lands)
 

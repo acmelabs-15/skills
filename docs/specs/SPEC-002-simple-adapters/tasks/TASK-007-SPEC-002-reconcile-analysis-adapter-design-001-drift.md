@@ -37,11 +37,13 @@ Reconciliation paths (decide via decisions phase):
 ## Scope
 
 In Scope:
+
 - `_shared/composition/src/adapters/analysis.ts` (modify)
 - `_shared/composition/src/core/base-markdown-adapter.ts` (modify if abstract slot is added)
 - `docs/specs/SPEC-002-simple-adapters/design/DESIGN-001-SPEC-002-basemarkdownadapter-configuration-pattern.md` (amend if spec-amendment path chosen)
 
 Out of Scope:
+
 - Reconciling SESSION adapter DESIGN-001 drift (separate gap-TASK)
 - DESIGN-002 cross-source coordinator drift (separate gap-TASK)
 

@@ -31,7 +31,6 @@ Create the /decompose skill definition (SKILL.md) and the decompose.ts CLI entry
 - [x] Unit test: decompose.ts rejects invalid --plan argument with usage message
 - [x] Unit test: decompose.ts rejects plan YAML that fails Zod validation with structured PlanValidationError
 
-
 ## Scope
 
 **In Scope**:

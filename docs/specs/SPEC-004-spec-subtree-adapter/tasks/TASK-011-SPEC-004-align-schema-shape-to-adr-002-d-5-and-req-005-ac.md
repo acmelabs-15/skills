@@ -39,6 +39,7 @@ User adjudication required FIRST: keep current simplified shape and amend ADR-00
 | docs/specs/SPEC-004-spec-subtree-adapter/requirements/REQ-005-*.md | MODIFY | Amend AC if option B chosen |
 
 ## Definition of Done
+
 - [x] User adjudication on shape direction logged in PLAN-001 event log (orchestrator+user pre-authorized Option A: refactor schema to ADR-002 D-5 — ADR is canonical authority)
 - [x] Schema empty-children case behaves per adjudication (children array allows length 0; AC5 satisfied)
 - [x] Destinations (root.source_path + children.source_path + children.dest_path) validated by sync path-traversal guard (rejects `..` segments and absolute paths); runtime async realpath-based `containedPathSchema` retained in `src/core/validators.ts`

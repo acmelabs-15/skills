@@ -78,6 +78,7 @@ The session split into three phases with sharply different quality:
 **Root Cause**: Protocol enforcement was distributed across advisory documents without mechanical enforcement at any layer. Post-compaction context loss removed the orchestrator's recall of those advisories, and no rehydration gate existed to restore it. The system design permitted the failure; the compaction event triggered it.
 
 **Actionable Fix (applied this session)**: Three-pronged:
+
 1. Post-compaction rehydration protocol (TIER-1 BLOCKING) requiring 8-step active re-read before any work
 2. Per-TASK build+qa cycle (TIER-1 BLOCKING) mandating rigid atomic steps with no batching
 3. Multi-layer enforcement meta-rule requiring every workflow phase to embed its protocol at schema + template + renderer + skill + memory + CLAUDE.md + dispatch brief layers simultaneously
@@ -124,6 +125,7 @@ The session split into three phases with sharply different quality:
 ### Cross-Category Patterns
 
 The assumption-substitution pattern appeared in 4 categories simultaneously:
+
 - **Context**: auto-loaded summaries assumed = full protocol knowledge
 - **Sequence**: parallel batch dispatch assumed = per-TASK atomic cycle
 - **State**: status flip assumed = validated completion

@@ -15,6 +15,17 @@ import { z } from "zod";
 
 const IdentifierString = z.string().min(1);
 
+/**
+ * Path field refinement rejecting traversal sequences and absolute paths (CWE-22).
+ * Applied to all file-path fields in distribution + composition plan schemas.
+ */
+const SafePath = z
+  .string()
+  .min(1)
+  .refine((v) => !v.split(/[/\\]/).includes("..") && !v.startsWith("/") && !/^[A-Z]:\\/i.test(v), {
+    message: "Path traversal (..) or absolute path rejected (CWE-22 mitigation)",
+  });
+
 const RenumberMapSchema = z.record(IdentifierString, IdentifierString).superRefine((map, ctx) => {
   const values = Object.values(map);
   const seen = new Set<string>();
@@ -42,7 +53,7 @@ export const DistributionPlanSchema = z
   .object({
     plan_type: z.literal("distribution"),
     source_type: z.string().min(1),
-    source_path: z.string().min(1),
+    source_path: SafePath,
     renumber_map: RenumberMapSchema,
     wikilink_map: WikilinkMapSchema.default({}),
     clusters: z
@@ -50,7 +61,7 @@ export const DistributionPlanSchema = z
         z.string(),
         z.object({
           description: z.string().optional(),
-          destination_path: z.string().optional(),
+          destination_path: SafePath.optional(),
           identifiers: z.array(IdentifierString).optional(),
           decisions: z.array(IdentifierString).optional(),
           renumbered_to: z.array(IdentifierString).optional(),
@@ -75,8 +86,8 @@ export const CompositionPlanSchema = z
   .object({
     plan_type: z.literal("composition"),
     source_type: z.string().min(1),
-    target_path: z.string().min(1),
-    sources: z.array(z.string().min(1)).optional(),
+    target_path: SafePath,
+    sources: z.array(SafePath).optional(),
     renumber_map: RenumberMapSchema,
     wikilink_map: WikilinkMapSchema.default({}),
   })

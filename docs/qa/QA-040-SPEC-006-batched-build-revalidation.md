@@ -191,7 +191,7 @@ tests_run: 585, passed: 585, failed: 0, skipped: 0 — schema invariant holds.
 - [decision] TASK-003 delegation seam via DelegationAdapter injection is sound; tests inject mocks for decompose/recompose/deleteNote/structuralFix and cover hash-mismatch + thrown-exception + user-skip scenarios #delegation #di
 - [decision] TASK-005 NoteWriter seam (writeBrainNote + writeBasicMemoryNote) prints the 3 Pattern 2 phases in default impl; live Brain MCP calls injected by Claude Code wrapper #note-writer #pattern-2
 - [insight] DESIGN-001 specifies Brain MCP list_directory + read_note for Phase 1 discovery; impl uses Bun.Glob + Bun.file via DI MemoryAdapter — sensible test-seam deviation worth documenting as a design-vs-impl divergence #design-drift #di
-- [insight] detect.ts and assemble.ts retain the pre-2026-05-21 `test-report` canonical key + `TEST-REPORT` prefix; folder maps to docs/qa correctly so no functional break today but ingest of a qa note will produce TEST-REPORT-* filenames instead of QA-* #convention-rename #qa
+- [insight] detect.ts and assemble.ts retain the pre-2026-05-21 `test-report` canonical key + `TEST-REPORT` prefix; folder maps to docs/qa correctly so no functional break today but ingest of a qa note will produce TEST-REPORT-*filenames instead of QA-* #convention-rename #qa
 - [constraint] Composer skills (defrag + ingest) do NOT import the composition library — delegation seam is the dispatch boundary per TASK-003 brief #composer-boundary
 - [outcome] CONVENTIONS Section 6 thresholds (OBS_MIN=3, REL_MIN=2, OBS_MAX=15, REL_MAX=12, LINE_MAX=500) correctly enforced in audit.ts:82-87 and verified by audit.test boundary cases #thresholds #conventions
 

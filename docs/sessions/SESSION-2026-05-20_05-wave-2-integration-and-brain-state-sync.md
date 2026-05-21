@@ -445,7 +445,6 @@ QA P1 findings tracked for next session's Phase X continuation:
 
 Proceeding to /end Step 4 (commits + lint-fix + PR + session DONE).
 
-
 ## Event 23 — Retrospective dispatched + RETRO-002 written (2026-05-20)
 
 **Type**: retrospective | learning-extraction

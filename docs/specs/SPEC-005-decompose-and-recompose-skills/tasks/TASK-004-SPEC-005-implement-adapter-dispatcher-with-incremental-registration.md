@@ -35,7 +35,6 @@ Create the adapter registry module at _shared/composition/src/registry.ts that m
 - [x] getAdapter("bogus") throws error listing valid registered types
 - [x] Unit tests cover all 7 assertions above (adjusted: SPEC-002/003/004 adapters return instances rather than throwing, since those SPECs shipped)
 
-
 ## Scope
 
 **In Scope**:

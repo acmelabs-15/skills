@@ -47,12 +47,10 @@ Out of Scope: changes to preservation-ratio enforceIntegrityFloor (orthogonal sa
 - [x] Unit test: H3 regen section "### Progress Dashboard" correctly identified and stripped
 - [x] All existing tests in plan-integrity-floor.test.ts and plan-round-trip.test.ts still pass
 
-
 ## ADR Compliance
 
 - [x] Honors ADR-002 D-5: regenerated-sections integrity floor as Zod refinement plus runtime line-count check
 - [x] Honors ADR-001 F-8: hash validation integrity preserved against bulk-bypass
-
 
 ## Observations
 

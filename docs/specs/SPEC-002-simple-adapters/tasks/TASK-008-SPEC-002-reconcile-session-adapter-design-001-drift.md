@@ -33,16 +33,17 @@ Reconcile four pieces of DESIGN-001-SPEC-002 vs code drift for the SESSION adapt
 - [x] All SESSION adapter and round-trip tests pass after reconciliation — 18 session-touching tests + 447 full suite all green
 - [x] DESIGN-001 status flipped to ACCEPTED
 
-
 ## Scope
 
 In Scope:
+
 - `_shared/composition/src/adapters/session.ts` (modify)
 - `_shared/composition/src/core/base-markdown-adapter.ts` (modify if abstract slots added)
 - `docs/specs/SPEC-002-simple-adapters/design/DESIGN-001-SPEC-002-basemarkdownadapter-configuration-pattern.md` (amend if spec-amendment path chosen)
 - `_shared/composition/tests/fixtures/session-sample.md` (revise convention)
 
 Out of Scope:
+
 - Cross-source coordinator architecture (handled by TASK-009)
 - Round-trip fixture file layout (handled by TASK-011)
 

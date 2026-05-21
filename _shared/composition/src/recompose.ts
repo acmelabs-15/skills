@@ -132,7 +132,16 @@ export async function executeCompositionPlan(
 }
 
 function resolveRelativeToPlan(target: string, planPath: string): string {
-  if (target.startsWith("/")) return target;
+  if (target.startsWith("/") || /^[A-Z]:\\/i.test(target)) {
+    throw new PlanValidationError("Absolute paths not allowed in plan YAML (CWE-22)", [
+      { path: "path", message: `Absolute path rejected: ${target}` },
+    ]);
+  }
+  if (target.split(/[/\\]/).includes("..")) {
+    throw new PlanValidationError("Path traversal not allowed in plan YAML (CWE-22)", [
+      { path: "path", message: `Path traversal rejected: ${target}` },
+    ]);
+  }
   const planDir = dirname(resolve(planPath));
   return resolve(planDir, target);
 }

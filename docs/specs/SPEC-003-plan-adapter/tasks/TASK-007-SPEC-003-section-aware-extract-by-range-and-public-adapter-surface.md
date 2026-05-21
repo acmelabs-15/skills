@@ -40,16 +40,14 @@ Out of Scope: dispatcher registration (TASK-006); integrity-floor semantics (TAS
 - [x] PlanAdapter exposes readonly identifier_pattern matching {phase}.{part-id} format
 - [x] extractByRange returns content including own heading and excluding next heading at same delimiter level
 - [x] extractByRange excludes lines belonging to regenerated_sections when mutation spec supplied
-- [x] Test: extracting a `### build.SPEC-001` section returns from that line up to but not including the next `### `
+- [x] Test: extracting a `### build.SPEC-001` section returns from that line up to but not including the next `###`
 - [x] Test: identifier_pattern matches "research.1" and "spec.SPEC-001"
 - [x] All existing plan-adapter.test.ts and plan-round-trip.test.ts pass
-
 
 ## ADR Compliance
 
 - [x] Honors ADR-002 D-3: PLAN distinct implementation observable contract
 - [x] Honors ADR-002 D-4: PLAN hash extraction strategy section boundary semantics
-
 
 ## Observations
 

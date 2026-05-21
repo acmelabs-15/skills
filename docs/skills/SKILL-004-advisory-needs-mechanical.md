@@ -30,6 +30,7 @@ For every advisory protocol rule, add a mechanical enforcement layer:
 | "Verify branch before git ops" | Pre-commit hook reading branch name |
 
 Implementation steps:
+
 1. Identify the advisory rule.
 2. Determine the tool operation that triggers the rule (e.g., `edit_note`, `commit`, `write_note`).
 3. Add a PostToolUse hook or schema `superRefine` validator that fires at that operation.
