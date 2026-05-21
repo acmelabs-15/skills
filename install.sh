@@ -32,10 +32,17 @@ SKILLS=(
   "recompose"
   "defrag"
   "ingest"
+  "plan"
+  "research"
+  "decisions"
+  "spec"
+  "build"
+  "review"
+  "end"
 )
 
 for skill in "${SKILLS[@]}"; do
-  src="${REPO_ROOT}/${skill}"
+  src="${REPO_ROOT}/skills/${skill}"
   dest="${TARGET_ROOT}/${skill}"
 
   if [[ ! -d "${src}" ]]; then

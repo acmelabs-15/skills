@@ -19,7 +19,7 @@
 
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
-import { detectProjectContext } from "../../_shared/detect-context.ts";
+import { detectProjectContext } from "../../../_shared/detect-context.ts";
 import { type AssembledNote, assembleNote } from "./assemble.ts";
 import {
   SPEC_NESTED_TYPES,
@@ -351,7 +351,7 @@ export function usage(): string {
     "ingest — Bring external content into a Brain knowledge graph",
     "",
     "Usage:",
-    "  bun ingest/scripts/ingest.ts <source> [options]",
+    "  bun skills/ingest/scripts/ingest.ts <source> [options]",
     "",
     "Options:",
     "  --type <type>           Force entity type (one of 16 canonical types)",

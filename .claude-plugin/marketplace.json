@@ -1,0 +1,15 @@
+{
+  "name": "ACMElabs",
+  "owner": {
+    "name": "Peter Kloss",
+    "email": "pkloss@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "skills",
+      "source": "./",
+      "description": "Brain knowledge-graph skills ecosystem: deterministic composition library (decompose/recompose/defrag/ingest) + lifecycle skills (plan/research/decisions/spec/build/review/end)",
+      "version": "0.1.0"
+    }
+  ]
+}

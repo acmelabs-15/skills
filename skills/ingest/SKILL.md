@@ -31,12 +31,12 @@ Both can be installed simultaneously without collision.
 ## CLI usage
 
 ```bash
-bun ingest/scripts/ingest.ts <path>                       # single file (auto-detect type)
-bun ingest/scripts/ingest.ts <path> --type analysis       # force entity type
-bun ingest/scripts/ingest.ts <dir>  --batch               # directory batch mode
-bun ingest/scripts/ingest.ts <path> --basic-memory        # simplified write (skip CONVENTIONS)
-bun ingest/scripts/ingest.ts <path> --project-root /p
-bun ingest/scripts/ingest.ts <path> --dry-run             # show plan, don't write
+bun skills/ingest/scripts/ingest.ts <path>                       # single file (auto-detect type)
+bun skills/ingest/scripts/ingest.ts <path> --type analysis       # force entity type
+bun skills/ingest/scripts/ingest.ts <dir>  --batch               # directory batch mode
+bun skills/ingest/scripts/ingest.ts <path> --basic-memory        # simplified write (skip CONVENTIONS)
+bun skills/ingest/scripts/ingest.ts <path> --project-root /p
+bun skills/ingest/scripts/ingest.ts <path> --dry-run             # show plan, don't write
 ```
 
 ## Pipeline (six steps)

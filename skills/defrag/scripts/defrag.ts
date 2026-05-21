@@ -99,7 +99,7 @@ export function usage(): string {
     "defrag — Brain knowledge-graph curator",
     "",
     "Usage:",
-    "  bun defrag/scripts/defrag.ts [options]",
+    "  bun skills/defrag/scripts/defrag.ts [options]",
     "",
     "Options:",
     "  --report-only         Run audit, write report, exit (no delegation; cron-safe)",
