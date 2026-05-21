@@ -62,3 +62,4 @@ The crossSourceUpdateSchema is defined in `_shared/composition/schemas/distribut
 - implements [[ADR-002: Adapter Contract and Plan Schema]]
 - implements [[ADR-001: Composition Library Architecture]]
 - depends_on [[REQ-002-SPEC-002: SESSION Adapter Implementation]]
+- implements [[ADR-004: Cross-Source Coordinator Architecture]]
