@@ -11,11 +11,20 @@ export const EntityIdSchema = z.string().regex(/^[A-Z]+-\d+/);
 export const PartIdSchema = z
   .string()
   .regex(
-    /^(research|decisions\.\d+|spec-decomposition|spec\.SPEC-\d+|build\.SPEC-\d+|review|end)$/,
+    /^(research|decisions\.\d+|spec-decomposition|spec\.SPEC-\d+|build\.SPEC-\d+|review|end|protocol-hardening|protocol-hardening\.[A-Z]+\.\d+)$/,
   );
 export const TaskIdSchema = z.string().regex(/^T-\d{2,}$/);
 export const SessionIdSchema = z.string().regex(/^SESSION-\d{4}-\d{2}-\d{2}_\d{2}$/);
 export const EventNumberSchema = z.number().int().positive();
+
+// SPEC-scoped entity IDs (distinct from session-scoped T-NN above).
+// Used by TaskNote/RequirementNote/DesignNote/TestReportNote schemas (added X.D).
+// PLAN's per-TASK build-workflow items reference these IDs.
+export const SpecIdSchema = z.string().regex(/^SPEC-\d{3,}$/);
+export const SpecTaskIdSchema = z.string().regex(/^TASK-\d{3,}-SPEC-\d{3,}$/);
+export const ReqIdSchema = z.string().regex(/^REQ-\d{3,}-SPEC-\d{3,}$/);
+export const DesignIdSchema = z.string().regex(/^DESIGN-\d{3,}-SPEC-\d{3,}$/);
+export const TestReportIdSchema = z.string().regex(/^TEST-REPORT-\d{3,}-SPEC-\d{3,}/);
 
 // Status enums
 export const PartSubstatusEnum = z.enum([

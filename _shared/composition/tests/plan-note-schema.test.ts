@@ -33,6 +33,24 @@ function minimalPlan(): PlanNote {
         source_artifacts: ["[[SPEC-001: Test]]"],
         depends_on: ["research"],
         dod: [{ text: "Tests pass", done: false }],
+        // Per feedback_per_task_build_qa_cycle: build.SPEC-NNN parts in any non-PENDING
+        // substatus require per-TASK impl + qa items.
+        build_workflow_items: [
+          {
+            id: "impl-TASK-001-SPEC-001",
+            type: "impl",
+            task_ref: "TASK-001-SPEC-001",
+            status: "PENDING",
+            failed_iterations: 0,
+          },
+          {
+            id: "qa-TASK-001-SPEC-001",
+            type: "qa",
+            task_ref: "TASK-001-SPEC-001",
+            status: "PENDING",
+            failed_iterations: 0,
+          },
+        ],
       },
     ],
     tasks: [
@@ -119,6 +137,122 @@ describe("PlanNoteSchema", () => {
   test("rejects malformed frontmatter title", () => {
     const plan = minimalPlan();
     plan.frontmatter.title = "Plan-001: bad";
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  // BuildWorkflowItem invariants (Phase X — per-TASK build+qa cycle protocol)
+
+  test("rejects build.SPEC-NNN IN_PROGRESS without build_workflow_items", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part) throw new Error("setup");
+    part.build_workflow_items = undefined;
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects build.SPEC-NNN IN_PROGRESS with empty build_workflow_items", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part) throw new Error("setup");
+    part.build_workflow_items = [];
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects TASK with only impl item (missing qa)", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part || !part.build_workflow_items) throw new Error("setup");
+    part.build_workflow_items = part.build_workflow_items.filter((i) => i.type !== "qa");
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects TASK with only qa item (missing impl)", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part || !part.build_workflow_items) throw new Error("setup");
+    part.build_workflow_items = part.build_workflow_items.filter((i) => i.type !== "impl");
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects qa item DONE without test_report_ref", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part || !part.build_workflow_items) throw new Error("setup");
+    const impl = part.build_workflow_items.find((i) => i.type === "impl");
+    const qa = part.build_workflow_items.find((i) => i.type === "qa");
+    if (!impl || !qa) throw new Error("setup");
+    impl.status = "DONE";
+    qa.status = "DONE";
+    // test_report_ref intentionally omitted
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects qa item IN_PROGRESS when paired impl is PENDING", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part || !part.build_workflow_items) throw new Error("setup");
+    const qa = part.build_workflow_items.find((i) => i.type === "qa");
+    if (!qa) throw new Error("setup");
+    qa.status = "IN_PROGRESS";
+    // impl stays PENDING
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects build.SPEC-NNN DONE when items not all DONE", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part) throw new Error("setup");
+    part.substatus = "DONE";
+    part.outcome = "[[SPEC-001: Test]]";
+    // build_workflow_items still PENDING/PENDING from fixture
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("accepts build.SPEC-NNN DONE when all items DONE with valid test_report_ref", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part || !part.build_workflow_items) throw new Error("setup");
+    part.substatus = "DONE";
+    part.outcome = "[[SPEC-001: Test]]";
+    const task = plan.tasks[0];
+    if (task) task.status = "DONE";
+    if (task) task.resolved_at_event = 5;
+    for (const item of part.build_workflow_items) {
+      item.status = "DONE";
+      if (item.type === "qa") {
+        item.test_report_ref = "TEST-REPORT-001-SPEC-001";
+      }
+    }
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(true);
+  });
+
+  test("rejects BuildWorkflowItem with mismatched id and type+task_ref", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part || !part.build_workflow_items) throw new Error("setup");
+    const impl = part.build_workflow_items.find((i) => i.type === "impl");
+    if (!impl) throw new Error("setup");
+    impl.id = "impl-TASK-999-SPEC-001"; // mismatch with task_ref "TASK-001-SPEC-001"
+    const result = PlanNoteSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("rejects BuildWorkflowItem failed_iterations exceeding 3", () => {
+    const plan = minimalPlan();
+    const part = plan.parts[1];
+    if (!part || !part.build_workflow_items) throw new Error("setup");
+    const impl = part.build_workflow_items.find((i) => i.type === "impl");
+    if (!impl) throw new Error("setup");
+    impl.failed_iterations = 4;
     const result = PlanNoteSchema.safeParse(plan);
     expect(result.success).toBe(false);
   });

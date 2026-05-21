@@ -2,15 +2,75 @@ import { z } from "zod";
 import {
   ComplexityTierEnum,
   EffortEnum,
+  EventNumberSchema,
   ObservationSchema,
   PartIdSchema,
   PartSubstatusEnum,
   PlanStatusEnum,
   RelationSchema,
   SessionIdSchema,
+  SpecTaskIdSchema,
   TaskIdSchema,
   TaskStatusEnum,
+  TestReportIdSchema,
 } from "./common.js";
+
+/**
+ * BuildWorkflow primitives — per-TASK impl + qa items inside build.SPEC-NNN parts.
+ *
+ * Added by Phase X (Protocol Hardening, 2026-05-20) to mechanically enforce
+ * the rigid per-TASK build+qa cycle. See:
+ * - ~/.claude/memory/feedback_per_task_build_qa_cycle.md (TIER-1 BLOCKING protocol)
+ * - ~/.claude/memory/feedback_workflow_phase_rigor_at_every_layer.md (meta-rule)
+ *
+ * Every TASK in a spec yields TWO PLAN items: impl-TASK-NNN-SPEC-MMM and
+ * qa-TASK-NNN-SPEC-MMM. Each carries its own status enum. Cross-field
+ * invariants enforce pairing + sequencing (qa cannot advance unless impl DONE).
+ */
+
+export const BuildWorkflowStatusEnum = z.enum([
+  "PENDING",
+  "IN_PROGRESS",
+  "DONE",
+  "BLOCKED",
+  "FAILED",
+]);
+
+export const BuildWorkflowItemIdSchema = z.string().regex(/^(impl|qa)-TASK-\d{3,}-SPEC-\d{3,}$/);
+
+const BuildWorkflowItemSchema = z
+  .object({
+    id: BuildWorkflowItemIdSchema,
+    type: z.enum(["impl", "qa"]),
+    task_ref: SpecTaskIdSchema,
+    status: BuildWorkflowStatusEnum,
+    owning_session: SessionIdSchema.optional(),
+    transitioned_at_event: EventNumberSchema.optional(),
+    failed_iterations: z.number().int().min(0).max(3).default(0),
+    test_report_ref: TestReportIdSchema.optional(),
+    fix_brief_for_event: EventNumberSchema.optional(),
+  })
+  .strict()
+  .superRefine((data, ctx) => {
+    const expected = `${data.type}-${data.task_ref}`;
+    if (data.id !== expected) {
+      ctx.addIssue({
+        code: "custom",
+        message: `BuildWorkflowItem id ${data.id} must equal ${expected} (type-task_ref)`,
+      });
+    }
+    if (data.type === "qa" && (data.status === "DONE" || data.status === "FAILED")) {
+      if (!data.test_report_ref) {
+        ctx.addIssue({
+          code: "custom",
+          message: `qa item ${data.id} with status ${data.status} requires test_report_ref`,
+        });
+      }
+    }
+  });
+
+export type BuildWorkflowItem = z.infer<typeof BuildWorkflowItemSchema>;
+export type BuildWorkflowStatus = z.infer<typeof BuildWorkflowStatusEnum>;
 
 /**
  * PlanNote Zod schema (ADR-003 D-4, D-6, D-9, D-10, D-11).
@@ -72,11 +132,62 @@ const PartSchema = z
     depends_on: z.array(PartIdSchema),
     dod: z.array(DodItemSchema),
     decisions: z.array(DecisionStateSchema).optional(),
+    // build_workflow_items: per-TASK impl + qa pairs for build.SPEC-NNN parts.
+    // MANDATORY for build.SPEC-NNN parts when substatus is not PENDING
+    // (per feedback_per_task_build_qa_cycle protocol).
+    build_workflow_items: z.array(BuildWorkflowItemSchema).optional(),
   })
   .strict()
   .superRefine((data, ctx) => {
     if (data.substatus === "DONE" && !data.outcome) {
       ctx.addIssue({ code: "custom", message: "DONE part must have outcome" });
+    }
+    // build.SPEC-NNN parts MUST carry build_workflow_items once they leave PENDING
+    if (data.id.startsWith("build.SPEC-") && data.substatus !== "PENDING") {
+      if (!data.build_workflow_items || data.build_workflow_items.length === 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: `build.SPEC-NNN part ${data.id} with substatus ${data.substatus} must have build_workflow_items (per-TASK impl+qa pairs)`,
+        });
+        return;
+      }
+      // Each TASK must have BOTH impl + qa items
+      const taskRefs = new Set(data.build_workflow_items.map((i) => i.task_ref));
+      for (const taskRef of taskRefs) {
+        const items = data.build_workflow_items.filter((i) => i.task_ref === taskRef);
+        const hasImpl = items.some((i) => i.type === "impl");
+        const hasQa = items.some((i) => i.type === "qa");
+        if (!hasImpl || !hasQa) {
+          ctx.addIssue({
+            code: "custom",
+            message: `Task ${taskRef} in part ${data.id} must have both impl and qa items (has impl=${hasImpl}, qa=${hasQa})`,
+          });
+        }
+      }
+      // qa item IN_PROGRESS/DONE requires its paired impl item to be DONE
+      for (const qa of data.build_workflow_items.filter((i) => i.type === "qa")) {
+        if (qa.status === "IN_PROGRESS" || qa.status === "DONE") {
+          const impl = data.build_workflow_items.find(
+            (i) => i.type === "impl" && i.task_ref === qa.task_ref,
+          );
+          if (!impl || impl.status !== "DONE") {
+            ctx.addIssue({
+              code: "custom",
+              message: `qa item ${qa.id} status ${qa.status} requires paired impl-${qa.task_ref} to be DONE (currently ${impl?.status ?? "missing"})`,
+            });
+          }
+        }
+      }
+      // build.SPEC-NNN part DONE requires every build_workflow_item to be DONE
+      if (data.substatus === "DONE") {
+        const notDone = data.build_workflow_items.filter((i) => i.status !== "DONE");
+        if (notDone.length > 0) {
+          ctx.addIssue({
+            code: "custom",
+            message: `build.SPEC-NNN part ${data.id} DONE requires every build_workflow_item DONE; ${notDone.length} not done: ${notDone.map((i) => `${i.id}=${i.status}`).join(", ")}`,
+          });
+        }
+      }
     }
   });
 
