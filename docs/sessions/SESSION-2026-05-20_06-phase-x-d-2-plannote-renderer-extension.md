@@ -66,6 +66,21 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - biome clean; tsc clean. Commit `c8786ca build(spec-007): X.D.4 parser + fixture for build_workflow_items` landed on branch `feat/plan-001-x-d-2-plan-renderer`
 - PLAN-001 Phase X.D table: X.D.4 IN_PROGRESS → DONE with commit reference + remaining-failures rationale
 
+## Event 05
+
+**Type**: implementation | x-d-3-complete | full-green | 2026-05-20
+
+- PLAN-001 X.D.3 PENDING → IN_PROGRESS (edit landed disk; Pydantic relation-noise unrelated)
+- bun-ts-engineer dispatched with scoped X.D.3 brief (transition mutations only; explicit OUT-OF-SCOPE for checkbox-flip mutation pending TaskNote/REQ/DESIGN schemas)
+- Engineer added `transition-impl-item` + `transition-qa-item` mutations to `_shared/composition/src/mutations/plan-mutations.ts`. Runtime invariants beyond schema: (a) owning_session non-empty string + at_event positive integer mandated (REQUIRE context, throw on missing per protocol); (b) part/task existence checks; (c) from/current status match; (d) failed_iterations clamp to [0,3]; (e) qa pre-checks: test_report_ref required when to ∈ {DONE, FAILED}, paired impl DONE when to ∈ {IN_PROGRESS, DONE} — schema enforces these later but pre-check produces clearer error messages
+- New test file `_shared/composition/tests/plan-mutations-build-workflow.test.ts` with 15 tests covering successful transitions, context-missing throws, qa precondition throws, failed_iterations bump+clamp, applyPlanMutation round-trip byte-identity
+- Adjusted `tests/plan-mutations.test.ts` + `tests/plan-session-round-trip.test.ts` set-part-substatus IN_PROGRESS → DONE tests: now chain transition-impl-item → transition-qa-item (with test_report_ref) → set-part-substatus DONE, matching the rigid per-TASK cycle preconditions
+- Test counts: 214 pass / 2 fail → **231 pass / 0 fail** (net +17: 2 expected-failure flips + 15 new tests). biome clean; tsc clean
+- Deferred `flip-build-workflow-item-checkbox` mutation to X.D.5+ — depends on TaskNote/RequirementNote/DesignNote schemas not yet introduced. Documented in commit body
+- Engineer note: skill audit auto-fix tried to move test file to `__tests__/`; engineer restored to `tests/` to match this repo's flat convention (32 existing test files). Vitest coverage path unusable in this repo (Node ESM compat issue with vitest's bundled rolldown vs Bun); project uses `bun test` exclusively, retained
+- Commit `fd65894 build(spec-007): X.D.3 transition mutations for build_workflow_items` landed on branch `feat/plan-001-x-d-2-plan-renderer`
+- PLAN-001 Phase X.D table: X.D.3 IN_PROGRESS → DONE with commit reference. Composition library mechanism completion now 4 of 7 (X.D.1 + X.D.2 + X.D.3 + X.D.4 DONE; X.D.5 + X.D.6 + X.D.7 remain — TaskNote / Req+Design / SpecRoot+TestReport schemas)
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
