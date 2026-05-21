@@ -344,3 +344,24 @@ Audited 7 user-created lifecycle skills + composition library current state + NO
 - Captured verbatim to ANALYSIS-003 in new section "Architectural reinforcement — composition library is THE enforcement layer"
 - Pattern reinforced: session note POINTS at the Brain note holding the durable content; post-compaction resume = read session → follow pointers → check PLAN state → carry on
 - See ANALYSIS-003 for the full verbatim quotes + what-this-means + why-this-is-doable
+
+
+## Event 18 — Post-compaction rehydration protocol locked + persistence gaps closed (2026-05-20)
+
+**Type**: rehydration-hardening | content-persistence
+
+User flagged the actual root cause of today's drift: post-compaction the orchestrator went off the rails because auto-loaded context alone was insufficient; the active session note + PLAN + protocol memories were never actively re-read after compaction.
+
+Captured to durable persistence:
+
+- New TIER-1 BLOCKING memory written: `~/.claude/memory/feedback_post_compaction_rehydration_protocol.md` — 8-step checklist (read AGENTS.md + standards + auto-memories + session + linked notes + PLAN + git + recap) BEFORE any post-compaction work. MEMORY.md index updated at top of Protocol memories section
+- ANALYSIS-003 appended with three new sections to close persistence gaps that would have lost context post-compaction:
+  - 15-item ordered execution sequence (X.C + X.D combined) with rationale + per-item status
+  - Per-skill detailed audit findings (X.B subagent return, verbatim — /spec /decisions /research /review /end full detail)
+  - 3 next-move options surfaced 2026-05-20 (continue / checkpoint / specific subset) with default recommendation
+
+Now if compaction fires, the rehydration protocol fires, the orchestrator re-reads everything, and follows the session-note pointers to ANALYSIS-003 which carries the full context.
+
+Outstanding follow-up:
+
+- CLAUDE.md needs a Tier-1 reference to the new rehydration protocol memory as a BLOCKING gate. Held for user approval since CLAUDE.md is the orchestrator contract.

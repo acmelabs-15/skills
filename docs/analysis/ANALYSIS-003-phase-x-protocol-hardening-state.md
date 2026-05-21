@@ -210,3 +210,84 @@ The other lifecycle skills (/decisions, /spec, /build, /review, /end) all run UN
 ### Why this is doable
 
 The composition library schemas + renderers + mutations for PlanNote and SessionNote already exist (SPEC-001 + Wave 2 SPEC-007 work). Extending them with BuildWorkflowItem (Phase X.D.1 — DONE), 5 new note-type schemas (X.D.5-7), the renderer extension (X.D.2), and the transition functions (X.D.3) completes the enforcement layer. After that, the skill updates (X.C) just rewire the skills to call these functions instead of having agents do the work.
+
+
+## 15-item ordered execution sequence (X.C + X.D combined)
+
+The execution order locked 2026-05-20 after Phase X.B audit. Sequencing rationale: skills describe protocol → composition library implements protocol → templates reinforce. Status updated as items complete.
+
+| # | Item | Status | Reason for ordering |
+|---|---|---|---|
+| 1 | Extend PlanNote schema with BuildWorkflowItemSchema (impl+qa per TASK) | DONE (X.D.1, commit deeae3f) | Foundation — everything else references it |
+| 2 | Extend PlanNote renderer to generate rendered impl+qa instruction blocks | PENDING | Output of (1); becomes orchestrator dispatch brief source |
+| 3 | Add transitionImplItem + transitionQaItem + checkbox-flip mutations — require context, throw on missing | PENDING | Mechanical enforcement; called by all skills |
+| 4 | Update /plan SKILL.md | PENDING | Highest priority — entry point to the workflow; mandates per-TASK impl+qa structure |
+| 5 | Update /spec SKILL.md | PENDING | Adds PLAN handoff contract — emits per-TASK items on Stage 2 close |
+| 6 | Update /build SKILL.md | PENDING | Dispatch briefs = verbatim rendered PLAN content; schema-validates agent claims |
+| 7 | Add TaskNote schema + DoD claim validator | PENDING | Validates implementer TASK done claim |
+| 8 | Add RequirementNote + DesignNote schemas + AC/compliance claim validators | PENDING | Validates QA PASS claim |
+| 9 | Update /end SKILL.md | PENDING | Verifies impl+qa pairing + TEST-REPORT linkages at session close |
+| 10 | Add SpecRootNote + TestReportNote schemas + renderers | PENDING | Completes the schema coverage |
+| 11 | Update /decisions SKILL.md with lockDecision reference | PENDING | Formalizes decision micro-cycle as deterministic |
+| 12 | Update /review SKILL.md with checkbox-vs-diff cross-check axis | PENDING | Self-review uses schema-based validation |
+| 13 | Update /research SKILL.md with convergencePass reference | PENDING | Lighter touch |
+| 14 | Update NOTE-TEMPLATES.md (TASK + REQ + DESIGN + TEST-REPORT + PLAN templates) | PENDING | Reinforces checkbox-as-contract; flesh out TEST-REPORT stub |
+| 15 | Update KNOWLEDGE-GRAPH-STRUCTURES.md (Sections 4.6/4.7/4.8/4.9) | PENDING | Embeds rigor in canonical spec |
+
+## Per-skill detailed audit findings (X.B subagent return, verbatim)
+
+### /spec (242 lines)
+
+Existing rigor: Strict authoring order (REQ→DESIGN→TASK→SPEC root); Pattern 2 three-phase write; Phase 3 pre-flight + ADR coverage gate + Gate A semantic gap + Gate B 4 binary drift checks; G2 resume per-step skip conditions; halt-block inventory with Contract 3 schema; bi-directional relation closure (Step 6).
+
+Gaps:
+
+- per-TASK impl+qa mandate: ABSENT. /spec authors TASK notes with DoD checklists (line 138) but says nothing about /plan emitting paired impl-TASK-N + qa-TASK-N items per TASK. Handoff to /plan is implicit — no contract for what PLAN items get created.
+- checkbox-as-contract: PARTIALLY PRESENT. TASK DoD is named (line 138) and "premature [x]" is anti-pattern (lines 134, 210), but REQ Acceptance Criteria + DESIGN compliance checkboxes aren't framed as the QA contract; they're authoring concerns, not validation contracts for downstream agents.
+- PLAN-renderer-as-dispatch-source: ABSENT. No mention that PLAN renders verbatim TASK DoD / REQ AC / DESIGN compliance for dispatch briefs.
+- state-transition-requires-context: ABSENT for SPEC subtree state. Two-step edit pattern (lines 85-93) mandates Brain edit + SESSION Event + commit, but doesn't require sessionNoteRef / reason / commit_sha as input to a deterministic state-transition function.
+- schema-validates-claims: PARTIALLY PRESENT. Gate B (c) checks TASK→REQ traceability (line 166); Phase 3 pre-flight validates structure — but no schema check that an "all DoD [x]" claim mechanically matches PLAN per-TASK impl status.
+
+Highest-leverage change: Add a "PLAN handoff contract" section that mandates Stage 2 Step 5 (or set-part-done) emits two PLAN items per authored TASK (impl-TASK-N rendering verbatim DoD + Files Affected + ADR Compliance; qa-TASK-N rendering verbatim linked REQ Acceptance Criteria + DESIGN compliance) — making TASK DoD / REQ AC the literal contracts /build dispatches.
+
+### /decisions (257 lines)
+
+Existing rigor: Per-D-N 7-sub-step micro-cycle (2a-2g) with one-decision-at-a-time, decision-critic stress-test, verbatim option capture, decision-binding echo, diff-approval, two-step PLAN→SESSION edit, commit (lines 96-107); 12-item hygiene audit + 4 binary drift checks at Step 3-3.5; tier-aware pre-author-composite gate (Step 4); architect dispatch with detail-parity mandate (Step 5); detail-parity audit (Step 6) with re-dispatch loop; MANDATORY adr-review blocking gate (Step 7); per-D-N status enum (PENDING|LOCKED) in d_n_substatus.
+
+Gaps:
+
+- PLAN-renderer-as-dispatch-source: PARTIALLY PRESENT. Step 5 architect dispatch brief MUST include PLAN-part d_n_substatus (all LOCKED D-Ns with verbatim decision text) + corresponding SESSION Event NN entries (lines 152-153) — this IS render-as-dispatch for ADR authoring. Pattern exists but isn't named/generalized.
+- state-transition-requires-context: PARTIALLY PRESENT. 2c-2g requires verbatim text + rationale + diff approval + SESSION ref + commit, but no formal function-call signature requiring (sessionNoteRef, reason, commit_sha) as throwable inputs.
+- schema-validates-claims: PARTIALLY PRESENT. Step 6 detail-parity audit samples ≥5 D-Ns and verifies ADR sections vs SESSION events; Step 3.5 (a) verifies source traceability — but no schema that says "claim of LOCKED requires verbatim option text field non-empty + decision-binding echo logged."
+
+Highest-leverage change: Formalize Step 2f as a deterministic lockDecision(planId, d_n, verbatim, rationale, sessionEventRef, commit_sha) function that throws on missing fields — turn the implicit 7-sub-step protocol into a schema-validated state transition that mechanically cannot complete without provenance.
+
+### /research (208 lines)
+
+Existing rigor: Step 0 first-principles gate; Memory-First gate; tier classification (Step 2) sets PLAN frontmatter complexity_tier with HALT-on-missing downstream; buy-vs-build BLOCKING for new capabilities (Step 3); conditional CVA at Tier ≥3 (Step 4); per-requirement analyst dispatch surfaces options-only — no lock (Step 5); convergence loop (Steps 6-8) with max-3 iterations; explicit "options surfaced, /decisions locks" boundary (line 9, anti-pattern line 170); no-Open-Questions invariant (line 172); no-deferral-to-implementation (line 174).
+
+Highest-leverage change: Add a convergencePass(prdRef, analyses[], userConfirmation) schema check at Step 8 that mechanically verifies (a) every PRD requirement has ≥1 ANALYSIS note, (b) no ANALYSIS note has an "Open Questions" section, (c) no ANALYSIS has unsupported quant claims — making the convergence gate auditable rather than relying on critic judgment.
+
+### /review (320 lines)
+
+Existing rigor: Two modes (self-review when plan= arg / review-others when pr= arg) with calibrated adversarial framing per Tier (lines 60-69); 8 axes (5 skill + 3 agent) with adaptive PR-type subset selection (Step 2 table line 128); per-axis verdict caching by diff hash for G2 resume (lines 76-80); 10-value verdict enum with strict merge rules (Step 6 lines 196-203); UNKNOWN-never-overrides-WARN/FAIL invariant (line 207); structured report block for /end consumption (lines 242-249); reviewer-asymmetry mandate embedded in every agent brief (lines 147, 155, 163).
+
+Highest-leverage change: In self-review mode (when plan= arg present), add a "checkbox-vs-diff cross-check" axis that reads every linked TASK's DoD + REQ AC + DESIGN compliance and verifies each [x] claim has corresponding diff evidence — converts /review from judgment-based to schema-based for the claim-validation dimension.
+
+### /end (401 lines)
+
+Existing rigor: Step 1 DoD verification reads every owning part's H3 part-id body and HALTs on any [ ] (lines 84-94); /review BLOCKING gate (Step 2) with strict verdict→action mapping (line 104 table); 5 pre-flight checks; 3-option AskUserQuestion FAIL branch with Recommended default + fix-target routing (lines 122-148); G2 resume per-step skip markers (lines 73-82); two-step edit + atomic commit ordering (Step 4); structured end-of-session report (Step 5); halt-block inventory.
+
+Highest-leverage change: Extend Step 1 to verify the impl-TASK-N + qa-TASK-N pairing — for every owning part, every TASK referenced must have BOTH (a) impl item status=DONE AND all DoD checkboxes [x], AND (b) qa item status=DONE AND linked TEST-REPORT exists with all REQ AC + DESIGN compliance checkboxes [x] + PASS verdict — making the session-close gate mechanically tied to the paired-item rigid protocol.
+
+## 3 next-move options (surfaced 2026-05-20)
+
+For user to decide pace + scope of next action:
+
+1. **Continue this session** — keep going on X.D.2 (renderer extension) → X.D.3 (transitions) → X.D.4 (fixture) etc. Real risk: orchestrator hits context limits mid-work.
+
+2. **Checkpoint here** — clean stopping point. Resume in fresh session using this analysis + the state-capture memory + the TIER-1 BLOCKING memories. Cleanest for protocol-correctness; relies on the post-compaction rehydration protocol working as designed.
+
+3. **Pick a specific next subset** — e.g., "do X.D.2-4 to unblock the 16 failing tests + close out the composition library round-trip, then pause"; or "do all X.C skill updates first then composition library"; or any other ordered slice.
+
+Default recommendation: option 2 (checkpoint) given orchestrator context depth + the multi-session realistic scope. The post-compaction rehydration protocol (feedback_post_compaction_rehydration_protocol) makes resumption reliable.
