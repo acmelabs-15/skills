@@ -78,6 +78,10 @@ Tests reduction directive: write only the minimum tests required for next implem
 
 [2026-05-21] PLAN-001 `## Wave 3 Gap-TASK Build Wave` revised to rigid-cycle-compliant structure: 6 per-TASK impl items + 1 decisions.4 item, each with explicit Status, Owning session, File ownership, Scope, Paired QA fields. All 7 items transition PENDING -> IN_PROGRESS this turn as single wave kickoff. Per-TASK rigid cycle steps f-t will fire as each impl agent returns. Min-tests directive embedded; QA NOT deferred (validates per cycle, against existing tests + code-read evidence). TASK-009-SPEC-002 (large Cross-Source Coordinator impl) explicitly NOT in this wave; gated on decisions.4 ADR-004 outcome.
 
+## Event 13
+
+[2026-05-21] Wave 3 dispatch step (d) executed: 7 parallel agents launched in background. Streams A-F: general-purpose impl agents with verbatim TASK note paths + DoD-as-contract briefs + min-tests directive + Brain MCP for `docs/**` + `## State Changes` return contract. Stream G: brain:🧠-architect for ADR-004 (Cross-Source Coordinator strategic call; mandates brain:---adr-review BLOCKING gate before ACCEPTED). Agent IDs tracked via TaskList #11-17 (one task per stream). Per rigid cycle: next-action awaits return notifications; on each return, orchestrator processes steps f-t per TASK (Session Event + PLAN impl→DONE + commit + PLAN qa→IN_PROGRESS + commit + QA dispatch + QA processing). Across-TASK parallelism preserved while honoring per-TASK atomicity.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid
