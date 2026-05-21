@@ -81,6 +81,23 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - Commit `fd65894 build(spec-007): X.D.3 transition mutations for build_workflow_items` landed on branch `feat/plan-001-x-d-2-plan-renderer`
 - PLAN-001 Phase X.D table: X.D.3 IN_PROGRESS → DONE with commit reference. Composition library mechanism completion now 4 of 7 (X.D.1 + X.D.2 + X.D.3 + X.D.4 DONE; X.D.5 + X.D.6 + X.D.7 remain — TaskNote / Req+Design / SpecRoot+TestReport schemas)
 
+## Event 06
+
+**Type**: implementation | x-d-5-complete | 2026-05-20
+
+- PLAN-001 X.D.5 PENDING → IN_PROGRESS (edit landed disk; Pydantic noise unrelated)
+- bun-ts-engineer dispatched with scoped X.D.5 brief (schema + parser + DoD claim validator only; explicit OUT-OF-SCOPE for renderer, RequirementNote, DesignNote, etc.)
+- New files added under `_shared/composition/`:
+  - `src/schemas/task-note.ts` — TaskNoteSchema with frontmatter (TaskNoteStatusEnum TODO/IN_PROGRESS/DONE/BLOCKED/DEFERRED/ABANDONED) + body (design_context, objective, scope_in/out, implementation_notes, files_affected table, testing_requirements, definition_of_done, adr_compliance, effort_summary, observations, relations). `.strict()` throughout
+  - `src/parsers/task-note.ts` — markdown→TaskNote via unified+remark+ast-helpers; uses internal `findListAfter` helper (no ast-helpers export change needed)
+  - `src/validators/task-claim-validator.ts` — `validateTaskDoneClaim(task) → {verdict:"PASS",total} | {verdict:"FAIL",total,unsatisfied:[{index,text}]}` + `validateTaskAdrComplianceClaim` (returns PASS total 0 when section absent)
+  - Test files for schema (~12 tests), parser (~14 tests), validator (~14 tests) + fixture `tests/fixtures/task-note-sample.md`
+- Cross-field invariants (superRefine): (a) TASK id derived from title regex must parse against SpecTaskIdSchema; (b) **status DONE requires every DoD item `done===true` OR non-empty `deferred_rationale`** — load-bearing; (c) adr_compliance if present must be non-empty
+- Test counts: 231 → **271 pass / 0 fail** (+40 tests; 546 expect calls). biome clean; tsc clean
+- Engineer notes: TASK id derived from frontmatter title (not a separate field), per "simpler" recommendation; `deferred_rationale` schema uses `.min(1)` so empty-string deferral fails — paired with validator treating empty-string deferral as unsatisfied; Scope parser handles both In/Out-marked and looser flat-list forms
+- Commit `d3c7810 build(spec-007): X.D.5 TaskNote schema + parser + DoD claim validator` landed on branch `feat/plan-001-x-d-2-plan-renderer`
+- Phase X.D progress now 5 of 7 (X.D.1+2+3+4+5 DONE; X.D.6 + X.D.7 remain — RequirementNote + DesignNote + SpecRootNote + TestReportNote schemas)
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
