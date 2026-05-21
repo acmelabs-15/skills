@@ -48,3 +48,5 @@ Add `tests/fixtures/spec-subtree/design/DESIGN-001-SPEC-001-adapter-architecture
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
 - caused_by [[QA-025-SPEC-004: SPEC Subtree Test Fixtures]]
 - extends [[TASK-006-SPEC-004: SPEC Subtree Test Fixtures]]
+
+- validated_by [[QA-035-SPEC-004: Task 010 Design Fixture Revalidation]]

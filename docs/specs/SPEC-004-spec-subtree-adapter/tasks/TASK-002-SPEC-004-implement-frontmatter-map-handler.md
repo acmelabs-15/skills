@@ -1,7 +1,7 @@
 ---
 title: 'TASK-002-SPEC-004: Implement Frontmatter Map Handler'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-002-spec-004-implement-frontmatter-map-handler
@@ -71,7 +71,7 @@ The inverse frontmatter_map is computed by swapping keys and values. For the fro
 
 ## Observations
 
-- [fact] Status: TODO #status
+- [fact] Status: DONE -- minor coverage gaps closed; validated by QA-027 aggregate #status
 - [fact] Size tier: S -- focused regex-based frontmatter field replacement with inverse #estimation
 - [decision] Line-level regex over full YAML parse/serialize to preserve char-identity #technique
 
@@ -81,3 +81,4 @@ The inverse frontmatter_map is computed by swapping keys and values. For the fro
 - implements [[DESIGN-001-SPEC-004: SPEC Subtree Adapter Architecture]]
 - implements [[REQ-002-SPEC-004: Frontmatter Map Mutations]]
 - depends_on [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
+- validated_by [[QA-027-SPEC-004: Spec-Aggregate Retro-Validation]]

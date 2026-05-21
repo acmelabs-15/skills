@@ -184,7 +184,9 @@ Body content one.
 
 Body content two.
 `;
-    const extracted = adapter.extractByRange(content, { start: 1, end: -1 }, ["Progress Dashboard"]);
+    const extracted = adapter.extractByRange(content, { start: 1, end: -1 }, [
+      "Progress Dashboard",
+    ]);
     expect(extracted).toContain("Body content one.");
     expect(extracted).toContain("Body content two.");
     expect(extracted).not.toContain("Progress Dashboard");

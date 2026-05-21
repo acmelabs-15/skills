@@ -1,7 +1,7 @@
 ---
 title: 'REQ-001-SPEC-004: SPEC Subtree Adapter Implementation'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-004-spec-subtree-adapter/requirements/req-001-spec-004-spec-subtree-adapter-implementation
 tags:
 - requirement

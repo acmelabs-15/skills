@@ -1,7 +1,7 @@
 ---
 title: 'TASK-003-SPEC-004: Implement Filename Rewrite Handler'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-003-spec-004-implement-filename-rewrite-handler
@@ -69,7 +69,7 @@ Use Bun filesystem APIs for rename operations. The pre-flight validation checks 
 
 ## Observations
 
-- [fact] Status: TODO #status
+- [fact] Status: DONE -- drift closed by gap-TASK 009; validated by QA-027 aggregate #status
 - [fact] Size tier: S -- focused filesystem rename with pre-flight validation and rollback #estimation
 - [decision] Pre-flight validation before any rename prevents partial-rewrite states #technique
 
@@ -79,3 +79,5 @@ Use Bun filesystem APIs for rename operations. The pre-flight validation checks 
 - implements [[DESIGN-002-SPEC-004: Filename Rewrite Coordination]]
 - implements [[REQ-003-SPEC-004: Filename Rewrite Per Child]]
 - depends_on [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
+- closed_by [[TASK-009-SPEC-004: Implement Filename Rewrite Unit Tests and Path Containment]]
+- validated_by [[QA-027-SPEC-004: Spec-Aggregate Retro-Validation]]

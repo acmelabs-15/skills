@@ -13,16 +13,16 @@
  *   - On all-pass, every destination is written and no .tmp remains.
  */
 
-import { describe, expect, test, beforeEach, afterEach } from "bun:test";
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   SpecSubtreeAdapter,
-  rollbackCluster,
-  validateSubtreeHashes,
   type SubtreeFileForValidation,
   type SubtreeProcessInput,
+  rollbackCluster,
+  validateSubtreeHashes,
 } from "../src/adapters/spec-subtree.js";
 import { sha256 } from "../src/core/hash.js";
 import type { MutationSpec } from "../src/core/types.js";
@@ -122,14 +122,24 @@ describe("validateSubtreeHashes (DESIGN-003 Component 1)", () => {
     // Non-injective map produces a hash mismatch (irreversible mutation):
     // both keys collide on the same value, so reverseMutations cannot recover.
     const badMutations: MutationSpec = {
-      renumber_map: { "REQ-001": "X", "EARS": "X" },
+      renumber_map: { "REQ-001": "X", EARS: "X" },
       wikilink_map: {},
     };
     const goodStaged = adapter.applyMutations(rootFixture, goodMutations);
     const badStaged = adapter.applyMutations(reqFixture, badMutations);
     const files: SubtreeFileForValidation[] = [
-      { filePath: "a.md", sourceContent: rootFixture, stagedContent: goodStaged, mutations: goodMutations },
-      { filePath: "b.md", sourceContent: reqFixture, stagedContent: badStaged, mutations: badMutations },
+      {
+        filePath: "a.md",
+        sourceContent: rootFixture,
+        stagedContent: goodStaged,
+        mutations: goodMutations,
+      },
+      {
+        filePath: "b.md",
+        sourceContent: reqFixture,
+        stagedContent: badStaged,
+        mutations: badMutations,
+      },
     ];
     const result = validateSubtreeHashes(adapter, files);
     expect(result.allPass).toBe(false);
@@ -229,9 +239,9 @@ describe("SpecSubtreeAdapter.processSubtree (DESIGN-001 Components 1+2)", () => 
 
     // No destinations exist either (failure aborts before rename phase).
     expect(existsSync(input.rootPath)).toBe(false);
-    expect(
-      existsSync(join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md")),
-    ).toBe(false);
+    expect(existsSync(join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md"))).toBe(
+      false,
+    );
   });
 
   test("empty children array: SPEC root only is staged + validated + renamed", async () => {

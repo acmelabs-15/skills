@@ -302,6 +302,16 @@ QA-008 returned (QA-036 filename had spaces - retroactively renamed kebab via Ba
 
 Pre-existing drift flag from QA-009: `_shared/composition/biome.json:30` uses `files.include` (Biome 2.x expects `files.includes`). Non-blocking; tracked.
 
+## Event 41
+
+[2026-05-21] SPEC-004 state propagation complete (22 notes modified). All 7 original TASKs TODO → DONE + closed_by gap-TASK relations + validated_by QA-027. All 4 gap-TASKs added validated_by QA-036/035/037/038. All 6 REQs DRAFT → ACCEPTED. All 3 DESIGNs DRAFT → ACCEPTED. **SPEC-004 root ACCEPTED → DONE** with closure observations + 5 contains relations + 6 validated_by relations. Wave 2 SPEC-004 retro fully closed.
+
+QA-008/010/011/012 all returned PASS (484/484 tests). 1 basic-memory response-validation error during SPEC-004 root edits recovered (re-read confirmed writes succeeded).
+
+## Event 42
+
+[2026-05-21] Firing TASK-014 SPEC-007 (PLAN-001 live migration to trimmed template) — queued earlier per user-locked Dispatch-now option. PLAN-001 now safe from concurrent agent contention (SPEC-004 propagation complete). Plus parallel safe work: biome auto-fix across composition library + KNOWLEDGE-GRAPH-CONVENTIONS Section 3 update (`test-report` → `qa` in 16-type list) per deferred user directive.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

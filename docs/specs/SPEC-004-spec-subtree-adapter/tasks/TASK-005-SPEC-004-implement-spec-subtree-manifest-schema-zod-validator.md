@@ -1,7 +1,7 @@
 ---
 title: 'TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-005-spec-004-implement-spec-subtree-manifest-schema-zod-validator
@@ -71,7 +71,7 @@ The specSubtreeManifestSchema follows the concrete Zod shape from ADR-002 D-5. R
 
 ## Observations
 
-- [fact] Status: TODO #status
+- [fact] Status: DONE -- drift closed by gap-TASK 011; validated by QA-027 aggregate #status
 - [fact] Size tier: S -- Zod schema definition reusing existing validators; two schema files plus index.ts registration #estimation
 - [decision] Reuse injectiveDisjointMap and containedPathSchema from SPEC-001 base.ts to avoid validator duplication #reuse
 
@@ -80,3 +80,5 @@ The specSubtreeManifestSchema follows the concrete Zod shape from ADR-002 D-5. R
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
 - implements [[REQ-005-SPEC-004: SPEC Subtree Manifest Zod Schema]]
 - depends_on [[TASK-005-SPEC-001: Implement Zod Plan Schemas]]
+- closed_by [[TASK-011-SPEC-004: Align Schema Shape to ADR-002 D-5 and REQ-005 AC]]
+- validated_by [[QA-027-SPEC-004: Spec-Aggregate Retro-Validation]]

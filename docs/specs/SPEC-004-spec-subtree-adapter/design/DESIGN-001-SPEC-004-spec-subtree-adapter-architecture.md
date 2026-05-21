@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-001-SPEC-004: SPEC Subtree Adapter Architecture'
 type: design
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-004-spec-subtree-adapter/design/design-001-spec-004-spec-subtree-adapter-architecture
 tags:
 - design

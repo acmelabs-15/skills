@@ -21,7 +21,8 @@ const distributionSpec: MutationSpec = {
   // the new old-VALUE -> new-VALUE semantics (REQ-004 AC-2). The inverse contract is
   // mechanical (invert the map on reverse), so apply-then-reverse remains identity.
   frontmatter_map: {
-    '"PLAN-001: Composition Library Build-Out"': '"PLAN-001-renumbered: Composition Library Build-Out"',
+    '"PLAN-001: Composition Library Build-Out"':
+      '"PLAN-001-renumbered: Composition Library Build-Out"',
     "planning/plan-001-composition-library": "planning/plan-001-renumbered-composition-library",
   },
   regenerated_sections: ["Progress Dashboard", "Cross-Part Dependency Graph"],

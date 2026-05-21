@@ -1,7 +1,7 @@
 ---
 title: 'TASK-004-SPEC-004: Implement Per-File Hash Validation Orchestration'
 type: task
-status: TODO
+status: DONE
 effort: M
 estimate: 2d
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-004-spec-004-implement-per-file-hash-validation-orchestration
@@ -70,7 +70,7 @@ The validation iterates manifest entries in order (root first, then children). F
 
 ## Observations
 
-- [fact] Status: TODO #status
+- [fact] Status: DONE -- drift closed by gap-TASK 012; validated by QA-027 aggregate #status
 - [fact] Size tier: M -- hash validation orchestration with cluster rollback and error reporting; integrates with frontmatter reversal #estimation
 - [decision] Collect-then-validate pattern per DESIGN-003-SPEC-004 enables cluster-level rollback #orchestration
 
@@ -81,3 +81,5 @@ The validation iterates manifest entries in order (root first, then children). F
 - implements [[REQ-004-SPEC-004: Per-File Hash Validation]]
 - depends_on [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
 - depends_on [[TASK-002-SPEC-004: Implement Frontmatter Map Handler]]
+- closed_by [[TASK-012-SPEC-004: Align Adapter Orchestration to DESIGN-001 and DESIGN-003]]
+- validated_by [[QA-027-SPEC-004: Spec-Aggregate Retro-Validation]]

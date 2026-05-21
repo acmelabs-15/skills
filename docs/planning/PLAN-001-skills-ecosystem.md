@@ -1371,7 +1371,7 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-004 — SPEC Subtree Adapter Build (IN_PROGRESS — Wave 2 retro state propagation 2026-05-21)
+### build.SPEC-004 — SPEC Subtree Adapter Build (DONE — Wave 2 retro complete 2026-05-21; 5 gap-TASKs landed + QA PASS; SPEC-004 root DONE)
 
 **Substatus**: BLOCKED
 **Blocker**: PUD-D2 (Wave 2 retro-validation disposition)

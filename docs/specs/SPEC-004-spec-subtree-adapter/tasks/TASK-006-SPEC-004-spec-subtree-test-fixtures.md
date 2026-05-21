@@ -1,7 +1,7 @@
 ---
 title: 'TASK-006-SPEC-004: SPEC Subtree Test Fixtures'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-006-spec-004-spec-subtree-test-fixtures
@@ -71,7 +71,7 @@ Fixtures must be realistic Brain knowledge-graph notes following CONVENTIONS (16
 
 ## Observations
 
-- [fact] Status: TODO #status
+- [fact] Status: DONE -- drift closed by gap-TASK 010; validated by QA-027 aggregate #status
 - [fact] Size tier: S -- fixture creation with 4 markdown files and 2 YAML files; low complexity but attention to CONVENTIONS compliance #estimation
 - [constraint] Fixtures must follow full Brain knowledge-graph CONVENTIONS to be realistic test data #conventions #compliance
 
@@ -80,3 +80,5 @@ Fixtures must be realistic Brain knowledge-graph notes following CONVENTIONS (16
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
 - implements [[REQ-006-SPEC-004: SPEC Subtree Adapter Round-Trip Property Test]]
 - depends_on [[TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
+- closed_by [[TASK-010-SPEC-004: Add DESIGN Fixture and Composition Plan YAML]]
+- validated_by [[QA-027-SPEC-004: Spec-Aggregate Retro-Validation]]

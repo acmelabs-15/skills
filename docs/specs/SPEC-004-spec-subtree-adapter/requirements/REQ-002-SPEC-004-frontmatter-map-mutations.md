@@ -1,7 +1,7 @@
 ---
 title: 'REQ-002-SPEC-004: Frontmatter Map Mutations'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-004-spec-subtree-adapter/requirements/req-002-spec-004-frontmatter-map-mutations
 tags:
 - requirement

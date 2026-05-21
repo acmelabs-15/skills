@@ -55,3 +55,5 @@ User adjudication required FIRST: is in-memory adapter + caller-provided filesys
 - caused_by [[QA-023-SPEC-004: Implement Per-File Hash Validation Orchestration]]
 - extends [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
 - extends [[TASK-004-SPEC-004: Implement Per-File Hash Validation Orchestration]]
+
+- validated_by [[QA-038-SPEC-004: TASK-012 Orchestrator Revalidation]]

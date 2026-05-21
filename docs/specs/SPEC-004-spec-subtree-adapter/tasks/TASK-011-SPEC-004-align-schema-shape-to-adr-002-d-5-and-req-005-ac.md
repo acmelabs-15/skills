@@ -59,3 +59,5 @@ User adjudication required FIRST: keep current simplified shape and amend ADR-00
 - caused_by [[QA-024-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
 - extends [[TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
 - depends_on [[ADR-002: Adapter Contract and Plan Schema]]
+
+- validated_by [[QA-037-SPEC-004: TASK-011 Schema Shape Revalidation]]

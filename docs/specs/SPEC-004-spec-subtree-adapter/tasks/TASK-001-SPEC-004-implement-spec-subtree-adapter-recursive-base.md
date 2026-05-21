@@ -1,7 +1,7 @@
 ---
 title: 'TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base'
 type: task
-status: TODO
+status: DONE
 effort: M
 estimate: 2d
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-001-spec-004-implement-spec-subtree-adapter-recursive-base
@@ -80,7 +80,7 @@ The adapter reuses the unified + remark pipeline pattern from BaseMarkdownAdapte
 
 ## Observations
 
-- [fact] Status: TODO #status
+- [fact] Status: DONE -- drift closed by gap-TASKs 008 + 012; validated by QA-027 aggregate #status
 - [fact] Size tier: M -- core adapter class with 5-method interface plus orchestration skeleton; moderate complexity #estimation
 - [decision] Standalone class using composition over inheritance per DESIGN-001-SPEC-004 #architecture
 
@@ -89,3 +89,6 @@ The adapter reuses the unified + remark pipeline pattern from BaseMarkdownAdapte
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
 - implements [[DESIGN-001-SPEC-004: SPEC Subtree Adapter Architecture]]
 - implements [[REQ-001-SPEC-004: SPEC Subtree Adapter Implementation]]
+- closed_by [[TASK-008-SPEC-004: Add Adapters Barrel and Align sourceType to spec]]
+- closed_by [[TASK-012-SPEC-004: Align Adapter Orchestration to DESIGN-001 and DESIGN-003]]
+- validated_by [[QA-027-SPEC-004: Spec-Aggregate Retro-Validation]]

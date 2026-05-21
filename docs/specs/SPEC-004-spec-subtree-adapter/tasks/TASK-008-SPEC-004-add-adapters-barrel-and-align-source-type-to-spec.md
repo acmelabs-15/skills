@@ -57,3 +57,5 @@ User adjudication required before code changes.
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
 - caused_by [[QA-020-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
 - extends [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
+
+- validated_by [[QA-036-SPEC-004: TASK-008 Barrel and sourceType Alignment Revalidation]]
