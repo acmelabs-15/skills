@@ -1,0 +1,14 @@
+# Composition (recompose) plan for analysis-sample.md
+# Inverse of analysis-distribution.plan.yaml — re-merges the renumbered items
+# back to their original identifiers, producing the SHA-256 identity that the
+# round-trip property test asserts.
+# This file is a documentation fixture; the test reads the inverse map directly.
+plan_type: composition
+source_type: analysis
+source_path: tests/fixtures/analysis-sample.md
+renumber_map:
+  item-100: item-1
+  item-101: item-2
+  item-200: item-3
+  item-201: item-4
+wikilink_map: {}

@@ -1,0 +1,30 @@
+# Distribution (decompose) plan for analysis-sample.md
+# This file is a documentation fixture; the round-trip test reads the
+# renumber_map directly as a TypeScript object, not by parsing this YAML.
+# Layout convention: flat (matches adr-*.plan.yaml + session-*.plan.yaml).
+plan_type: distribution
+source_type: analysis
+source_path: tests/fixtures/analysis-sample.md
+clusters:
+  cluster_a:
+    description: First cluster — early findings about parsers and rewrites
+    findings:
+      - item-1
+      - item-2
+    renumbered_to:
+      - item-100
+      - item-101
+  cluster_b:
+    description: Second cluster — later findings about persistence and validation
+    findings:
+      - item-3
+      - item-4
+    renumbered_to:
+      - item-200
+      - item-201
+renumber_map:
+  item-1: item-100
+  item-2: item-101
+  item-3: item-200
+  item-4: item-201
+wikilink_map: {}

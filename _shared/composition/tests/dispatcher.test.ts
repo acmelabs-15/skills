@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { AdrAdapter } from "../src/adapters/adr.js";
 import { AnalysisAdapter } from "../src/adapters/analysis.js";
+import { PlanAdapter } from "../src/adapters/plan.js";
 import { SessionAdapter } from "../src/adapters/session.js";
 import { getAdapter, listAdapters } from "../src/core/dispatcher.js";
 
@@ -23,12 +24,18 @@ describe("dispatcher registry", () => {
     expect(adapter.sourceType).toBe("session");
   });
 
+  test("getAdapter('plan') returns a PlanAdapter instance", () => {
+    const adapter = getAdapter("plan");
+    expect(adapter).toBeInstanceOf(PlanAdapter);
+    expect(adapter.sourceType).toBe("plan");
+  });
+
   test("getAdapter('unknown') throws a descriptive error", () => {
     expect(() => getAdapter("unknown")).toThrow(/No adapter registered for source_type: unknown/);
   });
 
   test("listAdapters returns all registered source_type discriminants", () => {
     const keys = listAdapters();
-    expect(keys).toEqual(["adr", "analysis", "session"]);
+    expect(keys).toEqual(["adr", "analysis", "plan", "session"]);
   });
 });

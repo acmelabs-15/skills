@@ -1,11 +1,13 @@
 import { AdrAdapter } from "../adapters/adr.js";
 import { AnalysisAdapter } from "../adapters/analysis.js";
+import { PlanAdapter } from "../adapters/plan.js";
 import { SessionAdapter } from "../adapters/session.js";
 import type { CompositionAdapter } from "./adapter.js";
 
 const registry = new Map<string, CompositionAdapter>([
   ["adr", new AdrAdapter()],
   ["analysis", new AnalysisAdapter()],
+  ["plan", new PlanAdapter()],
   ["session", new SessionAdapter()],
 ]);
 

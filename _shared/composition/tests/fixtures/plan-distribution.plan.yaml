@@ -20,6 +20,14 @@ mutations:
     SPEC-004: SPEC-103
     SPEC-005: SPEC-104
   wikilink_map: {}
+  # Frontmatter mutations applied to the destination's YAML frontmatter.
+  # Keys denote frontmatter fields (or dotted paths into nested structures);
+  # values denote the post-mutation form. The round-trip test asserts these
+  # invert cleanly when paired with the composition plan's renumber_map.
+  frontmatter_map:
+    title: "PLAN-001-renumbered: Example"
+    permalink: planning/plan-001-renumbered-example
+    branches: "[SPEC-100, SPEC-101, SPEC-102, SPEC-103, SPEC-104]"
   regenerated_sections:
     - Progress Dashboard
     - Cross-Part Dependency Graph
