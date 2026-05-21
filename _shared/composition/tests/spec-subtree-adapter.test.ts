@@ -98,8 +98,8 @@ const manifest: SubtreeManifest = {
 };
 
 describe("SpecSubtreeAdapter", () => {
-  test("sourceType is 'spec-subtree'", () => {
-    expect(adapter.sourceType).toBe("spec-subtree");
+  test("sourceType is 'spec'", () => {
+    expect(adapter.sourceType).toBe("spec");
   });
 
   test("parse + serialize is structure-preserving and idempotent", () => {

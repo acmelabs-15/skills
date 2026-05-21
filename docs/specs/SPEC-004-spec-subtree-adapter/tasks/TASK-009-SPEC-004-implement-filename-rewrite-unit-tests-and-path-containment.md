@@ -2,7 +2,7 @@
 title: 'TASK-009-SPEC-004: Implement Filename Rewrite Unit Tests and Path Containment'
 type: task
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-009-spec-004-implement-filename-rewrite-unit-tests-and-path-containment
-status: DRAFT
+status: DONE
 effort: S
 estimate: 1d
 tags:
@@ -32,11 +32,11 @@ Author `_shared/composition/tests/filename-rewrite.test.ts` exercising `applyFil
 
 ## Definition of Done
 
-- [ ] Test file with at least 5 unit tests covering: success, duplicate target rejection, path traversal rejection, LIFO rollback after mid-sequence failure, no-rewrites no-op
-- [ ] Pre-flight in `applyFilenameRewrites` rejects when two rewrites target same `newRelativePath`
-- [ ] Pre-flight rejects `newRelativePath` containing `..` or starting with `/`
-- [ ] All tests pass under `bun test`
-- [ ] tsc strict + biome clean
+- [x] Test file with at least 5 unit tests covering: success, duplicate target rejection, path traversal rejection, LIFO rollback after mid-sequence failure, no-rewrites no-op
+- [x] Pre-flight in `applyFilenameRewrites` rejects when two rewrites target same `newRelativePath`
+- [x] Pre-flight rejects `newRelativePath` containing `..` or starting with `/`
+- [x] All tests pass under `bun test`
+- [x] tsc strict + biome clean
 
 ## Observations
 

@@ -2,7 +2,7 @@
 title: 'TASK-010-SPEC-007: Implement Plan Mutation API'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-010-spec-007-implement-plan-mutation-api
-status: TODO
+status: DONE
 effort: L
 estimate: 1.5d
 tags:
@@ -90,3 +90,4 @@ Create `_shared/composition/src/plan-mutations.ts` implementing applyPlanMutatio
 - implements [[DESIGN-003-SPEC-007: Mutation API and Invariant Enforcement]]
 - depends_on [[TASK-005-SPEC-007: Implement PlanNote Parser]]
 - depends_on [[TASK-007-SPEC-007: Implement PlanNote Renderer]]
+- validated_by [[QA-019-SPEC-007: Implement Plan Mutation API]]

@@ -1,7 +1,7 @@
 ---
 title: 'QA-029-SPEC-003: Composition Plan YAML and Frontmatter Map in Fixtures'
 type: test_report
-permalink: qa/qa-029-spec-003-composition-plan-yaml-and-frontmatter-map-in-fixtures-1
+permalink: qa/qa-029-spec-003-composition-plan-yaml-and-frontmatter-map-in-fixtures
 tags:
 - test-report
 - spec-003

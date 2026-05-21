@@ -77,7 +77,7 @@ describe("specSubtreeDistributionPlanSchema", () => {
   test("accepts a valid distribution plan", () => {
     const valid = {
       plan_type: "distribution" as const,
-      source_type: "spec-subtree" as const,
+      source_type: "spec" as const,
       manifest: {
         root_path: "SPEC-001-foo.md",
         root_hash: "abc",
@@ -98,10 +98,10 @@ describe("specSubtreeDistributionPlanSchema", () => {
     expect(result.success).toBe(true);
   });
 
-  test("planSchema discriminated union routes spec-subtree distribution", () => {
+  test("planSchema discriminated union routes spec (subtree) distribution", () => {
     const valid = {
       plan_type: "distribution" as const,
-      source_type: "spec-subtree" as const,
+      source_type: "spec" as const,
       manifest: {
         root_path: "SPEC-001-foo.md",
         root_hash: "abc",
@@ -119,7 +119,7 @@ describe("specSubtreeCompositionPlanSchema", () => {
   test("accepts a valid composition plan", () => {
     const valid = {
       plan_type: "composition" as const,
-      source_type: "spec-subtree" as const,
+      source_type: "spec" as const,
       manifest: {
         root_path: "SPEC-001-foo.md",
         root_hash: "abc",

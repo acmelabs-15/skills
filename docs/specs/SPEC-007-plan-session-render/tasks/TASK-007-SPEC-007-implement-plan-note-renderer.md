@@ -2,7 +2,7 @@
 title: 'TASK-007-SPEC-007: Implement PlanNote Renderer'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-007-spec-007-implement-plan-note-renderer
-status: TODO
+status: DONE
 effort: L
 estimate: 1.5d
 tags:
@@ -96,3 +96,4 @@ Create `_shared/composition/src/renderers/plan-note.ts` implementing renderPlanN
 - implements [[DESIGN-002-SPEC-007: Parser Renderer Round-Trip Strategy]]
 - depends_on [[TASK-002-SPEC-007: Implement PlanNote Zod Schema]]
 - depends_on [[TASK-009-SPEC-007: Implement Mermaid Renderer]]
+- validated_by [[QA-016-SPEC-007: Implement PlanNote Renderer]]

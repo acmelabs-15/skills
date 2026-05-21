@@ -2,7 +2,7 @@
 title: 'TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-014-spec-007-execute-plan-001-migration-to-trimmed-template
-status: DRAFT
+status: TODO
 effort: M
 estimate: 1d
 tags:
@@ -88,3 +88,5 @@ Apply the SPEC-007 render pipeline to `docs/planning/PLAN-001-skills-ecosystem.m
 - implements [[REQ-012-SPEC-007: PLAN-001 Dogfood Migration]]
 - extends [[TASK-013-SPEC-007: Dogfood PLAN-001 Migration]]
 - caused_by [[QA-022-SPEC-007: Dogfood PLAN-001 Migration]]
+- [decision] Supersedes TASK-013 which was BLOCKED by QA-022 FAIL; gap-TASK ready for build dispatch #supersedes #gap-task
+- supersedes [[TASK-013-SPEC-007: Dogfood PLAN-001 Migration]]

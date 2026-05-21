@@ -2,7 +2,7 @@
 title: 'TASK-012-SPEC-007: Implement Round-Trip Property Test'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-012-spec-007-implement-round-trip-test
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -89,3 +89,4 @@ Create `_shared/composition/src/tests/round-trip.test.ts` with two SHA-256 char-
 - depends_on [[TASK-006-SPEC-007: Implement SessionNote Parser]]
 - depends_on [[TASK-007-SPEC-007: Implement PlanNote Renderer]]
 - depends_on [[TASK-008-SPEC-007: Implement SessionNote Renderer]]
+- validated_by [[QA-021-SPEC-007: Implement Round-Trip Property Test]]

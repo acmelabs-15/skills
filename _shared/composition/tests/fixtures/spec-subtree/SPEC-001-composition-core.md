@@ -21,6 +21,7 @@ SHA-256 round-trip invariant.
 
 - [ ] REQ-001-SPEC-001 implemented
 - [ ] REQ-002-SPEC-001 implemented
+- [ ] DESIGN-001-SPEC-001 accepted
 - [ ] TASK-001-SPEC-001 done
 
 ## Observations
@@ -33,4 +34,5 @@ SHA-256 round-trip invariant.
 
 - contains [[REQ-001-SPEC-001: Adapter Interface]]
 - contains [[REQ-002-SPEC-001: Hash Utility]]
+- contains [[DESIGN-001-SPEC-001: Adapter Architecture]]
 - contains [[TASK-001-SPEC-001: Scaffold Adapter]]

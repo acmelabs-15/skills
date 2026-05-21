@@ -2,7 +2,7 @@
 title: 'REQ-004-SPEC-007: PlanNote Markdown Parser'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-004-spec-007-plan-note-parser
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007

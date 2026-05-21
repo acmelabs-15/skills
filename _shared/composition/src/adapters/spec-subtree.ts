@@ -1,4 +1,4 @@
-import { dirname, join } from "node:path";
+import { dirname, isAbsolute, join, resolve } from "node:path";
 import type { Root } from "mdast";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
@@ -62,7 +62,7 @@ export class SubtreeHashValidationError extends Error {
  * subtree.
  */
 export class SpecSubtreeAdapter implements CompositionAdapter {
-  readonly sourceType = "spec-subtree";
+  readonly sourceType = "spec";
 
   private readonly processor = unified()
     .use(remarkParse)
@@ -181,6 +181,27 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
   async applyFilenameRewrites(rootDir: string, rewrites: FilenameRewriteSpec[]): Promise<void> {
     if (rewrites.length === 0) return;
 
+    // Pre-flight: path-containment check on every target path.
+    // Reject absolute paths, paths containing ".." traversal segments, and
+    // paths that resolve outside rootDir.
+    for (const rw of rewrites) {
+      this.assertContainedRelativePath(rw.newRelativePath, rootDir);
+    }
+
+    // Pre-flight: injectivity — no two rewrites may target the same
+    // newRelativePath. Detected before any rename executes (the dst-exists
+    // check below would otherwise only catch this AFTER the first succeeded,
+    // triggering rollback rather than pre-flight rejection).
+    const targetSet = new Set<string>();
+    for (const rw of rewrites) {
+      if (targetSet.has(rw.newRelativePath)) {
+        throw new Error(
+          `Filename rewrite injectivity violation: duplicate target ${rw.newRelativePath}`,
+        );
+      }
+      targetSet.add(rw.newRelativePath);
+    }
+
     // Pre-flight: every source path must exist.
     for (const rw of rewrites) {
       const srcAbs = join(rootDir, rw.relativePath);
@@ -231,6 +252,31 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
         }
       }
       throw err;
+    }
+  }
+
+  /**
+   * Validates that a relative path is safe for use as a rewrite target:
+   * not absolute, no ".." traversal segments, and resolves to a location
+   * within rootDir.
+   */
+  private assertContainedRelativePath(relativePath: string, rootDir: string): void {
+    if (relativePath.length === 0) {
+      throw new Error("Filename rewrite path-containment violation: empty path");
+    }
+    if (isAbsolute(relativePath)) {
+      throw new Error(`Filename rewrite path-containment violation: absolute path ${relativePath}`);
+    }
+    const segments = relativePath.split(/[/\\]/);
+    if (segments.includes("..")) {
+      throw new Error(`Filename rewrite path-containment violation: traversal in ${relativePath}`);
+    }
+    const rootAbs = resolve(rootDir);
+    const targetAbs = resolve(rootAbs, relativePath);
+    if (targetAbs !== rootAbs && !targetAbs.startsWith(`${rootAbs}/`)) {
+      throw new Error(
+        `Filename rewrite path-containment violation: escapes rootDir: ${relativePath}`,
+      );
     }
   }
 

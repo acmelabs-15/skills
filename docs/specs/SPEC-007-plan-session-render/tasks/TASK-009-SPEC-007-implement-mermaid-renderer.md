@@ -2,7 +2,7 @@
 title: 'TASK-009-SPEC-007: Implement Mermaid Renderer'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-009-spec-007-implement-mermaid-renderer
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -91,3 +91,4 @@ Create `_shared/composition/src/renderers/mermaid.ts` implementing renderMermaid
 - implements [[REQ-008-SPEC-007: Mermaid Renderer]]
 - implements [[DESIGN-004-SPEC-007: Mermaid Renderer and Auto-Derivation]]
 - required_by [[TASK-007-SPEC-007: Implement PlanNote Renderer]]
+- validated_by [[QA-018-SPEC-007: Implement Mermaid Renderer]]

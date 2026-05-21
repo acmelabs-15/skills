@@ -2,7 +2,7 @@
 title: 'QA-031-SPEC-003: TASK-010 Fix Iter 1 Revalidation'
 type: test-report
 status: DONE
-permalink: qa/qa-031-spec-003-task-010-fix-iter-1-revalidation-1
+permalink: qa/qa-031-spec-003-task-010-fix-iter-1-revalidation
 tags:
 - test-report
 - spec-003

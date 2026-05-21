@@ -1,7 +1,7 @@
 ---
 title: 'CRIT-004-ADR-004: Debate Log'
 type: critique
-permalink: critique/crit-004-adr-004-debate-log-1
+permalink: critique/crit-004-adr-004-debate-log
 status: ACCEPTED
 tags:
 - critique

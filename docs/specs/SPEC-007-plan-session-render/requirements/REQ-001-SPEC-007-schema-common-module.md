@@ -2,7 +2,7 @@
 title: 'REQ-001-SPEC-007: Schema Common Module'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-001-spec-007-schema-common-module
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007

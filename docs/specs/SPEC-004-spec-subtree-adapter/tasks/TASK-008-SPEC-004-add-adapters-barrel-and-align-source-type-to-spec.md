@@ -2,7 +2,7 @@
 title: 'TASK-008-SPEC-004: Add Adapters Barrel and Align sourceType to spec'
 type: task
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-008-spec-004-add-adapters-barrel-and-align-source-type-to-spec
-status: DRAFT
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -40,11 +40,11 @@ User adjudication required before code changes.
 
 ## Definition of Done
 
-- [ ] `src/adapters/index.ts` exists exporting `SpecSubtreeAdapter`, `AdrAdapter`, `AnalysisAdapter`, `PlanAdapter`, `SessionAdapter`
-- [ ] User has adjudicated sourceType choice ("spec" vs "spec-subtree")
-- [ ] Implementation + schema + tests aligned to adjudicated value
-- [ ] All existing 27 SPEC-004 tests pass
-- [ ] `bunx tsc --noEmit -p tsconfig.json` clean; `bunx biome check` clean
+- [x] `src/adapters/index.ts` exists exporting `SpecSubtreeAdapter`, `AdrAdapter`, `AnalysisAdapter`, `PlanAdapter`, `SessionAdapter`
+- [x] User has adjudicated sourceType choice ("spec" vs "spec-subtree") — locked: "spec" (canonical authority)
+- [x] Implementation + schema + tests aligned to adjudicated value
+- [x] All existing 27 SPEC-004 tests pass (full suite: 468/468 pass)
+- [x] `bunx tsc --noEmit -p tsconfig.json` clean; `bunx biome check` clean
 
 ## Observations
 

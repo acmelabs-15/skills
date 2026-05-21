@@ -1,7 +1,7 @@
 ---
 title: 'QA-028-SPEC-003: Register PlanAdapter in Dispatcher'
 type: qa
-permalink: qa/qa-028-spec-003-register-plan-adapter-in-dispatcher-2
+permalink: qa/qa-028-spec-003-register-plan-adapter-in-dispatcher
 status: DONE
 tags:
 - qa

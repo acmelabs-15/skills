@@ -2,7 +2,7 @@
 title: 'TASK-013-SPEC-007: Dogfood PLAN-001 Migration'
 type: task
 permalink: specs/spec-007-plan-session-render/tasks/task-013-spec-007-dogfood-plan-001-migration
-status: TODO
+status: BLOCKED
 effort: M
 estimate: 1d
 tags:
@@ -91,3 +91,7 @@ Migrate PLAN-001-skills-ecosystem.md from the original template to the trimmed t
 - implements [[REQ-012-SPEC-007: PLAN-001 Dogfood Migration]]
 - depends_on [[TASK-012-SPEC-007: Implement Round-Trip Property Test]]
 - depends_on [[TASK-010-SPEC-007: Implement Plan Mutation API]]
+- [outcome] QA-022 FAIL verdict: all 6 DoD checks failed; migration never executed on live PLAN-001 #blocked #qa-fail
+- [decision] Superseded by TASK-014 which carries the same migration objective with gap-TASK context #superseded
+- validated_by [[QA-022-SPEC-007: Dogfood PLAN-001 Migration]]
+- superseded_by [[TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template]]

@@ -2,7 +2,7 @@
 title: 'REQ-003-SPEC-007: SessionNote Zod Schema'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-003-spec-007-session-note-zod-schema
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007

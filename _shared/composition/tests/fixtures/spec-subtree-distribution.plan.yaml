@@ -1,38 +1,67 @@
+# SPEC subtree distribution plan per ADR-002 D-5.
+# Per-entry mutations: root + each child carry their own MutationSpec.
+# Per-child filename_rewrite_map present when renumber implies a filename
+# change. dest_path validated by path-containment guard (no .., no /).
 plan_type: distribution
-source_type: spec-subtree
+source_type: spec
 
-manifest:
-  root_path: SPEC-001-composition-core.md
-  root_hash: "0000000000000000000000000000000000000000000000000000000000000000"
+subtree_manifest:
+  root:
+    source_path: docs/specs/SPEC-001-composition-core/SPEC-001-composition-core.md
+    mutations:
+      renumber_map:
+        SPEC-001: SPEC-100
+      wikilink_map:
+        "[[SPEC-001: Composition Core]]": "[[SPEC-100: Composition Core]]"
+      frontmatter_map:
+        title: "SPEC-100: Composition Core"
+        permalink: specs/spec-100-composition-core/spec-100-composition-core
   children:
-    - relative_path: requirements/REQ-001-SPEC-001-adapter-interface.md
-      hash: "1111111111111111111111111111111111111111111111111111111111111111"
-      identifier: REQ-001
-    - relative_path: requirements/REQ-002-SPEC-001-hash-utility.md
-      hash: "2222222222222222222222222222222222222222222222222222222222222222"
-      identifier: REQ-002
-    - relative_path: tasks/TASK-001-SPEC-001-scaffold.md
-      hash: "3333333333333333333333333333333333333333333333333333333333333333"
-      identifier: TASK-001
-
-destinations:
-  - root_path: SPEC-100-composition-core.md
-    children:
-      - relative_path: requirements/REQ-100-SPEC-100-adapter-interface.md
-        new_identifier: REQ-100
-      - relative_path: requirements/REQ-101-SPEC-100-hash-utility.md
-        new_identifier: REQ-101
-      - relative_path: tasks/TASK-100-SPEC-100-scaffold.md
-        new_identifier: TASK-100
-
-mutations:
-  renumber_map:
-    REQ-001: REQ-100
-    REQ-002: REQ-101
-    TASK-001: TASK-100
-    SPEC-001: SPEC-100
-  wikilink_map:
-    "[[SPEC-001: Composition Core]]": "[[SPEC-100: Composition Core]]"
-    "[[REQ-001-SPEC-001: Adapter Interface]]": "[[REQ-100-SPEC-100: Adapter Interface]]"
-    "[[REQ-002-SPEC-001: Hash Utility]]": "[[REQ-101-SPEC-100: Hash Utility]]"
-    "[[TASK-001-SPEC-001: Scaffold Adapter]]": "[[TASK-100-SPEC-100: Scaffold Adapter]]"
+    - source_path: docs/specs/SPEC-001-composition-core/requirements/REQ-001-SPEC-001-adapter-interface.md
+      dest_path: docs/specs/SPEC-100-composition-core/requirements/REQ-100-SPEC-100-adapter-interface.md
+      mutations:
+        renumber_map:
+          REQ-001-SPEC-001: REQ-100-SPEC-100
+        wikilink_map:
+          "[[REQ-001-SPEC-001: Adapter Interface]]": "[[REQ-100-SPEC-100: Adapter Interface]]"
+        frontmatter_map:
+          title: "REQ-100-SPEC-100: Adapter Interface"
+          permalink: specs/spec-100-composition-core/requirements/req-100-spec-100-adapter-interface
+      filename_rewrite_map:
+        REQ-001-SPEC-001-adapter-interface.md: REQ-100-SPEC-100-adapter-interface.md
+    - source_path: docs/specs/SPEC-001-composition-core/requirements/REQ-002-SPEC-001-hash-utility.md
+      dest_path: docs/specs/SPEC-100-composition-core/requirements/REQ-101-SPEC-100-hash-utility.md
+      mutations:
+        renumber_map:
+          REQ-002-SPEC-001: REQ-101-SPEC-100
+        wikilink_map:
+          "[[REQ-002-SPEC-001: Hash Utility]]": "[[REQ-101-SPEC-100: Hash Utility]]"
+        frontmatter_map:
+          title: "REQ-101-SPEC-100: Hash Utility"
+          permalink: specs/spec-100-composition-core/requirements/req-101-spec-100-hash-utility
+      filename_rewrite_map:
+        REQ-002-SPEC-001-hash-utility.md: REQ-101-SPEC-100-hash-utility.md
+    - source_path: docs/specs/SPEC-001-composition-core/design/DESIGN-001-SPEC-001-adapter-architecture.md
+      dest_path: docs/specs/SPEC-100-composition-core/design/DESIGN-100-SPEC-100-adapter-architecture.md
+      mutations:
+        renumber_map:
+          DESIGN-001-SPEC-001: DESIGN-100-SPEC-100
+        wikilink_map:
+          "[[DESIGN-001-SPEC-001: Adapter Architecture]]": "[[DESIGN-100-SPEC-100: Adapter Architecture]]"
+        frontmatter_map:
+          title: "DESIGN-100-SPEC-100: Adapter Architecture"
+          permalink: specs/spec-100-composition-core/design/design-100-spec-100-adapter-architecture
+      filename_rewrite_map:
+        DESIGN-001-SPEC-001-adapter-architecture.md: DESIGN-100-SPEC-100-adapter-architecture.md
+    - source_path: docs/specs/SPEC-001-composition-core/tasks/TASK-001-SPEC-001-scaffold.md
+      dest_path: docs/specs/SPEC-100-composition-core/tasks/TASK-100-SPEC-100-scaffold.md
+      mutations:
+        renumber_map:
+          TASK-001-SPEC-001: TASK-100-SPEC-100
+        wikilink_map:
+          "[[TASK-001-SPEC-001: Scaffold Adapter]]": "[[TASK-100-SPEC-100: Scaffold Adapter]]"
+        frontmatter_map:
+          title: "TASK-100-SPEC-100: Scaffold Adapter"
+          permalink: specs/spec-100-composition-core/tasks/task-100-spec-100-scaffold
+      filename_rewrite_map:
+        TASK-001-SPEC-001-scaffold.md: TASK-100-SPEC-100-scaffold.md

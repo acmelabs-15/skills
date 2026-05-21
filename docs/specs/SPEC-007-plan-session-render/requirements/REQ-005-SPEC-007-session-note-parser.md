@@ -2,7 +2,7 @@
 title: 'REQ-005-SPEC-007: SessionNote Markdown Parser'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-005-spec-007-session-note-parser
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007

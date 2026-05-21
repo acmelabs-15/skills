@@ -260,6 +260,24 @@ Two parallel processor agents dispatched: (1) SPEC-004 retro state-change consol
 
 Per "max parallel + go with recommendation" directive: TASK-009 + TASK-010 impl agents dispatched in parallel this turn (file-disjoint: tests/ vs fixtures/). TASK-008/011/012 adjudications queued — will surface when SPEC-007 processor returns (consolidating questions if SPEC-007 also has adjudications).
 
+## Event 36
+
+[2026-05-21] SPEC-007 processor returned. Aggregate **FAIL** (12/13 PASS; TASK-013 dogfood-migrate FAIL; TASK-014 gap ready). QA-033 aggregate authored. Per-TASK State Changes: 12 TASKs → DONE; 11 REQs → ACCEPTED; 4 DESIGNs → ACCEPTED; TASK-013 → BLOCKED; TASK-014 DRAFT → TODO; SPEC-007 root stays ACCEPTED.
+
+## Event 37
+
+[2026-05-21] Three SPEC-004 adjudications queued; one batched parallel dispatch + one user question. Per blanket pre-authorization on drift cleanups with strong recommendations: TASK-008 (align sourceType + barrel) + TASK-011 (reshape schema per ADR-002 D-5) dispatched immediately. TASK-012 surfaced via AskUserQuestion (3 options); user locked **Implement-as-spec** (adapter owns processSubtree + SubtreeOrchestrator + ClusterRollback per DESIGN-001/003 verbatim; ~200-300 LOC, 1-2 days, honors spec-is-authority). Verbatim echo recorded in chat.
+
+## Event 38
+
+[2026-05-21] TASK-014 SPEC-007 surfaced via AskUserQuestion; user locked **Dispatch now (Recommended)** WITH the option's mitigation embedded ("wait for current in-flight agents to return before dispatching"). Queued. Dispatch will fire after current 5 in-flight agents return.
+
+TASK-008 SPEC-004 returned DONE (468/468 tests + tsc/biome clean; sourceType→"spec" + barrel created). Out-of-scope flag: dispatcher.ts doesn't register SpecSubtreeAdapter; TASK-012 will own that.
+
+TASK-009 + TASK-010 SPEC-004 already DONE (commit 41f941d); QA dispatched in this turn for all three (QA-009 + QA-010 + QA-008).
+
+In-flight (5 + 3 QA + 1 impl-012 = 9): SPEC-007 state propagation, impl-TASK-011, impl-TASK-012, QA-008, QA-009, QA-010. (Note: QA-009 + QA-010 dispatched in prior batch.)
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

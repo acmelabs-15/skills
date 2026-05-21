@@ -1,7 +1,7 @@
 ---
 title: 'QA-031-SPEC-002: TASK-007 Fix Iter 1 Revalidation'
 type: test_report
-permalink: qa/qa-031-spec-002-task-007-fix-iter-1-revalidation-1
+permalink: qa/qa-031-spec-002-task-007-fix-iter-1-revalidation
 tags:
 - qa
 - spec-002

@@ -2,7 +2,7 @@
 title: 'TASK-010-SPEC-004: Add DESIGN Fixture and Composition Plan YAML'
 type: task
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-010-spec-004-add-design-fixture-and-composition-plan-yaml
-status: DRAFT
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -32,11 +32,11 @@ Add `tests/fixtures/spec-subtree/design/DESIGN-001-SPEC-001-adapter-architecture
 
 ## Definition of Done
 
-- [ ] DESIGN fixture present with Component Architecture, interfaces, Observations, Relations
-- [ ] Composition plan YAML inversion of distribution plan validated by `specSubtreeCompositionPlanSchema`
-- [ ] Round-trip test includes DESIGN child; per-file SHA-256 PROOF passes for all 5 files (root + 2 REQ + 1 DESIGN + 1 TASK)
-- [ ] biome check clean on fixtures
-- [ ] All SPEC-004 tests pass
+- [x] DESIGN fixture present with Component Architecture, interfaces, Observations, Relations
+- [x] Composition plan YAML inversion of distribution plan validated by `specSubtreeCompositionPlanSchema`
+- [x] Round-trip test includes DESIGN child; per-file SHA-256 PROOF passes for all 5 files (root + 2 REQ + 1 DESIGN + 1 TASK)
+- [x] biome check clean on fixtures
+- [x] All SPEC-004 tests pass
 
 ## Observations
 

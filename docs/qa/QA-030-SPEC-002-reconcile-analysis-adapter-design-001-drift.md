@@ -1,5 +1,5 @@
 ---
-permalink: qa/qa-030-spec-002-reconcile-analysis-adapter-design-001-drift-1
+permalink: qa/qa-030-spec-002-reconcile-analysis-adapter-design-001-drift
 ---
 
 ---
