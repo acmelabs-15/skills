@@ -96,7 +96,7 @@ Use bun init or manual creation. Ensure all Bun-native APIs are available. The p
 
 ## Relations
 
-- validated_by [[TEST-REPORT-001-SPEC-001: Scaffold Composition Project]]
+- validated_by [[QA-001-SPEC-001: Scaffold Composition Project]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-001-SPEC-001: Composition Library Module Structure]]

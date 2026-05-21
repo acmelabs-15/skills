@@ -1,7 +1,7 @@
 ---
 title: 'SKILL-004: advisory-needs-mechanical'
 type: skill
-permalink: skills/skill-004-advisory-needs-mechanical-1
+permalink: skills/skill-004-advisory-needs-mechanical
 tags:
 - skill
 - enforcement

@@ -1,7 +1,7 @@
 ---
 title: 'TASK-009-SPEC-004: Implement Filename Rewrite Unit Tests and Path Containment'
 type: task
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-009-spec-004-implement-filename-rewrite-unit-tests-and-path-containment-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-009-spec-004-implement-filename-rewrite-unit-tests-and-path-containment
 status: DRAFT
 effort: S
 estimate: 1d
@@ -17,7 +17,7 @@ tags:
 
 ## Design Context
 
-Gap from TEST-REPORT-022-SPEC-004: TASK-003 + DESIGN-002 require unit tests for filename rewrite (success / conflict / rollback) and pre-flight injectivity + path-containment checks; none exist.
+Gap from QA-022-SPEC-004: TASK-003 + DESIGN-002 require unit tests for filename rewrite (success / conflict / rollback) and pre-flight injectivity + path-containment checks; none exist.
 
 ## Objective
 
@@ -46,5 +46,5 @@ Author `_shared/composition/tests/filename-rewrite.test.ts` exercising `applyFil
 ## Relations
 
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
-- caused_by [[TEST-REPORT-022-SPEC-004: Implement Filename Rewrite Handler]]
+- caused_by [[QA-022-SPEC-004: Implement Filename Rewrite Handler]]
 - extends [[TASK-003-SPEC-004: Implement Filename Rewrite Handler]]

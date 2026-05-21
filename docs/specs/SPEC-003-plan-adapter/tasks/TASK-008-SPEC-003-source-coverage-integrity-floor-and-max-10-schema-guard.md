@@ -1,7 +1,7 @@
 ---
 title: 'TASK-008-SPEC-003: Source-Coverage Integrity Floor and Max-10 Schema Guard'
 type: task
-permalink: specs/spec-003-plan-adapter/tasks/task-008-spec-003-source-coverage-integrity-floor-and-max-10-schema-guard-1
+permalink: specs/spec-003-plan-adapter/tasks/task-008-spec-003-source-coverage-integrity-floor-and-max-10-schema-guard
 status: DRAFT
 effort: S
 estimate: 0.5d
@@ -16,7 +16,7 @@ tags:
 
 ## Design Context
 
-Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (TEST-REPORT-011-SPEC-003). REQ-003-SPEC-003 mandates a 50% integrity floor measured as "regenerated_sections cover ≤50% of source content lines." Current `enforceIntegrityFloor` measures preservation ratio of recovered vs input, not section coverage. DESIGN-002 Component 2 also mandates a schema-level max-10 refinement which is absent. Both layers are missing.
+Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (QA-011-SPEC-003). REQ-003-SPEC-003 mandates a 50% integrity floor measured as "regenerated_sections cover ≤50% of source content lines." Current `enforceIntegrityFloor` measures preservation ratio of recovered vs input, not section coverage. DESIGN-002 Component 2 also mandates a schema-level max-10 refinement which is absent. Both layers are missing.
 
 ## Objective
 
@@ -62,7 +62,7 @@ Out of Scope: changes to preservation-ratio enforceIntegrityFloor (orthogonal sa
 ## Relations
 
 - part_of [[SPEC-003: PLAN Adapter]]
-- caused_by [[TEST-REPORT-011-SPEC-003: Regen Sections and Integrity Floor]]
+- caused_by [[QA-011-SPEC-003: Regen Sections and Integrity Floor]]
 - extends [[TASK-002-SPEC-003: Implement Regenerated Sections Handler and Integrity Floor]]
 - implements [[REQ-002-SPEC-003: Regenerated Sections Field Handling]]
 - implements [[REQ-003-SPEC-003: Fifty Percent Integrity Floor on Regenerated Sections]]

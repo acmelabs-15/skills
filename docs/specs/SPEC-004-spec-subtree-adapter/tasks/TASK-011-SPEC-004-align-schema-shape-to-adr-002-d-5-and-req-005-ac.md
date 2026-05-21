@@ -1,7 +1,7 @@
 ---
 title: 'TASK-011-SPEC-004: Align Schema Shape to ADR-002 D-5 and REQ-005 AC'
 type: task
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-011-spec-004-align-schema-shape-to-adr-002-d-5-and-req-005-ac-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-011-spec-004-align-schema-shape-to-adr-002-d-5-and-req-005-ac
 status: DRAFT
 effort: M
 estimate: 1.5d
@@ -16,7 +16,7 @@ tags:
 
 ## Design Context
 
-Gap from TEST-REPORT-024-SPEC-004: `specSubtreeManifestSchema` diverges from ADR-002 D-5 + REQ-005 in four ways:
+Gap from QA-024-SPEC-004: `specSubtreeManifestSchema` diverges from ADR-002 D-5 + REQ-005 in four ways:
 
 1. ADR-002 D-5 says per-entry `mutations` (root entry + each child) — impl uses top-level plan-wide `mutations`
 2. ADR-002 D-5 says per-child optional `filename_rewrite_map` — not in shape
@@ -57,6 +57,6 @@ User adjudication required FIRST: keep current simplified shape and amend ADR-00
 ## Relations
 
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
-- caused_by [[TEST-REPORT-024-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
+- caused_by [[QA-024-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
 - extends [[TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
 - depends_on [[ADR-002: Adapter Contract and Plan Schema]]

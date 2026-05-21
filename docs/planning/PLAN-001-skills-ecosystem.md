@@ -160,14 +160,23 @@ graph TD
 
 ## Decision Log
 
+### 2026-05-21 — Convention update: QA replaces TEST-REPORT; permalink collision suffixes stripped
+
+User locked: `TEST-REPORT` is not canonical — `QA` is. Two scripts run this turn (one swing each per user directive):
+
+- `scripts/rename-test-report-to-qa.ts` — Bun TS one-shot. 44 file renames + 84 content edits across `docs/**`. Frontmatter title/type/permalink/tags + H1 + body wikilinks + prose references all rewritten. Verified zero `TEST-REPORT` / `test-report` references remain in `docs/**`.
+- `find ... sed` one-liner for permalink collision suffixes. 63 trailing `-1` / `-2` permalink suffixes stripped (basic-memory collision artifact catalogued in `feedback_skills_phase_x_protocol_hardening_state` "~95 permalink -1 cleanups"). Preserves legitimate 3-digit suffixes like `-001` (which appear in slugs ending with PLAN-001 etc.). Verified zero trailing `-1`/`-2` permalinks remain.
+
+Note: convention update — `~/KNOWLEDGE-GRAPH-CONVENTIONS.md` Section 3 currently lists `test-report` as one of the 16 canonical types. Per user directive 2026-05-21, that needs updating to `qa`. Deferred to a future session (convention file lives at user-home root, not in this project's `docs/**`).
+
 ### 2026-05-21 — Wave 2 retro-validation DEFERRED mid-swarm (user pivot)
 
 User pivoted ([[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]] Event 07) — other urgent work requires attention. Wave 2 retro-validation swarm partially complete:
 
-- **SPEC-002**: agent returned. 6 TEST-REPORTs (010-015 + 016 aggregate) + 4 gap-TASKs filed (TASK-007/008/009/010). Aggregate verdict FAIL. State Changes NOT YET PROPAGATED to Brain note statuses.
-- **SPEC-003**: agent returned. 6 TEST-REPORTs (010-015 aggregate) + 5 gap-TASKs filed (TASK-006/007/008/009/010). Aggregate verdict FAIL. State Changes NOT YET PROPAGATED.
-- **SPEC-004**: agent KILLED mid-flight (TaskStop). Partial TEST-REPORTs + 4 gap-TASKs filed (TASK-008/009/010/011). No aggregate return; State Changes UNKNOWN.
-- **SPEC-007**: agent KILLED mid-flight (TaskStop). 14+ TEST-REPORTs (010-022; partial) + gap-TASKs filed. No aggregate return; State Changes UNKNOWN.
+- **SPEC-002**: agent returned. 6 QAs (010-015 + 016 aggregate) + 4 gap-TASKs filed (TASK-007/008/009/010). Aggregate verdict FAIL. State Changes NOT YET PROPAGATED to Brain note statuses.
+- **SPEC-003**: agent returned. 6 QAs (010-015 aggregate) + 5 gap-TASKs filed (TASK-006/007/008/009/010). Aggregate verdict FAIL. State Changes NOT YET PROPAGATED.
+- **SPEC-004**: agent KILLED mid-flight (TaskStop). Partial QAs + 4 gap-TASKs filed (TASK-008/009/010/011). No aggregate return; State Changes UNKNOWN.
+- **SPEC-007**: agent KILLED mid-flight (TaskStop). 14+ QAs (010-022; partial) + gap-TASKs filed. No aggregate return; State Changes UNKNOWN.
 
 All filenames clean post-correction (Pattern 2 Phase 3 corrective SendMessages applied to in-flight agents; verified `find docs/{qa,specs} -name '* *.md'` returns 0).
 
@@ -182,7 +191,7 @@ Resume plan for next session: (1) read SPEC-002 + SPEC-003 returns from this ses
 
 ### 2026-05-21 — PUD-D2 locked = Hybrid (Wave 2 retro-validation)
 
-User adjudicated PUD-D2 via AskUserQuestion (`/plan PLAN-001-skills-ecosystem` continue mode, [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]] Event 02). Locked option: **Hybrid (Recommended)**. Existing Wave 2 code (SPEC-002/003/004/007 on main as `5299aea` + `2f049fd`) kept as baseline. Per SPEC: dispatch QA agent per rigid cycle — read every TASK + linked REQ + linked DESIGN; for every checkbox in DoD/AC/compliance find evidence-or-gap in code; verify every existing `[x]` claim against code evidence; write TEST-REPORT per TASK with per-checkbox findings. Genuine gaps → file new TASKs and drive through full rigid cycle. Validating items → flip Brain notes (TASK DONE + `validated_by` → TEST-REPORT; REQ ACCEPTED; DESIGN ACCEPTED; SPEC root DONE). Parallelizable as 4-SPEC swarm. Estimated effort 6–10h. Mechanical leverage from X.D claim validators (PR #6). Branch `feat/plan-001-wave-2-retro-validation` created off `main`. Build parts 002/003/004/007 transition BLOCKED → READY pending dispatch-strategy confirmation (parallel-all-4 vs sequential-from-002). 005/006 remain BLOCKED (transitive on Wave 2 close). Phase X.E.2 + X.E.3 stay BLOCKED until Wave 2 retro-validation completes.
+User adjudicated PUD-D2 via AskUserQuestion (`/plan PLAN-001-skills-ecosystem` continue mode, [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]] Event 02). Locked option: **Hybrid (Recommended)**. Existing Wave 2 code (SPEC-002/003/004/007 on main as `5299aea` + `2f049fd`) kept as baseline. Per SPEC: dispatch QA agent per rigid cycle — read every TASK + linked REQ + linked DESIGN; for every checkbox in DoD/AC/compliance find evidence-or-gap in code; verify every existing `[x]` claim against code evidence; write QA per TASK with per-checkbox findings. Genuine gaps → file new TASKs and drive through full rigid cycle. Validating items → flip Brain notes (TASK DONE + `validated_by` → QA; REQ ACCEPTED; DESIGN ACCEPTED; SPEC root DONE). Parallelizable as 4-SPEC swarm. Estimated effort 6–10h. Mechanical leverage from X.D claim validators (PR #6). Branch `feat/plan-001-wave-2-retro-validation` created off `main`. Build parts 002/003/004/007 transition BLOCKED → READY pending dispatch-strategy confirmation (parallel-all-4 vs sequential-from-002). 005/006 remain BLOCKED (transitive on Wave 2 close). Phase X.E.2 + X.E.3 stay BLOCKED until Wave 2 retro-validation completes.
 
 Sidecar fix this turn: 3 Progress Log bullets (2026-05-20 entries for spec.SPEC-007 / Wave 2 launch / build.SPEC-001 IN_PROGRESS) were restructured to put `relates_to [[wikilink]]` at the front per basic-memory list-item parser convention. The original bullets had inline wikilinks at the end with >200-char prose prefixes, which basic-memory parsed as malformed relation_type strings and blocked all `edit_note` operations on PLAN-001. Restructured form preserves wikilinks for semantic graph + unblocks Brain MCP edits. Binary-rule exception (direct file Edit on a Brain note under `docs/**`) documented here per same pragmatic-MCP-fallback precedent recorded 2026-05-20.
 
@@ -244,11 +253,11 @@ User adjudicated /end Step 1 HALT (DoD incomplete) via AskUserQuestion. Locked o
 - **Part**: build.SPEC-002 (also affects 003 / 004 / 007 directly; 005 / 006 transitively)
 - **Surfaced At Event**: 13 (SESSION-2026-05-20_06)
 - **Surfaced Session**: SESSION-2026-05-20_06
-- **Question**: How should the Wave 2 code (SPEC-002 / 003 / 004 / 007 — merged to main as `5299aea` Wave 2 integration + `2f049fd` PR #6 Phase X additions) be handled? It was never validated under the rigid per-TASK build+QA protocol; 30 TASKs were originally flipped DONE without TEST-REPORTs (that's what triggered Phase X). The Brain notes for the 4 SPEC subtrees were surgically reverted to pre-build state per SESSION-_05 Event 20, but the code is on main.
+- **Question**: How should the Wave 2 code (SPEC-002 / 003 / 004 / 007 — merged to main as `5299aea` Wave 2 integration + `2f049fd` PR #6 Phase X additions) be handled? It was never validated under the rigid per-TASK build+QA protocol; 30 TASKs were originally flipped DONE without QAs (that's what triggered Phase X). The Brain notes for the 4 SPEC subtrees were surgically reverted to pre-build state per SESSION-_05 Event 20, but the code is on main.
 
 **Options**:
 
-- **Hybrid (Recommended)**: Keep the existing code as a baseline. For each of the 4 SPECs, dispatch a QA agent per the rigid cycle: (1) read every TASK + linked REQ + linked DESIGN; (2) for every checkbox in DoD / AC / compliance, find evidence-or-gap in the existing code; (3) verify every existing `[x]` claim against actual code evidence; (4) write a TEST-REPORT per TASK with per-checkbox findings. For genuine gaps file new TASKs and drive them through the full rigid cycle. For everything that validates, flip Brain notes (TASK status → DONE with `validated_by` → TEST-REPORT; REQ → ACCEPTED; DESIGN → ACCEPTED; SPEC root → DONE). Parallelizable as 4-SPEC swarm. Estimated effort 6–10 hours.
+- **Hybrid (Recommended)**: Keep the existing code as a baseline. For each of the 4 SPECs, dispatch a QA agent per the rigid cycle: (1) read every TASK + linked REQ + linked DESIGN; (2) for every checkbox in DoD / AC / compliance, find evidence-or-gap in the existing code; (3) verify every existing `[x]` claim against actual code evidence; (4) write a QA per TASK with per-checkbox findings. For genuine gaps file new TASKs and drive them through the full rigid cycle. For everything that validates, flip Brain notes (TASK status → DONE with `validated_by` → QA; REQ → ACCEPTED; DESIGN → ACCEPTED; SPEC root → DONE). Parallelizable as 4-SPEC swarm. Estimated effort 6–10 hours.
 - **Throw out**: Reset the 4 SPECs' code state on main + rebuild from scratch through the rigid cycle. Highest trust outcome; significant clock cost; discards working code.
 - **Salvage**: Pure retro-QA pass against existing code without the gap-finding rigor. Faster but confirmation-bias risk — claim validators check note-internal consistency, not code-vs-spec alignment.
 - **Defer indefinitely**: Land further work without resolving D2; tech debt persists.
@@ -272,7 +281,7 @@ Retro-validate the existing Wave 2 code for `{{SPEC_ID}}` (one of SPEC-002 / SPE
 3. `~/.claude/memory/feedback_workflow_phase_rigor_at_every_layer.md` — TIER-1 BLOCKING
 4. `~/KNOWLEDGE-GRAPH-STRUCTURES.md` Section 4.6 PLAN + Section 4.7 SPEC + Section 4.8 TASK + Section 4.9 REQ EARS
 5. The complete `{{SPEC_ID}}` subtree via Brain MCP `list_directory` then `read_note` for each: SPEC root + every REQ + every DESIGN + every TASK
-6. The composition library at `_shared/composition/` — specifically `src/schemas/test-report-note.ts`, `src/validators/validate-test-report-pass-claim.ts`, `src/schemas/task-note.ts`
+6. The composition library at `_shared/composition/` — specifically `src/schemas/qa-note.ts`, `src/validators/validate-qa-pass-claim.ts`, `src/schemas/task-note.ts`
 7. The implementation code paths for `{{SPEC_ID}}` (derived from TASK `files_affected` fields + DESIGN module-structure sections)
 
 ### Inputs (per-agent)
@@ -293,9 +302,9 @@ For each `TASK-NNN-{{SPEC_ID}}-*.md`, in order (oldest TASK number first):
 1. **Read** — Brain MCP `read_note` on TASK; collect linked REQs + DESIGNs from Relations; `read_note` each.
 2. **Identify code under verification** — From TASK `files_affected` + DESIGN module-structure sections, enumerate exact files. Read via `Read` tool.
 3. **Per-checkbox evidence-or-gap** — For EVERY checkbox in TASK DoD + linked REQ AC (EARS Given/When/Then) + linked DESIGN compliance: produce finding PASS / FAIL / PARTIAL / N/A with `file:line` evidence or test-name citation. Do NOT trust prior `[x]` marks — re-verify against code.
-4. **Write TEST-REPORT** — `docs/qa/TEST-REPORT-NNN-{{SPEC_ID}}-<task-slug>.md` via Pattern 2 three-phase write. Must satisfy `TestReportNoteSchema` (frontmatter `validates`, `verdict`, `tests_run`, `passed`, `failed`, `skipped`; body per-checkbox findings table; `tests_run === passed + failed + skipped`).
-5. **Self-validate** — Parse own TEST-REPORT via schema + call `validateTestReportPassClaim`. On rejection, fix the underlying claim, not the numbers.
-6. **Per-TASK verdict** — Return `PASS — see TEST-REPORT-NNN-{{SPEC_ID}}-<task-slug>` OR `FAIL — see TEST-REPORT-NNN + <bulleted gap headlines>`.
+4. **Write QA** — `docs/qa/QA-NNN-{{SPEC_ID}}-<task-slug>.md` via Pattern 2 three-phase write. Must satisfy `TestReportNoteSchema` (frontmatter `validates`, `verdict`, `tests_run`, `passed`, `failed`, `skipped`; body per-checkbox findings table; `tests_run === passed + failed + skipped`).
+5. **Self-validate** — Parse own QA via schema + call `validateTestReportPassClaim`. On rejection, fix the underlying claim, not the numbers.
+6. **Per-TASK verdict** — Return `PASS — see QA-NNN-{{SPEC_ID}}-<task-slug>` OR `FAIL — see QA-NNN + <bulleted gap headlines>`.
 
 ### Gap handling
 
@@ -303,8 +312,8 @@ On FAIL/PARTIAL checkbox:
 
 - Do NOT modify code (retro is QA-only).
 - Do NOT mark the checkbox `[x]` in TASK/REQ/DESIGN (leave `[ ]`).
-- Record gap in TEST-REPORT findings table with full evidence.
-- File gap-TASK directly via Brain MCP `write_note` Pattern 2 three-phase write at path `docs/specs/{{SPEC_ID}}-<slug>/tasks/TASK-NEW-NNN-{{SPEC_ID}}-<gap-slug>.md` (next available NNN by `list_directory tasks/`). Status DRAFT. Required Relations (use the canonical colon-form titles of the actual targets): `caused_by` your TEST-REPORT, `part_of` the SPEC root, `extends` the original TASK. DoD checkboxes listing the specific gap items to remediate. Note the gap-TASK count in your per-SPEC aggregate return.
+- Record gap in QA findings table with full evidence.
+- File gap-TASK directly via Brain MCP `write_note` Pattern 2 three-phase write at path `docs/specs/{{SPEC_ID}}-<slug>/tasks/TASK-NEW-NNN-{{SPEC_ID}}-<gap-slug>.md` (next available NNN by `list_directory tasks/`). Status DRAFT. Required Relations (use the canonical colon-form titles of the actual targets): `caused_by` your QA, `part_of` the SPEC root, `extends` the original TASK. DoD checkboxes listing the specific gap items to remediate. Note the gap-TASK count in your per-SPEC aggregate return.
 
 Orchestrator will drive gap-TASKs through the standard rigid build+QA cycle in a follow-up dispatch (not this swarm).
 
@@ -312,7 +321,7 @@ Orchestrator will drive gap-TASKs through the standard rigid build+QA cycle in a
 
 After all TASKs in `{{SPEC_ID}}` validated:
 
-1. Write `docs/qa/TEST-REPORT-NNN-{{SPEC_ID}}-spec-aggregate.md` (Pattern 2). Aggregates per-TASK verdicts + per-REQ AC coverage + per-DESIGN compliance coverage. Frontmatter `validates` linking to the SPEC root by canonical colon-form title; verdict PASS only if all per-TASK PASS.
+1. Write `docs/qa/QA-NNN-{{SPEC_ID}}-spec-aggregate.md` (Pattern 2). Aggregates per-TASK verdicts + per-REQ AC coverage + per-DESIGN compliance coverage. Frontmatter `validates` linking to the SPEC root by canonical colon-form title; verdict PASS only if all per-TASK PASS.
 2. Return `## State Changes` listing PROPOSED orchestrator-applied transitions:
    - Per-TASK: `TASK-NNN-{{SPEC_ID}}-*` DRAFT/READY → DONE (on PASS) OR new gap-TASK already filed (on FAIL)
    - Per-REQ: DRAFT → ACCEPTED (all AC PASS) OR stays DRAFT (any AC FAIL)
@@ -322,7 +331,7 @@ After all TASKs in `{{SPEC_ID}}` validated:
 ### IN-SCOPE
 
 - Reading + analyzing `{{SPEC_ID}}` subtree + implementation code
-- Authoring TEST-REPORT notes (per-TASK + aggregate)
+- Authoring QA notes (per-TASK + aggregate)
 - Writing gap-TASK notes directly via Brain MCP (per 2026-05-21 refinement)
 - Returning `## State Changes` proposal for note status transitions
 - Running existing tests via `bun test <path>` for TASK-specific validation
@@ -343,10 +352,10 @@ After all TASKs in `{{SPEC_ID}}` validated:
 - ❌ Mass-flipping checkboxes without per-item evidence
 - ❌ Trusting prior `[x]` marks from pre-revert state
 - ❌ Returning aggregate PASS without per-checkbox findings
-- ❌ Writing a TEST-REPORT that `validateTestReportPassClaim` rejects, then "fixing" the numbers instead of the claim
+- ❌ Writing a QA that `validateTestReportPassClaim` rejects, then "fixing" the numbers instead of the claim
 - ❌ Writing gap fixes inline (code is read-only)
-- ❌ Skipping the per-SPEC aggregate TEST-REPORT
-- ❌ Returning anything other than `PASS — see TEST-REPORT-NNN` or `FAIL — see TEST-REPORT-NNN + gap list`
+- ❌ Skipping the per-SPEC aggregate QA
+- ❌ Returning anything other than `PASS — see QA-NNN` or `FAIL — see QA-NNN + gap list`
 
 ### Tools
 
@@ -1196,15 +1205,15 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 
 | Task | Status | QA |
 |---|---|---|
-| TASK-001-SPEC-001 Scaffold Composition Project | DONE | TEST-REPORT-001-SPEC-001 PASS |
-| TASK-002-SPEC-001 Core Types and Adapter Interface | DONE | TEST-REPORT-002-SPEC-001 PASS |
-| TASK-003-SPEC-001 SHA-256 Hash Utility | DONE | TEST-REPORT-003-SPEC-001 PASS |
-| TASK-004-SPEC-001 BaseMarkdownAdapter | DONE | TEST-REPORT-004-SPEC-001 PASS |
-| TASK-005-SPEC-001 Zod Plan Schemas | DONE | TEST-REPORT-005-SPEC-001 PASS |
-| TASK-006-SPEC-001 Injectivity and Path-Containment Validators | DONE | TEST-REPORT-006-SPEC-001 PASS |
-| TASK-007-SPEC-001 Atomic Write Helper | DONE | TEST-REPORT-007-SPEC-001 PASS |
-| TASK-008-SPEC-001 ADR Adapter | DONE | TEST-REPORT-008-SPEC-001 PASS |
-| TASK-009-SPEC-001 Round-Trip Property Test (THE PROOF) | DONE | TEST-REPORT-009-SPEC-001 PASS ✓ THE PROOF |
+| TASK-001-SPEC-001 Scaffold Composition Project | DONE | QA-001-SPEC-001 PASS |
+| TASK-002-SPEC-001 Core Types and Adapter Interface | DONE | QA-002-SPEC-001 PASS |
+| TASK-003-SPEC-001 SHA-256 Hash Utility | DONE | QA-003-SPEC-001 PASS |
+| TASK-004-SPEC-001 BaseMarkdownAdapter | DONE | QA-004-SPEC-001 PASS |
+| TASK-005-SPEC-001 Zod Plan Schemas | DONE | QA-005-SPEC-001 PASS |
+| TASK-006-SPEC-001 Injectivity and Path-Containment Validators | DONE | QA-006-SPEC-001 PASS |
+| TASK-007-SPEC-001 Atomic Write Helper | DONE | QA-007-SPEC-001 PASS |
+| TASK-008-SPEC-001 ADR Adapter | DONE | QA-008-SPEC-001 PASS |
+| TASK-009-SPEC-001 Round-Trip Property Test (THE PROOF) | DONE | QA-009-SPEC-001 PASS ✓ THE PROOF |
 
 #### Pending User Decisions (for build.SPEC-001)
 
@@ -1410,7 +1419,7 @@ Two TIER-1 BLOCKING orchestrator-private memories written; MEMORY.md updated wit
 
 7 user-created lifecycle skills + NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md + composition library current state all audited. Gap inventory captured in ANALYSIS-003 H2 X.B Audit Findings + Per-skill detailed audit findings. 15-item ordered execution sequence locked for X.C + X.D in ANALYSIS-003. Commit 601d75f.
 
-#### X.C — Update skills + templates + structures (DONE 2026-05-21 — 10-agent parallel wave landed; all 7 lifecycle SKILL.md files (plan/build/spec/decisions/research/review/end at ~/.claude/skills/) now carry canonical inline protocol-injection block + skill-specific framing; 3 deferred X.D code items completed: commits c9585f2 flip-checkbox cross-note mutation + e1bb056 SpecRootNote renderer semantic round-trip + 8e1e095 TEST-REPORT byte-identical round-trip; ~/.claude/skills/ not a git repo — SKILL.md saves uncommitted by design; +20 new code tests; 424 → 444 pass / 0 fail. Templates + STRUCTURES updates not in this wave — defer to X.E or follow-up)
+#### X.C — Update skills + templates + structures (DONE 2026-05-21 — 10-agent parallel wave landed; all 7 lifecycle SKILL.md files (plan/build/spec/decisions/research/review/end at ~/.claude/skills/) now carry canonical inline protocol-injection block + skill-specific framing; 3 deferred X.D code items completed: commits c9585f2 flip-checkbox cross-note mutation + e1bb056 SpecRootNote renderer semantic round-trip + 8e1e095 QA byte-identical round-trip; ~/.claude/skills/ not a git repo — SKILL.md saves uncommitted by design; +20 new code tests; 424 → 444 pass / 0 fail. Templates + STRUCTURES updates not in this wave — defer to X.E or follow-up)
 
 Highest priority: /plan + /build + /spec SKILL.md files updated with rigid per-TASK protocol + checkbox-as-contract language. Lighter touch: /decisions + /research + /review + /end. NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md updated per audit findings.
 
@@ -1422,7 +1431,7 @@ Highest-leverage change per skill (from audit; see ANALYSIS-003 § Per-skill det
 - /decisions: formalize lockDecision as deterministic function requiring context
 - /research: add convergencePass schema check at Step 8
 - /review: add checkbox-vs-diff cross-check axis in self-review mode
-- /end: extend Step 1 DoD verification to verify impl-TASK-N + qa-TASK-N pairing + TEST-REPORT linkages
+- /end: extend Step 1 DoD verification to verify impl-TASK-N + qa-TASK-N pairing + QA linkages
 
 #### X.D — Composition library mechanism completion (IN_PROGRESS 1 of 7)
 
@@ -1436,7 +1445,7 @@ D1 user decision RESOLVED 2026-05-20: include composition library mechanism comp
 - X.D.6 — Add RequirementNote + DesignNote schemas with AC/compliance claim validators (DONE 2026-05-20 commit 48084fa — RequirementNoteSchema + DesignNoteSchema + parsers + validateRequirementAcClaim + validateDesignComplianceClaim; ClaimResult lifted to shared validators/types.ts; DoDClaimResult retained as backwards-compat alias; ACCEPTED status enforces every AC/compliance item [x] or deferred when section present; +70 new tests; 271 → 341 pass / 0 fail)
 - X.D.7 — Add SpecRootNote + TestReportNote schemas + renderers (DONE 2026-05-21 commit 47cb568 — SpecRootNoteSchema + parser; TestReportNoteSchema + parser + renderer with semantic round-trip; validateSpecDoneClaim enforces every success_criteria + artifact_status item satisfied when present; validateTestReportPassClaim + schema superRefine reject verdict mismatches AND tests_run inequalities; ClaimResult.unsatisfied extended with optional `section` field — forward-compatible; +83 new tests; 341 → 424 pass / 0 fail. **Phase X.D COMPLETE 7 of 7**)
 
-#### X.E — Wrap-up (PARTIAL DONE 2026-05-21 — docs portion complete via 3-agent wave; ~/CLAUDE.md gained pre-flight rows + Composition library section, ~/NOTE-TEMPLATES.md gained full TEST-REPORT template + Schema-validated-by pointers on SPEC/REQ/DESIGN/TASK, ~/KNOWLEDGE-GRAPH-STRUCTURES.md gained Section 4.6 BuildWorkflowItem subsection + Schema enforcement paragraphs + new Section 4.13 TEST-REPORT. ~/ not under git so saves are saved-no-repo by design. X.E.2 PLAN-001 final reconciliation (clean up stale build.SPEC-002/003/004/007 IN_PROGRESS rows) BLOCKED on D2 Wave 2 throw-out vs salvage; X.E.3 final phase close gated on X.E.2)
+#### X.E — Wrap-up (PARTIAL DONE 2026-05-21 — docs portion complete via 3-agent wave; ~/CLAUDE.md gained pre-flight rows + Composition library section, ~/NOTE-TEMPLATES.md gained full QA template + Schema-validated-by pointers on SPEC/REQ/DESIGN/TASK, ~/KNOWLEDGE-GRAPH-STRUCTURES.md gained Section 4.6 BuildWorkflowItem subsection + Schema enforcement paragraphs + new Section 4.13 QA. ~/ not under git so saves are saved-no-repo by design. X.E.2 PLAN-001 final reconciliation (clean up stale build.SPEC-002/003/004/007 IN_PROGRESS rows) BLOCKED on D2 Wave 2 throw-out vs salvage; X.E.3 final phase close gated on X.E.2)
 
 CLAUDE.md updated with TIER-1 BLOCKING protocol references (DONE for post-compaction-rehydration; remaining: per-task-build-qa-cycle + workflow-phase-rigor-at-every-layer references). PLAN-001 final reconciliation (depends on D2 throw-out vs salvage decision for Wave 2). Final commit + phase close + set-part-done.
 

@@ -1,7 +1,7 @@
 ---
 title: 'TASK-010-SPEC-004: Add DESIGN Fixture and Composition Plan YAML'
 type: task
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-010-spec-004-add-design-fixture-and-composition-plan-yaml-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-010-spec-004-add-design-fixture-and-composition-plan-yaml
 status: DRAFT
 effort: S
 estimate: 0.5d
@@ -16,7 +16,7 @@ tags:
 
 ## Design Context
 
-Gap from TEST-REPORT-025-SPEC-004: fixture has 2 REQs + 1 TASK + 0 DESIGN but DoD + REQ-006 AC1 require 1 REQ + 1 DESIGN + 1 TASK minimum. No composition plan YAML exists either.
+Gap from QA-025-SPEC-004: fixture has 2 REQs + 1 TASK + 0 DESIGN but DoD + REQ-006 AC1 require 1 REQ + 1 DESIGN + 1 TASK minimum. No composition plan YAML exists either.
 
 ## Objective
 
@@ -46,5 +46,5 @@ Add `tests/fixtures/spec-subtree/design/DESIGN-001-SPEC-001-adapter-architecture
 ## Relations
 
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
-- caused_by [[TEST-REPORT-025-SPEC-004: SPEC Subtree Test Fixtures]]
+- caused_by [[QA-025-SPEC-004: SPEC Subtree Test Fixtures]]
 - extends [[TASK-006-SPEC-004: SPEC Subtree Test Fixtures]]

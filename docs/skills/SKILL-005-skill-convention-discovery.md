@@ -1,7 +1,7 @@
 ---
 title: 'SKILL-005: skill-convention-discovery'
 type: skill
-permalink: skills/skill-005-skill-convention-discovery-1
+permalink: skills/skill-005-skill-convention-discovery
 tags:
 - skill
 - skill-development

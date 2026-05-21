@@ -1,7 +1,7 @@
 ---
 title: 'TASK-007-SPEC-003: Section-Aware extractByRange and Public Adapter Surface'
 type: task
-permalink: specs/spec-003-plan-adapter/tasks/task-007-spec-003-section-aware-extract-by-range-and-public-adapter-surface-1
+permalink: specs/spec-003-plan-adapter/tasks/task-007-spec-003-section-aware-extract-by-range-and-public-adapter-surface
 status: DRAFT
 effort: S
 estimate: 0.5d
@@ -16,7 +16,7 @@ tags:
 
 ## Design Context
 
-Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (TEST-REPORT-010-SPEC-003). REQ-001-SPEC-003 AC-1 mandates section_delimiter and identifier_pattern as observable adapter properties; AC-2 mandates extractByRange use inclusive-of-own-heading exclusive-of-next-heading semantics for phase sections. Current impl keeps these as dead private fields and uses a raw line slice.
+Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (QA-010-SPEC-003). REQ-001-SPEC-003 AC-1 mandates section_delimiter and identifier_pattern as observable adapter properties; AC-2 mandates extractByRange use inclusive-of-own-heading exclusive-of-next-heading semantics for phase sections. Current impl keeps these as dead private fields and uses a raw line slice.
 
 ## Objective
 
@@ -58,7 +58,7 @@ Out of Scope: dispatcher registration (TASK-006); integrity-floor semantics (TAS
 ## Relations
 
 - part_of [[SPEC-003: PLAN Adapter]]
-- caused_by [[TEST-REPORT-010-SPEC-003: PLAN Adapter Base]]
-- caused_by [[TEST-REPORT-011-SPEC-003: Regen Sections and Integrity Floor]]
+- caused_by [[QA-010-SPEC-003: PLAN Adapter Base]]
+- caused_by [[QA-011-SPEC-003: Regen Sections and Integrity Floor]]
 - extends [[TASK-001-SPEC-003: Implement PLAN Adapter Base]]
 - implements [[REQ-001-SPEC-003: PLAN Adapter Implementation]]

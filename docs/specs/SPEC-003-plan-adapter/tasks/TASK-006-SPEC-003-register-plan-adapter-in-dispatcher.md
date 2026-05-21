@@ -1,7 +1,7 @@
 ---
 title: 'TASK-006-SPEC-003: Register PlanAdapter in Dispatcher'
 type: task
-permalink: specs/spec-003-plan-adapter/tasks/task-006-spec-003-register-plan-adapter-in-dispatcher-1
+permalink: specs/spec-003-plan-adapter/tasks/task-006-spec-003-register-plan-adapter-in-dispatcher
 status: DRAFT
 effort: XS
 estimate: 0.25d
@@ -16,7 +16,7 @@ tags:
 
 ## Design Context
 
-Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (TEST-REPORT-010-SPEC-003). DESIGN-001-SPEC-003 Component 1 Responsibilities lists "Registers as source_type 'plan' in the adapter dispatcher" but `src/core/dispatcher.ts` only registers adr/analysis/session.
+Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (QA-010-SPEC-003). DESIGN-001-SPEC-003 Component 1 Responsibilities lists "Registers as source_type 'plan' in the adapter dispatcher" but `src/core/dispatcher.ts` only registers adr/analysis/session.
 
 ## Objective
 
@@ -54,6 +54,6 @@ Out of Scope: PlanAdapter implementation changes; SPEC-002/004/007 dispatcher en
 ## Relations
 
 - part_of [[SPEC-003: PLAN Adapter]]
-- caused_by [[TEST-REPORT-010-SPEC-003: PLAN Adapter Base]]
+- caused_by [[QA-010-SPEC-003: PLAN Adapter Base]]
 - extends [[TASK-001-SPEC-003: Implement PLAN Adapter Base]]
 - implements [[DESIGN-001-SPEC-003: PLAN Adapter Architecture]]

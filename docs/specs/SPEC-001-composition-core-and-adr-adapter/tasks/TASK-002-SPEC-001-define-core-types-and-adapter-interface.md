@@ -78,7 +78,7 @@ Types must exactly match the signatures in ADR-002 D-2. The Root type import com
 
 ## Relations
 
-- validated_by [[TEST-REPORT-002-SPEC-001: Core Types and Adapter Interface]]
+- validated_by [[QA-002-SPEC-001: Core Types and Adapter Interface]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy]]

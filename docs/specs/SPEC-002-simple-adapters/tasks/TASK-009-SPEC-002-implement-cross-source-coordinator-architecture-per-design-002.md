@@ -1,7 +1,7 @@
 ---
 title: 'TASK-009-SPEC-002: Implement Cross-Source Coordinator Architecture per DESIGN-002'
 type: task
-permalink: specs/spec-002-simple-adapters/tasks/task-009-spec-002-implement-cross-source-coordinator-architecture-per-design-002-1
+permalink: specs/spec-002-simple-adapters/tasks/task-009-spec-002-implement-cross-source-coordinator-architecture-per-design-002
 status: DRAFT
 effort: M
 estimate: 1.5d
@@ -18,7 +18,7 @@ tags:
 
 Resolve the largest drift in SPEC-002: TASK-003 produced a cross-source update mechanism that diverges from DESIGN-002 and REQ-003 on every axis. Either implement DESIGN-002 as specified, or amend DESIGN-002 plus REQ-003 to match the simpler `getCrossSourceUpdates` pass-through that exists in code.
 
-Evidence: TEST-REPORT-012-SPEC-002 (TASK-003 FAIL on 9 of 13 criteria).
+Evidence: QA-012-SPEC-002 (TASK-003 FAIL on 9 of 13 criteria).
 
 Concrete gaps:
 
@@ -62,14 +62,14 @@ Out of Scope:
 
 ## Observations
 
-- [fact] Gap discovered by Wave 2 retro-validation; evidence in TEST-REPORT-012-SPEC-002 #gap #retro
+- [fact] Gap discovered by Wave 2 retro-validation; evidence in QA-012-SPEC-002 #gap #retro
 - [problem] TASK-003 DoD prescribes architecture (interface, handler, file location) that is entirely unimplemented; current code is a different, simpler abstraction #scope #drift
 - [decision] Status: DRAFT pending strategic decision (build to spec vs amend spec to code) #status
 - [risk] Decision blocks SPEC-003 PLAN-adapter integration design which assumes DESIGN-002 coordinator architecture #downstream
 
 ## Relations
 
-- caused_by [[TEST-REPORT-012-SPEC-002: Implement SESSION Cross-Source Updates Handler]]
+- caused_by [[QA-012-SPEC-002: Implement SESSION Cross-Source Updates Handler]]
 - extends [[TASK-003-SPEC-002: Implement SESSION Cross-Source Updates Handler]]
 - part_of [[SPEC-002: Simple Adapters]]
 - depends_on [[DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol]]

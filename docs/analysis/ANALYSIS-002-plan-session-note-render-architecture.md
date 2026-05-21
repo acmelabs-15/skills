@@ -441,7 +441,7 @@ Key properties of the SESSION template:
 import { z } from 'zod';
 
 // IDs
-export const EntityIdSchema = z.string().regex(/^(ADR|SPEC|REQ|DESIGN|TASK|ANALYSIS|CRIT|PLAN|PRD|SESSION|EPIC|FEATURE|RETRO|SECURITY|TEST-REPORT|SKILL)-\d{3,}/);
+export const EntityIdSchema = z.string().regex(/^(ADR|SPEC|REQ|DESIGN|TASK|ANALYSIS|CRIT|PLAN|PRD|SESSION|EPIC|FEATURE|RETRO|SECURITY|QA|SKILL)-\d{3,}/);
 export const PartIdSchema = z.string().regex(/^(research|decisions\.\d+|spec-decomposition|spec\.SPEC-\d{3}|build\.SPEC-\d{3}|review|end)$/);
 export const TaskIdSchema = z.string().regex(/^T-\d{2,}$/);
 export const DecisionIdSchema = z.string().regex(/^[DF]-\d+$/);

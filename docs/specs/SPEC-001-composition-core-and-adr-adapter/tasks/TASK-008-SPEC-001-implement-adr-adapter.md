@@ -76,7 +76,7 @@ The ADR adapter overrides only configuration properties per ADR-002 D-3. The H3 
 
 ## Relations
 
-- validated_by [[TEST-REPORT-008-SPEC-001: ADR Adapter]]
+- validated_by [[QA-008-SPEC-001: ADR Adapter]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-007-SPEC-001: ADR Adapter Implementation]]
 - implements [[DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy]]

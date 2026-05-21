@@ -1,7 +1,7 @@
 ---
 title: 'TASK-009-SPEC-003: Frontmatter Inverse Contract and Branches Array JSON Handling'
 type: task
-permalink: specs/spec-003-plan-adapter/tasks/task-009-spec-003-frontmatter-inverse-contract-and-branches-array-json-handling-1
+permalink: specs/spec-003-plan-adapter/tasks/task-009-spec-003-frontmatter-inverse-contract-and-branches-array-json-handling
 status: DRAFT
 effort: S
 estimate: 0.5d
@@ -16,7 +16,7 @@ tags:
 
 ## Design Context
 
-Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (TEST-REPORT-012-SPEC-003). REQ-004 AC-2 mandates inverse-recovery semantics: "reverseMutations [...] inverse mapping swaps keys and values" and DoD-6 mandates "apply then reverse recovers original." Current implementation explicitly chose forward-only semantics, contradicting the spec. Additionally REQ-004 AC-5 mandates JSON-serialized string parsing for branches[] arrays; current impl writes the raw string verbatim.
+Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (QA-012-SPEC-003). REQ-004 AC-2 mandates inverse-recovery semantics: "reverseMutations [...] inverse mapping swaps keys and values" and DoD-6 mandates "apply then reverse recovers original." Current implementation explicitly chose forward-only semantics, contradicting the spec. Additionally REQ-004 AC-5 mandates JSON-serialized string parsing for branches[] arrays; current impl writes the raw string verbatim.
 
 ## Objective
 
@@ -60,6 +60,6 @@ Out of Scope: dispatcher; integrity floor; extractByRange; fixture YAML files (c
 ## Relations
 
 - part_of [[SPEC-003: PLAN Adapter]]
-- caused_by [[TEST-REPORT-012-SPEC-003: PLAN Frontmatter Mutations]]
+- caused_by [[QA-012-SPEC-003: PLAN Frontmatter Mutations]]
 - extends [[TASK-003-SPEC-003: Implement PLAN Frontmatter Mutations]]
 - implements [[REQ-004-SPEC-003: PLAN Frontmatter Mutations]]

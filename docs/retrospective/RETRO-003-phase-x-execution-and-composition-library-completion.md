@@ -2,7 +2,7 @@
 title: 'RETRO-003: Phase X Execution and Composition Library Completion'
 type: retrospective
 status: ACCEPTED
-permalink: retrospective/retro-003-phase-x-execution-and-composition-library-completion-1
+permalink: retrospective/retro-003-phase-x-execution-and-composition-library-completion
 tags:
 - retrospective
 - phase-x

@@ -1,7 +1,7 @@
 ---
 title: 'TASK-012-SPEC-004: Align Adapter Orchestration to DESIGN-001 and DESIGN-003'
 type: task
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-012-spec-004-align-adapter-orchestration-to-design-001-and-design-003-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-012-spec-004-align-adapter-orchestration-to-design-001-and-design-003
 status: DRAFT
 effort: M
 estimate: 2d
@@ -16,7 +16,7 @@ tags:
 
 ## Design Context
 
-Gap from TEST-REPORT-020 + TEST-REPORT-023: implementation provides `applySubtreeMutations` / `reverseSubtreeMutations` / `validateSubtreeRoundTrip` (in-memory) while DESIGN-001 calls for a single `processSubtree(): ProcessResult` entry point coordinated by `SubtreeOrchestrator` with two-phase stage-all then validate-all, and DESIGN-003 calls for `validateSubtreeHashes(adapter, manifest, sourceContents, stagedContents): HashValidationResult` + `rollbackCluster(stagedPaths, renamedPaths)` for filesystem-aware cluster rollback.
+Gap from QA-020 + QA-023: implementation provides `applySubtreeMutations` / `reverseSubtreeMutations` / `validateSubtreeRoundTrip` (in-memory) while DESIGN-001 calls for a single `processSubtree(): ProcessResult` entry point coordinated by `SubtreeOrchestrator` with two-phase stage-all then validate-all, and DESIGN-003 calls for `validateSubtreeHashes(adapter, manifest, sourceContents, stagedContents): HashValidationResult` + `rollbackCluster(stagedPaths, renamedPaths)` for filesystem-aware cluster rollback.
 
 The PROOF passes for in-memory mutation round-trip, but the orchestration around it (filesystem stage-all, then validate-all, then atomic-rename, with cluster .tmp rollback on any failure) is not implemented in the adapter.
 
@@ -51,7 +51,7 @@ User adjudication required FIRST: is in-memory adapter + caller-provided filesys
 ## Relations
 
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
-- caused_by [[TEST-REPORT-020-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
-- caused_by [[TEST-REPORT-023-SPEC-004: Implement Per-File Hash Validation Orchestration]]
+- caused_by [[QA-020-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
+- caused_by [[QA-023-SPEC-004: Implement Per-File Hash Validation Orchestration]]
 - extends [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
 - extends [[TASK-004-SPEC-004: Implement Per-File Hash Validation Orchestration]]

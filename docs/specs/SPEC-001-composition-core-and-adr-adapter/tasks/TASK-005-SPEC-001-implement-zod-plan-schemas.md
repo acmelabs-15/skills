@@ -79,7 +79,7 @@ The nested discriminated union assembles plan_type (outer) x source_type (inner)
 
 ## Relations
 
-- validated_by [[TEST-REPORT-005-SPEC-001: Zod Plan Schemas]]
+- validated_by [[QA-005-SPEC-001: Zod Plan Schemas]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-003-SPEC-001: Zod Plan Schema Modular Layout]]
 - implements [[REQ-004-SPEC-001: Zod Plan Validator Base]]

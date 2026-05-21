@@ -1,7 +1,7 @@
 ---
 title: 'TASK-010-SPEC-002: Reconcile Round-Trip Fixture Layout and YAML Plan Assets'
 type: task
-permalink: specs/spec-002-simple-adapters/tasks/task-010-spec-002-reconcile-round-trip-fixture-layout-and-yaml-plan-assets-1
+permalink: specs/spec-002-simple-adapters/tasks/task-010-spec-002-reconcile-round-trip-fixture-layout-and-yaml-plan-assets
 status: DRAFT
 effort: S
 estimate: 0.5d
@@ -16,7 +16,7 @@ tags:
 
 ## Objective
 
-Reconcile fixture-layout and YAML-plan-asset drift across the ANALYSIS and SESSION round-trip property tests, discovered in TEST-REPORT-014 and TEST-REPORT-015.
+Reconcile fixture-layout and YAML-plan-asset drift across the ANALYSIS and SESSION round-trip property tests, discovered in QA-014 and QA-015.
 
 Gaps:
 
@@ -43,14 +43,14 @@ Out of Scope:
 
 ## Observations
 
-- [fact] Gap discovered by Wave 2 retro-validation; evidence in TEST-REPORT-014 and TEST-REPORT-015 #gap #retro
+- [fact] Gap discovered by Wave 2 retro-validation; evidence in QA-014 and QA-015 #gap #retro
 - [decision] Status: DRAFT pending fixture-layout decision #status
 - [insight] All SPEC-002 fixtures use the flat layout; nested-folder layout would be a one-time restructure #scope
 
 ## Relations
 
-- caused_by [[TEST-REPORT-014-SPEC-002: Implement ANALYSIS Adapter Round-Trip Property Test]]
-- caused_by [[TEST-REPORT-015-SPEC-002: Implement SESSION Adapter Round-Trip Property Test]]
+- caused_by [[QA-014-SPEC-002: Implement ANALYSIS Adapter Round-Trip Property Test]]
+- caused_by [[QA-015-SPEC-002: Implement SESSION Adapter Round-Trip Property Test]]
 - extends [[TASK-005-SPEC-002: Implement ANALYSIS Adapter Round-Trip Property Test]]
 - extends [[TASK-006-SPEC-002: Implement SESSION Adapter Round-Trip Property Test]]
 - part_of [[SPEC-002: Simple Adapters]]

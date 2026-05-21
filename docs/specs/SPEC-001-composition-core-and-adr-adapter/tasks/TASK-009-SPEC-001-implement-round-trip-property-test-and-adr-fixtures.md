@@ -79,7 +79,7 @@ The ADR fixture should be 200-500 lines with multiple D-N sections, wikilinks, Y
 
 ## Relations
 
-- validated_by [[TEST-REPORT-009-SPEC-001: Round-Trip Property Test]]
+- validated_by [[QA-009-SPEC-001: Round-Trip Property Test]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-008-SPEC-001: Round-Trip Property Test for ADR Adapter]]
 - implements [[REQ-003-SPEC-001: SHA-256 Hash Utility]]

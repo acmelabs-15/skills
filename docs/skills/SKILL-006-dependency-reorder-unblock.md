@@ -1,7 +1,7 @@
 ---
 title: 'SKILL-006: dependency-reorder-unblock'
 type: skill
-permalink: skills/skill-006-dependency-reorder-unblock-1
+permalink: skills/skill-006-dependency-reorder-unblock
 tags:
 - skill
 - execution-planning

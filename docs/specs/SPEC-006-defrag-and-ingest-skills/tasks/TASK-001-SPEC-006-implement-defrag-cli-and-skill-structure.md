@@ -2,7 +2,7 @@
 title: 'TASK-001-SPEC-006: Implement Defrag CLI and Skill Structure'
 type: task
 status: TODO
-permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-001-spec-006-implement-defrag-cli-and-skill-structure-2
+permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-001-spec-006-implement-defrag-cli-and-skill-structure
 tags:
 - task
 - defrag

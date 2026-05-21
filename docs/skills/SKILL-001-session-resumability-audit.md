@@ -1,7 +1,7 @@
 ---
 title: 'SKILL-001: session-resumability-audit'
 type: skill
-permalink: skills/skill-001-session-resumability-audit-1
+permalink: skills/skill-001-session-resumability-audit
 tags:
 - skill
 - session-lifecycle

@@ -1,7 +1,7 @@
 ---
 title: 'TASK-008-SPEC-004: Add Adapters Barrel and Align sourceType to spec'
 type: task
-permalink: specs/spec-004-spec-subtree-adapter/tasks/task-008-spec-004-add-adapters-barrel-and-align-source-type-to-spec-1
+permalink: specs/spec-004-spec-subtree-adapter/tasks/task-008-spec-004-add-adapters-barrel-and-align-source-type-to-spec
 status: DRAFT
 effort: S
 estimate: 0.5d
@@ -17,7 +17,7 @@ tags:
 
 ## Design Context
 
-Gap from TEST-REPORT-020-SPEC-004 retro-validation: TASK-001 DoD requires barrel export + REQ-001 AC1 + DESIGN-001 Component 1 require `sourceType = "spec"`, but implementation has `sourceType = "spec-subtree"` and no barrel file.
+Gap from QA-020-SPEC-004 retro-validation: TASK-001 DoD requires barrel export + REQ-001 AC1 + DESIGN-001 Component 1 require `sourceType = "spec"`, but implementation has `sourceType = "spec-subtree"` and no barrel file.
 
 ## Objective
 
@@ -55,5 +55,5 @@ User adjudication required before code changes.
 ## Relations
 
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
-- caused_by [[TEST-REPORT-020-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
+- caused_by [[QA-020-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
 - extends [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]

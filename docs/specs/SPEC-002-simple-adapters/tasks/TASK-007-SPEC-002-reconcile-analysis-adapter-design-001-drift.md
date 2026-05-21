@@ -1,7 +1,7 @@
 ---
 title: 'TASK-007-SPEC-002: Reconcile ANALYSIS Adapter DESIGN-001 Drift'
 type: task
-permalink: specs/spec-002-simple-adapters/tasks/task-007-spec-002-reconcile-analysis-adapter-design-001-drift-1
+permalink: specs/spec-002-simple-adapters/tasks/task-007-spec-002-reconcile-analysis-adapter-design-001-drift
 status: DRAFT
 effort: XS
 estimate: 0.25d
@@ -16,7 +16,7 @@ tags:
 
 ## Objective
 
-Reconcile two pieces of DESIGN-001-SPEC-002 vs code drift for the ANALYSIS adapter discovered in Wave 2 retro-validation (TEST-REPORT-010-SPEC-002):
+Reconcile two pieces of DESIGN-001-SPEC-002 vs code drift for the ANALYSIS adapter discovered in Wave 2 retro-validation (QA-010-SPEC-002):
 
 1. `identifierPrefix` property declared in DESIGN-001 Component 1 + Component 3 AdapterConfig is absent in `_shared/composition/src/adapters/analysis.ts`. The base class `BaseMarkdownAdapter` also lacks the abstract slot.
 2. `identifierPattern` in code is `/item-(\\d+)/i` (case-insensitive flag); DESIGN-001 specifies `/item-(\\d+)/` (no flag).
@@ -47,11 +47,11 @@ Out of Scope:
 
 ## Observations
 
-- [fact] Gap discovered by Wave 2 retro-validation; evidence in TEST-REPORT-010-SPEC-002 #gap #retro
+- [fact] Gap discovered by Wave 2 retro-validation; evidence in QA-010-SPEC-002 #gap #retro
 - [decision] Status: DRAFT pending reconciliation decision (amend spec vs amend code) #status
 
 ## Relations
 
-- caused_by [[TEST-REPORT-010-SPEC-002: Implement ANALYSIS Adapter]]
+- caused_by [[QA-010-SPEC-002: Implement ANALYSIS Adapter]]
 - extends [[TASK-001-SPEC-002: Implement ANALYSIS Adapter]]
 - part_of [[SPEC-002: Simple Adapters]]

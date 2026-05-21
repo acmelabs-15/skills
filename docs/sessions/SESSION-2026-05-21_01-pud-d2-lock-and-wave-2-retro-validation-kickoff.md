@@ -1,7 +1,7 @@
 ---
 title: 'SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff'
 type: session
-permalink: sessions/session-2026-05-21-01-pud-d2-lock-and-wave-2-retro-validation-kickoff-1
+permalink: sessions/session-2026-05-21-01-pud-d2-lock-and-wave-2-retro-validation-kickoff
 status: PAUSED
 tags:
 - session
@@ -25,7 +25,7 @@ Starting branch: `feat/plan-001-wave-2-retro-validation` (created off `main` thi
 
 ## Event 02
 
-[2026-05-21] PUD-D2 surfaced to user via AskUserQuestion with 4 verbatim options + Hybrid recommendation. User locked **Hybrid (Recommended)**: keep existing Wave 2 code as baseline; per SPEC dispatch QA agent per rigid cycle (read every TASK + linked REQ + linked DESIGN; for every checkbox in DoD/AC/compliance find evidence-or-gap in code; verify every existing [x] claim against code evidence; write TEST-REPORT per TASK; genuine gaps → file new TASKs and drive through full rigid cycle; everything validates → flip Brain notes TASK DONE + validated_by, REQ ACCEPTED, DESIGN ACCEPTED, SPEC root DONE); parallelizable as 4-SPEC swarm; 6–10h; X.D claim validators (PR #6) give mechanical leverage. Verbatim echo recorded in chat. Branch `feat/plan-001-wave-2-retro-validation` created off main + appended to PLAN-001 branches list (pending PLAN edit in Event 03).
+[2026-05-21] PUD-D2 surfaced to user via AskUserQuestion with 4 verbatim options + Hybrid recommendation. User locked **Hybrid (Recommended)**: keep existing Wave 2 code as baseline; per SPEC dispatch QA agent per rigid cycle (read every TASK + linked REQ + linked DESIGN; for every checkbox in DoD/AC/compliance find evidence-or-gap in code; verify every existing [x] claim against code evidence; write QA per TASK; genuine gaps → file new TASKs and drive through full rigid cycle; everything validates → flip Brain notes TASK DONE + validated_by, REQ ACCEPTED, DESIGN ACCEPTED, SPEC root DONE); parallelizable as 4-SPEC swarm; 6–10h; X.D claim validators (PR #6) give mechanical leverage. Verbatim echo recorded in chat. Branch `feat/plan-001-wave-2-retro-validation` created off main + appended to PLAN-001 branches list (pending PLAN edit in Event 03).
 
 ## Event 03
 
@@ -39,7 +39,7 @@ Commit `01d9429` on `feat/plan-001-wave-2-retro-validation`: PLAN edits + this s
 
 ## Event 05
 
-[2026-05-21] Wave 2 Retro-Validation Canonical Brief authored + locked in PLAN-001 as new `## Wave 2 Retro-Validation Canonical Brief` section (before `## Blockers`). Pattern: 1-canonical-block-N-agents-inline per [[SKILL-002: Canonical Block Parallelism]] + explicit IN-SCOPE / OUT-OF-SCOPE fences per [[SKILL-003: Dispatch Scope Fences]]. Brief content: Mission + Required Reading (7 items) + Inputs table + 6-step per-TASK retro-validation cycle (read → identify code → per-checkbox evidence → write TEST-REPORT → self-validate via composition library schema → per-TASK verdict) + Gap handling (file gap-TASK directly via Brain MCP per 2026-05-21 user-locked refinement) + Per-SPEC aggregate deliverable (TEST-REPORT-NNN-{{SPEC_ID}}-spec-aggregate + `## State Changes` proposal) + IN-SCOPE / OUT-OF-SCOPE + Anti-patterns + Tools. 4 placeholders ({{SPEC_ID}} + 2 derived). Self-caught defect: first draft introduced its own malformed-wikilink bullet (template wikilink `[[<your TEST-REPORT>]]` with >200-char prefix); PreToolUse hook blocked the edit; fixed by switching template wikilinks to plain-text descriptions in the bullet, then locked.
+[2026-05-21] Wave 2 Retro-Validation Canonical Brief authored + locked in PLAN-001 as new `## Wave 2 Retro-Validation Canonical Brief` section (before `## Blockers`). Pattern: 1-canonical-block-N-agents-inline per [[SKILL-002: Canonical Block Parallelism]] + explicit IN-SCOPE / OUT-OF-SCOPE fences per [[SKILL-003: Dispatch Scope Fences]]. Brief content: Mission + Required Reading (7 items) + Inputs table + 6-step per-TASK retro-validation cycle (read → identify code → per-checkbox evidence → write QA → self-validate via composition library schema → per-TASK verdict) + Gap handling (file gap-TASK directly via Brain MCP per 2026-05-21 user-locked refinement) + Per-SPEC aggregate deliverable (QA-NNN-{{SPEC_ID}}-spec-aggregate + `## State Changes` proposal) + IN-SCOPE / OUT-OF-SCOPE + Anti-patterns + Tools. 4 placeholders ({{SPEC_ID}} + 2 derived). Self-caught defect: first draft introduced its own malformed-wikilink bullet (template wikilink `[[<your QA>]]` with >200-char prefix); PreToolUse hook blocked the edit; fixed by switching template wikilinks to plain-text descriptions in the bullet, then locked.
 
 Brief refinement adjudication via AskUserQuestion (3 options multi-select; user selected option 1 only): agents file gap-TASKs themselves via Brain MCP Pattern 2 (changed from PROPOSE-only). Options 2 (bun test execution) + 3 (sibling-SPEC reading required) not selected — kept draft defaults (test execution allowed; sibling-SPEC reading not required).
 
@@ -50,6 +50,17 @@ Brief refinement adjudication via AskUserQuestion (3 options multi-select; user 
 ## Event 07
 
 [2026-05-21] User pivot — other urgent work requires attention. Wave 2 retro-validation DEFERRED mid-swarm. SPEC-002 agent had returned cleanly (4 gap-TASKs, aggregate FAIL); SPEC-003 agent returned cleanly post-Pattern-2-Phase-3 correction (5 gap-TASKs, aggregate FAIL); SPEC-004 + SPEC-007 agents KILLED via TaskStop with partial work landed. All filenames clean (verified `find docs/{qa,specs} -name '* *.md'` returns 0). PLAN-001 Decision Log updated with full deferral rationale + resume plan. Build parts state: build.SPEC-002/003 IN_PROGRESS (data ready); build.SPEC-004/007 DEFERRED (need respawn). Session closing as PAUSED for next-session pickup.
+
+## Event 08
+
+[2026-05-21] User pressure-point reinforcement: stay disciplined with session + PLAN notes constantly current under pressure. Two cleanup scripts run this turn (one swing each per user directive):
+
+- `scripts/rename-test-report-to-qa.ts` (Bun TS) — TEST-REPORT → QA across `docs/**`. 44 file renames + 84 content edits (frontmatter title/type/permalink/tags + H1 + body wikilinks + prose). Zero `TEST-REPORT` references remain in `docs/**` (verified via `grep -rn`).
+- `find … sed` one-liner — stripped 63 basic-memory collision suffixes `-1`/`-2` from permalink lines. Preserved legitimate 3-digit suffixes like `-001` (slugs ending with PLAN-001 etc.). Zero trailing single-digit permalink suffixes remain.
+
+PLAN-001 Decision Log entry 2026-05-21 captures both cleanups. Convention file update at `~/KNOWLEDGE-GRAPH-CONVENTIONS.md` Section 3 (`test-report` → `qa` in 16-type list) deferred — lives outside project's binary-rule scope.
+
+Tests reduction directive: write only the minimum tests required for next implementation work; circle back to full test suite later today. Parallelism directive: maximize parallel work where possible without putting work at risk (per prior 5-stream wave structure mapped against shared-resource dispatcher.ts as the sequentialization point).
 
 ## Observations
 

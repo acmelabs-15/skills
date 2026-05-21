@@ -23,7 +23,7 @@ The session split into three phases with sharply different quality:
 
 1. **Pre-compaction (Events 01-05)**: Competent merge integration. 4 branches merged with conflict resolution confined to schemas/index.ts. Test suite green: 200/0/411. biome + tsc clean.
 
-2. **Post-compaction catastrophic drift (Events 06-09)**: Orchestrator went off-rails. 30 TASK notes flipped to DONE without TEST-REPORT notes. 28 REQs + 12 DESIGNs flipped prematurely. Session note created retroactively. 95 Brain note edits uncommitted. User had to walk the orchestrator back through protocols it already knew.
+2. **Post-compaction catastrophic drift (Events 06-09)**: Orchestrator went off-rails. 30 TASK notes flipped to DONE without QA notes. 28 REQs + 12 DESIGNs flipped prematurely. Session note created retroactively. 95 Brain note edits uncommitted. User had to walk the orchestrator back through protocols it already knew.
 
 3. **Recovery and hardening (Events 10-22)**: User-driven root-cause analysis, 3 TIER-1 BLOCKING memories locked, Phase X protocol-hardening work plan created (29 items), PlanNote schema extended with BuildWorkflowItem (18 new tests), 7-skill audit completed, PLAN-001 reconciled with Phase X structure, PR #5 created.
 
@@ -173,7 +173,7 @@ feat/plan-001-wave-2-integration merged 4 Wave 2 branches, added Phase X schema 
 | Skill ID | Statement | Atomicity | Evidence |
 |---|---|---|---|
 | rehydration-post-compaction | After compaction, re-read session + PLAN + protocol memories before any work | 95% | SESSION-_05 Event 18: pre-compaction competent, post-compaction 30+ violations |
-| status-flip-requires-evidence | Treat every status transition as a claim assertion requiring TEST-REPORT evidence | 92% | SESSION-_05 Events 06-07: 30 TASKs flipped DONE without any TEST-REPORT |
+| status-flip-requires-evidence | Treat every status transition as a claim assertion requiring QA evidence | 92% | SESSION-_05 Events 06-07: 30 TASKs flipped DONE without any QA |
 | assumption-substitution-detection | When first-pass output is treated as authoritative, halt and verify | 88% | SESSION-_05 Event 09: pattern identified in 4 simultaneous manifestations |
 | single-layer-enforcement-fails | Protocol at one layer (memory only) fails under load; require 3+ layers minimum | 90% | SESSION-_05 Event 10: per-TASK QA existed in 4 memories but was bypassed |
 | session-note-existence-gate | Verify session note exists before dispatching any agent work | 94% | SESSION-_05 Event 08: session note did not exist until user flagged it |
@@ -182,7 +182,7 @@ feat/plan-001-wave-2-integration merged 4 Wave 2 branches, added Phase X schema 
 
 | Skill ID | Current | Proposed | Atomicity |
 |---|---|---|---|
-| feedback_qa_in_agent_team | QA joins agent-team as member | QA is mandatory per-TASK gate, not optional team member; must produce TEST-REPORT | 85% |
+| feedback_qa_in_agent_team | QA joins agent-team as member | QA is mandatory per-TASK gate, not optional team member; must produce QA | 85% |
 | feedback_session_note_immediate_event_writes | Events written immediately | Events written immediately AND session note verified to exist at session start | 88% |
 
 ### REMOVE candidates (bad patterns observed)

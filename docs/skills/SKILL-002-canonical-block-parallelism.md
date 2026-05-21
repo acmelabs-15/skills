@@ -1,7 +1,7 @@
 ---
 title: 'SKILL-002: canonical-block-parallelism'
 type: skill
-permalink: skills/skill-002-canonical-block-parallelism-1
+permalink: skills/skill-002-canonical-block-parallelism
 tags:
 - skill
 - parallelism

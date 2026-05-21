@@ -1,7 +1,7 @@
 ---
 title: 'TASK-010-SPEC-003: Composition Plan YAML and Frontmatter Map in Fixtures'
 type: task
-permalink: specs/spec-003-plan-adapter/tasks/task-010-spec-003-composition-plan-yaml-and-frontmatter-map-in-fixtures-1
+permalink: specs/spec-003-plan-adapter/tasks/task-010-spec-003-composition-plan-yaml-and-frontmatter-map-in-fixtures
 status: DRAFT
 effort: XS
 estimate: 0.25d
@@ -16,7 +16,7 @@ tags:
 
 ## Design Context
 
-Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (TEST-REPORT-013-SPEC-003 and TEST-REPORT-014-SPEC-003). TASK-004 DoD-3 calls for `plan-composition.plan.yaml` which is absent; DoD-5 and DoD-6 call for frontmatter_map (with title plus permalink plus branches[]) in fixtures which is absent. The round-trip test (TASK-005) consequently cannot exercise REQ-005 AC-3 frontmatter coverage.
+Gap-TASK surfaced during SPEC-003 Wave 2 retro-validation (QA-013-SPEC-003 and QA-014-SPEC-003). TASK-004 DoD-3 calls for `plan-composition.plan.yaml` which is absent; DoD-5 and DoD-6 call for frontmatter_map (with title plus permalink plus branches[]) in fixtures which is absent. The round-trip test (TASK-005) consequently cannot exercise REQ-005 AC-3 frontmatter coverage.
 
 ## Objective
 
@@ -57,7 +57,7 @@ Out of Scope: changing the round-trip test to load YAML (still inline MutationSp
 ## Relations
 
 - part_of [[SPEC-003: PLAN Adapter]]
-- caused_by [[TEST-REPORT-013-SPEC-003: PLAN Adapter Test Fixtures]]
-- caused_by [[TEST-REPORT-014-SPEC-003: PLAN Adapter Round-Trip Property Test]]
+- caused_by [[QA-013-SPEC-003: PLAN Adapter Test Fixtures]]
+- caused_by [[QA-014-SPEC-003: PLAN Adapter Round-Trip Property Test]]
 - extends [[TASK-004-SPEC-003: Create PLAN Adapter Test Fixtures]]
 - implements [[REQ-005-SPEC-003: PLAN Adapter Round-Trip Property Test]]

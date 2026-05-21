@@ -1,7 +1,7 @@
 ---
 title: 'TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template'
 type: task
-permalink: specs/spec-007-plan-session-render/tasks/task-014-spec-007-execute-plan-001-migration-to-trimmed-template-1
+permalink: specs/spec-007-plan-session-render/tasks/task-014-spec-007-execute-plan-001-migration-to-trimmed-template
 status: DRAFT
 effort: M
 estimate: 1d
@@ -19,7 +19,7 @@ tags:
 
 Gap-TASK filed by retro-validation QA against TASK-013-SPEC-007. The Wave 2 implementation merged the render pipeline (parser + renderer + mutations + round-trip tests on canonical fixtures) but did NOT execute the PLAN-001 migration to the trimmed template. Live `docs/planning/PLAN-001-skills-ecosystem.md` still contains all three forbidden sections (Workflow Plan / Decision Log / Progress Log).
 
-See TEST-REPORT-022-SPEC-007 for the gap evidence.
+See QA-022-SPEC-007 for the gap evidence.
 
 ## Objective
 
@@ -87,4 +87,4 @@ Apply the SPEC-007 render pipeline to `docs/planning/PLAN-001-skills-ecosystem.m
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-012-SPEC-007: PLAN-001 Dogfood Migration]]
 - extends [[TASK-013-SPEC-007: Dogfood PLAN-001 Migration]]
-- caused_by [[TEST-REPORT-022-SPEC-007: Dogfood PLAN-001 Migration]]
+- caused_by [[QA-022-SPEC-007: Dogfood PLAN-001 Migration]]

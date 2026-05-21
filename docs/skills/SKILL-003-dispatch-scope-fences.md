@@ -1,7 +1,7 @@
 ---
 title: 'SKILL-003: dispatch-scope-fences'
 type: skill
-permalink: skills/skill-003-dispatch-scope-fences-1
+permalink: skills/skill-003-dispatch-scope-fences
 tags:
 - skill
 - dispatch

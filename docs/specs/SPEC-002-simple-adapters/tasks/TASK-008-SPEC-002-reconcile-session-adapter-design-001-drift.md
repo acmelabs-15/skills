@@ -1,7 +1,7 @@
 ---
 title: 'TASK-008-SPEC-002: Reconcile SESSION Adapter DESIGN-001 Drift'
 type: task
-permalink: specs/spec-002-simple-adapters/tasks/task-008-spec-002-reconcile-session-adapter-design-001-drift-1
+permalink: specs/spec-002-simple-adapters/tasks/task-008-spec-002-reconcile-session-adapter-design-001-drift
 status: DRAFT
 effort: S
 estimate: 0.5d
@@ -16,7 +16,7 @@ tags:
 
 ## Objective
 
-Reconcile four pieces of DESIGN-001-SPEC-002 vs code drift for the SESSION adapter discovered in Wave 2 retro-validation (TEST-REPORT-011-SPEC-002):
+Reconcile four pieces of DESIGN-001-SPEC-002 vs code drift for the SESSION adapter discovered in Wave 2 retro-validation (QA-011-SPEC-002):
 
 1. `identifierPrefix = "Event "` declared in DESIGN-001 Component 2 is absent in `_shared/composition/src/adapters/session.ts`.
 2. `supportsCrossSourceUpdates = true` declared in DESIGN-001 Component 2 is absent. Cross-source emission is exposed via a `getCrossSourceUpdates(content, plan)` method instead. TASK-002 DoD item 7 explicitly demands the boolean property.
@@ -47,12 +47,12 @@ Out of Scope:
 
 ## Observations
 
-- [fact] Gap discovered by Wave 2 retro-validation; evidence in TEST-REPORT-011-SPEC-002 #gap #retro
+- [fact] Gap discovered by Wave 2 retro-validation; evidence in QA-011-SPEC-002 #gap #retro
 - [decision] Status: DRAFT pending reconciliation decisions across four drift dimensions #status
 - [risk] Fixture convention mix (space vs hyphen) is latent: round-trip works only because renumber_map targets the hyphen form; future fixture additions could expose this #convention
 
 ## Relations
 
-- caused_by [[TEST-REPORT-011-SPEC-002: Implement SESSION Adapter]]
+- caused_by [[QA-011-SPEC-002: Implement SESSION Adapter]]
 - extends [[TASK-002-SPEC-002: Implement SESSION Adapter]]
 - part_of [[SPEC-002: Simple Adapters]]
