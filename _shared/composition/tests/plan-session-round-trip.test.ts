@@ -27,7 +27,38 @@ describe("Plan/Session render round-trip property test (ADR-003 D-8 gate)", () =
 
   test("Plan mutation round-trip: applyPlanMutation output re-parses cleanly", async () => {
     const md = await Bun.file(join(fixtureDir, "plan-note-sample.md")).text();
-    const mutated = applyPlanMutation(md, {
+    // Drive the build_workflow_items DONE first (rigid per-TASK cycle); then
+    // flip the part itself. Each step round-trips through render+parse and
+    // hash-compares cleanly.
+    const m1 = applyPlanMutation(md, {
+      type: "transition-impl-item",
+      partId: "build.SPEC-007",
+      taskRef: "TASK-001-SPEC-007",
+      from: "IN_PROGRESS",
+      to: "DONE",
+      owning_session: "SESSION-2026-05-20_04",
+      at_event: 5,
+    });
+    const m2 = applyPlanMutation(m1, {
+      type: "transition-qa-item",
+      partId: "build.SPEC-007",
+      taskRef: "TASK-001-SPEC-007",
+      from: "PENDING",
+      to: "IN_PROGRESS",
+      owning_session: "SESSION-2026-05-20_04",
+      at_event: 6,
+    });
+    const m3 = applyPlanMutation(m2, {
+      type: "transition-qa-item",
+      partId: "build.SPEC-007",
+      taskRef: "TASK-001-SPEC-007",
+      from: "IN_PROGRESS",
+      to: "DONE",
+      owning_session: "SESSION-2026-05-20_04",
+      at_event: 7,
+      test_report_ref: "TEST-REPORT-001-SPEC-007",
+    });
+    const mutated = applyPlanMutation(m3, {
       type: "set-part-substatus",
       partId: "build.SPEC-007",
       from: "IN_PROGRESS",
