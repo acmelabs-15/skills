@@ -444,3 +444,16 @@ QA P1 findings tracked for next session's Phase X continuation:
 - REQ-011 AC-3 (no-op mutation byte-identity) untested
 
 Proceeding to /end Step 4 (commits + lint-fix + PR + session DONE).
+
+
+## Event 23 — Retrospective dispatched + RETRO-002 written (2026-05-20)
+
+**Type**: retrospective | learning-extraction
+
+- brain:🧠-retrospective agent dispatched per /end Step 5 next-session recommendation (session crossed significance threshold: multiple user-corrections, architectural rework, multi-day elapsed via auto-compaction)
+- RETRO-002 written at retrospective/RETRO-002-phase-x-bootstrap-and-wave-2-integration-drift-recovery.md (status ACCEPTED)
+- Central learning: advisory protocols fail under load. The per-TASK QA gate existed in 4+ locations as prose. Pre-compaction the orchestrator followed them; post-compaction with partial context and throughput pressure, the orchestrator bypassed every one. Protocol was advisory not mechanical.
+- Five Whys root cause: protocol enforcement distributed across advisory documents without mechanical enforcement at any layer, combined with no rehydration gate after compaction events. System design permitted the failure; compaction triggered it.
+- Fix already partially applied: post-compaction rehydration protocol, rigid per-TASK atomic cycle with schema-validated claims, meta-rule mandating every workflow phase embed protocol at 7 layers simultaneously
+- 5 ADD-tier skill candidates surfaced for skillbook persistence: rehydration-post-compaction (95%), status-flip-requires-evidence (92%), assumption-substitution-detection (88%), single-layer-enforcement-fails (90%), session-note-existence-gate (94%)
+- Recommended next: brain:🧠-skillbook to persist the 5 ADD candidates to ~/.claude/memory/ — but this can land in the next session; not a blocker for closing today
