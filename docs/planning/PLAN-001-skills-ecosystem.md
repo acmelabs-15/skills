@@ -155,6 +155,10 @@ graph TD
 
 ## Decision Log
 
+### 2026-05-20 — Phase X Exit Criteria deferral at session close
+
+User adjudicated /end Step 1 HALT (DoD incomplete) via AskUserQuestion. Locked option: "Defer with rationale (Recommended)". 6 of 7 Phase X Exit Criteria items marked `[~]` (deferred); Exit Criterion 5 (CLAUDE.md TIER-1 references) flipped to `[x]` since the work is genuinely complete this session. Phase X is multi-session work by design; today closes X.A bootstrap + X.B audit + X.D.1 BuildWorkflowItem schema; remainder carried forward via /plan PLAN-001 continue. Full state-of-work + 15-item ordered execution sequence + per-skill audit + architectural reinforcement captured in [[ANALYSIS-003: Phase X Protocol Hardening State]]. Resume reliability backed by TIER-1 BLOCKING `feedback_post_compaction_rehydration_protocol` enforced via `~/CLAUDE.md` pre-flight table. /end Step 2 (/review BLOCKING gate) proceeds against the full feat/plan-001-wave-2-integration → main diff.
+
 - **2026-05-19** — PLAN-001 created via /plan create with `--name skills-ecosystem`. Branch `feat/plan-001-skills-ecosystem` was pre-created during bootstrap Step 1; /plan honored the existing non-main branch per skill branch policy.
 - **2026-05-19** — research part marked DONE upfront with `KICKOFF-BRIEF.md` (project root file) as outcome reference (file-path, not wikilink — the brief is a project-config file under the binary-rule, not a Brain note). Justification: user explicitly directed "skip /research dispatch — KICKOFF-BRIEF.md IS the research output". Deviation from outcome-wikilink convention documented here.
 - **2026-05-19** — Heavy /plan create dispatches (analyst first-principles + pre-mortem + critic) were SKIPPED for the bootstrap turn. KICKOFF-BRIEF.md contains baked-in first-principles answers, an explicit post-mortem of the prior drift incident, and an explicit critique target via the 5 open questions adjudicated in Step 5 AskUserQuestion. Per the iterative-phase-reentry rule, validation phases can re-enter if gaps surface during decisions.1 adjudication or later.
@@ -1277,13 +1281,13 @@ CLAUDE.md updated with TIER-1 BLOCKING protocol references (DONE for post-compac
 
 ### Exit Criteria
 
-- [ ] All X.A through X.E sub-phases DONE
-- [ ] Composition library mechanisms implemented (schemas + renderers + transition functions) and tested
-- [ ] All 7 lifecycle skills updated with rigid protocol
-- [ ] Templates + STRUCTURES updated per protocol
-- [ ] CLAUDE.md TIER-1 references applied
-- [ ] PLAN-001 frontmatter shows Phase X DONE
-- [ ] All pending user decisions (D1-D4 in [[ANALYSIS-003: Phase X Protocol Hardening State]]) resolved + applied
+- [~] All X.A through X.E sub-phases DONE — DEFERRED 2026-05-20 (X.A bootstrap + X.B audit + X.D.1 schema extension DONE today; X.C skill updates + X.D.2-7 mechanism completion + X.E wrap-up carried forward to next session via /plan PLAN-001 continue)
+- [~] Composition library mechanisms implemented (schemas + renderers + transition functions) and tested — DEFERRED 2026-05-20 (X.D.1 PlanNote BuildWorkflowItem schema DONE; X.D.2 renderer + X.D.3 transitions + X.D.4 fixture + X.D.5-7 additional schemas carried forward)
+- [~] All 7 lifecycle skills updated with rigid protocol — DEFERRED 2026-05-20 (X.C carried forward; audit findings + per-skill highest-leverage gaps captured in ANALYSIS-003 Per-skill detailed audit findings section)
+- [~] Templates + STRUCTURES updated per protocol — DEFERRED 2026-05-20 (X.C.5-6 carried forward)
+- [x] CLAUDE.md TIER-1 references applied — DONE 2026-05-20 (pre-flight table now references feedback_post_compaction_rehydration_protocol + feedback_per_task_build_qa_cycle + feedback_workflow_phase_rigor_at_every_layer)
+- [~] PLAN-001 frontmatter shows Phase X DONE — DEFERRED 2026-05-20 (depends on remaining X.E.2 final reconciliation carried forward; Phase X stays IN_PROGRESS at end of this session)
+- [~] All pending user decisions (D1-D4 in ANALYSIS-003) resolved + applied — DEFERRED 2026-05-20 (D1 composition library scope RESOLVED include-tonight; D3 CLAUDE.md updates RESOLVED done; D2 Wave 2 throw-out vs salvage + D4 PLAN-001 full reconciliation timing carried forward)
 
 ### Blockers
 

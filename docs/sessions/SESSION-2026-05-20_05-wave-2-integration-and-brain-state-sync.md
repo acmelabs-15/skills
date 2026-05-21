@@ -412,3 +412,15 @@ Executed:
 - D2 decision (Wave 2 code throw-out vs salvage) still pending — applies to the integration branch's code; brain notes no longer carry false-DONE markers in the meantime
 
 Working tree status after this event: clean except for session note. Ready for /end protocol.
+
+
+## Event 21 — /end Step 1 DoD HALT resolved via defer-with-rationale (2026-05-20)
+
+**Type**: end-skill-step | dod-deferral
+
+- /end Step 1 DoD verification HALTED on Phase X Exit Criteria 6 of 7 unchecked
+- AskUserQuestion surfaced 3 options; user locked: "Defer with rationale (Recommended)"
+- PLAN-001 Phase X Exit Criteria items 1, 2, 3, 4, 6, 7 marked [~] with deferral rationale on each line; item 5 (CLAUDE.md TIER-1 references) flipped to [x] (genuinely done this session)
+- PLAN-001 Decision Log entry added: "2026-05-20 — Phase X Exit Criteria deferral at session close" documents the deferral with cross-reference to ANALYSIS-003
+- Phase X carried forward state: X.C + X.D.2-7 + X.E + D2 (Wave 2 throw-out vs salvage) + D4 (PLAN-001 full reconciliation timing) all carried to next session via /plan PLAN-001 continue
+- Next: /end Step 2 — /review BLOCKING gate against feat/plan-001-wave-2-integration → main diff
