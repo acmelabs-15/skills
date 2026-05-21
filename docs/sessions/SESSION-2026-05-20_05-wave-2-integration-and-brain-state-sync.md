@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync'
 type: session
 permalink: sessions/session-2026-05-20_05-wave-2-integration-and-brain-state-sync
-status: IN_PROGRESS
+status: DONE
 tags:
 - session
 - build
