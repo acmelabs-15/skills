@@ -53,6 +53,19 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - Commit `76b6651 build(spec-007): X.D.2 PlanNote renderer emits build_workflow_items blocks` landed on branch `feat/plan-001-x-d-2-plan-renderer`
 - PLAN-001 Phase X.D table: X.D.2 IN_PROGRESS → DONE with commit reference
 
+## Event 04
+
+**Type**: implementation | x-d-4-complete | 2026-05-20
+
+- PLAN-001 X.D.4 PENDING → IN_PROGRESS (edit landed disk; Pydantic relation-noise unrelated)
+- bun-ts-engineer dispatched with scoped X.D.4 brief (parser + fixture only; explicit OUT-OF-SCOPE for mutations / other schemas)
+- Engineer extended `_shared/composition/src/parsers/plan-note.ts` parsePart to extract `**Build Workflow Items**` H4 blocks into Part.build_workflow_items, inverse of the X.D.2 renderer emission. Added new `sectionizeH4` helper in `ast-helpers.ts` for symmetry with H2/H3 helpers (though final parseBuildWorkflowItems walks children directly — simpler than splitting at H4 boundaries)
+- Engineer updated fixture `_shared/composition/tests/fixtures/plan-note-sample.md` build.SPEC-007 part: added Build Workflow Items section with TASK-001-SPEC-007 (impl IN_PROGRESS + qa PENDING) matching the conceptual state of the T-01 plan-task IN_PROGRESS. Round-trip byte-identity preserved (plan-round-trip.test.ts 7/7 pass)
+- Test counts: 200 pass / 16 fail → 214 pass / 2 fail. 14 of 16 EXPECTED FAILURES flipped green
+- Remaining 2 failures (genuine X.D.3 dependencies, not X.D.4 gaps): (1) `applyPlanMutation > set-part-substatus IN_PROGRESS → DONE with outcome` — schema correctly rejects flip while build_workflow_items non-DONE; needs X.D.3 transitionImplItem + transitionQaItem mutations to drive items DONE first. (2) Plan/Session round-trip mutation test — same root cause
+- biome clean; tsc clean. Commit `c8786ca build(spec-007): X.D.4 parser + fixture for build_workflow_items` landed on branch `feat/plan-001-x-d-2-plan-renderer`
+- PLAN-001 Phase X.D table: X.D.4 IN_PROGRESS → DONE with commit reference + remaining-failures rationale
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
