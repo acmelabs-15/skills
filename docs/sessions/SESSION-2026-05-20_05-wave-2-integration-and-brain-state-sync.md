@@ -270,3 +270,16 @@ The protocol enforces itself via surface area produced by templates + schemas + 
 - Designed for resumability: fresh agent / post-compaction can read this memory + the two TIER-1 memories + SESSION-_05 + PLAN-001 and pick up exactly where work left off
 - Phase X.A.6 (state-capture memory) DONE
 - Next: pending user decisions D1-D4 before Phase X.B audit can start
+
+
+## Event 13 — Brain note mirror of state-capture written (2026-05-20)
+
+**Type**: state-persistence | brain-graph-mirror
+
+- Written: ANALYSIS-003 at `analysis/ANALYSIS-003-phase-x-protocol-hardening-state.md` — Brain knowledge-graph mirror of the orchestrator-private state-capture memory
+- Title fixed via Pattern 2 Phase 2: frontmatter title + H1 now `'ANALYSIS-003: Phase X Protocol Hardening State'`
+- ANALYSIS-003 captures: Phase X work plan (29 items + status), 37-surface drift inventory summary, 4 pending user decisions (D1-D4), protocol architecture (inlined per Section 5.3 — no assistant-private memory references in Brain notes), resume instructions, key references
+- Designed as resumption anchor on Brain knowledge-graph side; orchestrator-private state-capture memory is its mirror on the assistant-private side
+- Phase X.A.7 (Brain note mirror) DONE
+- User reinforced architecture in two messages mid-write: (a) composition library mechanisms are the deterministic enforcement that /plan and other lifecycle skills LEVERAGE (not just docs/skills updates); (b) deterministic plan-state-transition script must REQUIRE session note reference as input — throws error if missing — mechanically enforcing the protocol step-by-step
+- Next: address user's architecture reinforcement, confirm Phase X.D scope (decision D1 leaning toward 'include tonight' or partial), then begin Phase X.B audit
