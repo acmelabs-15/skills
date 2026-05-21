@@ -8,17 +8,17 @@ import type { CompositionAdapter } from "../core/adapter.js";
 import {
   type HashValidationEntry,
   type HashValidationResult,
-  rollbackCluster,
   type SubtreeFileForValidation,
+  rollbackCluster,
   validateSubtreeHashes,
 } from "../core/cluster-rollback.js";
 import { sha256 } from "../core/hash.js";
 import {
-  defaultSubtreeFileIO,
   type ProcessResult,
-  processSubtree as orchestrateSubtree,
   type SubtreeFileIO,
   type SubtreeProcessInput,
+  defaultSubtreeFileIO,
+  processSubtree as orchestrateSubtree,
 } from "../core/subtree-orchestrator.js";
 import type { LineRange, MutationSpec } from "../core/types.js";
 

@@ -12,14 +12,14 @@
 import { renameSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import type { MutationSpec } from "./types.js";
 import {
   type HashValidationEntry,
-  rollbackCluster,
   type SubtreeFileForValidation,
   type SubtreeReverseMutator,
+  rollbackCluster,
   validateSubtreeHashes,
 } from "./cluster-rollback.js";
+import type { MutationSpec } from "./types.js";
 
 /**
  * Single-file extension of `MutationSpec` keyed by relative path within the

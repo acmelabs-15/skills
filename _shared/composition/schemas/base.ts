@@ -16,13 +16,12 @@ export const frontmatterMapSchema = z.record(z.string(), z.string());
  * obviously excessive declarations without requiring the source file. The runtime
  * 50%-line-coverage check (Component 3) is the second enforcement layer.
  */
-export const regeneratedSectionsFloor = z.array(z.string()).refine(
-  (sections) => sections.length <= 10,
-  {
+export const regeneratedSectionsFloor = z
+  .array(z.string())
+  .refine((sections) => sections.length <= 10, {
     message:
       "regenerated_sections declares more than 10 sections; likely integrity bypass. Maximum 10 sections (enforced at schema level); runtime validates <=50% of source lines.",
-  },
-);
+  });
 
 // Note: `satisfies z.ZodType<MutationSpec>` is omitted here. With Zod's `.optional()`
 // producing `T | undefined` and the project's `exactOptionalPropertyTypes: true`

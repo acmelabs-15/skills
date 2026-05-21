@@ -12,8 +12,8 @@
  */
 
 import { existsSync, unlinkSync } from "node:fs";
-import type { MutationSpec } from "./types.js";
 import { sha256 } from "./hash.js";
+import type { MutationSpec } from "./types.js";
 
 /**
  * Adapter contract surface used by cluster-rollback. Mirrors the
