@@ -425,7 +425,7 @@ After all TASKs in `{{SPEC_ID}}` validated:
 
 ### decisions.4 — ADR-004 Cross-Source Coordinator strategic call
 
-**Status**: DONE-PENDING-REVIEW (2026-05-21; architect returned ADR-004 PROPOSED with recommended option **D-2 amend-spec**; awaiting brain:---adr-review BLOCKING gate per `~/CLAUDE.md` ADR Review Requirement)
+**Status**: DONE (2026-05-21; ADR-004 ACCEPTED Round 1 6/6 convergence; see CRIT-004-ADR-004 debate log + 9 Clarifications C-1..C-9 applied to ADR-004)
 **Outcome**: [[ADR-004: Cross-Source Coordinator Architecture]] (PROPOSED)
 **Recommended option**: D-2 (Amend-Spec) — refine DESIGN-002 to match what code already does. 2h vs 1.5d for D-1. Rationale: DESIGN-002 coordinator is speculative infrastructure for unmaterialized SPEC-003 integration; code's map-based pass-through already passes 23 tests + both SHA-256 PROOF gates; the two CrossSourceUpdate schemas model fundamentally different abstractions
 **Next**: brain:---adr-review skill dispatch (mandatory blocking gate); on PASS → user adjudicates D-1/D-2/D-3 via AskUserQuestion → ADR-004 flipped ACCEPTED → DESIGN-002 amendment OR TASK-009-SPEC-002 dispatch

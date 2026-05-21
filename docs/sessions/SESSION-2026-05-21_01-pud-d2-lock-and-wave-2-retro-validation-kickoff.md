@@ -220,6 +220,14 @@ Still in-flight: QA-007-SPEC-002, QA-batched-SPEC-003-plan-ts, impl-fix-iter-1 T
 
 PLAN qa-batched-SPEC-003 IN_PROGRESS → DONE; TASK-007/008/009-SPEC-003 status DRAFT → DONE + validated_by QA-032 (all 3 notes).
 
+## Event 30
+
+[2026-05-21] brain:---adr-review Phase 1 6-reviewer parallel complete. Convergence Round 1: **6/6 ACCEPT** (architect, critic HIGH, independent-thinker ACCEPT-w-CONCERNS, security ACCEPT, analyst, high-level-advisor). 0 BLOCK. 0 D&C dissents. Threshold ≥5 ACCEPT met.
+
+P0 findings: 0. P1 findings consolidated: 9 items → applied as Clarifications C-1..C-9 on ADR-004 (test count correction; DESIGN-002 amendment skeleton; ADR-002 alignment trace; DESIGN-002 re-review sequencing; effort refinement 4-6h; precedent boundary for amend-spec vs implement-as-spec; SPEC-003 tracked pre-constraints incl. SEC-001 path containment; duplicate TASK-003 reconcile; ADR-002 Clarification follow-up). CRIT-004-ADR-004 debate log authored.
+
+ADR-004 PROPOSED → ACCEPTED. PLAN decisions.4 DONE-PENDING-REVIEW → DONE. D-2 amendment dispatch unblocked. Wave 3 retro-validation COMPLETE.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

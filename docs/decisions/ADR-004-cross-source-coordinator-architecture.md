@@ -2,7 +2,7 @@
 title: 'ADR-004: Cross-Source Coordinator Architecture'
 type: decision
 permalink: decisions/adr-004-cross-source-coordinator-architecture
-status: PROPOSED
+status: ACCEPTED
 date: 2026-05-21
 updated: 2026-05-21
 tags:
@@ -17,7 +17,7 @@ tags:
 
 ## Status
 
-PROPOSED (2026-05-21; pending brain:---adr-review Phase 4 convergence gate)
+ACCEPTED (2026-05-21; brain:---adr-review Phase 4 convergence 6/6 ACCEPT Round 1; see CRIT-004-ADR-004)
 
 ## Context and Problem Statement
 
@@ -138,3 +138,25 @@ Chosen option: "D-2: Amend-Spec", because:
 - depends_on [[DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol]]
 - caused_by [[QA-016-SPEC-002: Spec Aggregate Retro-Validation]]
 - leads_to [[TASK-009-SPEC-002: Implement Cross-Source Coordinator Architecture per DESIGN-002]]
+
+## Clarifications
+
+(Applied 2026-05-21 from brain:---adr-review Phase 3 resolutions; see [[CRIT-004-ADR-004: Debate Log]] for full debate record.)
+
+**C-1 (test count correction)**: The original ADR cited "23 passing tests" as evidence. Correction: 23 is the SPEC-002 AGGREGATE test count across 5 files. The cross-source-specific tests are 11 across 2 files (session-adapter + session-cross-source). Both numbers support the decision; precision matters for future readers.
+
+**C-2 (DESIGN-002 amendment skeleton)**: The amended DESIGN-002 must describe (a) the `getCrossSourceUpdates(content, plan)` pass-through method on SessionAdapter; (b) the actual `crossSourceUpdateSchema` shape with `target_source_type`, `target_path`, `frontmatter_map`, `wikilink_map`; (c) the semantics that the adapter EMITS updates without applying them (the orchestrator dispatches application); (d) the absence of coordinator/handler infrastructure with rationale pointing to ADR-004 and SPEC-003 deferral.
+
+**C-3 (ADR-002 alignment trace)**: ADR-002 D-1 locks the `cross_source_updates` field NAME and array position in the distribution schema. ADR-002 does NOT lock the internal `crossSourceUpdateSchema` element shape; that was left to per-adapter design. ADR-004 amends the element shape only, not the field name or array position. ADR-002 D-1 remains correct.
+
+**C-4 (DESIGN-002 re-review sequencing)**: Strict order: (1) ADR-004 → ACCEPTED; (2) author DESIGN-002 amendment via memory agent (status DRAFT during amendment); (3) DESIGN-002 re-review per /spec Gate B; (4) DESIGN-002 → ACCEPTED.
+
+**C-5 (effort refinement)**: 2h documentation + 2-4h DESIGN-002 re-review cycle = 4-6h total. The original 2h figure was documentation-only.
+
+**C-6 (precedent boundary — when amend-spec is acceptable)**: Amend-spec is acceptable when (a) the implementation diverged because it discovered a better local design with positive evidence (passing tests + SHA-256 proofs + alignment with existing patterns), AND (b) the spec was speculative (no concrete consumer yet), AND (c) at least 2 reviewers concur on the design quality of the implementation vs the spec. Implement-as-spec is required when (a) the spec was deliberately designed against known consumers, OR (b) the implementation diverged for reasons of expedience without architectural justification, OR (c) the spec encodes external contracts (API, schema, protocol).
+
+**C-7 (SPEC-003 tracked pre-constraints)**: SPEC-003 (PLAN adapter integration) spec-decomposition phase MUST explicitly address: (a) coordinator interface design (if needed by PLAN adapter consumer); (b) rollback semantics (originally REQ-003 AC-3 of SPEC-002, displaced by D-2); (c) reversal protocol during recomposition (originally REQ-003 AC-4 of SPEC-002, displaced); (d) schema shape evaluation (whether current `frontmatter_map`/`wikilink_map` shape is sufficient OR a field-level mutation shape is needed); (e) wire `containedPathSchema` to `crossSourceUpdateSchema.target_path` (SEC-001 from security review — CWE-22 latent path traversal).
+
+**C-8 (duplicate TASK-003 reconcile)**: Two TASK-003-SPEC-002 notes exist (lowercase + uppercase folder variants). Reconcile before amendment: identify canonical, archive/delete the duplicate, ensure status alignment.
+
+**C-9 (ADR-002 Clarification follow-up)**: Add a Clarification entry to ADR-002 noting that D-1's `crossSourceUpdateSchema` shape is superseded by ADR-004 D-2; the field name + array position remain locked.
