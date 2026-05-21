@@ -157,3 +157,24 @@ Move to DONE when Phase X.E.3 done, all D1-D4 resolved + applied, PLAN-001 front
 - relates_to [[ANALYSIS-001: SPEC Clustering]]
 - relates_to [[ADR-003: Plan/Session Render Architecture]]
 - relates_to [[SPEC-007: Plan/Session Render Implementation]]
+
+
+## X.B Audit Findings (DONE 2026-05-20)
+
+7 lifecycle skills audited + composition library current state + NOTE-TEMPLATES. Per-skill gap-analysis summary:
+
+| Skill | Lines | Existing rigor | Highest-leverage gap |
+|---|---|---|---|
+| /plan | 230 | Two-step edit; PLAN owns workflow state; status enum | No per-TASK impl+qa mandate inside build parts; no composition library reference |
+| /build | 286 | Per-TASK Stage A cycle 4a-4g (closest to rigid protocol) | Briefs ad-hoc, not = verbatim rendered PLAN content; no schema validation of agent claims |
+| /spec | 242 | Strict REQ→DESIGN→TASK order; Gate B traceability | No PLAN handoff contract emitting per-TASK impl+qa items with rendered DoD/AC/compliance |
+| /decisions | 257 | Per-D-N micro-cycle (closest decisions-side match) | lockDecision not formalized as deterministic function requiring context |
+| /research | 208 | Options-only; no-Open-Questions; no-deferral | convergencePass not schema-validated mechanically |
+| /review | 320 | 10-value verdict enum; diff-hash cache | No checkbox-vs-diff cross-check axis |
+| /end | 401 | Step 1 DoD halt-on-empty (closest end-of-phase gate) | Doesn't distinguish impl/QA marks; doesn't verify TEST-REPORT linkages for x claims |
+
+Composition library state: PlanNote/SessionNote schemas/renderers/mutations present. Missing 5 schemas (TaskNote, RequirementNote, DesignNote, SpecRootNote, TestReportNote), 5 renderers, claim-validators, deterministic transition functions.
+
+NOTE-TEMPLATES: TASK/REQ/DESIGN templates have checkbox sections but no checkbox-as-contract language. TEST-REPORT template is STUB.
+
+15-item execution order locked for X.C + X.D. Next: begin item 1 (extend PlanNote schema with BuildWorkflowItemSchema).

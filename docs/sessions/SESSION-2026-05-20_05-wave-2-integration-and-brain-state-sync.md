@@ -283,3 +283,37 @@ The protocol enforces itself via surface area produced by templates + schemas + 
 - Phase X.A.7 (Brain note mirror) DONE
 - User reinforced architecture in two messages mid-write: (a) composition library mechanisms are the deterministic enforcement that /plan and other lifecycle skills LEVERAGE (not just docs/skills updates); (b) deterministic plan-state-transition script must REQUIRE session note reference as input — throws error if missing — mechanically enforcing the protocol step-by-step
 - Next: address user's architecture reinforcement, confirm Phase X.D scope (decision D1 leaning toward 'include tonight' or partial), then begin Phase X.B audit
+
+
+## Event 14 — PLAN-001 partial reconciliation + Phase X structure added (2026-05-20)
+
+**Type**: plan-update
+
+- ANALYSIS-003 title fixed via Pattern 2 Phase 2 (frontmatter title + H1 now colon + Title Case)
+- PLAN-001 frontmatter: added 5 missing branches (build-spec-002/003/004/007 + wave-2-integration) → branches list now 8 entries
+- PLAN-001 Progress Dashboard: added protocol-hardening row between build.SPEC-NNN and review rows
+- PLAN-001 Phase Progression: added protocol-hardening IN_PROGRESS row between build.SPEC-007 and review pointing at the ANALYSIS-003 work plan
+- PLAN-001 H2 sections: inserted Phase-X — Protocol Hardening section between Build and Review (line 1232). Sub-phases X.A through X.E with Status, canonical work plan pointer, sub-phases, Exit Criteria, Blockers, owning session
+- Brain MCP response noise: edits hit a pre-existing serialization bug where Progress Log bullets parse as overlong relation_types. Edits land on disk; responses error. Future schemas will reject such bullet shapes
+- DEFERRED until D2 (throw-out vs salvage): reverting Wave 2 false-DONE statuses on 4 SPEC roots + 30 TASKs + 28 REQs + 12 DESIGNs. Phase Progression for those still shows IN_PROGRESS — truthful pre-Wave-2-build state
+- Phase X.A complete (all 7 items DONE). Commit 15174d7 closes Phase X.A
+- Next: Phase X.B audit of 7 lifecycle skills plus composition library current state. Inline findings in this conversation
+
+
+## Event 15 — Phase X.B audit complete (2026-05-20)
+
+**Type**: audit-complete
+
+Audited 7 user-created lifecycle skills + composition library current state + NOTE-TEMPLATES. Findings:
+
+- /plan (230L): no mandate for per-TASK impl+qa items in build parts; no reference to composition library deterministic functions
+- /build (286L): per-TASK Stage A cycle closest match to rigid protocol; briefs are ad-hoc not verbatim rendered PLAN content; no schema validation of agent claims
+- /spec (242L): strict authoring order present; no PLAN handoff contract emitting per-TASK impl+qa with rendered DoD/AC/compliance
+- /decisions (257L): per-D-N micro-cycle closest decisions-side match; lockDecision not formalized as deterministic function
+- /research (208L): options-only + no-Open-Questions present; convergencePass not schema-validated
+- /review (320L): 10-value verdict enum; no checkbox-vs-diff axis
+- /end (401L): Step 1 DoD halt-on-empty present; doesn't distinguish impl/QA marks or verify TEST-REPORT linkages
+- Composition library: PlanNote + SessionNote schemas/renderers/mutations exist; missing TaskNote/RequirementNote/DesignNote/SpecRootNote/TestReportNote schemas + renderers + claim-validators + deterministic transition functions
+- NOTE-TEMPLATES TASK template has DoD section but no checkbox-as-contract language; TEST-REPORT template is STUB; needs full development
+
+15-item execution order locked covering Phase X.C + X.D. Next: begin item 1 (extend PlanNote schema with BuildWorkflowItemSchema for per-TASK impl+qa items).
