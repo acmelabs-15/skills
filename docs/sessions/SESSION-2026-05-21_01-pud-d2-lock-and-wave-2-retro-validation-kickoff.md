@@ -332,6 +332,19 @@ Parser constraint surfaced: inline markdown (backticks, **bold**, *italic*) stri
 
 **Wave 2 retro-validation FULLY COMPLETE. 7 of 7 SPECs DONE (SPEC-001/002/003/004/007 + 005/006 still PENDING as fresh builds for Wave 4).**
 
+## Event 45
+
+[2026-05-21] **Wave 4 dispatched**: 2 parallel batched per-SPEC build agents for fresh greenfield builds.
+
+- SPEC-005 (Decompose/Recompose, 6 TASKs, ~200 LOC est): agent dispatched. Owns `skills/decompose/` + `skills/recompose/`. Consumes composition library via public barrel.
+- SPEC-006 (Defrag/Ingest, 7 TASKs, ~300 LOC est): agent dispatched. Owns `skills/defrag/` + `skills/ingest/`. SPEC-006 TASK-003 has a soft dependency on SPEC-005 (delegation to decompose/recompose) — agent instructed to HALT-and-report if SPEC-005 not landed.
+
+User-approved batched dispatch (per pattern set by Wave 3 Stream D SPEC-003 plan.ts): each agent handles all TASKs in dependency order internally. Min-tests directive; Bun-native APIs; Pattern 2 three-phase write for any Brain notes.
+
+PLAN-001 build.SPEC-005/006 substatus stays PENDING per schema-honest representation (PlanNoteSchema requires per-TASK build_workflow_items for non-PENDING; not authored at finest granularity for batched dispatch). Source-of-truth is per-TASK frontmatter status — agents flip TODO → DONE on their TASKs as DoD checkboxes satisfied.
+
+In-flight: 2 build agents (SPEC-005 + SPEC-006). On returns: per-TASK QA dispatch wave (potentially 13 QAs in parallel for file-disjoint TASKs).
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid
