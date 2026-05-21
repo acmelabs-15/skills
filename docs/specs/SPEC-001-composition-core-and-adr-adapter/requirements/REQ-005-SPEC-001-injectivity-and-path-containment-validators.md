@@ -2,7 +2,7 @@
 title: 'REQ-005-SPEC-001: Injectivity and Path Containment Validators'
 type: requirement
 permalink: specs/spec-001-composition-core-and-adr-adapter/requirements/req-005-spec-001-injectivity-and-path-containment-validators
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-001
@@ -35,27 +35,25 @@ Security
 ADR-002 D-5 specifies two BLOCKING validators as Zod .refine() rules. The injectiveDisjointMap validator checks that (a) no two source IDs map to the same target (injectivity: Set size === array length) and (b) keys and values come from disjoint sets (no key appears as a value). Without disjointness, single-pass string replacement is order-dependent and non-reversible, which breaks the F-8 hash protocol. The containedPathSchema validator uses realpath() to resolve symlinks before checking that all output paths start with the docs/ root plus path.sep, mitigating CWE-22 path traversal including symlink bypass. The containedPathSchema is async (uses realpath), requiring planSchema.parseAsync().
 
 ## Acceptance Criteria
-
-- [ ] GIVEN a renumber_map where two source keys map to the same target value
+- [x] GIVEN a renumber_map where two source keys map to the same target value
       WHEN parsed via the Zod schema
       THEN the injectivity validator rejects it with a message identifying the non-injective mapping
 
-- [ ] GIVEN a renumber_map where a key also appears as a value (e.g., "D-1" maps to "D-2" and "D-2" maps to "D-3")
+- [x] GIVEN a renumber_map where a key also appears as a value (e.g., "D-1" maps to "D-2" and "D-2" maps to "D-3")
       WHEN parsed via the Zod schema
       THEN the disjointness validator rejects it with a descriptive error
 
-- [ ] GIVEN a wikilink_map with non-injective or non-disjoint mappings
+- [x] GIVEN a wikilink_map with non-injective or non-disjoint mappings
       WHEN parsed
       THEN the same validators reject it
 
-- [ ] GIVEN an output_path that resolves outside docs/ (e.g., "../secrets/file.md")
+- [x] GIVEN an output_path that resolves outside docs/ (e.g., "../secrets/file.md")
       WHEN parsed via containedPathSchema
       THEN it is rejected with a CWE-22 path traversal error message
 
-- [ ] GIVEN an output_path that uses symlinks to escape docs/
+- [x] GIVEN an output_path that uses symlinks to escape docs/
       WHEN parsed via containedPathSchema with realpath resolution
       THEN it is rejected because the realpath resolves outside the docs/ root
-
 ## Implementation Notes
 
 The injectiveDisjointMap is implemented as a Zod .refine() on z.record(z.string(), z.string()). The containedPathSchema uses path.resolve() and fs/promises realpath() with a path.sep suffix check to prevent prefix-match false positives (e.g., docs-backup/ matching docs/). Both validators are applied at the per-destination level in distribution plans and per-source level in composition plans.

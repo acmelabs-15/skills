@@ -2,7 +2,7 @@
 title: 'DESIGN-003-SPEC-001: Zod Plan Schema Modular Layout'
 type: design
 permalink: specs/spec-001-composition-core-and-adr-adapter/design/design-003-spec-001-zod-plan-schema-modular-layout
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-001

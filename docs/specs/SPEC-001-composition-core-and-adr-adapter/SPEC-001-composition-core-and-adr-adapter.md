@@ -69,43 +69,41 @@ The following requirements are addressed by this SPEC:
 | AI-Assisted | 3.75d | Sum of TASK AI-Assisted estimates |
 
 ## Success Criteria
-
-- [ ] All 8 REQs reach ACCEPTED via Gate A + Gate B
-- [ ] All 9 TASKs reach DONE via /build per-TASK cycle
-- [ ] Spec-level QA sweep passes (per /build Stage B)
-- [ ] All 4 mandatory exit gates pass (per /build Step 7)
-- [ ] Round-trip property test passes: SHA-256(original) === SHA-256(recomposed) for ADR adapter (THE PROOF)
-
+- [x] All 8 REQs reach ACCEPTED via Gate A + Gate B
+- [x] All 9 TASKs reach DONE via /build per-TASK cycle
+- [x] Spec-level QA sweep passes (per /build Stage B)
+- [x] All 4 mandatory exit gates pass (per /build Step 7)
+- [x] Round-trip property test passes: SHA-256(original) === SHA-256(recomposed) for ADR adapter (THE PROOF)
 ## Artifact Status
 
 ### Requirements
 
-- [ ] REQ-001-SPEC-001: CompositionAdapter Interface Contract
-- [ ] REQ-002-SPEC-001: BaseMarkdownAdapter Base Class
-- [ ] REQ-003-SPEC-001: SHA-256 Hash Utility
-- [ ] REQ-004-SPEC-001: Zod Plan Validator Base
-- [ ] REQ-005-SPEC-001: Injectivity and Path Containment Validators
-- [ ] REQ-006-SPEC-001: Atomic Write-to-Temp-Then-Rename Rollback
-- [ ] REQ-007-SPEC-001: ADR Adapter Implementation
-- [ ] REQ-008-SPEC-001: Round-Trip Property Test for ADR Adapter
+- [x] REQ-001-SPEC-001: CompositionAdapter Interface Contract
+- [x] REQ-002-SPEC-001: BaseMarkdownAdapter Base Class
+- [x] REQ-003-SPEC-001: SHA-256 Hash Utility
+- [x] REQ-004-SPEC-001: Zod Plan Validator Base
+- [x] REQ-005-SPEC-001: Injectivity and Path Containment Validators
+- [x] REQ-006-SPEC-001: Atomic Write-to-Temp-Then-Rename Rollback
+- [x] REQ-007-SPEC-001: ADR Adapter Implementation
+- [x] REQ-008-SPEC-001: Round-Trip Property Test for ADR Adapter
 
 ### Designs
 
-- [ ] DESIGN-001-SPEC-001: Composition Library Module Structure
-- [ ] DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy
-- [ ] DESIGN-003-SPEC-001: Zod Plan Schema Modular Layout
+- [x] DESIGN-001-SPEC-001: Composition Library Module Structure
+- [x] DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy
+- [x] DESIGN-003-SPEC-001: Zod Plan Schema Modular Layout
 
 ### Tasks
 
-- [ ] TASK-001-SPEC-001: Scaffold Composition Project
-- [ ] TASK-002-SPEC-001: Define Core Types and Adapter Interface
-- [ ] TASK-003-SPEC-001: Implement SHA-256 Hash Utility
-- [ ] TASK-004-SPEC-001: Implement BaseMarkdownAdapter
-- [ ] TASK-005-SPEC-001: Implement Zod Plan Schemas
-- [ ] TASK-006-SPEC-001: Implement Injectivity and Path Containment Validators
-- [ ] TASK-007-SPEC-001: Implement Atomic Write Helper
-- [ ] TASK-008-SPEC-001: Implement ADR Adapter
-- [ ] TASK-009-SPEC-001: Implement Round-Trip Property Test and ADR Fixtures
+- [x] TASK-001-SPEC-001: Scaffold Composition Project
+- [x] TASK-002-SPEC-001: Define Core Types and Adapter Interface
+- [x] TASK-003-SPEC-001: Implement SHA-256 Hash Utility
+- [x] TASK-004-SPEC-001: Implement BaseMarkdownAdapter
+- [x] TASK-005-SPEC-001: Implement Zod Plan Schemas
+- [x] TASK-006-SPEC-001: Implement Injectivity and Path Containment Validators
+- [x] TASK-007-SPEC-001: Implement Atomic Write Helper
+- [x] TASK-008-SPEC-001: Implement ADR Adapter
+- [x] TASK-009-SPEC-001: Implement Round-Trip Property Test and ADR Fixtures
 
 ## ADR Cross-cutting Constraints
 
@@ -129,6 +127,7 @@ The following requirements are addressed by this SPEC:
 ## Observations
 
 - [decision] SPEC-001 authored on 2026-05-19 covering 8 REQs + 3 DESIGNs + 9 TASKs #spec #status
+- [outcome] All 21 child notes synced to terminal state on 2026-05-20: 9 TASKs DONE, 8 REQs ACCEPTED, 3 DESIGNs ACCEPTED, all checkboxes flipped #sync #complete
 - [decision] Cluster source from ANALYSIS-001 SPEC Clustering Finding 1 #provenance #clustering
 - [constraint] Round-trip property test on ADR adapter is THE PROOF gate that validates the entire architecture #proof #blocking
 - [constraint] All 5 subsequent SPECs depend on SPEC-001 core library being validated via the PROOF #dependency #foundational

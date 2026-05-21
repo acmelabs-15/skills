@@ -2,7 +2,7 @@
 title: 'DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy'
 type: design
 permalink: specs/spec-001-composition-core-and-adr-adapter/design/design-002-spec-001-compositionadapter-interface-and-type-hierarchy
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-001

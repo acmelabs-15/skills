@@ -2,7 +2,7 @@
 title: 'REQ-008-SPEC-001: Round-Trip Property Test for ADR Adapter'
 type: requirement
 permalink: specs/spec-001-composition-core-and-adr-adapter/requirements/req-008-spec-001-round-trip-property-test-for-adr-adapter
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-001
@@ -37,31 +37,29 @@ KICKOFF-BRIEF.md specifies the round-trip property test as the key architectural
 The test framework uses bun test (ADR-001 F-6). Test fixtures include a real-world ADR sample and a corresponding fixture plan YAML that exercises D-N renumber, wikilink substitution, and multi-destination distribution.
 
 ## Acceptance Criteria
-
-- [ ] GIVEN a test file at _shared/composition/tests/round-trip.test.ts
+- [x] GIVEN a test file at _shared/composition/tests/round-trip.test.ts
       WHEN bun test is run
       THEN the round-trip property test executes for the ADR adapter
 
-- [ ] GIVEN a real-world ADR fixture at tests/fixtures/adr-sample.md
+- [x] GIVEN a real-world ADR fixture at tests/fixtures/adr-sample.md
       WHEN the round-trip test reads it, decomposes via a fixture plan, and recomposes via the inverse plan
       THEN SHA-256(original) === SHA-256(recomposed)
 
-- [ ] GIVEN the parse/serialize round-trip precondition
+- [x] GIVEN the parse/serialize round-trip precondition
       WHEN serialize(parse(adr-sample.md)) is computed
       THEN the output is character-identical to the input (no whitespace normalization drift)
 
-- [ ] GIVEN the applyMutations/reverseMutations inverse precondition
+- [x] GIVEN the applyMutations/reverseMutations inverse precondition
       WHEN reverseMutations(applyMutations(content, spec), spec) is computed
       THEN the output is character-identical to the input
 
-- [ ] GIVEN a fixture plan YAML that exercises D-N renumber with disjoint key-value domains
+- [x] GIVEN a fixture plan YAML that exercises D-N renumber with disjoint key-value domains
       WHEN the full decompose-then-recompose cycle completes
       THEN every intermediate hash check passes (per-destination S_hash === D'_hash)
 
-- [ ] GIVEN a fixture plan YAML with deliberately non-identity renumber (e.g., D-3 to D-100 to D-1)
+- [x] GIVEN a fixture plan YAML with deliberately non-identity renumber (e.g., D-3 to D-100 to D-1)
       WHEN the round-trip completes
       THEN the final recomposed content is char-identical to the original despite identifier renumbering
-
 ## Implementation Notes
 
 The test framework is a bun test file that takes an adapter instance, a fixture markdown file, and a fixture plan YAML. It executes the full decompose-then-recompose cycle and asserts char-identity via SHA-256 comparison. The ADR test fixture should be a realistic ADR note (~200-500 lines) with multiple D-N sections, wikilinks, and YAML frontmatter. The fixture plan should exercise at least 2 destination clusters with non-trivial renumber_map entries.

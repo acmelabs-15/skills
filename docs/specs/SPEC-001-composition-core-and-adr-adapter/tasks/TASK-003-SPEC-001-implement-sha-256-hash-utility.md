@@ -45,17 +45,13 @@ Use Bun.hash("sha256", content) which returns a Uint8Array. Convert to hex strin
 - Difference test (different input produces different hash)
 
 ## Definition of Done
-
-- [ ] sha256 function exported from src/core/hash.ts
-- [ ] Returns hex-encoded SHA-256 hash string
-- [ ] Uses Bun.hash per ADR-001 F-6
-- [ ] Unit tests pass with 3+ test cases
-
+- [x] sha256 function exported from src/core/hash.ts
+- [x] Returns hex-encoded SHA-256 hash string
+- [x] Uses Bun.hash per ADR-001 F-6
+- [x] Unit tests pass with 3+ test cases
 ## ADR Compliance
-
-- [ ] Honors ADR-001 F-6: Uses Bun.hash (Bun-native API)
-- [ ] Honors ADR-001 F-8: SHA-256 as the hash algorithm
-
+- [x] Honors ADR-001 F-6: Uses Bun.hash (Bun-native API)
+- [x] Honors ADR-001 F-8: SHA-256 as the hash algorithm
 ## Effort Summary
 
 | Tier | Estimate | Notes |
