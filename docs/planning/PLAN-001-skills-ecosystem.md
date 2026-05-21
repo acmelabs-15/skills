@@ -415,7 +415,7 @@ After all TASKs in `{{SPEC_ID}}` validated:
 
 ### impl-TASK-010-SPEC-003 — Plan composition YAML + frontmatter_map fixtures
 
-**Status**: IN_PROGRESS (2026-05-21; QA returned FAIL on iteration 1 — Stream F1 re-dispatch fix iteration in progress; see iteration log below)
+**Status**: DONE (2026-05-21; iter 1 fix complete: YAML hash quoting + fixture-load tests; 19/19 PASS; QA re-dispatched)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/tests/fixtures/` (plan) + `_shared/composition/tests/plan-integrity-floor.test.ts`
 **Scope**: TASK-010-SPEC-003
