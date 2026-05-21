@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync'
 type: session
 permalink: sessions/session-2026-05-20_05-wave-2-integration-and-brain-state-sync
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - build
@@ -10,7 +10,6 @@ tags:
 - integration
 - brain-sync
 - phase-x-protocol-hardening
-- paused-for-resume
 ---
 
 # SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync
@@ -397,3 +396,19 @@ User will invoke /plan PLAN-001-skills-ecosystem in a new session. /plan reads P
 ### Session status
 
 This session note transitioning IN_PROGRESS → PAUSED (next edit). Session continues in a future invocation; not COMPLETE because Phase X is not done.
+
+
+## Event 20 — Surgical revert of Wave 2 false-DONE statuses + SPEC-001 post-QA reconciliation committed (2026-05-20)
+
+**Type**: state-correction | working-tree-cleanup
+
+User approved Option C (surgical revert): drop the 74 Wave 2 false-DONE status flips from earlier today; keep the 21 SPEC-001 post-QA changes which reflect legitimate validated state.
+
+Executed:
+
+- `git checkout HEAD -- docs/specs/SPEC-002-simple-adapters/ docs/specs/SPEC-003-plan-adapter/ docs/specs/SPEC-004-spec-subtree-adapter/ docs/specs/SPEC-007-plan-session-render/` reverted 74 files
+- SPEC-001 (Group A) 21 files committed as post-QA reconciliation
+- Wave 2 subtree (SPEC-002/003/004/007) notes back at pre-Wave-2-build state
+- D2 decision (Wave 2 code throw-out vs salvage) still pending — applies to the integration branch's code; brain notes no longer carry false-DONE markers in the meantime
+
+Working tree status after this event: clean except for session note. Ready for /end protocol.
