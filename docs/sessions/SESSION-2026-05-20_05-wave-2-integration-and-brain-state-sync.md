@@ -2,13 +2,15 @@
 title: 'SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync'
 type: session
 permalink: sessions/session-2026-05-20_05-wave-2-integration-and-brain-state-sync
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - build
 - wave-2
 - integration
 - brain-sync
+- phase-x-protocol-hardening
+- paused-for-resume
 ---
 
 # SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync
@@ -365,3 +367,33 @@ Now if compaction fires, the rehydration protocol fires, the orchestrator re-rea
 Outstanding follow-up:
 
 - CLAUDE.md needs a Tier-1 reference to the new rehydration protocol memory as a BLOCKING gate. Held for user approval since CLAUDE.md is the orchestrator contract.
+
+
+## Event 19 — Checkpoint complete (Phase X paused for resume in new session) (2026-05-20)
+
+**Type**: checkpoint | session-pause-prep
+
+User approved option 2 (checkpoint) + CLAUDE.md update. Final hygiene completed:
+
+- CLAUDE.md updated with 3 new TIER-1 BLOCKING rows in pre-flight table: post-compaction rehydration, per-TASK build+qa cycle, workflow phase rigor. Auto-imported tier-1 context now surfaces these on every session start
+- PLAN-001 Phase X subsections reconciled to current item statuses: X.A DONE, X.B DONE 2026-05-20, X.C PENDING with per-skill highest-leverage findings inlined, X.D IN_PROGRESS 1 of 7 (X.D.1 DONE, X.D.2-7 pending), X.E PENDING. D1 user decision RESOLVED inline
+- ANALYSIS-003 carries the full work plan + audit detail + 3 options (used today) + architectural reinforcement verbatim — all references reachable from this session note
+
+### Status as of checkpoint
+
+- Active project: skills (set in Brain MCP this session)
+- Active branch: feat/plan-001-wave-2-integration
+- Most recent commits: d28852f, c02ca27, ca1fef3, 15174d7, 601d75f, deeae3f, 330da3b, 5f85fe4, eb43256, plus the next commit covering Event 18-19
+- Active PLAN phase: protocol-hardening (Phase X) IN_PROGRESS
+- Active Phase X sub-phase: X.D Composition library mechanism completion IN_PROGRESS 1 of 7
+- Active item: X.D.1 DONE; X.D.2 (extend PlanNote renderer to generate rendered impl+qa instruction blocks reading linked TASK/REQ/DESIGN checkboxes) is the next PENDING item to pick up
+- Uncommitted work: 95 Brain note files from earlier today's brain:memory-agent dispatches (Wave 2 false-DONE statuses) — held pending D2 throw-out vs salvage decision; do NOT commit until D2 resolved
+- Pending decisions: D2 (Wave 2 throw-out vs salvage); D3 (defer CLAUDE.md updates — now partially resolved, more TIER-1 references can be added in X.E); D4 (PLAN-001 reconciliation timing — partial reconcile done; full reconcile gated on D2)
+
+### Next action on resume
+
+User will invoke /plan PLAN-001-skills-ecosystem in a new session. /plan reads PLAN-001 state, identifies protocol-hardening as the active phase, sees X.D.2 as the next PENDING item. Orchestrator runs post-compaction rehydration checklist first (per the TIER-1 BLOCKING memory in CLAUDE.md), reads session + analysis + memories + PLAN, then proceeds with X.D.2 (PlanNote renderer extension).
+
+### Session status
+
+This session note transitioning IN_PROGRESS → PAUSED (next edit). Session continues in a future invocation; not COMPLETE because Phase X is not done.

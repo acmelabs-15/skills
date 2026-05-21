@@ -1241,21 +1241,39 @@ None — all decisions LOCKED in ADR-003.
 
 Two TIER-1 BLOCKING orchestrator-private memories written; MEMORY.md updated with TIER-1 entries; SESSION-2026-05-20_05 Events 09-13 captured; ANALYSIS-003 Brain-side mirror written. Commits: d28852f + c02ca27 + ca1fef3.
 
-#### X.B — Audit existing enforcement layers (PENDING)
+#### X.B — Audit existing enforcement layers (DONE 2026-05-20)
 
-Audit 7 user-created lifecycle skills + NOTE-TEMPLATES.md (PLAN/TASK/REQ/DESIGN/TEST-REPORT templates) + KNOWLEDGE-GRAPH-STRUCTURES.md Sections 4.6/4.7/4.8/4.9 + composition library current schemas/renderer at `_shared/composition/`. Produce gap inventory inline.
+7 user-created lifecycle skills + NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md + composition library current state all audited. Gap inventory captured in ANALYSIS-003 H2 X.B Audit Findings + Per-skill detailed audit findings. 15-item ordered execution sequence locked for X.C + X.D in ANALYSIS-003. Commit 601d75f.
 
 #### X.C — Update skills + templates + structures (PENDING)
 
 Highest priority: /plan + /build + /spec SKILL.md files updated with rigid per-TASK protocol + checkbox-as-contract language. Lighter touch: /decisions + /research + /review + /end. NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md updated per audit findings.
 
-#### X.D — Composition library mechanism completion (PENDING — gated on user decision D1)
+Highest-leverage change per skill (from audit; see ANALYSIS-003 § Per-skill detailed audit findings):
 
-Extend PlanNote Zod schema to mandate per-TASK impl+qa structure with rendered instruction blocks. Extend PlanNote renderer to deterministically read linked TASK/REQ/DESIGN and generate rendered instructions inline. Add TaskNote + RequirementNote + DesignNote + SpecRootNote + TestReportNote schemas + renderers + claim-validators. Add deterministic state-transition functions that REQUIRE context (sessionNoteRef, reason, commit) and THROW on missing/invalid — the load-bearing enforcement.
+- /plan: add PLAN structure mandate for per-TASK impl+qa items + reference composition library deterministic functions
+- /build: replace ad-hoc brief construction with verbatim rendered PLAN content; add schema validation of agent claims
+- /spec: add PLAN handoff contract emitting per-TASK impl+qa items at Stage 2 close
+- /decisions: formalize lockDecision as deterministic function requiring context
+- /research: add convergencePass schema check at Step 8
+- /review: add checkbox-vs-diff cross-check axis in self-review mode
+- /end: extend Step 1 DoD verification to verify impl-TASK-N + qa-TASK-N pairing + TEST-REPORT linkages
+
+#### X.D — Composition library mechanism completion (IN_PROGRESS 1 of 7)
+
+D1 user decision RESOLVED 2026-05-20: include composition library mechanism completion with the expanded renderer-per-note-type scope.
+
+- X.D.1 — BuildWorkflowItem added to PlanNote schema (DONE 2026-05-20 commit deeae3f). 18 schema tests pass. 16 downstream tests (plan-parser / plan-mutations / plan-session-round-trip) EXPECTED FAILURES until X.D.2-4 land.
+- X.D.2 — Extend PlanNote renderer to generate rendered impl+qa instruction blocks reading linked TASK/REQ/DESIGN checkboxes (PENDING — next item)
+- X.D.3 — Add transitionImplItem + transitionQaItem + checkbox-flip mutations + claim-validators — REQUIRE context, throw on missing (PENDING)
+- X.D.4 — Update fixture plan-note-sample.md + parser to handle build_workflow_items markdown — unblocks 16 failing tests (PENDING)
+- X.D.5 — Add TaskNote schema with DoD claim validator (PENDING)
+- X.D.6 — Add RequirementNote + DesignNote schemas with AC/compliance claim validators (PENDING)
+- X.D.7 — Add SpecRootNote + TestReportNote schemas + renderers (PENDING)
 
 #### X.E — Wrap-up (PENDING)
 
-CLAUDE.md updated with TIER-1 BLOCKING protocol references. PLAN-001 final reconciliation (depends on D2 throw-out vs salvage decision for Wave 2). Final commit + phase close + set-part-done.
+CLAUDE.md updated with TIER-1 BLOCKING protocol references (DONE for post-compaction-rehydration; remaining: per-task-build-qa-cycle + workflow-phase-rigor-at-every-layer references). PLAN-001 final reconciliation (depends on D2 throw-out vs salvage decision for Wave 2). Final commit + phase close + set-part-done.
 
 ### Exit Criteria
 
