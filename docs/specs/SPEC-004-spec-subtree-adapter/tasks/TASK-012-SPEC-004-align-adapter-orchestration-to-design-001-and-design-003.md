@@ -2,7 +2,7 @@
 title: 'TASK-012-SPEC-004: Align Adapter Orchestration to DESIGN-001 and DESIGN-003'
 type: task
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-012-spec-004-align-adapter-orchestration-to-design-001-and-design-003
-status: DRAFT
+status: DONE
 effort: M
 estimate: 2d
 tags:
@@ -35,11 +35,11 @@ User adjudication required FIRST: is in-memory adapter + caller-provided filesys
 
 ## Definition of Done
 
-- [ ] User adjudication on architectural boundary logged
-- [ ] Either design amended to match implementation OR implementation extended to match design
-- [ ] If option B: filesystem stage-all + validate-all + cluster .tmp rollback verified by test
-- [ ] All existing SPEC-004 tests still pass
-- [ ] No silent assumptions or TODOs
+- [x] User adjudication on architectural boundary logged
+- [x] Either design amended to match implementation OR implementation extended to match design
+- [x] If option B: filesystem stage-all + validate-all + cluster .tmp rollback verified by test
+- [x] All existing SPEC-004 tests still pass
+- [x] No silent assumptions or TODOs
 
 ## Observations
 

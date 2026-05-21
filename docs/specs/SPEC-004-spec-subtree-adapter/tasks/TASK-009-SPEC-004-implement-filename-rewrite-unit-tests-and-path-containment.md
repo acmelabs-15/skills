@@ -48,3 +48,5 @@ Author `_shared/composition/tests/filename-rewrite.test.ts` exercising `applyFil
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
 - caused_by [[QA-022-SPEC-004: Implement Filename Rewrite Handler]]
 - extends [[TASK-003-SPEC-004: Implement Filename Rewrite Handler]]
+
+- validated_by [[QA-034-SPEC-004: TASK-009 Filename Rewrite Tests Revalidation]]
