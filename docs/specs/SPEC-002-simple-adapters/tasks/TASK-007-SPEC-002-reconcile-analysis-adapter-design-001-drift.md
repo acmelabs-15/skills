@@ -57,3 +57,5 @@ Out of Scope:
 - caused_by [[QA-010-SPEC-002: Implement ANALYSIS Adapter]]
 - extends [[TASK-001-SPEC-002: Implement ANALYSIS Adapter]]
 - part_of [[SPEC-002: Simple Adapters]]
+
+- validated_by [[QA-031-SPEC-002: TASK-007 Fix Iter-1 Revalidation]]

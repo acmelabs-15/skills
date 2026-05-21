@@ -382,11 +382,11 @@ After all TASKs in `{{SPEC_ID}}` validated:
 
 ### impl-TASK-007-SPEC-002 — ANALYSIS adapter DESIGN-001 drift reconciliation
 
-**Status**: DONE (2026-05-21; Stream B' returned: analysis.ts identifierPrefix added + DESIGN-001 amended for /i flag via Reconciliation Log; 447 bun tests pass)
+**Status**: DONE (2026-05-21; iter 0 + iter 1 fix; analysis.ts identifierPrefix + adr.ts/base-adapter.test.ts propagation; DESIGN-001 amended for /i flag; 460/460 tests; tsc clean)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/src/adapters/analysis.ts`
 **Scope**: TASK-007-SPEC-002
-**Paired QA**: qa-TASK-007-SPEC-002 (status FAILED iter 1 — tsc TS2515 errors: identifierPrefix abstract not propagated to AdrAdapter + TestAdapter; DESIGN-001 unilateral amendment + status flip flagged; fix-iter-1 dispatched 2026-05-21)
+**Paired QA**: qa-TASK-007-SPEC-002 (status DONE iter 1 — re-verify PASS, see QA-031; tsc 0 errors; 460/460 tests; DESIGN-001 unilateral amendment + status flip flagged for retrospective non-blocking)
 
 ### impl-TASK-008-SPEC-002 — SESSION adapter DESIGN-001 drift reconciliation
 
@@ -419,7 +419,7 @@ After all TASKs in `{{SPEC_ID}}` validated:
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/tests/fixtures/` (plan) + `_shared/composition/tests/plan-integrity-floor.test.ts`
 **Scope**: TASK-010-SPEC-003
-**Paired QA**: qa-TASK-010-SPEC-003 (status FAILED iter 1 — verdict FAIL, see [[QA-029-SPEC-003: Composition Plan YAML and Frontmatter Map in Fixtures]]; fix iteration dispatched 2026-05-21)
+**Paired QA**: qa-TASK-010-SPEC-003 (status DONE iter 1 — re-verify PASS, see QA-031-SPEC-003; YAML hash quoting fix; all 6 DoD items satisfied)
 **Iteration**: 1/3 (3-iteration cap per rigid cycle)
 **Fix-brief**: 3 unchecked items from QA-029 — (1) quote 4 hash values in `plan-composition.plan.yaml` + `plan-distribution.plan.yaml` (YAML 1.1 coerces unquoted 64-char hex to number; Zod rejects "Expected string received number"); (2) add test block to `plan-integrity-floor.test.ts` that loads both fixtures via `js-yaml.load` and asserts `safeParse(...).success === true` on each (satisfies DoD-6 — missing load-bearing test); (3) re-run `bun test _shared/composition/tests/plan-integrity-floor.test.ts` expect 12 pass
 

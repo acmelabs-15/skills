@@ -206,6 +206,14 @@ QA-007-SPEC-002 + QA-008-SPEC-002 still in-flight from Event 19.
 
 Still in-flight: QA-007-SPEC-002, QA-batched-SPEC-003-plan-ts, impl-fix-iter-1 TASK-010-SPEC-003. ADR-004 brain:---adr-review BLOCKING gate launching this turn.
 
+## Event 27
+
+[2026-05-21] QA-031 re-verify of TASK-007-SPEC-002 fix iter-1: **PASS** (4/4 items). tsc 0 errors; AdrAdapter + TestAdapter identifierPrefix propagation confirmed; full bun test 460/460. PLAN qa-TASK-007-SPEC-002 FAILED → DONE; TASK-007 status DRAFT → DONE + validated_by QA-031. Protocol concerns (unilateral DESIGN amendment) remain flagged for retrospective non-blocking.
+
+## Event 28
+
+[2026-05-21] QA-031-SPEC-003 re-verify of TASK-010-SPEC-003 fix iter-1: **PASS** (3/3 previously-FAIL items now satisfied). YAML hashes quoted; fixture-load tests added at plan-integrity-floor.test.ts lines 249-273; 19/19 pass. PLAN qa-TASK-010-SPEC-003 FAILED → DONE; TASK-010-SPEC-003 status DRAFT → DONE + validated_by QA-031-SPEC-003.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

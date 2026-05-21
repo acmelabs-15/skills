@@ -2,7 +2,7 @@
 title: 'TASK-010-SPEC-003: Composition Plan YAML and Frontmatter Map in Fixtures'
 type: task
 permalink: specs/spec-003-plan-adapter/tasks/task-010-spec-003-composition-plan-yaml-and-frontmatter-map-in-fixtures
-status: DRAFT
+status: DONE
 effort: XS
 estimate: 0.25d
 tags:
@@ -61,3 +61,5 @@ Out of Scope: changing the round-trip test to load YAML (still inline MutationSp
 - caused_by [[QA-014-SPEC-003: PLAN Adapter Round-Trip Property Test]]
 - extends [[TASK-004-SPEC-003: Create PLAN Adapter Test Fixtures]]
 - implements [[REQ-005-SPEC-003: PLAN Adapter Round-Trip Property Test]]
+
+- validated_by [[QA-031-SPEC-003: TASK-010 Fix Iter-1 Revalidation]]
