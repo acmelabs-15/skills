@@ -1,7 +1,7 @@
 ---
 title: 'REQ-003-SPEC-002: SESSION Cross-Source Updates Handling'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-002-simple-adapters/requirements/req-003-spec-002-session-cross-source-updates-handling
 tags:
 - requirement

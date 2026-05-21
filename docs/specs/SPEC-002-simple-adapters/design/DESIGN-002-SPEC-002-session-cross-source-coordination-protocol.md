@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol'
 type: design
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-002-simple-adapters/design/design-002-spec-002-session-cross-source-coordination-protocol
 tags:
 - design
