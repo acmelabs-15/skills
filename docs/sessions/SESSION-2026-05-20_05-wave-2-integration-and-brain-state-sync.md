@@ -334,3 +334,13 @@ Audited 7 user-created lifecycle skills + composition library current state + NO
 - 16 downstream tests EXPECTED FAILURES (plan-mutations, plan-parser, plan-session-round-trip): existing fixture plan-note-sample.md pre-dates protocol; blocked on X.D.2 renderer + X.D.3 parser + X.D.4 fixture updates
 - biome clean; tsc clean
 - Phase X.D.1 DONE. Next: X.D.2 (extend PlanNote renderer to generate rendered impl+qa instruction blocks)
+
+
+## Event 17 — Architectural reinforcement captured verbatim (2026-05-20)
+
+**Type**: drift-prevention | content-persistence
+
+- User's architectural reinforcement messages (the load-bearing framing about /plan kicks off the flow + composition library deterministic mechanisms + script-throws-on-bad-input + session-note-required-on-state-transition) were in conversation context but NOT captured to any Brain note. Drift risk: post-compaction resume would lose the framing.
+- Captured verbatim to ANALYSIS-003 in new section "Architectural reinforcement — composition library is THE enforcement layer"
+- Pattern reinforced: session note POINTS at the Brain note holding the durable content; post-compaction resume = read session → follow pointers → check PLAN state → carry on
+- See ANALYSIS-003 for the full verbatim quotes + what-this-means + why-this-is-doable

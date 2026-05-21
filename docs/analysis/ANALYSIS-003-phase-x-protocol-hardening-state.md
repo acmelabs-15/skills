@@ -178,3 +178,35 @@ Composition library state: PlanNote/SessionNote schemas/renderers/mutations pres
 NOTE-TEMPLATES: TASK/REQ/DESIGN templates have checkbox sections but no checkbox-as-contract language. TEST-REPORT template is STUB.
 
 15-item execution order locked for X.C + X.D. Next: begin item 1 (extend PlanNote schema with BuildWorkflowItemSchema).
+
+
+## Architectural reinforcement — composition library is THE enforcement layer (user verbatim 2026-05-20)
+
+User direct quote captured verbatim to prevent drift:
+
+> Again I just want to remind you the whole point of doing all that work in the what is now the acme lab skills directory where you created all of these you created all of these schemas for the ADR the analysis the plan the session the spec adapters for ADR analysis plan core adapter atomic right like a plan mutation like all of these things the whole point of that right was so that we could like just remember like this whole flow starts with me using the plan skill and pointing that to a play in reference so the plan skills will kicks off the flow so by updating like the plans skill to very rigorously and it's resources in the main ski itself like everywhere in the different modes we're just constantly reinforcing these things like the decision skill is also used by that like because this all gets kicked off by the plan skill we kind of do have a lot of control over kicking off the flow and then those other skills are used throughout the the plan workflow right so we have to like use those like those deterministic rendering mechanisms that we're going to provide to those like to the plan skill right so that it can instead of having the agent do it it's rendering it's rendering the plan itself with that deterministic render and so like there should be errors in there and validation so like when that script is used and something's you know by the agents leaves pass to it incorrectly it'll error or when the agent correctly passes like a state to it it will correctly propagate throughout the whole thing right and we have to worry about it so I think this should be pretty doable
+
+Plus follow-up:
+
+> like for example because again the plan skill kicks off the flow - and it is going to be deterministically rendered - and beacuse when a part of tyhe plan gets transitioned to inprogress it must aslso be provided with the session note handling that in progess transition - if a ession note isn't provided it shoudl throw and error which should call it out - again another enforcing/prventing thje agent from going to many turns w/out completely forgetting the protocols and stadrnrsds
+
+### What this means architecturally
+
+The composition library at `_shared/composition/` is the LOAD-BEARING enforcement layer, not just documentation. /plan kicks off the workflow and uses deterministic Bun+TS scripts from the composition library for:
+
+- Reading the PLAN reference the user provides
+- Authoring/updating the PLAN note via the deterministic renderer (NOT having an agent author it directly)
+- Validating every state transition against the PlanNote Zod schema
+- Requiring context (session note reference, reason, commit_sha) on every state-transition function call — throws on missing
+- Propagating state correctly throughout the PLAN structure when inputs are valid
+
+The other lifecycle skills (/decisions, /spec, /build, /review, /end) all run UNDER /plan's coordination. Each uses the same composition library deterministic functions. This means:
+
+- The protocol gets reinforced at every workflow step because every skill calls the same enforcement layer
+- Agents don't have to remember protocols across many turns — the script either accepts the input or throws
+- The PLAN renders itself deterministically with rendered dispatch instructions for impl + qa items
+- Errors thrown by the script are unmissable — orchestrator MUST address them before continuing
+
+### Why this is doable
+
+The composition library schemas + renderers + mutations for PlanNote and SessionNote already exist (SPEC-001 + Wave 2 SPEC-007 work). Extending them with BuildWorkflowItem (Phase X.D.1 — DONE), 5 new note-type schemas (X.D.5-7), the renderer extension (X.D.2), and the transition functions (X.D.3) completes the enforcement layer. After that, the skill updates (X.C) just rewire the skills to call these functions instead of having agents do the work.
