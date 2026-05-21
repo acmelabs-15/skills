@@ -2,7 +2,7 @@
 title: 'TASK-008-SPEC-002: Reconcile SESSION Adapter DESIGN-001 Drift'
 type: task
 permalink: specs/spec-002-simple-adapters/tasks/task-008-spec-002-reconcile-session-adapter-design-001-drift
-status: DRAFT
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -25,13 +25,14 @@ Reconcile four pieces of DESIGN-001-SPEC-002 vs code drift for the SESSION adapt
 
 ## Definition of Done
 
-- [ ] DESIGN-001 amended to align with REQ-002 (Event-NN hyphenated identifier) OR REQ-002 amended to align with DESIGN-001 (Event space-separated)
-- [ ] `identifierPrefix` either added to base class + subclasses OR dropped from DESIGN-001
-- [ ] `supportsCrossSourceUpdates` either added to SessionAdapter OR dropped from DESIGN-001 and TASK-002 DoD
-- [ ] `/i` flag either sanctioned in DESIGN-001 or removed from code
-- [ ] Fixture convention unified (section delimiter + body token use same form)
-- [ ] All SESSION adapter and round-trip tests pass after reconciliation
-- [ ] DESIGN-001 status flipped to ACCEPTED
+- [x] DESIGN-001 amended to align with REQ-002 (Event-NN hyphenated identifier) — DESIGN-001 Component 2 updated; REQ-002 already specified Event-NN
+- [x] `identifierPrefix` added to SessionAdapter (`"Event-"`) honoring base-class abstract slot
+- [x] `supportsCrossSourceUpdates` added to SessionAdapter as `readonly … = true` boolean property; existing `getCrossSourceUpdates(content, plan)` method retained as separate concern (handled by TASK-003/TASK-009 cross-source coordinator)
+- [x] `/i` flag sanctioned in DESIGN-001 Convention Note (matches TASK-007 precedent for AnalysisAdapter)
+- [x] Fixture convention documented as two-form (space-separated `## Event NN` H2 headings + hyphenated `Event-NN` body tokens); fixture is already self-consistent under chosen pattern, no fixture mutation needed
+- [x] All SESSION adapter and round-trip tests pass after reconciliation — 18 session-touching tests + 447 full suite all green
+- [x] DESIGN-001 status flipped to ACCEPTED
+
 
 ## Scope
 

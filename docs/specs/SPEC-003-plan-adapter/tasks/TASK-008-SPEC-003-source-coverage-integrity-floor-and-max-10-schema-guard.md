@@ -38,19 +38,21 @@ Out of Scope: changes to preservation-ratio enforceIntegrityFloor (orthogonal sa
 
 ## Definition of Done
 
-- [ ] src/core/validate.ts exports validateIntegrityFloor(sourceContent, sections) returning {valid, coveragePercent, message}
-- [ ] validateIntegrityFloor rejects plans where regen sections cover greater-than 50% of total source lines
-- [ ] validateIntegrityFloor accepts plans where regen sections cover exactly 50% of total source lines
-- [ ] validateIntegrityFloor accepts plans where regen sections cover less than 50% of total source lines
-- [ ] Zod schema rejects regenerated_sections arrays with greater-than 10 entries
-- [ ] findRegeneratedSpans regex matches H2 (##) and H3 (###) headings
-- [ ] Unit test: H3 regen section "### Progress Dashboard" correctly identified and stripped
-- [ ] All existing tests in plan-integrity-floor.test.ts and plan-round-trip.test.ts still pass
+- [x] src/core/validate.ts exports validateIntegrityFloor(sourceContent, sections) returning {valid, coveragePercent, message}
+- [x] validateIntegrityFloor rejects plans where regen sections cover greater-than 50% of total source lines
+- [x] validateIntegrityFloor accepts plans where regen sections cover exactly 50% of total source lines
+- [x] validateIntegrityFloor accepts plans where regen sections cover less than 50% of total source lines
+- [x] Zod schema rejects regenerated_sections arrays with greater-than 10 entries
+- [x] findRegeneratedSpans regex matches H2 (##) and H3 (###) headings
+- [x] Unit test: H3 regen section "### Progress Dashboard" correctly identified and stripped
+- [x] All existing tests in plan-integrity-floor.test.ts and plan-round-trip.test.ts still pass
+
 
 ## ADR Compliance
 
-- [ ] Honors ADR-002 D-5: regenerated-sections integrity floor as Zod refinement plus runtime line-count check
-- [ ] Honors ADR-001 F-8: hash validation integrity preserved against bulk-bypass
+- [x] Honors ADR-002 D-5: regenerated-sections integrity floor as Zod refinement plus runtime line-count check
+- [x] Honors ADR-001 F-8: hash validation integrity preserved against bulk-bypass
+
 
 ## Observations
 

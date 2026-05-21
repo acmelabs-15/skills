@@ -155,3 +155,4 @@ None. The protocol shape is locked by ADR-002 D-1 (cross_source_updates schema) 
 - implements [[REQ-003-SPEC-002: SESSION Cross-Source Updates Handling]]
 - part_of [[SPEC-002: Simple Adapters]]
 - depends_on [[DESIGN-001-SPEC-002: BaseMarkdownAdapter Configuration Pattern]]
+- required_by [[ADR-004: Cross-Source Coordinator Architecture]]

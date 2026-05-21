@@ -2,7 +2,7 @@
 title: 'TASK-010-SPEC-002: Reconcile Round-Trip Fixture Layout and YAML Plan Assets'
 type: task
 permalink: specs/spec-002-simple-adapters/tasks/task-010-spec-002-reconcile-round-trip-fixture-layout-and-yaml-plan-assets
-status: DRAFT
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -54,3 +54,5 @@ Out of Scope:
 - extends [[TASK-005-SPEC-002: Implement ANALYSIS Adapter Round-Trip Property Test]]
 - extends [[TASK-006-SPEC-002: Implement SESSION Adapter Round-Trip Property Test]]
 - part_of [[SPEC-002: Simple Adapters]]
+
+- validated_by [[QA-017-SPEC-002: Reconcile Round-Trip Fixture Layout and YAML Plan Assets]]

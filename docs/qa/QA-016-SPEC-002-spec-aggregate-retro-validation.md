@@ -118,3 +118,4 @@ SPEC-002 retro-validation discovered substantial DESIGN-vs-code drift. Behaviora
 - leads_to [[TASK-009-SPEC-002: Implement Cross-Source Coordinator Architecture per DESIGN-002]]
 - leads_to [[TASK-010-SPEC-002: Reconcile Round-Trip Fixture Layout and YAML Plan Assets]]
 - part_of [[PLAN-001: Skills Ecosystem]]
+- leads_to [[ADR-004: Cross-Source Coordinator Architecture]]

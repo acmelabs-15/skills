@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-001-SPEC-002: BaseMarkdownAdapter Configuration Pattern'
 type: design
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-002-simple-adapters/design/design-001-spec-002-basemarkdownadapter-configuration-pattern
 tags:
 - design
@@ -35,7 +35,7 @@ This design realizes ADR-002 D-3's BaseMarkdownAdapter pattern: "ADR, ANALYSIS, 
 export class AnalysisAdapter extends BaseMarkdownAdapter {
   readonly sourceType = "analysis" as const;
   readonly sectionDelimiter = "### ";
-  readonly identifierPattern = /item-(\d+)/;
+  readonly identifierPattern = /item-(\d+)/i;
   readonly identifierPrefix = "item-";
 }
 ```
@@ -59,12 +59,14 @@ export class AnalysisAdapter extends BaseMarkdownAdapter {
 ```typescript
 export class SessionAdapter extends BaseMarkdownAdapter {
   readonly sourceType = "session" as const;
-  readonly sectionDelimiter = "## Event ";
-  readonly identifierPattern = /Event (\d+)/;
-  readonly identifierPrefix = "Event ";
+  protected readonly sectionDelimiter = "## Event ";
+  protected readonly identifierPattern = /Event-(\d+)/i;
+  protected readonly identifierPrefix = "Event-";
   readonly supportsCrossSourceUpdates = true;
 }
 ```
+
+**Convention note (reconciled by TASK-008-SPEC-002)**: SESSION notes use a two-form Event-NN convention. The H2 section delimiter is `"## Event "` (space-separated, e.g. `## Event 01`) for human-readable Markdown headings. The body identifier token is `Event-NN` (hyphen-separated, e.g. `Event-01`) for tokenized references in body text, observations, and wikilinks. The `identifierPattern` `/Event-(\d+)/i` matches body tokens; `renumber_map` keys target the body token form. Section headings are renumbered indirectly via line-level edits driven by the same map. The `/i` flag is sanctioned to tolerate downstream casing drift without breaking parse. REQ-002 AC-3 "Event-NN format" governs the canonical identifier form.
 
 **Responsibilities**:
 
@@ -125,12 +127,23 @@ interface AdapterConfig {
 
 None. All design decisions are locked by ADR-002 D-3 and SPEC-001 BaseMarkdownAdapter contract.
 
+## Reconciliation Log
+
+### 2026-05-21 — ANALYSIS adapter drift (TASK-007-SPEC-002, SESSION-2026-05-21_01)
+
+Two drifts between DESIGN-001 and `_shared/composition/src/adapters/analysis.ts` discovered during Wave 2 retro-validation (QA-010-SPEC-002):
+
+1. **`identifierPrefix`** — declared in DESIGN-001 Component 1 + Component 3 AdapterConfig but absent from code. **Resolution**: code amended — `identifierPrefix = "item-"` added to `AnalysisAdapter`. The base class abstract slot is satisfied; DESIGN-001 unchanged on this point.
+2. **`identifierPattern` `/i` flag** — DESIGN-001 specified `/item-(\d+)/`; code is `/item-(\d+)/i`. **Resolution**: DESIGN-001 amended — `/i` flag added to documented pattern + observation. Rationale: the case-insensitive flag is intentional per code comments ("case-insensitive at the prefix") and matches the broader Brain note convention of accepting `Item-1`, `ITEM-1`, `item-1`.
+
+SESSION adapter drift handled separately by TASK-008-SPEC-002.
+
 ## Observations
 
 - [technique] Config-only subclassing pattern reduces each simple adapter to 5-10 lines of configuration code #pattern #config-override
 - [decision] Subclass extends pattern chosen per ADR-002 D-3 locked decision; composition alternative not considered #inheritance #locked
-- [fact] AnalysisAdapter overrides: sectionDelimiter "### ", identifierPattern /item-(\d+)/, identifierPrefix "item-" #analysis #config
-- [fact] SessionAdapter overrides: sectionDelimiter "## Event ", identifierPattern /Event (\d+)/, identifierPrefix "Event ", supportsCrossSourceUpdates true #session #config
+- [fact] AnalysisAdapter overrides: sectionDelimiter "### ", identifierPattern /item-(\d+)/i (case-insensitive at prefix), identifierPrefix "item-" #analysis #config
+- [fact] SessionAdapter overrides: sectionDelimiter "## Event ", identifierPattern /Event-(\d+)/i, identifierPrefix "Event-", supportsCrossSourceUpdates true #session #config
 
 ## Relations
 

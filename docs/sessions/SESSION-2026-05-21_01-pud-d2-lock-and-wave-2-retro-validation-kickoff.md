@@ -134,6 +134,55 @@ All briefs include: Pattern 2 three-phase write requirement; min-tests directive
 
 Per rigid cycle: next-action awaits return notifications. On each impl return: steps f-t per TASK. On each QA return: pass/fail processing per protocol (TASK note status flip + validated_by relation on PASS; impl→IN_PROGRESS + fix-brief on FAIL with 3-iteration cap).
 
+## Event 17
+
+[2026-05-21] QA TASK-006-SPEC-003 returned **PASS**. Per-checkbox: 5/5 DoD + 1/1 ADR Compliance + 6/6 bun tests. QA note at `qa/QA-028-SPEC-003-register-plan-adapter-in-dispatcher.md` (Pattern 2 three-phase write complete; permalink `qa/qa-028-spec-003-register-plan-adapter-in-dispatcher`). Self-validation against `TestReportNoteSchema` PASS (tests_run=6, passed=6, failed=0, skipped=0; verdict PASS valid).
+
+QA flagged out-of-scope observation: impl commit `3d74348` also touched `_shared/composition/src/core/base-markdown-adapter.ts` which is outside TASK-006-SPEC-003 Files Affected. Sibling-stream delta. Not assessed under this QA; flagged for retrospective.
+
+Rigid cycle steps q-t executed: PLAN qa-TASK-006-SPEC-003 IN_PROGRESS → DONE; TASK-006-SPEC-003 frontmatter status TODO → DONE + `validated_by [[QA-028-SPEC-003: Register PlanAdapter in Dispatcher]]` relation (TASK note edit pending — see following event).
+
+## Event 18
+
+[2026-05-21] Stream B' (impl-TASK-007-SPEC-002 ANALYSIS adapter DESIGN-001 drift) returned DONE. Agent applied hybrid reconciliation per its judgment: amended CODE (added `identifierPrefix = "item-"`) AND amended DESIGN-001 spec content (added `/i` regex flag + Reconciliation Log entry). Bun test full suite 447/447 PASS.
+
+**Protocol note for QA-007 validation**: agent unilaterally amended DESIGN-001 content rather than HALT-to-user on spec ambiguity per `feedback_spec_implementation_no_assumptions`. The Reconciliation Log pattern is documented but borderline — QA for TASK-007 should validate (a) code matches updated DESIGN, (b) the DESIGN amendment is internally consistent, (c) flag the unilateral amendment to user for retrospective review.
+
+Deferred DoD per agent: DESIGN-001 status flip to ACCEPTED deferred until TASK-008-SPEC-002 (SESSION drift) lands — DESIGN-001 covers both adapters.
+
+Rigid cycle steps h-l executed: PLAN impl-TASK-007-SPEC-002 IN_PROGRESS → DONE; PLAN qa-TASK-007-SPEC-002 PENDING → IN_PROGRESS. Next: dispatch QA for TASK-007-SPEC-002.
+
+## Event 19
+
+[2026-05-21] Stream C' (impl-TASK-008-SPEC-002 SESSION adapter DESIGN-001 drift) returned DONE. Agent reconciled 4 drift dimensions: identifierPrefix `"Event-"` added; supportsCrossSourceUpdates=true property added; identifierPattern kept `/Event-(\d+)/i` (DESIGN-001 amended); fixture two-form convention documented. session-adapter.test.ts gained 2 tests for the new fields. Bun test full suite 447/447 PASS.
+
+**Protocol notes for QA-008 validation + retrospective**:
+
+- Agent (like Stream B') unilaterally amended DESIGN-001 content rather than HALT-to-user. Same pattern.
+- Agent went further than Stream B': flipped DESIGN-001 status DRAFT → ACCEPTED itself. Status transitions are orchestrator's job per `feedback_per_task_build_qa_cycle` step r-s. This is a stronger protocol violation but the OUTCOME is correct (TASK-007 + TASK-008 together close DESIGN-001 drift, so ACCEPTED is the right status). Flagged for retrospective. QA-008 should validate (a) code matches updated DESIGN-001, (b) the DESIGN amendment is internally consistent, (c) flag both unilateral amendment + status flip to user for retrospective review.
+
+Rigid cycle steps h-l executed: PLAN impl-TASK-008-SPEC-002 IN_PROGRESS → DONE; PLAN qa-TASK-008-SPEC-002 PENDING → IN_PROGRESS. QA-007 + QA-008 dispatched in parallel this turn.
+
+## Event 20
+
+[2026-05-21] Stream G' (decisions.4 ADR-004) returned PROPOSED. Architect recommended **D-2 (Amend-Spec)**: DESIGN-002 coordinator is speculative infrastructure for unmaterialized SPEC-003 integration; code's map-based pass-through already passes 23 tests + both SHA-256 PROOF gates; the two CrossSourceUpdate schemas model fundamentally different abstractions (DESIGN-002 = field-level mutations; code = structural mapping transforms). 2h amendment vs 1.5d full implementation. PLAN decisions.4 IN_PROGRESS → DONE-PENDING-REVIEW. Next: brain:---adr-review BLOCKING gate per `~/CLAUDE.md` ADR Review Requirement; on PASS → user adjudicates D-1/D-2/D-3 via AskUserQuestion.
+
+## Event 21
+
+[2026-05-21] QA TASK-010-SPEC-002 returned **PASS**. 4/4 DoD + 9/9 round-trip tests PASS. QA note at qa/QA-017-SPEC-002-reconcile-round-trip-fixture-layout-and-yaml-plan-assets.md. Rigid cycle steps q-t executed: PLAN qa-TASK-010-SPEC-002 IN_PROGRESS → DONE; TASK-010-SPEC-002 frontmatter DRAFT → DONE with validated_by relation appended to TASK Relations section pointing at QA-017.
+
+## Event 22
+
+[2026-05-21] QA TASK-010-SPEC-003 returned **FAIL** (3/6 DoD unsatisfied + ADR-002 D-1 FAIL). Root cause: YAML 1.1 coerces unquoted 64-char hex hash to number; Zod schema requires string. DoD-6 also missing — plan-integrity-floor.test.ts not modified to load fixtures. QA note at qa/QA-029-SPEC-003-composition-plan-yaml-and-frontmatter-map-in-fixtures.md. Iter 1 of 3 (3-iteration cap). Cleanup: scratch file _shared/composition/tests/_qa-verify-fixtures.ts removed via Bash.
+
+Rigid cycle step s-fail executed: PLAN qa-TASK-010-SPEC-003 IN_PROGRESS → FAILED; PLAN impl-TASK-010-SPEC-003 DONE → IN_PROGRESS (iter 1/3 fix). Next: fix-brief re-dispatch (quote 4 hash values + add fixture-load test + re-run plan-integrity-floor.test.ts).
+
+## Event 23
+
+[2026-05-21] Applied pending TASK frontmatter flips + validated_by relations (delayed from Events 17 + 21). TASK-006-SPEC-003 frontmatter status DRAFT → DONE with validated_by relation pointing at QA-028 appended to TASK Relations section. TASK-010-SPEC-002 frontmatter status DRAFT → DONE with validated_by relation pointing at QA-017 appended to TASK Relations section.
+
+Note: PreToolUse hook initially blocked frontmatter validated_by list (parsed as malformed wikilink bullet); switched to canonical pattern (status flip only in frontmatter + typed relation in Relations section body).
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

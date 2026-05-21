@@ -2,7 +2,7 @@
 title: 'TASK-007-SPEC-002: Reconcile ANALYSIS Adapter DESIGN-001 Drift'
 type: task
 permalink: specs/spec-002-simple-adapters/tasks/task-007-spec-002-reconcile-analysis-adapter-design-001-drift
-status: DRAFT
+status: DONE
 effort: XS
 estimate: 0.25d
 tags:
@@ -28,11 +28,11 @@ Reconciliation paths (decide via decisions phase):
 
 ## Definition of Done
 
-- [ ] DESIGN-001-SPEC-002 vs code drift documented in decision ledger
-- [ ] Either DESIGN-001 amended OR base class + AnalysisAdapter updated to honor `identifierPrefix`
-- [ ] Either DESIGN-001 amended OR `/i` flag removed from `identifierPattern`
-- [ ] All ANALYSIS adapter tests still pass after reconciliation
-- [ ] DESIGN-001 status flipped to ACCEPTED once reconciled
+- [x] DESIGN-001-SPEC-002 vs code drift documented in decision ledger
+- [x] Either DESIGN-001 amended OR base class + AnalysisAdapter updated to honor `identifierPrefix` — code amended: `identifierPrefix = "item-"` added to AnalysisAdapter
+- [x] Either DESIGN-001 amended OR `/i` flag removed from `identifierPattern` — DESIGN-001 amended: `/i` flag added to documented pattern (matches code intent of case-insensitive prefix matching)
+- [x] All ANALYSIS adapter tests still pass after reconciliation — `bun test tests/analysis-adapter.test.ts tests/analysis-round-trip.test.ts`: 8 pass / 0 fail
+- [ ] DESIGN-001 status flipped to ACCEPTED once reconciled — DEFERRED to TASK-008 completion (DESIGN-001 covers both ANALYSIS and SESSION; status flip gated on SESSION drift reconciliation in TASK-008)
 
 ## Scope
 
@@ -49,6 +49,8 @@ Out of Scope:
 
 - [fact] Gap discovered by Wave 2 retro-validation; evidence in QA-010-SPEC-002 #gap #retro
 - [decision] Status: DRAFT pending reconciliation decision (amend spec vs amend code) #status
+- [outcome] Reconciled 2026-05-21 via hybrid path: code added `identifierPrefix = "item-"`; DESIGN-001 amended to add `/i` flag #reconciled #hybrid-path
+- [fact] `bun test tests/analysis-adapter.test.ts tests/analysis-round-trip.test.ts`: 8 pass / 0 fail post-change #verification #tests
 
 ## Relations
 

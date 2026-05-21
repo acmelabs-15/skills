@@ -378,23 +378,23 @@ After all TASKs in `{{SPEC_ID}}` validated:
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/src/core/dispatcher.ts`
 **Scope**: TASK-006-SPEC-003 (see note for DoD verbatim)
-**Paired QA**: qa-TASK-006-SPEC-003 (status IN_PROGRESS — dispatched 2026-05-21)
+**Paired QA**: qa-TASK-006-SPEC-003 (status DONE — verdict PASS, see [[QA-028-SPEC-003: Register PlanAdapter in Dispatcher]], 6/6 checkboxes PASS + bun test 6/6 PASS)
 
 ### impl-TASK-007-SPEC-002 — ANALYSIS adapter DESIGN-001 drift reconciliation
 
-**Status**: IN_PROGRESS (2026-05-21)
+**Status**: DONE (2026-05-21; Stream B' returned: analysis.ts identifierPrefix added + DESIGN-001 amended for /i flag via Reconciliation Log; 447 bun tests pass)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/src/adapters/analysis.ts`
 **Scope**: TASK-007-SPEC-002
-**Paired QA**: qa-TASK-007-SPEC-002 (status PENDING)
+**Paired QA**: qa-TASK-007-SPEC-002 (status IN_PROGRESS — dispatched 2026-05-21)
 
 ### impl-TASK-008-SPEC-002 — SESSION adapter DESIGN-001 drift reconciliation
 
-**Status**: IN_PROGRESS (2026-05-21)
+**Status**: DONE (2026-05-21; Stream C' returned: session.ts identifierPrefix + supportsCrossSourceUpdates added; DESIGN-001 amended + flipped to ACCEPTED by agent; 447 bun tests pass)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/src/adapters/session.ts`
 **Scope**: TASK-008-SPEC-002
-**Paired QA**: qa-TASK-008-SPEC-002 (status PENDING)
+**Paired QA**: qa-TASK-008-SPEC-002 (status IN_PROGRESS — dispatched 2026-05-21)
 
 ### impl-batched-SPEC-003-plan-ts (TASK-007 + TASK-008 + TASK-009-SPEC-003) — user-approved batched
 
@@ -411,17 +411,26 @@ After all TASKs in `{{SPEC_ID}}` validated:
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/tests/fixtures/` (analysis + session)
 **Scope**: TASK-010-SPEC-002
-**Paired QA**: qa-TASK-010-SPEC-002 (status IN_PROGRESS — dispatched 2026-05-21)
+**Paired QA**: qa-TASK-010-SPEC-002 (status DONE — verdict PASS, see [[QA-017-SPEC-002: Reconcile Round-Trip Fixture Layout and YAML Plan Assets]])
 
 ### impl-TASK-010-SPEC-003 — Plan composition YAML + frontmatter_map fixtures
 
-**Status**: DONE (2026-05-21; Stream F landed plan-composition.plan.yaml + modified plan-distribution.plan.yaml before session limit)
+**Status**: IN_PROGRESS (2026-05-21; QA returned FAIL on iteration 1 — Stream F1 re-dispatch fix iteration in progress; see iteration log below)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
-**File ownership**: `_shared/composition/tests/fixtures/` (plan)
+**File ownership**: `_shared/composition/tests/fixtures/` (plan) + `_shared/composition/tests/plan-integrity-floor.test.ts`
 **Scope**: TASK-010-SPEC-003
-**Paired QA**: qa-TASK-010-SPEC-003 (status IN_PROGRESS — dispatched 2026-05-21)
+**Paired QA**: qa-TASK-010-SPEC-003 (status FAILED iter 1 — verdict FAIL, see [[QA-029-SPEC-003: Composition Plan YAML and Frontmatter Map in Fixtures]]; fix iteration dispatched 2026-05-21)
+**Iteration**: 1/3 (3-iteration cap per rigid cycle)
+**Fix-brief**: 3 unchecked items from QA-029 — (1) quote 4 hash values in `plan-composition.plan.yaml` + `plan-distribution.plan.yaml` (YAML 1.1 coerces unquoted 64-char hex to number; Zod rejects "Expected string received number"); (2) add test block to `plan-integrity-floor.test.ts` that loads both fixtures via `js-yaml.load` and asserts `safeParse(...).success === true` on each (satisfies DoD-6 — missing load-bearing test); (3) re-run `bun test _shared/composition/tests/plan-integrity-floor.test.ts` expect 12 pass
 
 ### decisions.4 — ADR-004 Cross-Source Coordinator strategic call
+
+**Status**: DONE-PENDING-REVIEW (2026-05-21; architect returned ADR-004 PROPOSED with recommended option **D-2 amend-spec**; awaiting brain:---adr-review BLOCKING gate per `~/CLAUDE.md` ADR Review Requirement)
+**Outcome**: [[ADR-004: Cross-Source Coordinator Architecture]] (PROPOSED)
+**Recommended option**: D-2 (Amend-Spec) — refine DESIGN-002 to match what code already does. 2h vs 1.5d for D-1. Rationale: DESIGN-002 coordinator is speculative infrastructure for unmaterialized SPEC-003 integration; code's map-based pass-through already passes 23 tests + both SHA-256 PROOF gates; the two CrossSourceUpdate schemas model fundamentally different abstractions
+**Next**: brain:---adr-review skill dispatch (mandatory blocking gate); on PASS → user adjudicates D-1/D-2/D-3 via AskUserQuestion → ADR-004 flipped ACCEPTED → DESIGN-002 amendment OR TASK-009-SPEC-002 dispatch
+
+
 
 **Status**: IN_PROGRESS (2026-05-21)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]

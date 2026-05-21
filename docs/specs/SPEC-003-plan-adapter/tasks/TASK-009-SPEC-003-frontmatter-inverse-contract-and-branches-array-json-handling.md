@@ -37,18 +37,20 @@ Out of Scope: dispatcher; integrity floor; extractByRange; fixture YAML files (c
 
 ## Definition of Done
 
-- [ ] frontmatter_map semantic switched from field-name->new-value to old-value->new-value
-- [ ] applyFrontmatterMutations replaces frontmatter values per the new semantic
-- [ ] reverseFrontmatterMutations restores original values by inverting the map
-- [ ] Test: apply(content, fmMap) then reverse(result, fmMap) === content for scalar fields
-- [ ] branches[] array value is JSON-parsed then YAML-serialized as proper array literal
-- [ ] Test: branches frontmatter_map value `'["a","b"]'` produces `branches: [a, b]` in YAML
-- [ ] plan-round-trip.test.ts distributionSpec includes frontmatter_map; SHA-256 identity still holds
-- [ ] REQ-004 AC-1 through AC-5 all pass
+- [x] frontmatter_map semantic switched from field-name->new-value to old-value->new-value
+- [x] applyFrontmatterMutations replaces frontmatter values per the new semantic
+- [x] reverseFrontmatterMutations restores original values by inverting the map
+- [x] Test: apply(content, fmMap) then reverse(result, fmMap) === content for scalar fields
+- [x] branches[] array value is JSON-parsed then YAML-serialized as proper array literal
+- [x] Test: branches frontmatter_map value `'["a","b"]'` produces `branches: [a, b]` in YAML
+- [x] plan-round-trip.test.ts distributionSpec includes frontmatter_map; SHA-256 identity still holds
+- [x] REQ-004 AC-1 through AC-5 all pass
+
 
 ## ADR Compliance
 
-- [ ] Honors ADR-002 D-2: MutationSpec frontmatter_map field plus inverse contract
+- [x] Honors ADR-002 D-2: MutationSpec frontmatter_map field plus inverse contract
+
 
 ## Observations
 

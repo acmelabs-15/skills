@@ -51,6 +51,20 @@ export class IntegrityFloorError extends Error {
 export class PlanAdapter implements CompositionAdapter {
   readonly sourceType = "plan";
 
+  /**
+   * Public, observable section delimiter for PLAN phase boundaries.
+   * Per REQ-001-SPEC-003 AC-1: phase sections under Workflow Plan use `### {phase}.{part-id}`.
+   */
+  readonly section_delimiter = "### ";
+
+  /**
+   * Public, observable identifier pattern matching `{phase}.{part-id}` per REQ-001-SPEC-003 AC-1.
+   * Phase is a lowercase token (research, decisions, spec, build, review, end);
+   * part-id is either a positive integer (e.g. `research.1`) or a CAPS-prefixed identifier
+   * (e.g. `spec.SPEC-001`, `build.SPEC-003`).
+   */
+  readonly identifier_pattern = /^[a-z][a-z-]*\.(?:[A-Z][A-Z]+-\d+|\d+)$/;
+
   /** Minimum fraction of non-regenerated content that must be preserved through reverseMutations. */
   readonly integrityFloor: number;
 
@@ -71,11 +85,61 @@ export class PlanAdapter implements CompositionAdapter {
     return this.processor.stringify(ast);
   }
 
-  extractByRange(content: string, range: LineRange): string {
+  /**
+   * Extract content by line range. Two overloads:
+   *
+   * - Numeric range `{start, end}`: 1-indexed inclusive line slice (end=-1 means EOF).
+   * - Section name `{section}`: section-aware extraction honouring `### {phase}.{part-id}`
+   *   boundaries — INCLUSIVE of the named heading line, EXCLUSIVE of the next heading at
+   *   the same or higher level (matches the ADR adapter boundary convention).
+   *
+   * Optionally accepts a third `regenerated_sections` argument; when supplied, lines
+   * belonging to those regenerative spans are stripped from the extracted output.
+   */
+  extractByRange(
+    content: string,
+    range: LineRange | { section: string },
+    regeneratedSections?: readonly string[],
+  ): string {
+    let extracted: string;
+    if ("section" in range) {
+      extracted = this.extractBySectionName(content, range.section);
+    } else {
+      const lines = content.split("\n");
+      const start = range.start - 1; // convert 1-indexed to 0-indexed
+      const end = range.end === -1 ? lines.length : range.end; // end is inclusive 1-indexed
+      extracted = lines.slice(start, end).join("\n");
+    }
+    if (regeneratedSections && regeneratedSections.length > 0) {
+      extracted = this.stripRegeneratedSections(extracted, regeneratedSections);
+    }
+    return extracted;
+  }
+
+  /**
+   * Section-aware extraction for `### {phase}.{part-id}` headings. The returned string
+   * includes the heading line itself and continues up to (but not including) the next
+   * heading line of equal-or-higher level (matched by `^#{1,3} `).
+   *
+   * Returns "" if the section is not found.
+   */
+  private extractBySectionName(content: string, sectionName: string): string {
+    const wanted = sectionName.trim();
     const lines = content.split("\n");
-    const start = range.start - 1; // convert 1-indexed to 0-indexed
-    const end = range.end === -1 ? lines.length : range.end; // end is inclusive 1-indexed
-    return lines.slice(start, end).join("\n");
+    const startIdx = lines.findIndex((line) => {
+      const m = line.match(/^(###)[ \t]+(.+?)[ \t]*$/);
+      return m !== null && (m[2] ?? "").trim() === wanted;
+    });
+    if (startIdx === -1) return "";
+    // Find next H1/H2/H3 boundary
+    let endIdx = lines.length;
+    for (let i = startIdx + 1; i < lines.length; i++) {
+      if (/^#{1,3}[ \t]+/.test(lines[i] ?? "")) {
+        endIdx = i;
+        break;
+      }
+    }
+    return lines.slice(startIdx, endIdx).join("\n");
   }
 
   applyMutations(content: string, mutations: MutationSpec): string {
@@ -89,25 +153,31 @@ export class PlanAdapter implements CompositionAdapter {
   }
 
   /**
-   * Locate the byte spans of every `## Heading` whose text matches one of `headings`
-   * (case-sensitive, trimmed). Returns spans sorted by start offset, non-overlapping.
+   * Locate the byte spans of every `## Heading` or `### Heading` whose text matches one
+   * of `headings` (case-sensitive, trimmed). Returns spans sorted by start offset,
+   * non-overlapping. Per REQ-002 AC-1, both H2 and H3 are supported because PLAN
+   * regenerative sections may be authored at either level.
+   *
+   * Span end is the offset of the NEXT heading of equal-or-higher level (H2 closes on
+   * H1/H2; H3 closes on H1/H2/H3) — or content.length if none.
    */
   findRegeneratedSpans(content: string, headings: readonly string[]): SectionSpan[] {
     if (headings.length === 0) return [];
     const wanted = new Set(headings.map((h) => h.trim()));
     const spans: SectionSpan[] = [];
 
-    // Match `## ` at start of line followed by heading text up to newline.
-    // Use lastIndex iteration to capture offsets.
-    const headingRe = /^##[ \t]+(.+?)[ \t]*$/gm;
-    type Match = { heading: string; offset: number; lineEnd: number };
+    // Match `## ` or `### ` at start of line, capturing the heading level + text.
+    const headingRe = /^(##|###)[ \t]+(.+?)[ \t]*$/gm;
+    type Match = { heading: string; level: number; offset: number; lineEnd: number };
     const matches: Match[] = [];
     for (;;) {
       const m = headingRe.exec(content);
       if (m === null) break;
-      const headingText = (m[1] ?? "").trim();
+      const headingText = (m[2] ?? "").trim();
+      const level = (m[1] ?? "").length; // 2 or 3
       matches.push({
         heading: headingText,
+        level,
         offset: m.index,
         lineEnd: m.index + m[0].length,
       });
@@ -117,8 +187,18 @@ export class PlanAdapter implements CompositionAdapter {
       const current = matches[i];
       if (!current) continue;
       if (!wanted.has(current.heading)) continue;
-      const next = matches[i + 1];
-      const end = next ? next.offset : content.length;
+      // Span ends at the next heading of equal-or-higher level (numerically <=).
+      // An H2 span closes on the next H2/H1 (we don't model H1 here but lower index
+      // means higher level). An H3 span closes on the next H3/H2/H1.
+      let end = content.length;
+      for (let j = i + 1; j < matches.length; j++) {
+        const candidate = matches[j];
+        if (!candidate) continue;
+        if (candidate.level <= current.level) {
+          end = candidate.offset;
+          break;
+        }
+      }
       spans.push({ heading: current.heading, start: current.offset, end });
     }
 
@@ -163,14 +243,14 @@ export class PlanAdapter implements CompositionAdapter {
     let result = this.applySinglePassReplace(segment, renumberMap);
     result = this.applySinglePassReplace(result, wikilinkMap);
 
-    // frontmatter_map uses field-name semantics (keys are YAML field names, values
-    // are the new field values). The map does not record original values, so reverse
-    // mutations cannot algebraically restore them. On reverse, leave the frontmatter
-    // untouched — callers that need bit-exact restoration supply an explicit inverse
-    // spec via a second applyMutations call.
+    // Per REQ-004 AC-2 (TASK-009): frontmatter_map uses old-VALUE → new-VALUE semantics.
+    // Apply replaces old values with new values inside the frontmatter block; reverse
+    // applies the inverted map (new → old) restoring originals. Array-valued entries
+    // (e.g. branches[]) are JSON-parsed and re-serialized as proper YAML inline arrays.
     const fmMap = mutations.frontmatter_map;
-    if (!reverse && fmMap && Object.keys(fmMap).length > 0) {
-      result = this.applyFrontmatterMutations(result, fmMap);
+    if (fmMap && Object.keys(fmMap).length > 0) {
+      const map = reverse ? this.invertMap(fmMap) : fmMap;
+      result = this.applyFrontmatterMutations(result, map);
     }
     return result;
   }
@@ -194,10 +274,15 @@ export class PlanAdapter implements CompositionAdapter {
   }
 
   /**
-   * Mutate single-line frontmatter fields. Multi-line YAML arrays (`branches:` followed
-   * by `  - foo`) are not currently handled — the frontmatter_map contract requires
-   * scalar string values, so callers that need to renumber arrays must serialize
-   * the entire array into a single line via a different mechanism.
+   * Mutate frontmatter values using old-VALUE → new-VALUE semantics (REQ-004 AC-2).
+   * Each entry's key is matched against the existing value of any single-line
+   * `field: <value>` row in the YAML frontmatter; on match, the value is replaced
+   * with the entry's value.
+   *
+   * Array-valued entries are detected by the JSON-array shape of the entry value
+   * (`[…]`) and emitted as a YAML inline array literal (`field: [a, b, c]`).
+   *
+   * The inverse is mechanical: invert the map (new → old) and re-apply.
    */
   private applyFrontmatterMutations(
     content: string,
@@ -206,14 +291,49 @@ export class PlanAdapter implements CompositionAdapter {
     const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
     if (!fmMatch) return content;
     let fm = fmMatch[1] ?? "";
-    for (const [key, value] of Object.entries(frontmatterMap)) {
-      const keyPattern = new RegExp(
-        `^(${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}:\\s*)(.+)$`,
-        "m",
-      );
-      fm = fm.replace(keyPattern, `$1${value}`);
+
+    // Walk each line and try to replace its value if the existing value matches a key.
+    const outLines: string[] = [];
+    for (const line of fm.split("\n")) {
+      const m = line.match(/^([^\s:][^:]*):[ \t]+(.+)$/);
+      if (!m) {
+        outLines.push(line);
+        continue;
+      }
+      const field = m[1] ?? "";
+      const existing = (m[2] ?? "").trim();
+      // Direct value match (exact)
+      if (Object.hasOwn(frontmatterMap, existing)) {
+        const replacement = this.renderFrontmatterValue(frontmatterMap[existing] ?? "");
+        outLines.push(`${field}: ${replacement}`);
+        continue;
+      }
+      outLines.push(line);
     }
+    fm = outLines.join("\n");
+
     return content.replace(/^---\n[\s\S]*?\n---/, `---\n${fm}\n---`);
+  }
+
+  /**
+   * Render a frontmatter_map entry value into the YAML form. If the value is a JSON
+   * array literal (`["a","b"]`), emit it as a YAML inline array (`[a, b]`). Otherwise
+   * pass through verbatim (callers are responsible for quoting strings that require
+   * it, e.g. `"PLAN-001: Example"`).
+   */
+  private renderFrontmatterValue(raw: string): string {
+    const trimmed = raw.trim();
+    if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+      try {
+        const parsed = JSON.parse(trimmed) as unknown;
+        if (Array.isArray(parsed)) {
+          return `[${parsed.map((item) => String(item)).join(", ")}]`;
+        }
+      } catch {
+        // Not valid JSON — fall through and emit verbatim.
+      }
+    }
+    return raw;
   }
 
   /**

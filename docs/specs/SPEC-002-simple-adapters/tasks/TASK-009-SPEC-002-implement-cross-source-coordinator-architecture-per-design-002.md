@@ -73,3 +73,4 @@ Out of Scope:
 - extends [[TASK-003-SPEC-002: Implement SESSION Cross-Source Updates Handler]]
 - part_of [[SPEC-002: Simple Adapters]]
 - depends_on [[DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol]]
+- caused_by [[ADR-004: Cross-Source Coordinator Architecture]]

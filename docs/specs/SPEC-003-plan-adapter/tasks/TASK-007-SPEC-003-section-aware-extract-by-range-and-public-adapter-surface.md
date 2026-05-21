@@ -36,18 +36,20 @@ Out of Scope: dispatcher registration (TASK-006); integrity-floor semantics (TAS
 
 ## Definition of Done
 
-- [ ] PlanAdapter exposes readonly section_delimiter === "### "
-- [ ] PlanAdapter exposes readonly identifier_pattern matching {phase}.{part-id} format
-- [ ] extractByRange returns content including own heading and excluding next heading at same delimiter level
-- [ ] extractByRange excludes lines belonging to regenerated_sections when mutation spec supplied
-- [ ] Test: extracting a `### build.SPEC-001` section returns from that line up to but not including the next `### `
-- [ ] Test: identifier_pattern matches "research.1" and "spec.SPEC-001"
-- [ ] All existing plan-adapter.test.ts and plan-round-trip.test.ts pass
+- [x] PlanAdapter exposes readonly section_delimiter === "### "
+- [x] PlanAdapter exposes readonly identifier_pattern matching {phase}.{part-id} format
+- [x] extractByRange returns content including own heading and excluding next heading at same delimiter level
+- [x] extractByRange excludes lines belonging to regenerated_sections when mutation spec supplied
+- [x] Test: extracting a `### build.SPEC-001` section returns from that line up to but not including the next `### `
+- [x] Test: identifier_pattern matches "research.1" and "spec.SPEC-001"
+- [x] All existing plan-adapter.test.ts and plan-round-trip.test.ts pass
+
 
 ## ADR Compliance
 
-- [ ] Honors ADR-002 D-3: PLAN distinct implementation observable contract
-- [ ] Honors ADR-002 D-4: PLAN hash extraction strategy section boundary semantics
+- [x] Honors ADR-002 D-3: PLAN distinct implementation observable contract
+- [x] Honors ADR-002 D-4: PLAN hash extraction strategy section boundary semantics
+
 
 ## Observations
 

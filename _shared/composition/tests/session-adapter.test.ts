@@ -44,6 +44,15 @@ describe("SessionAdapter", () => {
     expect(adapter.sourceType).toBe("session");
   });
 
+  test("identifierPrefix is 'Event-' (DESIGN-001 Component 2)", () => {
+    // Accessing protected via index access for test introspection.
+    expect((adapter as unknown as { identifierPrefix: string }).identifierPrefix).toBe("Event-");
+  });
+
+  test("supportsCrossSourceUpdates is true (DESIGN-001 Component 2 + TASK-002 DoD item 7)", () => {
+    expect(adapter.supportsCrossSourceUpdates).toBe(true);
+  });
+
   test("parse → serialize is idempotent (remark-normalized)", () => {
     const ast = adapter.parse(sessionFixture);
     const serialized = adapter.serialize(ast);

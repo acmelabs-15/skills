@@ -2,7 +2,7 @@
 title: 'TASK-006-SPEC-003: Register PlanAdapter in Dispatcher'
 type: task
 permalink: specs/spec-003-plan-adapter/tasks/task-006-spec-003-register-plan-adapter-in-dispatcher
-status: DRAFT
+status: DONE
 effort: XS
 estimate: 0.25d
 tags:
@@ -57,3 +57,5 @@ Out of Scope: PlanAdapter implementation changes; SPEC-002/004/007 dispatcher en
 - caused_by [[QA-010-SPEC-003: PLAN Adapter Base]]
 - extends [[TASK-001-SPEC-003: Implement PLAN Adapter Base]]
 - implements [[DESIGN-001-SPEC-003: PLAN Adapter Architecture]]
+
+- validated_by [[QA-028-SPEC-003: Register PlanAdapter in Dispatcher]]

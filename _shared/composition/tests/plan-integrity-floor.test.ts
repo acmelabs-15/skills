@@ -3,6 +3,7 @@ import { planCompositionPlanSchema } from "../schemas/composition/plan.plan.sche
 import { planDistributionPlanSchema } from "../schemas/distribution/plan.plan.schema.js";
 import { IntegrityFloorError, PlanAdapter } from "../src/adapters/plan.js";
 import type { MutationSpec } from "../src/core/types.js";
+import { validateIntegrityFloor } from "../src/core/validate.js";
 
 describe("PlanAdapter integrity floor (TASK-002)", () => {
   test("default integrity floor is 0.5", () => {
@@ -133,6 +134,38 @@ describe("PLAN Zod schemas (TASK-002)", () => {
     expect(result.success).toBe(true);
   });
 
+  test("distribution plan rejects regenerated_sections with >10 entries (TASK-008 max-10 schema guard)", () => {
+    const plan = {
+      plan_type: "distribution",
+      source_type: "plan",
+      source: { path: "p.md", hash: "h", range: { start: 1, end: -1 } },
+      destinations: [{ path: "d.md", content_hash: "h2" }],
+      mutations: {
+        renumber_map: {},
+        wikilink_map: {},
+        regenerated_sections: Array.from({ length: 11 }, (_, i) => `Section ${i}`),
+      },
+    };
+    const result = planDistributionPlanSchema.safeParse(plan);
+    expect(result.success).toBe(false);
+  });
+
+  test("distribution plan accepts regenerated_sections with exactly 10 entries", () => {
+    const plan = {
+      plan_type: "distribution",
+      source_type: "plan",
+      source: { path: "p.md", hash: "h", range: { start: 1, end: -1 } },
+      destinations: [{ path: "d.md", content_hash: "h2" }],
+      mutations: {
+        renumber_map: {},
+        wikilink_map: {},
+        regenerated_sections: Array.from({ length: 10 }, (_, i) => `Section ${i}`),
+      },
+    };
+    const result = planDistributionPlanSchema.safeParse(plan);
+    expect(result.success).toBe(true);
+  });
+
   test("composition plan rejects integrity_floor outside [0,1]", () => {
     const plan = {
       plan_type: "composition",
@@ -148,5 +181,122 @@ describe("PLAN Zod schemas (TASK-002)", () => {
     };
     const result = planCompositionPlanSchema.safeParse(plan);
     expect(result.success).toBe(false);
+  });
+});
+
+describe("validateIntegrityFloor source-coverage check (TASK-008 — REQ-003 AC-3/AC-4)", () => {
+  test("rejects when regenerated_sections cover >50% of source lines", () => {
+    // 12 total lines; Dashboard section spans 7 lines → 58%.
+    const source = `# Plan
+Line 1
+Line 2
+## Progress Dashboard
+| col |
+| --- |
+| row1 |
+| row2 |
+| row3 |
+| row4 |
+Tail line A
+Tail line B
+`;
+    const result = validateIntegrityFloor(source, ["Progress Dashboard"]);
+    expect(result.valid).toBe(false);
+    expect(result.coveragePercent).toBeGreaterThan(50);
+    expect(result.message).toContain("Integrity floor violation");
+  });
+
+  test("accepts when regenerated_sections cover <50% of source lines", () => {
+    const source = `# Plan
+Line 1
+Line 2
+Line 3
+Line 4
+Line 5
+Line 6
+Line 7
+Line 8
+## Progress Dashboard
+| col |
+Tail
+`;
+    const result = validateIntegrityFloor(source, ["Progress Dashboard"]);
+    expect(result.valid).toBe(true);
+    expect(result.coveragePercent).toBeLessThan(50);
+  });
+
+  test("accepts exactly 50% coverage (REQ-003 AC-4 boundary)", () => {
+    // 10 lines total, regen spans 5 → exactly 50%.
+    const source = `Body A
+Body B
+Body C
+Body D
+Body E
+## Progress Dashboard
+row1
+row2
+row3
+row4`;
+    const result = validateIntegrityFloor(source, ["Progress Dashboard"]);
+    expect(result.valid).toBe(true);
+    expect(result.coveragePercent).toBeLessThanOrEqual(50);
+  });
+});
+
+describe("findRegeneratedSpans H3 support (TASK-008 — REQ-002 AC-1)", () => {
+  test("matches H3 regenerated section heading", () => {
+    const adapter = new PlanAdapter();
+    const content = `# Plan
+
+## Body
+
+Body line.
+
+### Progress Dashboard
+
+| col |
+| --- |
+
+## After
+
+Tail.
+`;
+    const spans = adapter.findRegeneratedSpans(content, ["Progress Dashboard"]);
+    expect(spans.length).toBe(1);
+    const span = spans[0];
+    if (!span) throw new Error("span unexpectedly undefined");
+    const slice = content.slice(span.start, span.end);
+    expect(slice).toContain("### Progress Dashboard");
+    expect(slice).toContain("| col |");
+    // Closes on next H2 (equal-or-higher level)
+    expect(slice).not.toContain("## After");
+    expect(slice).not.toContain("Tail.");
+  });
+
+  test("applyMutations skips H3 regenerated section content", () => {
+    const adapter = new PlanAdapter();
+    const content = `# Plan
+
+## Body
+
+SPEC-001 outside.
+
+### Progress Dashboard
+
+SPEC-001 inside dashboard.
+
+## After
+
+SPEC-001 also outside.
+`;
+    const mutations: MutationSpec = {
+      renumber_map: { "SPEC-001": "SPEC-100" },
+      wikilink_map: {},
+      regenerated_sections: ["Progress Dashboard"],
+    };
+    const mutated = adapter.applyMutations(content, mutations);
+    expect(mutated).toContain("SPEC-100 outside.");
+    expect(mutated).toContain("SPEC-100 also outside.");
+    expect(mutated).toContain("SPEC-001 inside dashboard.");
   });
 });
