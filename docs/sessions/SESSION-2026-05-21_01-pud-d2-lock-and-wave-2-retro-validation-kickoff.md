@@ -254,6 +254,12 @@ Next-ready parts: build.SPEC-005 + build.SPEC-006 (Wave 4 fresh skill builds —
 
 Two parallel processor agents dispatched: (1) SPEC-004 retro state-change consolidator; (2) SPEC-007 aggregate author + state-change consolidator. Both read-only on existing artifacts; orchestrator applies state transitions after returns. On returns: gap-TASK impl + QA cycles per rigid protocol (parallel where file-disjoint).
 
+## Event 35
+
+[2026-05-21] SPEC-004 retro processor returned. Aggregate **FAIL**: 0/7 PASS, 4 PARTIAL, 3 FAIL across original TASKs. Core SHA-256 round-trip PROOF holds; only 4/7 SPEC root ACs PASS. 5 gap-TASKs (008-012) already filed; 2 ready for immediate dispatch (TASK-009 filename rewrite tests + TASK-010 DESIGN fixture), 3 require user adjudication before impl (TASK-008 sourceType barrel alignment, TASK-011 schema shape ↔ ADR-002 D-5, TASK-012 orchestration boundary — last is genuinely architectural).
+
+Per "max parallel + go with recommendation" directive: TASK-009 + TASK-010 impl agents dispatched in parallel this turn (file-disjoint: tests/ vs fixtures/). TASK-008/011/012 adjudications queued — will surface when SPEC-007 processor returns (consolidating questions if SPEC-007 also has adjudications).
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid
