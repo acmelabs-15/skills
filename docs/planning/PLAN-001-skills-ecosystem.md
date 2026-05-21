@@ -374,11 +374,11 @@ After all TASKs in `{{SPEC_ID}}` validated:
 
 ### impl-TASK-006-SPEC-003 — Register PlanAdapter in dispatcher
 
-**Status**: IN_PROGRESS (2026-05-21)
+**Status**: DONE (2026-05-21; Stream A code landed dispatcher.ts + dispatcher.test.ts + base-markdown-adapter.ts before session limit; agent return interrupted but file evidence verified)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/src/core/dispatcher.ts`
 **Scope**: TASK-006-SPEC-003 (see note for DoD verbatim)
-**Paired QA**: qa-TASK-006-SPEC-003 (status PENDING — transitions when impl returns)
+**Paired QA**: qa-TASK-006-SPEC-003 (status IN_PROGRESS — dispatched 2026-05-21)
 
 ### impl-TASK-007-SPEC-002 — ANALYSIS adapter DESIGN-001 drift reconciliation
 
@@ -407,19 +407,19 @@ After all TASKs in `{{SPEC_ID}}` validated:
 
 ### impl-TASK-010-SPEC-002 — Round-trip fixtures + YAML
 
-**Status**: IN_PROGRESS (2026-05-21)
+**Status**: DONE (2026-05-21; Stream E landed 4 fixture YAMLs before session limit)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/tests/fixtures/` (analysis + session)
 **Scope**: TASK-010-SPEC-002
-**Paired QA**: qa-TASK-010-SPEC-002 (status PENDING)
+**Paired QA**: qa-TASK-010-SPEC-002 (status IN_PROGRESS — dispatched 2026-05-21)
 
 ### impl-TASK-010-SPEC-003 — Plan composition YAML + frontmatter_map fixtures
 
-**Status**: IN_PROGRESS (2026-05-21)
+**Status**: DONE (2026-05-21; Stream F landed plan-composition.plan.yaml + modified plan-distribution.plan.yaml before session limit)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/tests/fixtures/` (plan)
 **Scope**: TASK-010-SPEC-003
-**Paired QA**: qa-TASK-010-SPEC-003 (status PENDING)
+**Paired QA**: qa-TASK-010-SPEC-003 (status IN_PROGRESS — dispatched 2026-05-21)
 
 ### decisions.4 — ADR-004 Cross-Source Coordinator strategic call
 

@@ -82,6 +82,37 @@ Tests reduction directive: write only the minimum tests required for next implem
 
 [2026-05-21] Wave 3 dispatch step (d) executed: 7 parallel agents launched in background. Streams A-F: general-purpose impl agents with verbatim TASK note paths + DoD-as-contract briefs + min-tests directive + Brain MCP for `docs/**` + `## State Changes` return contract. Stream G: brain:🧠-architect for ADR-004 (Cross-Source Coordinator strategic call; mandates brain:---adr-review BLOCKING gate before ACCEPTED). Agent IDs tracked via TaskList #11-17 (one task per stream). Per rigid cycle: next-action awaits return notifications; on each return, orchestrator processes steps f-t per TASK (Session Event + PLAN impl→DONE + commit + PLAN qa→IN_PROGRESS + commit + QA dispatch + QA processing). Across-TASK parallelism preserved while honoring per-TASK atomicity.
 
+## Event 14
+
+[2026-05-21] Wave 3 SESSION LIMIT hit mid-flight. Agent return triage from filesystem evidence:
+
+- Stream A (impl-TASK-006-SPEC-003): DONE — dispatcher.ts + dispatcher.test.ts + base-markdown-adapter.ts modified. Agent return interrupted by session limit but code landed.
+- Stream B (impl-TASK-007-SPEC-002): DIED — no analysis.ts modifications. Session-limit returned "session limit · resets 4am" before agent started substantive work.
+- Stream C (impl-TASK-008-SPEC-002): DIED — no session.ts modifications.
+- Stream D (impl-batched-SPEC-003-plan-ts): DIED — no plan.ts modifications.
+- Stream E (impl-TASK-010-SPEC-002): DONE — 4 fixture YAMLs created (analysis-composition, analysis-distribution, session-composition, session-distribution).
+- Stream F (impl-TASK-010-SPEC-003): DONE — plan-composition.plan.yaml created + plan-distribution.plan.yaml modified.
+- Stream G (decisions.4 ADR-004): DIED — no ADR-004 file in docs/decisions/.
+
+User logged into new account; session limit cleared; re-dispatch authorized for B/C/D/G + QA dispatch authorized for A/E/F.
+
+Safety commit captured Streams A/E/F file landings before further state changes. Code committed at `1f09992...` (next commit will reference SHA after this Event lands).
+
+## Event 15
+
+[2026-05-21] PLAN-001 state transitions (rigid cycle steps h, j for completed streams):
+
+- impl-TASK-006-SPEC-003 IN_PROGRESS → DONE (Stream A code observably landed; DoD verification deferred to QA step)
+- impl-TASK-010-SPEC-002 IN_PROGRESS → DONE (Stream E)
+- impl-TASK-010-SPEC-003 IN_PROGRESS → DONE (Stream F)
+- qa-TASK-006-SPEC-003 PENDING → IN_PROGRESS
+- qa-TASK-010-SPEC-002 PENDING → IN_PROGRESS
+- qa-TASK-010-SPEC-003 PENDING → IN_PROGRESS
+- impl-TASK-007-SPEC-002 stays IN_PROGRESS (re-dispatch incoming)
+- impl-TASK-008-SPEC-002 stays IN_PROGRESS (re-dispatch incoming)
+- impl-batched-SPEC-003-plan-ts stays IN_PROGRESS (re-dispatch incoming)
+- decisions.4 stays IN_PROGRESS (re-dispatch incoming)
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid
