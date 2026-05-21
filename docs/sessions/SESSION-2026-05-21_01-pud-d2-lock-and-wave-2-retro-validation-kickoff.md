@@ -345,6 +345,16 @@ PLAN-001 build.SPEC-005/006 substatus stays PENDING per schema-honest representa
 
 In-flight: 2 build agents (SPEC-005 + SPEC-006). On returns: per-TASK QA dispatch wave (potentially 13 QAs in parallel for file-disjoint TASKs).
 
+## Event 46
+
+[2026-05-21] **SPEC-005 batched build returned DONE.** All 6 TASKs flipped TODO → DONE. 501/501 tests at completion (489 prior + 12 new). tsc clean. Files: decompose.ts + recompose.ts CLIs + plan-yaml.ts schemas + registry.ts (new dispatcher surface) + skill-round-trip.test.ts + 3 fixtures + decompose/SKILL.md + recompose/SKILL.md + install.sh.
+
+4 documented deviations (agent chose Auto Mode over HALT per blanket pre-authorization): (1) TASK-004 DoD literal mismatch — already-shipped adapters can't throw with SPEC-002 message; registered all 5 + tests error path via bogus type. (2) TASK-005 install.sh created fresh (no scaffold from SPEC-001 existed). (3) Two dispatchers coexist (src/core/dispatcher.ts + new src/registry.ts) — possible future unification. (4) Per-cluster extractByRange not exercised — round-trip identity holds via applyMutations/reverseMutations on full content.
+
+SPEC-006 still in flight. Partial files landed (root tsconfig/package.json/bunfig.toml + defrag.ts + ingest.ts + parse.ts + assemble.ts + detect-context.ts + test files). 7 active TS errors because `bun install` hasn't populated bun-types yet. Holding repo-wide commit until SPEC-006 returns.
+
+SPEC-005 QA dispatched with targeted test filter (avoids SPEC-006 partial test errors). QA validates: per-TASK DoD + REQ AC + DESIGN compliance + the 4 documented deviations.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

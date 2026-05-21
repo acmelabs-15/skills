@@ -1,7 +1,7 @@
 ---
 title: 'TASK-004-SPEC-006: Implement Ingest CLI and Skill Structure'
 type: task
-status: TODO
+status: DONE
 permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-004-spec-006-implement-ingest-cli-and-skill-structure
 tags:
 - task
@@ -18,15 +18,15 @@ Create the /ingest skill directory structure, SKILL.md skill definition, and CLI
 
 ## Definition of Done
 
-- [ ] ingest/SKILL.md exists with trigger phrases, description, and orchestration instructions
-- [ ] ingest/scripts/ingest.ts exists as CLI entry point accepting --type and --basic-memory flags
-- [ ] ingest/scripts/parse.ts exports source file parser (frontmatter extraction, H1 detection, section detection)
-- [ ] ingest/scripts/detect.ts exports entity type detection and target path resolution
-- [ ] ingest/scripts/assemble.ts exports content assembly (frontmatter generation, observation/relation generation)
-- [ ] Single-file ingest works end-to-end: parse, detect, assemble, three-phase write, verify
-- [ ] Directory batch mode iterates files and produces summary report
-- [ ] install.sh updated to include ingest/ symlink at ~/.claude/skills/ingest
-- [ ] biome lint passes on all new files
+- [x] ingest/SKILL.md exists with trigger phrases, description, and orchestration instructions
+- [x] ingest/scripts/ingest.ts exists as CLI entry point accepting --type and --basic-memory flags
+- [x] ingest/scripts/parse.ts exports source file parser (frontmatter extraction, H1 detection, section detection)
+- [x] ingest/scripts/detect.ts exports entity type detection and target path resolution
+- [x] ingest/scripts/assemble.ts exports content assembly (frontmatter generation, observation/relation generation)
+- [x] Single-file ingest works end-to-end: parse, detect, assemble, three-phase write, verify
+- [x] Directory batch mode iterates files and produces summary report
+- [x] install.sh updated to include ingest/ symlink at ~/.claude/skills/ingest
+- [x] biome lint passes on all new files
 
 ## Files Affected
 

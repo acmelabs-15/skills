@@ -1,0 +1,7 @@
+plan_type: distribution
+source_type: adr
+source_path: adr-round-trip.md
+renumber_map:
+  D-1: D-500
+  D-2: D-501
+wikilink_map: {}

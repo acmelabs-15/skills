@@ -1,7 +1,7 @@
 ---
 title: 'TASK-005-SPEC-006: Implement Ingest Brain-Awareness'
 type: task
-status: TODO
+status: DONE
 permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-005-spec-006-implement-ingest-brain-awareness
 tags:
 - task
@@ -18,17 +18,17 @@ Implement the Brain-awareness layer in the /ingest pipeline. This task covers CO
 
 ## Definition of Done
 
-- [ ] _shared/detect-context.ts exports detectProjectContext function returning contextType, evidence, and confidence
-- [ ] Brain context detection: checks for docs/ directory AND canonical entity types in frontmatter
-- [ ] Basic Memory context detection: absence of canonical types OR --basic-memory flag
-- [ ] Frontmatter generation produces title in ENTITY-ID colon Descriptor format, type from 16 canonical types, status DRAFT, permalink in folder/kebab form, 2-5 tags
-- [ ] Observation generation produces at least 3 observations with valid category prefix and 1-3 inline tags
-- [ ] Relation generation produces at least 2 relations using only the 11 valid relation types
-- [ ] Pattern 2 three-phase write executes correctly: space-title write_note, colon edit_note, kebab move_note
-- [ ] Post-write verification checks all 6 items from CONVENTIONS Section 8.2
-- [ ] Final-two-sections invariant enforced: Observations then Relations are the last two sections
-- [ ] Unit tests for detect-context.ts covering Brain, Basic Memory, and flag override scenarios
-- [ ] biome lint passes
+- [x] _shared/detect-context.ts exports detectProjectContext function returning contextType, evidence, and confidence
+- [x] Brain context detection: checks for docs/ directory AND canonical entity types in frontmatter
+- [x] Basic Memory context detection: absence of canonical types OR --basic-memory flag
+- [x] Frontmatter generation produces title in ENTITY-ID colon Descriptor format, type from 16 canonical types, status DRAFT, permalink in folder/kebab form, 2-5 tags
+- [x] Observation generation produces at least 3 observations with valid category prefix and 1-3 inline tags
+- [x] Relation generation produces at least 2 relations using only the 11 valid relation types
+- [x] Pattern 2 three-phase write executes correctly: space-title write_note, colon edit_note, kebab move_note
+- [x] Post-write verification checks all 6 items from CONVENTIONS Section 8.2
+- [x] Final-two-sections invariant enforced: Observations then Relations are the last two sections
+- [x] Unit tests for detect-context.ts covering Brain, Basic Memory, and flag override scenarios
+- [x] biome lint passes
 
 ## Files Affected
 

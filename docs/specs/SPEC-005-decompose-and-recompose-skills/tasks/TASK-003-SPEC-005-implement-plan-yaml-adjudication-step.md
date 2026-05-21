@@ -1,7 +1,7 @@
 ---
 title: 'TASK-003-SPEC-005: Implement Plan YAML Adjudication Step'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-003-spec-005-implement-plan-yaml-adjudication-step
@@ -25,11 +25,12 @@ Implement the AskUserQuestion integration within the /decompose and /recompose S
 
 ## Definition of Done
 
-- [ ] Both SKILL.md files include AskUserQuestion section with approve/reject-with-feedback/abort options
-- [ ] Plan summary formatter produces human-readable markdown showing source paths, destination paths, renumber map, wikilink map, and type-specific fields
-- [ ] Rejection handler renames current plan to {name}-rejected-{N}.yaml and passes feedback to LLM re-authoring step
-- [ ] Abort handler exits cleanly with no file I/O
-- [ ] Integration test: fixture plan presented via summary formatter produces expected markdown output
+- [x] Both SKILL.md files include AskUserQuestion section with approve/reject-with-feedback/abort options
+- [x] Plan summary formatter produces human-readable markdown showing source paths, destination paths, renumber map, wikilink map, and type-specific fields
+- [x] Rejection handler renames current plan to {name}-rejected-{N}.yaml and passes feedback to LLM re-authoring step
+- [x] Abort handler exits cleanly with no file I/O
+- [x] Integration test: fixture plan presented via summary formatter produces expected markdown output
+
 
 ## Scope
 

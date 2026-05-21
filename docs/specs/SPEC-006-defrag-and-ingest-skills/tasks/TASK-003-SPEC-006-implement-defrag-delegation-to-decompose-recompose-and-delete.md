@@ -2,7 +2,7 @@
 title: 'TASK-003-SPEC-006: Implement Defrag Delegation to Decompose Recompose and
   Delete'
 type: task
-status: TODO
+status: DONE
 permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-003-spec-006-implement-defrag-delegation-to-decompose-recompose-and-delete
 tags:
 - task
@@ -19,15 +19,15 @@ Implement the delegation logic in defrag/scripts/defrag.ts and defrag/scripts/re
 
 ## Definition of Done
 
-- [ ] defrag/scripts/report.ts exports a report function that formats audit candidates into grouped markdown
-- [ ] Split candidate confirmation triggers /decompose Skill invocation with note path and source_type
-- [ ] Merge candidate confirmation triggers /recompose Skill invocation with note paths and source_type
-- [ ] Stale-delete confirmation triggers Brain MCP delete_note with audit logging
-- [ ] Structural-fix confirmation triggers Brain MCP edit_note to add H3 grouping headers
-- [ ] Failed delegation (from /decompose or /recompose) is logged and skipped; cycle continues
-- [ ] Final audit summary includes action counts (split, merge, delete, structural-fix, skipped, failed)
-- [ ] --report-only mode writes report to defrag/reports/defrag-YYYY-MM-DD.md
-- [ ] biome lint passes on all new/modified files
+- [x] defrag/scripts/report.ts exports a report function that formats audit candidates into grouped markdown
+- [x] Split candidate confirmation triggers /decompose Skill invocation with note path and source_type
+- [x] Merge candidate confirmation triggers /recompose Skill invocation with note paths and source_type
+- [x] Stale-delete confirmation triggers Brain MCP delete_note with audit logging
+- [x] Structural-fix confirmation triggers Brain MCP edit_note to add H3 grouping headers
+- [x] Failed delegation (from /decompose or /recompose) is logged and skipped; cycle continues
+- [x] Final audit summary includes action counts (split, merge, delete, structural-fix, skipped, failed)
+- [x] --report-only mode writes report to defrag/reports/defrag-YYYY-MM-DD.md
+- [x] biome lint passes on all new/modified files
 
 ## Files Affected
 

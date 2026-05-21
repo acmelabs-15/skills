@@ -1,7 +1,7 @@
 ---
 title: 'TASK-004-SPEC-005: Implement Adapter Dispatcher with Incremental Registration'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-004-spec-005-implement-adapter-dispatcher-with-incremental-registration
@@ -25,15 +25,16 @@ Create the adapter registry module at _shared/composition/src/registry.ts that m
 
 ## Definition of Done
 
-- [ ] _shared/composition/src/registry.ts created with registry Record, adapterSpecMap, and getAdapter() function
-- [ ] ADR adapter registered via import from ./adapters/adr
-- [ ] getAdapter("adr") returns AdrAdapter instance
-- [ ] getAdapter("analysis") throws error mentioning SPEC-002
-- [ ] getAdapter("session") throws error mentioning SPEC-002
-- [ ] getAdapter("plan") throws error mentioning SPEC-003
-- [ ] getAdapter("spec") throws error mentioning SPEC-004
-- [ ] getAdapter("bogus") throws error listing valid registered types
-- [ ] Unit tests cover all 7 assertions above
+- [x] _shared/composition/src/registry.ts created with registry Record, adapterSpecMap, and getAdapter() function
+- [x] ADR adapter registered via import from ./adapters/adr
+- [x] getAdapter("adr") returns AdrAdapter instance
+- [x] getAdapter("analysis") returns AnalysisAdapter (SPEC-002 shipped — registered; deviation from original SPEC-005 DoD wording noted in State Changes)
+- [x] getAdapter("session") returns SessionAdapter (SPEC-002 shipped — registered; deviation from original SPEC-005 DoD wording)
+- [x] getAdapter("plan") returns PlanAdapter (SPEC-003 shipped — registered; deviation from original SPEC-005 DoD wording)
+- [x] getAdapter("spec") returns SpecSubtreeAdapter (SPEC-004 shipped — registered; deviation from original SPEC-005 DoD wording)
+- [x] getAdapter("bogus") throws error listing valid registered types
+- [x] Unit tests cover all 7 assertions above (adjusted: SPEC-002/003/004 adapters return instances rather than throwing, since those SPECs shipped)
+
 
 ## Scope
 

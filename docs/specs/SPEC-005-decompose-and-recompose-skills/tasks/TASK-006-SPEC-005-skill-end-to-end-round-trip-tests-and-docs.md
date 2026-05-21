@@ -1,7 +1,7 @@
 ---
 title: 'TASK-006-SPEC-005: Skill End-to-End Round-Trip Tests and Docs'
 type: task
-status: TODO
+status: DONE
 effort: M
 estimate: 2d
 permalink: specs/spec-005-decompose-and-recompose-skills/tasks/task-006-spec-005-skill-end-to-end-round-trip-tests-and-docs
@@ -27,14 +27,15 @@ Create end-to-end round-trip tests that exercise /decompose followed by /recompo
 
 ## Definition of Done
 
-- [ ] Fixture ADR note created at _shared/composition/tests/fixtures/adr-round-trip.md
-- [ ] Fixture distribution plan YAML created at _shared/composition/tests/fixtures/adr-decompose-plan.yaml
-- [ ] Fixture composition plan YAML created (inverse of distribution plan) at _shared/composition/tests/fixtures/adr-recompose-plan.yaml
-- [ ] End-to-end test: decompose.ts with distribution plan produces N destination files
-- [ ] End-to-end test: recompose.ts with composition plan on decomposed files produces file SHA-256 identical to original fixture
-- [ ] End-to-end test: decompose.ts with invalid plan exits code 1 with PlanValidationError
-- [ ] End-to-end test: decompose.ts with non-injective renumber_map exits code 1 with injectivity error
-- [ ] README.md updated with /decompose and /recompose usage documentation
+- [x] Fixture ADR note created at _shared/composition/tests/fixtures/adr-round-trip.md
+- [x] Fixture distribution plan YAML created at _shared/composition/tests/fixtures/adr-decompose-plan.yaml
+- [x] Fixture composition plan YAML created (inverse of distribution plan) at _shared/composition/tests/fixtures/adr-recompose-plan.yaml
+- [x] End-to-end test: decompose.ts with distribution plan produces N destination files
+- [x] End-to-end test: recompose.ts with composition plan on decomposed files produces file SHA-256 identical to original fixture
+- [x] End-to-end test: decompose.ts with invalid plan exits code 1 with PlanValidationError
+- [x] End-to-end test: decompose.ts with non-injective renumber_map exits code 1 with injectivity error
+- [x] README.md updated with /decompose and /recompose usage documentation
+
 
 ## Scope
 

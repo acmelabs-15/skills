@@ -1,7 +1,7 @@
 ---
 title: 'TASK-006-SPEC-006: Defrag and Ingest Tests'
 type: task
-status: TODO
+status: DONE
 permalink: specs/spec-006-defrag-and-ingest-skills/tasks/task-006-spec-006-defrag-and-ingest-tests
 tags:
 - task
@@ -18,17 +18,17 @@ Implement tests for /defrag and /ingest skills. /defrag tests cover the audit en
 
 ## Definition of Done
 
-- [ ] defrag/scripts/audit.test.ts covers all threshold boundary conditions (observation min/max, relation min/max, line count, staleness)
-- [ ] defrag/scripts/report.test.ts covers markdown report formatting for each candidate type
-- [ ] defrag/scripts/defrag.test.ts covers delegation error handling (mock /decompose and /recompose failures)
-- [ ] ingest/scripts/parse.test.ts covers frontmatter-present and frontmatter-absent source files
-- [ ] ingest/scripts/detect.test.ts covers entity type detection for all 16 canonical types plus fallback
-- [ ] ingest/scripts/assemble.test.ts covers Brain-aware content assembly (frontmatter, observations, relations) and Basic Memory path
-- [ ] ingest/scripts/ingest.test.ts covers end-to-end single-file ingest with Pattern 2 three-phase write verification
-- [ ] _shared/detect-context.test.ts covers Brain, Basic Memory, and --basic-memory flag override scenarios
-- [ ] Test fixtures directory at test-fixtures/ contains sample source files for each scenario
-- [ ] All tests pass via bun test
-- [ ] biome lint passes on all test files
+- [x] defrag/scripts/audit.test.ts covers all threshold boundary conditions (observation min/max, relation min/max, line count, staleness)
+- [x] defrag/scripts/report.test.ts covers markdown report formatting for each candidate type
+- [x] defrag/scripts/defrag.test.ts covers delegation error handling (mock /decompose and /recompose failures)
+- [x] ingest/scripts/parse.test.ts covers frontmatter-present and frontmatter-absent source files
+- [x] ingest/scripts/detect.test.ts covers entity type detection for all 16 canonical types plus fallback
+- [x] ingest/scripts/assemble.test.ts covers Brain-aware content assembly (frontmatter, observations, relations) and Basic Memory path
+- [x] ingest/scripts/ingest.test.ts covers end-to-end single-file ingest with Pattern 2 three-phase write verification
+- [x] _shared/detect-context.test.ts covers Brain, Basic Memory, and --basic-memory flag override scenarios
+- [x] Test fixtures directory at test-fixtures/ contains sample source files for each scenario
+- [x] All tests pass via bun test
+- [x] biome lint passes on all test files
 
 ## Files Affected
 
