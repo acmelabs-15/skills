@@ -1250,7 +1250,7 @@ Two TIER-1 BLOCKING orchestrator-private memories written; MEMORY.md updated wit
 
 7 user-created lifecycle skills + NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md + composition library current state all audited. Gap inventory captured in ANALYSIS-003 H2 X.B Audit Findings + Per-skill detailed audit findings. 15-item ordered execution sequence locked for X.C + X.D in ANALYSIS-003. Commit 601d75f.
 
-#### X.C — Update skills + templates + structures (IN_PROGRESS 2026-05-21 — owning session SESSION-2026-05-20_06; 10-agent parallel wave covering 7 lifecycle SKILL.md files + 3 deferred X.D code items)
+#### X.C — Update skills + templates + structures (DONE 2026-05-21 — 10-agent parallel wave landed; all 7 lifecycle SKILL.md files (plan/build/spec/decisions/research/review/end at ~/.claude/skills/) now carry canonical inline protocol-injection block + skill-specific framing; 3 deferred X.D code items completed: commits c9585f2 flip-checkbox cross-note mutation + e1bb056 SpecRootNote renderer semantic round-trip + 8e1e095 TEST-REPORT byte-identical round-trip; ~/.claude/skills/ not a git repo — SKILL.md saves uncommitted by design; +20 new code tests; 424 → 444 pass / 0 fail. Templates + STRUCTURES updates not in this wave — defer to X.E or follow-up)
 
 Highest priority: /plan + /build + /spec SKILL.md files updated with rigid per-TASK protocol + checkbox-as-contract language. Lighter touch: /decisions + /research + /review + /end. NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md updated per audit findings.
 

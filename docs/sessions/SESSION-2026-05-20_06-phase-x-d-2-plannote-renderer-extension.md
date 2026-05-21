@@ -151,6 +151,35 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - Skill content cannot reference `~/.claude/memory/*` auto-memories per CONVENTIONS Section 5.3 — protocol-injection block inlined verbatim in each of 7 skill briefs (single canonical block, agents inline as-is)
 - Dispatched in one wave; expected return synthesis afterward + single integration commit covering all 10 outputs
 
+## Event 10
+
+**Type**: parallel-wave-complete | x-c-closed | 2026-05-21
+
+10-agent parallel wave landed across two batches (5+5) — file-disjoint, no merge conflicts.
+
+### Wave 1: 5 SKILL.md updates (general-purpose agents)
+
+- `~/.claude/skills/plan/SKILL.md` — protocol block + Role-of-/plan H3 inserted between Modes and Cross-cutting (lines 26-86)
+- `~/.claude/skills/build/SKILL.md` — block inserted after Contract 2 paragraph (~line 59); existing Stage A cycle (Steps 4a-4g) reconciled under the rigid (a)-(u) governing protocol
+- `~/.claude/skills/spec/SKILL.md` — block inserted before Reference files (lines 235-296); /spec-specific framing emphasizes checkbox-as-contract authoring
+- `~/.claude/skills/decisions/SKILL.md` — block inserted before Reference files (~lines 252-310); /decisions-specific framing for per-D-N micro-cycle
+- `~/.claude/skills/research/SKILL.md` — block inserted before Reference files (~lines 204-256); /research-specific framing emphasizes options-only + no-Open-Questions + criteria-translating-to-checkboxes
+
+### Wave 2: 2 SKILL.md + 3 code (mixed agents)
+
+- `~/.claude/skills/review/SKILL.md` — block inserted before Reference files (~line 316); /review-specific framing adds checkbox-vs-diff cross-check axis
+- `~/.claude/skills/end/SKILL.md` — block inserted before Anti-patterns (~line 364); /end-specific framing extends Step 1 DoD verification via composition-library claim validators
+- **Code: flip-checkbox cross-note mutation** — commit `c9585f2` — new `src/mutations/checkbox-mutations.ts` with `applyCheckboxMutation(markdown, mutation)` operating on TaskNote DoD / REQ AC / DESIGN compliance via markdown-string flip + re-parse validation. +9 tests. Surprises: REQ AC items are multi-line EARS prose requiring tolerant line-walker; DESIGN H2 disambiguation between Compliance + Architecture Compliance; deferred-rationale suffix preserved across flips
+- **Code: SpecRootNote renderer** — commit `e1bb056` — new `src/renderers/spec-root-note.ts` with semantic round-trip (parse→render→parse equivalent model). Kept `sections: Record<string, string>` — JS objects preserve string-key insertion order per ES2015+ spec; no schema refactor needed. +10 tests. Surprises: Scope rendered as H3 sub-headings (parser parseScope() switches buckets on H3 not bold markers); bun-ts-best-practices audit incorrectly moved sibling renderer file into __tests__/ (filename "test-report-note.ts" matched "test" substring heuristic); restored
+- **Code: TEST-REPORT byte-identity** — commit `8e1e095` — fixture normalized to canonical renderer-output form (dropped inline-code backticks; normalized Execution Time row's Target/Status cells to em-dash). Renderer itself emitted canonical form already — only fixture adjustments needed. +1 byte-identical round-trip test
+
+### Cross-cutting notes
+
+- `~/.claude/skills/` is NOT a git repo by design (each skill directory is part of the orchestrator's editing surface, not under VCS). The 7 SKILL.md updates are saved-without-commit. Project-side composition library commits (c9585f2, e1bb056, 8e1e095) are on branch `feat/plan-001-x-d-2-plan-renderer`
+- Bun + biome + tsc all clean. Test counts: 424 → **444 pass / 0 fail** (+20 code tests + protocol block in 7 SKILL.md files)
+- All 7 lifecycle skills now carry the canonical block verbatim + skill-specific framing as an H3 above. Defense-in-depth surface area now spans: 6 note-type schemas + 6 parsers + 4 renderers (+ deferred TaskNote/REQ/DESIGN renderers) + 11 plan-mutations + 1 flip-checkbox cross-note mutation + 6 claim validators + 7 lifecycle SKILL.md files + 3 TIER-1 BLOCKING auto-memories + CLAUDE.md pre-flight table
+- Phase X.C DONE in PLAN-001. Templates + STRUCTURES updates (X.C.5-6 originally) not included — deferred to X.E or follow-up
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
