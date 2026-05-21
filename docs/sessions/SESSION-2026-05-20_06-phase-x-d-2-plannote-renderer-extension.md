@@ -98,6 +98,28 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - Commit `d3c7810 build(spec-007): X.D.5 TaskNote schema + parser + DoD claim validator` landed on branch `feat/plan-001-x-d-2-plan-renderer`
 - Phase X.D progress now 5 of 7 (X.D.1+2+3+4+5 DONE; X.D.6 + X.D.7 remain — RequirementNote + DesignNote + SpecRootNote + TestReportNote schemas)
 
+## Event 07
+
+**Type**: implementation | x-d-6-complete | 2026-05-20
+
+- PLAN-001 X.D.6 PENDING → IN_PROGRESS (edit landed disk; Pydantic noise unrelated)
+- bun-ts-engineer dispatched with scoped X.D.6 brief (REQ + DESIGN schemas + parsers + claim validators; allowed ClaimResult refactor as minimal cleanup)
+- New files added under `_shared/composition/`:
+  - `src/schemas/requirement-note.ts` — RequirementNoteSchema with frontmatter (RequirementNoteStatusEnum DRAFT/PROPOSED/ACCEPTED/DEPRECATED) + body (requirement_statement, pattern, priority, category, context, acceptance_criteria, observations, relations). EARS statement stays as opaque prose (no clause parsing). `priority` free-form 1-200 chars; `category` accepts canonical enum OR free-form string
+  - `src/schemas/design-note.ts` — DesignNoteSchema with opaque `sections: Record<string, string>` for varied DESIGN body + optional compliance_criteria checkboxes (Compliance H2 wins over Architecture Compliance when both present)
+  - `src/parsers/requirement-note.ts` + `src/parsers/design-note.ts`
+  - `src/validators/types.ts` — ClaimResult lifted here as shared type
+  - `src/validators/requirement-claim-validator.ts` + `src/validators/design-claim-validator.ts`
+  - 6 new test files + 2 new fixtures
+- Refactor: `src/validators/task-claim-validator.ts` re-exports `ClaimResult` from shared types module; `DoDClaimResult` retained as backwards-compat alias. No behavior change. Imports remain importable from X.D.5 paths
+- Cross-field invariants (superRefine):
+  - REQ: ACCEPTED requires every acceptance_criteria item `done===true OR deferred_rationale non-empty`; derived REQ id parses against ReqIdSchema
+  - DESIGN: ACCEPTED unconditional when compliance_criteria undefined; otherwise requires every item satisfied; derived DESIGN id parses against DesignIdSchema
+- Test counts: 271 → **341 pass / 0 fail** (+70 tests). biome clean; tsc clean
+- Engineer notes: DESIGN sections via `mdToString` flattens lists/tables/code-blocks — non-prose subsections survive as text without round-trip fidelity (out of scope this round); `[design]` observation category isn't in canonical enum (10 valid categories) so test markdown adjusted; `priority` free-form because REQ-001-SPEC-007 example contains long sentence prose; Compliance H2 wins when both `## Compliance` + `## Architecture Compliance` exist
+- Commit `48084fa build(spec-007): X.D.6 REQ + DESIGN schemas + AC / compliance validators` landed on branch `feat/plan-001-x-d-2-plan-renderer`
+- Phase X.D progress now 6 of 7 (X.D.1+2+3+4+5+6 DONE; X.D.7 remains — SpecRootNote + TestReportNote schemas + renderers)
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
