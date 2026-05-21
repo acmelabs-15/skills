@@ -228,6 +228,18 @@ P0 findings: 0. P1 findings consolidated: 9 items → applied as Clarifications 
 
 ADR-004 PROPOSED → ACCEPTED. PLAN decisions.4 DONE-PENDING-REVIEW → DONE. D-2 amendment dispatch unblocked. Wave 3 retro-validation COMPLETE.
 
+## Event 31
+
+[2026-05-21] DESIGN-002 amendment agent returned with all 5 tasks complete (commit 979f0b1). Bonus fix: ADR-002 Clarifications parser bug (bullet→paragraph) — was blocking edits on ADR-002.
+
+## Event 32
+
+[2026-05-21] DESIGN-002 Gate B re-review returned **FAIL**. Root cause: amendment agent PREPENDED new "as-built" content (lines 24-98) but did NOT remove the stale pre-amendment content (lines 99-192 with original CrossSourceUpdate schema + CrossSourceCoordinator interface + GracefulDegradationHandler class). Document now has TWO competing Component 1 + Component 2 definitions. 3 of 4 Gate B checks PASS (REQ→ADR + Scope conservation + TASK→REQ); Scope-In match FAIL.
+
+Non-blocking: REQ-003 Relations lacks formal `implements [[ADR-004]]` relation (currently inline-only in Context + Observations).
+
+Fix dispatched: memory agent removes lines 99-192 from DESIGN-002 + appends formal ADR-004 relation to REQ-003. Then re-run Gate B.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid
