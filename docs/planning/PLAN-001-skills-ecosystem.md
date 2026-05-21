@@ -1276,7 +1276,7 @@ D1 user decision RESOLVED 2026-05-20: include composition library mechanism comp
 - X.D.6 — Add RequirementNote + DesignNote schemas with AC/compliance claim validators (DONE 2026-05-20 commit 48084fa — RequirementNoteSchema + DesignNoteSchema + parsers + validateRequirementAcClaim + validateDesignComplianceClaim; ClaimResult lifted to shared validators/types.ts; DoDClaimResult retained as backwards-compat alias; ACCEPTED status enforces every AC/compliance item [x] or deferred when section present; +70 new tests; 271 → 341 pass / 0 fail)
 - X.D.7 — Add SpecRootNote + TestReportNote schemas + renderers (DONE 2026-05-21 commit 47cb568 — SpecRootNoteSchema + parser; TestReportNoteSchema + parser + renderer with semantic round-trip; validateSpecDoneClaim enforces every success_criteria + artifact_status item satisfied when present; validateTestReportPassClaim + schema superRefine reject verdict mismatches AND tests_run inequalities; ClaimResult.unsatisfied extended with optional `section` field — forward-compatible; +83 new tests; 341 → 424 pass / 0 fail. **Phase X.D COMPLETE 7 of 7**)
 
-#### X.E — Wrap-up (PENDING)
+#### X.E — Wrap-up (IN_PROGRESS 2026-05-21 — owning session SESSION-2026-05-20_06; 3-agent parallel wave for CLAUDE.md + NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md additions covering X.D mechanisms. X.E.2 PLAN-001 full reconciliation remains blocked on D2 Wave 2 throw-out vs salvage)
 
 CLAUDE.md updated with TIER-1 BLOCKING protocol references (DONE for post-compaction-rehydration; remaining: per-task-build-qa-cycle + workflow-phase-rigor-at-every-layer references). PLAN-001 final reconciliation (depends on D2 throw-out vs salvage decision for Wave 2). Final commit + phase close + set-part-done.
 

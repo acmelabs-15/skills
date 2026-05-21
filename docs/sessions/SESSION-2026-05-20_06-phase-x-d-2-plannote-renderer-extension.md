@@ -180,6 +180,15 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - All 7 lifecycle skills now carry the canonical block verbatim + skill-specific framing as an H3 above. Defense-in-depth surface area now spans: 6 note-type schemas + 6 parsers + 4 renderers (+ deferred TaskNote/REQ/DESIGN renderers) + 11 plan-mutations + 1 flip-checkbox cross-note mutation + 6 claim validators + 7 lifecycle SKILL.md files + 3 TIER-1 BLOCKING auto-memories + CLAUDE.md pre-flight table
 - Phase X.C DONE in PLAN-001. Templates + STRUCTURES updates (X.C.5-6 originally) not included — deferred to X.E or follow-up
 
+## Event 11
+
+**Type**: parallel-wave-dispatch | x-e-start | 2026-05-21
+
+- Phase X.E (Wrap-up) entered IN_PROGRESS
+- Pre-dispatch survey: none of the X.D mechanisms (composition library claim validators, BuildWorkflowItem, transition-impl-item / transition-qa-item, flip-checkbox, TaskNote/REQ/DESIGN/SpecRoot/TestReport schemas) referenced in `~/CLAUDE.md`, `~/NOTE-TEMPLATES.md`, or `~/KNOWLEDGE-GRAPH-STRUCTURES.md`. TEST-REPORT template at NOTE-TEMPLATES.md:1340 still marked stub
+- 3-agent parallel wave dispatched, file-disjoint (one user-level home file per agent)
+- X.E.2 PLAN-001 full reconciliation (Phase Progression for stale build.SPEC-002/003/004/007 IN_PROGRESS rows) remains blocked on D2 — that work waits
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
