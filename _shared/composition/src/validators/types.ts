@@ -14,12 +14,27 @@
  * an alias for backwards compatibility of the X.D.5 export.
  */
 
+/**
+ * Each unsatisfied entry carries the zero-based index within its source list
+ * + the bullet text. X.D.7 adds an OPTIONAL `section` discriminator so
+ * multi-source validators (SpecRootNote which gates DONE on TWO lists —
+ * Success Criteria + Artifact Status) can report which list the failure came
+ * from without polluting the `text` field. Existing single-source validators
+ * (TASK DoD, TASK ADR-compliance, REQ AC, DESIGN compliance) leave `section`
+ * undefined.
+ */
+export interface UnsatisfiedItem {
+  index: number;
+  text: string;
+  section?: string;
+}
+
 export type ClaimResult =
   | { verdict: "PASS"; total: number }
   | {
       verdict: "FAIL";
       total: number;
-      unsatisfied: Array<{ index: number; text: string }>;
+      unsatisfied: UnsatisfiedItem[];
     };
 
 /** Backwards-compatible alias for the X.D.5 task-claim-validator export. */
