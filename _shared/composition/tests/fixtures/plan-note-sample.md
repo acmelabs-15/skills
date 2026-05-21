@@ -106,6 +106,30 @@ graph TD
 - [ ] All tasks DONE
 - [ ] Round-trip PASS
 
+**Build Workflow Items**:
+
+#### impl-TASK-001-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-001-SPEC-007
+- **Status**: IN_PROGRESS
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-001-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-001-SPEC-007
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
 ## Tasks
 
 ### Active
