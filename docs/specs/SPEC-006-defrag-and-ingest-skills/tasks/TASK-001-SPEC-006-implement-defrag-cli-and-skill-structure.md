@@ -52,3 +52,5 @@ estimate: 0.5d
 - part_of [[SPEC-006: Defrag and Ingest Skills]]
 - implements [[REQ-001-SPEC-006: Defrag Skill Implementation]]
 - implements [[DESIGN-001-SPEC-006: Defrag Skill Architecture]]
+- validated_by [[QA-040-SPEC-006: Batched Build Revalidation]]
+- validated_by [[QA-041-SPEC-006: Fix Iter 1 Revalidation]]

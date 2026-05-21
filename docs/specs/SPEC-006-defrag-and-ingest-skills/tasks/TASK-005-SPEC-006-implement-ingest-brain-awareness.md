@@ -59,3 +59,5 @@ estimate: 1.5d
 - implements [[REQ-005-SPEC-006: Ingest Brain-Awareness]]
 - implements [[DESIGN-002-SPEC-006: Ingest Skill Architecture]]
 - implements [[DESIGN-003-SPEC-006: Skill Coexistence Strategy]]
+- validated_by [[QA-040-SPEC-006: Batched Build Revalidation]]
+- validated_by [[QA-041-SPEC-006: Fix Iter 1 Revalidation]]

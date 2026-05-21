@@ -1,7 +1,7 @@
 ---
 title: 'REQ-001-SPEC-006: Defrag Skill Implementation'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-006-defrag-and-ingest-skills/requirements/req-001-spec-006-defrag-skill-implementation
 tags:
 - requirement

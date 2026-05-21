@@ -64,3 +64,5 @@ estimate: 2d
 - implements [[REQ-001-SPEC-006: Defrag Skill Implementation]]
 - implements [[REQ-004-SPEC-006: Ingest Skill Implementation]]
 - implements [[REQ-006-SPEC-006: Coexistence with Memory-Ingest and Memory-Defrag]]
+- validated_by [[QA-040-SPEC-006: Batched Build Revalidation]]
+- validated_by [[QA-041-SPEC-006: Fix Iter 1 Revalidation]]

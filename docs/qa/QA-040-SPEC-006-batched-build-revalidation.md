@@ -206,3 +206,4 @@ tests_run: 585, passed: 585, failed: 0, skipped: 0 — schema invariant holds.
 - relates_to [[TASK-006-SPEC-006: Defrag and Ingest Tests]]
 - relates_to [[TASK-007-SPEC-006: Document Defrag and Ingest Skill UX in README]]
 - pairs_with [[QA-039-SPEC-005: Batched Build Revalidation]]
+- superseded_by [[QA-041-SPEC-006: Fix Iter 1 Revalidation]]

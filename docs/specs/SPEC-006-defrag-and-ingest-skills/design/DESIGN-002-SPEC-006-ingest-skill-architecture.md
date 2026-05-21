@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-002-SPEC-006: Ingest Skill Architecture'
 type: design
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-006-defrag-and-ingest-skills/design/design-002-spec-006-ingest-skill-architecture
 tags:
 - design
