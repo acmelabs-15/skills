@@ -1,10 +1,12 @@
-import type { RootContent } from "mdast";
+import type { Heading, RootContent } from "mdast";
+import { toString as mdToString } from "mdast-util-to-string";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 import type { Observation, Relation } from "../schemas/common.js";
 import type {
+  BuildWorkflowItem,
   DecisionState,
   DodItem,
   EditorMirrorEntry,
@@ -137,7 +139,72 @@ function parsePart(partId: string, children: RootContent[]): Part {
     }));
     if (decisions.length > 0) part.decisions = decisions;
   }
+
+  // Build Workflow Items (if present) — H4 blocks beneath this part.
+  const buildItems = parseBuildWorkflowItems(children);
+  if (buildItems.length > 0) part.build_workflow_items = buildItems;
   return part;
+}
+
+function optStr(value: string | undefined): string | undefined {
+  if (value === undefined || value === "—" || value === "") return undefined;
+  return value;
+}
+
+function optNum(value: string | undefined): number | undefined {
+  const s = optStr(value);
+  if (s === undefined) return undefined;
+  const n = Number(s);
+  if (!Number.isFinite(n)) return undefined;
+  return n;
+}
+
+function parseBuildWorkflowItems(children: RootContent[]): BuildWorkflowItem[] {
+  // Walk the flat children list; for each H4 heading, the next list contains
+  // the bullet fields for that build workflow item. Renderer order is
+  // deterministic: `#### {id}` followed by an 8-bullet list.
+  const items: BuildWorkflowItem[] = [];
+  for (let i = 0; i < children.length; i++) {
+    const node = children[i];
+    if (!node || node.type !== "heading") continue;
+    if ((node as Heading).depth !== 4) continue;
+    const id = mdToString(node as Heading).trim();
+    // Find the next list following this heading (skip paragraphs between).
+    let listChild: RootContent | undefined;
+    for (let j = i + 1; j < children.length; j++) {
+      const candidate = children[j];
+      if (!candidate) continue;
+      if (candidate.type === "heading") break;
+      if (candidate.type === "list") {
+        listChild = candidate;
+        break;
+      }
+    }
+    if (!listChild) continue;
+    const fm = bulletFieldMap([listChild]);
+    const type = fm.get("Type") as BuildWorkflowItem["type"] | undefined;
+    const taskRef = fm.get("Task Ref");
+    const status = fm.get("Status") as BuildWorkflowItem["status"] | undefined;
+    const failedIterationsRaw = fm.get("Failed Iterations");
+    if (!type || !taskRef || !status) continue;
+    const item: BuildWorkflowItem = {
+      id,
+      type,
+      task_ref: taskRef,
+      status,
+      failed_iterations: failedIterationsRaw === undefined ? 0 : (Number(failedIterationsRaw) ?? 0),
+    };
+    const owningSession = optStr(fm.get("Owning Session"));
+    if (owningSession !== undefined) item.owning_session = owningSession;
+    const transitionedAt = optNum(fm.get("Transitioned At Event"));
+    if (transitionedAt !== undefined) item.transitioned_at_event = transitionedAt;
+    const testReportRef = optStr(fm.get("Test Report Ref"));
+    if (testReportRef !== undefined) item.test_report_ref = testReportRef;
+    const fixBriefFor = optNum(fm.get("Fix Brief For Event"));
+    if (fixBriefFor !== undefined) item.fix_brief_for_event = fixBriefFor;
+    items.push(item);
+  }
+  return items;
 }
 
 function parseListField(value: string | undefined): string[] {

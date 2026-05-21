@@ -31,6 +31,11 @@ export function sectionizeH3(children: RootContent[]): Map<string, RootContent[]
   return sectionizeByDepth(children, 3);
 }
 
+/** Split a children array into a map of H4 heading text → children. */
+export function sectionizeH4(children: RootContent[]): Map<string, RootContent[]> {
+  return sectionizeByDepth(children, 4);
+}
+
 function sectionizeByDepth(children: RootContent[], depth: number): Map<string, RootContent[]> {
   const sections = new Map<string, RootContent[]>();
   let current: string | null = null;

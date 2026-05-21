@@ -1,6 +1,7 @@
 import yaml from "js-yaml";
 import type { Observation, Relation } from "../schemas/common.js";
 import type {
+  BuildWorkflowItem,
   DodItem,
   EditorMirrorEntry,
   Part,
@@ -162,7 +163,43 @@ function renderPart(part: Part): string {
     }
   }
 
+  if (part.build_workflow_items && part.build_workflow_items.length > 0) {
+    lines.push("", "**Build Workflow Items**:", "");
+    const sorted = sortBuildWorkflowItems(part.build_workflow_items);
+    for (let i = 0; i < sorted.length; i++) {
+      const item = sorted[i];
+      if (!item) continue;
+      if (i > 0) lines.push("");
+      lines.push(...renderBuildWorkflowItem(item));
+    }
+  }
+
   return lines.join(NL);
+}
+
+function sortBuildWorkflowItems(items: BuildWorkflowItem[]): BuildWorkflowItem[] {
+  // Stable order: per task_ref ascending (lex), impl before qa within a task_ref.
+  return [...items].sort((a, b) => {
+    const taskCmp = a.task_ref.localeCompare(b.task_ref);
+    if (taskCmp !== 0) return taskCmp;
+    if (a.type === b.type) return 0;
+    return a.type === "impl" ? -1 : 1;
+  });
+}
+
+function renderBuildWorkflowItem(item: BuildWorkflowItem): string[] {
+  return [
+    `#### ${item.id}`,
+    "",
+    `- **Type**: ${item.type}`,
+    `- **Task Ref**: ${item.task_ref}`,
+    `- **Status**: ${item.status}`,
+    `- **Owning Session**: ${item.owning_session ?? "—"}`,
+    `- **Transitioned At Event**: ${item.transitioned_at_event ?? "—"}`,
+    `- **Failed Iterations**: ${item.failed_iterations}`,
+    `- **Test Report Ref**: ${item.test_report_ref ?? "—"}`,
+    `- **Fix Brief For Event**: ${item.fix_brief_for_event ?? "—"}`,
+  ];
 }
 
 function renderPhaseProgression(plan: PlanNote): string {

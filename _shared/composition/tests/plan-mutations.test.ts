@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import { applyPlanMutation } from "../src/mutations/plan-mutations.js";
+import { type PlanMutation, applyPlanMutation } from "../src/mutations/plan-mutations.js";
 import { parsePlanNote } from "../src/parsers/plan-note.js";
 
 const fixturePath = join(import.meta.dir, "fixtures", "plan-note-sample.md");
@@ -9,10 +9,56 @@ async function loadFixture(): Promise<string> {
   return Bun.file(fixturePath).text();
 }
 
+function applyChain(md: string, mutations: PlanMutation[]): string {
+  return mutations.reduce((acc, m) => applyPlanMutation(acc, m), md);
+}
+
+/**
+ * Drive build.SPEC-007 build_workflow_items to all-DONE via the rigid
+ * per-TASK build+qa cycle. Required precondition for transitioning the
+ * part itself to DONE (per the schema invariant that every workflow item
+ * must be DONE before the parent build.SPEC-NNN part flips DONE).
+ */
+function driveBuildWorkflowItemsToDone(md: string): string {
+  return applyChain(md, [
+    {
+      type: "transition-impl-item",
+      partId: "build.SPEC-007",
+      taskRef: "TASK-001-SPEC-007",
+      from: "IN_PROGRESS",
+      to: "DONE",
+      owning_session: "SESSION-2026-05-20_04",
+      at_event: 5,
+    },
+    {
+      type: "transition-qa-item",
+      partId: "build.SPEC-007",
+      taskRef: "TASK-001-SPEC-007",
+      from: "PENDING",
+      to: "IN_PROGRESS",
+      owning_session: "SESSION-2026-05-20_04",
+      at_event: 6,
+    },
+    {
+      type: "transition-qa-item",
+      partId: "build.SPEC-007",
+      taskRef: "TASK-001-SPEC-007",
+      from: "IN_PROGRESS",
+      to: "DONE",
+      owning_session: "SESSION-2026-05-20_04",
+      at_event: 7,
+      test_report_ref: "TEST-REPORT-001-SPEC-007",
+    },
+  ]);
+}
+
 describe("applyPlanMutation", () => {
   test("set-part-substatus transitions IN_PROGRESS → DONE with outcome", async () => {
     const md = await loadFixture();
-    const out = applyPlanMutation(md, {
+    // Precondition: build.SPEC-NNN parts cannot flip DONE while any
+    // build_workflow_item is non-DONE. Drive impl + qa to DONE first.
+    const ready = driveBuildWorkflowItemsToDone(md);
+    const out = applyPlanMutation(ready, {
       type: "set-part-substatus",
       partId: "build.SPEC-007",
       from: "IN_PROGRESS",

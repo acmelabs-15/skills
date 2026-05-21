@@ -12,6 +12,7 @@ branches:
   - feat/plan-001-build-spec-004
   - feat/plan-001-build-spec-007
   - feat/plan-001-wave-2-integration
+  - feat/plan-001-x-d-2-plan-renderer
 permalink: planning/plan-001-skills-ecosystem
 tags:
 - plan
@@ -1249,7 +1250,7 @@ Two TIER-1 BLOCKING orchestrator-private memories written; MEMORY.md updated wit
 
 7 user-created lifecycle skills + NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md + composition library current state all audited. Gap inventory captured in ANALYSIS-003 H2 X.B Audit Findings + Per-skill detailed audit findings. 15-item ordered execution sequence locked for X.C + X.D in ANALYSIS-003. Commit 601d75f.
 
-#### X.C — Update skills + templates + structures (PENDING)
+#### X.C — Update skills + templates + structures (DONE 2026-05-21 — 10-agent parallel wave landed; all 7 lifecycle SKILL.md files (plan/build/spec/decisions/research/review/end at ~/.claude/skills/) now carry canonical inline protocol-injection block + skill-specific framing; 3 deferred X.D code items completed: commits c9585f2 flip-checkbox cross-note mutation + e1bb056 SpecRootNote renderer semantic round-trip + 8e1e095 TEST-REPORT byte-identical round-trip; ~/.claude/skills/ not a git repo — SKILL.md saves uncommitted by design; +20 new code tests; 424 → 444 pass / 0 fail. Templates + STRUCTURES updates not in this wave — defer to X.E or follow-up)
 
 Highest priority: /plan + /build + /spec SKILL.md files updated with rigid per-TASK protocol + checkbox-as-contract language. Lighter touch: /decisions + /research + /review + /end. NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md updated per audit findings.
 
@@ -1268,14 +1269,14 @@ Highest-leverage change per skill (from audit; see ANALYSIS-003 § Per-skill det
 D1 user decision RESOLVED 2026-05-20: include composition library mechanism completion with the expanded renderer-per-note-type scope.
 
 - X.D.1 — BuildWorkflowItem added to PlanNote schema (DONE 2026-05-20 commit deeae3f). 18 schema tests pass. 16 downstream tests (plan-parser / plan-mutations / plan-session-round-trip) EXPECTED FAILURES until X.D.2-4 land.
-- X.D.2 — Extend PlanNote renderer to generate rendered impl+qa instruction blocks reading linked TASK/REQ/DESIGN checkboxes (PENDING — next item)
-- X.D.3 — Add transitionImplItem + transitionQaItem + checkbox-flip mutations + claim-validators — REQUIRE context, throw on missing (PENDING)
-- X.D.4 — Update fixture plan-note-sample.md + parser to handle build_workflow_items markdown — unblocks 16 failing tests (PENDING)
-- X.D.5 — Add TaskNote schema with DoD claim validator (PENDING)
-- X.D.6 — Add RequirementNote + DesignNote schemas with AC/compliance claim validators (PENDING)
-- X.D.7 — Add SpecRootNote + TestReportNote schemas + renderers (PENDING)
+- X.D.2 — Extend PlanNote renderer to generate rendered impl+qa instruction blocks reading linked TASK/REQ/DESIGN checkboxes (DONE 2026-05-20 commit 76b6651 — Build Workflow Items sub-section emitted from renderPart with deterministic impl-before-qa ordering; 6 new renderer tests pass; 16 EXPECTED FAILURES unchanged as designed)
+- X.D.3 — Add transitionImplItem + transitionQaItem + checkbox-flip mutations + claim-validators — REQUIRE context, throw on missing (DONE 2026-05-20 commit fd65894 — transition-impl-item + transition-qa-item mutations added; runtime mandates owning_session + at_event with clear pre-check errors; +15 new mutation tests; final 2 EXPECTED FAILURES flipped green; checkbox-flip mutation deferred to X.D.5+ pending TaskNote/RequirementNote/DesignNote schemas. Test counts: 214 pass / 2 fail → 231 pass / 0 fail)
+- X.D.4 — Update fixture plan-note-sample.md + parser to handle build_workflow_items markdown — unblocks 16 failing tests (DONE 2026-05-20 commit c8786ca — parser parsePart extracts Build Workflow Items H4 blocks via new sectionizeH4 helper; fixture plan-note-sample.md gained build_workflow_items under build.SPEC-007 with impl IN_PROGRESS + qa PENDING; 14 of 16 EXPECTED FAILURES flipped green; remaining 2 are genuine X.D.3 mutation dependencies — set-part-substatus IN_PROGRESS → DONE blocked by schema correctly rejecting flips while items non-DONE)
+- X.D.5 — Add TaskNote schema with DoD claim validator (DONE 2026-05-20 commit d3c7810 — TaskNoteSchema + parser + validateTaskDoneClaim + validateTaskAdrComplianceClaim; superRefine enforces status DONE requires every DoD [x] OR deferred_rationale — mechanical lying prevention; +40 new tests; 231 pass → 271 pass / 0 fail)
+- X.D.6 — Add RequirementNote + DesignNote schemas with AC/compliance claim validators (DONE 2026-05-20 commit 48084fa — RequirementNoteSchema + DesignNoteSchema + parsers + validateRequirementAcClaim + validateDesignComplianceClaim; ClaimResult lifted to shared validators/types.ts; DoDClaimResult retained as backwards-compat alias; ACCEPTED status enforces every AC/compliance item [x] or deferred when section present; +70 new tests; 271 → 341 pass / 0 fail)
+- X.D.7 — Add SpecRootNote + TestReportNote schemas + renderers (DONE 2026-05-21 commit 47cb568 — SpecRootNoteSchema + parser; TestReportNoteSchema + parser + renderer with semantic round-trip; validateSpecDoneClaim enforces every success_criteria + artifact_status item satisfied when present; validateTestReportPassClaim + schema superRefine reject verdict mismatches AND tests_run inequalities; ClaimResult.unsatisfied extended with optional `section` field — forward-compatible; +83 new tests; 341 → 424 pass / 0 fail. **Phase X.D COMPLETE 7 of 7**)
 
-#### X.E — Wrap-up (PENDING)
+#### X.E — Wrap-up (PARTIAL DONE 2026-05-21 — docs portion complete via 3-agent wave; ~/CLAUDE.md gained pre-flight rows + Composition library section, ~/NOTE-TEMPLATES.md gained full TEST-REPORT template + Schema-validated-by pointers on SPEC/REQ/DESIGN/TASK, ~/KNOWLEDGE-GRAPH-STRUCTURES.md gained Section 4.6 BuildWorkflowItem subsection + Schema enforcement paragraphs + new Section 4.13 TEST-REPORT. ~/ not under git so saves are saved-no-repo by design. X.E.2 PLAN-001 final reconciliation (clean up stale build.SPEC-002/003/004/007 IN_PROGRESS rows) BLOCKED on D2 Wave 2 throw-out vs salvage; X.E.3 final phase close gated on X.E.2)
 
 CLAUDE.md updated with TIER-1 BLOCKING protocol references (DONE for post-compaction-rehydration; remaining: per-task-build-qa-cycle + workflow-phase-rigor-at-every-layer references). PLAN-001 final reconciliation (depends on D2 throw-out vs salvage decision for Wave 2). Final commit + phase close + set-part-done.
 
