@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff'
 type: session
 permalink: sessions/session-2026-05-21-01-pud-d2-lock-and-wave-2-retro-validation-kickoff-1
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - plan-001
@@ -46,6 +46,10 @@ Brief refinement adjudication via AskUserQuestion (3 options multi-select; user 
 ## Event 06
 
 [2026-05-21] Build parts transitioned BLOCKED → IN_PROGRESS in PLAN-001: build.SPEC-002, build.SPEC-003, build.SPEC-004, build.SPEC-007. Section headers updated `(BLOCKED)` → `(IN_PROGRESS — Wave 2 retro-validation)`. Detailed Progress Dashboard + Phase Progression count reconciliation deferred to Phase X.E.2 (final PLAN reconciliation; tracked under transitive blockers in Blockers section). Owning session for all 4: SESSION-2026-05-21_01. Ready for 4-agent QA swarm spawn pending final user go/no-go.
+
+## Event 07
+
+[2026-05-21] User pivot — other urgent work requires attention. Wave 2 retro-validation DEFERRED mid-swarm. SPEC-002 agent had returned cleanly (4 gap-TASKs, aggregate FAIL); SPEC-003 agent returned cleanly post-Pattern-2-Phase-3 correction (5 gap-TASKs, aggregate FAIL); SPEC-004 + SPEC-007 agents KILLED via TaskStop with partial work landed. All filenames clean (verified `find docs/{qa,specs} -name '* *.md'` returns 0). PLAN-001 Decision Log updated with full deferral rationale + resume plan. Build parts state: build.SPEC-002/003 IN_PROGRESS (data ready); build.SPEC-004/007 DEFERRED (need respawn). Session closing as PAUSED for next-session pickup.
 
 ## Observations
 

@@ -160,6 +160,26 @@ graph TD
 
 ## Decision Log
 
+### 2026-05-21 — Wave 2 retro-validation DEFERRED mid-swarm (user pivot)
+
+User pivoted ([[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]] Event 07) — other urgent work requires attention. Wave 2 retro-validation swarm partially complete:
+
+- **SPEC-002**: agent returned. 6 TEST-REPORTs (010-015 + 016 aggregate) + 4 gap-TASKs filed (TASK-007/008/009/010). Aggregate verdict FAIL. State Changes NOT YET PROPAGATED to Brain note statuses.
+- **SPEC-003**: agent returned. 6 TEST-REPORTs (010-015 aggregate) + 5 gap-TASKs filed (TASK-006/007/008/009/010). Aggregate verdict FAIL. State Changes NOT YET PROPAGATED.
+- **SPEC-004**: agent KILLED mid-flight (TaskStop). Partial TEST-REPORTs + 4 gap-TASKs filed (TASK-008/009/010/011). No aggregate return; State Changes UNKNOWN.
+- **SPEC-007**: agent KILLED mid-flight (TaskStop). 14+ TEST-REPORTs (010-022; partial) + gap-TASKs filed. No aggregate return; State Changes UNKNOWN.
+
+All filenames clean post-correction (Pattern 2 Phase 3 corrective SendMessages applied to in-flight agents; verified `find docs/{qa,specs} -name '* *.md'` returns 0).
+
+Build parts state on defer:
+
+- build.SPEC-002: IN_PROGRESS (retro-validation data ready for orchestrator processing in next session)
+- build.SPEC-003: IN_PROGRESS (retro-validation data ready for orchestrator processing)
+- build.SPEC-004: DEFERRED (agent killed mid-flight; partial work landed; needs respawn next session)
+- build.SPEC-007: DEFERRED (agent killed mid-flight; partial work landed; needs respawn next session)
+
+Resume plan for next session: (1) read SPEC-002 + SPEC-003 returns from this session note Event 02/05 + agent return logs; (2) apply State Changes to Brain notes via Brain MCP for SPEC-002 + SPEC-003 (REQ-001/002/004 of SPEC-002 → ACCEPTED; everything else stays per per-TASK verdicts); (3) respawn 2 fresh agents for SPEC-004 + SPEC-007 retro-validation with same canonical brief; (4) process those returns; (5) then drive 9+ gap-TASKs through full rigid build+QA cycle.
+
 ### 2026-05-21 — PUD-D2 locked = Hybrid (Wave 2 retro-validation)
 
 User adjudicated PUD-D2 via AskUserQuestion (`/plan PLAN-001-skills-ecosystem` continue mode, [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]] Event 02). Locked option: **Hybrid (Recommended)**. Existing Wave 2 code (SPEC-002/003/004/007 on main as `5299aea` + `2f049fd`) kept as baseline. Per SPEC: dispatch QA agent per rigid cycle — read every TASK + linked REQ + linked DESIGN; for every checkbox in DoD/AC/compliance find evidence-or-gap in code; verify every existing `[x]` claim against code evidence; write TEST-REPORT per TASK with per-checkbox findings. Genuine gaps → file new TASKs and drive through full rigid cycle. Validating items → flip Brain notes (TASK DONE + `validated_by` → TEST-REPORT; REQ ACCEPTED; DESIGN ACCEPTED; SPEC root DONE). Parallelizable as 4-SPEC swarm. Estimated effort 6–10h. Mechanical leverage from X.D claim validators (PR #6). Branch `feat/plan-001-wave-2-retro-validation` created off `main`. Build parts 002/003/004/007 transition BLOCKED → READY pending dispatch-strategy confirmation (parallel-all-4 vs sequential-from-002). 005/006 remain BLOCKED (transitive on Wave 2 close). Phase X.E.2 + X.E.3 stay BLOCKED until Wave 2 retro-validation completes.
@@ -1251,7 +1271,7 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-004 — SPEC Subtree Adapter Build (IN_PROGRESS — Wave 2 retro-validation)
+### build.SPEC-004 — SPEC Subtree Adapter Build (DEFERRED — agent killed mid-flight 2026-05-21)
 
 **Substatus**: BLOCKED
 **Blocker**: PUD-D2 (Wave 2 retro-validation disposition)
@@ -1342,7 +1362,7 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-007 — Plan/Session Render Implementation Build (IN_PROGRESS — Wave 2 retro-validation)
+### build.SPEC-007 — Plan/Session Render Implementation Build (DEFERRED — agent killed mid-flight 2026-05-21)
 
 **Substatus**: BLOCKED
 **Blocker**: PUD-D2 (Wave 2 retro-validation disposition). Note: SPEC-007 code on main carries the Phase X.D protocol-hardening additions — BuildWorkflowItem schema, transition mutations, claim validators — which are validated under their OWN cycle but the SPEC-007 build itself never ran through the rigid per-TASK protocol
