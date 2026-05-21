@@ -403,7 +403,7 @@ After all TASKs in `{{SPEC_ID}}` validated:
 **File ownership**: `_shared/composition/src/adapters/plan.ts` + schemas
 **Scope**: TASK-007-SPEC-003 (section-aware extractByRange) + TASK-008-SPEC-003 (integrity floor + max-10 schema) + TASK-009-SPEC-003 (frontmatter inverse + branches array)
 **Batching rationale**: All 3 TASKs touch the same file; user-approved via AskUserQuestion 2026-05-21 ("Approve batched dispatch (one agent does all 3 SPEC-003 plan.ts TASKs)"). Protocol allows user-approved batching per `feedback_per_task_build_qa_cycle` line 16.
-**Paired QA**: qa-batched-SPEC-003-plan-ts (status IN_PROGRESS — dispatched 2026-05-21; validates all 3 TASKs' DoD checkboxes)
+**Paired QA**: qa-batched-SPEC-003-plan-ts (status DONE — verdict PASS, see QA-032; 23/23 DoD + 5/5 ADR compliance + 460/460 tests; all 3 TASKs individually PASS)
 
 ### impl-TASK-010-SPEC-002 — Round-trip fixtures + YAML
 

@@ -214,6 +214,12 @@ Still in-flight: QA-007-SPEC-002, QA-batched-SPEC-003-plan-ts, impl-fix-iter-1 T
 
 [2026-05-21] QA-031-SPEC-003 re-verify of TASK-010-SPEC-003 fix iter-1: **PASS** (3/3 previously-FAIL items now satisfied). YAML hashes quoted; fixture-load tests added at plan-integrity-floor.test.ts lines 249-273; 19/19 pass. PLAN qa-TASK-010-SPEC-003 FAILED → DONE; TASK-010-SPEC-003 status DRAFT → DONE + validated_by QA-031-SPEC-003.
 
+## Event 29
+
+[2026-05-21] QA-032 batched re-verify of TASK-007/008/009-SPEC-003 (plan.ts work): **PASS** all 3. Per-TASK: TASK-007 (7/7 DoD + 2/2 ADR); TASK-008 (8/8 + 2/2); TASK-009 (8/8 + 1/1). Scoped 44/44 tests; full 460/460. Numbering anomaly noted: two parallel QA agents both claimed QA-031 namespace; this one renumbered to QA-032 at landing. Brain MCP `move_note` quirk briefly landed at `docs/docs/qa/`; corrected.
+
+PLAN qa-batched-SPEC-003 IN_PROGRESS → DONE; TASK-007/008/009-SPEC-003 status DRAFT → DONE + validated_by QA-032 (all 3 notes).
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

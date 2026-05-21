@@ -2,7 +2,7 @@
 title: 'TASK-009-SPEC-003: Frontmatter Inverse Contract and Branches Array JSON Handling'
 type: task
 permalink: specs/spec-003-plan-adapter/tasks/task-009-spec-003-frontmatter-inverse-contract-and-branches-array-json-handling
-status: DRAFT
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -65,3 +65,5 @@ Out of Scope: dispatcher; integrity floor; extractByRange; fixture YAML files (c
 - caused_by [[QA-012-SPEC-003: PLAN Frontmatter Mutations]]
 - extends [[TASK-003-SPEC-003: Implement PLAN Frontmatter Mutations]]
 - implements [[REQ-004-SPEC-003: PLAN Frontmatter Mutations]]
+
+- validated_by [[QA-032-SPEC-003: Batched plan.ts TASKs-007-008-009]]

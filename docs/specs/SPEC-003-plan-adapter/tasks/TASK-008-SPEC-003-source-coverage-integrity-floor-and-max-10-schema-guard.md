@@ -2,7 +2,7 @@
 title: 'TASK-008-SPEC-003: Source-Coverage Integrity Floor and Max-10 Schema Guard'
 type: task
 permalink: specs/spec-003-plan-adapter/tasks/task-008-spec-003-source-coverage-integrity-floor-and-max-10-schema-guard
-status: DRAFT
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -69,3 +69,5 @@ Out of Scope: changes to preservation-ratio enforceIntegrityFloor (orthogonal sa
 - implements [[REQ-002-SPEC-003: Regenerated Sections Field Handling]]
 - implements [[REQ-003-SPEC-003: Fifty Percent Integrity Floor on Regenerated Sections]]
 - implements [[DESIGN-002-SPEC-003: Regenerated Sections Mechanism]]
+
+- validated_by [[QA-032-SPEC-003: Batched plan.ts TASKs-007-008-009]]

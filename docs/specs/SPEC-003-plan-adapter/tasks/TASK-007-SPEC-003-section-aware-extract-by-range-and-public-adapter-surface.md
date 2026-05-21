@@ -2,7 +2,7 @@
 title: 'TASK-007-SPEC-003: Section-Aware extractByRange and Public Adapter Surface'
 type: task
 permalink: specs/spec-003-plan-adapter/tasks/task-007-spec-003-section-aware-extract-by-range-and-public-adapter-surface
-status: DRAFT
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -64,3 +64,5 @@ Out of Scope: dispatcher registration (TASK-006); integrity-floor semantics (TAS
 - caused_by [[QA-011-SPEC-003: Regen Sections and Integrity Floor]]
 - extends [[TASK-001-SPEC-003: Implement PLAN Adapter Base]]
 - implements [[REQ-001-SPEC-003: PLAN Adapter Implementation]]
+
+- validated_by [[QA-032-SPEC-003: Batched plan.ts TASKs-007-008-009]]
