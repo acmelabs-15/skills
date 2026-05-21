@@ -1269,7 +1269,7 @@ Highest-leverage change per skill (from audit; see ANALYSIS-003 § Per-skill det
 D1 user decision RESOLVED 2026-05-20: include composition library mechanism completion with the expanded renderer-per-note-type scope.
 
 - X.D.1 — BuildWorkflowItem added to PlanNote schema (DONE 2026-05-20 commit deeae3f). 18 schema tests pass. 16 downstream tests (plan-parser / plan-mutations / plan-session-round-trip) EXPECTED FAILURES until X.D.2-4 land.
-- X.D.2 — Extend PlanNote renderer to generate rendered impl+qa instruction blocks reading linked TASK/REQ/DESIGN checkboxes (IN_PROGRESS 2026-05-20 — owning session SESSION-2026-05-20_06 on branch `feat/plan-001-x-d-2-plan-renderer`)
+- X.D.2 — Extend PlanNote renderer to generate rendered impl+qa instruction blocks reading linked TASK/REQ/DESIGN checkboxes (DONE 2026-05-20 commit 76b6651 — Build Workflow Items sub-section emitted from renderPart with deterministic impl-before-qa ordering; 6 new renderer tests pass; 16 EXPECTED FAILURES unchanged as designed)
 - X.D.3 — Add transitionImplItem + transitionQaItem + checkbox-flip mutations + claim-validators — REQUIRE context, throw on missing (PENDING)
 - X.D.4 — Update fixture plan-note-sample.md + parser to handle build_workflow_items markdown — unblocks 16 failing tests (PENDING)
 - X.D.5 — Add TaskNote schema with DoD claim validator (PENDING)

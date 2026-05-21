@@ -41,6 +41,18 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - Session note frontmatter corrected: removed duplicate stub block injected by basic-memory move_note; title now single-quoted
 - Brain MCP edit response surfaced Pydantic relation-type validation errors (pre-existing PLAN-001 progress-log bug from SESSION-_05 Event 14 — disk writes succeed; response noise only). Verified via on-disk grep: both edits landed at lines 15 + 1272
 
+## Event 03
+
+**Type**: implementation | x-d-2-complete | 2026-05-20
+
+- bun-ts-engineer dispatched with scoped X.D.2 brief (renderer-only; explicit OUT-OF-SCOPE for parser / mutations / fixture / other schemas)
+- Engineer extended `_shared/composition/src/renderers/plan-note.ts` `renderPart` — emits `**Build Workflow Items**` sub-section with `#### {item.id}` blocks when `part.build_workflow_items` non-empty. Deterministic ordering: impl before qa per task_ref, tasks lex-sorted. Absent optionals render as em-dash matching existing convention. Renders NOTHING when items absent (no placeholder)
+- New test file `_shared/composition/tests/plan-note-renderer.test.ts` (6 tests): presence/absence, ordering, optional rendering, byte-identical determinism. All pass
+- Test counts: 194 pass → 200 pass (+6 new renderer tests). 16 EXPECTED FAILURES (plan-parser / plan-mutations / plan-session-round-trip) unchanged — by design; blocked on X.D.3 + X.D.4
+- biome clean; tsc clean. Engineer-noted convention: stayed on `bun:test` per in-project convention (every other test file uses it) over bun-ts-best-practices skill's vitest default
+- Commit `76b6651 build(spec-007): X.D.2 PlanNote renderer emits build_workflow_items blocks` landed on branch `feat/plan-001-x-d-2-plan-renderer`
+- PLAN-001 Phase X.D table: X.D.2 IN_PROGRESS → DONE with commit reference
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
