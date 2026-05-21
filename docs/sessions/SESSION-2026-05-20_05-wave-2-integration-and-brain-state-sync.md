@@ -317,3 +317,20 @@ Audited 7 user-created lifecycle skills + composition library current state + NO
 - NOTE-TEMPLATES TASK template has DoD section but no checkbox-as-contract language; TEST-REPORT template is STUB; needs full development
 
 15-item execution order locked covering Phase X.C + X.D. Next: begin item 1 (extend PlanNote schema with BuildWorkflowItemSchema for per-TASK impl+qa items).
+
+
+## Event 16 — Phase X.D.1 schema extension complete (2026-05-20)
+
+**Type**: implementation | schema-extension
+
+- Added to common.ts: SpecIdSchema, SpecTaskIdSchema, ReqIdSchema, DesignIdSchema, TestReportIdSchema (SPEC-scoped entity IDs). PartIdSchema extended to accept protocol-hardening phase
+- Added to plan-note.ts: BuildWorkflowStatusEnum, BuildWorkflowItemIdSchema, BuildWorkflowItemSchema with cross-field invariants (ID format match, qa items DONE/FAILED need test_report_ref, failed_iterations cap at 3)
+- Extended PartSchema with optional build_workflow_items + superRefine invariants:
+  - build.SPEC-NNN parts non-PENDING MUST have build_workflow_items
+  - Each task_ref must have both impl + qa items  
+  - qa item IN_PROGRESS/DONE requires paired impl DONE
+  - build.SPEC-NNN DONE requires every build_workflow_item DONE
+- plan-note-schema.test.ts: 18 pass (10 new BuildWorkflowItem invariant tests + 8 existing)
+- 16 downstream tests EXPECTED FAILURES (plan-mutations, plan-parser, plan-session-round-trip): existing fixture plan-note-sample.md pre-dates protocol; blocked on X.D.2 renderer + X.D.3 parser + X.D.4 fixture updates
+- biome clean; tsc clean
+- Phase X.D.1 DONE. Next: X.D.2 (extend PlanNote renderer to generate rendered impl+qa instruction blocks)
