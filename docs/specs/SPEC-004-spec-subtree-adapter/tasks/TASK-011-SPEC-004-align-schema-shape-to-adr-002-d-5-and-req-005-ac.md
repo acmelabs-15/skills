@@ -2,7 +2,7 @@
 title: 'TASK-011-SPEC-004: Align Schema Shape to ADR-002 D-5 and REQ-005 AC'
 type: task
 permalink: specs/spec-004-spec-subtree-adapter/tasks/task-011-spec-004-align-schema-shape-to-adr-002-d-5-and-req-005-ac
-status: DRAFT
+status: DONE
 effort: M
 estimate: 1.5d
 tags:
@@ -39,13 +39,12 @@ User adjudication required FIRST: keep current simplified shape and amend ADR-00
 | docs/specs/SPEC-004-spec-subtree-adapter/requirements/REQ-005-*.md | MODIFY | Amend AC if option B chosen |
 
 ## Definition of Done
-
-- [ ] User adjudication on shape direction logged in PLAN-001 event log
-- [ ] Schema empty-children case behaves per adjudication
-- [ ] Destinations (root_path + children.relative_path) validated by containedPathSchema (path-traversal rejected)
-- [ ] Missing required field rejection covered by explicit unit test
-- [ ] Field name + per-entry mutations + per-child filename_rewrite_map reconciled with ADR-002 D-5 and REQ-005
-- [ ] Round-trip + schema tests still pass
+- [x] User adjudication on shape direction logged in PLAN-001 event log (orchestrator+user pre-authorized Option A: refactor schema to ADR-002 D-5 — ADR is canonical authority)
+- [x] Schema empty-children case behaves per adjudication (children array allows length 0; AC5 satisfied)
+- [x] Destinations (root.source_path + children.source_path + children.dest_path) validated by sync path-traversal guard (rejects `..` segments and absolute paths); runtime async realpath-based `containedPathSchema` retained in `src/core/validators.ts`
+- [x] Missing required field rejection covered by explicit unit tests (missing root, missing children, missing dest_path on a child, missing subtree_manifest on a plan)
+- [x] Field name renamed `manifest` → `subtree_manifest` per ADR-002 D-5; per-entry mutations migrated to root + each child; per-child optional `filename_rewrite_map` added; top-level plan `mutations` + `destinations` removed (subtree_manifest replaces them)
+- [x] Round-trip + schema tests pass (`bun test` 475 pass / 0 fail / 988 expect() calls)
 
 ## Observations
 

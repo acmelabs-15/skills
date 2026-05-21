@@ -76,3 +76,4 @@ The migration can be done via a one-time script or a manual parse-transform-rend
 - implements [[ADR-003: Plan/Session Render Architecture]]
 - depends_on [[REQ-011-SPEC-007: Round-Trip Property Test]]
 - depends_on [[REQ-009-SPEC-007: Plan Mutation API]]
+- [outcome] AC validation deferred: TASK-013 FAIL (QA-022); gap-TASK TASK-014 filed and ready for build #blocked #deferred

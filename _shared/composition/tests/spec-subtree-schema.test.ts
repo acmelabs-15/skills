@@ -87,9 +87,7 @@ describe("specSubtreeManifestSchema (ADR-002 D-5 shape)", () => {
     const result = specSubtreeManifestSchema.safeParse(invalid);
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(
-        result.error.issues.some((i) => i.message.includes("Path traversal")),
-      ).toBe(true);
+      expect(result.error.issues.some((i) => i.message.includes("Path traversal"))).toBe(true);
     }
   });
 
@@ -140,8 +138,7 @@ describe("specSubtreeManifestSchema (ADR-002 D-5 shape)", () => {
         validChild,
         {
           ...validChild,
-          source_path:
-            "docs/specs/SPEC-001-foo/requirements/REQ-002-SPEC-001-bar.md",
+          source_path: "docs/specs/SPEC-001-foo/requirements/REQ-002-SPEC-001-bar.md",
           // same dest_path as validChild — non-injective
         },
       ],
@@ -149,9 +146,7 @@ describe("specSubtreeManifestSchema (ADR-002 D-5 shape)", () => {
     const result = specSubtreeManifestSchema.safeParse(invalid);
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(
-        result.error.issues.some((i) => i.message.includes("non-injective")),
-      ).toBe(true);
+      expect(result.error.issues.some((i) => i.message.includes("non-injective"))).toBe(true);
     }
   });
 
@@ -179,17 +174,13 @@ describe("specSubtreeDistributionPlanSchema (ADR-002 D-5)", () => {
           validChild,
           {
             ...validChild,
-            source_path:
-              "docs/specs/SPEC-001-foo/requirements/REQ-002-SPEC-001-bar.md",
-            dest_path:
-              "docs/specs/SPEC-100-foo/requirements/REQ-101-SPEC-100-bar.md",
+            source_path: "docs/specs/SPEC-001-foo/requirements/REQ-002-SPEC-001-bar.md",
+            dest_path: "docs/specs/SPEC-100-foo/requirements/REQ-101-SPEC-100-bar.md",
           },
           {
             ...validChild,
-            source_path:
-              "docs/specs/SPEC-001-foo/tasks/TASK-001-SPEC-001-baz.md",
-            dest_path:
-              "docs/specs/SPEC-100-foo/tasks/TASK-100-SPEC-100-baz.md",
+            source_path: "docs/specs/SPEC-001-foo/tasks/TASK-001-SPEC-001-baz.md",
+            dest_path: "docs/specs/SPEC-100-foo/tasks/TASK-100-SPEC-100-baz.md",
           },
         ],
       },

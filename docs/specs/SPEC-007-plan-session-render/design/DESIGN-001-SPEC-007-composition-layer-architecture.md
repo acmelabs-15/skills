@@ -2,7 +2,7 @@
 title: 'DESIGN-001-SPEC-007: Composition Layer Architecture'
 type: design
 permalink: specs/spec-007-plan-session-render/design/design-001-spec-007-composition-layer-architecture
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-007

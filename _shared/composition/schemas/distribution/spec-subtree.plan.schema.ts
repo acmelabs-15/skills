@@ -11,11 +11,7 @@ import { mutationSpecSchema } from "../base.js";
  * requires the path to exist on disk). At plan-load time, destination
  * paths do not yet exist, so we apply the cheaper sync check here.
  */
-function rejectPathTraversal(
-  pathValue: string,
-  ctx: z.RefinementCtx,
-  label: string,
-): void {
+function rejectPathTraversal(pathValue: string, ctx: z.RefinementCtx, label: string): void {
   if (pathValue.startsWith("/")) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -90,29 +86,27 @@ const baseSpecSubtreeManifestSchema = z.object({
  * MutationSpec entries is left to the runtime injectiveDisjointMap
  * validator from src/core/validators.ts when applied per-call.
  */
-export const specSubtreeManifestSchema = baseSpecSubtreeManifestSchema.superRefine(
-  (data, ctx) => {
-    rejectPathTraversal(data.root.source_path, ctx, "root.source_path");
-    const destPaths: string[] = [];
-    for (let i = 0; i < data.children.length; i++) {
-      const child = data.children[i];
-      if (!child) {
-        continue;
-      }
-      rejectPathTraversal(child.source_path, ctx, `children[${i}].source_path`);
-      rejectPathTraversal(child.dest_path, ctx, `children[${i}].dest_path`);
-      destPaths.push(child.dest_path);
+export const specSubtreeManifestSchema = baseSpecSubtreeManifestSchema.superRefine((data, ctx) => {
+  rejectPathTraversal(data.root.source_path, ctx, "root.source_path");
+  const destPaths: string[] = [];
+  for (let i = 0; i < data.children.length; i++) {
+    const child = data.children[i];
+    if (!child) {
+      continue;
     }
-    // Injectivity: no two children may write to the same dest_path.
-    const uniqueDestPaths = new Set(destPaths);
-    if (uniqueDestPaths.size !== destPaths.length) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Duplicate dest_path across children (non-injective)",
-      });
-    }
-  },
-);
+    rejectPathTraversal(child.source_path, ctx, `children[${i}].source_path`);
+    rejectPathTraversal(child.dest_path, ctx, `children[${i}].dest_path`);
+    destPaths.push(child.dest_path);
+  }
+  // Injectivity: no two children may write to the same dest_path.
+  const uniqueDestPaths = new Set(destPaths);
+  if (uniqueDestPaths.size !== destPaths.length) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Duplicate dest_path across children (non-injective)",
+    });
+  }
+});
 
 export const specSubtreeDistributionPlanSchema = z.object({
   plan_type: z.literal("distribution"),

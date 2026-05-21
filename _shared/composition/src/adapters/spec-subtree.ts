@@ -5,8 +5,32 @@ import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import type { CompositionAdapter } from "../core/adapter.js";
+import {
+  type HashValidationEntry,
+  type HashValidationResult,
+  rollbackCluster,
+  type SubtreeFileForValidation,
+  validateSubtreeHashes,
+} from "../core/cluster-rollback.js";
 import { sha256 } from "../core/hash.js";
+import {
+  defaultSubtreeFileIO,
+  type ProcessResult,
+  processSubtree as orchestrateSubtree,
+  type SubtreeFileIO,
+  type SubtreeProcessInput,
+} from "../core/subtree-orchestrator.js";
 import type { LineRange, MutationSpec } from "../core/types.js";
+
+export type {
+  HashValidationEntry,
+  HashValidationResult,
+  ProcessResult,
+  SubtreeFileForValidation,
+  SubtreeFileIO,
+  SubtreeProcessInput,
+};
+export { rollbackCluster, validateSubtreeHashes, defaultSubtreeFileIO };
 
 export interface SubtreeChild {
   /** Path relative to the SPEC root directory (e.g. "requirements/REQ-001-...md"). */
@@ -114,6 +138,25 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
   }
 
   // --- Additional subtree methods ---
+
+  /**
+   * Manifest-driven full-subtree orchestration entry point per
+   * DESIGN-001 Component 1.
+   *
+   * Delegates to the SubtreeOrchestrator (DESIGN-001 Component 2) which
+   * runs the stage-all -> validate-all -> rename-all pipeline with
+   * cluster `.tmp` rollback on any failure. Returns a structured
+   * `ProcessResult` with per-file hash diagnostics on validation
+   * failure; throws only on unexpected filesystem errors during stage
+   * or rename phases (those throws are accompanied by rollback of any
+   * in-progress staged/renamed files).
+   */
+  async processSubtree(
+    input: SubtreeProcessInput,
+    fileIO: SubtreeFileIO = defaultSubtreeFileIO,
+  ): Promise<ProcessResult> {
+    return orchestrateSubtree(this, input, fileIO);
+  }
 
   /**
    * Applies mutations to every file in the subtree (root + children).

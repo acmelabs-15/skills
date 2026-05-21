@@ -2,7 +2,7 @@
 title: 'DESIGN-002-SPEC-007: Parser Renderer Round-Trip Strategy'
 type: design
 permalink: specs/spec-007-plan-session-render/design/design-002-spec-007-round-trip-strategy
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-007

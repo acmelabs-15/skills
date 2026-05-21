@@ -50,4 +50,6 @@ export type { SpecSubtreeCompositionPlan } from "./composition/spec-subtree.plan
 export type {
   SpecSubtreeDistributionPlan,
   SpecSubtreeManifest,
+  SubtreeManifestChild,
+  SubtreeManifestRoot,
 } from "./distribution/spec-subtree.plan.schema.js";
