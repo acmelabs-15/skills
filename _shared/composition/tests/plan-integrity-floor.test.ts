@@ -1,4 +1,7 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
+import yaml from "js-yaml";
 import { planCompositionPlanSchema } from "../schemas/composition/plan.plan.schema.js";
 import { planDistributionPlanSchema } from "../schemas/distribution/plan.plan.schema.js";
 import { IntegrityFloorError, PlanAdapter } from "../src/adapters/plan.js";
@@ -240,6 +243,32 @@ row4`;
     const result = validateIntegrityFloor(source, ["Progress Dashboard"]);
     expect(result.valid).toBe(true);
     expect(result.coveragePercent).toBeLessThanOrEqual(50);
+  });
+});
+
+describe("PLAN fixture YAML parses against schemas (TASK-010 — DoD-2/DoD-4/DoD-6)", () => {
+  test("plan-composition.plan.yaml fixture parses via planCompositionPlanSchema", () => {
+    const fixturePath = join(
+      import.meta.dir,
+      "fixtures",
+      "plan-composition.plan.yaml",
+    );
+    const raw = readFileSync(fixturePath, "utf8");
+    const doc = yaml.load(raw);
+    const result = planCompositionPlanSchema.safeParse(doc);
+    expect(result.success).toBe(true);
+  });
+
+  test("plan-distribution.plan.yaml fixture parses via planDistributionPlanSchema", () => {
+    const fixturePath = join(
+      import.meta.dir,
+      "fixtures",
+      "plan-distribution.plan.yaml",
+    );
+    const raw = readFileSync(fixturePath, "utf8");
+    const doc = yaml.load(raw);
+    const result = planDistributionPlanSchema.safeParse(doc);
+    expect(result.success).toBe(true);
   });
 });
 

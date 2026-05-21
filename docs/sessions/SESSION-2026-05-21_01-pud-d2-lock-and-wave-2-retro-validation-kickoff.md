@@ -183,6 +183,29 @@ Rigid cycle step s-fail executed: PLAN qa-TASK-010-SPEC-003 IN_PROGRESS → FAIL
 
 Note: PreToolUse hook initially blocked frontmatter validated_by list (parsed as malformed wikilink bullet); switched to canonical pattern (status flip only in frontmatter + typed relation in Relations section body).
 
+## Event 24
+
+[2026-05-21] Stream D' (impl-batched-SPEC-003-plan-ts: TASK-007 + 008 + 009) returned DONE. Files: plan.ts (section-aware extractByRange + H2|H3 regen heading detection + frontmatter old-value→new-value semantics + branches[] JSON-to-YAML); new validate.ts (validateIntegrityFloor); schemas/base.ts (regeneratedSectionsFloor max-10 refinement); 4 new test files (plan-adapter, plan-integrity-floor, plan-frontmatter, plan-round-trip). Targeted plan suites 42/42 PASS; full composition 458/458 PASS. THE PROOF (SHA-256 identity round-trip) still passes after frontmatter_map contract change.
+
+Out-of-scope flag: pre-existing tsc errors in adr.ts + base-adapter.test.ts (missing identifierPrefix abstract) unchanged. Sibling-stream concern surfaced by impl-007-SPEC-002 reconciliation pattern; likely needs orchestrator follow-up gap-TASK or fold into SPEC-001 maintenance.
+
+Rigid cycle: PLAN impl-batched-SPEC-003 IN_PROGRESS → DONE; PLAN qa-batched-SPEC-003 PENDING → IN_PROGRESS. Batched QA agent dispatched this turn (per user-approved batching; scoped evaluation across all 3 TASKs' DoD + linked REQ AC + linked DESIGN compliance).
+
+## Event 25
+
+[2026-05-21] Three parallel dispatches kicked off this turn:
+1. Batched QA for SPEC-003 plan.ts work (TASK-007/008/009-SPEC-003) — agent dispatched
+2. impl fix-iter-1 for TASK-010-SPEC-003 (3-step fix-brief from QA-029) — agent dispatched
+3. brain:---adr-review skill for ADR-004 — invoked per MANDATORY BLOCKING gate
+
+QA-007-SPEC-002 + QA-008-SPEC-002 still in-flight from Event 19.
+
+## Event 26
+
+[2026-05-21] QA TASK-008-SPEC-002 returned **PASS** (6/7 DoD PASS + 1 PARTIAL process-irregular; 11/11 tests; DESIGN-001 structural compliance 5/5 PASS). QA note at qa/QA-030-SPEC-002-reconcile-session-adapter-design-001-drift.md. QA flagged 2 protocol violations (unilateral DESIGN-001 body amendment + unilateral status flip) — confirmed outcome-correct but process-irregular; flagged for retrospective reinforcement of dispatch-brief language for reconciliation TASKs. Rigid cycle: PLAN qa-TASK-008-SPEC-002 IN_PROGRESS → DONE; TASK-008-SPEC-002 frontmatter DRAFT → DONE + validated_by relation appended.
+
+Still in-flight: QA-007-SPEC-002, QA-batched-SPEC-003-plan-ts, impl-fix-iter-1 TASK-010-SPEC-003. ADR-004 brain:---adr-review BLOCKING gate launching this turn.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

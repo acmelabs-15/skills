@@ -57,3 +57,5 @@ Out of Scope:
 - caused_by [[QA-011-SPEC-002: Implement SESSION Adapter]]
 - extends [[TASK-002-SPEC-002: Implement SESSION Adapter]]
 - part_of [[SPEC-002: Simple Adapters]]
+
+- validated_by [[QA-030-SPEC-002: Reconcile Session Adapter Design-001 Drift]]

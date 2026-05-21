@@ -38,7 +38,7 @@ Out of Scope: changing the round-trip test to load YAML (still inline MutationSp
 ## Definition of Done
 
 - [ ] tests/fixtures/plan-composition.plan.yaml exists
-- [ ] plan-composition.plan.yaml parses via planCompositionPlanSchema.safeParse with success: true
+- [x] plan-composition.plan.yaml parses via planCompositionPlanSchema.safeParse with success: true
 - [ ] plan-distribution.plan.yaml includes mutations.frontmatter_map with title plus permalink plus branches keys
 - [ ] plan-distribution.plan.yaml parses via planDistributionPlanSchema.safeParse with success: true
 - [ ] Round-trip semantics preserved: distribution renumber_map values equal composition renumber_map keys (inverse)

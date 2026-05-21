@@ -394,16 +394,16 @@ After all TASKs in `{{SPEC_ID}}` validated:
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/src/adapters/session.ts`
 **Scope**: TASK-008-SPEC-002
-**Paired QA**: qa-TASK-008-SPEC-002 (status IN_PROGRESS — dispatched 2026-05-21)
+**Paired QA**: qa-TASK-008-SPEC-002 (status DONE — verdict PASS, see QA-030; 6/7 DoD PASS + 1 PARTIAL (process irregular but outcome correct); 11/11 tests; protocol violations flagged for retrospective)
 
 ### impl-batched-SPEC-003-plan-ts (TASK-007 + TASK-008 + TASK-009-SPEC-003) — user-approved batched
 
-**Status**: IN_PROGRESS (2026-05-21)
+**Status**: DONE (2026-05-21; Stream D' returned: plan.ts + validate.ts + base.ts changes; targeted plan suites 42/42 PASS; full composition 458/458 PASS)
 **Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 **File ownership**: `_shared/composition/src/adapters/plan.ts` + schemas
 **Scope**: TASK-007-SPEC-003 (section-aware extractByRange) + TASK-008-SPEC-003 (integrity floor + max-10 schema) + TASK-009-SPEC-003 (frontmatter inverse + branches array)
 **Batching rationale**: All 3 TASKs touch the same file; user-approved via AskUserQuestion 2026-05-21 ("Approve batched dispatch (one agent does all 3 SPEC-003 plan.ts TASKs)"). Protocol allows user-approved batching per `feedback_per_task_build_qa_cycle` line 16.
-**Paired QA**: qa-batched-SPEC-003-plan-ts (status PENDING — validates all 3 TASKs' DoD checkboxes)
+**Paired QA**: qa-batched-SPEC-003-plan-ts (status IN_PROGRESS — dispatched 2026-05-21; validates all 3 TASKs' DoD checkboxes)
 
 ### impl-TASK-010-SPEC-002 — Round-trip fixtures + YAML
 
