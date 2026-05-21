@@ -120,6 +120,28 @@ Resumed from [[SESSION-2026-05-20_05: Wave 2 Integration and Brain State Sync]] 
 - Commit `48084fa build(spec-007): X.D.6 REQ + DESIGN schemas + AC / compliance validators` landed on branch `feat/plan-001-x-d-2-plan-renderer`
 - Phase X.D progress now 6 of 7 (X.D.1+2+3+4+5+6 DONE; X.D.7 remains — SpecRootNote + TestReportNote schemas + renderers)
 
+## Event 08
+
+**Type**: implementation | x-d-7-complete | phase-x-d-closed | 2026-05-21
+
+- PLAN-001 X.D.7 PENDING → IN_PROGRESS (edit landed disk; Pydantic noise unrelated)
+- bun-ts-engineer dispatched with scoped X.D.7 brief covering SpecRootNote (schema + parser; renderer deferred — body too varied) + TestReportNote (full schema + parser + renderer + semantic round-trip)
+- New files added under `_shared/composition/`:
+  - `src/schemas/spec-root-note.ts` — SpecRootNoteSchema (Context + Scope In/Out + optional Phases array + optional success_criteria + optional artifact_status + opaque sections Record + Observations + Relations)
+  - `src/schemas/test-report-note.ts` — TestReportNoteSchema (Objective + Approach + Summary + Test Results table + observations/relations)
+  - `src/parsers/spec-root-note.ts` + `src/parsers/test-report-note.ts`
+  - `src/renderers/test-report-note.ts` (deterministic renderer; semantic round-trip)
+  - `src/validators/spec-claim-validator.ts` + `src/validators/test-report-claim-validator.ts`
+  - 7 new test files + 2 new fixtures
+- Refactor: `src/validators/types.ts` extended `ClaimResult.unsatisfied` to named `UnsatisfiedItem` interface with optional `section` field — forward-compatible; X.D.5/6 validators emit `section` undefined; all prior tests stay green
+- Cross-field invariants (superRefine):
+  - SpecRootNote: title→SpecIdSchema; status DONE requires every success_criteria + artifact_status item satisfied when sections present; DONE unconditional when both gate sections absent
+  - TestReportNote: title→TestReportIdSchema; `tests_run === passed + failed + skipped`; PASS verdict requires `failed===0` AND `tests_run>0` AND no FAIL rows in test_results
+- Test counts: 341 → **424 pass / 0 fail** (+83 tests). biome clean; tsc clean
+- Engineer notes: (a) canonical RelationVerbEnum does NOT include `validates` (used in exemplar TEST-REPORT-007) — fixture uses `relates_to` instead; exemplar TEST-REPORT-007 would actually fail RelationSchema parse today; (b) verdict derivation: PASS only when `failed===0 && tests_run>0`; introduces PARTIAL when `skipped>0 && failed===0`; otherwise FAIL; (c) Phases parsing kept loose (no req_refs constraint); (d) Success Criteria + Artifact Status both gate DONE additively; unsatisfied indices offset by `success_criteria.length` to keep globally distinct
+- Commit `47cb568 build(spec-007): X.D.7 SpecRoot + TestReport schemas + TestReport renderer` landed on branch `feat/plan-001-x-d-2-plan-renderer`
+- **Phase X.D composition library mechanism completion DONE 7 of 7** (X.D.1 BuildWorkflowItem schema + X.D.2 PlanNote renderer + X.D.3 transition mutations + X.D.4 parser/fixture + X.D.5 TaskNote + X.D.6 REQ/DESIGN + X.D.7 SpecRoot/TestReport). Mechanical protocol enforcement now spans schemas + parsers + renderers + mutations + claim validators across 6 note types (PLAN, SESSION, TASK, REQ, DESIGN, SPEC-root, TEST-REPORT)
+
 ## Observations
 
 - [decision] Resume at X.D.2 per locked user adjudication; D2 + D4 stay deferred — they block X.E.2 only, not X.D.* #scope #lock
