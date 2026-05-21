@@ -259,3 +259,14 @@ The protocol enforces itself via surface area produced by templates + schemas + 
 - Memory 2 written: `~/.claude/memory/feedback_workflow_phase_rigor_at_every_layer.md` — TIER-1 BLOCKING; meta-rule for rigor at every enforcement layer
 - `~/.claude/memory/MEMORY.md` index updated: both memories added at TOP of "Protocol memories" section with TIER-1 BLOCKING markers
 - Next: scope-decision question on composition library mechanism completion (Phase X.D vs deferred to Wave 2 rebuild). Phase X.B audit + Phase X.C skill/template updates can proceed in parallel either way.
+
+
+## Event 12 — Phase X state-capture memory written (resumption anchor) (2026-05-20)
+
+**Type**: state-persistence
+
+- Written: `~/.claude/memory/feedback_skills_phase_x_protocol_hardening_state.md` — PROJECT-STATE memory capturing Phase X work plan (29 items + status), 37-surface drift inventory summary, 4 pending user decisions (D1-D4), resume instructions, key references
+- MEMORY.md index updated: new entry at top of Protocol memories section above the two TIER-1 BLOCKING memories
+- Designed for resumability: fresh agent / post-compaction can read this memory + the two TIER-1 memories + SESSION-_05 + PLAN-001 and pick up exactly where work left off
+- Phase X.A.6 (state-capture memory) DONE
+- Next: pending user decisions D1-D4 before Phase X.B audit can start
