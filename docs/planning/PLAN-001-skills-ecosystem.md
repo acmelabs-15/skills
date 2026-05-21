@@ -364,29 +364,87 @@ After all TASKs in `{{SPEC_ID}}` validated:
 - `Bash` for `bun test <path>` execution + read-only git/rg/grep/find commands. Forbidden: any state-changing git command, any file modification command, any network call
 - NEVER `Edit` / `Write` / `Glob` / `Grep` on files under `docs/**`
 
-## Wave 3 Gap-TASK Build Wave
+## Wave 3 Gap-TASK Build Wave (rigid-cycle compliant)
 
-> Dispatch 2026-05-21. Owning session: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]. 7 parallel streams. Minimum tests directive (per user 2026-05-21 mid-session): impl agents write only essential tests (1 per AC, no exhaustive coverage); full test suite expansion deferred to later today.
+> Dispatch 2026-05-21. Owning session: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]. Per `feedback_per_task_build_qa_cycle` rigid cycle steps a-u per TASK. Parallelism is across-TASK (multiple TASKs at different cycle states simultaneously); never within-TASK.
 
-| Stream | Item | Status | File ownership | Notes |
-|---|---|---|---|---|
-| A | impl-TASK-006-SPEC-003 (register PlanAdapter in dispatcher) | IN_PROGRESS | `_shared/composition/src/core/dispatcher.ts` | P0 small (~5 LOC) |
-| B | impl-TASK-007-SPEC-002 (ANALYSIS adapter DESIGN-001 drift) | IN_PROGRESS | `_shared/composition/src/adapters/analysis.ts` | small drift fix |
-| C | impl-TASK-008-SPEC-002 (SESSION adapter DESIGN-001 drift) | IN_PROGRESS | `_shared/composition/src/adapters/session.ts` | small drift fix |
-| D | impl-batched-SPEC-003 (TASK-007 + 008 + 009 — section-aware extractByRange + integrity floor + frontmatter inverse) | IN_PROGRESS | `_shared/composition/src/adapters/plan.ts` + schemas | 3 TASKs same file -> single agent |
-| E | impl-TASK-010-SPEC-002 (round-trip fixtures + YAML) | IN_PROGRESS | `_shared/composition/tests/fixtures/` analysis + session | small fixture work |
-| F | impl-TASK-010-SPEC-003 (plan composition YAML + frontmatter_map fixtures) | IN_PROGRESS | `_shared/composition/tests/fixtures/` plan | small fixture work |
-| G | decisions ADR-004 (Cross-Source Coordinator strategic call) | IN_PROGRESS | `docs/decisions/ADR-004-*` | /decisions per-D-N cycle; gates TASK-009-SPEC-002 (LARGE) |
+> **Protocol re-read 2026-05-21** identified 3 prior-plan violations (batched-by-default Stream D; "QA deferred" language; missing per-TASK item structure). Revised below. User-approved exception: Stream D batched dispatch for SPEC-003 plan.ts TASKs (locked via AskUserQuestion 2026-05-21).
 
-**Exit criteria for this wave**:
+> **Minimum tests directive** (user 2026-05-21): impl agents write only essential tests (1 per AC, no exhaustive coverage). Does NOT bypass QA — QA still runs per rigid cycle, validates against existing tests + code-read evidence. Full test suite expansion deferred to later today.
 
-- All 6 impl streams return `## State Changes` with code committed + minimum tests passing
-- Decisions stream returns ADR-004 PROPOSED with brain:---adr-review queued
-- Orchestrator applies status transitions per agent returns
-- Wave-level QA sweep deferred (per minimum-tests directive; circle back later today)
-- Aggregate commit + push
+### impl-TASK-006-SPEC-003 — Register PlanAdapter in dispatcher
 
-**Sequencing**: B/C share no files; D batches 3 SPEC-003 TASKs into one agent (all touch plan.ts); A/B/C/D/E/F dispatched in parallel; G is /decisions path running concurrently. TASK-009-SPEC-002 (Cross-Source Coordinator impl) NOT dispatched this wave — gated on ADR-004 outcome.
+**Status**: IN_PROGRESS (2026-05-21)
+**Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
+**File ownership**: `_shared/composition/src/core/dispatcher.ts`
+**Scope**: TASK-006-SPEC-003 (see note for DoD verbatim)
+**Paired QA**: qa-TASK-006-SPEC-003 (status PENDING — transitions when impl returns)
+
+### impl-TASK-007-SPEC-002 — ANALYSIS adapter DESIGN-001 drift reconciliation
+
+**Status**: IN_PROGRESS (2026-05-21)
+**Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
+**File ownership**: `_shared/composition/src/adapters/analysis.ts`
+**Scope**: TASK-007-SPEC-002
+**Paired QA**: qa-TASK-007-SPEC-002 (status PENDING)
+
+### impl-TASK-008-SPEC-002 — SESSION adapter DESIGN-001 drift reconciliation
+
+**Status**: IN_PROGRESS (2026-05-21)
+**Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
+**File ownership**: `_shared/composition/src/adapters/session.ts`
+**Scope**: TASK-008-SPEC-002
+**Paired QA**: qa-TASK-008-SPEC-002 (status PENDING)
+
+### impl-batched-SPEC-003-plan-ts (TASK-007 + TASK-008 + TASK-009-SPEC-003) — user-approved batched
+
+**Status**: IN_PROGRESS (2026-05-21)
+**Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
+**File ownership**: `_shared/composition/src/adapters/plan.ts` + schemas
+**Scope**: TASK-007-SPEC-003 (section-aware extractByRange) + TASK-008-SPEC-003 (integrity floor + max-10 schema) + TASK-009-SPEC-003 (frontmatter inverse + branches array)
+**Batching rationale**: All 3 TASKs touch the same file; user-approved via AskUserQuestion 2026-05-21 ("Approve batched dispatch (one agent does all 3 SPEC-003 plan.ts TASKs)"). Protocol allows user-approved batching per `feedback_per_task_build_qa_cycle` line 16.
+**Paired QA**: qa-batched-SPEC-003-plan-ts (status PENDING — validates all 3 TASKs' DoD checkboxes)
+
+### impl-TASK-010-SPEC-002 — Round-trip fixtures + YAML
+
+**Status**: IN_PROGRESS (2026-05-21)
+**Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
+**File ownership**: `_shared/composition/tests/fixtures/` (analysis + session)
+**Scope**: TASK-010-SPEC-002
+**Paired QA**: qa-TASK-010-SPEC-002 (status PENDING)
+
+### impl-TASK-010-SPEC-003 — Plan composition YAML + frontmatter_map fixtures
+
+**Status**: IN_PROGRESS (2026-05-21)
+**Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
+**File ownership**: `_shared/composition/tests/fixtures/` (plan)
+**Scope**: TASK-010-SPEC-003
+**Paired QA**: qa-TASK-010-SPEC-003 (status PENDING)
+
+### decisions.4 — ADR-004 Cross-Source Coordinator strategic call
+
+**Status**: IN_PROGRESS (2026-05-21)
+**Owning session**: [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
+**Output target**: `docs/decisions/ADR-004-cross-source-coordinator-*.md`
+**Concurrent stream**: runs in parallel to the build streams above; outcome gates TASK-009-SPEC-002 (large Cross-Source Coordinator impl, NOT in this wave)
+**Per-D-N cycle**: decision-critic stress-test -> AskUserQuestion -> verbatim echo -> ADR authoring -> `brain:---adr-review` BLOCKING gate
+
+### Wave 3 dispatch sequence (per rigid cycle)
+
+Pre-dispatch (this turn): all 6 impl items + 1 decisions item transition PENDING -> IN_PROGRESS via a single atomic PLAN edit + Session Event 10 + commit (wave kickoff = single state transition; the protocol's per-TASK atomicity applies to MID-EXECUTION cycle state transitions, not initial kickoff).
+
+Per-TASK cycle going forward (after each impl agent returns):
+
+1. Steps f-g: Orchestrator collects impl `## State Changes` + appends per-TASK Session Event
+2. Step h: PLAN transition impl-TASK-N IN_PROGRESS -> DONE
+3. Step i: per-TASK atomic commit
+4. Step j: PLAN transition qa-TASK-N PENDING -> IN_PROGRESS
+5. Step k-l: Session Event + commit
+6. Step m: Dispatch QA agent for that TASK (parallel across TASKs as agents return at different rates)
+7. Steps n-s: QA writes QA-NNN note + verdict + Orchestrator processes per pass/fail
+8. Step t: per-TASK atomic commit closing the cycle
+
+This preserves max-parallel across streams while honoring per-TASK atomicity within each stream.
 
 ## Blockers
 

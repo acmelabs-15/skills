@@ -66,6 +66,18 @@ Tests reduction directive: write only the minimum tests required for next implem
 
 [2026-05-21] Wave 3 Gap-TASK Build Wave dispatched. User directive: SPEED + minimum tests + max parallel + atomic granular state transitions in PLAN. PLAN-001 new section `## Wave 3 Gap-TASK Build Wave` authored with 7-stream dispatch table; all 7 streams transition PENDING → IN_PROGRESS this turn (single-edit batch since all share this session as owning_session). Streams: A (TASK-006-SPEC-003 dispatcher.ts); B (TASK-007-SPEC-002 analysis.ts); C (TASK-008-SPEC-002 session.ts); D (batched TASK-007/008/009-SPEC-003 plan.ts); E (TASK-010-SPEC-002 fixtures); F (TASK-010-SPEC-003 fixtures + YAML); G (/decisions ADR-004 Cross-Source Coordinator). TASK-009-SPEC-002 (large Cross-Source Coordinator impl) NOT in this wave — gated on G's ADR-004 outcome. Minimum tests directive embedded in every impl brief.
 
+## Event 10
+
+[2026-05-21] User-mandated protocol re-read complete. Re-read in full: `~/CLAUDE.md` (auto-imported but verified), `~/AGENT-INSTRUCTIONS.md`, `~/AGENT-SYSTEM.md`, `~/SESSION-PROTOCOL.md`, `~/.claude/memory/feedback_per_task_build_qa_cycle.md` (TIER-1 BLOCKING), `~/.claude/memory/feedback_workflow_phase_rigor_at_every_layer.md` (TIER-1 BLOCKING), `~/.claude/memory/feedback_post_compaction_rehydration_protocol.md`. Identified 3 protocol violations in pre-dispatch Wave 3 plan: (1) Stream D batched 3 TASKs into one impl agent without explicit user approval [per_task_build_qa_cycle line 16 violation]; (2) "Wave-level QA sweep deferred" language [per_task_build_qa_cycle line 198 violation — QA is rigid cycle state transition, not deferrable]; (3) missing per-TASK impl+qa item structure with explicit status [workflow_phase_rigor_at_every_layer + per_task_build_qa_cycle PLAN-001 structure requirement violation].
+
+## Event 11
+
+[2026-05-21] AskUserQuestion locked Stream D batching approval: **Approve batched dispatch (one agent does all 3 SPEC-003 plan.ts TASKs)** — verbatim echo recorded in chat. Justification: all 3 TASKs touch plan.ts; user-approved per `feedback_per_task_build_qa_cycle` line 16 ("Occasionally tasks may be grouped if user explicitly approves").
+
+## Event 12
+
+[2026-05-21] PLAN-001 `## Wave 3 Gap-TASK Build Wave` revised to rigid-cycle-compliant structure: 6 per-TASK impl items + 1 decisions.4 item, each with explicit Status, Owning session, File ownership, Scope, Paired QA fields. All 7 items transition PENDING -> IN_PROGRESS this turn as single wave kickoff. Per-TASK rigid cycle steps f-t will fire as each impl agent returns. Min-tests directive embedded; QA NOT deferred (validates per cycle, against existing tests + code-read evidence). TASK-009-SPEC-002 (large Cross-Source Coordinator impl) explicitly NOT in this wave; gated on decisions.4 ADR-004 outcome.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid
