@@ -1,4 +1,5 @@
 import type { DodCheckboxItem, TaskNote } from "../schemas/task-note.js";
+import type { ClaimResult } from "./types.js";
 
 /**
  * DoD claim validator (Phase X.D.5, 2026-05-20).
@@ -12,22 +13,20 @@ import type { DodCheckboxItem, TaskNote } from "../schemas/task-note.js";
  *
  * PASS shape carries `total` for symmetric reporting (zero items still PASS
  * for the ADR-compliance variant when the section is absent).
+ *
+ * X.D.6: `ClaimResult` lifted to validators/types.ts; `DoDClaimResult` is
+ * preserved here as a backwards-compatible alias.
  */
 
-export type DoDClaimResult =
-  | { verdict: "PASS"; total: number }
-  | {
-      verdict: "FAIL";
-      total: number;
-      unsatisfied: Array<{ index: number; text: string }>;
-    };
+export type { ClaimResult } from "./types.js";
+export type DoDClaimResult = ClaimResult;
 
 function isSatisfied(item: DodCheckboxItem): boolean {
   if (item.done) return true;
   return typeof item.deferred_rationale === "string" && item.deferred_rationale.length > 0;
 }
 
-function evaluate(items: readonly DodCheckboxItem[]): DoDClaimResult {
+function evaluate(items: readonly DodCheckboxItem[]): ClaimResult {
   const unsatisfied: Array<{ index: number; text: string }> = [];
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
@@ -47,7 +46,7 @@ function evaluate(items: readonly DodCheckboxItem[]): DoDClaimResult {
  * implementer's done-claim. PASS only if every item is checked or
  * deferred-with-rationale.
  */
-export function validateTaskDoneClaim(task: TaskNote): DoDClaimResult {
+export function validateTaskDoneClaim(task: TaskNote): ClaimResult {
   return evaluate(task.definition_of_done);
 }
 
@@ -55,7 +54,7 @@ export function validateTaskDoneClaim(task: TaskNote): DoDClaimResult {
  * Symmetric variant for `## ADR Compliance` checklist. Section is optional;
  * when absent, returns PASS with total 0 (no ADRs to honor at this scope).
  */
-export function validateTaskAdrComplianceClaim(task: TaskNote): DoDClaimResult {
+export function validateTaskAdrComplianceClaim(task: TaskNote): ClaimResult {
   const items = task.adr_compliance;
   if (items === undefined) {
     return { verdict: "PASS", total: 0 };
