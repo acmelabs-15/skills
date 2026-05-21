@@ -37,6 +37,16 @@ Commit `01d9429` on `feat/plan-001-wave-2-retro-validation`: PLAN edits + this s
 
 [2026-05-21] Dispatch-strategy decision surfaced via AskUserQuestion (3 options: parallel-4-via-agent-teams / sequential-SPEC-002-first-then-parallel / sequential-all-4). User locked **Parallel 4-SPEC swarm via agent-teams (matches Hybrid spec)**. Spawn 4 QA agents in parallel with worktree isolation. Each agent retro-validates one SPEC (002/003/004/007) end-to-end against the existing code per the rigid cycle. Estimated wall-clock 2–3h. Verbatim echo recorded in chat. Next step (next turn): author canonical retro-validation brief block (1-canonical-block-N-agents-inline pattern per [[SKILL-002: Canonical Block Parallelism]]); transition build.SPEC-002/003/004/007 BLOCKED → IN_PROGRESS with owning_session bound; spawn agent-team with brief; surface for approval before dispatch per `feedback_team_single_lead_invariant`.
 
+## Event 05
+
+[2026-05-21] Wave 2 Retro-Validation Canonical Brief authored + locked in PLAN-001 as new `## Wave 2 Retro-Validation Canonical Brief` section (before `## Blockers`). Pattern: 1-canonical-block-N-agents-inline per [[SKILL-002: Canonical Block Parallelism]] + explicit IN-SCOPE / OUT-OF-SCOPE fences per [[SKILL-003: Dispatch Scope Fences]]. Brief content: Mission + Required Reading (7 items) + Inputs table + 6-step per-TASK retro-validation cycle (read → identify code → per-checkbox evidence → write TEST-REPORT → self-validate via composition library schema → per-TASK verdict) + Gap handling (file gap-TASK directly via Brain MCP per 2026-05-21 user-locked refinement) + Per-SPEC aggregate deliverable (TEST-REPORT-NNN-{{SPEC_ID}}-spec-aggregate + `## State Changes` proposal) + IN-SCOPE / OUT-OF-SCOPE + Anti-patterns + Tools. 4 placeholders ({{SPEC_ID}} + 2 derived). Self-caught defect: first draft introduced its own malformed-wikilink bullet (template wikilink `[[<your TEST-REPORT>]]` with >200-char prefix); PreToolUse hook blocked the edit; fixed by switching template wikilinks to plain-text descriptions in the bullet, then locked.
+
+Brief refinement adjudication via AskUserQuestion (3 options multi-select; user selected option 1 only): agents file gap-TASKs themselves via Brain MCP Pattern 2 (changed from PROPOSE-only). Options 2 (bun test execution) + 3 (sibling-SPEC reading required) not selected — kept draft defaults (test execution allowed; sibling-SPEC reading not required).
+
+## Event 06
+
+[2026-05-21] Build parts transitioned BLOCKED → IN_PROGRESS in PLAN-001: build.SPEC-002, build.SPEC-003, build.SPEC-004, build.SPEC-007. Section headers updated `(BLOCKED)` → `(IN_PROGRESS — Wave 2 retro-validation)`. Detailed Progress Dashboard + Phase Progression count reconciliation deferred to Phase X.E.2 (final PLAN reconciliation; tracked under transitive blockers in Blockers section). Owning session for all 4: SESSION-2026-05-21_01. Ready for 4-agent QA swarm spawn pending final user go/no-go.
+
 ## Observations
 
 - [decision] PUD-D2 locked = Hybrid: retro-validate Wave 2 code (SPEC-002/003/004/007) against rigid per-TASK build+QA protocol using X.D claim validators for mechanical leverage #pud-d2 #wave-2 #hybrid

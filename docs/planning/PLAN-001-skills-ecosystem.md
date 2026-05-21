@@ -235,6 +235,106 @@ User adjudicated /end Step 1 HALT (DoD incomplete) via AskUserQuestion. Locked o
 
 **Recommendation rationale**: The X.D claim validators landed in PR #6 give the Hybrid path mechanical leverage. Throw out discards working tests. Salvage rubber-stamps. Hybrid uses the validators to find real gaps + applies the rigid cycle only where it actually adds trust.
 
+## Wave 2 Retro-Validation Canonical Brief
+
+> This is the brief block all 4 QA agents inline verbatim, with only `{{SPEC_ID}}` (and derived paths) varying per agent. Pattern: SKILL-002 canonical-block-parallelism + SKILL-003 dispatch-scope-fences. Locked 2026-05-21 ([[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]] Event 05).
+
+### Mission
+
+Retro-validate the existing Wave 2 code for `{{SPEC_ID}}` (one of SPEC-002 / SPEC-003 / SPEC-004 / SPEC-007) against its complete spec subtree using the rigid per-TASK build+QA protocol's QA half. Existing code is on `main` (commits `5299aea` Wave 2 integration + `2f049fd` PR #6 Phase X additions). Brain notes for the 4 SPEC subtrees were surgically reverted to pre-build state — they currently show DRAFT/READY statuses, not the false-DONE statuses pre-revert.
+
+**Authority chain** — spec is authority, not your judgment. If spec is silent or ambiguous, HALT and report; never assume or fill gaps.
+
+### Required reading (in order)
+
+1. `~/CLAUDE.md` → auto-imports `~/KNOWLEDGE-GRAPH-CONVENTIONS.md`
+2. `~/.claude/memory/feedback_per_task_build_qa_cycle.md` — TIER-1 BLOCKING; the protocol you execute
+3. `~/.claude/memory/feedback_workflow_phase_rigor_at_every_layer.md` — TIER-1 BLOCKING
+4. `~/KNOWLEDGE-GRAPH-STRUCTURES.md` Section 4.6 PLAN + Section 4.7 SPEC + Section 4.8 TASK + Section 4.9 REQ EARS
+5. The complete `{{SPEC_ID}}` subtree via Brain MCP `list_directory` then `read_note` for each: SPEC root + every REQ + every DESIGN + every TASK
+6. The composition library at `_shared/composition/` — specifically `src/schemas/test-report-note.ts`, `src/validators/validate-test-report-pass-claim.ts`, `src/schemas/task-note.ts`
+7. The implementation code paths for `{{SPEC_ID}}` (derived from TASK `files_affected` fields + DESIGN module-structure sections)
+
+### Inputs (per-agent)
+
+| Placeholder | Value |
+|---|---|
+| `{{SPEC_ID}}` | One of `SPEC-002` / `SPEC-003` / `SPEC-004` / `SPEC-007` |
+| `{{SPEC_FOLDER}}` | `docs/specs/{{SPEC_ID}}-<kebab-slug>/` |
+| `{{SPEC_TASKS}}` | All `TASK-NNN-{{SPEC_ID}}-*.md` under `{{SPEC_FOLDER}}/tasks/` |
+| Owning session | `SESSION-2026-05-21_01` |
+| Code root | `_shared/composition/` (and any SPEC-specific paths from TASK `files_affected`) |
+| Worktree | Isolated per agent (4-way parallel) |
+
+### The retro-validation cycle (per TASK in `{{SPEC_ID}}`)
+
+For each `TASK-NNN-{{SPEC_ID}}-*.md`, in order (oldest TASK number first):
+
+1. **Read** — Brain MCP `read_note` on TASK; collect linked REQs + DESIGNs from Relations; `read_note` each.
+2. **Identify code under verification** — From TASK `files_affected` + DESIGN module-structure sections, enumerate exact files. Read via `Read` tool.
+3. **Per-checkbox evidence-or-gap** — For EVERY checkbox in TASK DoD + linked REQ AC (EARS Given/When/Then) + linked DESIGN compliance: produce finding PASS / FAIL / PARTIAL / N/A with `file:line` evidence or test-name citation. Do NOT trust prior `[x]` marks — re-verify against code.
+4. **Write TEST-REPORT** — `docs/qa/TEST-REPORT-NNN-{{SPEC_ID}}-<task-slug>.md` via Pattern 2 three-phase write. Must satisfy `TestReportNoteSchema` (frontmatter `validates`, `verdict`, `tests_run`, `passed`, `failed`, `skipped`; body per-checkbox findings table; `tests_run === passed + failed + skipped`).
+5. **Self-validate** — Parse own TEST-REPORT via schema + call `validateTestReportPassClaim`. On rejection, fix the underlying claim, not the numbers.
+6. **Per-TASK verdict** — Return `PASS — see TEST-REPORT-NNN-{{SPEC_ID}}-<task-slug>` OR `FAIL — see TEST-REPORT-NNN + <bulleted gap headlines>`.
+
+### Gap handling
+
+On FAIL/PARTIAL checkbox:
+
+- Do NOT modify code (retro is QA-only).
+- Do NOT mark the checkbox `[x]` in TASK/REQ/DESIGN (leave `[ ]`).
+- Record gap in TEST-REPORT findings table with full evidence.
+- File gap-TASK directly via Brain MCP `write_note` Pattern 2 three-phase write at path `docs/specs/{{SPEC_ID}}-<slug>/tasks/TASK-NEW-NNN-{{SPEC_ID}}-<gap-slug>.md` (next available NNN by `list_directory tasks/`). Status DRAFT. Required Relations (use the canonical colon-form titles of the actual targets): `caused_by` your TEST-REPORT, `part_of` the SPEC root, `extends` the original TASK. DoD checkboxes listing the specific gap items to remediate. Note the gap-TASK count in your per-SPEC aggregate return.
+
+Orchestrator will drive gap-TASKs through the standard rigid build+QA cycle in a follow-up dispatch (not this swarm).
+
+### Per-SPEC aggregate deliverable
+
+After all TASKs in `{{SPEC_ID}}` validated:
+
+1. Write `docs/qa/TEST-REPORT-NNN-{{SPEC_ID}}-spec-aggregate.md` (Pattern 2). Aggregates per-TASK verdicts + per-REQ AC coverage + per-DESIGN compliance coverage. Frontmatter `validates` linking to the SPEC root by canonical colon-form title; verdict PASS only if all per-TASK PASS.
+2. Return `## State Changes` listing PROPOSED orchestrator-applied transitions:
+   - Per-TASK: `TASK-NNN-{{SPEC_ID}}-*` DRAFT/READY → DONE (on PASS) OR new gap-TASK already filed (on FAIL)
+   - Per-REQ: DRAFT → ACCEPTED (all AC PASS) OR stays DRAFT (any AC FAIL)
+   - Per-DESIGN: DRAFT → ACCEPTED (compliance PASS) OR stays DRAFT
+   - SPEC root: DRAFT → DONE only if all per-TASK PASS + all REQ ACCEPTED + all DESIGN ACCEPTED
+
+### IN-SCOPE
+
+- Reading + analyzing `{{SPEC_ID}}` subtree + implementation code
+- Authoring TEST-REPORT notes (per-TASK + aggregate)
+- Writing gap-TASK notes directly via Brain MCP (per 2026-05-21 refinement)
+- Returning `## State Changes` proposal for note status transitions
+- Running existing tests via `bun test <path>` for TASK-specific validation
+
+### OUT-OF-SCOPE (escalate or refuse)
+
+- Modifying code in `_shared/composition/` or any `src/` paths
+- Modifying TASK / REQ / DESIGN / SPEC note CONTENT beyond writing new gap-TASKs (status transitions are orchestrator's after your return)
+- Writing new tests to fill coverage gaps (that's a gap-TASK for follow-up dispatch)
+- Touching other SPECs (you own `{{SPEC_ID}}` only)
+- Touching PLAN-001
+- Editing the session note (only orchestrator writes Events)
+- Dispatching sub-agents (you ARE the leaf agent)
+- Bypassing the schema validator on `verdict: PASS` claims
+
+### Anti-patterns
+
+- ❌ Mass-flipping checkboxes without per-item evidence
+- ❌ Trusting prior `[x]` marks from pre-revert state
+- ❌ Returning aggregate PASS without per-checkbox findings
+- ❌ Writing a TEST-REPORT that `validateTestReportPassClaim` rejects, then "fixing" the numbers instead of the claim
+- ❌ Writing gap fixes inline (code is read-only)
+- ❌ Skipping the per-SPEC aggregate TEST-REPORT
+- ❌ Returning anything other than `PASS — see TEST-REPORT-NNN` or `FAIL — see TEST-REPORT-NNN + gap list`
+
+### Tools
+
+- Brain MCP for ALL `docs/**` ops (binary rule per CONVENTIONS Section 1.7.1)
+- `Read` for code inspection in `_shared/composition/` and non-`docs/**` paths
+- `Bash` for `bun test <path>` execution + read-only git/rg/grep/find commands. Forbidden: any state-changing git command, any file modification command, any network call
+- NEVER `Edit` / `Write` / `Glob` / `Grep` on files under `docs/**`
+
 ## Blockers
 
 **Active**: build.SPEC-005 + build.SPEC-006 remain BLOCKED transitively on Wave 2 retro-validation completion (build.SPEC-002/003/004/007). Phase X.E.2 + X.E.3 (final PLAN reconciliation + phase close) BLOCKED on Wave 2 retro-validation completion. Review + end phases BLOCKED on Wave 2 close.
@@ -1090,10 +1190,10 @@ None pending. ADR-003 formalization required first (D-1..D-11 already locked in 
 
 None — implementation is mechanical execution of SPEC-001.
 
-### build.SPEC-002 — Simple Adapters Build (BLOCKED)
+### build.SPEC-002 — Simple Adapters Build (IN_PROGRESS — Wave 2 retro-validation)
 
-**Substatus**: BLOCKED
-**Blocker**: PUD-D2 (Wave 2 retro-validation disposition) — row previously marked DONE by SESSION-_05 brain:memory dispatch; Event 20 surgical revert restored SPEC-002 subtree files to pre-build state but this PLAN row was not corrected at the time. Truthful state: code on main (PR #5); SPEC-002 subtree Brain notes at pre-build state; awaiting D2 disposition for retro-validation
+**Substatus**: IN_PROGRESS (retro-validation mode)
+**Mode**: Wave 2 retro-validation per Hybrid disposition (PUD-D2 resolved 2026-05-21). QA-only against existing code; see `## Wave 2 Retro-Validation Canonical Brief` above
 **Dependencies**: spec.SPEC-002 DONE ✓ + build.SPEC-001 (recommended sequencing per KICKOFF-BRIEF.md build order — ADR adapter PROOF before extending pattern)
 **Wave**: 2 of 4 (Wave 2 parallel — 4-way dispatch with SPEC-003, SPEC-004, SPEC-007)
 **Owning session**: [[SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF]]
@@ -1121,7 +1221,7 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-003 — PLAN Adapter Build (BLOCKED)
+### build.SPEC-003 — PLAN Adapter Build (IN_PROGRESS — Wave 2 retro-validation)
 
 **Substatus**: BLOCKED
 **Blocker**: PUD-D2 (Wave 2 retro-validation disposition)
@@ -1151,7 +1251,7 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-004 — SPEC Subtree Adapter Build (BLOCKED)
+### build.SPEC-004 — SPEC Subtree Adapter Build (IN_PROGRESS — Wave 2 retro-validation)
 
 **Substatus**: BLOCKED
 **Blocker**: PUD-D2 (Wave 2 retro-validation disposition)
@@ -1242,7 +1342,7 @@ Populated by /build dispatch.
 
 None.
 
-### build.SPEC-007 — Plan/Session Render Implementation Build (BLOCKED)
+### build.SPEC-007 — Plan/Session Render Implementation Build (IN_PROGRESS — Wave 2 retro-validation)
 
 **Substatus**: BLOCKED
 **Blocker**: PUD-D2 (Wave 2 retro-validation disposition). Note: SPEC-007 code on main carries the Phase X.D protocol-hardening additions — BuildWorkflowItem schema, transition mutations, claim validators — which are validated under their OWN cycle but the SPEC-007 build itself never ran through the rigid per-TASK protocol
