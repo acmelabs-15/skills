@@ -2,7 +2,7 @@
 title: 'ANALYSIS-003: Phase X Protocol Hardening State'
 type: analysis
 permalink: analysis/analysis-003-phase-x-protocol-hardening-state
-status: IN_PROGRESS
+status: ACCEPTED
 tags:
 - analysis
 - phase-x
@@ -141,6 +141,64 @@ If picking up cold, read in this order:
 ## Retirement criteria
 
 Move to DONE when Phase X.E.3 done, all D1-D4 resolved + applied, PLAN-001 frontmatter shows Phase X DONE, Wave 2 either fully thrown-out + rebuilt OR fully retro-validated + closed.
+
+## Status Update — Post-PR-#8 (2026-05-21)
+
+Phase X execution complete except for D2-blocked X.E.2 + X.E.3. All sections above this point are historical record of the planning + audit work as it stood on 2026-05-20. This section is the durable post-execution state.
+
+### Final phase status
+
+| Phase | Status | Outcome |
+|---|---|---|
+| X.A Bootstrap | DONE | Two TIER-1 protocol memories + ANALYSIS-003 + MEMORY.md index |
+| X.B Audit | DONE | 7-skill audit + composition library audit + NOTE-TEMPLATES audit. 15-item execution order locked |
+| X.C Skills + Templates + Structures | DONE | 10-agent parallel wave (7 SKILL.md + 3 deferred code items). PR #6 |
+| X.D Composition Library Mechanism | DONE | 7 of 7 sub-items via PR #6 |
+| X.E Wrap-up | PARTIAL DONE | Docs portion DONE (CLAUDE.md + NOTE-TEMPLATES.md + KNOWLEDGE-GRAPH-STRUCTURES.md); X.E.2 + X.E.3 BLOCKED on PUD-D2 |
+
+### Composition library deliverables (PR #6 + #7 + #8)
+
+- **6 note-type schemas**: PlanNoteSchema (with BuildWorkflowItem), SessionNoteSchema, TaskNoteSchema, RequirementNoteSchema, DesignNoteSchema, SpecRootNoteSchema, TestReportNoteSchema
+- **6 parsers**: corresponding parser for each note type
+- **4 renderers**: PlanNote, SessionNote, SpecRoot semantic, TestReport byte-identical
+- **13 mutations**: 11 plan mutations including transition-impl-item + transition-qa-item (mandate session context, throw on missing) + applyCheckboxMutation (cross-note flip)
+- **6 claim validators**: validateTaskDoneClaim, validateRequirementAcClaim, validateDesignComplianceClaim, validateSpecDoneClaim, validateTestReportPassClaim, applyCheckboxMutation re-parse validation
+- **Test counts**: 200 pass / 16 fail (session start) to 444 pass / 0 fail (session end)
+
+### PRs landed
+
+| PR | Title | Merge commit |
+|---|---|---|
+| #6 | Phase X protocol hardening (X.D + X.C + X.E docs) | `2f049fd` |
+| #7 | Recovery-test readiness (PUD-D2 surfacing + BLOCKED transitions) | `8dc30f1` |
+| #8 | Session close (PAUSED to DONE + Event 15) | `ce3d726` |
+
+### Pending User Decisions resolved + remaining
+
+- **D1 Composition library scope** — RESOLVED (include with renderer-per-note-type scope; all 7 X.D items done)
+- **D2 Wave 2 retro-validation disposition** — STILL OPEN. Captured as PUD-D2 in PLAN-001. Hybrid recommended (use new claim validators to find gaps; file new TASKs only for genuine gaps; drive only gaps through rigid cycle). Blocks X.E.2 (PLAN-001 final reconciliation) + X.E.3 (final phase close) + all 6 build.SPEC-NNN parts
+- **D3 CLAUDE.md updates** — RESOLVED (TIER-1 references applied)
+- **D4 PLAN-001 reconciliation timing** — RESOLVED partial (recovery-readiness in PR #7; full reconciliation gated on D2)
+
+### Resume instructions (fresh session)
+
+A fresh `/plan PLAN-001-skills-ecosystem` invocation will:
+
+1. Run post-compaction rehydration checklist (TIER-1 BLOCKING)
+2. Read PLAN-001 - find protocol-hardening IN_PROGRESS + 6 BLOCKED build.SPEC-NNN parts
+3. See PUD-D2 in `## Pending User Decisions` as the gating decision
+4. Surface PUD-D2 with Hybrid as Recommended default
+5. After user adjudicates: D2 resolution unblocks build.SPEC-002/003/004/007 retro-validation chain (parallelizable as 4-SPEC swarm); resolving those unblocks build.SPEC-005/006 then review + end phases then X.E.2 + X.E.3
+
+### Retirement criteria revision
+
+This note transitioned from IN_PROGRESS to ACCEPTED on 2026-05-21. It will move to DEPRECATED when:
+
+- PUD-D2 is resolved AND applied (Wave 2 either retro-validated to closed state OR thrown-out + rebuilt)
+- PLAN-001 frontmatter shows Phase X status DONE
+- build.SPEC-NNN parts no longer reference PUD-D2 as blocker
+
+Until then it remains the canonical Brain knowledge-graph anchor for Phase X work.
 
 ## Observations
 
