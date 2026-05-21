@@ -2,7 +2,7 @@
 title: 'REQ-009-SPEC-007: Plan Mutation API'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-009-spec-007-plan-mutation-api
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007

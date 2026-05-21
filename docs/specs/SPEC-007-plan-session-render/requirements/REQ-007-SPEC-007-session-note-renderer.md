@@ -2,7 +2,7 @@
 title: 'REQ-007-SPEC-007: SessionNote Markdown Renderer'
 type: requirement
 permalink: specs/spec-007-plan-session-render/requirements/req-007-spec-007-session-note-renderer
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-007
