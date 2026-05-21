@@ -2,7 +2,7 @@
 title: 'REQ-007-SPEC-001: ADR Adapter Implementation'
 type: requirement
 permalink: specs/spec-001-composition-core-and-adr-adapter/requirements/req-007-spec-001-adr-adapter-implementation
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-001
@@ -38,27 +38,27 @@ ADR-002 D-4 specifies the ADR hash extraction strategy: extract S by H3 line ran
 
 ## Acceptance Criteria
 
-- [ ] GIVEN an ADR adapter class extending BaseMarkdownAdapter
+- [x] GIVEN an ADR adapter class extending BaseMarkdownAdapter
       WHEN instantiated
       THEN sourceType === "adr" and section_delimiter === "### " and identifier_pattern matches /D-(\d+)/
 
-- [ ] GIVEN a valid ADR markdown file with multiple D-N sections under ## Decision
+- [x] GIVEN a valid ADR markdown file with multiple D-N sections under ## Decision
       WHEN extractByRange is called with a line range spanning one D-N section
       THEN the extracted content INCLUDES the section heading line (e.g., `### D-N: Title`) at the start AND EXCLUDES the next section heading line at the end (boundary convention: inclusive-of-own-heading, exclusive-of-next-heading; the trailing newline before the next heading IS included in the extracted content. Clarified per Gate A semantic gap finding 2026-05-19)
 
-- [ ] GIVEN extracted ADR content with D-N identifiers
+- [x] GIVEN extracted ADR content with D-N identifiers
       WHEN applyMutations is called with renumber_map {"D-3": "D-100", "D-4": "D-101"}
       THEN all occurrences of D-3 become D-100 and D-4 become D-101 in a single pass
 
-- [ ] GIVEN mutated content
+- [x] GIVEN mutated content
       WHEN reverseMutations is called with the same MutationSpec
       THEN the original content is recovered (reverseMutations(applyMutations(content, spec), spec) === content)
 
-- [ ] GIVEN the ADR adapter
+- [x] GIVEN the ADR adapter
       WHEN parse followed by serialize is called on ADR markdown
       THEN the output is character-identical to the input (round-trip identity)
 
-- [ ] GIVEN a full decompose operation on an ADR file via the ADR adapter
+- [x] GIVEN a full decompose operation on an ADR file via the ADR adapter
       WHEN hash validation runs on all destination files
       THEN S_hash === D'_hash for every destination
 

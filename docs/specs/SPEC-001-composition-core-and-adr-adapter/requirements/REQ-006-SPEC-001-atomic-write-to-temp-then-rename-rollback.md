@@ -2,7 +2,7 @@
 title: 'REQ-006-SPEC-001: Atomic Write-to-Temp-Then-Rename Rollback'
 type: requirement
 permalink: specs/spec-001-composition-core-and-adr-adapter/requirements/req-006-spec-001-atomic-write-to-temp-then-rename-rollback
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-001
@@ -36,23 +36,23 @@ ADR-001 F-8 specifies the rollback mechanism formally. For each destination file
 
 ## Acceptance Criteria
 
-- [ ] GIVEN a plan with 3 destination files where all pass hash validation
+- [x] GIVEN a plan with 3 destination files where all pass hash validation
       WHEN the script executes
       THEN all 3 .tmp files are created first, then all 3 are renamed atomically to final paths
 
-- [ ] GIVEN a plan with 3 destination files where the 2nd fails hash validation
+- [x] GIVEN a plan with 3 destination files where the 2nd fails hash validation
       WHEN the hash mismatch is detected
       THEN all .tmp files (including the 1st that passed) are removed and source files remain untouched
 
-- [ ] GIVEN a plan execution that crashes after creating .tmp files but before rename
+- [x] GIVEN a plan execution that crashes after creating .tmp files but before rename
       WHEN the plan is rerun
       THEN the .tmp files from the previous run are cleaned up and execution proceeds normally
 
-- [ ] GIVEN the atomic write utility at _shared/composition/src/core/atomic-write.ts
+- [x] GIVEN the atomic write utility at _shared/composition/src/core/atomic-write.ts
       WHEN called with content and a destination path
       THEN it writes to dest-path.tmp using Bun.write and returns a handle for later rename or cleanup
 
-- [ ] GIVEN the all-or-nothing rename phase
+- [x] GIVEN the all-or-nothing rename phase
       WHEN rename is called for all staged files
       THEN it uses POSIX-compatible fs rename (not copy-then-delete) for atomicity
 

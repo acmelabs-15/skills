@@ -1,0 +1,12 @@
+# Composition (recompose) plan — inverse of adr-distribution.plan.yaml.
+# This file is a documentation fixture; the round-trip test reads the
+# renumber_map directly as a TypeScript object, not by parsing this YAML.
+plan_type: composition
+source_type: adr
+target_path: tests/fixtures/adr-sample.md
+renumber_map:
+  D-100: D-1
+  D-101: D-2
+  D-200: D-3
+  D-201: D-4
+wikilink_map: {}

@@ -51,7 +51,7 @@ tags:
 - Created PLAN-001 Skills Ecosystem (see Relations: part_of from this session) via Pattern 2 three-phase write (write_note → edit_note find_replace title-colon → move_note kebab filename)
 - First write_note plus edit_note attempt produced malformed state (wikilinks in body lacked colons because authored-from-template without forward-reference colonization); delete_note plus recreate-with-colon-wikilinks resolved
 - Permalink artifact basic-memory auto-suffixed `-1` after delete plus recreate collision; remediated this turn via edit_note find_replace on the permalink line (`planning/plan-001-skills-ecosystem-1` → `planning/plan-001-skills-ecosystem`)
-- find_replace tool behavior clarified plain-text replacement IS supported on frontmatter and inline content; the misleading `# ` prefix in error messages is display-only. Inline double-bracket wikilink syntax cannot be matched via find_replace because basic-memory extracts wikilinks out of literal content into the relations table — fix via delete plus recreate with correct wikilinks from the start
+- find_replace tool behavior clarified plain-text replacement IS supported on frontmatter and inline content; the misleading `#` prefix in error messages is display-only. Inline double-bracket wikilink syntax cannot be matched via find_replace because basic-memory extracts wikilinks out of literal content into the relations table — fix via delete plus recreate with correct wikilinks from the start
 
 ## Event 06 — SESSION-2026-05-19_01 authored
 

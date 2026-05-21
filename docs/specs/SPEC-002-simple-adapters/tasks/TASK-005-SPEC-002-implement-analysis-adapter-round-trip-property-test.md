@@ -35,11 +35,13 @@ Create the round-trip property test and fixtures for the ANALYSIS adapter. The t
 ## Scope
 
 **In Scope**:
+
 - _shared/composition/tests/fixtures/analysis/sample-analysis.md (Create)
 - _shared/composition/tests/fixtures/analysis/sample-analysis-plan.yaml (Create)
 - _shared/composition/tests/analysis-round-trip.test.ts (Create)
 
 **Out of Scope**:
+
 - SESSION round-trip test (TASK-006-SPEC-002)
 - ANALYSIS adapter implementation (TASK-001-SPEC-002)
 

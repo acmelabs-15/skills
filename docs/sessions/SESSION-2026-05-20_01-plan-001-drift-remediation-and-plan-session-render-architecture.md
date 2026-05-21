@@ -122,7 +122,7 @@ Added spec.SPEC-007 to PLAN-001 scope as a PENDING part. Progress Dashboard upda
 - Scope: artifact
 - Target: ADR-001
 
-User directed transition from F-4 locked state ("Standalone local-only git repo (no remote initially)") to remote-tracked. Remote chosen: git@github.com:loriensleafs/skills.git (private GitHub repo, loriensleafs namespace). Migration path: Option C (keep feat/plan-001-skills-ecosystem as working branch; create main from current HEAD as long-lived integration branch; push both; main becomes GitHub default). User directive: /end pipeline's PR-creation step (Step 4f) runs AUTOMATICALLY going forward, no per-session opt-out.
+User directed transition from F-4 locked state ("Standalone local-only git repo (no remote initially)") to remote-tracked. Remote chosen: <git@github.com>:loriensleafs/skills.git (private GitHub repo, loriensleafs namespace). Migration path: Option C (keep feat/plan-001-skills-ecosystem as working branch; create main from current HEAD as long-lived integration branch; push both; main becomes GitHub default). User directive: /end pipeline's PR-creation step (Step 4f) runs AUTOMATICALLY going forward, no per-session opt-out.
 
 ADR-001 Clarifications section updated with the F-4 evolution entry; frontmatter updated field refreshed from 2026-05-19 to 2026-05-20. brain:---adr-review NOT re-run — Clarifications updates are documentation evolutions of already-ACCEPTED decisions per CONVENTIONS Section 3.1, not new architectural decisions. The F-4 reversibility assessment ("Adding a remote is a single git remote add command. No architectural impact.") explicitly anticipated this transition.
 
@@ -132,13 +132,14 @@ Operational consequence: claude/settings.json permissions.deny rules still block
 
 - Type: state-change
 - Scope: artifact
-- Target: skills repo / remote at git@github.com:loriensleafs/skills.git
+- Target: skills repo / remote at <git@github.com>:loriensleafs/skills.git
 
-User executed Option C migration commands in a separate terminal (outside Claude Code; permissions.deny rules block git push from within sessions). Sequence executed: git checkout -b main (created main from feat HEAD); git remote add origin git@github.com:loriensleafs/skills.git; git push -u origin main (370 objects, 321 KiB, set up tracking); git checkout feat/plan-001-skills-ecosystem; git push -u origin feat/plan-001-skills-ecosystem (0 deltas — feat identical to main at push time, as expected per Option C; tracking set up).
+User executed Option C migration commands in a separate terminal (outside Claude Code; permissions.deny rules block git push from within sessions). Sequence executed: git checkout -b main (created main from feat HEAD); git remote add origin <git@github.com>:loriensleafs/skills.git; git push -u origin main (370 objects, 321 KiB, set up tracking); git checkout feat/plan-001-skills-ecosystem; git push -u origin feat/plan-001-skills-ecosystem (0 deltas — feat identical to main at push time, as expected per Option C; tracking set up).
 
 Verification: gh repo view loriensleafs/skills succeeded (gh auth works; repo exists; no description and no README per GitHub's "This repository does not have a README" notice — both deferred as low-priority cleanup); gh pr list returned 0 open PRs (correct — feat and main at identical commits at push time); git log origin/main..feat/plan-001-skills-ecosystem empty output (confirms feat is not ahead of main yet — first PR happens when feat accrues new commits).
 
 Operational consequences:
+
 - F-4 evolution is now operational, not just locked-in-decision: remote exists; branches tracked.
 - Future commits to feat/plan-001-skills-ecosystem accrue ahead of main; the first /end pipeline run after the deny rules are lifted will execute Step 4f gh pr create automatically per the locked policy.
 - Deferred cleanup (user awareness, not blockers): .gitignore not yet authored (root and docs/planning .DS_Store currently untracked); no README.md yet; default branch on GitHub likely already main (first-pushed) but not explicitly verified via gh repo edit; permissions.deny entries (gh pr create:*, git push:*) still in place — lift those to enable /end auto-PR going forward.
@@ -147,7 +148,7 @@ Operational consequences:
 
 - [outcome] Drift remediation of PLAN-001 H4 subsection placeholders complete via commit f280c0f; 24 subsections populated across 6 spec.SPEC-NNN parts + 3 fixes to decisions.1 + 1 fix to decisions.2 + 2 fixes to spec-decomposition + top-level Blockers + Cross-Part Deps Graph #drift-remediation #plan-001
 - [outcome] Initial push to remote completed 2026-05-20 (370 objects, 321 KiB); main + feat/plan-001-skills-ecosystem both tracking origin; F-4 evolution operational #remote-pushed #f4-operational
-- [decision] ADR-001 F-4 evolved: remote added at git@github.com:loriensleafs/skills.git; auto PR creation locked for /end Step 4f going forward; Clarifications-entry-only update (no adr-review re-run) per F-4's anticipated-transition rationale #adr-evolution #remote-added #auto-pr
+- [decision] ADR-001 F-4 evolved: remote added at <git@github.com>:loriensleafs/skills.git; auto PR creation locked for /end Step 4f going forward; Clarifications-entry-only update (no adr-review re-run) per F-4's anticipated-transition rationale #adr-evolution #remote-added #auto-pr
 - [decision] 11 architectural decisions locked for plan/session note render architecture; captured in ANALYSIS-002 with full rationale + alternatives; formal ADR-003 + brain:---adr-review cycle deferred #adr-pending
 - [insight] basic-memory edit_note replace_section silently appends new H2 sections at file bottom when targeting H4 subsections; required sed truncation as binary-rule exception per CONVENTIONS Section 1.7.1 #brain-mcp-quirk #remediation
 - [insight] basic-memory bullet parser strict validation rejects any prose bullet containing double-bracket wikilink syntax; workaround is plain-text title references in prose + wikilinks reserved for Relations section #brain-mcp-bullet-parser

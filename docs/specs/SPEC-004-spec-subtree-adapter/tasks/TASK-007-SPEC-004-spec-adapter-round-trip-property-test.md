@@ -26,12 +26,14 @@ Implement the round-trip property test for the SPEC subtree adapter that proves 
 ## Scope
 
 **In Scope**:
+
 - Round-trip property test at _shared/composition/tests/spec-subtree-adapter.test.ts
 - Per-file SHA-256 comparison (root + all children)
 - Programmatic inverse plan generation (swap source/dest, invert all maps)
 - Error diagnostics: on failure, report which file drifted and first divergence point
 
 **Out of Scope**:
+
 - Adapter implementation (TASK-001 through TASK-004)
 - Fixtures (TASK-006)
 - ADR/ANALYSIS/SESSION adapter tests (covered by SPEC-001 and SPEC-002)

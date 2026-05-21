@@ -2,7 +2,7 @@
 title: 'DESIGN-001-SPEC-001: Composition Library Module Structure'
 type: design
 permalink: specs/spec-001-composition-core-and-adr-adapter/design/design-001-spec-001-composition-library-module-structure
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-001

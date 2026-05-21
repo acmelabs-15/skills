@@ -56,15 +56,18 @@ The following requirements are addressed by this SPEC:
 ANALYSIS and SESSION adapter classes plus cross-source handler.
 
 #### Requirements
+
 - [ ] [[REQ-001-SPEC-002: ANALYSIS Adapter Implementation]]
 - [ ] [[REQ-002-SPEC-002: SESSION Adapter Implementation]]
 - [ ] [[REQ-003-SPEC-002: SESSION Cross-Source Updates Handling]]
 
 #### Design
+
 - [ ] [[DESIGN-001-SPEC-002: BaseMarkdownAdapter Configuration Pattern]]
 - [ ] [[DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol]]
 
 #### Tasks
+
 - [ ] [[TASK-001-SPEC-002: Implement ANALYSIS Adapter]] (S, 0.5d)
 - [ ] [[TASK-002-SPEC-002: Implement SESSION Adapter]] (S, 0.5d)
 - [ ] [[TASK-003-SPEC-002: Implement SESSION Cross-Source Updates Handler]] (S, 0.5d)
@@ -74,10 +77,12 @@ ANALYSIS and SESSION adapter classes plus cross-source handler.
 Dispatcher extension, Zod schema extension, and round-trip property tests.
 
 #### Requirements
+
 - [ ] [[REQ-004-SPEC-002: Adapter Registry Extension]]
 - [ ] [[REQ-005-SPEC-002: Round-Trip Property Tests for ANALYSIS and SESSION]]
 
 #### Tasks
+
 - [ ] [[TASK-004-SPEC-002: Register ANALYSIS and SESSION Adapters in Dispatcher]] (S, 1d)
 - [ ] [[TASK-005-SPEC-002: Implement ANALYSIS Adapter Round-Trip Property Test]] (S, 0.5d)
 - [ ] [[TASK-006-SPEC-002: Implement SESSION Adapter Round-Trip Property Test]] (S, 1d)

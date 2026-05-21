@@ -37,9 +37,11 @@ Implement the SESSION adapter as a concrete subclass of BaseMarkdownAdapter at _
 ## Scope
 
 **In Scope**:
+
 - _shared/composition/src/adapters/session.ts (Create)
 
 **Out of Scope**:
+
 - Cross-source updates handler (TASK-003-SPEC-002)
 - Registry extension (TASK-004-SPEC-002)
 - Round-trip property test (TASK-006-SPEC-002)

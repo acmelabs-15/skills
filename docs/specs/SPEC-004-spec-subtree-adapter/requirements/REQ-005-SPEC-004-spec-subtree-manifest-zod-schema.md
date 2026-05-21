@@ -35,6 +35,7 @@ Functional
 ADR-002 D-1 specifies the SPEC extension to the plan YAML schema, adding a subtree_manifest field with a structured manifest of root and child files. ADR-002 D-5 specifies the Zod shape for specSubtreeManifestSchema with root (source_path + mutations) and children (array of source_path + dest_path + mutations + optional filename_rewrite_map).
 
 The schema must validate:
+
 - Root entry has source_path (string) and mutations (MutationSpec with renumber_map, wikilink_map, optional frontmatter_map)
 - Children array contains entries with source_path, dest_path, mutations, and optional filename_rewrite_map
 - All renumber_map entries across root and children are injective with disjoint key-value domains (reusing the injectiveDisjointMap validator from SPEC-001 REQ-005-SPEC-001)
@@ -57,7 +58,7 @@ Both distribution and composition plan variants for source_type "spec" use the s
 
 ## Implementation Notes
 
-The specSubtreeManifestSchema extends the SPEC-specific plan schema files at _shared/composition/schemas/distribution/spec.plan.schema.ts and _shared/composition/schemas/composition/spec.plan.schema.ts. It is registered in the discriminated union assembly at schemas/index.ts. The schema reuses existing validators (injectiveDisjointMap, containedPathSchema) from SPEC-001 to avoid duplication.
+The specSubtreeManifestSchema extends the SPEC-specific plan schema files at _shared/composition/schemas/distribution/spec.plan.schema.ts and_shared/composition/schemas/composition/spec.plan.schema.ts. It is registered in the discriminated union assembly at schemas/index.ts. The schema reuses existing validators (injectiveDisjointMap, containedPathSchema) from SPEC-001 to avoid duplication.
 
 ## Observations
 

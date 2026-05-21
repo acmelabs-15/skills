@@ -51,12 +51,14 @@ class SpecSubtreeAdapter implements CompositionAdapter {
 ```
 
 **Responsibilities**:
+
 - Implements 5-method CompositionAdapter interface for per-file content operations
 - Provides processSubtree() method for manifest-driven orchestration
 - Coordinates per-file hash validation across all subtree files
 - Manages cluster-level atomic write and rollback
 
 **Interfaces**:
+
 - Consumed by: composition script (decompose.ts / recompose.ts) via adapter dispatch
 - Composes with: sha256() from core/hash.ts, stage/rename/cleanup from core/atomic-write.ts
 
@@ -83,6 +85,7 @@ function orchestrateSubtree(
 ```
 
 **Responsibilities**:
+
 - Iterates manifest entries (root first, then children in order)
 - For each entry: read source, extract, apply mutations, stage to .tmp
 - After all files staged: run per-file hash validation
@@ -101,6 +104,7 @@ function reverseFrontmatterMap(content: string, map: Record<string, string>): st
 ```
 
 **Responsibilities**:
+
 - Parses YAML frontmatter block (between --- delimiters)
 - Replaces specified field values without disturbing other fields
 - Computes inverse by swapping keys and values in the map

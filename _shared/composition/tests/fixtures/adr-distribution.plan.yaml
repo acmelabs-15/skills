@@ -1,0 +1,29 @@
+# Distribution (decompose) plan for adr-sample.md
+# This file is a documentation fixture; the round-trip test reads the
+# renumber_map directly as a TypeScript object, not by parsing this YAML.
+plan_type: distribution
+source_type: adr
+source_path: tests/fixtures/adr-sample.md
+clusters:
+  cluster_a:
+    description: First cluster — early decisions about parsing and mutation
+    decisions:
+      - D-1
+      - D-2
+    renumbered_to:
+      - D-100
+      - D-101
+  cluster_b:
+    description: Second cluster — later decisions about persistence and validation
+    decisions:
+      - D-3
+      - D-4
+    renumbered_to:
+      - D-200
+      - D-201
+renumber_map:
+  D-1: D-100
+  D-2: D-101
+  D-3: D-200
+  D-4: D-201
+wikilink_map: {}

@@ -50,7 +50,7 @@ The test uses realistic fixtures that include a SPEC root note with frontmatter,
 
 ## Implementation Notes
 
-The test fixture lives at _shared/composition/tests/fixtures/ and includes a realistic SPEC subtree directory. The test file lives at _shared/composition/tests/spec-subtree-adapter.test.ts. The test generates the inverse plan programmatically by swapping source/destination paths and inverting all mutation maps (renumber_map, wikilink_map, frontmatter_map, filename_rewrite_map). This ensures the test does not depend on hand-crafted inverse plans that could themselves contain errors.
+The test fixture lives at _shared/composition/tests/fixtures/ and includes a realistic SPEC subtree directory. The test file lives at_shared/composition/tests/spec-subtree-adapter.test.ts. The test generates the inverse plan programmatically by swapping source/destination paths and inverting all mutation maps (renumber_map, wikilink_map, frontmatter_map, filename_rewrite_map). This ensures the test does not depend on hand-crafted inverse plans that could themselves contain errors.
 
 ## Observations
 

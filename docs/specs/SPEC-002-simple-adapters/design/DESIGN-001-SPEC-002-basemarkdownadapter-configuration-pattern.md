@@ -41,10 +41,12 @@ export class AnalysisAdapter extends BaseMarkdownAdapter {
 ```
 
 **Responsibilities**:
+
 - Provides ANALYSIS-specific configuration to BaseMarkdownAdapter
 - Registers as source_type "analysis" in the adapter dispatcher
 
 **Interfaces**:
+
 - Consumed by: adapter dispatcher (source_type resolution), decompose.ts, recompose.ts
 - Implemented by: single concrete class (no further subclassing expected)
 
@@ -65,11 +67,13 @@ export class SessionAdapter extends BaseMarkdownAdapter {
 ```
 
 **Responsibilities**:
+
 - Provides SESSION-specific configuration to BaseMarkdownAdapter
 - Declares cross_source_updates support via supportsCrossSourceUpdates flag
 - Registers as source_type "session" in the adapter dispatcher
 
 **Interfaces**:
+
 - Consumed by: adapter dispatcher, decompose.ts, recompose.ts, cross-source coordination protocol
 - Implemented by: single concrete class
 
@@ -90,10 +94,12 @@ interface AdapterConfig {
 ```
 
 **Responsibilities**:
+
 - Constrains the configuration surface to a known set of properties
 - Ensures type safety across all BaseMarkdownAdapter subclasses
 
 **Interfaces**:
+
 - Consumed by: BaseMarkdownAdapter constructor
 - Implemented by: AnalysisAdapter, SessionAdapter, AdrAdapter (from SPEC-001)
 

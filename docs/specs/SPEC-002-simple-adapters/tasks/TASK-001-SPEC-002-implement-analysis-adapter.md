@@ -36,9 +36,11 @@ Implement the ANALYSIS adapter as a concrete subclass of BaseMarkdownAdapter at 
 ## Scope
 
 **In Scope**:
+
 - _shared/composition/src/adapters/analysis.ts (Create)
 
 **Out of Scope**:
+
 - Registry extension (TASK-004-SPEC-002)
 - Round-trip property test (TASK-005-SPEC-002)
 - Zod schema extension (handled as part of TASK-004-SPEC-002)

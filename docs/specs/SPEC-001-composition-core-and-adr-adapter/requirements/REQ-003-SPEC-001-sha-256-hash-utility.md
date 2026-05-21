@@ -2,7 +2,7 @@
 title: 'REQ-003-SPEC-001: SHA-256 Hash Utility'
 type: requirement
 permalink: specs/spec-001-composition-core-and-adr-adapter/requirements/req-003-spec-001-sha-256-hash-utility
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-001
@@ -36,19 +36,19 @@ ADR-002 D-2 P1-I resolution specifies that hash() is NOT part of the Composition
 
 ## Acceptance Criteria
 
-- [ ] GIVEN a string input
+- [x] GIVEN a string input
       WHEN sha256(input) is called
       THEN it returns the hex-encoded SHA-256 hash of the input
 
-- [ ] GIVEN two identical strings
+- [x] GIVEN two identical strings
       WHEN sha256 is called on each
       THEN the returned hashes are identical
 
-- [ ] GIVEN two strings differing by a single character
+- [x] GIVEN two strings differing by a single character
       WHEN sha256 is called on each
       THEN the returned hashes differ
 
-- [ ] GIVEN the sha256 utility
+- [x] GIVEN the sha256 utility
       WHEN imported from _shared/composition/src/core/hash.ts
       THEN it uses Bun.hash("sha256", ...) internally per ADR-001 F-6
 

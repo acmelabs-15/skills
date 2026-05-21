@@ -2,7 +2,7 @@
 title: 'TASK-002-SPEC-001: Define Core Types and Adapter Interface'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-002-spec-001-define-core-types-and-adapter-interface
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -25,11 +25,13 @@ Define CompositionAdapter interface, LineRange, RenumberMap, WikilinkMap, Frontm
 ## Scope
 
 **In Scope**:
+
 - types.ts with all 5 shared types (LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec)
 - adapter.ts with CompositionAdapter interface (5 methods + sourceType property)
 - JSDoc comments on all types and methods matching ADR-002 D-2 specification
 
 **Out of Scope**:
+
 - Implementation of the interface (handled by TASK-004 BaseMarkdownAdapter and TASK-008 ADR adapter)
 
 ## Implementation Notes
@@ -50,15 +52,15 @@ Types must exactly match the signatures in ADR-002 D-2. The Root type import com
 
 ## Definition of Done
 
-- [ ] types.ts exports LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec matching ADR-002 D-2
-- [ ] adapter.ts exports CompositionAdapter interface with all 5 methods + sourceType
-- [ ] JSDoc on all types and methods per ADR-002 D-2 specification
-- [ ] tsc --noEmit passes
+- [x] types.ts exports LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec matching ADR-002 D-2
+- [x] adapter.ts exports CompositionAdapter interface with all 5 methods + sourceType
+- [x] JSDoc on all types and methods per ADR-002 D-2 specification
+- [x] tsc --noEmit passes
 
 ## ADR Compliance
 
-- [ ] Honors ADR-002 D-2: interface matches specification exactly
-- [ ] Honors ADR-001 D-2: Root type from mdast
+- [x] Honors ADR-002 D-2: interface matches specification exactly
+- [x] Honors ADR-001 D-2: Root type from mdast
 
 ## Effort Summary
 
@@ -75,6 +77,8 @@ Types must exactly match the signatures in ADR-002 D-2. The Root type import com
 - [constraint] All methods synchronous per ADR-002 Axis 1 decision #sync #interface
 
 ## Relations
+
+- validated_by [[TEST-REPORT-002-SPEC-001: Core Types and Adapter Interface]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy]]

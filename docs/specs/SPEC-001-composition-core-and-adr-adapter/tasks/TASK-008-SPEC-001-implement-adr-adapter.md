@@ -2,7 +2,7 @@
 title: 'TASK-008-SPEC-001: Implement ADR Adapter'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-008-spec-001-implement-adr-adapter
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -48,17 +48,17 @@ The ADR adapter overrides only configuration properties per ADR-002 D-3. The H3 
 
 ## Definition of Done
 
-- [ ] AdrAdapter class exported from src/adapters/adr.ts
-- [ ] Extends BaseMarkdownAdapter with section_delimiter="### " and identifier_pattern=/D-(\d+)/
-- [ ] sourceType === "adr"
-- [ ] H3 extraction under ## Decision works correctly
-- [ ] Unit tests pass for all 5 inherited methods
-- [ ] D-N renumber via applyMutations works with single-pass replacement
+- [x] AdrAdapter class exported from src/adapters/adr.ts
+- [x] Extends BaseMarkdownAdapter with section_delimiter="### " and identifier_pattern=/D-(\d+)/
+- [x] sourceType === "adr"
+- [x] H3 extraction under ## Decision works correctly
+- [x] Unit tests pass for all 5 inherited methods
+- [x] D-N renumber via applyMutations works with single-pass replacement
 
 ## ADR Compliance
 
-- [ ] Honors ADR-002 D-3: ADR adapter capability matrix
-- [ ] Honors ADR-002 D-4: ADR hash extraction strategy
+- [x] Honors ADR-002 D-3: ADR adapter capability matrix
+- [x] Honors ADR-002 D-4: ADR hash extraction strategy
 
 ## Effort Summary
 
@@ -76,6 +76,7 @@ The ADR adapter overrides only configuration properties per ADR-002 D-3. The H3 
 
 ## Relations
 
+- validated_by [[TEST-REPORT-008-SPEC-001: ADR Adapter]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-007-SPEC-001: ADR Adapter Implementation]]
 - implements [[DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy]]

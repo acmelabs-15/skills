@@ -53,6 +53,7 @@ function validateSubtreeHashes(
 ```
 
 **Responsibilities**:
+
 - Iterates manifest entries (root + children)
 - For each entry: extract source content, extract staged (mutated) content
 - Apply reverseMutations (inverse renumber_map + inverse wikilink_map + inverse frontmatter_map) to staged content
@@ -74,6 +75,7 @@ function rollbackCluster(
 ```
 
 **Responsibilities**:
+
 - Removes all .tmp files unconditionally
 - If any destination files were already renamed (failure during rename phase), removes those too
 - Logs each cleanup action for audit trail

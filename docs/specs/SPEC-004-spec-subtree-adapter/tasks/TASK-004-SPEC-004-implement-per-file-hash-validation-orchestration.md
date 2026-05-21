@@ -25,6 +25,7 @@ Implement the per-file hash validation orchestration that validates SHA-256 char
 ## Scope
 
 **In Scope**:
+
 - validateSubtreeHashes(adapter, manifest, sourceContents, stagedContents) function
 - Per-file 4-step hash protocol implementation
 - ClusterRollback function (remove all .tmp files on failure)
@@ -32,6 +33,7 @@ Implement the per-file hash validation orchestration that validates SHA-256 char
 - Integration with SubtreeOrchestrator validation phase
 
 **Out of Scope**:
+
 - Content mutation logic (handled by TASK-001 and TASK-002)
 - Filename rewrite (handled by TASK-003)
 - The sha256() utility itself (from SPEC-001 REQ-003-SPEC-001)

@@ -58,13 +58,16 @@ The following requirements are addressed by this SPEC:
 Establishes the adapter skeleton and Zod validation.
 
 #### Requirements
+
 - [ ] REQ-001-SPEC-004: SPEC Subtree Adapter Implementation
 - [ ] REQ-005-SPEC-004: SPEC Subtree Manifest Zod Schema
 
 #### Design
+
 - [ ] DESIGN-001-SPEC-004: SPEC Subtree Adapter Architecture
 
 #### Tasks
+
 - [ ] TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base (M, 2d)
 - [ ] TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator (S, 1d)
 
@@ -73,13 +76,16 @@ Establishes the adapter skeleton and Zod validation.
 Implements frontmatter and filename mutation capabilities.
 
 #### Requirements
+
 - [ ] REQ-002-SPEC-004: Frontmatter Map Mutations
 - [ ] REQ-003-SPEC-004: Filename Rewrite Per Child
 
 #### Design
+
 - [ ] DESIGN-002-SPEC-004: Filename Rewrite Coordination
 
 #### Tasks
+
 - [ ] TASK-002-SPEC-004: Implement Frontmatter Map Handler (S, 1d)
 - [ ] TASK-003-SPEC-004: Implement Filename Rewrite Handler (S, 1d)
 
@@ -88,13 +94,16 @@ Implements frontmatter and filename mutation capabilities.
 Implements per-file hash validation and the round-trip property test that proves zero drift.
 
 #### Requirements
+
 - [ ] REQ-004-SPEC-004: Per-File Hash Validation
 - [ ] REQ-006-SPEC-004: SPEC Subtree Adapter Round-Trip Property Test
 
 #### Design
+
 - [ ] DESIGN-003-SPEC-004: Per-File Hash Validation Strategy
 
 #### Tasks
+
 - [ ] TASK-004-SPEC-004: Implement Per-File Hash Validation Orchestration (M, 2d)
 - [ ] TASK-006-SPEC-004: SPEC Subtree Test Fixtures (S, 1d)
 - [ ] TASK-007-SPEC-004: SPEC Adapter Round-Trip Property Test (M, 2d)

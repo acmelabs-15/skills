@@ -2,7 +2,7 @@
 title: 'TASK-006-SPEC-001: Implement Injectivity and Path Containment Validators'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-006-spec-001-implement-injectivity-and-path-containment-validators
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -47,15 +47,15 @@ injectiveDisjointMap uses Set operations per ADR-002 D-5 spec. containedPathSche
 
 ## Definition of Done
 
-- [ ] injectiveDisjointMap exported and validates both injectivity and disjointness
-- [ ] containedPathSchema exported with async realpath + path.sep containment check
-- [ ] Error messages are descriptive per ADR-002 D-5
-- [ ] Unit tests cover all edge cases (5+ test cases)
+- [x] injectiveDisjointMap exported and validates both injectivity and disjointness
+- [x] containedPathSchema exported with async realpath + path.sep containment check
+- [x] Error messages are descriptive per ADR-002 D-5
+- [x] Unit tests cover all edge cases (5+ test cases)
 
 ## ADR Compliance
 
-- [ ] Honors ADR-001 F-8: Injectivity is BLOCKING validator gate
-- [ ] Honors ADR-002 D-5: Validator structure matches specification
+- [x] Honors ADR-001 F-8: Injectivity is BLOCKING validator gate
+- [x] Honors ADR-002 D-5: Validator structure matches specification
 
 ## Effort Summary
 
@@ -72,6 +72,8 @@ injectiveDisjointMap uses Set operations per ADR-002 D-5 spec. containedPathSche
 - [technique] Set operations for injectivity check are O(n) and trivially correct #set-operations #algorithm
 
 ## Relations
+
+- validated_by [[TEST-REPORT-006-SPEC-001: Injectivity and Path Containment Validators]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-005-SPEC-001: Injectivity and Path Containment Validators]]

@@ -25,6 +25,7 @@ Implement the filename rewrite logic that applies filename_rewrite_map entries f
 ## Scope
 
 **In Scope**:
+
 - applyFilenameRewrites(manifest, destDir) function
 - validateFilenameRewrites(manifest, destDir) pre-flight check
 - rollbackFilenameRewrites(completedRewrites) function
@@ -32,6 +33,7 @@ Implement the filename rewrite logic that applies filename_rewrite_map entries f
 - Bun filesystem rename operations
 
 **Out of Scope**:
+
 - Content mutations (handled by TASK-001 and TASK-002)
 - Hash validation (handled by TASK-004)
 

@@ -94,7 +94,7 @@ None.
 ### P1-J: BaseMarkdownAdapter pattern (PENDING)
 
 - **Source**: independent-thinker P1-2
-- **Finding**: ADR + ANALYSIS + SESSION differ mostly in `section_delimiter` value (`### ` vs `## ` vs `## Event `). 3 of 5 adapters could share a parameterized base class. PLAN and SPEC genuinely need distinct adapters.
+- **Finding**: ADR + ANALYSIS + SESSION differ mostly in `section_delimiter` value (`###` vs `##` vs `## Event`). 3 of 5 adapters could share a parameterized base class. PLAN and SPEC genuinely need distinct adapters.
 - **Resolution**: PENDING. Add note to D-3 capability matrix indicating BaseMarkdownAdapter is the impl pattern for 3 simple adapters (ADR + ANALYSIS + SESSION) with config-only overrides. PLAN and SPEC remain distinct. Does not change interface contract; reduces implementation LOC.
 
 ## P2 Issues (13 items documented for tracking)

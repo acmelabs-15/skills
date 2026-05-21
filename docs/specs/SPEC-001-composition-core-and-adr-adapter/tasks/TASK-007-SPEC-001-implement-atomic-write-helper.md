@@ -2,7 +2,7 @@
 title: 'TASK-007-SPEC-001: Implement Atomic Write Helper'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-007-spec-001-implement-atomic-write-helper
-status: TODO
+status: DONE
 effort: S
 estimate: 0.25d
 tags:
@@ -47,16 +47,16 @@ Uses Bun.write for staging (ADR-001 F-6). Uses fs.renameSync for POSIX atomic re
 
 ## Definition of Done
 
-- [ ] stage, rename, cleanup exported from src/core/atomic-write.ts
-- [ ] Uses Bun.write for staging per ADR-001 F-6
-- [ ] POSIX rename for atomicity
-- [ ] Cluster all-or-nothing helper function works correctly
-- [ ] Unit tests pass
+- [x] stage, rename, cleanup exported from src/core/atomic-write.ts
+- [x] Uses Bun.write for staging per ADR-001 F-6
+- [x] POSIX rename for atomicity
+- [x] Cluster all-or-nothing helper function works correctly
+- [x] Unit tests pass
 
 ## ADR Compliance
 
-- [ ] Honors ADR-001 F-8: Write-to-temp-then-rename rollback mechanism
-- [ ] Honors ADR-001 F-6: Bun.write for file I/O
+- [x] Honors ADR-001 F-8: Write-to-temp-then-rename rollback mechanism
+- [x] Honors ADR-001 F-6: Bun.write for file I/O
 
 ## Effort Summary
 
@@ -73,6 +73,8 @@ Uses Bun.write for staging (ADR-001 F-6). Uses fs.renameSync for POSIX atomic re
 - [constraint] Must handle stale .tmp files from previous crashed runs #crash-recovery #cleanup
 
 ## Relations
+
+- validated_by [[TEST-REPORT-007-SPEC-001: Atomic Write Helper]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-006-SPEC-001: Atomic Write-to-Temp-Then-Rename Rollback]]

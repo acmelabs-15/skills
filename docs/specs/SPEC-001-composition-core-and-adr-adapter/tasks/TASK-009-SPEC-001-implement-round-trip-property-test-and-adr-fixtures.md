@@ -2,7 +2,7 @@
 title: 'TASK-009-SPEC-001: Implement Round-Trip Property Test and ADR Fixtures'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-009-spec-001-implement-round-trip-property-test-and-adr-fixtures
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -49,18 +49,18 @@ The ADR fixture should be 200-500 lines with multiple D-N sections, wikilinks, Y
 
 ## Definition of Done
 
-- [ ] round-trip.test.ts implements full decompose-then-recompose cycle with SHA-256 assertion
-- [ ] ADR fixture is realistic (200+ lines with D-N sections, frontmatter, wikilinks, code blocks)
-- [ ] Fixture plans exercise non-trivial renumber_map with disjoint key-value domains
-- [ ] parse/serialize identity precondition test passes
-- [ ] applyMutations/reverseMutations inverse precondition test passes
-- [ ] Full round-trip SHA-256 assertion passes (THE PROOF)
-- [ ] bun test runs all tests successfully
+- [x] round-trip.test.ts implements full decompose-then-recompose cycle with SHA-256 assertion
+- [x] ADR fixture is realistic (200+ lines with D-N sections, frontmatter, wikilinks, code blocks)
+- [x] Fixture plans exercise non-trivial renumber_map with disjoint key-value domains
+- [x] parse/serialize identity precondition test passes
+- [x] applyMutations/reverseMutations inverse precondition test passes
+- [x] Full round-trip SHA-256 assertion passes (THE PROOF)
+- [x] bun test runs all tests successfully
 
 ## ADR Compliance
 
-- [ ] Honors ADR-001 F-8: SHA-256(original) === SHA-256(recomposed) is the PROOF gate
-- [ ] Honors ADR-001 F-6: Uses bun test runner
+- [x] Honors ADR-001 F-8: SHA-256(original) === SHA-256(recomposed) is the PROOF gate
+- [x] Honors ADR-001 F-6: Uses bun test runner
 
 ## Effort Summary
 
@@ -79,6 +79,7 @@ The ADR fixture should be 200-500 lines with multiple D-N sections, wikilinks, Y
 
 ## Relations
 
+- validated_by [[TEST-REPORT-009-SPEC-001: Round-Trip Property Test]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[REQ-008-SPEC-001: Round-Trip Property Test for ADR Adapter]]
 - implements [[REQ-003-SPEC-001: SHA-256 Hash Utility]]

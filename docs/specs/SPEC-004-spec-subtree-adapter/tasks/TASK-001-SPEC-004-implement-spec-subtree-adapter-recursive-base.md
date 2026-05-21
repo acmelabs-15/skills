@@ -25,6 +25,7 @@ Create the SpecSubtreeAdapter class at _shared/composition/src/adapters/spec-sub
 ## Scope
 
 **In Scope**:
+
 - SpecSubtreeAdapter class implementing CompositionAdapter at _shared/composition/src/adapters/spec-subtree.ts
 - 5-method interface implementation (parse, extractByRange, applyMutations, reverseMutations, serialize) using unified + remark pipeline
 - processSubtree() method with manifest iteration skeleton
@@ -32,6 +33,7 @@ Create the SpecSubtreeAdapter class at _shared/composition/src/adapters/spec-sub
 - Export from adapters barrel file
 
 **Out of Scope**:
+
 - Frontmatter mutation logic (TASK-002)
 - Filename rewrite logic (TASK-003)
 - Per-file hash validation orchestration (TASK-004)

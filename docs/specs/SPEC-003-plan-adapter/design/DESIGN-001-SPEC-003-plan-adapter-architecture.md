@@ -51,12 +51,14 @@ export class PlanAdapter implements CompositionAdapter {
 ```
 
 **Responsibilities**:
+
 - Implements all 5 CompositionAdapter methods directly (no base class inheritance)
 - Handles regenerated_sections exclusion in extractByRange and reverseMutations
 - Handles frontmatter_map mutations in applyMutations and reverseMutations
 - Registers as source_type "plan" in the adapter dispatcher
 
 **Interfaces**:
+
 - Consumed by: adapter dispatcher (source_type resolution), decompose.ts, recompose.ts
 - Implements: CompositionAdapter from _shared/composition/src/core/adapter.ts
 
@@ -85,11 +87,13 @@ function stripRegenerativeSections(
 ```
 
 **Responsibilities**:
+
 - Scans content for headings matching regenerated_sections names
 - Computes the line range of each regenerative section (from heading to next heading of equal or higher level)
 - Strips regenerative sections from content for hash comparison
 
 **Interfaces**:
+
 - Consumed by: PlanAdapter.extractByRange, PlanAdapter.reverseMutations
 - Internal helper (not exported from the adapter module)
 
@@ -112,6 +116,7 @@ function reverseFrontmatterMap(
 ```
 
 **Responsibilities**:
+
 - Parses YAML frontmatter block from content
 - Applies field replacements from frontmatter_map
 - Reverses field replacements by swapping keys and values
@@ -119,6 +124,7 @@ function reverseFrontmatterMap(
 - Serializes updated frontmatter back into the content
 
 **Interfaces**:
+
 - Consumed by: PlanAdapter.applyMutations, PlanAdapter.reverseMutations
 - Internal helper (not exported from the adapter module)
 

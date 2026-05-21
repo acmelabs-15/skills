@@ -25,6 +25,7 @@ Create realistic test fixtures for the SPEC subtree adapter round-trip property 
 ## Scope
 
 **In Scope**:
+
 - Fixture SPEC root note (SPEC-001-test-project.md) with frontmatter, Phases section, Acceptance Criteria, wikilinks to children
 - Fixture REQ note (REQ-001-SPEC-001-test-requirement.md) with EARS format, acceptance criteria, observations, relations
 - Fixture DESIGN note (DESIGN-001-SPEC-001-test-design.md) with component architecture, interfaces, observations, relations
@@ -33,6 +34,7 @@ Create realistic test fixtures for the SPEC subtree adapter round-trip property 
 - Composition plan YAML (spec-composition.plan.yaml) as the inverse of the distribution plan
 
 **Out of Scope**:
+
 - Test implementation code (TASK-007)
 - Non-SPEC fixtures (ADR, ANALYSIS, SESSION fixtures covered by SPEC-001 and SPEC-002)
 

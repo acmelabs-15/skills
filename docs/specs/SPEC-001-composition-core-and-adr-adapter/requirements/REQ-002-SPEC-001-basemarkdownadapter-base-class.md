@@ -2,7 +2,7 @@
 title: 'REQ-002-SPEC-001: BaseMarkdownAdapter Base Class'
 type: requirement
 permalink: specs/spec-001-composition-core-and-adr-adapter/requirements/req-002-spec-001-basemarkdownadapter-base-class
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-001
@@ -38,23 +38,23 @@ The base class implements all 5 CompositionAdapter methods using unified/remark 
 
 ## Acceptance Criteria
 
-- [ ] GIVEN a TypeScript abstract class BaseMarkdownAdapter at _shared/composition/src/core/base-markdown-adapter.ts
+- [x] GIVEN a TypeScript abstract class BaseMarkdownAdapter at _shared/composition/src/core/base-markdown-adapter.ts
       WHEN compiled
       THEN it implements CompositionAdapter interface with concrete implementations of all 5 methods
 
-- [ ] GIVEN BaseMarkdownAdapter
+- [x] GIVEN BaseMarkdownAdapter
       WHEN a subclass provides section_delimiter and identifier_pattern
-      THEN extractByRange returns raw line slices (line-number-bounded; the base class extractByRange is purely line-number-based per Implementation Notes — subclasses that need section-aware extraction implement that logic via overridden methods or external dispatchers, NOT via the base class extractByRange. Clarified per Gate A semantic gap finding 2026-05-19)
+      THEN extractByRange returns raw line slices (line-number-bounded; the base class extractByRange is purely line-number-based per Implementation Notes -- subclasses that need section-aware extraction implement that logic via overridden methods or external dispatchers, NOT via the base class extractByRange. Clarified per Gate A semantic gap finding 2026-05-19)
 
-- [ ] GIVEN BaseMarkdownAdapter with unified/remark pipeline
+- [x] GIVEN BaseMarkdownAdapter with unified/remark pipeline
       WHEN parse is called with valid markdown including YAML frontmatter
       THEN it returns a Root AST with frontmatter node preserved
 
-- [ ] GIVEN BaseMarkdownAdapter serialize method
+- [x] GIVEN BaseMarkdownAdapter serialize method
       WHEN called with a Root AST produced by parse
       THEN serialize(parse(content)) === content holds (round-trip char-identity)
 
-- [ ] GIVEN applyMutations with single-pass replacement semantics
+- [x] GIVEN applyMutations with single-pass replacement semantics
       WHEN called with an injective renumber_map
       THEN all occurrences of each key are replaced with its value in one pass without cascading substitutions
 

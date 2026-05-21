@@ -2,7 +2,7 @@
 title: 'REQ-001-SPEC-001: CompositionAdapter Interface Contract'
 type: requirement
 permalink: specs/spec-001-composition-core-and-adr-adapter/requirements/req-001-spec-001-compositionadapter-interface-contract
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-001
@@ -38,37 +38,37 @@ ADR-001 D-4 locks the discriminated union on source_type, meaning the script dis
 
 ## Acceptance Criteria
 
-- [ ] GIVEN a TypeScript file at _shared/composition/src/core/adapter.ts
+- [x] GIVEN a TypeScript file at _shared/composition/src/core/adapter.ts
       WHEN compiled with tsc strict mode
       THEN the CompositionAdapter interface exports all 5 methods plus sourceType property with correct signatures matching ADR-002 D-2
 
-- [ ] GIVEN any class implementing CompositionAdapter
+- [x] GIVEN any class implementing CompositionAdapter
       WHEN the class omits or mis-types any of the 5 methods
       THEN tsc produces a compile-time error identifying the missing or incorrect method
 
-- [ ] GIVEN the parse method receives valid markdown content
+- [x] GIVEN the parse method receives valid markdown content
       WHEN parse is called
       THEN it returns a remark Root AST node (from @types/mdast)
 
-- [ ] GIVEN the extractByRange method receives content and a LineRange
+- [x] GIVEN the extractByRange method receives content and a LineRange
       WHEN the range specifies start and end lines (1-indexed, inclusive)
       THEN it returns the raw string content within those lines
 
-- [ ] GIVEN applyMutations receives content and a MutationSpec
+- [x] GIVEN applyMutations receives content and a MutationSpec
       WHEN called with an injective renumber_map and wikilink_map
       THEN it returns content with all specified substitutions applied via single-pass replacement
 
-- [ ] GIVEN reverseMutations receives mutated content and the same MutationSpec
+- [x] GIVEN reverseMutations receives mutated content and the same MutationSpec
       WHEN called
       THEN it returns content with inverse substitutions applied such that reverseMutations(applyMutations(content, spec), spec) === content
 
-- [ ] GIVEN the serialize method receives a remark Root AST
+- [x] GIVEN the serialize method receives a remark Root AST
       WHEN called
       THEN it returns markdown string identical to the original content that produced the AST (serialize(parse(content)) === content)
 
 ## Implementation Notes
 
-The interface lives at _shared/composition/src/core/adapter.ts. Supporting types (LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec) live at _shared/composition/src/core/types.ts per ADR-002 D-2. The Root type is imported from mdast. All methods are synchronous per ADR-002 Considered Options Axis 1 (markdown parsing is CPU-bound with no I/O).
+The interface lives at _shared/composition/src/core/adapter.ts. Supporting types (LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec) live at_shared/composition/src/core/types.ts per ADR-002 D-2. The Root type is imported from mdast. All methods are synchronous per ADR-002 Considered Options Axis 1 (markdown parsing is CPU-bound with no I/O).
 
 ## Consumer Implementation Pattern
 

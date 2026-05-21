@@ -2,7 +2,7 @@
 title: 'TASK-004-SPEC-001: Implement BaseMarkdownAdapter'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-004-spec-001-implement-basemarkdownadapter
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -47,19 +47,19 @@ Configure unified().use(remarkParse).use(remarkFrontmatter, ['yaml']).use(remark
 
 ## Definition of Done
 
-- [ ] BaseMarkdownAdapter exported from src/core/base-markdown-adapter.ts
-- [ ] parse returns Root AST from unified/remark pipeline
-- [ ] serialize produces char-identical output (round-trip identity)
-- [ ] extractByRange operates on raw lines correctly for all LineRange forms including end=-1
-- [ ] applyMutations uses single-pass replacement with regex alternation
-- [ ] reverseMutations(applyMutations(c, m), m) === c for all injective MutationSpecs
-- [ ] Unit tests pass covering all 5 methods
+- [x] BaseMarkdownAdapter exported from src/core/base-markdown-adapter.ts
+- [x] parse returns Root AST from unified/remark pipeline
+- [x] serialize produces char-identical output (round-trip identity)
+- [x] extractByRange operates on raw lines correctly for all LineRange forms including end=-1
+- [x] applyMutations uses single-pass replacement with regex alternation
+- [x] reverseMutations(applyMutations(c, m), m) === c for all injective MutationSpecs
+- [x] Unit tests pass covering all 5 methods
 
 ## ADR Compliance
 
-- [ ] Honors ADR-001 D-2: Uses unified + remark pipeline
-- [ ] Honors ADR-002 D-2: Implements CompositionAdapter contract
-- [ ] Honors ADR-002 D-3: Config-only override pattern for simple adapters
+- [x] Honors ADR-001 D-2: Uses unified + remark pipeline
+- [x] Honors ADR-002 D-2: Implements CompositionAdapter contract
+- [x] Honors ADR-002 D-3: Config-only override pattern for simple adapters
 
 ## Effort Summary
 
@@ -77,6 +77,7 @@ Configure unified().use(remarkParse).use(remarkFrontmatter, ['yaml']).use(remark
 
 ## Relations
 
+- validated_by [[TEST-REPORT-004-SPEC-001: BaseMarkdownAdapter]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-002-SPEC-001: CompositionAdapter Interface and Type Hierarchy]]
 - implements [[REQ-002-SPEC-001: BaseMarkdownAdapter Base Class]]

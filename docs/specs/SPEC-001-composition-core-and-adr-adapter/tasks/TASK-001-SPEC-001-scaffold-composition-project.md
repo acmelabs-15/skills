@@ -2,7 +2,7 @@
 title: 'TASK-001-SPEC-001: Scaffold Composition Project'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-001-spec-001-scaffold-composition-project
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -25,6 +25,7 @@ Create the _shared/composition/ project directory with package.json, tsconfig.js
 ## Scope
 
 **In Scope**:
+
 - package.json with runtime deps (zod, unified, remark-parse, remark-stringify, remark-frontmatter, js-yaml) and dev deps (biome, @types/mdast)
 - tsconfig.json with strict mode, target ES2022, moduleResolution bundler
 - biome.json with lint + format config
@@ -34,6 +35,7 @@ Create the _shared/composition/ project directory with package.json, tsconfig.js
 - bun test + biome lint scripts in package.json
 
 **Out of Scope**:
+
 - Source code implementation (handled by TASK-002 through TASK-008)
 - CI pipeline configuration (handled by SPEC-005)
 
@@ -65,18 +67,18 @@ Use bun init or manual creation. Ensure all Bun-native APIs are available. The p
 
 ## Definition of Done
 
-- [ ] package.json contains all required runtime and dev dependencies per ADR-001 F-6 + D-1 + D-2
-- [ ] tsconfig.json compiles with strict mode enabled and no errors
-- [ ] biome.json lint + format config present and passing
-- [ ] All subdirectories created per DESIGN-001-SPEC-001 module structure
-- [ ] README.md documents library purpose and adapter contract overview
-- [ ] bun install + bun test + biome check all pass
+- [x] package.json contains all required runtime and dev dependencies per ADR-001 F-6 + D-1 + D-2
+- [x] tsconfig.json compiles with strict mode enabled and no errors
+- [x] biome.json lint + format config present and passing
+- [x] All subdirectories created per DESIGN-001-SPEC-001 module structure
+- [x] README.md documents library purpose and adapter contract overview
+- [x] bun install + bun test + biome check all pass
 
 ## ADR Compliance
 
-- [ ] Honors ADR-001 F-6: Bun + TypeScript with biome for lint/format
-- [ ] Honors ADR-001 D-1: Zod listed as runtime dependency
-- [ ] Honors ADR-001 D-2: unified + remark packages listed as runtime dependencies
+- [x] Honors ADR-001 F-6: Bun + TypeScript with biome for lint/format
+- [x] Honors ADR-001 D-1: Zod listed as runtime dependency
+- [x] Honors ADR-001 D-2: unified + remark packages listed as runtime dependencies
 
 ## Effort Summary
 
@@ -93,6 +95,8 @@ Use bun init or manual creation. Ensure all Bun-native APIs are available. The p
 - [constraint] All dependencies must be Bun-compatible per ADR-001 F-6 #bun #compatibility
 
 ## Relations
+
+- validated_by [[TEST-REPORT-001-SPEC-001: Scaffold Composition Project]]
 
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-001-SPEC-001: Composition Library Module Structure]]

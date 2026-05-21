@@ -34,11 +34,13 @@ Create the /recompose skill definition (SKILL.md) and the recompose.ts CLI entry
 ## Scope
 
 **In Scope**:
+
 - recompose/SKILL.md
 - _shared/composition/src/recompose.ts
 - Unit tests for recompose.ts
 
 **Out of Scope**:
+
 - decompose.ts (TASK-001-SPEC-005)
 - Adapter implementations (SPEC-001 through SPEC-004)
 

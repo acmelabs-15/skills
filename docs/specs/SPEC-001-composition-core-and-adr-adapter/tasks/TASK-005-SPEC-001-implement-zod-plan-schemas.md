@@ -2,7 +2,7 @@
 title: 'TASK-005-SPEC-001: Implement Zod Plan Schemas'
 type: task
 permalink: specs/spec-001-composition-core-and-adr-adapter/tasks/task-005-spec-001-implement-zod-plan-schemas
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -50,18 +50,18 @@ The nested discriminated union assembles plan_type (outer) x source_type (inner)
 
 ## Definition of Done
 
-- [ ] base.ts exports all shared Zod types per ADR-002 D-5
-- [ ] ADR distribution schema validates section_delimiter and D-N renumber keys
-- [ ] ADR composition schema validates plural sources and singular destination
-- [ ] index.ts exports planSchema and Plan type
-- [ ] PlanValidationError interface exported with error mapping function
-- [ ] Tests pass with valid and invalid fixture YAMLs
+- [x] base.ts exports all shared Zod types per ADR-002 D-5
+- [x] ADR distribution schema validates section_delimiter and D-N renumber keys
+- [x] ADR composition schema validates plural sources and singular destination
+- [x] index.ts exports planSchema and Plan type
+- [x] PlanValidationError interface exported with error mapping function
+- [x] Tests pass with valid and invalid fixture YAMLs
 
 ## ADR Compliance
 
-- [ ] Honors ADR-001 D-1: Zod for plan validation
-- [ ] Honors ADR-002 D-1: Nested discriminated union shape
-- [ ] Honors ADR-002 D-5: Modular per-type schema files
+- [x] Honors ADR-001 D-1: Zod for plan validation
+- [x] Honors ADR-002 D-1: Nested discriminated union shape
+- [x] Honors ADR-002 D-5: Modular per-type schema files
 
 ## Effort Summary
 
@@ -79,6 +79,7 @@ The nested discriminated union assembles plan_type (outer) x source_type (inner)
 
 ## Relations
 
+- validated_by [[TEST-REPORT-005-SPEC-001: Zod Plan Schemas]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]
 - implements [[DESIGN-003-SPEC-001: Zod Plan Schema Modular Layout]]
 - implements [[REQ-004-SPEC-001: Zod Plan Validator Base]]
