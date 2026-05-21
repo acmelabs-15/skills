@@ -28,7 +28,7 @@ export const CANONICAL_ENTITY_TYPES = [
   "feature",
   "epic",
   "critique",
-  "test-report",
+  "qa",
   "security",
   "retrospective",
   "skill",

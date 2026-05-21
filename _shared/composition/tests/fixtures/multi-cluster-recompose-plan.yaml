@@ -1,0 +1,12 @@
+plan_type: composition
+source_type: adr
+target_path: multi-cluster-round-trip.md
+sources:
+  - multi-cluster-shard-a.md
+  - multi-cluster-shard-b.md
+  - multi-cluster-shard-c.md
+renumber_map:
+  "D-700": "D-1"
+  "D-701": "D-2"
+  "D-702": "D-3"
+wikilink_map: {}

@@ -39,9 +39,13 @@ function asStringArray(v: unknown): string[] {
 }
 
 function parseFrontmatter(raw: Record<string, unknown>): TestReportFrontmatter {
+  // Schema accepts both legacy `test-report` and current `qa` per 2026-05-21
+  // rename. Preserve the actual frontmatter value rather than hard-coding;
+  // schema rejects anything outside the two-value enum at parse time.
+  const rawType = asString(raw["type"]);
   return {
     title: asString(raw["title"]),
-    type: "test-report",
+    type: rawType as TestReportFrontmatter["type"],
     permalink: asString(raw["permalink"]),
     status: asString(raw["status"]) as TestReportFrontmatter["status"],
     tags: asStringArray(raw["tags"]),

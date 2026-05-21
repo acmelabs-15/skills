@@ -14,7 +14,15 @@ import { sha256 } from "../src/core/hash.js";
 import { parsePlanNote } from "../src/parsers/plan-note.js";
 import { renderPlanNote } from "../src/renderers/plan-note.js";
 
-const PLAN_PATH = join(import.meta.dir, "..", "..", "..", "docs", "planning", "PLAN-001-skills-ecosystem.md");
+const PLAN_PATH = join(
+  import.meta.dir,
+  "..",
+  "..",
+  "..",
+  "docs",
+  "planning",
+  "PLAN-001-skills-ecosystem.md",
+);
 
 describe("TASK-014-SPEC-007: PLAN-001 trimmed-template migration", () => {
   test("AC#1 — PLAN-001 matches trimmed template structure (no forbidden sections)", async () => {

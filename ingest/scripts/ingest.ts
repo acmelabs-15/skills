@@ -285,7 +285,7 @@ function prefixFor(type: string): string {
         feature: "FEATURE",
         epic: "EPIC",
         critique: "CRIT",
-        "test-report": "TEST-REPORT",
+        qa: "QA",
         security: "SECURITY",
         retrospective: "RETRO",
         skill: "SKILL",

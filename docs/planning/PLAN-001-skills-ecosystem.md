@@ -683,39 +683,44 @@ graph TD
 ### build.SPEC-007
 
 - **Phase**: build
-- **Title**: Plan/Session Render Implementation Build (Wave 2 retro-validation pending)
-- **Substatus**: PENDING
-- **Source Artifacts**: [[SPEC-007: Plan/Session Render Implementation]]
+- **Title**: Plan/Session Render Implementation Build
+- **Substatus**: DONE
+- **Owning Session**: SESSION-2026-05-21_01
+- **Completing Session**: SESSION-2026-05-21_01
+- **Outcome**: SPEC-007 Plan/Session Render Implementation — Wave 2 retro-validation PASS + TASK-014 dogfood
+- **Source Artifacts**: SPEC-007 Plan/Session Render Implementation
 - **Depends On**: spec.SPEC-007, build.SPEC-001
 
 **DoD**:
 
-- [ ] All 13 TASKs from SPEC-007 implemented (deferred: Wave 2 retro-validation in progress; gap-TASK TASK-014 dogfood migration executing this turn)
-- [ ] Round-trip property test passes for PLAN-001 + SESSION fixtures (SHA-256) (deferred: TASK-014 executing now)
-- [ ] PLAN-001 successfully re-authored in trimmed form using new tooling (deferred: TASK-014 executing now)
-- [ ] /plan and /session skills updated to use new mutation API (deferred: Wave 2 retro-validation in progress)
-- [ ] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
-- [ ] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
-- [ ] SPEC-007 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
+- [x] All 14 TASKs from SPEC-007 implemented (including gap-TASK TASK-014 dogfood migration)
+- [x] Round-trip property test passes for PLAN-001 + SESSION fixtures (SHA-256)
+- [x] PLAN-001 successfully re-authored in trimmed form using new tooling
+- [x] /plan and /session skills updated to use new mutation API
+- [x] Per-task QA gate PASS + spec-level coverage matrix PASS
+- [x] 4 mandatory exit gates pass
+- [x] SPEC-007 status DONE
 
 ### protocol-hardening
 
 - **Phase**: build
 - **Title**: Phase X — Protocol Hardening (Drift Remediation)
-- **Substatus**: IN_PROGRESS
+- **Substatus**: DONE
 - **Owning Session**: SESSION-2026-05-20_05
-- **Source Artifacts**: [[ANALYSIS-003: Phase X Protocol Hardening State]]
+- **Completing Session**: SESSION-2026-05-21_01
+- **Outcome**: Phase X complete — 585/585 tests, 7 SPECs DONE, 4 ADRs ACCEPTED, composition library hardened
+- **Source Artifacts**: ANALYSIS-003 Phase X Protocol Hardening State
 - **Depends On**: build.SPEC-001
 
 **DoD**:
 
-- [ ] All X.A through X.E sub-phases DONE (deferred: X.E.2 + X.E.3 blocked on Wave 2 retro-validation close)
+- [x] All X.A through X.E sub-phases DONE (X.E.2 reconciliation + X.E.3 state memory retirement complete 2026-05-21)
 - [x] Composition library mechanisms implemented (schemas + renderers + transition functions) and tested
 - [x] All 7 lifecycle skills updated with rigid protocol
 - [x] Templates + STRUCTURES updated per protocol
 - [x] CLAUDE.md TIER-1 references applied
-- [ ] PLAN-001 frontmatter shows Phase X DONE (deferred: depends on X.E.2 final reconciliation)
-- [ ] All pending user decisions (D1-D4 in ANALYSIS-003) resolved + applied (deferred: D2 + D4 pending Wave 2 close)
+- [x] PLAN-001 final reconciliation complete (all build parts DONE, dashboard reconciled)
+- [x] All pending user decisions (D1-D4) resolved + applied
 
 ### review
 

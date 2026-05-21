@@ -198,4 +198,66 @@ Sample.
     const m = note.frontmatter.title.match(/^(TEST-REPORT-\d{3,}-SPEC-\d{3,}):/);
     expect(m?.[1]).toBe("TEST-REPORT-099-SPEC-099");
   });
+
+  // QA-NNN convention (post-2026-05-21 rename)
+  test("parses QA-NNN convention note (type:qa, qa/qa-NNN permalink)", () => {
+    const md = `---
+title: "QA-200-SPEC-006: Post Rename Sample"
+type: qa
+permalink: qa/qa-200-spec-006-post-rename-sample
+status: DONE
+tags:
+  - qa
+  - spec-006
+  - post-rename
+---
+
+# QA-200-SPEC-006: Post Rename Sample
+
+## Objective
+
+Sample objective for QA-NNN convention.
+
+## Approach
+
+- **Test Types**: Unit
+- **Environment**: Local
+- **Data Strategy**: Inline
+
+## Results
+
+### Summary
+
+| Metric | Value | Target | Status |
+|--------|-------|--------|--------|
+| Tests Run | 2 | - | - |
+| Passed | 2 | - | [PASS] |
+| Failed | 0 | 0 | [PASS] |
+| Skipped | 0 | - | - |
+| Assertions | 2 | - | - |
+
+### Test Results by Category
+
+| Test | Category | Status | Notes |
+|------|----------|--------|-------|
+| t1 | Unit | [PASS] | - |
+| t2 | Unit | [PASS] | - |
+
+## Observations
+
+- [outcome] all pass #qa
+- [fact] qa convention #rename
+- [decision] post-rename note #convention
+
+## Relations
+
+- relates_to [[TASK-001-SPEC-006: Test]]
+- part_of [[SPEC-006: Test]]
+`;
+    const note = parseTestReportNote(md);
+    expect(note.frontmatter.title).toBe("QA-200-SPEC-006: Post Rename Sample");
+    expect(note.frontmatter.type).toBe("qa");
+    expect(note.frontmatter.permalink).toBe("qa/qa-200-spec-006-post-rename-sample");
+    expect(note.summary.verdict).toBe("PASS");
+  });
 });
