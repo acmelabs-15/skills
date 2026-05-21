@@ -8,17 +8,19 @@ import type {
 } from "../schemas/test-report-note.js";
 
 /**
- * TestReportNote renderer (Phase X.D.7, 2026-05-21).
+ * TestReportNote renderer (Phase X.D.7 → tightened X.C, 2026-05-21).
  *
  * Deterministic markdown render matching the parsed structure. Section order:
  *   frontmatter → H1 → Objective → Approach → Results (Summary + Test Results
  *   by Category) → Findings (optional) → Observations → Relations.
  *
- * The parser tolerates several phrasing variants in source TEST-REPORTs (the
- * docs/qa exemplars are not byte-uniform), so this renderer targets SEMANTIC
- * round-trip — parse(render(parse(x))) === parse(x) — rather than byte
- * identity. Byte identity is deferred as follow-up work if/when adapters
- * standardize TEST-REPORT authorship through this renderer.
+ * Round-trip is BYTE-IDENTICAL against the canonical fixture
+ * (tests/fixtures/test-report-note-sample.md), matching the PlanNote pattern.
+ * The parser still tolerates phrasing variants seen in docs/qa exemplars
+ * (inline code in Scope bullet, custom Target/Status cells on Execution Time
+ * row) — those are normalized to the canonical renderer-output form on
+ * re-render, so adapter-driven mutations of fixture-form TEST-REPORTs survive
+ * decompose → recompose unchanged.
  */
 
 const NL = "\n";

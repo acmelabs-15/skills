@@ -16,7 +16,7 @@ tags:
 Verify TASK-099-SPEC-099 sample feature against acceptance criteria.
 
 - **Feature**: Sample Feature (TASK-099-SPEC-099)
-- **Scope**: `src/sample/sample.ts` -- 3 exported functions
+- **Scope**: src/sample/sample.ts -- 3 exported functions
 - **Acceptance Criteria**: ADR-001 F-1, REQ-001-SPEC-099 AC-1, REQ-002-SPEC-099 AC-2
 
 ## Approach
@@ -37,7 +37,7 @@ Verify TASK-099-SPEC-099 sample feature against acceptance criteria.
 | Failed | 0 | 0 | [PASS] |
 | Skipped | 0 | - | - |
 | Assertions | 14 | - | - |
-| Execution Time | 18ms | <500ms | [PASS] |
+| Execution Time | 18ms | - | - |
 
 ### Test Results by Category
 

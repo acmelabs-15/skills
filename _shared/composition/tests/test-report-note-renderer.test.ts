@@ -110,6 +110,15 @@ describe("renderTestReportNote", () => {
   });
 });
 
+describe("renderTestReportNote round-trip — byte-identical", () => {
+  test("parse(fixture) → render === fixture (byte-identical)", async () => {
+    const fixture = await loadFixture();
+    const parsed = parseTestReportNote(fixture);
+    const rendered = renderTestReportNote(parsed);
+    expect(rendered).toBe(fixture);
+  });
+});
+
 describe("renderTestReportNote round-trip — semantic equality", () => {
   test("render(parse(fixture)) re-parses to equivalent model", async () => {
     const md = await loadFixture();
