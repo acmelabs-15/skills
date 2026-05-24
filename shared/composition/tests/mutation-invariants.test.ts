@@ -1,7 +1,11 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
 import { type PlanMutation, applyPlanMutation } from "../src/mutations/plan-mutations.js";
+import { applySessionMutation } from "../src/mutations/session-mutations.js";
 import { parsePlanNote } from "../src/parsers/plan-note.js";
+import { parseSessionNote } from "../src/parsers/session-note.js";
+import { renderSessionNote } from "../src/renderers/session-note.js";
+import type { Event, SessionNote } from "../src/schemas/session-note.js";
 
 /**
  * Mutation invariant tests (TASK-026-SPEC-008).
@@ -226,5 +230,140 @@ describe("mutation invariants — double-apply idempotency", () => {
     });
     expect(hashOf(twice)).toBe(hashOf(once));
     expect(twice).toBe(once);
+  });
+});
+
+// drift-marker: SESSION-2026-05-21_01-duplicate-events — killed-agent re-entry produced Event 36/37/38 duplicates
+describe("session mutation duplicate-event-number rejection", () => {
+  /**
+   * Regression-locks the Phase X drift surface where SESSION-2026-05-21_01
+   * acquired duplicate Event 36 / 37 / 38 after a killed-agent re-entry.
+   *
+   * As-built semantics (probed against the real applySessionMutation /
+   * SessionNoteSchema, NOT assumed — DoD amended 2026-05-24 to match):
+   *
+   * The append API auto-assigns `n` (`nextN = events.length + 1`), so a caller
+   * CANNOT request a duplicate number directly. A duplicate is realized by
+   * feeding a session note whose markdown ALREADY contains two `## Event 05`
+   * headings (the killed-agent re-entry failure mode). The two headings carry
+   * distinct titles so they are distinct H2 sections, but both parse to n=5.
+   * The events array becomes [1,2,3,4,5,5,6,7,8,9,10]; the SessionNoteSchema
+   * continuity superRefine fires at index 5 (event.n=5, expected n=6) with the
+   * message `Event n=5 at index 5: expected n=6`. applySessionMutation parses
+   * the note first, so the rejection surfaces at that parse step — before any
+   * append is applied.
+   */
+
+  const EVENT_COUNT = 10;
+  const DUPLICATE_N = 5;
+
+  /** Build a valid session-note model with session-start + (count-1) state-change events. */
+  function buildSessionModel(count: number): SessionNote {
+    const events: Event[] = [{ n: 1, type: "session-start", title: "Kickoff", project: "skills" }];
+    for (let n = 2; n <= count; n++) {
+      events.push({
+        n,
+        type: "state-change",
+        title: `Change ${n}`,
+        scope: "plan",
+        target: "PLAN-001-SPEC-008",
+      });
+    }
+    return {
+      frontmatter: {
+        title: "SESSION-2026-05-21_01: Duplicate Event Regression",
+        type: "session",
+        status: "IN_PROGRESS",
+        binds_to: ["PLAN-001-SPEC-008"],
+        permalink: "sessions/session-2026-05-21_01-duplicate-event-regression",
+        tags: ["session", "spec-008"],
+      },
+      scope: "Regression fixture for duplicate-event-number rejection.",
+      bound_plans: [{ ref: "[[PLAN-001-SPEC-008: Sample]]", worked_parts: ["build.SPEC-008"] }],
+      events,
+      observations: [
+        { category: "fact", text: "Synthesized clean Event 01-10 ledger", tags: ["fixture"] },
+        { category: "fact", text: "Continuity invariant holds when sequential", tags: ["fixture"] },
+        { category: "fact", text: "Duplicate realized via string insertion", tags: ["fixture"] },
+      ],
+      relations: [
+        { verb: "part_of", target: "PLAN-001-SPEC-008: Sample" },
+        { verb: "relates_to", target: "SPEC-008: Protocol Hardening Wave 2" },
+      ],
+    };
+  }
+
+  /** Clean session note containing exactly `## Event 01` through `## Event 10`. */
+  function cleanSessionMarkdown(): string {
+    return renderSessionNote(buildSessionModel(EVENT_COUNT));
+  }
+
+  /**
+   * Inject a SECOND `## Event 05` block (distinct title → distinct H2 section,
+   * same parsed n=5) immediately after the first, producing the pre-duplicated
+   * note a killed-agent re-entry would leave behind.
+   */
+  function withDuplicateEvent05(markdown: string): string {
+    const dupeBlock = [
+      `## Event ${String(DUPLICATE_N).padStart(2, "0")} — Dupe Five (killed-agent re-entry)`,
+      "",
+      "- **Type**: state-change",
+      "- **Scope**: plan",
+      "- **Target**: PLAN-001-SPEC-008",
+      "",
+    ].join("\n");
+    // Anchor on the NEXT event's heading so the duplicate lands between Event 05
+    // and Event 06, keeping the array order [1,2,3,4,5,5,6,...].
+    const anchor = "## Event 06 — Change 6";
+    expect(markdown).toContain(anchor);
+    return markdown.replace(anchor, `${dupeBlock}${anchor}`);
+  }
+
+  test("synthesized clean note parses with a continuous Event 01-10 ledger", () => {
+    const clean = cleanSessionMarkdown();
+    const parsed = parseSessionNote(clean);
+    expect(parsed.events).toHaveLength(EVENT_COUNT);
+    expect(parsed.events.map((e) => e.n)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  });
+
+  test("rejects a session note containing a duplicate Event 05 with a continuity-violation message", () => {
+    const duplicated = withDuplicateEvent05(cleanSessionMarkdown());
+    // applySessionMutation parses first, so the duplicate surfaces at parse-time.
+    // The continuity superRefine fires at the first out-of-sequence index: the
+    // duplicate n=5 sits at index 5 where n=6 was expected. Message identifies
+    // the conflicting number via `n=5`.
+    expect(() =>
+      applySessionMutation(duplicated, {
+        type: "append-event",
+        event: { type: "state-change", title: "Next", scope: "plan", target: "PLAN-001-SPEC-008" },
+      }),
+    ).toThrow(/expected n=\d+/);
+    expect(() =>
+      applySessionMutation(duplicated, {
+        type: "append-event",
+        event: { type: "state-change", title: "Next", scope: "plan", target: "PLAN-001-SPEC-008" },
+      }),
+    ).toThrow(/n=5/);
+    // Direct parse surfaces the same continuity violation.
+    expect(() => parseSessionNote(duplicated)).toThrow(/expected n=\d+/);
+  });
+
+  test("positive control: appending Event 11 to a clean ledger succeeds", () => {
+    const clean = cleanSessionMarkdown();
+    // Same mutation type, clean (non-duplicated) note → next sequential number
+    // is auto-assigned and accepted, proving the rejection is duplicate-specific.
+    const out = applySessionMutation(clean, {
+      type: "append-event",
+      event: {
+        type: "state-change",
+        title: "Eleventh",
+        scope: "plan",
+        target: "PLAN-001-SPEC-008",
+      },
+    });
+    const reparsed = parseSessionNote(out);
+    expect(reparsed.events).toHaveLength(EVENT_COUNT + 1);
+    expect(reparsed.events.at(-1)?.n).toBe(EVENT_COUNT + 1);
+    expect(out).toContain("## Event 11 — Eleventh");
   });
 });

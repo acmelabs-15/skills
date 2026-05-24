@@ -2,7 +2,7 @@
 title: 'TASK-022-SPEC-008: Author Initial Adversarial Fixture Set for Five Existing Validators'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-022-spec-008-initial-adversarial-fixtures
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -66,3 +66,4 @@ Author the initial set of adversarial fixture markdown files at `shared/composit
 - implements [[REQ-006-SPEC-008: Adversarial-Claim Test Harness and Initial Fixture Set]]
 - implements [[DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape]]
 - depends_on [[TASK-021-SPEC-008: Implement Adversarial-Claim Test Harness]]
+- relates_to [[QA-075-SPEC-008: Validation Report for TASK-022 Initial Adversarial Fixture Set]]

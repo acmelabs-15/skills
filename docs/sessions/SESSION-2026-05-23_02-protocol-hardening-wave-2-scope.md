@@ -2396,3 +2396,34 @@ Then (max-parallelism): re-pickup 027 + start QA for the 3 impl-DONE tasks, disp
 - TASK-027-SPEC-008 (note): DoD#3/#4 amended; REQ-007 AC-5 amended (user-approved)
 - PLAN impl-TASK-027-SPEC-008: BLOCKED → IN_PROGRESS (blocker cleared)
 - PLAN qa-TASK-032/022/038-SPEC-008: PENDING → IN_PROGRESS
+
+
+## Event 100 — Batch 10 CLOSED: TASK-022 + 032 + 038 DONE (33/47); TASK-027 impl DONE (QA next)
+
+QA batch (`brain:🧠-qa`, parallel with 027 re-impl) returned **3× PASS** for the impl-DONE trio:
+- [[QA-074-SPEC-008: Validation Report for TASK-032 validateSpecDoneClaim Deferred Notation]]
+- [[QA-075-SPEC-008: Validation Report for TASK-022 Initial Adversarial Fixture Set]] (QA independently re-verified all 10 fixtures parse-OK + validator-rejects via scratch script)
+- [[QA-076-SPEC-008: Validation Report for TASK-038 dispatch-validator Utility]]
+Bi-directional `relates_to` set on each TASK↔QA pair. (Stray QA scratch file `_qa_scratch_fixture_verify.ts` removed; not committed.)
+
+TASK-027 re-implementation (parallel, on the amended spec) returned clean: 9 pass (3 new), asserts `/expected n=\d+/` + `/n=5/`, drift-marker comment present, biome+tsc clean. impl-027 → DONE; QA next.
+
+### Derived-view sync (batch close)
+
+- SPEC-008 root `### Tasks`: 022/032/038 → `[x]` (now **33/47 ticked**). Requirements/Designs unchanged — no REQ newly complete (REQ-006 needs 023/024; REQ-008 needs 031; REQ-011/012 need hook tasks; all totality-gated).
+- PLAN Wave Graph: 022/032/038 ⚡ → ✅ (class done); 027 🚧 → ⚡ (re-picked-up, in QA, class inprogress); W1c + W4 labels + provenance (Event 100). Part-level dashboard unchanged.
+
+### Marathon state
+
+- **33/47 (70%) CLOSED.** Suite: 996 pass / 2 fail / 998 (2 = SPEC-007 deferred baseline; 0 new regressions).
+- In flight: TASK-027 (impl DONE, QA pending).
+- PENDING (13): 014, 023, 024, 028, 031, 035, 036, 041, 042, 043, 044, 045, 046.
+
+### State Changes
+
+- QA-074/075/076-SPEC-008: created (DONE) + bi-dir relates_to to TASK-032/022/038
+- TASK-032/022/038-SPEC-008: status TODO → DONE; reciprocal QA relation added
+- PLAN qa-TASK-032/022/038-SPEC-008: IN_PROGRESS → DONE (Test Report Ref QA-074/075/076)
+- TASK-027-SPEC-008: DoD checkboxes → [x] (amended); PLAN impl-TASK-027 IN_PROGRESS → DONE
+- SPEC-008 root Tasks: 022/032/038 → [x] (33/47); PLAN Wave Graph synced
+- Marathon: 30/47 → **33/47** CLOSED

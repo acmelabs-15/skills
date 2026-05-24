@@ -2,7 +2,7 @@
 title: 'TASK-038-SPEC-008: Implement dispatch-validator Utility'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-038-spec-008-implement-dispatch-validator-utility
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -65,3 +65,4 @@ Implement `hooks/lib/dispatch-validator.ts` per [[DESIGN-004-SPEC-008: Hook Laye
 - implements [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[REQ-003-SPEC-008: New Claim Validator Suite]]
+- relates_to [[QA-076-SPEC-008: Validation Report for TASK-038 dispatch-validator Utility]]

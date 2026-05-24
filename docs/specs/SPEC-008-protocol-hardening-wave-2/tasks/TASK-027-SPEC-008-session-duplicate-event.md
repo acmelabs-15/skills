@@ -22,14 +22,14 @@ Add a test to `shared/composition/tests/mutation-invariants.test.ts` (the file a
 ## Definition of Done
 > Amended 2026-05-24 (SESSION-2026-05-23_02 Event 99, user-approved Option A): the session mutation API auto-assigns event numbers (`nextN = events.length + 1`; caller `n` stripped), and duplicate rejection is a `SessionNoteSchema` continuity check emitting `Event n=N at index I: expected n=M` — NOT a literal "duplicate"/"already exists" message. DoD#3/#4 amended to match the as-built behavior; the regression-lock intent (catch the Event 36/37/38 duplicate drift) is preserved.
 
-- [ ] New `describe` block "session mutation duplicate-event-number rejection" added to `shared/composition/tests/mutation-invariants.test.ts`
-- [ ] Test loads or synthesizes a session-note fixture containing `## Event 01` through `## Event 10`
-- [ ] Test feeds the mutation (or parser) a session note ALREADY containing a duplicate `## Event 05` (the append API auto-assigns `n`, so a duplicate is realized via a pre-duplicated note; rejection fires at the parse/continuity step)
-- [ ] Assertion: the operation throws/rejects with a message matching `/expected n=\d+/` (the continuity-violation check) that identifies the conflicting number (e.g., `n=5`)
-- [ ] Positive control: appending `## Event 11` (next sequential number) succeeds
-- [ ] Source-code comment `// drift-marker: SESSION-2026-05-21_01-duplicate-events — killed-agent re-entry produced Event 36/37/38 duplicates` annotates the new `describe` block
-- [ ] `bun test` passes
-- [ ] `biome lint` and `tsc --noEmit` pass
+- [x] New `describe` block "session mutation duplicate-event-number rejection" added to `shared/composition/tests/mutation-invariants.test.ts`
+- [x] Test loads or synthesizes a session-note fixture containing `## Event 01` through `## Event 10`
+- [x] Test feeds the mutation (or parser) a session note ALREADY containing a duplicate `## Event 05` (the append API auto-assigns `n`, so a duplicate is realized via a pre-duplicated note; rejection fires at the parse/continuity step)
+- [x] Assertion: the operation throws/rejects with a message matching `/expected n=\d+/` (the continuity-violation check) that identifies the conflicting number (e.g., `n=5`)
+- [x] Positive control: appending `## Event 11` (next sequential number) succeeds
+- [x] Source-code comment `// drift-marker: SESSION-2026-05-21_01-duplicate-events — killed-agent re-entry produced Event 36/37/38 duplicates` annotates the new `describe` block
+- [x] `bun test` passes
+- [x] `biome lint` and `tsc --noEmit` pass
 
 ## ADR Compliance
 

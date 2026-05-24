@@ -2,7 +2,7 @@
 title: 'TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-032-spec-008-extend-validate-spec-done-claim-for-deferred-notation-2
-status: TODO
+status: DONE
 tags:
 - task
 - spec-008
@@ -69,3 +69,4 @@ Steps:
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
 - pairs_with [[TASK-031-SPEC-008: Amend SPEC-007 Root with Deferred Notation and Legend]]
+- relates_to [[QA-074-SPEC-008: Validation Report for TASK-032 validateSpecDoneClaim Deferred Notation]]
