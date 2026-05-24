@@ -341,3 +341,36 @@ D-N progress: D-1 LOCKED (Event 10) → D-2 LOCKED (this event). Remaining: D-3,
 Implication: SPEC-008 will need a TASK for the harness implementation + a TASK for the initial fixture set covering the top-10 prioritized adversarial scenarios from Audit E + REQ-010's drift-regression markers feeding the fixture inventory.
 
 D-N progress: D-1 ✓, D-2 ✓, D-3 ✓. Remaining: D-4 (dispatch-brief), D-5 (P1 include/defer), D-6 (SPEC-007), D-7 (dispatcher.ts).
+
+
+## Event 13 — D-4 LOCKED: programmatic per-skill brief-generator scripts
+
+**Decision** (verbatim from AskUserQuestion answer):
+
+> **Programmatic per-skill scripts (Recommended; extends D-1)**
+>
+> Each skill ships brief-generator scripts at `skills/<name>/scripts/dispatch-<agent>.ts`. Scripts import cross-cutting constants (e.g., `validRelationTypes` from `shared/composition/src/schemas/common.ts`) and skill-specific data, output the full brief text. When the schema adds a relation type, every brief auto-includes it. Strongest drift-prevention; same shape as D-1's per-skill scripts.
+
+Implication: shared/composition exports cross-cutting constants. Per-skill scripts import + compose. SPEC-008 REQ-007 = "dispatch-brief generator scripts per skill+agent" with TASKs to author each script.
+
+## Event 14 — D-5 LOCKED: include all 3 P1 schemas (full Audit A recommendation)
+
+**Decision** (verbatim from AskUserQuestion answer):
+
+> **Include all 3 (full Audit A recommendation)**
+>
+> Build complete P1 coverage now: ANALYSIS + EPIC + CRIT. Most comprehensive; closes all P1 gaps. Adds ~2-3 days; some artifacts have no immediate consumer (no EPIC notes exist today; no per-CRIT claim pattern).
+
+Wave 2 final coverage:
+
+| Type | Schema | Parser | Validator | Notes |
+|---|---|---|---|---|
+| ADR | ✓ | ✓ | `validateAdrAcceptedClaim` | P0; PROPOSED→ACCEPTED gate; adr-review enforcement |
+| PLAN | (extend existing) | (existing) | `validatePlanDoneClaim` | P0; mechanical: all parts terminal before DONE |
+| ANALYSIS | ✓ | ✓ | `validateAnalysisAcceptedClaim` | P1; rejects ACCEPTED + Open Questions section |
+| EPIC | ✓ | ✓ | `validateEpicDoneClaim` | P1; rejects DONE without contained SPECs DONE |
+| CRIT | ✓ | ✓ | — (no claim validator) | P1; structural support for adr-review convergence |
+
+Total: 5 schemas + 5 parsers + 4 validators added. Updated effort: ~12-14 days (up from 10-13 with P1 deferral).
+
+D-N progress: D-1 ✓, D-2 ✓, D-3 ✓, D-4 ✓, D-5 ✓. Remaining: D-6 (SPEC-007), D-7 (dispatcher.ts).

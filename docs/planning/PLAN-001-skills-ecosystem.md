@@ -2245,8 +2245,8 @@ graph TD
 - [x] D-1 LOCKED — Per-skill scripts: each lifecycle skill ships gate-point scripts at `skills/<name>/scripts/<verb>.ts` as thin wrappers importing from `_shared/composition/`. Matches existing defrag/ingest pattern; skills become self-contained; new validators colocate with the skill that needs them.
 - [x] D-2 LOCKED — Extend existing flat dirs at `shared/composition/src/{schemas,parsers,validators}/` (consistent with 9 existing schemas; one pattern across waves). NOTE: `_shared` → `shared` directory rename captured as Track 4 cleanup item (see Wave 2 cleanup list)
 - [x] D-3 LOCKED — Shared fixture-driven harness: each lying-claim scenario lives as a named markdown file at `tests/fixtures/adversarial/<type>/drift-NN-<slug>.md`; shared `testAdversarial({fixture, validator, expectedReject})` helper runs parse→validate→assert. Natural mapping to Audit E item 10 (drift regression markers).
-- [ ] D-4 LOCKED — Dispatch-brief template persistence + enforcement mechanism (file location + how skills consume)
-- [ ] D-5 LOCKED — P1 include/defer adjudication (ANALYSIS schema/validator; EPIC; CRIT)
+- [x] D-4 LOCKED — Programmatic per-skill brief-generator scripts at `skills/<name>/scripts/dispatch-<agent>.ts`. Scripts import cross-cutting constants (e.g., `validRelationTypes` from `shared/composition/src/schemas/common.ts`) and print full brief text. Single source of truth via direct schema import; auto-updates when schema changes. Extends D-1 pattern.
+- [x] D-5 LOCKED — Full Audit A recommendation: include ALL 3 P1 schemas (ANALYSIS + EPIC + CRIT). Wave 2 ships 5 schemas + 5 parsers + 4 validators total (ADR + PLAN-done-claim + ANALYSIS + EPIC + CRIT). +2-3 days effort vs deferral; complete P1 coverage; some artifacts (EPIC, CRIT claim) have no immediate consumer but ready when needed.
 - [ ] D-6 LOCKED — SPEC-007 status resolution (downgrade DONE→ACCEPTED vs complete TASK-014 vs amend REQ-012 scope)
 - [ ] D-7 LOCKED — `core/dispatcher.ts` disposition (fix-add-spec vs deprecate-in-favor-of-registry)
 - [ ] ADR-004 authored and frontmatter status ACCEPTED; date + updated populated
