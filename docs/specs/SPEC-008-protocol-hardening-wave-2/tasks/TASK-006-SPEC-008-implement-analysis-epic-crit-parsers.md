@@ -2,7 +2,7 @@
 title: 'TASK-006-SPEC-008: Implement ANALYSIS, EPIC, and CRIT Parsers'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-006-spec-008-implement-analysis-epic-crit-parsers
-status: TODO
+status: DONE
 effort: L
 estimate: 2d
 tags:
@@ -27,27 +27,29 @@ This TASK depends on TASK-002 (ANALYSIS schema), TASK-003 (EPIC schema), TASK-00
 
 ## Definition of Done
 
-- [ ] File `shared/composition/src/parsers/analysis-note.ts` exists and exports `parseAnalysisNote`
-- [ ] File `shared/composition/src/parsers/epic-note.ts` exists and exports `parseEpicNote`
-- [ ] File `shared/composition/src/parsers/crit-note.ts` exists and exports `parseCritNote`
-- [ ] `parseAnalysisNote` detects `## Open Questions` section heading presence (case-sensitive exact match) and sets `body.hasOpenQuestions: boolean` on the parsed model
-- [ ] `parseEpicNote` parses Contained Specs section rows into `body.containedSpecs: string[]` mirroring `contains` relations
-- [ ] `parseCritNote` parses Findings table into `body.findings: Finding[]` with severity enum, description, recommendation fields
-- [ ] Each parser throws Zod error when the input `type` field is wrong (analysis vs epic vs critique)
-- [ ] Each parser validates the assembled model via its `*NoteSchema.parse()`
-- [ ] Unit tests cover happy-path parse for each of the three types
-- [ ] Unit tests cover: ANALYSIS ACCEPTED plus Open Questions rejection, EPIC with contains but no Contained Specs rejection, CRIT with malformed parent-reference rejection
-- [ ] Render-then-parse round-trip test where a renderer exists; otherwise fixture-based integration test
-- [ ] `bun test shared/composition/tests/parsers/analysis-note.test.ts shared/composition/tests/parsers/epic-note.test.ts shared/composition/tests/parsers/crit-note.test.ts` passes with at least 12 cases total green
-- [ ] `biome check` passes on all three files
-- [ ] `tsc --noEmit` passes
-- [ ] `shared/composition/src/parsers/index.ts` re-exports `parseAnalysisNote`, `parseEpicNote`, `parseCritNote`
+
+- [x] File `shared/composition/src/parsers/analysis-note.ts` exists and exports `parseAnalysisNote`
+- [x] File `shared/composition/src/parsers/epic-note.ts` exists and exports `parseEpicNote`
+- [x] File `shared/composition/src/parsers/crit-note.ts` exists and exports `parseCritNote`
+- [x] `parseAnalysisNote` detects `## Open Questions` section heading presence (case-sensitive exact match) and sets `body.hasOpenQuestions: boolean` on the parsed model
+- [x] `parseEpicNote` parses Contained Specs section rows into `body.containedSpecs: string[]` mirroring `contains` relations
+- [x] `parseCritNote` parses Findings table into `body.findings: Finding[]` with severity enum, description, recommendation fields
+- [x] Each parser throws Zod error when the input `type` field is wrong (analysis vs epic vs critique)
+- [x] Each parser validates the assembled model via its `*NoteSchema.parse()`
+- [x] Unit tests cover happy-path parse for each of the three types
+- [x] Unit tests cover: ANALYSIS ACCEPTED plus Open Questions rejection, EPIC with contains but no Contained Specs rejection, CRIT with malformed parent-reference rejection
+- [x] Render-then-parse round-trip test where a renderer exists; otherwise fixture-based integration test
+- [x] `bun test shared/composition/tests/parsers/analysis-note.test.ts shared/composition/tests/parsers/epic-note.test.ts shared/composition/tests/parsers/crit-note.test.ts` passes with at least 12 cases total green
+- [x] `biome check` passes on all three files
+- [x] `tsc --noEmit` passes
+- [x] `shared/composition/src/parsers/index.ts` re-exports `parseAnalysisNote`, `parseEpicNote`, `parseCritNote`
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (flat directory placement; one file per type)
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5
-- [ ] Honors [[ADR-001: Composition Library Architecture]] (unified plus remark AST pattern; TASK-005 reference)
+
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (flat directory placement; one file per type)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5
+- [x] Honors [[ADR-001: Composition Library Architecture]] (unified plus remark AST pattern; TASK-005 reference)
 
 ## Files Affected
 

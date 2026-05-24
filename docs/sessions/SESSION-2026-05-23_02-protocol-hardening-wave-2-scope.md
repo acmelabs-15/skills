@@ -1732,3 +1732,36 @@ User adjudicated push-through. Solo dispatch of TASK-006 (3 parsers in one TASK)
 Dispatching bun-ts-engineer (foreground). Files: NEW `shared/composition/src/parsers/{analysis-note.ts,epic-note.ts,crit-note.ts}` + NEW `shared/composition/tests/parsers/{analysis-note.test.ts,epic-note.test.ts,crit-note.test.ts}` + MODIFY `shared/composition/src/parsers/index.ts`.
 
 Wave 1a closer: on impl + QA both PASS, all 8 Wave 1a TASKs close. REQ-001 AC-5 (H1 drift detection at parser layer) flips at TASK-006 closure. REQ-002 (parser suite) ACs flip per TASK-006 contribution.
+
+
+## Event 75 — impl-TASK-006 PASS (after clean re-dispatch); dispatching qa-006
+
+First dispatch of impl-TASK-006 died on an internal error (tool result missing) BEFORE any work — filesystem verified clean (zero parser files, clean git tree, TASK note 0 DoD flips). Clean re-dispatch per `feedback_api_rate_limit_recovery_protocol` (verify partial outputs before relaunch). Second dispatch succeeded.
+
+bun-ts-engineer agent a147cc52d67dbb7ab (foreground; 47 tool_uses; 646s). PASS — 15 DoD + 3 ADR Compliance all `[x]`.
+
+- NEW: `shared/composition/src/parsers/analysis-note.ts` (186L) + `epic-note.ts` (244L) + `crit-note.ts` (209L)
+- NEW: `shared/composition/tests/parsers/analysis-note.test.ts` (167L) + `epic-note.test.ts` (164L) + `crit-note.test.ts` (138L)
+- MODIFY: `shared/composition/src/parsers/index.ts` (13→29L; +3 parser exports + type re-exports)
+- Targeted: 25 pass / 0 fail (>12 floor)
+- All 3 parsers mirror TASK-005 parseAdrNote pattern (unified + remarkParse + remarkFrontmatter + remarkGfm; js-yaml frontmatter; shared ast-helpers; final schema .parse())
+
+**Agent design-note (resolved against authority chain; NOT a halt)**: DoD items 4+5 say parser "sets `body.hasOpenQuestions`/`body.containedSpecs` on the parsed model" but the `.strict()` AnalysisNoteSchema/EpicNoteSchema have no such fields. Agent resolved by returning the schema-validated note with the DoD-named derived value attached as an extra wrapper property (`ParsedAnalysisNote = AnalysisNote & { hasOpenQuestions }`, `ParsedEpicNote = EpicNote & { containedSpecs }`). CRIT's `findings` IS a first-class schema field so it goes into the validated model directly. This honors both the DoD naming AND the `.parse()` + `.strict()` contract without schema modification. **Flagged for QA to verify against REQ-002 ACs** — if REQ-002 requires these as schema fields rather than wrapper-derived, this is a partial finding.
+
+**Agent correctly declined out-of-scope**: skill-audit flagged project-config drift (missing vitest.config.ts; tsconfig fields) + tried to relocate crit-note.test.ts into `__tests__/`. Agent REVERTED the move + left config untouched — project standardizes on bun:test across all 84 test files; parser tests stay flat in `tests/parsers/` matching adr-note.test.ts + the DoD literal path. TASK-006 Files Affected lists only the 6 files + barrel; no vitest/tsconfig edits authorized. Correct scope discipline.
+
+### Independent orchestrator verification
+
+- `bun test`: 788 pass / 2 fail / 790 total. Delta from pre-batch (763/2/765): +25 = exact targeted test count. Same 2 SPEC-007 DEFERRED fails (D-1).
+- `cd shared/composition && bunx tsc --noEmit`: exit 0 (clean)
+- biome scoped (7 files): "No fixes applied" PASS
+- TASK-006 note: 18 `[x]` (15 DoD + 3 ADR Compliance), 0 `[ ]` — matches agent claim
+- New canonical suite baseline post-Event-75: **788 pass / 2 fail / 790 total**
+
+**LSP new-diagnostics noise (NOT a regression)**: editor surfaced "Cannot find module 'bun:test'" + "Cannot find module '../../src/parsers/crit-note.js'" on `crit-note.test.ts`. These are FU-2 workspace-tsconfig-scope false positives (same class flagged Event 62 for hooks/lib). `cd shared/composition && tsc --noEmit` is clean (exit 0); the errors are root-LSP resolution artifacts from `tests/parsers/**` not being in the LSP-active tsconfig scope. Tracked under FU-2 (PLAN-001 Post-Marathon Follow-Up Backlog).
+
+PLAN transitions:
+- impl-TASK-006-SPEC-008: IN_PROGRESS → DONE (Event 75)
+- qa-TASK-006-SPEC-008: PENDING → IN_PROGRESS (Event 75; dispatching brain:🧠-qa next)
+
+Next: commit code + PLAN + session atomically, then dispatch qa-006.

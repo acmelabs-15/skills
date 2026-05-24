@@ -2792,20 +2792,20 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-006-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 74
+- **Transitioned At Event**: Event 75
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: Batch 5c solo dispatch — 3 parsers (ANALYSIS + EPIC + CRIT); Wave 1a closer
+- **Fix Brief For Event**: bun-ts-engineer agent a147cc52d67dbb7ab (1st dispatch died on internal error w/ zero partial work; clean re-dispatch); 25/0/25 targeted; biome PASS; tsc PASS; suite 788/2/790 (+25); 15 DoD + 3 ADR Compliance all [x]; design-note: hasOpenQuestions/containedSpecs derived as attached props (not schema fields) per .strict() — QA to verify vs REQ-002
 
 #### qa-TASK-006-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-006-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 75
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
