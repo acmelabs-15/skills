@@ -51,6 +51,14 @@ Non-Functional (Test Coverage).
 - [ ] GIVEN the mutation-invariant test file WHEN session-mutation tests run THEN appending an `Event NN` whose `NN` already exists in the note is rejected with a duplicate-event-number error
 - [ ] GIVEN the existing test files in `shared/composition/tests/` WHEN a contributor greps for `// drift-marker:` THEN at least five existing tests carry a comment of the form `// drift-marker: <drift-surface-id> — <one-line-description>` mapping the test to its Phase X drift surface
 - [ ] GIVEN the five marked tests WHEN each marker comment is inspected THEN the drift-surface-id matches a documented Phase X drift surface (from the 37 captured at Phase X close in [[RETRO-003: Phase X Execution and Composition Library Completion]]) and the description identifies the lying behavior the test prevents
+
+- [ ] GIVEN the five Phase X drift surfaces enumerated in this REQ's Context WHEN each marker is placed THEN the marker lands on a test whose subject matches that surface (NOT an arbitrary unrelated test), per the binding surface-to-test mapping:
+  - SESSION duplicate-event drift → marker on the session-note duplicate-event-number mutation test in `mutation-invariants.test.ts`
+  - SPEC-002/003 SPEC-vs-TASK rollup drift → marker on the cross-note consistency test in `integration/cross-note-spec-task-consistency.test.ts`
+  - QA-027/030 duplicate-frontmatter-block drift → marker on the existing schema-parser test that rejects duplicate frontmatter blocks
+  - QA-027 forbidden `validates` relation drift → marker on the existing relation-verb validator test asserting the 11-type allowlist
+  - PLAN-001 trimmed-template canonical-form drift → marker on the existing PLAN round-trip render test
+  - If a natural matching test does not exist for any of the five surfaces, that gap MUST be surfaced before /build (raised as a clarification) rather than satisfied by placing the marker on an arbitrary unrelated test
 - [ ] GIVEN the new integration plus mutation tests WHEN `bun test` runs THEN total test count increases by at least eight tests over the pre-Track-3 baseline AND all new tests pass on first run
 
 ## Implementation Notes

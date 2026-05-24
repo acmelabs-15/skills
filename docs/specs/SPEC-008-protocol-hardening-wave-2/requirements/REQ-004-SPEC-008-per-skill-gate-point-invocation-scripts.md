@@ -53,11 +53,14 @@ Wave 2 coverage:
 - [ ] GIVEN a TASK note WHEN running `validate-task-schema.ts` THEN script parses via TaskNoteSchema exits zero on valid input non-zero with Zod issues on invalid input
 - [ ] GIVEN every per-skill script under `skills/<name>/scripts/` WHEN inspected THEN it includes the import.meta.main CLI guard and exits non-zero on validation failure
 - [ ] GIVEN every per-skill script WHEN tested via its colocated test file THEN the test asserts both the success path and the failure path
-- [ ] GIVEN any per-skill script accepting a file path argument WHEN passed a path with dot-dot traversal THEN script exits non-zero per D-8 security boundary
+- [ ] GIVEN any per-skill script accepting a file path argument WHEN the resolved absolute path is not equal to projectRoot AND does not start with `projectRoot + path.sep` THEN script exits non-zero with a stderr message naming the rejected path. Three adversarial cases MUST be verified:
+  - `../outside.md` (relative traversal) is rejected
+  - an absolute path outside projectRoot is rejected
+  - a prefix-collision sibling `<projectroot>-sibling/x.md` is rejected (the bare `.startsWith(projectRoot)` form would false-negative this)
 
 ## Implementation Notes
 
-Scripts are thin wrappers fewer than 60 lines each. The CLI guard pattern matches existing `skills/defrag/scripts/defrag.ts` and `skills/ingest/scripts/ingest.ts`. Each script parses CLI args, reads the target file via `Bun.file().text()`, calls the validator or mutation from `shared/composition/src/`, prints structured stdout on success and structured stderr on failure, and exits zero or non-zero accordingly. Scripts that mutate read the markdown, apply the composition-library mutation, and write the result back. Path-containment validation uses `path.resolve(projectRoot, userPath).startsWith(projectRoot)` to reject traversal; this matches the D-8 hook-handler boundary.
+Scripts are thin wrappers fewer than 60 lines each. The CLI guard pattern matches existing `skills/defrag/scripts/defrag.ts` and `skills/ingest/scripts/ingest.ts`. Each script parses CLI args, reads the target file via `Bun.file().text()`, calls the validator or mutation from `shared/composition/src/`, prints structured stdout on success and structured stderr on failure, and exits zero or non-zero accordingly. Scripts that mutate read the markdown, apply the composition-library mutation, and write the result back. Path-containment validation rejects traversal by computing `const resolved = path.resolve(projectRoot, userPath)` and accepting only when `resolved === projectRoot || resolved.startsWith(projectRoot + path.sep)`; the bare `.startsWith(projectRoot)` form is insufficient (trailing-slash and prefix-collision false-negatives) and MUST NOT be used. This matches the D-8 hook-handler boundary.
 
 ## Files Affected
 

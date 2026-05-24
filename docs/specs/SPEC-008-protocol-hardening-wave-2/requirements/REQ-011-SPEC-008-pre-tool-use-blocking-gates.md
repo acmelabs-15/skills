@@ -43,8 +43,10 @@ SO THAT the rigid per-TASK build+QA cycle and SPEC/REQ/DESIGN/ADR/PLAN/ANALYSIS/
       THEN the handler script `hooks/scripts/pre-pr-create-validate.ts` computes the PR diff, dispatches each touched Brain note to its validator, and returns `permissionDecision: "deny"` IF ANY note in the PR diff fails
 
 - [ ] GIVEN any Layer 1-5 handler script
-      WHEN the script encounters a non-blocking schema issue (missing inline `#tag` on an observation, malformed-but-parseable frontmatter)
-      THEN the handler returns `permissionDecision: "allow"` with `additionalContext: "Schema warning: <detail> (non-blocking)"` rather than denying the operation
+      WHEN the script classifies a validation result against the definitive blocking/non-blocking partition derived from ADR-005 D-8 HYBRID semantics
+      THEN the partition is applied exactly as follows so two implementers classify every case identically:
+  - BLOCKING (`permissionDecision: "deny"`): any failure from a status-flip claim validator — `validateTaskDoneClaim`, `validateRequirementAcClaim`, `validateDesignComplianceClaim`, `validateSpecDoneClaim`, `validateTestReportPassClaim`, `validateAdrAcceptedClaim`, `validateAnalysisAcceptedClaim`, `validateEpicDoneClaim`, `validatePlanDoneClaim`
+  - NON-BLOCKING (`permissionDecision: "allow"` with `additionalContext: "Schema warning: <detail> (non-blocking)"`): any schema issue surfaced by a per-type Note schema's `superRefine` that is NOT a claim-validator failure (e.g., observation count below minimum, missing inline `#tag` on an observation, tag-count bounds, malformed-but-parseable frontmatter)
 
 - [ ] GIVEN any Layer 1-5 handler script
       WHEN the script encounters an unparseable note or an unhandled exception during validation

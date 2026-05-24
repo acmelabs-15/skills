@@ -29,7 +29,7 @@ WHEN the composition library is referenced anywhere in the project root, the dir
 - [ ] GIVEN `shared/composition/src/core/dispatcher.ts` and `shared/composition/src/tests/dispatcher.test.ts` WHEN TASK-030 executes THEN both files are deleted via `git rm`
 - [ ] GIVEN post-deletion repo WHEN ripgrep audits for imports of `core/dispatcher` THEN zero production imports remain (only `core/adapter.ts` interface retained per ADR-005 D-7 evidence)
 - [ ] GIVEN `bun test` after dispatcher deletion WHEN run THEN test count equals pre-deletion count minus the dispatcher.test.ts case count and verdict is pass
-- [ ] GIVEN Brain notes citing `_shared/composition/` paths WHEN Track 4 path-rewrite sweep runs THEN every Brain note path reference is updated to `shared/composition/` (or scoped to the historical session/ADR notes that should preserve the original `_shared/` literal for archival fidelity per session-note temporal-log invariant)
+- [ ] GIVEN Brain notes citing `_shared/composition/` paths WHEN the Track 4 path-rewrite sweep runs THEN SESSION notes (all dates), ADR-005, ANALYSIS-004, and RETRO-003 preserve the `_shared/` literal (temporal-log plus decision-record archival fidelity); ALL other Brain notes that cite `_shared/composition/` paths (SPEC, REQ, DESIGN, and TASK notes) are rewritten to `shared/composition/`
 
 ## Observations
 

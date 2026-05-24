@@ -25,7 +25,7 @@ SO THAT no Brain note state change escapes validation between turns and the post
 
 - [ ] GIVEN a Layer 6 `Stop` hook declared with no matcher (fires on every turn end)
       WHEN an agent turn modifies `docs/specs/SPEC-NNN/tasks/TASK-NNN-*.md` (or any other Brain note) via tool calls during the turn and any of those modifications would have failed its claim validator
-      THEN the handler script `hooks/scripts/stop-backstop.ts` enumerates docs/** files modified during the turn (via the hook input transcript), parses each via its type-matching schema, dispatches to the claim validator, and emits `{ decision: "block", reason: "Turn-end backstop: <N> docs/** notes modified this turn fail validation: <list>" }` to block turn completion
+      THEN the handler script `hooks/scripts/stop-backstop.ts` enumerates candidate docs/** files via `git status --porcelain` (capturing both staged and unstaged Brain-note writes in the working tree at turn end), parses each via its type-matching schema, dispatches to the claim validator, and emits `{ decision: "block", reason: "Turn-end backstop: <N> docs/** notes modified this turn fail validation: <list>" }` to block turn completion. The `git status --porcelain` approach is chosen over transcript-parsing (which misses MCP edits) and over mtime-scanning (which misses reverts), and catches tool-mediated edits regardless of whether they went through Edit/Write or Brain MCP and regardless of commit state
 
 - [ ] GIVEN a Layer 6 handler that has run validation
       WHEN no docs/** files were modified during the turn OR every modified file passes its validator

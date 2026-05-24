@@ -25,7 +25,7 @@ WHEN REQ-009-SPEC-007 body text states "9 mutation types" (a stale fact captured
 ## Acceptance Criteria
 
 - [ ] GIVEN QA-027-SPEC-004 and QA-030-SPEC-002 with duplicate YAML frontmatter blocks WHEN TASK-034 runs THEN each note has exactly one frontmatter block (the first; basic-memory authoritative)
-- [ ] GIVEN QA-027, QA-042, QA-043, QA-015 with forbidden `validates` relation entries WHEN TASK-034 runs THEN each note's `## Relations` section replaces `validates [[X]]` with a valid relation type from the 11-type allowlist (recommended: `depends_on` for QA-aggregate references; `relates_to` only when no typed verb fits)
+- [ ] GIVEN QA-027, QA-042, QA-043, QA-015 with forbidden `validates` relation entries WHEN TASK-034 runs THEN each of the four notes' `## Relations` section replaces `validates [[X]]` with `depends_on [[X]]` — all four MUST use `depends_on` (each is a QA-aggregate note that depends on the spec/artifact it validates; `depends_on` is the canonical directional verb for this relationship)
 - [ ] GIVEN ANALYSIS-002, SESSION-2026-05-20_01, SESSION-2026-05-20_02 with title-without-colon WHEN TASK-034 runs THEN each note's frontmatter title and H1 carry the canonical `{ENTITY-ID}: {Descriptor}` colon form
 - [ ] GIVEN QA-030 with `type: test_report` and QA-038 with `type: test-report` WHEN TASK-034 runs THEN both notes carry the canonical `type: qa` value (per CONVENTIONS Section 3 16-type enum; rename completed 2026-05-21)
 - [ ] GIVEN QA-036, QA-038, SESSION-2026-05-20_03 with embedded `/Users/peter.kloss/...` PII paths WHEN TASK-034 runs THEN each path is replaced with a repo-relative or `<repo root>` form per `feedback_no_local_paths_in_brain_notes` (described inline; no auto-memory citation in the cleaned notes)
@@ -38,7 +38,7 @@ WHEN REQ-009-SPEC-007 body text states "9 mutation types" (a stale fact captured
 ## Observations
 
 - [decision] All Brain note repairs use Brain MCP `edit_note` (per `feedback_memory_updates_via_memory_agent` HARD-LOCK; never raw file Edit on `docs/**`) #brain-mcp #memory-agent-only
-- [decision] Repair 4 `validates` violations by replacing with typed verb; default to `depends_on` for QA-aggregate references per Audit C semantic-misuse finding #relation-types #11-type-allowlist
+- [decision] Repair 4 `validates` violations (QA-027, QA-042, QA-043, QA-015) by replacing with `depends_on` — all four bind to `depends_on` (QA-aggregate-depends-on-validated-artifact) per Audit C semantic-misuse finding #relation-types #11-type-allowlist
 - [constraint] Historical session notes (SESSION-2026-05-21_01 Events 36/37/38) carry temporal-log invariant — de-duplication preserves ledger fidelity, not rewrites history #temporal-log #immutable
 - [constraint] SPEC-002/003 rollup propagation must use `[~]` for verified-DEFERRED artifacts per REQ-008-SPEC-008 notation, not blanket `[x]` #cross-req-dependency #d-6
 - [insight] REQ-009-SPEC-007 amendment is one find_replace; smallest-blast-radius drift fix in the Audit D batch #small-fix
