@@ -49,10 +49,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec | 0 | 0 | 0 | 7 | 7 |
-| build | 0 | 0 | 0 | 7 | 7 |
+| build | 0 | 1 | 0 | 7 | 8 |
 | review | 0 | 1 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total** | **1** | **1** | **0** | **19** | **21** |
+| **Total** | **1** | **2** | **0** | **19** | **22** |
 
 ## Cross-Part Dependency Graph
 
@@ -77,14 +77,14 @@ graph TD
   spec_SPEC_006("✅ <b>spec.SPEC-006</b><br/><span style='color:#6b7280;font-size:11px'>Defrag and Ingest Skills</span>")
   spec_SPEC_007("✅ <b>spec.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Implementation</span>")
   build_SPEC_001("✅ <b>build.SPEC-001</b><br/><span style='color:#6b7280;font-size:11px'>Composition Core + ADR Adapter PROOF</span>")
-  build_SPEC_002("○ <b>build.SPEC-002</b><br/><span style='color:#6b7280;font-size:11px'>Simple Adapters Build (Wave 2 retro-validation pending)</span>")
-  build_SPEC_003("○ <b>build.SPEC-003</b><br/><span style='color:#6b7280;font-size:11px'>PLAN Adapter Build (Wave 2 retro-validation pending)</span>")
-  build_SPEC_004("○ <b>build.SPEC-004</b><br/><span style='color:#6b7280;font-size:11px'>SPEC Subtree Adapter Build (Wave 2 retro-validation pending)</span>")
-  build_SPEC_005("○ <b>build.SPEC-005</b><br/><span style='color:#6b7280;font-size:11px'>Decompose + Recompose Skills Build</span>")
-  build_SPEC_006("○ <b>build.SPEC-006</b><br/><span style='color:#6b7280;font-size:11px'>Defrag + Ingest Skills Build</span>")
-  build_SPEC_007("○ <b>build.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Implementation Build (Wave 2 retro-validation pending)</span>")
+  build_SPEC_002("✅ <b>build.SPEC-002</b><br/><span style='color:#6b7280;font-size:11px'>Simple Adapters Build</span>")
+  build_SPEC_003("✅ <b>build.SPEC-003</b><br/><span style='color:#6b7280;font-size:11px'>PLAN Adapter Build</span>")
+  build_SPEC_004("✅ <b>build.SPEC-004</b><br/><span style='color:#6b7280;font-size:11px'>SPEC Subtree Adapter Build</span>")
+  build_SPEC_005("✅ <b>build.SPEC-005</b><br/><span style='color:#6b7280;font-size:11px'>Decompose + Recompose Skills Build</span>")
+  build_SPEC_006("✅ <b>build.SPEC-006</b><br/><span style='color:#6b7280;font-size:11px'>Defrag + Ingest Skills Build</span>")
+  build_SPEC_007("✅ <b>build.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Implementation Build</span>")
   protocol_hardening("⚡ <b>protocol-hardening</b><br/><span style='color:#6b7280;font-size:11px'>Phase X — Protocol Hardening (Drift Remediation)</span>")
-  review("○ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
+  review("⚡ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
   end("○ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
 
   research --> decisions_1
@@ -112,14 +112,18 @@ graph TD
   spec_SPEC_007 --> build_SPEC_007
   build_SPEC_001 --> build_SPEC_007
   build_SPEC_001 --> protocol_hardening
+  build_SPEC_001 --> review
+  build_SPEC_002 --> review
+  build_SPEC_003 --> review
+  build_SPEC_004 --> review
   build_SPEC_005 --> review
   build_SPEC_006 --> review
   build_SPEC_007 --> review
   review --> end
 
-  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001 done
-  class protocol_hardening inprogress
-  class build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end pending
+  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007 done
+  class protocol_hardening,review inprogress
+  class end pending
 ```
 
 ## Phase Progression
@@ -412,6 +416,17 @@ graph TD
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
 
+#### impl-TASK-001-SPEC-001
+
+- **Type**: impl
+- **Task Ref**: TASK-001-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
 #### qa-TASK-001-SPEC-001
 
 - **Type**: qa
@@ -421,6 +436,28 @@ graph TD
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **Test Report Ref**: TEST-REPORT-001-SPEC-001
+- **Fix Brief For Event**: —
+
+#### qa-TASK-001-SPEC-001
+
+- **Type**: qa
+- **Task Ref**: TASK-001-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-000-SPEC-001
+- **Fix Brief For Event**: —
+
+#### impl-TASK-002-SPEC-001
+
+- **Type**: impl
+- **Task Ref**: TASK-002-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-002-SPEC-001
@@ -445,6 +482,28 @@ graph TD
 - **Test Report Ref**: TEST-REPORT-002-SPEC-001
 - **Fix Brief For Event**: —
 
+#### qa-TASK-002-SPEC-001
+
+- **Type**: qa
+- **Task Ref**: TASK-002-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-000-SPEC-001
+- **Fix Brief For Event**: —
+
+#### impl-TASK-003-SPEC-001
+
+- **Type**: impl
+- **Task Ref**: TASK-003-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
 #### impl-TASK-003-SPEC-001
 
 - **Type**: impl
@@ -465,6 +524,28 @@ graph TD
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **Test Report Ref**: TEST-REPORT-003-SPEC-001
+- **Fix Brief For Event**: —
+
+#### qa-TASK-003-SPEC-001
+
+- **Type**: qa
+- **Task Ref**: TASK-003-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-000-SPEC-001
+- **Fix Brief For Event**: —
+
+#### impl-TASK-004-SPEC-001
+
+- **Type**: impl
+- **Task Ref**: TASK-004-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-004-SPEC-001
@@ -489,6 +570,28 @@ graph TD
 - **Test Report Ref**: TEST-REPORT-004-SPEC-001
 - **Fix Brief For Event**: —
 
+#### qa-TASK-004-SPEC-001
+
+- **Type**: qa
+- **Task Ref**: TASK-004-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-000-SPEC-001
+- **Fix Brief For Event**: —
+
+#### impl-TASK-005-SPEC-001
+
+- **Type**: impl
+- **Task Ref**: TASK-005-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
 #### impl-TASK-005-SPEC-001
 
 - **Type**: impl
@@ -509,6 +612,28 @@ graph TD
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **Test Report Ref**: TEST-REPORT-005-SPEC-001
+- **Fix Brief For Event**: —
+
+#### qa-TASK-005-SPEC-001
+
+- **Type**: qa
+- **Task Ref**: TASK-005-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-000-SPEC-001
+- **Fix Brief For Event**: —
+
+#### impl-TASK-006-SPEC-001
+
+- **Type**: impl
+- **Task Ref**: TASK-006-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-006-SPEC-001
@@ -533,6 +658,28 @@ graph TD
 - **Test Report Ref**: TEST-REPORT-006-SPEC-001
 - **Fix Brief For Event**: —
 
+#### qa-TASK-006-SPEC-001
+
+- **Type**: qa
+- **Task Ref**: TASK-006-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-000-SPEC-001
+- **Fix Brief For Event**: —
+
+#### impl-TASK-007-SPEC-001
+
+- **Type**: impl
+- **Task Ref**: TASK-007-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
 #### impl-TASK-007-SPEC-001
 
 - **Type**: impl
@@ -553,6 +700,28 @@ graph TD
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **Test Report Ref**: TEST-REPORT-007-SPEC-001
+- **Fix Brief For Event**: —
+
+#### qa-TASK-007-SPEC-001
+
+- **Type**: qa
+- **Task Ref**: TASK-007-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-000-SPEC-001
+- **Fix Brief For Event**: —
+
+#### impl-TASK-008-SPEC-001
+
+- **Type**: impl
+- **Task Ref**: TASK-008-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-008-SPEC-001
@@ -577,6 +746,28 @@ graph TD
 - **Test Report Ref**: TEST-REPORT-008-SPEC-001
 - **Fix Brief For Event**: —
 
+#### qa-TASK-008-SPEC-001
+
+- **Type**: qa
+- **Task Ref**: TASK-008-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-000-SPEC-001
+- **Fix Brief For Event**: —
+
+#### impl-TASK-009-SPEC-001
+
+- **Type**: impl
+- **Task Ref**: TASK-009-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
 #### impl-TASK-009-SPEC-001
 
 - **Type**: impl
@@ -599,6 +790,17 @@ graph TD
 - **Test Report Ref**: TEST-REPORT-009-SPEC-001
 - **Fix Brief For Event**: —
 
+#### qa-TASK-009-SPEC-001
+
+- **Type**: qa
+- **Task Ref**: TASK-009-SPEC-001
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-000-SPEC-001
+- **Fix Brief For Event**: —
+
 ### build.SPEC-002
 
 - **Phase**: build
@@ -606,10 +808,9 @@ graph TD
 - **Substatus**: DONE
 - **Owning Session**: SESSION-2026-05-23_01
 - **Completing Session**: SESSION-2026-05-23_01
+- **Outcome**: 9/10 TASKs DONE + 1 CANCELLED (TASK-009 superseded); SPEC-002 root DONE; 24/24 SPEC-002 tests pass; retro-validated via [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]]
 - **Source Artifacts**: [[SPEC-002: Simple Adapters]]
 - **Depends On**: spec.SPEC-002, build.SPEC-001
-- **Outcome**: 9/10 TASKs DONE + 1 CANCELLED (TASK-009 superseded); SPEC-002 root DONE; 24/24 SPEC-002 tests pass; retro-validated via [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]]
-- **Reconciled**: 2026-05-23 (TASK-001..006 retro-validated as DONE)
 
 **DoD**:
 
@@ -619,6 +820,206 @@ graph TD
 - [x] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint (deferred: awaiting retro-validation close)
 - [x] SPEC-002 IN_PROGRESS → DONE (deferred: awaiting retro-validation close)
 
+**Build Workflow Items**:
+
+#### impl-TASK-001-SPEC-002
+
+- **Type**: impl
+- **Task Ref**: TASK-001-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-001-SPEC-002
+
+- **Type**: qa
+- **Task Ref**: TASK-001-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-042-SPEC-002
+- **Fix Brief For Event**: —
+
+#### impl-TASK-002-SPEC-002
+
+- **Type**: impl
+- **Task Ref**: TASK-002-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-002-SPEC-002
+
+- **Type**: qa
+- **Task Ref**: TASK-002-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-042-SPEC-002
+- **Fix Brief For Event**: —
+
+#### impl-TASK-003-SPEC-002
+
+- **Type**: impl
+- **Task Ref**: TASK-003-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-003-SPEC-002
+
+- **Type**: qa
+- **Task Ref**: TASK-003-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-042-SPEC-002
+- **Fix Brief For Event**: —
+
+#### impl-TASK-004-SPEC-002
+
+- **Type**: impl
+- **Task Ref**: TASK-004-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-004-SPEC-002
+
+- **Type**: qa
+- **Task Ref**: TASK-004-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-042-SPEC-002
+- **Fix Brief For Event**: —
+
+#### impl-TASK-005-SPEC-002
+
+- **Type**: impl
+- **Task Ref**: TASK-005-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-005-SPEC-002
+
+- **Type**: qa
+- **Task Ref**: TASK-005-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-042-SPEC-002
+- **Fix Brief For Event**: —
+
+#### impl-TASK-006-SPEC-002
+
+- **Type**: impl
+- **Task Ref**: TASK-006-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-006-SPEC-002
+
+- **Type**: qa
+- **Task Ref**: TASK-006-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-042-SPEC-002
+- **Fix Brief For Event**: —
+
+#### impl-TASK-007-SPEC-002
+
+- **Type**: impl
+- **Task Ref**: TASK-007-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-007-SPEC-002
+
+- **Type**: qa
+- **Task Ref**: TASK-007-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-042-SPEC-002
+- **Fix Brief For Event**: —
+
+#### impl-TASK-008-SPEC-002
+
+- **Type**: impl
+- **Task Ref**: TASK-008-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-008-SPEC-002
+
+- **Type**: qa
+- **Task Ref**: TASK-008-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-042-SPEC-002
+- **Fix Brief For Event**: —
+
+#### impl-TASK-010-SPEC-002
+
+- **Type**: impl
+- **Task Ref**: TASK-010-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-010-SPEC-002
+
+- **Type**: qa
+- **Task Ref**: TASK-010-SPEC-002
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-042-SPEC-002
+- **Fix Brief For Event**: —
+
 ### build.SPEC-003
 
 - **Phase**: build
@@ -626,10 +1027,9 @@ graph TD
 - **Substatus**: DONE
 - **Owning Session**: SESSION-2026-05-23_01
 - **Completing Session**: SESSION-2026-05-23_01
+- **Outcome**: 10/10 TASKs DONE; SPEC-003 root DONE; 30/30 SPEC-003 tests pass; retro-validated via [[QA-043-SPEC-003: Spec Aggregate Retro-Validation]]
 - **Source Artifacts**: [[SPEC-003: PLAN Adapter]]
 - **Depends On**: spec.SPEC-003, build.SPEC-001
-- **Outcome**: 10/10 TASKs DONE; SPEC-003 root DONE; 30/30 SPEC-003 tests pass; retro-validated via [[QA-043-SPEC-003: Spec Aggregate Retro-Validation]]
-- **Reconciled**: 2026-05-23 (TASK-001..005 retro-validated as DONE)
 
 **DoD**:
 
@@ -639,15 +1039,236 @@ graph TD
 - [x] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
 - [x] SPEC-003 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
 
+**Build Workflow Items**:
+
+#### impl-TASK-001-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-001-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-001-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-001-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
+#### impl-TASK-002-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-002-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-002-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-002-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
+#### impl-TASK-003-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-003-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-003-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-003-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
+#### impl-TASK-004-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-004-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-004-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-004-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
+#### impl-TASK-005-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-005-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-005-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-005-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
+#### impl-TASK-006-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-006-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-006-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-006-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
+#### impl-TASK-007-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-007-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-007-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-007-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
+#### impl-TASK-008-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-008-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-008-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-008-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
+#### impl-TASK-009-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-009-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-009-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-009-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
+#### impl-TASK-010-SPEC-003
+
+- **Type**: impl
+- **Task Ref**: TASK-010-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-010-SPEC-003
+
+- **Type**: qa
+- **Task Ref**: TASK-010-SPEC-003
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-043-SPEC-003
+- **Fix Brief For Event**: —
+
 ### build.SPEC-004
 
 - **Phase**: build
 - **Title**: SPEC Subtree Adapter Build
 - **Substatus**: DONE
+- **Outcome**: 12/12 TASKs DONE per task frontmatter (Wave 2 retro-validation + Phase X execution complete; PRs #6-#10)
 - **Source Artifacts**: [[SPEC-004: SPEC Subtree Adapter]]
 - **Depends On**: spec.SPEC-004, build.SPEC-001
-- **Outcome**: 12/12 TASKs DONE per task frontmatter (Wave 2 retro-validation + Phase X execution complete; PRs #6-#10)
-- **Reconciled**: 2026-05-23 — PLAN drift fix after PR #11 marketplace restructure merged
 
 **DoD**:
 
@@ -657,15 +1278,280 @@ graph TD
 - [x] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
 - [x] SPEC-004 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
 
+**Build Workflow Items**:
+
+#### impl-TASK-001-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-001-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-001-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-001-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-002-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-002-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-002-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-002-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-003-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-003-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-003-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-003-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-004-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-004-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-004-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-004-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-005-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-005-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-005-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-005-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-006-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-006-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-006-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-006-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-007-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-007-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-007-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-007-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-008-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-008-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-008-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-008-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-009-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-009-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-009-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-009-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-010-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-010-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-010-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-010-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-011-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-011-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-011-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-011-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
+#### impl-TASK-012-SPEC-004
+
+- **Type**: impl
+- **Task Ref**: TASK-012-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-012-SPEC-004
+
+- **Type**: qa
+- **Task Ref**: TASK-012-SPEC-004
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-027-SPEC-004
+- **Fix Brief For Event**: —
+
 ### build.SPEC-005
 
 - **Phase**: build
 - **Title**: Decompose + Recompose Skills Build
 - **Substatus**: DONE
+- **Outcome**: 6/6 TASKs DONE per task frontmatter (Wave 4 batched dispatch; SESSION-2026-05-21_01 Event 46; 501/501 tests at completion)
 - **Source Artifacts**: [[SPEC-005: Decompose and Recompose Skills]]
 - **Depends On**: spec.SPEC-005, build.SPEC-001
-- **Outcome**: 6/6 TASKs DONE per task frontmatter (Wave 4 batched dispatch; SESSION-2026-05-21_01 Event 46; 501/501 tests at completion)
-- **Reconciled**: 2026-05-23
 
 **DoD**:
 
@@ -675,15 +1561,148 @@ graph TD
 - [x] 4 mandatory exit gates pass
 - [x] SPEC-005 IN_PROGRESS → DONE
 
+**Build Workflow Items**:
+
+#### impl-TASK-001-SPEC-005
+
+- **Type**: impl
+- **Task Ref**: TASK-001-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-001-SPEC-005
+
+- **Type**: qa
+- **Task Ref**: TASK-001-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-039-SPEC-005
+- **Fix Brief For Event**: —
+
+#### impl-TASK-002-SPEC-005
+
+- **Type**: impl
+- **Task Ref**: TASK-002-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-002-SPEC-005
+
+- **Type**: qa
+- **Task Ref**: TASK-002-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-039-SPEC-005
+- **Fix Brief For Event**: —
+
+#### impl-TASK-003-SPEC-005
+
+- **Type**: impl
+- **Task Ref**: TASK-003-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-003-SPEC-005
+
+- **Type**: qa
+- **Task Ref**: TASK-003-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-039-SPEC-005
+- **Fix Brief For Event**: —
+
+#### impl-TASK-004-SPEC-005
+
+- **Type**: impl
+- **Task Ref**: TASK-004-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-004-SPEC-005
+
+- **Type**: qa
+- **Task Ref**: TASK-004-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-039-SPEC-005
+- **Fix Brief For Event**: —
+
+#### impl-TASK-005-SPEC-005
+
+- **Type**: impl
+- **Task Ref**: TASK-005-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-005-SPEC-005
+
+- **Type**: qa
+- **Task Ref**: TASK-005-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-039-SPEC-005
+- **Fix Brief For Event**: —
+
+#### impl-TASK-006-SPEC-005
+
+- **Type**: impl
+- **Task Ref**: TASK-006-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-006-SPEC-005
+
+- **Type**: qa
+- **Task Ref**: TASK-006-SPEC-005
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-039-SPEC-005
+- **Fix Brief For Event**: —
+
 ### build.SPEC-006
 
 - **Phase**: build
 - **Title**: Defrag + Ingest Skills Build
 - **Substatus**: DONE
+- **Outcome**: 7/7 TASKs DONE per task frontmatter (Wave 4 batched dispatch; QA-040 PARTIAL_FAIL fixed via fix-iter; later closed in PR #10)
 - **Source Artifacts**: [[SPEC-006: Defrag and Ingest Skills]]
 - **Depends On**: spec.SPEC-006, build.SPEC-005
-- **Outcome**: 7/7 TASKs DONE per task frontmatter (Wave 4 batched dispatch; QA-040 PARTIAL_FAIL fixed via fix-iter; later closed in PR #10)
-- **Reconciled**: 2026-05-23
 
 **DoD**:
 
@@ -694,15 +1713,170 @@ graph TD
 - [x] 4 mandatory exit gates pass
 - [x] SPEC-006 IN_PROGRESS → DONE
 
+**Build Workflow Items**:
+
+#### impl-TASK-001-SPEC-006
+
+- **Type**: impl
+- **Task Ref**: TASK-001-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-001-SPEC-006
+
+- **Type**: qa
+- **Task Ref**: TASK-001-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-040-SPEC-006
+- **Fix Brief For Event**: —
+
+#### impl-TASK-002-SPEC-006
+
+- **Type**: impl
+- **Task Ref**: TASK-002-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-002-SPEC-006
+
+- **Type**: qa
+- **Task Ref**: TASK-002-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-040-SPEC-006
+- **Fix Brief For Event**: —
+
+#### impl-TASK-003-SPEC-006
+
+- **Type**: impl
+- **Task Ref**: TASK-003-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-003-SPEC-006
+
+- **Type**: qa
+- **Task Ref**: TASK-003-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-040-SPEC-006
+- **Fix Brief For Event**: —
+
+#### impl-TASK-004-SPEC-006
+
+- **Type**: impl
+- **Task Ref**: TASK-004-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-004-SPEC-006
+
+- **Type**: qa
+- **Task Ref**: TASK-004-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-040-SPEC-006
+- **Fix Brief For Event**: —
+
+#### impl-TASK-005-SPEC-006
+
+- **Type**: impl
+- **Task Ref**: TASK-005-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-005-SPEC-006
+
+- **Type**: qa
+- **Task Ref**: TASK-005-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-040-SPEC-006
+- **Fix Brief For Event**: —
+
+#### impl-TASK-006-SPEC-006
+
+- **Type**: impl
+- **Task Ref**: TASK-006-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-006-SPEC-006
+
+- **Type**: qa
+- **Task Ref**: TASK-006-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-040-SPEC-006
+- **Fix Brief For Event**: —
+
+#### impl-TASK-007-SPEC-006
+
+- **Type**: impl
+- **Task Ref**: TASK-007-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-007-SPEC-006
+
+- **Type**: qa
+- **Task Ref**: TASK-007-SPEC-006
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-040-SPEC-006
+- **Fix Brief For Event**: —
+
 ### build.SPEC-007
 
 - **Phase**: build
 - **Title**: Plan/Session Render Implementation Build
 - **Substatus**: DONE
+- **Outcome**: 13/14 TASKs DONE per task frontmatter; TASK-013 (BLOCKED) superseded by gap-TASK-014 (DONE) per QA-022 + QA-033 aggregate; PLAN-001 successfully migrated to trimmed template form (visible in this file's current structure — no Workflow Plan / Decision Log / Progress Log per ADR-003 D-10/D-11)
 - **Source Artifacts**: [[SPEC-007: Plan/Session Render Implementation]]
 - **Depends On**: spec.SPEC-007, build.SPEC-001
-- **Outcome**: 13/14 TASKs DONE per task frontmatter; TASK-013 (BLOCKED) superseded by gap-TASK-014 (DONE) per QA-022 + QA-033 aggregate; PLAN-001 successfully migrated to trimmed template form (visible in this file's current structure — no Workflow Plan / Decision Log / Progress Log per ADR-003 D-10/D-11)
-- **Reconciled**: 2026-05-23
 
 **DoD**:
 
@@ -713,6 +1887,294 @@ graph TD
 - [x] Per-task QA gate PASS + spec-level coverage matrix PASS (deferred: Wave 2 retro-validation in progress)
 - [x] 4 mandatory exit gates pass (deferred: Wave 2 retro-validation in progress)
 - [x] SPEC-007 IN_PROGRESS → DONE (deferred: Wave 2 retro-validation in progress)
+
+**Build Workflow Items**:
+
+#### impl-TASK-001-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-001-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-001-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-001-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-002-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-002-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-002-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-002-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-003-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-003-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-003-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-003-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-004-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-004-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-004-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-004-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-005-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-005-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-005-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-005-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-006-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-006-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-006-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-006-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-007-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-007-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-007-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-007-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-008-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-008-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-008-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-008-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-009-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-009-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-009-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-009-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-010-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-010-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-010-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-010-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-011-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-011-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-011-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-011-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-012-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-012-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-012-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-012-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
+
+#### impl-TASK-014-SPEC-007
+
+- **Type**: impl
+- **Task Ref**: TASK-014-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-014-SPEC-007
+
+- **Type**: qa
+- **Task Ref**: TASK-014-SPEC-007
+- **Status**: DONE
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: QA-033-SPEC-007
+- **Fix Brief For Event**: —
 
 ### protocol-hardening
 
@@ -740,8 +2202,7 @@ graph TD
 - **Substatus**: IN_PROGRESS
 - **Owning Session**: SESSION-2026-05-23_01
 - **Source Artifacts**: (none)
-- **Depends On**: build.SPEC-001..007 (all DONE post-PR-#13 merge)
-- **Dispatched**: 2026-05-23 on branch `feat/plan-001-review`
+- **Depends On**: build.SPEC-001, build.SPEC-002, build.SPEC-003, build.SPEC-004, build.SPEC-005, build.SPEC-006, build.SPEC-007
 
 **DoD**:
 
