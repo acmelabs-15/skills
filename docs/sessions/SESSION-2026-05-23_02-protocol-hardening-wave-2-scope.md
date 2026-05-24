@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - protocol-hardening
@@ -1987,3 +1987,44 @@ Next: commit code + barrel + PLAN + Event 81 atomically, then dispatch 3 QAs in 
 - **Wave 5** (TASK-046): terminal smoke tests — 1 TASK.
 
 Marathon math: 21/47 (45%). Remaining 26 TASKs ≈ 5-6 batches.
+
+
+## Event 83 — Session PAUSED at Track-1 trilogy milestone (21/47, 45%)
+
+User adjudicated (AskUserQuestion): **"Pause; resume fresh next context (Recommended)"** — 21/47 milestone with Track-1 coverage trilogy complete is a strong natural stopping point; the next waves deserve a fresh budget.
+
+Session status IN_PROGRESS → PAUSED at the upcoming commit. All durable state preserved on `feat/plan-001-protocol-hardening-wave-2-scope`. Working tree clean after commit.
+
+### This-context deliverables (Events 65-83)
+
+- Rehydration + resumed SESSION-2026-05-23_02 from prior PAUSE (Event 64 → 65)
+- 4 decisions LOCKED: D-1 (DEFERRED test baseline) + D-2 (FU-1/FU-2 tracked) + D-3 (DESIGN-004 DiffNote.sha deferred) + D-4 (REQ-001 AC-5 gap → TASK-047)
+- Bulk-seeded all 34 remaining workflow items (68 impl+qa) + authored task-level wave graph
+- **+7 TASKs CLOSED**: 030 (orchestrator-inline), 003, 010, 004, 006, 047 (follow-up), 007, 008, 009 → wait that's 9. Correction: this context closed TASK-030, 003, 010, 004, 006, 047, 007, 008, 009 = **9 TASKs** (13/46 at Event 65 start → 21/47 at Event 83; net +8 closed minus +1 scope-add = the marathon grew 46→47 via TASK-047)
+- **+9 QA contract notes**: QA-056 through QA-064
+- **3 REQs ACCEPTED**: REQ-001 (schemas) + REQ-002 (parsers) + REQ-003 (validators) — full Track-1 coverage trilogy
+- **1 DESIGN ACCEPTED**: DESIGN-001 (Coverage Module Layout)
+- 1 follow-up TASK authored + closed (TASK-047 — REQ-001 AC-5 H1-drift gap)
+- Clean recoveries: 1 agent internal-error death (impl-006 re-dispatched), 1 cross-QA contradiction (REQ-001 AC-5 stop-the-line → D-4 → resolved)
+- Suite baseline 705/2/707 → 817/2/819
+- ~20 atomic commits
+
+### Resume protocol (next context)
+
+1. `/skills:plan PLAN-001-skills-ecosystem` continue mode → RESUMES this session (PAUSED → IN_PROGRESS; continue Event numbering from 84; do NOT create new note per `feedback_resume_paused_session_not_new`).
+2. Rehydration (TIER-1 per `feedback_post_compaction_rehydration_protocol`): set active project `skills` + bootstrap_context; read PLAN-001 + this session Events 65-83; verify git on `feat/plan-001-protocol-hardening-wave-2-scope` at the Event-83 commit or later; recap.
+3. **21/47 TASKs CLOSED.** Next-ready: Wave 1b (per-skill scripts TASK-011-020; Track 2; wires composition lib into /ingest /decompose /recompose /defrag skills). Then Wave 1c (cleanup 022/023/027/028/031/032/035/036), Wave 4 (hook handlers 024/038/041-045), Wave 5 (smoke tests 046).
+4. Per-batch protocol unchanged: PLAN seed-transition (items already bulk-seeded — just PENDING → IN_PROGRESS) → commit → dispatch → orchestrator-verify gates → full Event 55 propagation per closure → commit.
+5. Canonical suite baseline: **817 pass / 2 fail / 819 total** (2 fails = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1; NEW failures elsewhere = regression).
+
+### Open items for marathon resume
+
+- **FU-1/FU-2/FU-3** (PLAN-001 Post-Marathon Follow-Up Backlog): frontmatter `validates:` key in QA-032/033/034; hooks/** tsconfig+biome scope gap; this session's Observations/Relations placement drift (lines 69/77 — relocate to true file-end at session-end per CONVENTIONS 4.0).
+- **D-3 deferred**: DESIGN-004 DiffNote.sha amendment — revisit at TASK-043 (Layer 4/5 pre-push handler) dispatch.
+- 0 active blockers; 0 open findings.
+
+### Cumulative marathon state (across all sessions)
+
+- build.SPEC-008: 21/47 TASKs CLOSED (45%).
+- ACCEPTED: REQ-001, REQ-002, REQ-003; DESIGN-001.
+- Still DRAFT (totality-gated): REQ-004..012; DESIGN-002/003/004; SPEC-008 root (Success/Acceptance Criteria; flips at full Wave close).
