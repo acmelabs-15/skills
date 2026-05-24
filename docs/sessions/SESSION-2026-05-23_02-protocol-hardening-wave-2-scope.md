@@ -449,3 +449,56 @@ ADR-005 structure: top-level Status / Context / Decision Summary / Detailed Deci
 **Step 6 detail-parity audit**: orchestrator self-audit (orchestrator was author + has Events 10-16 in context). Each per-D-N section quotes the AskUserQuestion answer verbatim in the "Decision" subsection (Pattern: `> **<Label>** > <description>`). Considered Options sections preserve all alternatives surfaced. PASS — detail parity confirmed.
 
 **Next**: /decisions Step 7 `brain:---adr-review` BLOCKING gate; Step 8 ACCEPTED flip on PASS; Step 9 set-part-done to /plan.
+
+
+## Event 20 — ADR-005 adr-review round 1: FAIL convergence
+
+6-agent debate complete. Tally: 3 ACCEPT (critic, security, analyst) + 3 CONCERNS (architect, independent-thinker, advisor) + 0 BLOCK. 1 P0. Threshold ≥5 ACCEPT + 0 BLOCK + 0 P0 not met.
+
+**P0** (advisor): D-7 (delete dead file) is task-level, not architectural — move to SPEC-008 Track 4 as a cleanup TASK; remove from ADR D-N inventory.
+
+**P1 themes**:
+
+- **Advisor + IT**: D-5 over-scope (EPIC + CRIT have zero current consumers; speculative schemas). User-locked in Event 14 — Disagree-and-Commit applies unless user revises.
+- **Advisor**: SPEC-008 granularity (4 tracks in one SPEC); recommend split into SPEC-008 (Tracks 1+2) + SPEC-009 (Track 3) + Track 4 as individual cleanup tasks.
+- **Independent-thinker** (P2 elevated): voluntary script invocation is the SAME failure mode as Wave 1 prose; real fix is automated gates (hooks, pre-commit) that fire without orchestrator cooperation. This challenges D-1+D-4's core premise. Could become a new D-8.
+- **Critic**: EPIC `validateEpicDoneClaim` cross-note resolution underspecified (file I/O at validation time vs single-note pattern of other validators); integration test scaffold not addressed by any D-N; backward-transition + idempotency + duplicate-event tests not addressed.
+- **Architect**: `-1` permalink suffix on ADR-005 (cosmetic; fix via move_note); duplicate-note finding FALSE POSITIVE (verified — only one ADR-005 file). MADR fields finding REJECTED (project uses CONVENTIONS Section 3, not MADR).
+- **Security**: CWE-22 path containment + CWE-94 prompt injection trust-boundary docs (add to D-1 + D-4 Implementation Notes). Constructive; non-blocking.
+- **Analyst**: 12-14 day estimate tight (rename cascade reduces parallelism); expect() count off by 3% (1052 actual vs 1084 cited).
+
+**Phase 3 resolution plan**: orchestrator-authority revisions (architect P1.2/P1.3 partial, critic P1, security P1, analyst P1, P2 cleanup) applied inline. **User-input needed** on 3 substantive issues:
+
+1. Advisor P0: remove D-7 from ADR (move to SPEC-008 task)?
+2. IT P2 elevated: add D-8 for automated gates (hooks/pre-commit), OR amend D-1+D-4 to mandate them, OR accept-with-rationale that voluntary invocation is the chosen trade-off?
+3. Advisor P1: SPEC-008 granularity — keep as one SPEC vs split into SPEC-008 (Tracks 1+2) + SPEC-009 (Track 3) + Track 4 individual tasks?
+
+Plus reconfirm D-5 (EPIC + CRIT inclusion vs defer to Wave 3) given advisor + IT both flagged it.
+
+Surfacing via AskUserQuestion next.
+
+
+## Event 21 — Phase 3 resolutions applied to ADR-005
+
+User clarification turns added Q1 lock (D-7 tactical cleanup notation) + Q2 lock (mandate automated gates as Wave 2 deliverable; full hook architecture confirmed). Q3 (SPEC-008 granularity) still pending.
+
+**D-8 architecture confirmed by user** ("looks good"):
+
+- 5 PreToolUse blocking gates: Edit/Write/MultiEdit on `docs/**`, Brain MCP edit_note/write_note, Bash git commit, Bash git push, Bash gh pr create
+- Stop turn-end backstop
+- FileChanged on `.git/HEAD|.git/index|.git/logs/HEAD` for post-commit observability
+- Plugin directory layout: `hooks/hooks.json` + `hooks/lib/` (shared utilities) + `hooks/scripts/` (7 handler scripts)
+- Hybrid failure semantics: deny on status-flip claim failures; allow + `additionalContext` warning on other schema issues
+- Validators imported from `shared/composition/src/validators/` (per D-1+D-2 layout)
+
+**ADR-005 edits applied this turn**:
+
+- Status section: round 1 verdict captured + Phase 3 resolutions enumerated
+- Decision Summary: D-7 tactical-cleanup notation added; D-8 line added
+- D-8 full 11-section template inserted before Cross-Decision Coherence
+- Cross-Decision Coherence: 5-cluster view (was 4); Track 5 (hooks) added; D-8 dependency relationships documented
+- Migration Plan: 11 steps (was 10); D-8 hook authoring + smoke tests inserted at step 8; effort revised 12-14 → 14-16 days
+- Validation: D-8 validation criteria added; D-5 EPIC cross-note resolver injection mechanism added (critic P1.1); D-3 expanded scope captured (critic P1.2/P1.3)
+- Clarifications: Phase 3 adjustment narrative + 6 Disagree-and-Commit dissent entries (advisor+IT D-5 scope; architect MADR fields rejected; architect duplicate-note false positive; permalink `-1` cosmetic; relation-type specificity Track 4; IT alternative architectures rejected with rationale)
+
+**Open user decision**: Q3 — SPEC-008 granularity. With D-8 added (Track 5), Wave 2 now spans 5 tracks under one SPEC. Advisor's P1 about granularity has more weight; will resurface.

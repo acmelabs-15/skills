@@ -18,7 +18,7 @@ tags:
 
 ## Status
 
-PROPOSED 2026-05-23 — pending `brain:---adr-review` Phase 4 convergence gate (Step 7 of /decisions skill). Will flip to ACCEPTED on PASS verdict (≥5 ACCEPT + 0 BLOCK from 6-agent debate). Source: decisions.4 part of [[PLAN-001 Skills Ecosystem]], D-N micro-cycle adjudicating 7 architectural decisions captured in [[SESSION-2026-05-23_02 Protocol Hardening Wave 2 Scope]] Events 10-16.
+PROPOSED 2026-05-23 — adr-review round 1 result: 3 ACCEPT (critic, security, analyst) + 3 CONCERNS (architect, independent-thinker, advisor) + 0 BLOCK + 1 P0 surfaced (advisor). Phase 3 resolutions applied in-ADR: D-7 tactical cleanup notation (advisor P0); D-8 added (IT P2 elevation — automated enforcement gates); D-1 security path-containment requirement (security P1); D-4 brief-generator trust-boundary documentation (security P1); D-5 EPIC cross-note resolution mechanism (critic P1.1); D-3 integration + backward-transition + idempotency + duplicate-event test additions (critic P1.2/P1.3); effort estimate buffer + expect() count corrected (analyst P1); Disagree-and-Commit captured for D-5 scope (advisor + IT P1) in Clarifications. Pending: adr-review round 2 convergence on revised ADR. Source: decisions.4 part of [[PLAN-001 Skills Ecosystem]], D-N micro-cycle adjudicating 8 architectural decisions captured in [[SESSION-2026-05-23_02 Protocol Hardening Wave 2 Scope]] Events 10-16 + 20-22 (Phase 3 resolution events).
 
 ## Context and Problem Statement
 
@@ -44,7 +44,8 @@ Wave 2 scope shape locked via AskUserQuestion (SESSION-2026-05-23_02 Event 09) a
 - **D-4**: Programmatic per-skill dispatch-brief generator scripts at `skills/<name>/scripts/dispatch-<agent>.ts`; scripts import cross-cutting constants (e.g., `validRelationTypes` from `shared/composition/src/schemas/common.ts`) and print full brief text. Schema changes auto-propagate.
 - **D-5**: Full Audit A recommendation — include ALL 3 P1 schemas in Wave 2. Final coverage adds 5 schemas + 5 parsers + 4 validators: ADR, PLAN-done-claim, ANALYSIS, EPIC, CRIT.
 - **D-6**: Amend SPEC-007 root checkbox notation to use `[~]` (or `[deferred: rationale]`) for items where the underlying REQ is `status: DEFERRED`. Keep SPEC-007 status DONE. Extend `validateSpecDoneClaim` to recognize `[~]` as terminal alongside `[x]`.
-- **D-7**: Delete `_shared/composition/src/core/dispatcher.ts` + `tests/dispatcher.test.ts`. Evidence-confirmed dead (zero production imports; only consumed by its own test). Production code uses `registry.ts`. 508 → 506 tests post-delete.
+- **D-7**: Delete `_shared/composition/src/core/dispatcher.ts` + `tests/dispatcher.test.ts`. Evidence-confirmed dead. *(Tactical cleanup decision per Phase 3 advisor P0 resolution — kept in ADR for traceability with locked state alongside architectural decisions; not promoted to fully architectural significance.)*
+- **D-8**: Automated enforcement gates via plugin hooks. 5 `PreToolUse` blocking gates (Edit/Write/MultiEdit on docs/**, MCP edit_note/write_note, Bash git commit, Bash git push, Bash gh pr create) + `Stop` turn-end backstop + `FileChanged` .git observability. Validators fire mechanically WITHOUT orchestrator cooperation. Added Phase 3 in response to independent-thinker P2 elevation; user-mandated as Wave 2 deliverable.
 
 ## Detailed Decisions
 
@@ -354,49 +355,211 @@ User clarified concern about breaking adapter functionality (SESSION-2026-05-23_
 
 **References**: [[ANALYSIS-004 Protocol Hardening Wave 2 Audit Synthesis]] Audit D section + pre-lock evidence summary; [[SESSION-2026-05-23_02 Protocol Hardening Wave 2 Scope]] Event 16; `registry.ts` docstring at `_shared/composition/src/registry.ts` (lines 7-15 cite supersession explicitly).
 
+### D-8: Automated Enforcement Gates via Plugin Hooks
+
+**Status**: LOCKED 2026-05-23 (decisions.4 in PLAN-001-skills-ecosystem; added during adr-review round 1 Phase 3 resolution).
+
+**Context**: Independent-thinker P2 surfaced during ADR-005 adr-review round 1: voluntary script invocation (D-1+D-4) is the SAME failure mode as Wave 1 prose. If the orchestrator is the actor whose Wave-1-skipping behavior triggered the audit, then Wave 2 scripts that require the same actor's voluntary invocation will sit equally unused. The structural fix is automated gates that fire WITHOUT orchestrator cooperation — Claude Code plugin hooks. User mandated automated gates as Wave 2 deliverable (clarification turn during Phase 3 resolution).
+
+**Decision**: Wave 2 ships a plugin-level hook layer that auto-invokes claim validators at the moments Brain note state changes. Architecture comprises 5 `PreToolUse` blocking gates + 1 `Stop` backstop + 1 `FileChanged` observability layer:
+
+| Layer | Hook event | Matcher / `if` filter | Blocks? | Purpose |
+|---|---|---|---|---|
+| 1. Pre-write (local files) | `PreToolUse` | `Edit\|Write\|MultiEdit` + `if: "Edit(docs/**/*.md)\|Write(docs/**/*.md)\|MultiEdit(docs/**/*.md)"` | ✓ deny | Block bad writes to Brain notes before they land on disk |
+| 2. Pre-write (MCP) | `PreToolUse` | `mcp__plugin_brain_brain__edit_note\|mcp__plugin_brain_brain__write_note` | ✓ deny | Same logic at MCP layer (catches MCP-only writes) |
+| 3. Pre-commit | `PreToolUse` | `Bash` + `if: "Bash(git commit *)"` | ✓ deny | Block commits with failing staged Brain notes |
+| 4. Pre-push | `PreToolUse` | `Bash` + `if: "Bash(git push *)"` | ✓ deny | Block pushes containing commits with failing Brain notes |
+| 5. Pre-PR-create | `PreToolUse` | `Bash` + `if: "Bash(gh pr create *)"` | ✓ deny | Block PR open if PR diff contains failing Brain notes |
+| 6. Turn-end backstop | `Stop` | (none) | ✓ block | Sweep all `docs/**` modified this turn; block stop if any fail |
+| 7. Post-commit observability | `FileChanged` | `.git/HEAD\|.git/index\|.git/logs/HEAD` | observe | Surfaces post-commit graph state to transcript via `additionalContext` |
+
+**Considered Options**:
+
+- **Add D-8 to ADR-005 mandating automated gates** (chosen) — most rigorous response to IT P2; closes the voluntary-invocation gap at the runtime layer the orchestrator cannot bypass.
+- **Amend D-1 + D-4 to add gate-automation as required** — same intent, smaller ADR delta. Rejected because the architecture is substantial enough to warrant its own D-N.
+- **Accept-with-rationale that voluntary invocation is the chosen trade-off** — rejected; this is exactly the Wave 1 failure mode.
+- **Defer to ADR-006 (future)** — rejected because Wave 2's claimed enforcement properties depend on the hooks; deferring delays the actual win Wave 2 promises.
+
+**Decision shapes per gate**:
+
+```typescript
+// PreToolUse handler returns (Layer 1-5):
+{
+  hookSpecificOutput: {
+    hookEventName: "PreToolUse",
+    permissionDecision: "deny",  // or "allow"
+    permissionDecisionReason: "TaskNoteSchema: status=DONE requires all DoD [x]; failing: ..."
+  }
+}
+
+// Or hybrid: allow with warning:
+{
+  hookSpecificOutput: {
+    hookEventName: "PreToolUse",
+    permissionDecision: "allow",
+    additionalContext: "Schema warning: observation missing #tag (non-blocking)"
+  }
+}
+
+// Stop handler returns (Layer 6):
+{
+  decision: "block",
+  reason: "Turn-end backstop: 2 docs/** notes modified this turn fail validation: ..."
+}
+
+// FileChanged handler emits (Layer 7):
+{
+  hookSpecificOutput: {
+    hookEventName: "FileChanged",
+    additionalContext: "Post-commit state: commit abc123 landed; full graph validation: PASS"
+  }
+}
+```
+
+**Failure semantics**: HYBRID per-write — pre-write gates (layers 1-2) deny on status-flip claim failures (TASK/SPEC/REQ/DESIGN/TEST-REPORT/ADR/PLAN/ANALYSIS/EPIC status transitioning to terminal-DONE/ACCEPTED with unsatisfied checkboxes/AC); allow with `additionalContext` warning on other schema issues (missing tags, malformed frontmatter that's still parseable). Commit/push/PR-create gates deny on ANY failing staged/pushed note. Stop hook blocks turn completion on any unvalidated docs/** modification.
+
+**Implementation Notes** — directory layout in the skills plugin:
+
+```text
+hooks/
+├── hooks.json                                 ← Hook declarations
+├── lib/                                       ← Shared handler utilities
+│   ├── dispatch-validator.ts                  ← Route by frontmatter type
+│   ├── apply-edit-operation.ts                ← Compute proposed content for Edit/MultiEdit
+│   ├── git-staged-files.ts                    ← Read staged content via `git show :file`
+│   ├── git-diff-commits.ts                    ← Read commits-being-pushed/PRed diff
+│   ├── parse-tool-input.ts                    ← Handle tool_input shapes
+│   └── format-hook-response.ts                ← Emit PreToolUse / Stop decision JSON
+└── scripts/                                   ← Hook handler scripts
+    ├── pre-write-brain-note.ts                ← Layer 1
+    ├── pre-write-brain-note-mcp.ts            ← Layer 2
+    ├── pre-commit-validate.ts                 ← Layer 3
+    ├── pre-push-validate.ts                   ← Layer 4
+    ├── pre-pr-create-validate.ts              ← Layer 5
+    ├── stop-backstop.ts                       ← Layer 6
+    └── git-state-observer.ts                  ← Layer 7
+```
+
+Handler scripts use `${CLAUDE_PLUGIN_ROOT}` placeholder (resolves to plugin install dir). All handlers import composition library validators from `shared/composition/src/validators/` (per D-2 layout). Plugin-level location (vs `.claude/settings.json` project-level) ensures hooks ship with the plugin and apply on every install.
+
+**Security boundary**: hook handler scripts accept `file_path` and `command` arguments from Claude Code's hook dispatcher (trusted runtime), NOT from external user input. Per security reviewer P1: handlers MUST validate that resolved paths fall within the project root (no `..` traversal) before reading staged file content. Composition library validators receive parsed markdown content — no command injection surface. Brief generators (D-4) are separate; their trust boundary is documented in D-4.
+
+**Rollback Path**: remove `hooks/` directory and `hooks.json` declarations; composition library + per-skill scripts (D-1, D-4) remain functional. Wave 2 falls back to voluntary invocation (Wave 1 enforcement level). No production data migration required.
+
+**Cross-D-N Implications**: D-8 makes D-1 + D-4 scripts MANDATORY at the runtime layer (they were optional/voluntary in the original D-1+D-4 framing). D-3 adversarial fixtures can be reused as hook smoke tests (the fixture *is* the lying claim the hook should deny). D-5's new validators (ADR + PLAN-done + ANALYSIS + EPIC) bind directly into the hook dispatch routing. D-6's `[~]` notation extension lands in `validateSpecDoneClaim` — the version the hooks invoke. Hooks DO NOT bypass per-skill scripts; the relationship is composition: D-1 builds the validators-as-scripts; D-8 makes the validators-as-scripts mandatory at gate points by binding them to runtime events.
+
+**Failure Modes**:
+
+- *Hook handler crashes (uncaught exception)*: Bun process exits non-zero; PreToolUse treats non-zero exit as non-blocking error (continues with tool call). Mitigation: handler wraps validator invocation in try/catch; emits structured error response.
+- *Bun startup fails (e.g., missing dependency)*: hook fails to spawn; same fallthrough as crash. Mitigation: SPEC-008 TASK DoD includes hook smoke-test on plugin install.
+- *Legitimate deferral blocked by pre-commit hook*: deferred items use `[~]` notation per D-6; `validateSpecDoneClaim` accepts `[~]` as terminal. Other contexts (e.g., REQ status DEFERRED) handled in validator. `--no-verify` is FORBIDDEN per project policy; if a legitimate state cannot pass validation, the validator schema is wrong and must be amended.
+- *MCP layer not covered by hooks (Layer 2)*: if `PreToolUse` matcher pattern fails to match `mcp__plugin_brain_brain__*` tool names due to Claude Code matcher quirks, Brain MCP edits bypass validation. Mitigation: SPEC-008 TASK DoD includes hook smoke-test asserting MCP write triggers Layer 2 handler.
+- *FileChanged matcher uses literal filenames not globs*: Layer 7 watches only `.git/HEAD|.git/index|.git/logs/HEAD` (specific files). Cannot watch `docs/**/*.md` for external edits (e.g., `vim` outside Claude). Acceptable: external editor edits are out of scope for the protocol; tool-mediated edits are the threat model.
+
+**Performance Considerations**:
+
+- Bun startup: ~30-50ms per hook invocation.
+- Validation cost: ~50-200ms per Brain note (parse + schema + claim validator).
+- Per-edit hook overhead: ~80-250ms total.
+- Per-commit hook overhead: scales with staged file count; bounded ~500ms-2s for typical 5-10 file commit.
+- Per-turn cumulative: 10-20 edits per turn × 250ms = ~2-5s. Acceptable compared to typical agent dispatch latency.
+- Optimization (deferred to Wave 3 if needed): switch to HTTP hook handlers running a persistent validator daemon (eliminates per-invocation Bun startup).
+
+**Open Clarifications**: None at lock time.
+
+**References**: [[ANALYSIS-004 Protocol Hardening Wave 2 Audit Synthesis]] (IT P2 surfacing); ADR-005 adr-review round 1 IT verdict (CONCERNS, P2 elevated); user clarification turn (SESSION-2026-05-23_02 architecture confirmation); Claude Code hooks documentation (code.claude.com/docs/en/hooks).
+
 ## Cross-Decision Coherence
 
-The 7 D-Ns form 4 logical clusters mapping to the Wave 2 tracks:
+The 8 D-Ns form 5 logical clusters mapping to the Wave 2 tracks:
 
 | Cluster | D-Ns | Wave 2 track | Purpose |
 |---|---|---|---|
-| **Per-skill scripts spine** | D-1, D-4 | Track 2 (skill invocation wiring) | Per-skill `scripts/<verb>.ts` for both gate-point validation/mutation invocation (D-1) and dispatch-brief generation (D-4). One pattern; one invocation surface; one drift-prevention story. |
-| **Library coverage** | D-2, D-5 | Track 1 (coverage gaps) | New schemas/parsers/validators (D-5) land in extended flat dirs (D-2). Five new schemas (ADR, PLAN-done-claim, ANALYSIS, EPIC, CRIT) close the coverage matrix. |
-| **Test coverage** | D-3 | Track 3 (adversarial + integration + regression tests) | Shared fixture-driven harness for adversarial-claim tests; natural mapping to drift-regression markers from Phase X retired memory. |
-| **Drift cleanup** | D-6, D-7 | Track 4 (current drift cleanup) | SPEC-007 notation amendment (D-6) + `core/dispatcher.ts` deletion (D-7) close the specific code/spec drift surfaces Audit D identified. |
+| **Per-skill scripts spine** | D-1, D-4 | Track 2 (skill invocation wiring) | Per-skill `scripts/<verb>.ts` for both gate-point validation/mutation invocation (D-1) and dispatch-brief generation (D-4). One pattern; one invocation surface. |
+| **Library coverage** | D-2, D-5 | Track 1 (coverage gaps) | New schemas/parsers/validators (D-5) land in extended flat dirs (D-2). Five new schemas close the coverage matrix. |
+| **Test coverage** | D-3 | Track 3 (adversarial + integration + regression tests) | Shared fixture-driven harness; extended scope (per Phase 3 critic P1.2/P1.3) to include integration tests + backward-transition + idempotency + duplicate-event rejection tests + drift regression markers. |
+| **Drift cleanup** | D-6, D-7 | Track 4 (current drift cleanup) | SPEC-007 notation amendment (D-6) + `core/dispatcher.ts` deletion (D-7) close the specific code/spec drift surfaces Audit D identified. Track 4 also includes the user-directive `_shared` → `shared` rename + 10 Brain note hygiene fixes + dead-script cleanup (`scripts/` migration artifacts). |
+| **Automated enforcement** | D-8 | Track 5 (hooks layer; NEW per Phase 3) | Plugin hook infrastructure that auto-invokes validators at gate points. Makes D-1+D-4 scripts MANDATORY at runtime. Closes IT P2 gap (voluntary invocation = Wave 1 failure mode). |
 
-The clusters are loosely coupled. D-1 + D-4 form a strong dependency (D-4 explicitly extends D-1's per-skill scripts pattern). D-2's `_shared` → `shared` rename (captured separately from D-2 as a Track 4 cleanup item per user directive) cascades through ALL D-Ns that cite a path — must execute the rename before subsequent file-path-citing TASKs.
+Dependency relationships (Track 5 added):
+
+- D-2's `_shared` → `shared` rename (captured separately from D-2 as Track 4 cleanup item #11 per user directive) cascades through ALL D-Ns citing a path — must execute the rename before subsequent file-path-citing TASKs.
+- D-1 (per-skill scripts) and D-4 (brief generators) are tightly coupled — D-4 explicitly extends D-1.
+- **D-8 depends on D-1+D-4** — hooks invoke the scripts those D-Ns build. Without D-1+D-4 scripts, D-8 hooks have nothing to dispatch.
+- D-8 also depends on D-5 (new validators are bound into hook dispatch routing) and D-6 (the `[~]` notation extension lands in the validator hooks invoke).
+- D-3's adversarial fixtures double as D-8 hook smoke tests (fixtures = lying claims; hooks should deny them).
+- D-7 is independent (cleanup; can land any time).
+
+The clusters are loosely coupled but D-8 is the linchpin that converts Wave 2's potential enforcement (D-1+D-4 validators exist) into actual enforcement (validators fire mechanically).
+
 
 ## Migration Plan
 
-SPEC-008 TASK ordering (proposed; subject to /spec phase elaboration):
+SPEC-008 TASK ordering (proposed; subject to /spec phase elaboration). Updated Phase 3 to incorporate D-8 hooks layer + Track 5:
 
 1. **Rename `_shared/` → `shared/`** (Track 4 item #11; user directive from Event 11). Mechanical sweep; all subsequent TASKs reference `shared/...`.
-2. **Delete `core/dispatcher.ts` + test** (D-7). Test count drops to 506.
-3. **Author 5 new schemas + 5 parsers + 4 claim validators** (D-5; lands per D-2 in flat dirs).
+2. **Delete `core/dispatcher.ts` + test** (D-7). Test count drops to 506. *(Per D-7 tactical cleanup notation.)*
+3. **Author 5 new schemas + 5 parsers + 4 claim validators** (D-5; lands per D-2 in flat dirs). Includes EPIC cross-note resolution mechanism per Phase 3 critic P1.1.
 4. **Extend `validateSpecDoneClaim` for `[~]` notation** (D-6); migrate SPEC-007 root checkbox notation.
-5. **Implement adversarial harness + initial fixture set** (D-3). Wires the validators from step 3 into adversarial coverage.
-6. **Author per-skill gate-point scripts** (D-1) for build, end, spec, decisions, plan. Each script imports its validator from the schema/validator set in step 3.
-7. **Author per-skill dispatch-brief generator scripts** (D-4). Each imports cross-cutting constants from `shared/composition/src/schemas/common.ts`.
-8. **Update lifecycle SKILL.md files** to cite the new scripts at gate points (Audit B remediations).
-9. **Brain notes drift cleanup** (Track 4 items #1-#10): duplicate frontmatter, `validates` relations, title-without-colon, stale `type:test_report`, PII paths, duplicate Event numbers.
-10. **Final coverage matrix + 4 exit gates** (code-qualities-assessment + incoherence + orphan-ref + lint).
+5. **Implement adversarial harness + initial fixture set + integration tests + mutation tests** (D-3, scope expanded Phase 3). Wires the validators from step 3 into adversarial + integration coverage; adds backward-transition / idempotency / duplicate-event rejection tests.
+6. **Author per-skill gate-point scripts** (D-1) for build, end, spec, decisions, plan. Each script imports its validator from the schema/validator set in step 3. Includes path-containment validation per Phase 3 security P1.
+7. **Author per-skill dispatch-brief generator scripts** (D-4). Each imports cross-cutting constants. Includes brief-generator trust-boundary documentation per Phase 3 security P1.
+8. **Author hook handlers + hooks.json declaration** (D-8 NEW). Implement 7 layers: 5 PreToolUse gates + Stop backstop + FileChanged observability. Smoke-test each gate against fixtures from step 5.
+9. **Update lifecycle SKILL.md files** to cite the new scripts at gate points (Audit B remediations).
+10. **Brain notes drift cleanup** (Track 4 items #1-#10): duplicate frontmatter, `validates` relations, title-without-colon, stale `type:test_report`, PII paths, duplicate Event numbers. *Also: retire/remove unused `scripts/` migration artifacts (migrate-plan-001-to-trimmed-template.ts, rename-test-report-to-qa.ts, strip-permalink-collision-suffixes.ts).*
+11. **Final coverage matrix + 4 exit gates** (code-qualities-assessment + incoherence + orphan-ref + lint) + D-8 smoke-test pass.
+
+Updated effort estimate: ~14-16 days (was 12-14; +2 days for D-8 hooks layer + buffer per Phase 3 analyst P1). Critical path: rename → schemas → validators → scripts → hooks. Track 4 cleanup work parallelizable.
+
 
 ## Validation
 
 Each D-N has corresponding validation in SPEC-008's REQ AC + TASK DoD + test scaffolding:
 
-- **D-1**: smoke-test invocation per script (`bun skills/<name>/scripts/<verb>.ts --help`); skill SKILL.md cites the script with concrete command; CI ensures the script exits non-zero on validation failure.
-- **D-2**: file layout matches Wave 1 pattern; biome lint green; existing Wave 1 tests still pass.
-- **D-3**: adversarial harness exercises Audit E's top-10 prioritized scenarios; each fixture has descriptive `drift-NN-<slug>.md` name matching a Phase X drift surface.
-- **D-4**: brief generator output includes `validRelationTypes` import; schema constant change automatically reflected in generator output (test: append a new relation type → generator output includes it; revert; original output restored).
-- **D-5**: 5 new schemas have Zod superRefine + parser tests; 4 claim validators have happy-path + rejection + adversarial parse-then-validate coverage (per D-3).
-- **D-6**: `validateSpecDoneClaim` accepts `[~]` paired with DEFERRED child REQ status; rejects `[~]` paired with non-DEFERRED child; SPEC-007 root passes the validator post-amendment.
+- **D-1**: smoke-test invocation per script (`bun skills/<name>/scripts/<verb>.ts --help`); skill SKILL.md cites the script with concrete command; CI ensures the script exits non-zero on validation failure. Path-containment checks asserted per Phase 3 security P1.
+- **D-2**: file layout matches Wave 1 pattern; biome lint green; existing Wave 1 tests still pass; `_shared` → `shared` rename complete with zero residual references.
+- **D-3**: adversarial harness exercises Audit E's top-10 prioritized scenarios; each fixture has descriptive `drift-NN-<slug>.md` name matching a Phase X drift surface. **Phase 3 additions**: integration tests cover parse-mutate-validate-render full path; cross-note SPEC-vs-TASK consistency; TEST-REPORT-vs-TASK-DoD cross-validation. Mutation tests cover DONE→IN_PROGRESS backward transition rejection, double-apply idempotency, session-mutation duplicate-event-number rejection.
+- **D-4**: brief generator output includes `validRelationTypes` import; schema constant change automatically reflected in generator output. Trust-boundary documentation present per Phase 3 security P1.
+- **D-5**: 5 new schemas have Zod superRefine + parser tests; 4 claim validators have happy-path + rejection + adversarial parse-then-validate coverage (per D-3). **Phase 3 addition**: `validateEpicDoneClaim` cross-note resolution mechanism spec: validator accepts `{epicNote, resolveContainedSpec: (wikilink) => SpecRootNote | null}` shape; caller (hook handler) injects the resolver; missing target SPEC fails validation with explicit "unresolvable contained reference" error.
+- **D-6**: `validateSpecDoneClaim` accepts `[~]` paired with DEFERRED child REQ status; rejects `[~]` paired with non-DEFERRED child; SPEC-007 root passes the validator post-amendment. `[~]` recognition restricted to SPEC root Artifact Status / Phases / Acceptance Criteria sections only (not TASK DoD).
 - **D-7**: `bun test` 506/506 pass post-delete; `grep -r "core/dispatcher" shared scripts skills` returns empty.
+- **D-8** (Phase 3 NEW): each of 7 hook layers smoke-tested against fixtures (PreToolUse layers 1-5 against status-flip-claim adversarial fixtures returning `deny`; Stop hook returns `decision: "block"` on unvalidated turn-end state; FileChanged emits expected `additionalContext`). Hook handler scripts exit cleanly on bad input (no crashes). `hooks/hooks.json` registered correctly; plugin install confirms hooks attached.
+
 
 ## Clarifications
 
-(No clarifications yet; subsequent Adjustments land here per CONVENTIONS Section 3.1 ADR-specific update protocol.)
+### Adjustment 2026-05-23 — Phase 3 adr-review round 1 resolutions
+
+**Round 1 verdict**: 3 ACCEPT + 3 CONCERNS + 0 BLOCK + 1 P0. See [[CRIT-005-ADR-005: Wave 2 Protocol Hardening Debate Log]] (to be authored if CRIT capture is desired; otherwise debate evidence lives in SESSION-2026-05-23_02 Event 20).
+
+**Resolutions applied in this Adjustment**:
+
+- **Advisor P0**: D-7 was flagged as task-level not architectural. **Resolution**: Q1 user adjudication selected "Keep D-7 in ADR; mark as 'tactical cleanup decision'". D-7 retains its position in the ADR with explicit tactical-cleanup notation in the Decision Summary; readers understand it traces locked state rather than declaring architectural significance.
+
+- **Independent-thinker P2 (elevated)**: voluntary script invocation = Wave 1 failure mode. **Resolution**: added D-8 (Automated Enforcement Gates via Plugin Hooks). Wave 2 ships 5 PreToolUse blocking gates + Stop backstop + FileChanged observability. Validators fire mechanically; orchestrator cannot bypass. User mandated automated gates as Wave 2 deliverable during Phase 3 clarification turn.
+
+- **Security P1**: CWE-22 path containment + CWE-94 prompt injection trust boundary. **Resolution**: D-1 Implementation Notes amended to require path-containment validation in all new gate-point scripts; D-4 Implementation Notes amended with explicit brief-generator trust-boundary documentation (briefs inherit Brain note content trust level).
+
+- **Critic P1.1**: EPIC `validateEpicDoneClaim` cross-note resolution underspecified. **Resolution**: D-5 Implementation Notes amended — validator accepts resolver injection (`{epicNote, resolveContainedSpec: (wikilink) => SpecRootNote | null}`); missing-target failure handled explicitly.
+
+- **Critic P1.2 / P1.3**: integration tests + backward-transition + idempotency + duplicate-event tests not scoped. **Resolution**: D-3 scope expanded — adversarial harness fixtures + parse-mutate-validate-render integration tests + cross-note consistency tests + mutation rejection tests for backward transitions / double-apply / duplicate event numbers. Validation section updated.
+
+- **Analyst P1**: effort estimate tight + expect() count discrepancy. **Resolution**: estimate revised to 14-16 days (was 12-14) incorporating D-8 hooks layer + buffer; expect() count corrected from 1084 (cited at audit time) to 1052 (current grep result; 3% discrepancy from test additions/removals between audit and ADR authoring).
+
+**Disagree-and-Commit (irreconcilable findings; documented per ADR convention)**:
+
+- **Advisor + IT P1 (D-5 over-scope)**: both reviewers flagged that EPIC + CRIT schemas have zero current consumers and represent speculative coverage. User locked D-5 in Event 14 to include all 3 P1 schemas per full Audit A recommendation, accepting the ~2-3 day cost. Position: pattern is mechanical; building schemas slightly ahead of demand is cheaper than retroactive scramble; CRIT supports adr-review structural convergence even without a claim validator. Dissent noted; commit forward.
+
+- **Architect P1.3 (missing MADR fields)**: project uses CONVENTIONS Section 3 frontmatter schema, not MADR template. CONVENTIONS does not require decision-makers / consulted / informed fields. ADR-005 frontmatter conforms to project canonical schema. Architect's MADR recommendation is rejected as out of scope for this project's conventions.
+
+- **Architect P1.1 (duplicate Brain note)**: false positive — `list_directory decisions/` confirmed exactly one ADR-005 file. Search result returned multiple permalink hits during indexing transition; this is a Brain MCP search-index artifact, not a real duplicate. No action required.
+
+- **Architect P1.2 (`-1` permalink suffix)**: real but cosmetic. The `-1` was appended by Brain MCP during `move_note` due to a prior write collision in the transient index. Does not break wikilinks (target resolution uses title not permalink). Acknowledged; deferred to a low-priority cleanup item.
+
+- **Architect P2 / Critic P2 (relation types)**: `relates_to` could be more specific (`depends_on`, `implements`, `caused_by`). Minor graph-hygiene improvement; deferred to Track 4 cleanup pass alongside other relation-type corrections (e.g., the `validates` instances in QA notes).
+
+- **IT P2 (alternative architectures not considered)**: property-based testing (fast-check) for D-3; `[x] (DEFERRED)` instead of `[~]` for D-6; voluntary invocation as intentional choice. Property-based testing rejected because fixture-driven harness gives named drift-regression markers (Audit E item 10 alignment) — random generators cannot be cited as specific Phase X drift surfaces. `[~]` rejected over `[x] (DEFERRED)` because the SPEC root scan would need to read parenthetical text (more complex parsing); `[~]` is a single-character signal recognized by a 4-char regex. Voluntary invocation rejected as the IT P2 elevation itself — D-8 resolves.
+
 
 ## Observations
 
