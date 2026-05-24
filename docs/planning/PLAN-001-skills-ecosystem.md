@@ -2310,9 +2310,24 @@ Build-phase pre-mortem (SESSION-2026-05-23_02 Event 35; brain:🧠-analyst prosp
 - [ ] protocol-hardening part flips IN_PROGRESS → DONE (Wave 2 closes the umbrella)
 - [ ] PLAN-001 frontmatter status flips IN_PROGRESS → DONE (Wave 2 closes the PLAN)
 
+**Build Sequencing (bounded-parallel; approach LOCKED SESSION-2026-05-23_02 Event 48)**:
+
+Approach: ≤4 concurrent file-disjoint implementer builds per batch; every TASK retains its OWN per-TASK QA gate + QA note before DONE (no integrate-later). Orchestrator serializes all PLAN/session/commit bookkeeping + QA processing. Barrel-index files (`schemas/index.ts`, `parsers/index.ts`, `validators/index.ts`) + any shared code/test file force same-batch exclusion. TASK-029 + TASK-001 DONE.
+
+Per-wave protocol: (1) pick batch ≤4 (deps satisfied + pairwise-disjoint Files Affected + no shared barrel) → (2) per-TASK PLAN impl→IN_PROGRESS + session Event → batch-start commit → (3) dispatch all batch implementers concurrently (code TASKs → bun-ts-engineer; Brain-note TASKs → brain:🧠-memory / direct MCP; user-doc TASK-033 → Edit) → (4) per TASK on return (serialized): session Event → orchestrator re-runs gates independently → flip DoD/compliance checkboxes → PLAN impl→DONE → commit → PLAN qa→IN_PROGRESS → commit → dispatch QA → author QA note + flip REQ/DESIGN checkboxes + relation → PLAN qa→DONE + TASK status DONE → commit.
+
+Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the serialization bottleneck:
+
+- **W0** (8 indep, disjoint): TASK-021, 025, 026, 033, 034, 037, 039, 040
+- **W1a**: 002, 005, 010, 030 · **W1b**: 003, 011, 012, 031 · **W1c**: 004, 013, 015, 032 · **W1d**: 016, 017, 018, 020 · **W1e**: 022, 027, 036 (schemas/index.ts serialized 002→003→004; validators/index.ts serialized 010→007→008→009 across waves)
+- **W2a**: 006, 007, 014, 023, 035 · **W2b**: 028 (after 032; shared spec-claim-validator.test.ts)
+- **W3a**: 008, 019 · **W3b**: 009 (validators/index.ts after 008)
+- **W4** (REQ-003 gate cleared): 024, 038, 041, 042, 043, 044, 045
+- **W5** (terminal): 046 (smoke-tests all handlers + reuses adversarial fixtures)
+
 **Build Workflow Items**:
 
-> Seeded just-in-time per track to keep this TIER_4 / 46-TASK PLAN lean. PoC items (TASK-029, TASK-001) seeded at build start; the remaining 44 TASKs' items are seeded as each track begins (identical end-state; each item carries owning_session + at_event when its TASK starts).
+> Seeded just-in-time per batch. PoC items (TASK-029, TASK-001) DONE. Remaining items seeded as each wave/batch begins (each carries owning_session + at_event when its TASK starts).
 
 #### impl-TASK-029-SPEC-008
 

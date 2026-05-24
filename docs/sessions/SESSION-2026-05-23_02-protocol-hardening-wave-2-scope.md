@@ -1010,3 +1010,14 @@ Agent `a72742cc285442ea9` analyzed the 44 remaining TASKs (depends_on DAG + File
 - **Analyst's practical ceiling: 4–5 concurrent builds/wave** — the PLAN/session/commit serial surface + serial QA processing bound real throughput; barrel files force sub-serialization.
 
 Protocol tension to adjudicate: the TIER-1 hard-locked per-TASK cycle says "one TASK at a time / no parallel-per-SPEC." Its lesson-source violation was PARALLEL BUILDS WITH NO PER-TASK QA GATE (integrate-later). Parallelism is reconcilable only if every TASK retains its own independent QA gate before DONE. Surfacing the parallelization-approach decision to the user next.
+
+
+## Event 48 — Parallelization approach LOCKED: bounded parallel builds + per-TASK QA
+
+User adjudicated (AskUserQuestion). Selected verbatim: **"Bounded parallel builds + per-TASK QA"** — "Within a wave, dispatch up to ~4 INDEPENDENT implementer builds concurrently (disjoint code files; barrel-index TASKs serialized; deps satisfied). As each returns, I run that TASK's OWN independent QA gate + QA note before flipping it DONE; all PLAN/session/commit bookkeeping stays serial. Overlaps build latency without weakening the QA gate. Requires you to authorize relaxing the literal 'one-at-a-time' wording (the QA-gate invariant — the actual point of the lock — stays intact). Moderate added coordination."
+
+Authorization recorded: the literal "one-TASK-at-a-time" wording of the per-TASK build+QA hard-lock is RELAXED for SPEC-008 build to allow ≤4 concurrent file-disjoint implementer builds. The protected invariant is PRESERVED: every TASK keeps its own independent QA gate + QA contract note before flipping DONE; NO integrate-later / batched-QA. Code-only implementer agents never touch Brain notes (binary rule), so concurrency is collision-free on PLAN/session; barrel-index files (`schemas|parsers|validators/index.ts`) + any shared code/test file force same-batch exclusion.
+
+Agent routing by TASK type within the cycle: code TASKs → bun-ts-engineer; Brain-note TASKs (031/034/035/036 + SPEC-007 root 031) → brain:🧠-memory or orchestrator-direct Brain MCP; user-doc TASK-033 (`~/KNOWLEDGE-GRAPH-STRUCTURES.md`) → Edit tool. Each still runs its impl→QA cycle.
+
+Wave plan + bounded-parallel per-wave protocol encoded into PLAN build.SPEC-008 (Build Sequencing subsection). Next: seed + execute Wave 0 first batch.
