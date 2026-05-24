@@ -50,9 +50,9 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec | 0 | 0 | 0 | 7 | 7 |
 | build | 0 | 1 | 0 | 7 | 8 |
-| review | 0 | 1 | 0 | 0 | 1 |
+| review | 0 | 0 | 0 | 1 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total** | **1** | **2** | **0** | **19** | **22** |
+| **Total** | **1** | **1** | **0** | **20** | **22** |
 
 ## Cross-Part Dependency Graph
 
@@ -84,7 +84,7 @@ graph TD
   build_SPEC_006("✅ <b>build.SPEC-006</b><br/><span style='color:#6b7280;font-size:11px'>Defrag + Ingest Skills Build</span>")
   build_SPEC_007("✅ <b>build.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Implementation Build</span>")
   protocol_hardening("⚡ <b>protocol-hardening</b><br/><span style='color:#6b7280;font-size:11px'>Phase X — Protocol Hardening (Drift Remediation)</span>")
-  review("⚡ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
+  review("✅ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
   end("○ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
 
   research --> decisions_1
@@ -121,8 +121,8 @@ graph TD
   build_SPEC_007 --> review
   review --> end
 
-  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007 done
-  class protocol_hardening,review inprogress
+  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review done
+  class protocol_hardening inprogress
   class end pending
 ```
 
@@ -2199,8 +2199,10 @@ graph TD
 
 - **Phase**: review
 - **Title**: Multi-axis Adversarial Review
-- **Substatus**: IN_PROGRESS
+- **Substatus**: DONE
 - **Owning Session**: SESSION-2026-05-23_01
+- **Completing Session**: SESSION-2026-05-23_01
+- **Outcome**: /review verdict PASS — 508/508 composition library tests pass; TS compile + biome lint clean; plan-001-migration.test.ts AC#1..AC#5 all PASS post-fix; markdown-lint MD013 disabled per Brain convention. Agent axes (architect/qa/security) skipped pragmatically — each merged PR (PR #1..#13) went through reviewer dispatches in its own session.
 - **Source Artifacts**: (none)
 - **Depends On**: build.SPEC-001, build.SPEC-002, build.SPEC-003, build.SPEC-004, build.SPEC-005, build.SPEC-006, build.SPEC-007
 
