@@ -140,6 +140,22 @@ Build-phase pre-mortem (SESSION-2026-05-23_02 Event 35; brain:🧠-analyst prosp
 - **R2 — hook handlers untestable without live Claude Code runtime (Track 5, TASK-037..046)**: unit tests pass on mocked stdin but matchers (esp. Layer 2 MCP-tool matcher) may silently fail to fire in production → ships unenforced "enforcement" (the exact Wave 1 failure SPEC-008 exists to close). *Mitigation*: TASK-046 requires a per-layer manual integration proof (`echo '<HookInput>' | bun <handler>`); document + cite the exact MCP matcher string; prefer BLOCKED over untested-DONE if the matcher format is unverifiable; TASK-046 runs LAST against Track 3 adversarial fixtures.
 - **R3 — cross-track barrel-index / `common.ts` collisions**: parallel Track 1 TASKs writing the same `schemas|parsers|validators/index.ts` barrel or `common.ts` → merge conflict or silent last-writer-wins drop. *Mitigation*: the rigid per-TASK cycle (one TASK at a time, sequential) already prevents this; additionally do NOT parallelize same-barrel TASKs; `common.ts` single-owner (first schema TASK) with explicit `depends_on` edges from consumers.
 
+### Known Deferred Test Baseline (D-1 LOCKED 2026-05-24 SESSION-2026-05-23_02 Event 65)
+
+The canonical test-suite state across the SPEC-008 build marathon is **705 pass / 2 fail / 707 total**. The 2 failures live in `tests/skills/plan/plan-001-migration.test.ts` and are pre-existing DEFERRED SPEC-007 work — they pre-date SPEC-008 and belong to the SPEC-007 plan/session render implementation work that was deferred at session-end of SESSION-2026-05-20_06.
+
+**Operational implication for QA briefs**: Batch 5+ QA dispatch briefs MUST instruct agents to treat these 2 `plan-001-migration.test.ts` failures as DEFERRED SPEC-007 known-baseline. Any NEW failure outside this specific test file is a true regression and FAILS the TASK.
+
+**No SPEC-008 scope added**: the 2 fails remain SPEC-007 scope. SPEC-008 root Acceptance + Success Criteria language already accommodates this baseline (no totality AC tied to "0 failing tests").
+
+### Post-Marathon Follow-Up Backlog (D-2 LOCKED 2026-05-24 SESSION-2026-05-23_02 Event 65)
+
+Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon cleanup. Neither gates Batch 5+ dispatch.
+
+- **FU-1: Frontmatter `validates:` key in QA-032/033/034-SPEC-003** — Event 60 finding. Distinct from the Relations-bullet `validates` drift that TASK-034 swept (those used `^- validates [[` pattern, scoped to Relations bullets only). 3 notes carry `validates:` as a YAML frontmatter key. Outside SPEC-008 DoD. **Disposition**: /defrag sweep post-marathon (or a small targeted Brain MCP edit_note pass).
+- **FU-2: `hooks/**` scope gap in root tsconfig + biome.json** — surfaced Events 37 + 62 by impl-039/040 agents. `hooks/**` not in root `tsconfig.json` `include` array; also not in root `biome.json` `files.include`. Surfaces LSP false-positives ("Cannot find module bun:test", "Cannot find name Bun") but doesn't block actual builds or test runs. Tests run cleanly (43/0/66 across hooks/lib). **Disposition**: small targeted config PR post-marathon (5-10 min change); not added as SPEC-008 TASK.
+- **FU-3: Session note `## Observations`/`## Relations` placement drift** — surfaced SESSION-2026-05-23_02 Event 65 rehydration. Both sections live at lines 69/77 (between Event 01 and Event 02) instead of file end; 64+ Events have appended past them. Violates CONVENTIONS Section 4.0 (final-two-sections invariant). **Disposition**: session-end cleanup; reorder Observations/Relations to true tail before session DONE flip.
+
 ## Phase Progression
 
 ### research

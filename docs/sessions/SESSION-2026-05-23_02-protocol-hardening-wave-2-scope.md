@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - protocol-hardening
@@ -1367,3 +1367,54 @@ Session status IN_PROGRESS → PAUSED at commit `054a065`. All durable state pre
 - TASK-034 scope expansion adjudicated (31 extra `validates` swept)
 - Salvage-from-errored-return pattern proven (TASK-026 partial recovery)
 - ~24 atomic commits on `feat/plan-001-protocol-hardening-wave-2-scope`
+
+
+## Event 65 — Session RESUMED; rehydration complete; D-1 LOCKED (pre-existing migration fails → DEFERRED SPEC-007 baseline)
+
+Fresh context window. `/skills:plan PLAN-001-skills-ecosystem` continue mode invoked. Rehydration per TIER-1 `feedback_post_compaction_rehydration_protocol`:
+
+- Active project: `skills` set (Brain MCP per-conversation MCP process)
+- `bootstrap_context` returned (workflow mode: analysis)
+- PLAN-001 read: status IN_PROGRESS; 23/25 parts DONE; only `protocol-hardening` + `build.SPEC-008` IN_PROGRESS
+- SESSION-2026-05-23_02 Events 01-64 reviewed via tail extract
+- Git verified: `feat/plan-001-protocol-hardening-wave-2-scope` @ `054a065` (clean working tree)
+- Recap presented to user
+
+Session status PAUSED → IN_PROGRESS (frontmatter flipped this turn). Branch unchanged. Continue Event numbering from 65 per `feedback_resume_paused_session_not_new`.
+
+**Event 64 queued open decisions — adjudication round 1 of N**:
+
+User adjudicated (AskUserQuestion, verbatim option lock):
+
+> **D-1 LOCKED — Track as DEFERRED SPEC-007 (Recommended)** — These failures pre-date SPEC-008 and belong to deferred SPEC-007 work. Document in PLAN-001 + SPEC-008 root as a known-deferred baseline so Batch 5+ QAs treat them as expected (out-of-scope). Zero work added to the SPEC-008 marathon; preserves the 705/2/707 baseline as canonical.
+
+Implications for the marathon:
+
+1. **Baseline canonicalized**: 705 pass / 2 fail / 707 IS the expected suite state. Future QA briefs MUST instruct: "treat `plan-001-migration.test.ts` failures as DEFERRED SPEC-007 known-baseline; any NEW failure outside this baseline is a true regression."
+2. **PLAN-001 Risks section** to be updated with a tracked-deferred entry pointing at these 2 fails.
+3. **SPEC-008 root** Success/Acceptance criteria language stays unchanged (no totality AC explicitly tied to "0 failing tests"; AC language already accommodates the deferred baseline).
+4. **No new TASK** added to SPEC-008 — the 2 fails remain SPEC-007 scope.
+
+Next: surface D-2 (Track-4 followup candidates) and D-3 (DESIGN-004 amendment) sequentially per `feedback_one_decision_at_a_time`. Then dispatch Batch 5 (TASK-003 + 004 + 010 + 030).
+
+State (durable): session IN_PROGRESS at `054a065`. No commits this turn yet — D-1 doc updates + PLAN risk amendment will commit together once Risk doc updated.
+
+
+## Event 66 — D-2 + D-3 LOCKED; queued open decisions adjudication complete
+
+User adjudicated remaining queued open decisions sequentially (one-decision-at-a-time per `feedback_one_decision_at_a_time`).
+
+> **D-2 LOCKED — Track only; defer to post-marathon (Recommended)** — Document both in PLAN-001 follow-up backlog. Item (a) frontmatter `validates:` key in QA-032/033/034 — Brain MCP YAML frontmatter cleanup (3 notes); doesn't affect SPEC-008 DoD. Item (b) `hooks/**` scope gap in root tsconfig + biome — surfaces LSP false-positives but doesn't block builds/tests. Neither gates Batch 5+ dispatch. Address post-marathon via /defrag (item a) + small config PR (item b).
+
+> **D-3 LOCKED — Defer; revisit when Layer 4/5 handlers reach the question (Recommended)** — TASK-040 implemented `git-diff-commits.ts` returning diff text only, no per-commit SHA. QA flagged this MAY be needed by Layer 4/5 handlers (TASK-043 pre-push-validate.ts) but isn't required by current DoD. Defer the DESIGN-004 amendment until TASK-043's implementer surfaces the actual need with evidence. Avoids speculative spec amendment.
+
+Durable writes this turn:
+
+- PLAN-001 `## Risks` section extended with **Known Deferred Test Baseline** subsection (D-1 doc) + **Post-Marathon Follow-Up Backlog** subsection (D-2 + FU-3 session-note placement drift tracked from this Event).
+- PLAN-001 FU-3 added: session-end cleanup item to reorder this session's misplaced Observations/Relations sections to the true tail before session DONE flip.
+
+D-3 needs no PLAN durable doc beyond this Event entry — it's a "do nothing now" decision; the implementer brief for TASK-043 will pick up the open question when that batch reaches the queue.
+
+Marathon state unchanged. No commits this turn (will commit D-1/D-2/D-3 doc writes + session resume + Event 65/66 in a single atomic commit before Batch 5 dispatch).
+
+Next: commit the adjudication round, then dispatch Batch 5 (TASK-003 + 004 + 010 + 030).
