@@ -1021,3 +1021,14 @@ Authorization recorded: the literal "one-TASK-at-a-time" wording of the per-TASK
 Agent routing by TASK type within the cycle: code TASKs → bun-ts-engineer; Brain-note TASKs (031/034/035/036 + SPEC-007 root 031) → brain:🧠-memory or orchestrator-direct Brain MCP; user-doc TASK-033 (`~/KNOWLEDGE-GRAPH-STRUCTURES.md`) → Edit tool. Each still runs its impl→QA cycle.
 
 Wave plan + bounded-parallel per-wave protocol encoded into PLAN build.SPEC-008 (Build Sequencing subsection). Next: seed + execute Wave 0 first batch.
+
+
+## Event 49 — Wave 0 batch 1 START (bounded-parallel): impl-TASK-021/025/026 → IN_PROGRESS
+
+First bounded-parallel batch (3 file-disjoint, dep-satisfied, non-barrel Track-3 test-infra TASKs). Seeded + transitioned to IN_PROGRESS (owning_session SESSION-2026-05-23_02; at Event 49):
+
+- impl-TASK-021 — adversarial-claim test harness → `tests/_helpers/adversarial.ts`
+- impl-TASK-025 — integration parse→mutate→validate→render + 2 cross-note tests → `tests/integration/*.test.ts` + `tests/fixtures/integration/`
+- impl-TASK-026 — mutation backward-transition + idempotency tests → `tests/mutation-invariants.test.ts`
+
+File-disjointness confirmed (no shared file, no barrel). Dispatching 3 bun-ts-engineer implementers concurrently (foreground). Each brief: read existing composition API (parsers/validators/mutations/renderers) + relevant DESIGN/REQ; build code+tests only; no Brain-note edits; return per-DoD evidence. On return (serialized): per-TASK verify → impl→DONE → commit → qa gate → QA note → qa→DONE. No TASK flips DONE without its own QA PASS.
