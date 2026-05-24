@@ -2039,3 +2039,27 @@ Session status IN_PROGRESS → PAUSED at the upcoming commit. All durable state 
 ### State Changes
 
 - SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 84)
+
+
+## Event 85 — Batch 7 START (Wave 1b Batch A): per-skill gate-point scripts TASK-011 + 015 + 016
+
+Resuming marathon to completion (user cadence: "Run to completion" — pause only on real blocker / QA-fail cap / budget). Wave 1b = Track 2 per-skill scripts (TASK-011..020); wiring composition lib into lifecycle skills.
+
+Batch A (file-disjoint, ≤4): impl PENDING → IN_PROGRESS for:
+
+- [[TASK-011-SPEC-008: Implement validate-task-done Script]] → `skills/build/scripts/validate-task-done.ts`
+- [[TASK-015-SPEC-008: Implement spec-Skill Schema Validator Scripts]] → `skills/spec/scripts/validate-{task,req,design}-schema.ts`
+- [[TASK-016-SPEC-008: Implement lock-decision-mutation Script]] → `skills/decisions/scripts/lock-decision-mutation.ts`
+
+All three implement [[REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts]] + [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]; only dep is TASK-029 (DONE). Code TASKs → `bun-ts-engineer` per build sequencing.
+
+### Sequencing adjustments (dependency-graph reasoning, this context)
+
+- **TASK-014 deferred within Wave 1b**: `depends_on` TASK-032 (Extend validateSpecDoneClaim for Deferred Notation; PENDING, Wave 1c). Will sequence TASK-032 ahead of TASK-014 rather than follow the wave label. [reflect-capture] wave labels are a guide; the dependency graph is authoritative.
+- **Drift DEFERRED to Batch C** (stop-the-line, assessed): REQ-005/TASK-018 AC reference `validRelationTypes` imported from `shared/composition/src/schemas/common.ts`, but the actual Wave-1 export is `RelationVerbEnum` (a `z.enum`; `.options` for the array). Impact: TASK-018 `dispatch-qa` + REQ-005 AC ONLY; the 6 REQ-004 gate scripts (011/012/013/015/016/017) unaffected. Decision: proceed with Batches A+B now; adjudicate the symbol-name reconciliation with user before dispatching TASK-018.
+
+### State Changes
+
+- PLAN impl-TASK-011-SPEC-008: PENDING → IN_PROGRESS
+- PLAN impl-TASK-015-SPEC-008: PENDING → IN_PROGRESS
+- PLAN impl-TASK-016-SPEC-008: PENDING → IN_PROGRESS
