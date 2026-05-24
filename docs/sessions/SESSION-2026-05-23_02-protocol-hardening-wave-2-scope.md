@@ -374,3 +374,42 @@ Wave 2 final coverage:
 Total: 5 schemas + 5 parsers + 4 validators added. Updated effort: ~12-14 days (up from 10-13 with P1 deferral).
 
 D-N progress: D-1 ✓, D-2 ✓, D-3 ✓, D-4 ✓, D-5 ✓. Remaining: D-6 (SPEC-007), D-7 (dispatcher.ts).
+
+
+## Event 15 — D-6 LOCKED: SPEC-007 checkbox notation amendment + validator extension
+
+**Decision** (verbatim from AskUserQuestion answer):
+
+> **Amend SPEC root checkbox notation for deferred items (Recommended)**
+>
+> Change SPEC-007 root's REQ-012/TASK-013/TASK-014 checkbox from `[ ]` to `[~]` (or `[deferred: rationale]`) to match REQ-012's `status: DEFERRED`. Add notation legend to SPEC root. Keep SPEC-007 status DONE — deferred is a legitimate terminal status. Cheapest; respects existing deferral decision. Also extends `validateSpecDoneClaim` to recognize `[~]` as terminal alongside `[x]`.
+
+Implication: SPEC-008 needs a TASK to (a) amend SPEC-007 root notation + add legend, (b) extend `validateSpecDoneClaim` schema check to accept `[~]` alongside `[x]` as terminal markers. Validator extension reusable beyond SPEC-007.
+
+## Event 16 — D-7 LOCKED: delete `core/dispatcher.ts` + its test
+
+**Decision** (verbatim from AskUserQuestion answer):
+
+> **Delete `core/dispatcher.ts` + its test (Recommended; evidence-confirmed safe)**
+>
+> Production code uses `registry.ts`. Adapters live in separate files (`adapters/*.ts`). CompositionAdapter interface lives in `core/adapter.ts` (preserved). Only `dispatcher.test.ts` references the dead module — deleted alongside. 508/508 tests should stay green; if any fail, investigation reveals a hidden dependency we should fix.
+
+Evidence captured pre-lock: `core/dispatcher.ts` (33 lines) is early prototype mapping 4 source_types; `registry.ts` (~80 lines) is SPEC-005 production dispatcher mapping all 5 types with SPEC-aware errors; registry.ts docstring explicitly identifies core/dispatcher.ts as superseded. ZERO production imports of core/dispatcher.ts (only its own test). Adapters live in `adapters/*.ts` — untouched. CompositionAdapter interface in `core/adapter.ts` — preserved.
+
+User worry "could break adapter functionality" — resolved by file-level evidence: deletion touches dispatcher + its test only, no adapter logic.
+
+## Event 17 — All 7 D-Ns LOCKED; advancing to Step 3 hygiene audit
+
+D-N progress: D-1 ✓, D-2 ✓, D-3 ✓, D-4 ✓, D-5 ✓, D-6 ✓, D-7 ✓. ADR-004 will lock these 7 architectural decisions for Wave 2 protocol-hardening implementation.
+
+Next /decisions steps:
+
+- Step 3: 12-item canonical holistic hygiene audit on PLAN-001
+- Step 3.5: 4 binary drift-detection checks (source / scope / demand-signal / tier)
+- Step 3.6: conditional buy-vs-build re-check (skip — no new tool/library/external-service introduced)
+- Step 4: pre-author-composite gate (7 D-Ns at TIER_4; well under 25 hard threshold; ADR line estimate 600-800; under 1500 hard)
+- Step 5: dispatch `brain:🧠-architect` for ADR-004 composite with detail-parity mandate
+- Step 6: detail-parity audit (sample ≥5 D-Ns vs SESSION Events 10-16)
+- Step 7: `brain:---adr-review` MANDATORY blocking gate
+- Step 8: flip ADR-004 PROPOSED → ACCEPTED
+- Step 9: set-part-done call back to /plan with ADR-004 wikilink as outcome
