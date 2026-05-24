@@ -34,11 +34,11 @@ collision.
 ## CLI usage
 
 ```bash
-bun defrag/scripts/defrag.ts                  # interactive
-bun defrag/scripts/defrag.ts --report-only    # cron / non-interactive
-bun defrag/scripts/defrag.ts --staleness 90   # custom staleness threshold (days)
-bun defrag/scripts/defrag.ts --project-root /path/to/project
-bun defrag/scripts/defrag.ts --basic-memory   # treat as basic-memory context
+bun skills/defrag/scripts/defrag.ts                  # interactive
+bun skills/defrag/scripts/defrag.ts --report-only    # cron / non-interactive
+bun skills/defrag/scripts/defrag.ts --staleness 90   # custom staleness threshold (days)
+bun skills/defrag/scripts/defrag.ts --project-root /path/to/project
+bun skills/defrag/scripts/defrag.ts --basic-memory   # treat as basic-memory context
 ```
 
 ## Operation modes

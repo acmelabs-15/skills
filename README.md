@@ -62,13 +62,13 @@ stale / structural-fix candidates, then delegates the restructuring work to
 
 ```bash
 # Interactive
-bun defrag/scripts/defrag.ts
+bun skills/defrag/scripts/defrag.ts
 
 # Cron / report-only
-bun defrag/scripts/defrag.ts --report-only --staleness 90
+bun skills/defrag/scripts/defrag.ts --report-only --staleness 90
 
 # Specific project
-bun defrag/scripts/defrag.ts --project-root ~/Dev/brain --report-only
+bun skills/defrag/scripts/defrag.ts --project-root ~/Dev/brain --report-only
 ```
 
 ## /ingest — bring external content into the graph
@@ -126,19 +126,19 @@ source body, no required Observations / Relations / Pattern 2).
 
 ```bash
 # Single file, auto-detect type
-bun ingest/scripts/ingest.ts notes/onboarding.md
+bun skills/ingest/scripts/ingest.ts notes/onboarding.md
 
 # Force entity type
-bun ingest/scripts/ingest.ts notes/foo.md --type analysis
+bun skills/ingest/scripts/ingest.ts notes/foo.md --type analysis
 
 # Spec-nested
-bun ingest/scripts/ingest.ts task-source.md --type task --parent-spec SPEC-006-defrag-and-ingest
+bun skills/ingest/scripts/ingest.ts task-source.md --type task --parent-spec SPEC-006-defrag-and-ingest
 
 # Directory batch
-bun ingest/scripts/ingest.ts notes/ --batch
+bun skills/ingest/scripts/ingest.ts notes/ --batch
 
 # Basic-memory project
-bun ingest/scripts/ingest.ts notes/foo.md --basic-memory
+bun skills/ingest/scripts/ingest.ts notes/foo.md --basic-memory
 ```
 
 ## Coexistence with basic-memory-skills

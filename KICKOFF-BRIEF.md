@@ -39,8 +39,8 @@ Layout:
 │   ├── analysis/
 │   └── critique/
 ├── ingest/SKILL.md         # Brain-aware ingest (verbatim source preservation)
-├── decompose/SKILL.md      # 1→N split with hash-validated zero drift
-├── recompose/SKILL.md      # N→1 merge with hash-validated zero drift
+├── skills/decompose/SKILL.md      # 1→N split with hash-validated zero drift
+├── skills/recompose/SKILL.md      # N→1 merge with hash-validated zero drift
 ├── defrag/SKILL.md         # Periodic curator; delegates to /decompose + /recompose
 ├── _shared/composition/    # The deterministic library
 │   ├── src/
