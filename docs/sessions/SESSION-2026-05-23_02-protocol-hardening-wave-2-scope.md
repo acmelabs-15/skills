@@ -2233,3 +2233,22 @@ Routing to `/build` (spec=SPEC-008) for the rigid per-TASK build+QA cycle (steps
 ### State Changes
 
 - SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 92)
+
+
+## Event 93 — Batch 9 START (Wave 1b Batch C): TASK-018 + 019 + 020 (REQ-005 brief generators)
+
+Resuming marathon (run-to-completion cadence). Wave 1b Batch C = REQ-005 dispatch-brief generators wiring the composition library's rendered-brief surface into the lifecycle skills. File-disjoint across three skill dirs (build/ decisions/ research+review/); deps satisfied.
+
+impl PENDING → IN_PROGRESS for:
+
+- [[TASK-018-SPEC-008: Implement build-Skill Dispatch Brief Generators]] → `skills/build/scripts/` dispatch-implementer + dispatch-qa; ALSO adds `export const validRelationTypes = RelationVerbEnum.options` to `shared/composition/src/schemas/common.ts` (SPEC-008 Files Affected sanctions it; Track 1 closed without it).
+- [[TASK-019-SPEC-008: Implement decisions-Skill Dispatch Brief Generators]] → `skills/decisions/scripts/` dispatch-architect + critic brief generators.
+- [[TASK-020-SPEC-008: Implement research-Skill Dispatch Brief Generators]] → `skills/research/scripts/` dispatch-analyst + `skills/review/scripts/` dispatch-reviewer brief generators.
+
+All implement [[REQ-005-SPEC-008: Per-Skill Dispatch-Brief Generators]] + [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]. Code TASKs → `bun-ts-engineer` (explicit model override per Event-92 harness flag). Per-TASK QA gate retained (no integrate-later).
+
+### State Changes
+
+- PLAN impl-TASK-018-SPEC-008: PENDING → IN_PROGRESS
+- PLAN impl-TASK-019-SPEC-008: PENDING → IN_PROGRESS
+- PLAN impl-TASK-020-SPEC-008: PENDING → IN_PROGRESS
