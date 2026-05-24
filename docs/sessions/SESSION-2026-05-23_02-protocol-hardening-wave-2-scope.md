@@ -917,3 +917,14 @@ Rehydration checklist completed (TIER-1): re-read TIER-1 protocol memories (per-
 State confirmed: TASK-029 (rename) CLOSED (impl + qa PASS; commit `8144429`). No pending user decisions block TASK-001 (open items are marathon-time: ~171-note citation flip → Track 4 / TASK-034; defrag test failures; tsconfig bun-type gap; basic-memory transient flakiness).
 
 Next: rigid per-TASK cycle a–u for TASK-001 (ADR schema). Step (a) — PLAN `impl-TASK-001-SPEC-008` PENDING → IN_PROGRESS.
+
+
+## Event 42 — impl-TASK-001 PENDING → IN_PROGRESS; dispatching implementer (ADR schema)
+
+/build Stage A — TASK-001-SPEC-008 (Implement ADR Schema; Track 1, depends_on TASK-029 rename which is DONE). PLAN `impl-TASK-001-SPEC-008`: PENDING → IN_PROGRESS (owning_session SESSION-2026-05-23_02; at Event 42).
+
+Scope: ONE TASK only — author `shared/composition/src/schemas/adr-note.ts` (`AdrNoteSchema` + `type AdrNote`) + unit tests + barrel re-export. Build contract = TASK-001 DoD (12 items) + relevant slice of [[REQ-001-SPEC-008: New Schema Suite]] AC (the two ADR-specific GIVEN/WHEN/THEN clauses) + [[DESIGN-001-SPEC-008: Coverage Module Layout]] compliance (naming/barrel/common.ts-single-source).
+
+R1-related guardrail folded into brief: post-author `bun tsc --noEmit` (root) + `biome check` + `bun test` on the new test file must pass. Implementer writes CODE + tests only; returns `## State Changes` with per-DoD evidence; does NOT edit Brain notes (orchestrator flips TASK DoD checkboxes after claim validation).
+
+Next: dispatch brain:🧠-implementer (foreground) with the verbatim rendered impl brief.
