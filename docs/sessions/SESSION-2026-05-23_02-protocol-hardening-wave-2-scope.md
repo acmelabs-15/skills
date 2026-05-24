@@ -1469,3 +1469,62 @@ File-disjoint: impl-003 writes `shared/composition/src/schemas/epic-note.ts` + t
 PLAN state (post this Event): 14/46 impl-items in IN_PROGRESS+DONE (12 DONE + 003/010/030 IN_PROGRESS); 31 PENDING. Suite expected to drop 1-2 test cases when dispatcher.test.ts is removed (TASK-030 DoD allows the count drop).
 
 State: clean. No new commits this turn yet — PLAN edits (bulk seed + graph + Event 67) commit together.
+
+
+## Event 68 — TASK-030 CLOSED (both phases, orchestrator-inline); 13/46 TASKs DONE; QA-056 authored
+
+User adjudicated (AskUserQuestion) the post-bulk-seed pacing decision: **"Push: execute TASK-030 inline now; pause before impl-003/010 dispatch"** — close one more TASK at this milestone (13/46 progress visibility), leave the heavier impl-003 + impl-010 agent dispatches for fresh context.
+
+### Execution (mechanical; ADR-005 D-7 permits orchestrator-inline)
+
+1. Pre-deletion suite baseline: 705 pass / 2 fail / 707 total. dispatcher.test.ts case count: 6 (verified via `bun test shared/composition/tests/dispatcher.test.ts` → 6 pass).
+2. `git rm shared/composition/src/core/dispatcher.ts shared/composition/tests/dispatcher.test.ts` executed cleanly.
+3. Post-deletion gates (all PASS):
+   - `rg "from ['\"].*core/dispatcher" -t ts` → exit 1 (no matches) ✓
+   - `git diff shared/composition/src/core/adapter.ts` → empty ✓
+   - `bun test` → 699 pass / 2 fail / 701 total (drop of 6; matches dispatcher.test.ts case count exactly) ✓
+   - 2 fails are the DEFERRED SPEC-007 `plan-001-migration.test.ts` baseline (D-1 locked); zero new regressions ✓
+4. Commit 64dd1ca authored with ADR-005 D-7 verbatim citation in body per DoD item 7.
+
+### QA-056-SPEC-008 authored (Pattern 2 three-phase write)
+
+`docs/qa/QA-056-SPEC-008-task-030-inline-deletion-verification.md` — orchestrator-inline QA contract note. Per-DoD evidence table (7 items, all PASS); per-AC evidence table (REQ-009 ACs 5/6/7, all PASS); per-DESIGN compliance note (DESIGN-002 stays `[ ]` — aggregate; gates on TASK-035/036 closure). Pattern 2 phases all clean: write_note → edit_note for colon in title + H1 → move_note to kebab filename. Relations use `relates_to` per established session convention (matches QA-055 pattern).
+
+### Full Event 55 propagation pass (plain-text references per Event 54 parser rule)
+
+- TASK-030 note: status TODO → DONE; all 7 DoD items `[x]` with evidence annotations; Relations section updated to add `relates_to` link to QA-056-SPEC-008.
+- REQ-009 ACs 5, 6, 7 flipped `[x]` with verbatim "closed by TASK-030-SPEC-008 2026-05-24" annotations + commit ref + measurement values. REQ-009 ACs 1-4 already flipped (TASK-029 closure Event 55); AC-8 stays `[ ]` (Track 4 doc rewrite sweep — separate scope, likely TASK-035/036).
+- SPEC-008 root `### Tasks (46)` rollup: TASK-030 line flipped `[ ]` → `[x]`. Rollup now: 13/46 tasks `[x]` (001, 002, 005, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040).
+- SPEC-008 root REQ rollup: REQ-009 stays `[ ]` (gate on full AC closure including AC-8 + last-child TASK closure; only TASK-030 closed this Event — TASK-029 already closed prior).
+- SPEC-008 root DESIGN rollup: DESIGN-002 stays `[ ]` (aggregate on TASK-029/030/035/036 closure).
+- SPEC-008 root Acceptance/Success Criteria: unchanged (no totality-gated AC affected).
+- PLAN-001 impl-TASK-030: IN_PROGRESS → DONE (commit 64dd1ca; Event 68; orchestrator-inline note).
+- PLAN-001 qa-TASK-030: PENDING → DONE (Test Report Ref QA-056-SPEC-008; orchestrator-inline self-verification note; Event 68).
+- PLAN-001 task-level wave graph: T030 node label `⚡` → `✅`; classDef declaration moved T030 from `inprogress` to `done`; Wave 1a subgraph header updated `3 DONE, 3 IN PROGRESS Batch 5a, 2 PENDING Batch 5b` → `4 DONE, 2 IN PROGRESS Batch 5a, 2 PENDING Batch 5b`.
+- PLAN-001 Progress Dashboard: build row unchanged (part-level rollup; build.SPEC-008 part stays IN_PROGRESS until all 46 TASKs close).
+
+### Marathon state after Event 68
+
+- 13 TASKs CLOSED (impl + QA both PASS): 001, 002, 005, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040.
+- 2 TASKs IN_PROGRESS (impl in flight pending Batch 5a launch): 003, 010.
+- 31 TASKs PENDING: 004, 006, 007, 008, 009, 011-020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041-046.
+- Suite baseline updated: canonical post-Event-68 baseline is now 699 pass / 2 fail / 701 total. PLAN-001 Known Deferred Test Baseline subsection still applies (the 2 fails are the same DEFERRED SPEC-007 plan-001-migration.test.ts cases — total count just dropped by 6 due to TASK-030 deletion).
+
+### Pause decision (per user adjudication)
+
+User explicitly requested pause-before-agent-dispatch after TASK-030 closure. Honoring the pause:
+
+- Branch stays at the propagation commit (next commit) for fresh-context resume.
+- impl-003 + impl-010 stay IN_PROGRESS in PLAN; no agent dispatch yet (those are Batch 5a remainder; next context picks up).
+- Session stays IN_PROGRESS for now; will be moved PAUSED at session-end after this commit lands (or by next `/plan continue` invocation which transitions PAUSED→IN_PROGRESS again).
+
+### Resume protocol for next context
+
+1. `/skills:plan PLAN-001-skills-ecosystem` continue mode → resumes this session.
+2. Rehydration: re-read PLAN-001 + this session Events through 68 + current branch HEAD.
+3. Batch 5a remainder: dispatch impl-003 (EPIC schema; bun-ts-engineer; foreground) + impl-010 (PLAN done-claim ext + validatePlanDoneClaim; bun-ts-engineer; foreground) in parallel. File-disjoint (003 writes schemas/epic-note.ts + barrel; 010 writes schemas/plan-note.ts in-file + new validators/plan-claim-validator.ts + validators/index.ts barrel — different barrels).
+4. On impl-003 + impl-010 returns: full Event 55 propagation per closure; dispatch qa-003 + qa-010 (brain:🧠-qa; foreground; concurrent). Then close both → 15/46 DONE.
+5. Batch 5b: TASK-004 (CRIT schema; sequential on schemas/index.ts barrel after TASK-003 lands). 1 impl + 1 qa cycle. → 16/46 DONE.
+6. Then Wave 1b (TASK-011-020 per-skill scripts; 10 TASKs in ~2-3 sub-batches).
+
+Marathon math after Event 68: 13/46 (28%). Remaining 33 TASKs ≈ 7-8 more batches at the established cadence.

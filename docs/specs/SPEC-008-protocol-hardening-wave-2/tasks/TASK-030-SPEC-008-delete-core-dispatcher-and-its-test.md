@@ -2,7 +2,7 @@
 title: 'TASK-030-SPEC-008: Delete Core Dispatcher and Its Test'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-030-spec-008-delete-core-dispatcher-and-its-test-1
-status: TODO
+status: DONE
 tags:
 - task
 - spec-008
@@ -28,14 +28,14 @@ Steps:
 6. If any test breaks, investigation reveals a hidden dependency to be fixed (per D-7 verbatim)
 
 ## Definition of Done
+- [x] `git rm shared/composition/src/core/dispatcher.ts` executed
+- [x] Dispatcher test file removed (path verified by `find shared/composition -name 'dispatcher.test.ts'` returning zero results post-removal)
+- [x] `shared/composition/src/core/adapter.ts` is unchanged (`git diff shared/composition/src/core/adapter.ts` shows no changes)
+- [x] `rg "from ['\"].*core/dispatcher" -t ts` returns zero matches across `src/`, `skills/`, `tests/`
+- [x] `bun test` exits 0; test count equals pre-deletion count minus dispatcher.test.ts case count (707 → 701; delta 6 = dispatcher.test.ts case count)
+- [x] No regression in any adapter test (`shared/composition/src/adapters/*.test.ts` all pass)
+- [x] Commit message references ADR-005 D-7 in body for archaeological provenance (commit 64dd1ca)
 
-- [ ] `git rm shared/composition/src/core/dispatcher.ts` executed
-- [ ] Dispatcher test file removed (path verified by `find shared/composition -name 'dispatcher.test.ts'` returning zero results post-removal)
-- [ ] `shared/composition/src/core/adapter.ts` is unchanged (`git diff shared/composition/src/core/adapter.ts` shows no changes)
-- [ ] `rg "from ['\"].*core/dispatcher" -t ts` returns zero matches across `src/`, `skills/`, `tests/`
-- [ ] `bun test` exits 0; test count equals pre-deletion count minus dispatcher.test.ts case count
-- [ ] No regression in any adapter test (`shared/composition/src/adapters/*.test.ts` all pass)
-- [ ] Commit message references ADR-005 D-7 in body for archaeological provenance
 
 ## ADR Compliance
 
@@ -63,7 +63,7 @@ Steps:
 - [insight] If `bun test` fails post-deletion, the failure surfaces a hidden dependency that should be fixed — net positive learning per D-7 acceptance criteria #failure-as-signal
 
 ## Relations
-
 - implements [[REQ-009-SPEC-008: Structural Cleanup Dispatcher Deletion and Shared Rename]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-056-SPEC-008: Task 030 Inline Deletion Verification]]

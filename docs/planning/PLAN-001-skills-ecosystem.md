@@ -169,14 +169,14 @@ graph TD
     T040["✅ TASK-040<br/><span style='font-size:9px'>Git helpers</span>"]
   end
 
-  subgraph W1a ["Wave 1a — Schemas + Parsers (3 DONE, 3 IN PROGRESS Batch 5a, 2 PENDING Batch 5b)"]
+  subgraph W1a ["Wave 1a — Schemas + Parsers (4 DONE, 2 IN PROGRESS Batch 5a, 2 PENDING Batch 5b)"]
     direction LR
     T001["✅ TASK-001<br/><span style='font-size:9px'>ADR schema</span>"]
     T002["✅ TASK-002<br/><span style='font-size:9px'>ANALYSIS schema</span>"]
     T005["✅ TASK-005<br/><span style='font-size:9px'>ADR parser</span>"]
     T003["⚡ TASK-003<br/><span style='font-size:9px'>EPIC schema</span>"]
     T010["⚡ TASK-010<br/><span style='font-size:9px'>PLAN done-claim ext</span>"]
-    T030["⚡ TASK-030<br/><span style='font-size:9px'>Delete dispatcher.ts</span>"]
+    T030["✅ TASK-030<br/><span style='font-size:9px'>Delete dispatcher.ts</span>"]
     T004["⏸ TASK-004<br/><span style='font-size:9px'>CRIT schema (5b)</span>"]
     T006["⏸ TASK-006<br/><span style='font-size:9px'>ANALYSIS parser</span>"]
   end
@@ -252,8 +252,8 @@ graph TD
   T009 --> T046
   T045 --> T046
 
-  class T001,T002,T005,T021,T025,T026,T029,T033,T034,T037,T039,T040 done
-  class T003,T010,T030 inprogress
+  class T001,T002,T005,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
+  class T003,T010 inprogress
   class T004,T006,T007,T008,T009,T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
 ```
 
@@ -3232,23 +3232,23 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-030-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 67
+- **Transitioned At Event**: Event 68
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: orchestrator-inline (no agent dispatch per ADR-005 D-7 small-scope deletion)
+- **Fix Brief For Event**: orchestrator-inline (commit 64dd1ca; per ADR-005 D-7 small-scope deletion permission)
 
 #### qa-TASK-030-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-030-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 68
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Test Report Ref**: QA-056-SPEC-008
+- **Fix Brief For Event**: orchestrator-inline self-verification (no QA agent dispatched; per-DoD + per-AC mechanical evidence in QA-056)
 
 #### impl-TASK-031-SPEC-008
 

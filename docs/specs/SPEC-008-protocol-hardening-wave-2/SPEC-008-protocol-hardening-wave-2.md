@@ -105,7 +105,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [ ] [[TASK-027-SPEC-008: Session Mutation Duplicate Event Number Test]]
 - [ ] [[TASK-028-SPEC-008: Annotate Existing Tests with Phase X Drift Markers]]
 - [x] [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
-- [ ] [[TASK-030-SPEC-008: Delete Core Dispatcher and Its Test]]
+- [x] [[TASK-030-SPEC-008: Delete Core Dispatcher and Its Test]]
 - [ ] [[TASK-031-SPEC-008: Amend SPEC-007 Root with Deferred Notation and Legend]]
 - [ ] [[TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation]]
 - [x] [[TASK-033-SPEC-008: Document Deferred Notation in CONVENTIONS Sections 4.6 and 4.7]]
