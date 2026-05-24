@@ -2,7 +2,7 @@
 title: 'TASK-037-SPEC-008: Author hooks.json Manifest'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-037-spec-008-author-hooks-json-manifest
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -69,3 +69,4 @@ Author `${CLAUDE_PLUGIN_ROOT}/hooks/hooks.json` declaring all seven hook layers 
 - implements [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]]
 - implements [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
+- relates_to [[QA-050-SPEC-008: Author hooks.json Manifest]]

@@ -144,9 +144,9 @@ Mechanical claim validation: schemas/validators trip if these notes claim DONE w
 
 ## Relations
 
-- validates [[TASK-007-SPEC-003: Section-Aware extractByRange and Public Adapter Surface]]
-- validates [[TASK-008-SPEC-003: Source-Coverage Integrity Floor and Max-10 Schema Guard]]
-- validates [[TASK-009-SPEC-003: Frontmatter Inverse Contract and Branches Array JSON Handling]]
+- depends_on [[TASK-007-SPEC-003: Section-Aware extractByRange and Public Adapter Surface]]
+- depends_on [[TASK-008-SPEC-003: Source-Coverage Integrity Floor and Max-10 Schema Guard]]
+- depends_on [[TASK-009-SPEC-003: Frontmatter Inverse Contract and Branches Array JSON Handling]]
 - part_of [[SPEC-003: PLAN Adapter]]
 - implements [[REQ-001-SPEC-003: PLAN Adapter Implementation]]
 - implements [[REQ-002-SPEC-003: Regenerated Sections Field Handling]]

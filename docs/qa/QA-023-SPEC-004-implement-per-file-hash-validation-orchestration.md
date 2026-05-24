@@ -97,5 +97,5 @@ Verify TASK-004-SPEC-004 implements per-file SHA-256 validation with cluster rol
 
 ## Relations
 
-- validates [[TASK-004-SPEC-004: Implement Per-File Hash Validation Orchestration]]
+- depends_on [[TASK-004-SPEC-004: Implement Per-File Hash Validation Orchestration]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

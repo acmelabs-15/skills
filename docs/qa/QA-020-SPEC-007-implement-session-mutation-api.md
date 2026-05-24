@@ -74,6 +74,6 @@ Retro-validate TASK-011-SPEC-007 via `src/mutations/session-mutations.ts` (36 LO
 
 ## Relations
 
-- validates [[TASK-011-SPEC-007: Implement Session Mutation API]]
+- depends_on [[TASK-011-SPEC-007: Implement Session Mutation API]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-010-SPEC-007: Session Mutation API]]

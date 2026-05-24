@@ -76,6 +76,6 @@ Retro-validate TASK-010-SPEC-007 via `src/mutations/plan-mutations.ts` (396 LOC)
 
 ## Relations
 
-- validates [[TASK-010-SPEC-007: Implement Plan Mutation API]]
+- depends_on [[TASK-010-SPEC-007: Implement Plan Mutation API]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-009-SPEC-007: Plan Mutation API]]

@@ -100,5 +100,5 @@ Three deviations from the original task brief were identified. All are resolved 
 
 ## Relations
 
-- validates [[TASK-001-SPEC-001: Scaffold Composition Project]]
+- depends_on [[TASK-001-SPEC-001: Scaffold Composition Project]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

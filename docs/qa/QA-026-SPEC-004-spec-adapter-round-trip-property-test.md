@@ -98,5 +98,5 @@ Verify TASK-007-SPEC-004 ships the SPEC subtree round-trip property test that pr
 
 ## Relations
 
-- validates [[TASK-007-SPEC-004: SPEC Adapter Round-Trip Property Test]]
+- depends_on [[TASK-007-SPEC-004: SPEC Adapter Round-Trip Property Test]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

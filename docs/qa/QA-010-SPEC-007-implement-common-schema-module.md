@@ -86,6 +86,6 @@ Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspe
 
 ## Relations
 
-- validates [[TASK-001-SPEC-007: Implement Common Schema Module]]
+- depends_on [[TASK-001-SPEC-007: Implement Common Schema Module]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-001-SPEC-007: Schema Common Module]]

@@ -108,11 +108,11 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [ ] [[TASK-030-SPEC-008: Delete Core Dispatcher and Its Test]]
 - [ ] [[TASK-031-SPEC-008: Amend SPEC-007 Root with Deferred Notation and Legend]]
 - [ ] [[TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation]]
-- [ ] [[TASK-033-SPEC-008: Document Deferred Notation in CONVENTIONS Sections 4.6 and 4.7]]
+- [x] [[TASK-033-SPEC-008: Document Deferred Notation in CONVENTIONS Sections 4.6 and 4.7]]
 - [ ] [[TASK-034-SPEC-008: Repair Brain Note Hygiene Violations from Audit C]]
 - [ ] [[TASK-035-SPEC-008: Propagate SPEC-002 and SPEC-003 Checkbox Rollups and REQ Status Flips]]
 - [ ] [[TASK-036-SPEC-008: Amend REQ-009-SPEC-007 Mutation Count from 9 to 11]]
-- [ ] [[TASK-037-SPEC-008: Author hooks.json Manifest]]
+- [x] [[TASK-037-SPEC-008: Author hooks.json Manifest]]
 - [ ] [[TASK-038-SPEC-008: Implement dispatch-validator Utility]]
 - [ ] [[TASK-039-SPEC-008: Implement Edit Operation and Tool Input Helpers]]
 - [ ] [[TASK-040-SPEC-008: Implement Git Helpers for Staged and Diff Content]]
@@ -148,13 +148,13 @@ Render layer architecture; T2 dispatch-brief generators import cross-cutting con
 - [ ] All 12 REQs status ACCEPTED with their `## Acceptance Criteria` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateRequirementAcClaim`)
 - [ ] All 4 DESIGN notes status ACCEPTED with `## Compliance` checkboxes `[x]` where present (Wave 2 acceptance verifiable via `validateDesignComplianceClaim`)
 - [ ] All 46 TASKs status DONE with all `## Definition of Done` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateTaskDoneClaim`)
-- [ ] ADR coverage gate PASS — ADR-001, ADR-002, ADR-003, ADR-005 all have `implemented_by [[SPEC-008: Protocol Hardening Wave 2]]` in their Relations sections
-- [ ] Gate A semantic gap analysis PASS — no REQ flagged as vague or runtime-judgment-dependent by analyst review
-- [ ] Gate B 4 binary drift checks PASS — (a) REQ→ADR traceability, (b) scope conservation, (c) TASK→REQ traceability, (d) Scope-In match against ANALYSIS-004
+- [x] ADR coverage gate PASS — ADR-001, ADR-002, ADR-003, ADR-005 all have `implemented_by [[SPEC-008: Protocol Hardening Wave 2]]` in their Relations sections
+- [x] Gate A semantic gap analysis PASS — no REQ flagged as vague or runtime-judgment-dependent by analyst review
+- [x] Gate B 4 binary drift checks PASS — (a) REQ→ADR traceability, (b) scope conservation, (c) TASK→REQ traceability, (d) Scope-In match against ANALYSIS-004
 - [ ] Composition library tests pass: 508/508 baseline preserved + new Wave 2 additions (~30-50 new tests across adversarial fixtures + integration + mutation invariants)
 - [ ] All 5 PreToolUse hooks + Stop backstop + FileChanged observability smoke-tested against representative adversarial fixtures
 - [ ] 11 Track 4 drift items cleaned: `_shared`→`shared` rename complete; `core/dispatcher.ts` + test deleted; SPEC-007 `[~]` notation applied + legend added; 10 Brain note hygiene fixes landed (2 dup-frontmatter + 4 forbidden-relation + 3 title-no-colon + 2 stale-type + 3 PII redactions + 1 dup-event); SPEC-002/003 rollups propagated; REQ-009-SPEC-007 amended
-- [ ] CONVENTIONS Section 4.6/4.7 amended to document `[~]` as canonical deferred-checkbox notation
+- [x] CONVENTIONS Section 4.6/4.7 amended to document `[~]` as canonical deferred-checkbox notation (via TASK-033)
 
 ## Success Criteria
 

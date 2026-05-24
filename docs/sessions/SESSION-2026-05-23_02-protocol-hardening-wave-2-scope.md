@@ -1220,3 +1220,29 @@ PLAN `impl-TASK-034`: BLOCKED → IN_PROGRESS (Failed Iterations stays 0 — thi
 Dispatching brain:🧠-memory (foreground) with the full inventory of 30 notes + per-note grep lines. Mechanical work: replace each `- validates [[Target]]` Relations bullet with `- depends_on [[Target]]` (the canonical typed verb for QA-aggregate references per Audit C decision in the original TASK-034 brief). Brain MCP only; no raw Edit/Write on docs/**.
 
 On return: post-fix grep must return zero. Then full propagation per Event 55 protocol: TASK-034 DoD `[x]` (full broader DoD now satisfiable), then dispatch QA.
+
+
+## Event 59 — Cross-Part Dependency Graph fixed; batch 3 returns processed; TASK-033/037 CLOSED; TASK-034 sweep impl-DONE; qa-034 IN_PROGRESS
+
+User flagged: Cross-Part Dependency Graph was broken. Root cause: node identifier `end` is a Mermaid reserved keyword (closes `subgraph` blocks; silently breaks the graph parse). Renamed node identifier `end` → `end_part` in 3 locations (declaration + `review --> end_part` edge + class assignment); display label "end" preserved inside HTML `<b>end</b>`. Validated post-fix: zero bare `end` identifier remains; 3 `end_part` references present. Graph now parses.
+
+Batch 3 returns processed (all 3 PASS; zero return-channel errors this batch):
+
+- **impl-TASK-034 expanded sweep** (`af0a7b87c8d91ba1e`, brain:🧠-memory): 30 notes touched, 31 `validates`→`depends_on` replacements landed (QA-032-SPEC-003 had 3 bullets). Spot-checked QA-001/QA-018/QA-025 — bullet shape correct, schema-clean, no collateral changes. `grep -rn "^- validates \[\[" docs/qa/` → 0 (broader DoD verification now satisfied). Per-protocol orchestrator gate-rerun confirms.
+- **qa-TASK-033** (`a176f6333bb81326c`): PASS. 6 DoD + REQ-008 AC-6 verified. STRUCTURES Sections 4.6 + 4.7 substantive `[~]` content; CONVENTIONS pointer block updated; 8 `[~]` grep matches; 4 REQ-008 + 4 ADR-005 D-6 citations. Minor non-blocking observation: CONVENTIONS ToC not updated to mention `[~]`. QA-049-SPEC-008 contract note authored.
+- **qa-TASK-037** (`ac785498b7d2b4175`): PASS. 13 DoD verified (12 PASS + 1 `[~]` biome N/A — biome.json excludes hooks/). 7 hook layers verbatim per ADR-005 D-8. Handler script names use correct `-validate` suffix per ADR Implementation Notes (NOT the outdated dispatch-brief names — implementer correctly followed ADR). `statusMessage` fields added per hook entry (additive Claude Code hooks contract property; not divergent). QA-050-SPEC-008 contract note authored.
+
+Orchestrator full-propagation pass per Event 55 protocol:
+
+- TASK-033: status TODO → DONE; `relates_to QA-049` added.
+- TASK-037: status TODO → DONE; `relates_to QA-050` added.
+- TASK-034: all 8 DoD items flipped `[x]` (including the broader-grep DoD item 2 now satisfiable after sweep); ADR Compliance `[x]` with scope-expansion annotation. PLAN `impl-TASK-034` IN_PROGRESS → DONE; PLAN `qa-TASK-034` PENDING → IN_PROGRESS (dispatching QA next).
+- PLAN: `qa-TASK-033` IN_PROGRESS → DONE (TestReportRef QA-049); `qa-TASK-037` IN_PROGRESS → DONE (TestReportRef QA-050).
+- SPEC-008 root rollup: TASK-033, TASK-037 `[x]` flipped. TASK-034 stays `[ ]` (impl done; qa pending).
+- REQ-008 AC-6 `[x]` (TASK-033 fully satisfies). REQ-011/012 ACs unchanged — TASK-037 alone (manifest only) doesn't fully satisfy any AC; handler scripts (TASK-041..045) needed.
+- SPEC-008 root Acceptance Criteria: 4 items now flipped `[x]` per current state — ADR coverage gate (passed at /spec close), Gate A semantic (PASSed Event 30), Gate B 4 binary drift checks (PASSed Event 30), CONVENTIONS 4.6/4.7 amendment (TASK-033). 5 remaining SPEC-level ACs gate on totality and stay `[ ]`.
+- All 4 Success Criteria stay `[ ]` (gate on full Wave 2 close).
+
+Cross-Part Dependency Graph node statuses unchanged (TASKs are part-internal; graph tracks part-level not task-level).
+
+State after this turn: 7 TASKs fully CLOSED (001, 021, 025, 026, 029, 033, 037). 1 mid-cycle (034: impl done, qa-034 IN_PROGRESS). 38 PENDING. Next: dispatch qa-034 alone (no other batch starting yet — keeping the QA gate front-and-center after the prior partial-return + scope-expansion churn).

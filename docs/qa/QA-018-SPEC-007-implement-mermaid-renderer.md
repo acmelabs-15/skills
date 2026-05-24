@@ -78,6 +78,6 @@ Retro-validate TASK-009-SPEC-007 via `src/renderers/mermaid.ts` (105 LOC) and `t
 
 ## Relations
 
-- validates [[TASK-009-SPEC-007: Implement Mermaid Renderer]]
+- depends_on [[TASK-009-SPEC-007: Implement Mermaid Renderer]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-008-SPEC-007: Mermaid Renderer]]

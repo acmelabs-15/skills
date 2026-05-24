@@ -95,5 +95,5 @@ Verify TASK-005-SPEC-004 implements `specSubtreeManifestSchema` and distribution
 
 ## Relations
 
-- validates [[TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
+- depends_on [[TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

@@ -90,7 +90,7 @@ No findings. Implementation matches the DESIGN-001 Component 1 Responsibility ex
 
 ## Relations
 
-- validates [[TASK-006-SPEC-003: Register PlanAdapter in Dispatcher]]
+- depends_on [[TASK-006-SPEC-003: Register PlanAdapter in Dispatcher]]
 - part_of [[SPEC-003: PLAN Adapter]]
 - implements [[DESIGN-001-SPEC-003: PLAN Adapter Architecture]]
 - caused_by [[QA-010-SPEC-003: PLAN Adapter Base]]

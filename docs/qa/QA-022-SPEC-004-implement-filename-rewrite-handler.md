@@ -94,5 +94,5 @@ Verify TASK-003-SPEC-004 implements filename rewrite (`applyFilenameRewrites`) w
 
 ## Relations
 
-- validates [[TASK-003-SPEC-004: Implement Filename Rewrite Handler]]
+- depends_on [[TASK-003-SPEC-004: Implement Filename Rewrite Handler]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

@@ -90,5 +90,5 @@ Verify TASK-007-SPEC-001 atomic write helper implementation against acceptance c
 
 ## Relations
 
-- validates [[TASK-007-SPEC-001: Implement Atomic Write Helper]]
+- depends_on [[TASK-007-SPEC-001: Implement Atomic Write Helper]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

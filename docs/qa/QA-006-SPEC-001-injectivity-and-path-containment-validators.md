@@ -89,5 +89,5 @@ Biome unsafe fix applied: `process.env["SKILLS_DOCS_ROOT"]` changed to `process.
 
 ## Relations
 
-- validates [[TASK-006-SPEC-001: Implement Injectivity and Path Containment Validators]]
+- depends_on [[TASK-006-SPEC-001: Implement Injectivity and Path Containment Validators]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

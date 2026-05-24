@@ -95,7 +95,7 @@ All three fixture compliance items are N/A relative to QA gate scope (fixtures a
 
 ## Relations
 
-- validates [[TASK-010-SPEC-004: Add DESIGN Fixture and Composition Plan YAML]]
+- depends_on [[TASK-010-SPEC-004: Add DESIGN Fixture and Composition Plan YAML]]
 - implements [[REQ-006-SPEC-004: SPEC Subtree Adapter Round-Trip Property Test]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
 - pairs_with [[QA-034-SPEC-004: Task 009 Filename Rewrite Tests Revalidation]]

@@ -76,6 +76,6 @@ Retro-validate TASK-003-SPEC-007 against DoD via inspection of `src/schemas/sess
 
 ## Relations
 
-- validates [[TASK-003-SPEC-007: Implement SessionNote Zod Schema]]
+- depends_on [[TASK-003-SPEC-007: Implement SessionNote Zod Schema]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-003-SPEC-007: SessionNote Zod Schema]]

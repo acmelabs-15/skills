@@ -80,6 +80,6 @@ Spec text mentions `tests/round-trip.test.ts` + `tests/fixtures/plan-001-trimmed
 
 ## Relations
 
-- validates [[TASK-012-SPEC-007: Implement Round-Trip Property Test]]
+- depends_on [[TASK-012-SPEC-007: Implement Round-Trip Property Test]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-011-SPEC-007: Round-Trip Property Test]]

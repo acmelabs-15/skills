@@ -75,7 +75,7 @@ Retro-validate TASK-004-SPEC-007 against DoD via `src/parsers/ast-helpers.ts` (1
 
 ## Relations
 
-- validates [[TASK-004-SPEC-007: Implement AST Helpers]]
+- depends_on [[TASK-004-SPEC-007: Implement AST Helpers]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-004-SPEC-007: PlanNote Markdown Parser]]
 - implements [[REQ-005-SPEC-007: SessionNote Markdown Parser]]

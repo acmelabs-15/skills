@@ -94,5 +94,5 @@ Verify TASK-002-SPEC-004 implements `applyFrontmatterMap` / `reverseFrontmatterM
 
 ## Relations
 
-- validates [[TASK-002-SPEC-004: Implement Frontmatter Map Handler]]
+- depends_on [[TASK-002-SPEC-004: Implement Frontmatter Map Handler]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

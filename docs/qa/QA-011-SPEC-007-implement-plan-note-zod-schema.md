@@ -85,6 +85,6 @@ Retro-validate TASK-002-SPEC-007 (PlanNote Zod Schema) against DoD via `src/sche
 
 ## Relations
 
-- validates [[TASK-002-SPEC-007: Implement PlanNote Zod Schema]]
+- depends_on [[TASK-002-SPEC-007: Implement PlanNote Zod Schema]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-002-SPEC-007: PlanNote Zod Schema]]

@@ -28,7 +28,7 @@ WHEN the `KNOWLEDGE-GRAPH-CONVENTIONS.md` Section 4.6 (PLAN structure) and Secti
 - [ ] GIVEN `validateSpecDoneClaim` source at `shared/composition/src/validators/spec-claim-validator.ts` WHEN the validator parses a SPEC root with `status: DONE` and any artifact-status row using `[~]` THEN the validator accepts the claim as valid and does not emit an `unsatisfied` entry for that row
 - [ ] GIVEN `validateSpecDoneClaim` WHEN parsing a TASK DoD checklist (not a SPEC root artifact list) THEN the validator continues to reject `[~]` as a non-terminal marker for TASK DoD items (`[~]` is SPEC-root scoped only, per D-6)
 - [ ] GIVEN extended `validateSpecDoneClaim` WHEN run against SPEC-007 root after the Track 4 amendment THEN the validator returns `valid: true` (closing the SPEC-007 PARTIAL drift surfaced in Audit D)
-- [ ] GIVEN updated CONVENTIONS Section 4.6 + 4.7 WHEN a future spec author reads either section THEN both sections document `[~]` as the canonical deferred-notation marker and reference REQ-008-SPEC-008 as the source decision
+- [x] GIVEN updated CONVENTIONS Section 4.6 + 4.7 WHEN a future spec author reads either section THEN both sections document `[~]` as the canonical deferred-notation marker and reference REQ-008-SPEC-008 as the source decision
 - [ ] GIVEN composition library unit test suite WHEN `bun test` runs after validator extension THEN at least one test case asserts `[~]` acceptance on SPEC-root rows and at least one asserts `[~]` rejection on TASK DoD rows
 
 ## Observations

@@ -121,6 +121,6 @@ File is 1513 lines; trimmed migration was expected to reduce to ~30% of original
 
 ## Relations
 
-- validates [[TASK-013-SPEC-007: Dogfood PLAN-001 Migration]]
+- depends_on [[TASK-013-SPEC-007: Dogfood PLAN-001 Migration]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-012-SPEC-007: PLAN-001 Dogfood Migration]]

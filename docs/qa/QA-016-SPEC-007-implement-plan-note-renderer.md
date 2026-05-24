@@ -78,6 +78,6 @@ Retro-validate TASK-007-SPEC-007 via `src/renderers/plan-note.ts` (359 LOC), `te
 
 ## Relations
 
-- validates [[TASK-007-SPEC-007: Implement PlanNote Renderer]]
+- depends_on [[TASK-007-SPEC-007: Implement PlanNote Renderer]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-006-SPEC-007: PlanNote Markdown Renderer]]

@@ -31,18 +31,22 @@ The six violation categories (10 notes):
 
 ## Definition of Done
 
-- [ ] QA-027-SPEC-004 and QA-030-SPEC-002 each have exactly ONE frontmatter block (duplicate merged; colon-titles YAML-quoted; stub-permalink preserved)
-- [ ] QA-027, QA-042, QA-043, QA-015 each have zero `validates` relations; replaced with `depends_on` (or `relates_to` where no typed verb fits) — verified by `grep -rn "^- validates \[\[" docs/qa/` returning zero
-- [ ] ANALYSIS-002, SESSION-2026-05-20_01, SESSION-2026-05-20_02 each have a colon-bearing frontmatter title AND a matching H1 (both forms `{ENTITY-ID}: {Descriptor}`)
-- [ ] QA-030 frontmatter `type: qa` (was `test_report`); QA-038 frontmatter `type: qa` (was `test-report`)
-- [ ] QA-036, QA-038, SESSION-2026-05-20_03 contain zero absolute `/Users/<username>/` paths — verified by `grep -rn "/Users/" docs/qa/QA-036* docs/qa/QA-038* docs/sessions/SESSION-2026-05-20_03*` returning zero
-- [ ] SESSION-2026-05-21_01 has a monotonic Event sequence with no duplicate Event numbers (36/37/38 dedup resolved)
-- [ ] All edits used Brain MCP `edit_note` (binary tool rule) — no raw Edit/Write on `docs/**`
-- [ ] Post-fix: each repaired note still parses against its note-type schema (re-read via Brain MCP confirms no new malformation introduced)
+
+- [x] QA-027-SPEC-004 and QA-030-SPEC-002 each have exactly ONE frontmatter block (duplicate merged; colon-titles YAML-quoted; stub-permalink preserved)
+- [x] QA-027, QA-042, QA-043, QA-015 each have zero `validates` relations; replaced with `depends_on` (or `relates_to` where no typed verb fits) — verified by `grep -rn "^- validates \[\[" docs/qa/` returning zero **(Scope expanded Event 58: ALL 31 additional `validates` relations across 30 other QA notes also fixed — full broader-grep verification now satisfied)**
+- [x] ANALYSIS-002, SESSION-2026-05-20_01, SESSION-2026-05-20_02 each have a colon-bearing frontmatter title AND a matching H1 (both forms `{ENTITY-ID}: {Descriptor}`)
+- [x] QA-030 frontmatter `type: qa` (was `test_report`); QA-038 frontmatter `type: qa` (was `test-report`)
+- [x] QA-036, QA-038, SESSION-2026-05-20_03 contain zero absolute `/Users/<username>/` paths — verified by `grep -rn "/Users/" docs/qa/QA-036* docs/qa/QA-038* docs/sessions/SESSION-2026-05-20_03*` returning zero
+- [x] SESSION-2026-05-21_01 has a monotonic Event sequence with no duplicate Event numbers (36/37/38 dedup resolved via 36b/37b/38b renumbering)
+- [x] All edits used Brain MCP `edit_note` (binary tool rule) — no raw Edit/Write on `docs/**`
+- [x] Post-fix: each repaired note still parses against its note-type schema (re-read via Brain MCP confirms no new malformation introduced)
+
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-7 tactical-cleanup scope (Track 4 carries the Audit C hygiene cleanup; not an architectural decision, executed against the Audit C findings inventory)
+
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-7 tactical-cleanup scope (Track 4 carries the Audit C hygiene cleanup; not an architectural decision, executed against the Audit C findings inventory **plus the user-authorized scope expansion to the broader `validates` cleanup surfaced via the DoD verification grep, Event 58**)
+
 
 ## Files Affected
 

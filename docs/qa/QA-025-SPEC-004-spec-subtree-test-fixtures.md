@@ -96,5 +96,5 @@ Files found under `_shared/composition/tests/fixtures/`:
 
 ## Relations
 
-- validates [[TASK-006-SPEC-004: SPEC Subtree Test Fixtures]]
+- depends_on [[TASK-006-SPEC-004: SPEC Subtree Test Fixtures]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

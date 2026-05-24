@@ -86,7 +86,7 @@ graph TD
   build_SPEC_007("✅ <b>build.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Implementation Build</span>")
   protocol_hardening("⚡ <b>protocol-hardening</b><br/><span style='color:#6b7280;font-size:11px'>Phase X — Protocol Hardening (Drift Remediation)</span>")
   review("✅ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
-  end("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
+  end_part("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
   decisions_4("✅ <b>decisions.4</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Architecture Decisions (ADR-005)</span>")
   spec_SPEC_008("✅ <b>spec.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Protocol Hardening Wave 2</span>")
   build_SPEC_008("⚡ <b>build.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Protocol Hardening Build</span>")
@@ -123,12 +123,12 @@ graph TD
   build_SPEC_005 --> review
   build_SPEC_006 --> review
   build_SPEC_007 --> review
-  review --> end
+  review --> end_part
   protocol_hardening --> decisions_4
   decisions_4 --> spec_SPEC_008
   spec_SPEC_008 --> build_SPEC_008
 
-  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end,decisions_4,spec_SPEC_008 done
+  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end_part,decisions_4,spec_SPEC_008 done
   class protocol_hardening,build_SPEC_008 inprogress
 ```
 
@@ -2436,31 +2436,31 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-033-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 58
+- **Transitioned At Event**: Event 59
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **Test Report Ref**: QA-049-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-034-SPEC-008
 
 - **Type**: impl
 - **Task Ref**: TASK-034-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 58 (BLOCKED → IN_PROGRESS; scope expanded per user adjudication)
+- **Transitioned At Event**: Event 59 (expanded sweep PASS; 31 additional `validates` → `depends_on` across 30 notes; broader-grep verification now clean)
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: Event 58 — expand scope to fix ALL `validates` relations in docs/qa/ (31 in 30 notes; the 4 Audit C named already fixed)
+- **Fix Brief For Event**: —
 
 #### qa-TASK-034-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-034-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 59
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -2480,11 +2480,11 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-037-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 58
+- **Transitioned At Event**: Event 59
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **Test Report Ref**: QA-050-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-026-SPEC-008

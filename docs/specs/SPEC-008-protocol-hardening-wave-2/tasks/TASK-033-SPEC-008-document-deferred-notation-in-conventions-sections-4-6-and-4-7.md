@@ -2,7 +2,7 @@
 title: 'TASK-033-SPEC-008: Document Deferred Notation in CONVENTIONS Sections 4.6 and 4.7'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-033-spec-008-document-deferred-notation-in-conventions-sections-4-6-and-4-7-1
-status: TODO
+status: DONE
 tags:
 - task
 - spec-008
@@ -69,4 +69,5 @@ Steps:
 - implements [[REQ-008-SPEC-008: Deferred Checkbox Notation and Validator Extension]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - pairs_with [[TASK-031-SPEC-008: Amend SPEC-007 Root with Deferred Notation and Legend]]
+- relates_to [[QA-049-SPEC-008: Document Deferred Notation]]
 - pairs_with [[TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation]]

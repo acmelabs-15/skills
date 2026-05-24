@@ -106,5 +106,5 @@ None. Type-only deliverables have no branch/line coverage target. tsc --noEmit i
 
 ## Relations
 
-- validates [[TASK-002-SPEC-001: Define Core Types and Adapter Interface]]
+- depends_on [[TASK-002-SPEC-001: Define Core Types and Adapter Interface]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

@@ -76,6 +76,6 @@ Retro-validate TASK-005-SPEC-007 via `src/parsers/plan-note.ts` (388 LOC) and `t
 
 ## Relations
 
-- validates [[TASK-005-SPEC-007: Implement PlanNote Parser]]
+- depends_on [[TASK-005-SPEC-007: Implement PlanNote Parser]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-004-SPEC-007: PlanNote Markdown Parser]]

@@ -85,5 +85,5 @@ Validates `sha256(content: string): string` in `_shared/composition/src/core/has
 
 ## Relations
 
-- validates [[TASK-003-SPEC-001: Implement SHA-256 Hash Utility]]
+- depends_on [[TASK-003-SPEC-001: Implement SHA-256 Hash Utility]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

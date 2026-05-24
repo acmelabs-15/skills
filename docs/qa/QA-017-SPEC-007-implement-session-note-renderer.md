@@ -76,6 +76,6 @@ Retro-validate TASK-008-SPEC-007 via `src/renderers/session-note.ts` (154 LOC), 
 
 ## Relations
 
-- validates [[TASK-008-SPEC-007: Implement SessionNote Renderer]]
+- depends_on [[TASK-008-SPEC-007: Implement SessionNote Renderer]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-007-SPEC-007: SessionNote Markdown Renderer]]

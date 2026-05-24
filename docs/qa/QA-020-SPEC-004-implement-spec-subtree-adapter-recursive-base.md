@@ -101,5 +101,5 @@ Verify TASK-001-SPEC-004 establishes the `SpecSubtreeAdapter` class implementing
 
 ## Relations
 
-- validates [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
+- depends_on [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]
