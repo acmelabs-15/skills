@@ -299,3 +299,32 @@ bun skills/build/scripts/validate-task-done.ts <task-path>
 - Composition library exposes TS API only; no CLI. The CLI exists per-skill.
 
 PLAN-001 decisions.4 DoD: D-1 flipped `[ ]` → `[x]`.
+
+
+## Event 11 — D-2 LOCKED: extend existing flat dirs + `_shared` rename captured
+
+**Decision** (verbatim from AskUserQuestion answer):
+
+> **Extend existing flat dirs (Recommended)**
+>
+> Add Wave 2 files to existing `shared/composition/src/schemas/`, `src/parsers/`, `src/validators/`. New types follow same naming: `adr-note.ts`, `analysis-note.ts`, etc. Consistent with 9 existing schemas; one pattern across all waves.
+
+**Additional scope captured** (user clarification on D-2): rename `_shared/` → `shared/` at project root. This is a structural change, not an adjudication — user directive, not optional. Adding to Wave 2 scope as Track 4 cleanup item.
+
+**Track 4 cleanup additions** (running list; will become SPEC-008 REQ-012 cluster):
+
+| # | Item | Audit source |
+|---|---|---|
+| 1 | Brain notes: 2 duplicate frontmatter blocks (QA-027, QA-030) | C |
+| 2 | Brain notes: 4 forbidden `validates` relations (QA-027, QA-042, QA-043, QA-015) | C |
+| 3 | Brain notes: 3 title-without-colon (ANALYSIS-002, SESSION-2026-05-20_01, _02) | C |
+| 4 | Brain notes: 2 stale `type:test_report`/`type:test-report` (QA-030, QA-038) | C |
+| 5 | Brain notes: PII path redaction (QA-036, QA-038, SESSION-2026-05-20_03) | C |
+| 6 | Brain notes: Event 36/37/38 dedup in SESSION-2026-05-21_01 | C |
+| 7 | Code: SPEC-002/003 SPEC root checkbox rollup + 4 REQ statuses DRAFT→ACCEPTED | D |
+| 8 | Code: SPEC-007 status resolution (per D-6) | D / D-6 |
+| 9 | Code: `core/dispatcher.ts` disposition (per D-7) | D / D-7 |
+| 10 | Code: REQ-009-SPEC-007 amend "9 mutation types" → "11 mutation types" | D |
+| 11 | **Structural: `_shared/` → `shared/` rename** | User directive (this event) |
+
+D-N progress: D-1 LOCKED (Event 10) → D-2 LOCKED (this event). Remaining: D-3, D-4, D-5, D-6, D-7.

@@ -2243,7 +2243,7 @@ graph TD
 **DoD**:
 
 - [x] D-1 LOCKED — Per-skill scripts: each lifecycle skill ships gate-point scripts at `skills/<name>/scripts/<verb>.ts` as thin wrappers importing from `_shared/composition/`. Matches existing defrag/ingest pattern; skills become self-contained; new validators colocate with the skill that needs them.
-- [ ] D-2 LOCKED — Directory layout for new schemas/parsers/validators (extend `src/schemas|parsers|validators/` flat OR new `wave-2/` subdir)
+- [x] D-2 LOCKED — Extend existing flat dirs at `shared/composition/src/{schemas,parsers,validators}/` (consistent with 9 existing schemas; one pattern across waves). NOTE: `_shared` → `shared` directory rename captured as Track 4 cleanup item (see Wave 2 cleanup list)
 - [ ] D-3 LOCKED — Adversarial-claim test scaffold pattern (fixture-based parse-then-validate template)
 - [ ] D-4 LOCKED — Dispatch-brief template persistence + enforcement mechanism (file location + how skills consume)
 - [ ] D-5 LOCKED — P1 include/defer adjudication (ANALYSIS schema/validator; EPIC; CRIT)
