@@ -2247,8 +2247,8 @@ graph TD
 - [x] D-3 LOCKED — Shared fixture-driven harness: each lying-claim scenario lives as a named markdown file at `tests/fixtures/adversarial/<type>/drift-NN-<slug>.md`; shared `testAdversarial({fixture, validator, expectedReject})` helper runs parse→validate→assert. Natural mapping to Audit E item 10 (drift regression markers).
 - [x] D-4 LOCKED — Programmatic per-skill brief-generator scripts at `skills/<name>/scripts/dispatch-<agent>.ts`. Scripts import cross-cutting constants (e.g., `validRelationTypes` from `shared/composition/src/schemas/common.ts`) and print full brief text. Single source of truth via direct schema import; auto-updates when schema changes. Extends D-1 pattern.
 - [x] D-5 LOCKED — Full Audit A recommendation: include ALL 3 P1 schemas (ANALYSIS + EPIC + CRIT). Wave 2 ships 5 schemas + 5 parsers + 4 validators total (ADR + PLAN-done-claim + ANALYSIS + EPIC + CRIT). +2-3 days effort vs deferral; complete P1 coverage; some artifacts (EPIC, CRIT claim) have no immediate consumer but ready when needed.
-- [ ] D-6 LOCKED — SPEC-007 status resolution (downgrade DONE→ACCEPTED vs complete TASK-014 vs amend REQ-012 scope)
-- [ ] D-7 LOCKED — `core/dispatcher.ts` disposition (fix-add-spec vs deprecate-in-favor-of-registry)
+- [x] D-6 LOCKED — Amend SPEC-007 root checkbox notation: use `[~]` (or `[deferred: rationale]`) for items where the underlying REQ is `status: DEFERRED`. Keep SPEC-007 status DONE (deferred is a legitimate terminal status). Also extend `validateSpecDoneClaim` to recognize `[~]` as terminal alongside `[x]`.
+- [x] D-7 LOCKED — Delete `_shared/composition/src/core/dispatcher.ts` + `tests/dispatcher.test.ts`. Confirmed dead (only `dispatcher.test.ts` imports it); production code uses `registry.ts`; adapter functionality untouched (lives in separate files). 508 tests → 506 tests post-delete.
 - [ ] ADR-004 authored and frontmatter status ACCEPTED; date + updated populated
 - [ ] /brain:---adr-review PASS verdict (round-1 convergence ≥5 ACCEPT + 0 BLOCK)
 
