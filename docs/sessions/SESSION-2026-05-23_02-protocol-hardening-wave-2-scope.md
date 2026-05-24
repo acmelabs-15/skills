@@ -24,16 +24,29 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 
 - Starting commit: `eb0eb28` (end of PLAN-001 workflow close)
 - PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (umbrella; flips DONE when build.SPEC-008 DONE)
-- Scope shape: LOCKED — Option A (SPEC-008) per AskUserQuestion answer Event 09
-- ADR-005 ACCEPTED 2026-05-23 — 8 D-Ns; decisions.4 DONE
-- spec.SPEC-008 DONE — SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 46 TASK); all /spec gates PASS
-- build.SPEC-008 IN_PROGRESS — owning_session SESSION-2026-05-23_02 (this session; RESUMED from PAUSED at Event 41 for PoC TASK-001)
-- Build order: TASK-029 (rename) DONE FIRST → Track 1 (TASK-001..010) → Track 4 cleanup + Track 3 harness → Track 2 scripts + Track 3 fixtures → Track 5 hooks
-- TASK-029 (rename) DONE — `_shared/`→`shared/`; qa PASS (QA-044-SPEC-008); full a–u cycle demonstrated; commit `8144429`
-- **CURRENT**: PoC SIGNED OFF (Event 46) — TASK-029 + TASK-001 DONE (2/46). Marathon continues IN THIS session per user. FIRST: dependency/parallelism analysis across the 44 remaining TASKs → user decision on parallelization approach (reconciled with the rigid one-TASK-at-a-time + serial PLAN/session bookkeeping) → then Track 1 remainder (TASK-002..010).
-- DEFERRED (Track 4 doc-hygiene sweep / TASK-034): flip `_shared/composition` in ~171 live Brain notes (TASK-029 DoD item 3; historical-immutability scope resolved there)
-- LATENT follow-up: skill scripts + `migrate-plan-001…ts` outside root tsconfig bun-typed scope (`Cannot find name 'Bun'`) — config-coherence fix, relevant to Tracks 1/2/5
-- OPEN: 2 pre-existing `defrag.test.ts` delegation failures (decide fix/track/accept); basic-memory move/edit transient flakiness (retry on failure)
+- ADR-005 ACCEPTED (8 D-Ns; decisions.4 DONE)
+- spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 46 TASK)
+- build.SPEC-008 IN_PROGRESS (owning_session SESSION-2026-05-23_02; this session)
+- **PAUSED at commit `054a065`** — natural milestone after batch 4 closure
+- **12/46 TASKs fully CLOSED** (impl + QA both DONE): TASK-001, 002, 005, 021, 025, 026, 029, 033, 034, 037, 039, 040
+- **34/46 TASKs PENDING**: 003, 004, 006, 007, 008, 009, 010, 011-020, 022, 023, 024, 027, 028, 030, 031, 032, 035, 036, 038, 041-046
+- QA contract notes: QA-044..055 (12 notes; bi-dir `relates_to` to their TASKs)
+- SPEC-008 root verified current: 12/46 Task rollup `[x]`; 4/10 Acceptance Criteria `[x]` (ADR coverage gate, Gate A, Gate B, CONVENTIONS amendment); 0 REQ + 0 DESIGN + 0 Success Criteria flipped (all totality-gated; none have full child coverage yet)
+- Cross-Part Dependency Graph: Mermaid reserved-word `end → end_part` fix applied (Event 59)
+- Suite count: 705 pass / 2 fail / 707 (2 pre-existing `plan-001-migration.test.ts` deferred SPEC-007 work; zero new failures introduced this session)
+
+**Wave plan progress**:
+- W0 (zero deps): DONE — TASK-021, 025, 026, 029, 033, 034, 037, 039, 040 all closed
+- W1a (schemas + parsers; barrel-serialized): 50% — TASK-002 + 005 closed; TASK-003, 004, 010, 030 PENDING
+- W1b/c/d/e: PENDING
+- W2/3/4/5: PENDING (TASK-046 hard terminal)
+
+**Open marathon items** (carried forward; none blocking resume):
+- 2 pre-existing `plan-001-migration.test.ts` failures (DEFERRED SPEC-007 work; REQ-012 DEFERRED per ADR-005 D-6); DECIDE fix/track/accept at marathon resume
+- pre-existing tsconfig + biome `hooks/**` scope gap (LSP shows diagnostic noise; runtime `tsc --noEmit` from workspace exits 0); not blocking, but worth resolving for hooks/** files to surface real errors in LSP
+- Zod version mismatch (root v4.1.13; composition workspace v3.25.76); TASK-039 worked around with forward-compatible signatures
+- NEW finding (Event 60): QA-032/033/034 carry a `validates:` key in YAML **frontmatter** (not Relations bullet); semantically distinct from Phase 2 sweep; Track-4 follow-up candidate
+- basic-memory `move_note`/`edit_note` transient flakiness — expect + retry
 
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
@@ -1315,3 +1328,42 @@ State after this turn: **12 TASKs fully CLOSED** (001, 002, 005, 021, 025, 026, 
 Tracked open items unchanged from Event 60: 2 pre-existing `plan-001-migration.test.ts` failures (DEFERRED SPEC-007 work); pre-existing tsconfig + biome `hooks/**` scope gaps (latent config-coherence issue); new flag from Event 60 (frontmatter `validates:` key in QA-032/033/034 — Track 4 followup, not in current scope). Suite count post-batch: 705 pass / 2 fail / 707.
 
 Marathon math: 12/46 TASKs done (26%). At ~4 TASKs per parallel batch with full propagation overhead, remaining 34 TASKs ≈ 8-9 batches. Bookkeeping is dense per batch (QA notes + status flips + REQ AC propagation + SPEC root verification + PLAN transitions + session Events + commits ≈ 25-35 tool calls per batch closure).
+
+
+## Event 64 — Session PAUSED at clean milestone; resume protocol locked
+
+User adjudicated (AskUserQuestion) the post-batch-4 pace decision: **"Pause; resume fresh (recommended)"** — natural milestone, working tree clean, all SPEC-008 root rollups verified current, PLAN durable. Strongly recommended for context budget.
+
+This session has executed 63 Events across multiple parallel-batch dispatches over a long context window. Closures, propagation, partial-recovery, scope-expansion adjudication, graph fix, propagation protocol formalization, full SPEC-008 root + REQ AC propagation per closure. Bookkeeping is dense per closure (25-35 tool calls each); pausing at a natural milestone is the right call.
+
+Session status IN_PROGRESS → PAUSED at commit `054a065`. All durable state preserved on branch `feat/plan-001-protocol-hardening-wave-2-scope`.
+
+### Resume protocol (next context)
+
+1. `/skills:plan PLAN-001-skills-ecosystem` (continue mode) → RESUMES THIS session (PAUSED → IN_PROGRESS; continue Event numbering from 65; do NOT create a new note per `feedback_resume_paused_session_not_new`).
+2. Rehydration checklist (TIER-1; per `feedback_post_compaction_rehydration_protocol`): re-read TIER-1 protocol memories; set active project `skills` + `bootstrap_context`; read PLAN-001 + this session's Events 01–64; verify git state on `feat/plan-001-protocol-hardening-wave-2-scope` at `054a065` or later; recap to user.
+3. build.SPEC-008 IN_PROGRESS. Next bounded-parallel batch: **TASK-003 (EPIC schema) + TASK-004 (CRIT schema) + TASK-010 (PLAN done-claim extension + validatePlanDoneClaim) + TASK-030 (delete `core/dispatcher.ts` + its test)** — Wave 1a remainder. All 4 file-disjoint; TASK-003/004 both touch `schemas/index.ts` so serialize within their sub-wave (or batch them but coordinate barrel edits); TASK-010 touches `validators/index.ts` (different barrel); TASK-030 is a small `git rm` (could even be done inline by orchestrator to save an agent).
+4. Per-batch protocol: PLAN seed + transition → commit → dispatch → orchestrator-verify gates → flip DoD/Compliance + status DONE + relates_to QA-NNN + SPEC root `[x]` + REQ AC propagation + PLAN qa→DONE + session Event + commit.
+5. Marathon continuation after Wave 1a: Wave 1b/c/d/e (TASK-011-020 per-skill scripts; TASK-022/023/027/028/036 cleanup + harness; TASK-031/032 SPEC-007 notation + validator ext) → Wave 2/3 (Track 1 validators: 007/008/009 — barrel-serialized on validators/index.ts) → Wave 4 (Track 5 hook handlers: 038/041-045 + TASK-024 final fixtures) → Wave 5 terminal (TASK-046 smoke tests).
+
+### Open items for marathon resume (decisions queued)
+
+- DECIDE at resume start: 2 pre-existing `plan-001-migration.test.ts` failures — fix now / track separately / accept as DEFERRED SPEC-007 work
+- TRACK 4 followup TASK candidates: (a) frontmatter `validates:` key in QA-032/033/034 (Event 60 finding); (b) hooks/** in root tsconfig + biome includes (config-coherence gap)
+- DESIGN-004 `DiffNote.sha` amendment candidate (TASK-040 QA flagged): only if Layer 4/5 handlers (TASK-043) need per-commit SHA
+
+### Session 23 final deliverables (this session, across multiple pauses)
+
+- 5 parallel audits (Events 1-5) → ANALYSIS-004 omnibus
+- ADR-005 ACCEPTED (8 D-Ns including D-8 automated enforcement hooks); decisions.4 DONE
+- SPEC-008 authored: 63 notes (12 REQ + 4 DESIGN + 46 TASK + root) across 5 parallel architect tracks
+- spec.SPEC-008 DONE; all /spec gates PASS (ADR coverage + Gate A + Gate B)
+- build.SPEC-008 IN_PROGRESS with 12 TASKs CLOSED (impl + QA both PASS for each)
+- 12 QA contract notes (QA-044..055)
+- PoC pattern established (TASK-029 rename + TASK-001 ADR schema) and signed off
+- Bounded-parallel @ 4 protocol locked + proven across 4 batches
+- Full-propagation protocol locked (12-step closure pattern; SPEC root + REQ ACs propagated per closure)
+- Cross-Part Dependency Graph Mermaid reserved-word fix
+- TASK-034 scope expansion adjudicated (31 extra `validates` swept)
+- Salvage-from-errored-return pattern proven (TASK-026 partial recovery)
+- ~24 atomic commits on `feat/plan-001-protocol-hardening-wave-2-scope`
