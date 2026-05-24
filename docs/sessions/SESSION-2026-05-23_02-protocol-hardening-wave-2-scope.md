@@ -2454,3 +2454,31 @@ Independent QA (`brain:🧠-qa`) returned **PASS** — [[QA-077-SPEC-008: Valida
 - PLAN qa-TASK-027-SPEC-008: IN_PROGRESS → DONE (Test Report Ref QA-077)
 - SPEC-008 root Tasks: TASK-027 → [x] (34/47); Wave Graph synced
 - Marathon: 33/47 → **34/47** CLOSED
+
+
+## Event 103 — Batch 11 START (7-wide parallel, max-parallelism directive ×2): TASK-014 + 023 + 041 + 042 + 043 + 044 + 045
+
+User reiterated (2×, emphatic): "we should be doing as much work in parallel as possible." Course-correcting from the serial close pattern — dispatching the maximal SAFE wave of all runnable-now, file-disjoint code tasks. Explicitly raises the Event-48 ≤4 bounded-parallel cap to 7 per user directive. Per-TASK QA gate retained for each (the serial bottleneck is orchestrator return-processing, not implementer concurrency).
+
+Newly unblocked by Batch 10 closes (032/022/038 DONE):
+- [[TASK-014-SPEC-008: Implement validate-spec-done and run-pre-flight Scripts]] → `skills/end/scripts/` (dep TASK-032 ✅)
+- [[TASK-023-SPEC-008: Wire Adversarial-Claims Table-Driven Test Runner]] → `shared/composition/tests/adversarial-claims.test.ts` (dep TASK-022 ✅)
+- [[TASK-041-SPEC-008: Implement pre-write-brain-note Handler Layer 1]] → `hooks/scripts/pre-write-brain-note.ts` (dep TASK-038 ✅)
+- [[TASK-042-SPEC-008: Implement pre-write-brain-note-mcp Handler Layer 2]] → `hooks/scripts/pre-write-brain-note-mcp.ts` (dep TASK-038 ✅)
+- [[TASK-043-SPEC-008: Implement pre-commit pre-push and pre-pr-create Handlers Layers 3-5]] → `hooks/scripts/{pre-commit,pre-push,pre-pr-create}-validate.ts` (deps TASK-038/040 ✅)
+- [[TASK-044-SPEC-008: Implement stop-backstop Handler Layer 6]] → `hooks/scripts/stop-backstop.ts` (dep TASK-038 ✅)
+- [[TASK-045-SPEC-008: Implement git-state-observer Handler Layer 7]] → `hooks/scripts/git-state-observer.ts` (dep TASK-040 ✅)
+
+7 disjoint regions (end/scripts · composition test · 5 distinct hook handler files). hooks.json (TASK-037 DONE) is NOT edited by handlers (file-ownership instruction enforces). All → `bun-ts-engineer`.
+
+### Excluded (still not runnable / cross-cutting)
+- TASK-024 (AAE fixtures) depends on 023 (this wave) → next.
+- TASK-028 (annotate existing tests with drift-markers) cross-cutting → solo after.
+- TASK-031/035/036 (Brain-note hygiene) → orchestrator-direct.
+- TASK-046 (hook smoke tests) depends on 041-045 (this wave) + fixtures → terminal.
+
+### Follow-up flagged: REQ-004 acceptance — after TASK-014 closes, all REQ-004 tasks (011-017 + 014) are DONE; before flipping REQ-004 → ACCEPTED, add the AC-9 prefix-collision path-containment TEST to one gate-point script.
+
+### State Changes
+
+- PLAN impl-TASK-014/023/041/042/043/044/045-SPEC-008: PENDING → IN_PROGRESS
