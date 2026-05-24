@@ -28,22 +28,22 @@ User reopened the `protocol-hardening` part of [[PLAN-001 Skills Ecosystem]] wit
 Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `main` at `eb0eb28`).
 
 ## State
-
-- Starting commit: `eb0eb28` (end of PLAN-001 workflow close)
-- PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (umbrella; flips DONE when build.SPEC-008 DONE)
-- ADR-005 ACCEPTED (8 D-Ns; decisions.4 DONE); spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 47 TASK)
-- build.SPEC-008 IN_PROGRESS (owning_session SESSION-2026-05-23_02)
-- **27/47 TASKs fully CLOSED** (impl + QA both DONE): 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, **011, 012, 013, 015, 016, 017**, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040, 047
-- **20/47 TASKs PENDING**: 014, 018, 019, 020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041, 042, 043, 044, 045, 046
-- REQs ACCEPTED: REQ-001/002/003; DESIGN-001. DRAFT (totality-gated): REQ-004 (needs 011-017 done + 014 — only 014 left), REQ-005 (needs 018/019/020), REQ-006..012; DESIGN-002 (needs all REQ-004/005 tasks)/003/004; SPEC-008 root Success/Acceptance Criteria.
-- QA contract notes: QA-044..070 (added QA-065..070 this context)
-- Suite baseline: **891 pass / 2 fail / 893 total** (2 fails = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1; NEW failures elsewhere = regression)
-- Config corrected this context: `.gitignore` `build/`→`/build/` (skills/build/ now tracked); tsconfig + biome `include` → `skills/**` (FU-2 RESOLVED)
-- **Derived-view propagation = MANDATORY at every batch close** (user directive, Event 89): SPEC-008 root ALL 5 checkbox lists (Requirements/Designs/Tasks/Acceptance/Success) + PLAN task-level Wave Graph kept current. NO deferral. Currently: SPEC root Tasks 27 [x]; Wave Graph synced.
-- **Next-ready: Wave 1b Batch C** — TASK-018 (build dispatch-implementer + dispatch-qa) + 019 (decisions dispatch-architect + critic) + 020 (research dispatch-analyst + review dispatch-reviewer) = REQ-005 brief generators. TASK-018 implementer adds `validRelationTypes` export to common.ts per SPEC Files Affected. THEN: TASK-032 → unblocks TASK-014 (closes REQ-004; add prefix-collision test before REQ-004 ACCEPTED). THEN Wave 1c (022/023/027/028/031/035/036), Wave 4 hooks (024/038/041-045), Wave 5 smoke (046).
-- Open follow-ups (deferred, non-gating): REQ-004 AC-9 prefix-collision test (before REQ-004 ACCEPTED); FU-1 (`validates:` key in QA-032/033/034); FU-3 (this session Obs/Relations placement → session-end); `lock-decision`/transition scripts line-count vs DESIGN-002 soft ceiling (adjudicate at DESIGN-002 acceptance); D-3 (DESIGN-004 DiffNote.sha → TASK-043).
-- 0 active blockers; 0 open user decisions (validRelationTypes resolved via SPEC Files Affected)
-
+- Starting commit: `eb0eb28`. Latest commit: `73346d2` (Event 105). Branch `feat/plan-001-protocol-hardening-wave-2-scope`; working tree clean.
+- PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (umbrella; flips DONE when build.SPEC-008 DONE).
+- ADR-005 ACCEPTED; spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 47 TASK).
+- build.SPEC-008 IN_PROGRESS (owning_session SESSION-2026-05-23_02).
+- **34/47 TASKs fully CLOSED** (impl + QA both DONE): 001-013, 015-022, 025-027, 029-034, 037-040, 047, 032, 038. (i.e. the original 27 + 018/019/020 + 022/027/032/038.)
+- **6 IMPL-DONE, QA PENDING** (in flight): 014, 023, 041, 042, 043, 045. Code committed (`c7bccae`); DoD-flips + Wave-graph ✅ + QA happen at their close.
+- **1 BLOCKED→amended, pending re-build**: 044 (Layer 6 stop-backstop; spec amended Event 105 to `git status --porcelain`; ready to re-dispatch).
+- **6 PENDING** (not started): 024 (needs 023 QA), 028 (cross-cutting drift-markers), 031/035/036 (Brain-note hygiene), 046 (hook smoke — needs 041-045 + fixtures).
+- REQs ACCEPTED: REQ-001/002/003/005; DESIGN-001. Pending-acceptance (totality-gated): REQ-004 (after 014 QA + AC-9 prefix-collision test), REQ-006 (after 023 QA + 024), REQ-007 (after 028), REQ-008 (after 031), REQ-010 (after 035), REQ-011 (after 041/042/043 QA), REQ-012 (after 044 build + 045 QA); DESIGN-002 (after REQ-004), DESIGN-003 (after 023/024), DESIGN-004 (after all hooks).
+- QA contract notes: QA-044..077 (added QA-065..077 this session).
+- Suite baseline: **1151 pass / 2 fail / 1153** (2 = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1; NEW failures elsewhere = regression).
+- **Derived-view propagation MANDATORY at every batch close** (user directive): SPEC-008 root ALL 5 lists + PLAN Wave Graph. Currently: SPEC root Tasks 34 [x]; Requirements REQ-005 [x]; Wave Graph synced through Event 102 (the 6 impl-done + 044 NOT yet reflected as ✅/🚧 — sync at their close).
+- **User directive (2×): maximize parallelism** — raised the Event-48 ≤4 bounded-parallel cap; Batch 11 ran 7-wide. Keep filling the safe-disjoint runnable set, not one task at a time.
+- Open follow-ups: **FU-4** `hooks/**` not in tsconfig/biome `include` (CI doesn't gate hook layer; agents verified via scoped configs; needs config fix + `shared/composition` resolvable from hooks). **FU-5** TASK-039 `parse-tool-input.ts` MCP schemas (`{permalink,content}`) diverge from real MCP shapes (handlers used local schemas; reconcile). REQ-004 AC-9 prefix-collision test before REQ-004 ACCEPTED. FU-1 (`validates:` key in QA-032/033/034). FU-3 (session Obs/Relations placement → session-end). DESIGN-002 mutation-script line-count soft-ceiling (adjudicate at DESIGN-002 acceptance).
+- 0 active code blockers; 0 open user decisions (both TASK-027 + TASK-044 spec conflicts adjudicated Option A + applied).
+- **Next-ready (wide parallel wave)**: (1) QA the 6 impl-done (014/023/041/042/043/045) — batch into ~2 QA agents → close each (DoD flip + SPEC-root + Wave-graph). (2) Re-dispatch TASK-044 on amended spec (bun-ts-engineer). (3) Brain-note tasks 031/035/036 (orchestrator-direct, sequential — Brain DB write-serialization). (4) THEN 024 (after 023 closed), 028 (solo, cross-cutting). (5) FU-4 config fix. (6) THEN 046 (terminal smoke). (7) REQ DRAFT→ACCEPTED flips as each REQ's tasks close. (8) Final: spec-level QA sweep + 4 exit gates + SPEC-008 DONE + protocol-hardening part DONE + PLAN-001 DONE.
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
 User invoked `/plan PLAN-001-skills-ecosystem`. Orchestrator surfaced PLAN-001 functionally complete (21/22 parts DONE; protocol-hardening stale IN_PROGRESS). User selected option (b) "Reopen protocol-hardening for fresh work" then directed "everything that needs to be done for it — figure out what that is, ultrathink".
