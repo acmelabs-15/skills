@@ -2379,3 +2379,20 @@ Disjointness verified via Files Affected:
 - PLAN impl-TASK-022/032/038-SPEC-008: IN_PROGRESS → DONE
 - PLAN impl-TASK-027-SPEC-008: IN_PROGRESS → BLOCKED (spec gap; blocker recorded)
 - PLAN Wave Graph: 022/032/038 → ⚡; 027 → 🚧 BLOCKED
+
+
+## Event 99 — TASK-027 spec amended (user-approved Option A); 027 re-pickup + QA START for 022/032/038
+
+User adjudicated the TASK-027 spec-vs-code gap → **Option A: amend spec to match code** (verbatim: "Amend TASK-027 DoD#3/#4 + REQ-007 AC-5 to assert the actual continuity-rejection (`/expected n=\d+/` + the conflicting number) and to feed a pre-duplicated note (matching the auto-assign API). Keeps the drift-marker + regression-lock intent. Smallest blast radius … TASK-027 then completes immediately.").
+
+Applied (mid-implementation halt → amend → resume per the amended spec):
+- [[TASK-027-SPEC-008: Session Mutation Duplicate Event Number Test]] DoD#3 → feed a pre-duplicated note (API auto-assigns `n`); DoD#4 → assert `/expected n=\d+/` continuity message + conflicting number. Amendment banner added.
+- [[REQ-007-SPEC-008: Integration Tests and Mutation Tests and Drift Regression Markers]] AC-5 → clarified rejection is a continuity-violation (`Event n=N at index I: expected n=M`), not a literal "duplicate" string.
+
+Then (max-parallelism): re-pickup 027 + start QA for the 3 impl-DONE tasks, dispatched in parallel (disjoint: 027 impl writes `mutation-invariants.test.ts`; QA reads 032/022/038 code + writes QA notes).
+
+### State Changes
+
+- TASK-027-SPEC-008 (note): DoD#3/#4 amended; REQ-007 AC-5 amended (user-approved)
+- PLAN impl-TASK-027-SPEC-008: BLOCKED → IN_PROGRESS (blocker cleared)
+- PLAN qa-TASK-032/022/038-SPEC-008: PENDING → IN_PROGRESS

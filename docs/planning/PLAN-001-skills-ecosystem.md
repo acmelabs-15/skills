@@ -3147,9 +3147,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-022-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 99
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -3202,10 +3202,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-027-SPEC-008
-- **Status**: BLOCKED
+- **Status**: IN_PROGRESS
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 98
-- **Blocker**: spec-vs-code gap — TASK-027 DoD#4 + REQ-007 AC-5 mandate asserting the duplicate-event rejection message contains "duplicate"/"already exists", but the implemented rejection is a continuity check (`Event n=5 at index 5: expected n=6`). Awaiting user adjudication (amend assertion wording vs add duplicate-guard to source).
+- **Transitioned At Event**: 99
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -3302,9 +3301,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-032-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 99
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -3368,9 +3367,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-038-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 99
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
