@@ -43,7 +43,7 @@ import { isAbsolute, relative, resolve } from "node:path";
 
 import { dispatchValidator } from "../lib/dispatch-validator.ts";
 import { type StopBlock, emitResponse } from "../lib/format-hook-response.ts";
-import { readHookInput } from "../lib/parse-tool-input.ts";
+import { readStopHookInput } from "../lib/parse-tool-input.ts";
 
 /** Reason emitted when git enumeration or validator dispatch throws (fail CLOSED). */
 const INFRA_ERROR_REASON =
@@ -263,7 +263,10 @@ async function main(): Promise<void> {
   // process exits 0, allowing completion.
   let response: StopBlock | null;
   try {
-    const input = await readHookInput();
+    // Parse the real `Stop`-event shape (cwd-only; no tool_name / tool_input).
+    // A normal turn-end event validates cleanly here; only a genuinely
+    // malformed payload throws and is converted to a fail-CLOSED block below.
+    const input = await readStopHookInput();
     response = await buildResponse(input.cwd);
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err);

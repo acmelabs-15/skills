@@ -2676,3 +2676,18 @@ Confirms the enforcement's value: it caught [task]-category drift (P2), Descript
 - 37 TASK notes: `## Description` → `## Objective` (P3 RESOLVED)
 - TASK-002/005/039/040: DoD + ADR-Compliance checkboxes → [x] (P4 RESOLVED; verified done)
 - All 47 SPEC-008 TASK notes now pass TaskNoteSchema validation
+
+
+## Event 112 — FU-6 FIXED (Stop hook per-event input shape)
+
+`bun-ts-engineer` fixed the Layer-6 Stop-backstop input-shape bug. Root cause: shared `hooks/lib/parse-tool-input.ts` `readHookInput()` validated against `HookInputSchema` requiring `tool_name`+`tool_input` (PreToolUse shape); a `Stop` event has neither → threw → fail-CLOSED → blocked every turn end. Fix (additive, per-event-type): added `StopHookInputSchema` + `readStopHookInput` (requires only `cwd` + `hook_event_name:"Stop"`); `stop-backstop.ts` now uses it. PreToolUse handlers untouched. 32 tests pass (27 + 5 new Stop-shape regression). Scoped tsc + biome clean. Real Stop event (cwd-only, no tool_name/tool_input) now accepted; fail-CLOSED preserved for genuinely malformed input.
+
+- **FU-6b logged**: `git-state-observer.ts` (Layer 7 FileChanged) has the SAME PreToolUse-shape mismatch but fails OPEN, so it silently swallowed the symptom — it would never actually validate. Fix (FileChanged-event input schema) before Layer-7 go-live.
+
+Files (kept under `hooks/scripts.disabled/` + `hooks/lib/` — hooks stay disabled): `parse-tool-input.ts` (+StopHookInputSchema/readStopHookInput), `stop-backstop.ts`, `stop-backstop.test.ts`. This completes TASK-044's correctness; TASK-044 still needs QA + close.
+
+### State Changes
+
+- hooks/lib/parse-tool-input.ts: +StopHookInputSchema +readStopHookInput (per-event-type; additive)
+- hooks/scripts.disabled/stop-backstop.ts: uses readStopHookInput; +5 regression tests (FU-6 FIXED)
+- FU-6b logged (Layer-7 git-state-observer same mismatch, fails-open)

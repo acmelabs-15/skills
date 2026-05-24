@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
+import { HookInputError, parseStopHookInput } from "../../lib/parse-tool-input.ts";
 import {
   type ModifiedNote,
   PathContainmentError,
@@ -61,6 +62,57 @@ async function taskSample(): Promise<string> {
 function asDenying(content: string): string {
   return content.replace(/^status:.*$/m, "status: DONE");
 }
+
+// REGRESSION (FU-6): the Layer-6 Stop backstop previously validated its hook
+// input against the PreToolUse schema (requiring `tool_name` + `tool_input`).
+// A real `Stop` event carries NEITHER — only session metadata + `cwd`. That
+// made `readHookInput()` throw, which the handler converted into a fail-CLOSED
+// block on EVERY turn end. The fix routes the handler through the per-event
+// `parseStopHookInput`, which validates the actual Stop-event shape. These
+// fixtures use the REAL Stop-event shape (no tool_name/tool_input).
+describe("parseStopHookInput — real Stop-event input shape (FU-6 regression)", () => {
+  test("accepts a real Stop event (cwd + hook_event_name, no tool_name/tool_input)", () => {
+    const raw = JSON.stringify({
+      session_id: "sess-123",
+      transcript_path: "/tmp/transcript.jsonl",
+      cwd: "/repo/root",
+      hook_event_name: "Stop",
+      stop_hook_active: false,
+    });
+    const input = parseStopHookInput(raw);
+    expect(input.cwd).toBe("/repo/root");
+    expect(input.hook_event_name).toBe("Stop");
+    expect(input.session_id).toBe("sess-123");
+    expect(input.stop_hook_active).toBe(false);
+  });
+
+  test("accepts a minimal Stop event (cwd + hook_event_name only)", () => {
+    const input = parseStopHookInput(JSON.stringify({ cwd: "/repo", hook_event_name: "Stop" }));
+    expect(input.cwd).toBe("/repo");
+    expect(input.session_id).toBeUndefined();
+    expect(input.transcript_path).toBeUndefined();
+    expect(input.stop_hook_active).toBeUndefined();
+  });
+
+  test("does NOT require tool_name/tool_input (the old PreToolUse-shape bug)", () => {
+    // A Stop event with no tool fields must NOT be rejected as a shape error.
+    expect(() =>
+      parseStopHookInput(JSON.stringify({ cwd: "/repo", hook_event_name: "Stop" })),
+    ).not.toThrow();
+  });
+
+  test("throws HookInputError on a genuinely malformed payload (missing cwd)", () => {
+    // Preserve fail-CLOSED behaviour: a payload missing the repo-root seed is a
+    // genuine infra error, not a normal Stop event.
+    expect(() => parseStopHookInput(JSON.stringify({ hook_event_name: "Stop" }))).toThrow(
+      HookInputError,
+    );
+  });
+
+  test("throws HookInputError on empty input", () => {
+    expect(() => parseStopHookInput("")).toThrow(HookInputError);
+  });
+});
 
 describe("parsePorcelainPath", () => {
   test("returns null for a blank line", () => {

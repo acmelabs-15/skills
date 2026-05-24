@@ -25,10 +25,15 @@ export interface HookInput {
 }
 
 /**
- * Strict-shape input schema. `tool_input` is an open record so per-tool
- * downstream handlers (apply-edit-operation, dispatch-validator) can parse
- * the specific shape they expect — see ToolInputSchemas below for the
+ * Strict-shape PreToolUse input schema. `tool_input` is an open record so
+ * per-tool downstream handlers (apply-edit-operation, dispatch-validator) can
+ * parse the specific shape they expect — see ToolInputSchemas below for the
  * known per-tool shapes the handlers will further validate.
+ *
+ * This schema is PreToolUse-specific: it REQUIRES `tool_name` and `tool_input`.
+ * The `Stop` and `FileChanged` events carry a different shape (no tool fields)
+ * and MUST be parsed via {@link parseStopHookInput} / {@link readStopHookInput}
+ * instead — see {@link StopHookInputSchema}.
  */
 const HookInputSchema = z
   .object({
@@ -36,6 +41,43 @@ const HookInputSchema = z
     tool_input: z.record(z.string(), z.unknown()),
     transcript_path: z.string().optional(),
     cwd: z.string().min(1),
+  })
+  .passthrough();
+
+/**
+ * Parsed shape of a Claude Code `Stop` (turn-end) hook event. A Stop event has
+ * NO `tool_name` / `tool_input` — it carries session metadata plus the working
+ * directory. The Stop backstop (Layer 6) only needs `cwd` (the repo-root seed
+ * for its `git status --porcelain` enumeration); the remaining fields are
+ * surfaced for completeness and future observability.
+ */
+export interface StopHookInput {
+  /** Working directory of the session — the repo-root seed. */
+  cwd: string;
+  /** Always `"Stop"` for a turn-end event. */
+  hook_event_name: "Stop";
+  /** Session identifier, when the runtime supplies one. */
+  session_id?: string;
+  /** Path to the session transcript, when the runtime supplies one. */
+  transcript_path?: string;
+  /** True when a prior Stop hook is already active (re-entrancy guard). */
+  stop_hook_active?: boolean;
+}
+
+/**
+ * Strict-shape `Stop` event schema. Unlike {@link HookInputSchema}, it requires
+ * NO tool fields — a normal Stop event provides only session metadata and
+ * `cwd`. `cwd` is the sole REQUIRED field (the repo-root seed); the rest are
+ * optional because the runtime does not guarantee every field on every event.
+ * `passthrough()` tolerates additional runtime-supplied keys without failing.
+ */
+const StopHookInputSchema = z
+  .object({
+    cwd: z.string().min(1),
+    hook_event_name: z.literal("Stop"),
+    session_id: z.string().optional(),
+    transcript_path: z.string().optional(),
+    stop_hook_active: z.boolean().optional(),
   })
   .passthrough();
 
@@ -154,5 +196,48 @@ export function parseHookInput(raw: string): HookInput {
   if (transcript_path !== undefined) {
     out.transcript_path = transcript_path;
   }
+  return out;
+}
+
+/**
+ * Read stdin to EOF, parse JSON, validate against {@link StopHookInputSchema},
+ * return the typed StopHookInput. Throws HookInputError on malformed JSON or
+ * shape violation. The Stop backstop translates a genuine error (malformed
+ * payload) into a fail-CLOSED block — but a NORMAL Stop event (cwd-only, no
+ * tool fields) validates cleanly and is NOT treated as an infrastructure error.
+ */
+export async function readStopHookInput(): Promise<StopHookInput> {
+  const raw = await readStdinToEnd();
+  return parseStopHookInput(raw);
+}
+
+/**
+ * Pure `Stop`-event parser exposed for unit testing — avoids the stdin
+ * coupling so tests can drive a string directly. Validates the real Stop-event
+ * shape (`cwd` + `hook_event_name: "Stop"`, optional session metadata), NOT the
+ * PreToolUse shape, so a Stop event with no `tool_name` / `tool_input` parses
+ * successfully instead of failing shape validation.
+ */
+export function parseStopHookInput(raw: string): StopHookInput {
+  if (raw.trim() === "") {
+    throw new HookInputError("Hook input is empty");
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (cause) {
+    throw new HookInputError(
+      `Hook input is not valid JSON: ${cause instanceof Error ? cause.message : String(cause)}`,
+    );
+  }
+  const result = StopHookInputSchema.safeParse(parsed);
+  if (!result.success) {
+    throw new HookInputError(`Stop hook input failed shape validation: ${result.error.message}`);
+  }
+  const { cwd, hook_event_name, session_id, transcript_path, stop_hook_active } = result.data;
+  const out: StopHookInput = { cwd, hook_event_name };
+  if (session_id !== undefined) out.session_id = session_id;
+  if (transcript_path !== undefined) out.transcript_path = transcript_path;
+  if (stop_hook_active !== undefined) out.stop_hook_active = stop_hook_active;
   return out;
 }
