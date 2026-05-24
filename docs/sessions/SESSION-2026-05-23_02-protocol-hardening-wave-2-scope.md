@@ -30,18 +30,18 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 - Starting commit: `eb0eb28` (end of PLAN-001 workflow close)
 - PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (umbrella; flips DONE when build.SPEC-008 DONE)
 - ADR-005 ACCEPTED (8 D-Ns; decisions.4 DONE)
-- spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 47 TASK — grew 46→47 via TASK-047 follow-up)
+- spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 47 TASK)
 - build.SPEC-008 IN_PROGRESS (owning_session SESSION-2026-05-23_02; this session)
-- **RESUMED Event 84 at commit `bfeb589`** (Event-83 PAUSE point) — Track-1 trilogy milestone
-- **21/47 TASKs fully CLOSED** (impl + QA both DONE): TASK-001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040, 047
-- **26/47 TASKs PENDING**: 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041, 042, 043, 044, 045, 046
-- REQs ACCEPTED: REQ-001 (schemas) + REQ-002 (parsers) + REQ-003 (validators) — full Track-1 coverage trilogy. DESIGN-001 (Coverage Module Layout) ACCEPTED.
-- Still DRAFT (totality-gated): REQ-004..012; DESIGN-002/003/004; SPEC-008 root Success/Acceptance Criteria (flip at full Wave close)
-- QA contract notes: QA-044..064 (bi-dir `relates_to` to their TASKs)
-- Suite baseline: **817 pass / 2 fail / 819 total** (2 fails = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1 LOCKED; NEW failures elsewhere = regression)
-- Next-ready: **Wave 1b** — per-skill scripts TASK-011..020 (Track 2; wires composition lib into /ingest /decompose /recompose /defrag). Then Wave 1c (cleanup), Wave 4 (hooks), Wave 5 (smoke).
-- Open follow-ups (deferred, non-gating): FU-1 (`validates:` frontmatter key in QA-032/033/034), FU-2 (`hooks/**` tsconfig+biome scope gap), FU-3 (this session Obs/Relations placement drift → fix at session-end), D-3 (DESIGN-004 DiffNote.sha → revisit at TASK-043)
-- 0 active blockers; 0 open findings
+- **24/47 TASKs fully CLOSED** (impl + QA both DONE): 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, **011, 015, 016**, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040, 047
+- **23/47 TASKs PENDING**: 012, 013, 014, 017, 018, 019, 020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041, 042, 043, 044, 045, 046
+- REQs ACCEPTED: REQ-001/002/003; DESIGN-001. Still DRAFT (totality-gated): REQ-004..012 (REQ-004 needs 012/013/014/017 + 011/015/016 done = 4 left; REQ-005 needs 018/019/020); DESIGN-002/003/004; SPEC-008 root Success/Acceptance Criteria.
+- QA contract notes: QA-044..067 (added QA-065/066/067 this context)
+- Suite baseline: **845 pass / 2 fail / 847 total** (2 fails = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1; NEW failures elsewhere = regression)
+- Config corrected this context: `.gitignore` `build/`→`/build/` (skills/build/ now tracked); tsconfig + biome `include` → `skills/**` (FU-2 gap closed)
+- Next-ready: **Wave 1b Batch B** — TASK-012 (transition-impl-item) + 013 (transition-qa-item) + 017 (render-plan-note + set-part-done). Then Batch C (018/019/020 — 018 needs `validRelationTypes` symbol-name adjudication). TASK-014 needs TASK-032 (Wave 1c) first.
+- **Deferred derived-view sync** (do at Wave 1b close): SPEC-008 root `## Task` rollup checkboxes + PLAN "SPEC-008 Build Marathon" task-level Mermaid graph (flip 011/015/016 → ✅). Canonical state (TASK status + PLAN items + QA notes) IS current; these are derived views.
+- Open follow-ups (deferred, non-gating): FU-1 (`validates:` frontmatter key in QA-032/033/034); FU-3 (this session Obs/Relations placement → fix at session-end); `lock-decision-mutation.ts` 171-line DESIGN-002 soft-ceiling overage (adjudicate at DESIGN-002 acceptance); `validate-task-schema.ts` 81 lines (1 over, cosmetic); D-3 (DESIGN-004 DiffNote.sha → TASK-043). FU-2 now RESOLVED (config fixed).
+- 0 active blockers; 1 open decision (validRelationTypes naming — Batch C)
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
@@ -2091,3 +2091,19 @@ New code: `skills/build/scripts/validate-task-done.{ts,test.ts}` (61/131), `skil
 - TASK-011/015/016-SPEC-008: DoD + ADR-Compliance checkboxes → [x]
 - PLAN impl-TASK-011/015/016-SPEC-008: IN_PROGRESS → DONE
 - PLAN qa-TASK-011/015/016-SPEC-008: PENDING → IN_PROGRESS
+
+
+## Event 87 — Batch 7 CLOSED (Wave 1b-A): TASK-011 + 015 + 016 DONE; 24/47
+
+Independent QA (`brain:🧠-qa`, single batch agent) returned **3× PASS** — 28/28 colocated tests, tsc + biome clean, import boundaries clean, path-containment prefix-collision case (c) correctly rejected in all scripts (`+ sep` suffix load-bearing).
+
+QA contract notes authored (Pattern 2 three-phase): [[QA-065-SPEC-008: Validation Report for TASK-011 Validate Task Done Script]], [[QA-066-SPEC-008: Validation Report for TASK-015 Spec Schema Validator Scripts]], [[QA-067-SPEC-008: Validation Report for TASK-016 Lock Decision Mutation Script]]. Bi-directional `relates_to` set on each TASK-to-QA pair.
+
+Recovery note: parallel `move_note` (Pattern 2 Phase 3) raced — QA-065 moved, 066/067 failed leaving a stray kebab dup for 066. Removed stray + re-ran moves SEQUENTIALLY. [reflect-capture] `move_note` is NOT safe to parallelize (filesystem rename + DB index race); serialize all move_note calls.
+
+### State Changes
+
+- QA-065/066/067-SPEC-008: created (status DONE) + bi-dir relates_to to their TASKs
+- TASK-011/015/016-SPEC-008: status TODO then DONE; reciprocal QA relation added
+- PLAN qa-TASK-011/015/016-SPEC-008: IN_PROGRESS then DONE (Test Report Ref = QA-065/066/067)
+- Marathon: 21/47 then **24/47** CLOSED

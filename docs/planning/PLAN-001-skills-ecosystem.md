@@ -2915,11 +2915,11 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-011-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 86
+- **Transitioned At Event**: Event 87
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **Test Report Ref**: QA-065-SPEC-008
 - **Fix Brief For Event**: —
 
 
@@ -3005,11 +3005,11 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-015-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 86
+- **Transitioned At Event**: Event 87
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **Test Report Ref**: QA-066-SPEC-008
 - **Fix Brief For Event**: —
 
 
@@ -3029,11 +3029,11 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-016-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 86
+- **Transitioned At Event**: Event 87
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **Test Report Ref**: QA-067-SPEC-008
 - **Fix Brief For Event**: —
 
 

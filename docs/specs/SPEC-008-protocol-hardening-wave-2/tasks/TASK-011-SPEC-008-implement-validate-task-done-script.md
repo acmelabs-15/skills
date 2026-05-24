@@ -2,7 +2,7 @@
 title: 'TASK-011-SPEC-008: Implement validate-task-done Script'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-011-spec-008-implement-validate-task-done-script-1
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -77,3 +77,4 @@ Out of Scope:
 - implements [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-065-SPEC-008: Validation Report for TASK-011 Validate Task Done Script]]

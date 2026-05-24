@@ -2,7 +2,7 @@
 title: 'TASK-015-SPEC-008: Implement spec-Skill Schema Validator Scripts'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-015-spec-008-implement-spec-skill-schema-validator-scripts-1
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 tags:
@@ -80,3 +80,4 @@ Out of Scope:
 - implements [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-066-SPEC-008: Validation Report for TASK-015 Spec Schema Validator Scripts]]
