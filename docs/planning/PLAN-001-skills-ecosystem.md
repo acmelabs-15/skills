@@ -49,10 +49,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec | 0 | 0 | 0 | 7 | 7 |
-| build | 2 | 0 | 0 | 5 | 7 |
+| build | 1 | 1 | 0 | 5 | 7 |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total** | **4** | **0** | **0** | **17** | **21** |
+| **Total** | **3** | **1** | **0** | **17** | **21** |
 
 ## Cross-Part Dependency Graph
 
@@ -603,11 +603,13 @@ graph TD
 
 - **Phase**: build
 - **Title**: Simple Adapters Build (partial; 6 TODO TASKs remaining)
-- **Substatus**: READY
+- **Substatus**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_01
 - **Source Artifacts**: [[SPEC-002: Simple Adapters]]
 - **Depends On**: spec.SPEC-002, build.SPEC-001
 - **Partial State**: 3/10 TASKs DONE per task frontmatter; 6 TODO (TASK-001..006 — analysis adapter, session adapter, cross-source handler, dispatcher registration, 2 round-trip property tests)
 - **Reconciled**: 2026-05-23
+- **Build dispatched**: 2026-05-23 (this session) on branch `feat/plan-001-build-spec-002-simple-adapters`
 
 **DoD**:
 
