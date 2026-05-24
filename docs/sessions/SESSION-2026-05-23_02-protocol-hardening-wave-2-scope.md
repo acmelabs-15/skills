@@ -2284,3 +2284,12 @@ TASK-018's `## Scope` "Out of Scope" line says adding the `validRelationTypes` e
 - PLAN impl-TASK-018/019/020-SPEC-008: IN_PROGRESS → DONE
 - common.ts: validRelationTypes export added
 - PLAN task-level Wave Graph: 018/019/020 → ⚡ (inprogress)
+
+
+## Event 95 — Batch 9 QA START: qa-018/019/020 → IN_PROGRESS; dispatching scoped QA
+
+Per rigid cycle step (j-l): PLAN qa-TASK-018/019/020 PENDING → IN_PROGRESS (owning SESSION-2026-05-23_02, Event 95). Dispatching `brain:🧠-qa` (single batch agent, per Batch A/B pattern) for scoped validation of all 3 TASKs against TASK DoD + REQ-005 AC + DESIGN-002 compliance, with per-checkbox evidence to QA-071/072/073 (Pattern 2 three-phase; move_note SERIALIZED).
+
+### State Changes
+
+- PLAN qa-TASK-018/019/020-SPEC-008: PENDING → IN_PROGRESS
