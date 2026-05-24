@@ -2329,9 +2329,9 @@ Build-phase pre-mortem (SESSION-2026-05-23_02 Event 35; brain:🧠-analyst prosp
 
 - **Type**: qa
 - **Task Ref**: TASK-029-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 38
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —

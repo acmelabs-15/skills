@@ -867,3 +867,8 @@ DoD: items 1-2, 4-9 satisfied `[x]`. **Item 3 DEFERRED** per user decision (AskU
 Pre-existing latent (NOT a rename regression): skill scripts (`ingest`/`parse`/`audit`) + `migrate-plan-001…ts` show `Cannot find name 'Bun'` / `import.meta.dir` LSP errors — outside the root tsconfig `include`, so `tsc --noEmit` passes while the LSP flags them. Flagged for a config-coherence follow-up (relevant to Tracks 1/2/5 which add many new scripts).
 
 PLAN `impl-TASK-029-SPEC-008`: IN_PROGRESS → DONE (at Event 37). Next: commit (code rename + state), then qa-TASK-029 cycle.
+
+
+## Event 38 — qa-TASK-029 PENDING → IN_PROGRESS; dispatching QA
+
+PLAN `qa-TASK-029-SPEC-008`: PENDING → IN_PROGRESS (owning_session SESSION-2026-05-23_02; at Event 38). Next: dispatch brain:🧠-qa to independently validate TASK-029 DoD (items 1-2,4-9; item 3 deferred) + REQ-009 acceptance criteria with evidence; QA returns per-checkbox findings + verdict; orchestrator authors the QA note (binary rule — QA agent does not write docs/**).
