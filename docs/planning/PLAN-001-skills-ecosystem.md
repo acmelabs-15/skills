@@ -2487,6 +2487,96 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Test Report Ref**: QA-050-SPEC-008
 - **Fix Brief For Event**: —
 
+<!-- Wave 0 finish + Wave 1a start (seeded Event 61) -->
+
+#### impl-TASK-002-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-002-SPEC-008
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 61
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-002-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-002-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-005-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-005-SPEC-008
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 61
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-005-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-005-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-039-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-039-SPEC-008
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 61
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-039-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-039-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-040-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-040-SPEC-008
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 61
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-040-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-040-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
 #### impl-TASK-026-SPEC-008
 
 - **Type**: impl

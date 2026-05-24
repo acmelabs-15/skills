@@ -1264,3 +1264,19 @@ Orchestrator full-propagation pass:
 State after this turn: **8 TASKs fully CLOSED** (001, 021, 025, 026, 029, 033, 034, 037). 38 TASKs PENDING (002-020, 022-024, 027, 028, 030-032, 035-036, 038-046).
 
 Next: marathon continues. Practical context-budget consideration — the propagation per closure has been heavy (5-8 PLAN/SPEC/REQ/session edits + 2-3 commits per TASK) and 38 TASKs remain. Surfacing a pace decision next.
+
+
+## Event 61 — Batch 4 START: TASK-002 + TASK-005 + TASK-039 + TASK-040 (Wave 0 finish + Wave 1a entry)
+
+User: "keep going — next batch now." 4 file-disjoint impls dispatched concurrently. Wave 0 remainder + first 2 Wave 1a items (no barrel contention this batch):
+
+- impl-TASK-002 (Wave 1a) — `AnalysisNoteSchema` at `shared/composition/src/schemas/analysis-note.ts` + barrel + 6+ tests; ACCEPTED+Open-Questions rejection rule (closes Brain v2 Wave 7 exploit).
+- impl-TASK-005 (Wave 1a) — `parseAdrNote` at `shared/composition/src/parsers/adr-note.ts` + barrel + 6+ tests; depends on TASK-001 (DONE).
+- impl-TASK-039 (Wave 0 finish) — 3 hook lib utilities `apply-edit-operation.ts` / `parse-tool-input.ts` / `format-hook-response.ts` under `hooks/lib/` + tests under `hooks/lib/__tests__/`.
+- impl-TASK-040 (Wave 0 finish) — 2 git helpers `git-staged-files.ts` / `git-diff-commits.ts` under `hooks/lib/` + tests under `hooks/lib/__tests__/`.
+
+File-disjointness confirmed: TASK-002 touches `schemas/index.ts` (different barrel from TASK-005's `parsers/index.ts`); TASK-039/040 both write to `hooks/lib/` directory but to disjoint files within; no shared source/test files; deps satisfied (TASK-001 + TASK-029 both DONE).
+
+Agent routing: all 4 → bun-ts-engineer (foreground). Each brief carries: scope discipline (touch only the in-scope files), real-API discovery (no inventing missing symbols), scoped biome invocation (never `--fix` across non-in-scope paths — TASK-021 batch lesson), per-DoD evidence return format.
+
+8 PLAN workflow items seeded this Event (4 impl IN_PROGRESS + 4 qa PENDING).
