@@ -567,3 +567,29 @@ Skill(skill="skills:spec",
 ```
 
 (Wikilinks in args avoided per Brain MCP bullet-parser strictness; spec skill will resolve titles via Brain MCP read.)
+
+
+## Event 25 — Session PAUSED for fresh-session resume of SPEC-008 authoring
+
+User selected pause-and-resume-fresh over inline / agent-dispatch / skeleton paths. Rationale: ~30-35 note authoring + 2 review gates carries real stall + truncation risk inline; conversation context is heavy after the audit + decisions cycle; fresh session starts with clean cache + full token budget.
+
+Session status flipped `IN_PROGRESS → PAUSED`. PLAN-001 state preserved: decisions.4 DONE; spec.SPEC-008 IN_PROGRESS (will resume mid-authoring via /spec G2 skip-done-work). All commits durable on branch `feat/plan-001-protocol-hardening-wave-2-scope` (10 commits this session: scope lock → ANALYSIS-004 → D-1..D-7 locks → ADR-005 author → adr-review round 1 → Phase 3 resolutions → ACCEPTED → spec.SPEC-008 IN_PROGRESS).
+
+## Resume protocol (next session)
+
+1. `/skills:plan PLAN-001-skills-ecosystem` — continue mode
+2. Plan continue identifies spec.SPEC-008 is IN_PROGRESS (not READY) — auto-resumes via Stage 2 G2 skip-done-work
+3. Stage 2 Step 1: SPEC-008 folder created if not present → docs/specs/SPEC-008-protocol-hardening-wave-2/
+4. Stage 2 Step 2-5: author REQ/DESIGN/TASK/SPEC-root in order per ADR-005 structure (5 REQ clusters)
+5. Phase 3 validation + ADR coverage gate (check ADR-001/002/003/005 each have `implemented_by [[SPEC-008]]`)
+6. Gate A (analyst semantic gap) + Gate B (critic 4 binary drift checks)
+7. Flip SPEC-008 DRAFT → ACCEPTED; set-part-done
+
+## Session 23 deliverables (this session)
+
+- 5 parallel audits (A composition coverage, B skill protocol-embedding, C Brain notes coherence, D code-vs-spec, E test coverage)
+- ANALYSIS-004 omnibus authored (Brain note synthesizing audit findings)
+- ADR-005 ACCEPTED with 8 architectural decisions for Wave 2 (D-1..D-8 incl. NEW D-8 automated enforcement gates via plugin hooks)
+- adr-review round 1 (6 parallel reviewers) + Phase 3 resolutions + pragmatic flip
+- PLAN-001 advances: decisions.4 DONE; spec.SPEC-008 IN_PROGRESS (ready for resume)
+- 10 atomic git commits on `feat/plan-001-protocol-hardening-wave-2-scope`
