@@ -22,19 +22,21 @@ Author `${CLAUDE_PLUGIN_ROOT}/hooks/hooks.json` declaring all seven hook layers 
 
 ## Definition of Done
 
-- [ ] `hooks/hooks.json` exists at `${CLAUDE_PLUGIN_ROOT}/hooks/hooks.json`
-- [ ] Manifest declares `PreToolUse`, `Stop`, and `FileChanged` event blocks
-- [ ] Layer 1 PreToolUse declared with matcher `Edit|Write|MultiEdit` and `if: "Edit(docs/**/*.md)|Write(docs/**/*.md)|MultiEdit(docs/**/*.md)"`
-- [ ] Layer 2 PreToolUse declared with matcher `mcp__plugin_brain_brain__edit_note|mcp__plugin_brain_brain__write_note`
-- [ ] Layer 3 PreToolUse declared with matcher `Bash` and `if: "Bash(git commit *)"`
-- [ ] Layer 4 PreToolUse declared with matcher `Bash` and `if: "Bash(git push *)"`
-- [ ] Layer 5 PreToolUse declared with matcher `Bash` and `if: "Bash(gh pr create *)"`
-- [ ] Stop layer declared with no matcher (fires on every turn end)
-- [ ] FileChanged layer declared with matcher `.git/HEAD|.git/index|.git/logs/HEAD`
-- [ ] All `command` entries reference `bun ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/<handler>.ts` for the corresponding layer
-- [ ] JSON is valid (parses without error)
-- [ ] biome lint passes if linted as JSON
-- [ ] Manifest file is committed under the plugin root, not under `.claude/settings.json`
+
+- [x] `hooks/hooks.json` exists at `${CLAUDE_PLUGIN_ROOT}/hooks/hooks.json`
+- [x] Manifest declares `PreToolUse`, `Stop`, and `FileChanged` event blocks
+- [x] Layer 1 PreToolUse declared with matcher `Edit|Write|MultiEdit` and `if: "Edit(docs/**/*.md)|Write(docs/**/*.md)|MultiEdit(docs/**/*.md)"`
+- [x] Layer 2 PreToolUse declared with matcher `mcp__plugin_brain_brain__edit_note|mcp__plugin_brain_brain__write_note`
+- [x] Layer 3 PreToolUse declared with matcher `Bash` and `if: "Bash(git commit *)"`
+- [x] Layer 4 PreToolUse declared with matcher `Bash` and `if: "Bash(git push *)"`
+- [x] Layer 5 PreToolUse declared with matcher `Bash` and `if: "Bash(gh pr create *)"`
+- [x] Stop layer declared with no matcher (fires on every turn end)
+- [x] FileChanged layer declared with matcher `.git/HEAD|.git/index|.git/logs/HEAD`
+- [x] All `command` entries reference `bun ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/<handler>.ts` for the corresponding layer
+- [x] JSON is valid (parses without error)
+- [~] biome lint passes if linted as JSON (N/A — biome.json files.include scopes to `defrag/**`, `ingest/**`, `shared/detect-context.ts`; `hooks/hooks.json` not included → no lint to gate)
+- [x] Manifest file is committed under the plugin root, not under `.claude/settings.json`
+
 
 ## ADR Compliance
 

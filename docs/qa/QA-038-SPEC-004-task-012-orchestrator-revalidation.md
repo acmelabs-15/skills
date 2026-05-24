@@ -1,6 +1,6 @@
 ---
 title: 'QA-038-SPEC-004: TASK-012 Orchestrator Revalidation'
-type: test-report
+type: qa
 permalink: qa/qa-038-spec-004-task-012-orchestrator-revalidation-1
 status: DONE
 verdict: PASS
@@ -38,7 +38,7 @@ In-scope artifacts:
 
 ## Test Execution
 
-Working dir `/Users/peter.kloss/Dev/ACMElabs/skills/_shared/composition`
+Working dir `_shared/composition`
 
 | Command | Result |
 |---|---|

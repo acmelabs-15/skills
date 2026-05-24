@@ -128,7 +128,7 @@ Retro-validation pattern (matching QA-033-SPEC-007 + QA-039-SPEC-005 + QA-040-SP
 
 ## Relations
 
-- validates [[SPEC-002: Simple Adapters]]
+- depends_on [[SPEC-002: Simple Adapters]]
 - relates_to [[QA-033-SPEC-007: Spec Aggregate Retro-Validation]]
 - pairs_with [[SESSION-2026-05-23_01: PLAN-001 Reconcile and Build SPEC-002]]
 - part_of [[PLAN-001: Skills Ecosystem]]

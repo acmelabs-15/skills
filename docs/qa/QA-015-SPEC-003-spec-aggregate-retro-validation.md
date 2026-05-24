@@ -110,7 +110,7 @@ THE PROOF (the core REQ-005 deliverable) passes: SHA-256(original stripped) === 
 
 ## Relations
 
-- validates [[SPEC-003: PLAN Adapter]]
+- depends_on [[SPEC-003: PLAN Adapter]]
 - caused_by [[QA-010-SPEC-003: PLAN Adapter Base]]
 - caused_by [[QA-011-SPEC-003: Regen Sections and Integrity Floor]]
 - caused_by [[QA-012-SPEC-003: PLAN Frontmatter Mutations]]

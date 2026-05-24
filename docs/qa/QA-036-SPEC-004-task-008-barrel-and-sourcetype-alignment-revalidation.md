@@ -25,7 +25,7 @@ Revalidation of [[TASK-008-SPEC-004: Add Adapters Barrel and Align sourceType to
 
 ## Test Execution
 
-Working dir: `/Users/peter.kloss/Dev/ACMElabs/skills/_shared/composition`
+Working dir: `_shared/composition`
 
 Commands run:
 

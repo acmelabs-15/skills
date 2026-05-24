@@ -279,17 +279,17 @@ TASK-009 + TASK-010 SPEC-004 already DONE (commit 41f941d); QA dispatched in thi
 
 In-flight (5 + 3 QA + 1 impl-012 = 9): SPEC-007 state propagation, impl-TASK-011, impl-TASK-012, QA-008, QA-009, QA-010. (Note: QA-009 + QA-010 dispatched in prior batch.)
 
-## Event 36
+## Event 36b
 
-[2026-05-21] SPEC-007 processor returned. Aggregate **FAIL** (12/13 PASS; TASK-013 dogfood-migrate FAIL; TASK-014 gap ready). QA-033 aggregate authored. Per-TASK State Changes: 12 TASKs → DONE; 11 REQs → ACCEPTED; 4 DESIGNs → ACCEPTED; TASK-013 → BLOCKED; TASK-014 DRAFT → TODO; SPEC-007 root stays ACCEPTED.
+[2026-05-21] (Killed-agent re-entry duplicate of Event 36) SPEC-007 processor returned. Aggregate **FAIL** (12/13 PASS; TASK-013 dogfood-migrate FAIL; TASK-014 gap ready). QA-033 aggregate authored. Per-TASK State Changes: 12 TASKs → DONE; 11 REQs → ACCEPTED; 4 DESIGNs → ACCEPTED; TASK-013 → BLOCKED; TASK-014 DRAFT → TODO; SPEC-007 root stays ACCEPTED.
 
-## Event 37
+## Event 37b
 
-[2026-05-21] TASK-008/011/012 SPEC-004 dispatched. TASK-012 user-adjudicated: **Implement-as-spec** (adapter owns processSubtree + SubtreeOrchestrator + ClusterRollback per DESIGN-001/003 verbatim).
+[2026-05-21] (Killed-agent re-entry duplicate of Event 37) TASK-008/011/012 SPEC-004 dispatched. TASK-012 user-adjudicated: **Implement-as-spec** (adapter owns processSubtree + SubtreeOrchestrator + ClusterRollback per DESIGN-001/003 verbatim).
 
-## Event 38
+## Event 38b
 
-[2026-05-21] TASK-014 SPEC-007 user-adjudicated: **Dispatch-now with mitigation** (wait for in-flight). Queued. TASK-008/009/010 returned DONE; 3 QA agents dispatched. In-flight: 6 agents (SPEC-007 state propagation + impl TASK-011/012 + QA-008/009/010).
+[2026-05-21] (Killed-agent re-entry duplicate of Event 38) TASK-014 SPEC-007 user-adjudicated: **Dispatch-now with mitigation** (wait for in-flight). Queued. TASK-008/009/010 returned DONE; 3 QA agents dispatched. In-flight: 6 agents (SPEC-007 state propagation + impl TASK-011/012 + QA-008/009/010).
 
 ## Event 39
 

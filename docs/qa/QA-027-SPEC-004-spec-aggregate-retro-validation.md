@@ -1,19 +1,13 @@
 ---
-permalink: qa/qa-027-spec-004-spec-aggregate-retro-validation
----
-
----
-title: QA-027-SPEC-004: Spec-Aggregate Retro-Validation
+title: 'QA-027-SPEC-004: Spec-Aggregate Retro-Validation'
 type: qa
 permalink: qa/qa-027-spec-004-spec-aggregate-retro-validation
 status: DONE
 tags:
-
 - qa
 - spec-004
 - aggregate
 - retro-validation
-
 ---
 
 # QA-027-SPEC-004: Spec-Aggregate Retro-Validation
@@ -150,7 +144,7 @@ SPEC-004 root: stays ACCEPTED (current frontmatter) — NOT promoted to DONE
 
 ## Relations
 
-- validates [[SPEC-004: SPEC Subtree Adapter]]
+- depends_on [[SPEC-004: SPEC Subtree Adapter]]
 - depends_on [[QA-020-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
 - depends_on [[QA-021-SPEC-004: Implement Frontmatter Map Handler]]
 - depends_on [[QA-022-SPEC-004: Implement Filename Rewrite Handler]]

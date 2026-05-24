@@ -1177,3 +1177,33 @@ File-disjointness confirmed:
 - impl-037 writes `hooks/hooks.json` only.
 
 No file overlap; no shared barrels (this batch touches no schemas/parsers/validators/index.ts). On return (serialized): full propagation per the Event 55 locked protocol.
+
+
+## Event 57 — Batch 3 returns: 3 clean closures + 1 halt; TASK-034 surfaces DoD-vs-reality contradiction
+
+All 4 agents returned (zero return-channel errors this batch — vs 33% in batch 1; suggests bounded-parallel @ 4 + smaller per-agent task scope is more reliable).
+
+**qa-TASK-025** (`ace36d4179c3784c3`): PASS. 11 DoD + REQ-007 AC-1/2/3 + DESIGN-003 Track-3 compliance + 3 API-gap adaptations all verified principled (each missing API verified absent via `grep` on `src/`). QA-048-SPEC-008 contract note authored. TASK-025 status TODO → DONE; bi-dir `relates_to QA-048`.
+
+**impl-TASK-033** (`ada0e64c468bca9c0`): PASS. 6 DoD items SATISFIED. `~/KNOWLEDGE-GRAPH-STRUCTURES.md` Section 4.6 (PLAN: clarifies `[~]` is SPEC-scoped only) + Section 4.7 (SPEC: documents `[~]` canonical for `## Artifact Status` rows) edited; `~/KNOWLEDGE-GRAPH-CONVENTIONS.md` pointer block updated. Edit tool used correctly on user-home files (NOT Brain MCP per binary rule).
+
+**impl-TASK-037** (`a8b63ce216514bfe3`): PASS. 12 DoD items SATISFIED + 1 `[~]` (biome lint N/A — biome.json files.include excludes `hooks/`). `hooks/hooks.json` authored with 7 hook layers verbatim per ADR-005 D-8. **Important agent catch**: dispatch brief had outdated handler script names (`pre-commit.ts`, `pre-push.ts`, `pre-pr-create.ts`) but ADR-005 D-8 Implementation Notes specifies `-validate` suffixed versions (`pre-commit-validate.ts`, `pre-push-validate.ts`, `pre-pr-create-validate.ts`); agent followed the ADR per spec-is-authority and surfaced the divergence in its return. TASK-041..045 (handler script authoring) must use the ADR filenames — tracked.
+
+**impl-TASK-034** (`a6a739eb92d9316d7`): PARTIAL — agent did its scoped work correctly across 12 notes (6 violation categories from Audit C's named inventory: 4 QA notes' `validates` relations replaced with `depends_on`; 2 duplicate frontmatter blocks merged; 3 title-without-colon fixed; 2 stale `type:` flipped to `qa`; 3 PII paths redacted; 1 duplicate Event-number block renumbered to `36b/37b/38b`). All Brain MCP only. Schema re-parse confirms each repaired note still parses cleanly.
+
+**DoD-vs-reality contradiction surfaced (DoD bug, not impl bug)**: TASK-034 DoD item 2 verification command is `grep -rn "^- validates \[\[" docs/qa/` should return zero. Running this against the broader docs/qa/ tree reveals 15+ OTHER `validates` relations in QA notes that Audit C did NOT catch (QA-002/003/021/022/025 and more). The agent's scoped work satisfied the 4 named notes per Audit C; the broader grep finding is NEW drift outside the original Audit C inventory.
+
+This is a documented "spec is authority" / "mid-implementation halt on spec problem" scenario. PLAN `impl-TASK-034`: IN_PROGRESS → BLOCKED with Fix Brief pointer to this Event. Surfacing a user decision next.
+
+Orchestrator actions this turn:
+
+- QA-048-SPEC-008 authored (Pattern 2; `relates_to` only — no forbidden `validates`).
+- TASK-025: status DONE; `relates_to QA-048` added.
+- TASK-033: 6 DoD `[x]` (impl-only-closure; QA still pending).
+- TASK-037: 12 DoD `[x]` + 1 `[~]` deferred-N/A (biome scope) — applies the canonical `[~]` notation just documented by TASK-033 (eat-own-dogfood).
+- TASK-034: NO DoD flips this turn (DoD-vs-reality conflict; user adjudication required first).
+- PLAN: qa-TASK-025 DONE (Test Report Ref QA-048); impl-TASK-033 DONE; impl-TASK-037 DONE; impl-TASK-034 IN_PROGRESS → BLOCKED.
+- SPEC-008 root rollup: `[x]` flipped for TASK-025 (full closure). TASK-033/037 stay `[ ]` (impl-only-done; need QA). TASK-034 stays `[ ]` (BLOCKED).
+- REQ-007 ACs 1, 2, 3 flipped `[x]` (TASK-025 satisfies; previously AC-4 flipped at TASK-026 closure).
+
+State after this turn: 5 TASKs fully CLOSED (001, 021, 025, 026, 029). 2 impl-only-done (033, 037; qa pending). 1 BLOCKED (034). 38 remaining of 46.

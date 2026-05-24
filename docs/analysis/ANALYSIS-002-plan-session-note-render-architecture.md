@@ -1,5 +1,5 @@
 ---
-title: ANALYSIS-002-plan-session-note-render-architecture
+title: 'ANALYSIS-002: Plan/Session Note Render Architecture'
 type: analysis
 permalink: analysis/analysis-002-plan-session-note-render-architecture
 status: ACCEPTED

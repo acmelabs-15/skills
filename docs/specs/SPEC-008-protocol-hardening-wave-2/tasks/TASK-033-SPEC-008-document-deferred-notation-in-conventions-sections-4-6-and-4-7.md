@@ -31,12 +31,14 @@ Steps:
 
 ## Definition of Done
 
-- [ ] `~/KNOWLEDGE-GRAPH-STRUCTURES.md` Section 4.7 (SPEC structure) documents `[~]` as canonical deferred-notation marker for SPEC root `## Artifact Status` rows
-- [ ] `~/KNOWLEDGE-GRAPH-STRUCTURES.md` Section 4.6 (PLAN structure) either documents PLAN parity support for `[~]` OR explicitly clarifies `[~]` is SPEC-root-scoped only and PLAN parts use distinct build-workflow statuses
-- [ ] Both Section 4.6 and Section 4.7 reference REQ-008-SPEC-008 and ADR-005 D-6 as source decisions
-- [ ] `~/KNOWLEDGE-GRAPH-CONVENTIONS.md` Section 4.5-4.12 pointer block (if not already present) directs readers to STRUCTURES for `[~]` semantics
-- [ ] `grep -n "\\[~\\]" ~/KNOWLEDGE-GRAPH-STRUCTURES.md` returns the new content lines
-- [ ] No raw `Edit` / `Write` was used on `docs/**` (correctly used Edit/Write on user-home `~/KNOWLEDGE-GRAPH-*.md` per Section 1.7.1)
+
+- [x] `~/KNOWLEDGE-GRAPH-STRUCTURES.md` Section 4.7 (SPEC structure) documents `[~]` as canonical deferred-notation marker for SPEC root `## Artifact Status` rows
+- [x] `~/KNOWLEDGE-GRAPH-STRUCTURES.md` Section 4.6 (PLAN structure) either documents PLAN parity support for `[~]` OR explicitly clarifies `[~]` is SPEC-root-scoped only and PLAN parts use distinct build-workflow statuses
+- [x] Both Section 4.6 and Section 4.7 reference REQ-008-SPEC-008 and ADR-005 D-6 as source decisions
+- [x] `~/KNOWLEDGE-GRAPH-CONVENTIONS.md` Section 4.5-4.12 pointer block (if not already present) directs readers to STRUCTURES for `[~]` semantics
+- [x] `grep -n "\\[~\\]" ~/KNOWLEDGE-GRAPH-STRUCTURES.md` returns the new content lines
+- [x] No raw `Edit` / `Write` was used on `docs/**` (correctly used Edit/Write on user-home `~/KNOWLEDGE-GRAPH-*.md` per Section 1.7.1)
+
 
 ## ADR Compliance
 

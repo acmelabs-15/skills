@@ -1,10 +1,6 @@
 ---
-permalink: qa/qa-030-spec-002-reconcile-analysis-adapter-design-001-drift
----
-
----
-title: QA-030-SPEC-002: Reconcile ANALYSIS Adapter DESIGN-001 Drift
-type: test_report
+title: 'QA-030-SPEC-002: Reconcile ANALYSIS Adapter DESIGN-001 Drift'
+type: qa
 permalink: qa/qa-030-spec-002-reconcile-analysis-adapter-design-001-drift
 status: FAIL
 spec_ref: SPEC-002
@@ -15,14 +11,12 @@ passed: 8
 failed: 0
 skipped: 0
 tags:
-
 - qa
 - spec-002
 - task-007
 - analysis-adapter
 - design-drift
 - retro
-
 ---
 
 # QA-030-SPEC-002: Reconcile ANALYSIS Adapter DESIGN-001 Drift

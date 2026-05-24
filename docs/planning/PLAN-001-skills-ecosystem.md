@@ -2412,11 +2412,11 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-025-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 56
+- **Transitioned At Event**: Event 57
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **Test Report Ref**: QA-048-SPEC-008
 - **Fix Brief For Event**: —
 
 <!-- Wave 0 batch 3 (seeded Event 56) -->
@@ -2425,9 +2425,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-033-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 56
+- **Transitioned At Event**: Event 57
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -2447,12 +2447,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-034-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: BLOCKED
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 56
+- **Transitioned At Event**: Event 57
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Fix Brief For Event**: Event 57 — DoD-vs-reality contradiction surfaced; user decision pending on scope expansion vs DoD amendment vs new TASK
 
 #### qa-TASK-034-SPEC-008
 
@@ -2469,9 +2469,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-037-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 56
+- **Transitioned At Event**: Event 57
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
