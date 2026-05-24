@@ -2,7 +2,7 @@
 title: 'TASK-034-SPEC-008: Repair Brain Note Hygiene Violations from Audit C'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-034-spec-008-repair-brain-note-hygiene-violations-from-audit-c-1
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -84,3 +84,4 @@ The six violation categories (10 notes):
 - implements [[REQ-010-SPEC-008: Brain Note Hygiene and Code-vs-Spec Drift Cleanup]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - relates_to [[ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis]]
+- relates_to [[QA-051-SPEC-008: Repair Brain Note Hygiene Violations]]

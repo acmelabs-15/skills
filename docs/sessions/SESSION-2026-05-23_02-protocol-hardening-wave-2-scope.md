@@ -1246,3 +1246,21 @@ Orchestrator full-propagation pass per Event 55 protocol:
 Cross-Part Dependency Graph node statuses unchanged (TASKs are part-internal; graph tracks part-level not task-level).
 
 State after this turn: 7 TASKs fully CLOSED (001, 021, 025, 026, 029, 033, 037). 1 mid-cycle (034: impl done, qa-034 IN_PROGRESS). 38 PENDING. Next: dispatch qa-034 alone (no other batch starting yet — keeping the QA gate front-and-center after the prior partial-return + scope-expansion churn).
+
+
+## Event 60 — TASK-034 CLOSED (both phases); qa-034 PASS; new drift finding tracked
+
+brain:🧠-qa (`a954a7a35ebd61c5c`) independently re-validated TASK-034 across both phases. Verdict **PASS**. 8 DoD items + REQ-010 ACs 1-6 fully satisfied with file-level evidence. Both grep gates (`validates` + PII paths) return zero. 6 notes spot-checked via Brain MCP read_note — no structural damage; all parse cleanly. 42 unique notes repaired total (12 Phase 1 + 30 Phase 2). QA-051-SPEC-008 contract note authored (Pattern 2; uses `relates_to`).
+
+Orchestrator full-propagation pass:
+
+- TASK-034 status TODO → DONE; `relates_to QA-051` added.
+- PLAN `qa-TASK-034-SPEC-008`: IN_PROGRESS → DONE (Test Report Ref QA-051).
+- SPEC-008 root rollup: TASK-034 `[x]` flipped.
+- REQ-010 ACs 1-6 flipped `[x]` (TASK-034 fully covers; AC scope expansion annotation added to AC-2 documenting the broader sweep). AC-7/8/9 remain `[ ]` (TASK-035/036 scope). AC-10 partial — needs TASK-035/036 closures.
+
+**New drift finding tracked (NOT a TASK-034 failure)**: QA-032-SPEC-003 + QA-033 + QA-034 carry a `validates:` key in YAML frontmatter (not a Relations bullet). Outside TASK-034 DoD grep pattern (`^- validates \[\[`) and outside Audit C original inventory. Semantically distinct from Relations-section verb cleanup. Track as a Track-4-followup item for either a new TASK or a /defrag sweep.
+
+State after this turn: **8 TASKs fully CLOSED** (001, 021, 025, 026, 029, 033, 034, 037). 38 TASKs PENDING (002-020, 022-024, 027, 028, 030-032, 035-036, 038-046).
+
+Next: marathon continues. Practical context-budget consideration — the propagation per closure has been heavy (5-8 PLAN/SPEC/REQ/session edits + 2-3 commits per TASK) and 38 TASKs remain. Surfacing a pace decision next.

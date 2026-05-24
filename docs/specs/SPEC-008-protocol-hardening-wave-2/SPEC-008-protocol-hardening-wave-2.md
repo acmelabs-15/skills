@@ -109,7 +109,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [ ] [[TASK-031-SPEC-008: Amend SPEC-007 Root with Deferred Notation and Legend]]
 - [ ] [[TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation]]
 - [x] [[TASK-033-SPEC-008: Document Deferred Notation in CONVENTIONS Sections 4.6 and 4.7]]
-- [ ] [[TASK-034-SPEC-008: Repair Brain Note Hygiene Violations from Audit C]]
+- [x] [[TASK-034-SPEC-008: Repair Brain Note Hygiene Violations from Audit C]]
 - [ ] [[TASK-035-SPEC-008: Propagate SPEC-002 and SPEC-003 Checkbox Rollups and REQ Status Flips]]
 - [ ] [[TASK-036-SPEC-008: Amend REQ-009-SPEC-007 Mutation Count from 9 to 11]]
 - [x] [[TASK-037-SPEC-008: Author hooks.json Manifest]]
