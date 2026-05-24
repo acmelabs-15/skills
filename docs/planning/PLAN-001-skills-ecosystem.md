@@ -49,10 +49,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec | 0 | 0 | 0 | 7 | 7 |
-| build | 6 | 1 | 0 | 1 | 8 |
+| build | 2 | 0 | 0 | 5 | 7 |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total** | **8** | **1** | **0** | **13** | **22** |
+| **Total** | **4** | **0** | **0** | **17** | **21** |
 
 ## Cross-Part Dependency Graph
 
@@ -602,10 +602,12 @@ graph TD
 ### build.SPEC-002
 
 - **Phase**: build
-- **Title**: Simple Adapters Build (Wave 2 retro-validation pending)
-- **Substatus**: PENDING
+- **Title**: Simple Adapters Build (partial; 6 TODO TASKs remaining)
+- **Substatus**: READY
 - **Source Artifacts**: [[SPEC-002: Simple Adapters]]
 - **Depends On**: spec.SPEC-002, build.SPEC-001
+- **Partial State**: 3/10 TASKs DONE per task frontmatter; 6 TODO (TASK-001..006 — analysis adapter, session adapter, cross-source handler, dispatcher registration, 2 round-trip property tests)
+- **Reconciled**: 2026-05-23
 
 **DoD**:
 
@@ -618,10 +620,12 @@ graph TD
 ### build.SPEC-003
 
 - **Phase**: build
-- **Title**: PLAN Adapter Build (Wave 2 retro-validation pending)
-- **Substatus**: PENDING
+- **Title**: PLAN Adapter Build (partial; 5 TODO TASKs remaining)
+- **Substatus**: READY
 - **Source Artifacts**: [[SPEC-003: PLAN Adapter]]
 - **Depends On**: spec.SPEC-003, build.SPEC-001
+- **Partial State**: 5/10 TASKs DONE per task frontmatter; 5 TODO (TASK-001..005 — plan adapter base, regen sections, frontmatter mutations, fixtures, round-trip property test)
+- **Reconciled**: 2026-05-23
 
 **DoD**:
 
@@ -634,10 +638,12 @@ graph TD
 ### build.SPEC-004
 
 - **Phase**: build
-- **Title**: SPEC Subtree Adapter Build (Wave 2 retro-validation pending)
-- **Substatus**: PENDING
+- **Title**: SPEC Subtree Adapter Build
+- **Substatus**: DONE
 - **Source Artifacts**: [[SPEC-004: SPEC Subtree Adapter]]
 - **Depends On**: spec.SPEC-004, build.SPEC-001
+- **Outcome**: 12/12 TASKs DONE per task frontmatter (Wave 2 retro-validation + Phase X execution complete; PRs #6-#10)
+- **Reconciled**: 2026-05-23 — PLAN drift fix after PR #11 marketplace restructure merged
 
 **DoD**:
 
@@ -651,9 +657,11 @@ graph TD
 
 - **Phase**: build
 - **Title**: Decompose + Recompose Skills Build
-- **Substatus**: PENDING
+- **Substatus**: DONE
 - **Source Artifacts**: [[SPEC-005: Decompose and Recompose Skills]]
 - **Depends On**: spec.SPEC-005, build.SPEC-001
+- **Outcome**: 6/6 TASKs DONE per task frontmatter (Wave 4 batched dispatch; SESSION-2026-05-21_01 Event 46; 501/501 tests at completion)
+- **Reconciled**: 2026-05-23
 
 **DoD**:
 
@@ -667,9 +675,11 @@ graph TD
 
 - **Phase**: build
 - **Title**: Defrag + Ingest Skills Build
-- **Substatus**: PENDING
+- **Substatus**: DONE
 - **Source Artifacts**: [[SPEC-006: Defrag and Ingest Skills]]
 - **Depends On**: spec.SPEC-006, build.SPEC-005
+- **Outcome**: 7/7 TASKs DONE per task frontmatter (Wave 4 batched dispatch; QA-040 PARTIAL_FAIL fixed via fix-iter; later closed in PR #10)
+- **Reconciled**: 2026-05-23
 
 **DoD**:
 
@@ -683,10 +693,12 @@ graph TD
 ### build.SPEC-007
 
 - **Phase**: build
-- **Title**: Plan/Session Render Implementation Build (Wave 2 retro-validation pending)
-- **Substatus**: PENDING
+- **Title**: Plan/Session Render Implementation Build
+- **Substatus**: DONE
 - **Source Artifacts**: [[SPEC-007: Plan/Session Render Implementation]]
 - **Depends On**: spec.SPEC-007, build.SPEC-001
+- **Outcome**: 13/14 TASKs DONE per task frontmatter; TASK-013 (BLOCKED) superseded by gap-TASK-014 (DONE) per QA-022 + QA-033 aggregate; PLAN-001 successfully migrated to trimmed template form (visible in this file's current structure — no Workflow Plan / Decision Log / Progress Log per ADR-003 D-10/D-11)
+- **Reconciled**: 2026-05-23
 
 **DoD**:
 
