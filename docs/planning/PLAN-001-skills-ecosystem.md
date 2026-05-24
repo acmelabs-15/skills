@@ -132,6 +132,133 @@ graph TD
   class protocol_hardening,build_SPEC_008 inprogress
 ```
 
+## SPEC-008 Build Marathon — Task-Level Wave Graph
+
+Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part (the part-level graph above shows `build_SPEC_008` as the umbrella node; this graph expands it to show all 46 TASKs grouped by wave, with status from the PLAN workflow items below). Updated 2026-05-24 SESSION-2026-05-23_02 Event 67 (Batch 5a START).
+
+**Status legend**: ✅ DONE (impl + QA both PASS) · ⚡ IN_PROGRESS (impl or qa in flight) · ⏸ PENDING (workflow item seeded, awaiting batch).
+
+**Wave structure** (per Event 64 resume protocol):
+
+- **Wave 0**: Zero-dependency foundation (9 TASKs; all DONE)
+- **Wave 1a**: Schemas + parsers; barrel-coordinated on `schemas/index.ts` + `parsers/index.ts` (8 TASKs; 3 done, 3 IN_PROGRESS this Batch 5a, 2 pending Batch 5b)
+- **Wave 1b**: Per-skill scripts; Track 2 ingest/decompose/recompose/defrag (10 TASKs)
+- **Wave 1c**: Cleanup + harness extensions (8 TASKs)
+- **Wave 2/3**: Validators; barrel-serialized on `validators/index.ts` (3 TASKs)
+- **Wave 4**: Hook handlers + integration fixtures (7 TASKs)
+- **Wave 5**: Terminal smoke tests (1 TASK)
+
+```mermaid
+%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':10,'rankSpacing':45,'padding':10,'diagramPadding':14,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'11px','clusterBkg':'#f9fafb','clusterBorder':'#e5e7eb'}}}%%
+graph TD
+
+  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:10,ry:10
+  classDef inprogress fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12,rx:10,ry:10
+  classDef pending fill:#fafafa,stroke:#d1d5db,stroke-width:1px,color:#6b7280,stroke-dasharray:3 3,rx:10,ry:10
+
+  subgraph W0 ["Wave 0 — Zero-Dependency Foundation (9/9 DONE)"]
+    direction LR
+    T021["✅ TASK-021<br/><span style='font-size:9px'>Adversarial harness</span>"]
+    T025["✅ TASK-025<br/><span style='font-size:9px'>Integration tests</span>"]
+    T026["✅ TASK-026<br/><span style='font-size:9px'>Mutation invariants</span>"]
+    T029["✅ TASK-029<br/><span style='font-size:9px'>_shared→shared rename</span>"]
+    T033["✅ TASK-033<br/><span style='font-size:9px'>STRUCTURES [~] notation</span>"]
+    T034["✅ TASK-034<br/><span style='font-size:9px'>Brain note hygiene</span>"]
+    T037["✅ TASK-037<br/><span style='font-size:9px'>hooks.json manifest</span>"]
+    T039["✅ TASK-039<br/><span style='font-size:9px'>Hook lib utilities</span>"]
+    T040["✅ TASK-040<br/><span style='font-size:9px'>Git helpers</span>"]
+  end
+
+  subgraph W1a ["Wave 1a — Schemas + Parsers (3 DONE, 3 IN PROGRESS Batch 5a, 2 PENDING Batch 5b)"]
+    direction LR
+    T001["✅ TASK-001<br/><span style='font-size:9px'>ADR schema</span>"]
+    T002["✅ TASK-002<br/><span style='font-size:9px'>ANALYSIS schema</span>"]
+    T005["✅ TASK-005<br/><span style='font-size:9px'>ADR parser</span>"]
+    T003["⚡ TASK-003<br/><span style='font-size:9px'>EPIC schema</span>"]
+    T010["⚡ TASK-010<br/><span style='font-size:9px'>PLAN done-claim ext</span>"]
+    T030["⚡ TASK-030<br/><span style='font-size:9px'>Delete dispatcher.ts</span>"]
+    T004["⏸ TASK-004<br/><span style='font-size:9px'>CRIT schema (5b)</span>"]
+    T006["⏸ TASK-006<br/><span style='font-size:9px'>ANALYSIS parser</span>"]
+  end
+
+  subgraph W1b ["Wave 1b — Per-Skill Scripts (10 PENDING)"]
+    direction LR
+    T011["⏸ TASK-011"]
+    T012["⏸ TASK-012"]
+    T013["⏸ TASK-013"]
+    T014["⏸ TASK-014"]
+    T015["⏸ TASK-015"]
+    T016["⏸ TASK-016"]
+    T017["⏸ TASK-017"]
+    T018["⏸ TASK-018"]
+    T019["⏸ TASK-019"]
+    T020["⏸ TASK-020"]
+  end
+
+  subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (8 PENDING)"]
+    direction LR
+    T022["⏸ TASK-022"]
+    T023["⏸ TASK-023"]
+    T027["⏸ TASK-027"]
+    T028["⏸ TASK-028"]
+    T031["⏸ TASK-031"]
+    T032["⏸ TASK-032"]
+    T035["⏸ TASK-035"]
+    T036["⏸ TASK-036"]
+  end
+
+  subgraph W23 ["Wave 2/3 — Validators (3 PENDING; barrel-serialized)"]
+    direction LR
+    T007["⏸ TASK-007<br/><span style='font-size:9px'>validateAdrDoneClaim</span>"]
+    T008["⏸ TASK-008<br/><span style='font-size:9px'>validateAnalysisDoneClaim</span>"]
+    T009["⏸ TASK-009<br/><span style='font-size:9px'>validateEpicDoneClaim</span>"]
+  end
+
+  subgraph W4 ["Wave 4 — Hook Handlers + Final Fixtures (7 PENDING)"]
+    direction LR
+    T024["⏸ TASK-024<br/><span style='font-size:9px'>Final fixtures</span>"]
+    T038["⏸ TASK-038<br/><span style='font-size:9px'>HookInput types</span>"]
+    T041["⏸ TASK-041<br/><span style='font-size:9px'>L1 PreToolUse Edit</span>"]
+    T042["⏸ TASK-042<br/><span style='font-size:9px'>L2 PreToolUse MCP</span>"]
+    T043["⏸ TASK-043<br/><span style='font-size:9px'>L3 pre-push</span>"]
+    T044["⏸ TASK-044<br/><span style='font-size:9px'>L4 pre-commit</span>"]
+    T045["⏸ TASK-045<br/><span style='font-size:9px'>L5 pre-PR-create</span>"]
+  end
+
+  subgraph W5 ["Wave 5 — Terminal Smoke Tests (1 PENDING)"]
+    direction LR
+    T046["⏸ TASK-046<br/><span style='font-size:9px'>Per-layer integration smoke</span>"]
+  end
+
+  %% Cross-wave gating (critical-path edges only; intra-wave deps omitted for clarity)
+  T029 --> T001
+  T029 --> T030
+  T021 --> T022
+  T021 --> T023
+  T021 --> T024
+
+  T001 --> T007
+  T002 --> T008
+  T003 --> T009
+
+  T037 --> T038
+  T037 --> T041
+  T037 --> T042
+  T037 --> T043
+  T037 --> T044
+  T037 --> T045
+
+  T024 --> T046
+  T009 --> T046
+  T045 --> T046
+
+  class T001,T002,T005,T021,T025,T026,T029,T033,T034,T037,T039,T040 done
+  class T003,T010,T030 inprogress
+  class T004,T006,T007,T008,T009,T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
+```
+
+**Maintenance rule**: each TASK closure (impl + QA both PASS) flips its `class` declaration from `pending`/`inprogress` to `done`, alongside the SPEC-008 root rollup tick and full Event 55 propagation. Each Batch START flips IN_PROGRESS items from `pending` to `inprogress`. Keep this graph current per the same propagation cadence as the SPEC root rollup.
+
 ## Risks
 
 Build-phase pre-mortem (SESSION-2026-05-23_02 Event 35; brain:🧠-analyst prospective-hindsight against the SPEC-008 subtree). Top 3 critical build risks + mitigations baked into dispatch briefs / sequencing:
@@ -2613,6 +2740,756 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Transitioned At Event**: Event 53
 - **Failed Iterations**: 0
 - **Test Report Ref**: QA-047-SPEC-008
+- **Fix Brief For Event**: —
+
+<!-- BULK-SEED 2026-05-24 SESSION-2026-05-23_02 Event 67: 68 workflow items (impl+qa) for the 34 remaining SPEC-008 TASKs seeded as PENDING (except Batch 5a impl items 003/010/030 seeded as IN_PROGRESS at Event 67). Numerical task-ID order. -->
+
+#### impl-TASK-003-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-003-SPEC-008
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 67
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-003-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-003-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-004-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-004-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-004-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-004-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-006-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-006-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-006-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-006-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-007-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-007-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-007-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-007-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-008-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-008-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-008-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-008-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-009-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-009-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-009-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-009-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-010-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-010-SPEC-008
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 67
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-010-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-010-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-011-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-011-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-011-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-011-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-012-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-012-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-012-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-012-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-013-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-013-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-013-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-013-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-014-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-014-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-014-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-014-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-015-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-015-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-015-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-015-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-016-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-016-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-016-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-016-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-017-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-017-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-017-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-017-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-018-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-018-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-018-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-018-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-019-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-019-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-019-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-019-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-020-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-020-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-020-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-020-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-022-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-022-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-022-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-022-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-023-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-023-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-023-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-023-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-024-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-024-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-024-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-024-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-027-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-027-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-027-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-027-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-028-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-028-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-028-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-028-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-030-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-030-SPEC-008
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 67
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: orchestrator-inline (no agent dispatch per ADR-005 D-7 small-scope deletion)
+
+#### qa-TASK-030-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-030-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-031-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-031-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-031-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-031-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-032-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-032-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-032-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-032-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-035-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-035-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-035-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-035-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-036-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-036-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-036-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-036-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-038-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-038-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-038-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-038-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-041-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-041-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-041-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-041-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-042-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-042-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-042-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-042-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-043-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-043-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-043-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-043-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-044-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-044-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-044-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-044-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-045-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-045-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-045-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-045-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-046-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-046-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-046-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-046-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
 - **Fix Brief For Event**: —
 
 ## Tasks

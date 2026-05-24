@@ -1418,3 +1418,54 @@ D-3 needs no PLAN durable doc beyond this Event entry — it's a "do nothing now
 Marathon state unchanged. No commits this turn (will commit D-1/D-2/D-3 doc writes + session resume + Event 65/66 in a single atomic commit before Batch 5 dispatch).
 
 Next: commit the adjudication round, then dispatch Batch 5 (TASK-003 + 004 + 010 + 030).
+
+
+## Event 67 — Bulk PLAN seed (68 workflow items) + task-level wave graph added + Batch 5a START (impl-003/010/030)
+
+User flagged the de-facto seed-on-transition pattern as suboptimal: "why don't we seed the plan with all the remaining items/batches". Plus: "make sure to update the Cross-Part Dependency Graph as well". Two structural improvements to PLAN-001 executed in one Event.
+
+### Improvement 1 — Bulk seed of all remaining workflow items
+
+Seeded 68 workflow items (34 impl + 34 qa) for the 34 PENDING SPEC-008 TASKs in one large `find_replace` operation. Items inserted between the existing `qa-TASK-026-SPEC-008` block and the `## Tasks` section in numerical task-ID order: 003, 004, 006-010, 011-020, 022-024, 027-028, 030, 031-032, 035-036, 038, 041-046.
+
+For each TASK: 1 impl item + 1 qa item, both `Status: PENDING` with `Owning Session: —` + `Transitioned At Event: —`.
+
+**Exception**: Batch 5a impl items seeded directly as `IN_PROGRESS` with `Owning Session: SESSION-2026-05-23_02` + `Transitioned At Event: Event 67`:
+
+- `impl-TASK-003-SPEC-008` → IN_PROGRESS
+- `impl-TASK-010-SPEC-008` → IN_PROGRESS
+- `impl-TASK-030-SPEC-008` → IN_PROGRESS (Fix Brief: orchestrator-inline per ADR-005 D-7 small-scope deletion)
+
+Paired qa items (qa-003, qa-010, qa-030) seeded as PENDING; they advance to IN_PROGRESS only on impl-DONE per the rigid cycle gate.
+
+**Benefit**: full marathon scope (34 remaining TASKs × 2 phases = 68 items) now visible in PLAN-001 in one place. Each subsequent Batch start becomes a 3-4 line find_replace per TASK (PENDING → IN_PROGRESS) instead of seed + transition. Cross-batch dispatch planning easier. Aligns with canonical `feedback_per_task_build_qa_cycle` step (a): "PLAN transition impl-TASK-NNN PENDING → IN_PROGRESS (FIRST action)" — assumes PENDING item exists.
+
+### Improvement 2 — Task-level wave dependency graph for SPEC-008
+
+Added `## SPEC-008 Build Marathon — Task-Level Wave Graph` section after the existing `## Cross-Part Dependency Graph` (additive; existing part-level graph unchanged — it correctly shows `build_SPEC_008` as umbrella inprogress node).
+
+New Mermaid graph: 46 TASK nodes grouped into 7 wave subgraphs (Wave 0, 1a, 1b, 1c, 2/3, 4, 5) with status coloring (done / inprogress / pending) + cross-wave gating edges (critical-path only; intra-wave deps omitted for clarity). Maintenance rule documented in the section preamble: flip TASK node `class` on each TASK closure + each Batch START.
+
+Wave structure derived from Event 64 resume protocol:
+
+- Wave 0: 9 TASKs (021/025/026/029/033/034/037/039/040) — all ✅ DONE
+- Wave 1a: 8 TASKs (001/002/005 DONE; 003/010/030 IN_PROGRESS Batch 5a; 004/006 PENDING Batch 5b)
+- Wave 1b: 10 TASKs (011-020) — per-skill scripts
+- Wave 1c: 8 TASKs (022/023/027/028/031/032/035/036) — cleanup + harness
+- Wave 2/3: 3 TASKs (007/008/009) — validators barrel-serialized
+- Wave 4: 7 TASKs (024/038/041-045) — hook handlers + final fixtures
+- Wave 5: 1 TASK (046) — terminal smoke tests
+
+Cross-wave critical-path edges: T029→T001/T030; T021→T022/T023/T024; T001/T002/T003→T007/T008/T009; T037→T038/T041-045; T024+T009+T045→T046.
+
+### Batch 5a dispatch plan (this Event)
+
+Per rigid cycle step (a)-(c): PLAN transitions DONE this Event; session Event written; commit next.
+
+Next (step d): orchestrator-inline execution of TASK-030 (`git rm shared/composition/src/core/dispatcher.ts` + `shared/composition/tests/dispatcher.test.ts`; verify `bun test` baseline minus dispatcher case count; verify `core/adapter.ts` untouched; commit referencing ADR-005 D-7). Parallel dispatch of impl-003 + impl-010 to bun-ts-engineer (foreground).
+
+File-disjoint: impl-003 writes `shared/composition/src/schemas/epic-note.ts` + tests + barrel; impl-010 writes `shared/composition/src/schemas/plan-note.ts` (additive superRefine) + `validators/plan-claim-validator.ts` + tests + `validators/index.ts` barrel. TASK-003 touches `schemas/index.ts`; impl-010's modify to `plan-note.ts` is in-file (not barrel). TASK-030 touches only the deleted files + verification. No barrel collision between 003/010/030.
+
+PLAN state (post this Event): 14/46 impl-items in IN_PROGRESS+DONE (12 DONE + 003/010/030 IN_PROGRESS); 31 PENDING. Suite expected to drop 1-2 test cases when dispatcher.test.ts is removed (TASK-030 DoD allows the count drop).
+
+State: clean. No new commits this turn yet — PLAN edits (bulk seed + graph + Event 67) commit together.
