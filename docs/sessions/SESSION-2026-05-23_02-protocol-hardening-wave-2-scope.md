@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - protocol-hardening
@@ -15,6 +15,7 @@ status_history:
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 68; TASK-030 closed; before Batch 5a agent dispatch)
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 83; Track-1 trilogy milestone 21/47)
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 84; resume Wave 1b)
+- IN_PROGRESS → PAUSED 2026-05-24 (Event 91; Wave 1b Batches A+B closed, 27/47 — budget pause)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -2171,3 +2172,32 @@ QA contract notes authored (Pattern 2; move_note SERIALIZED per Batch-A lesson �
 - PLAN qa-TASK-012/013/017-SPEC-008: IN_PROGRESS → DONE (Test Report Ref QA-068/069/070)
 - SPEC-008 root Tasks: 012/013/017 → [x] (27/47 ticked); PLAN Wave Graph synced
 - Marathon: 24/47 → **27/47** CLOSED
+
+
+## Event 91 — Session PAUSED at 27/47 (budget); Wave 1b Batches A+B closed; derived views fully synced
+
+This context resumed at 21/47 (Event 84) and closed **6 TASKs** (Wave 1b Batches A+B: 011/012/013/015/016/017 — all REQ-004/005 gate-point + the build/spec/decisions/plan per-skill scripts) → **27/47 (57%)**. Pausing at a clean, fully-committed, fully-synced boundary (budget-exhaustion stop, sanctioned by the run-to-completion cadence).
+
+### This-context deliverables (Events 84-91)
+
+- Resumed SESSION-2026-05-23_02 from PAUSE (Event 83 → 84); rehydration complete.
+- 6 TASKs CLOSED via rigid per-TASK build+QA cycle in 2 bounded-parallel batches (Batch 7 = 011/015/016; Batch 8 = 012/013/017).
+- 6 QA contract notes authored: QA-065 through QA-070 (bi-dir relates_to).
+- Config drift fixed: `.gitignore` `build/`→`/build/` (skills/build/ source now tracked); tsconfig + biome `include` → `skills/**` (FU-2 RESOLVED). 12 commits.
+- **User directive captured + applied**: SPEC-008 root all-5-lists + PLAN task-level Wave Graph synced at every batch close (no deferral). Auto-memory `feedback_spec_root_and_plan_graph_sync` created.
+- Suite 845/2/847 → **891 pass / 2 fail / 893** (2 = SPEC-007 deferred baseline; zero new regressions).
+
+### Resume protocol (next context)
+
+1. `/skills:plan PLAN-001-skills-ecosystem` continue mode → RESUME this session (PAUSED → IN_PROGRESS; continue Event numbering from 92; no new note).
+2. Rehydrate (TIER-1): set active project + bootstrap_context; read PLAN-001 + this session Events 84-91; verify git on `feat/plan-001-protocol-hardening-wave-2-scope` at the Event-91 commit; recap.
+3. **27/47 CLOSED.** Next-ready: **Wave 1b Batch C** — TASK-018 (build dispatch-implementer + dispatch-qa) + 019 (decisions dispatch-architect + critic) + 020 (research dispatch-analyst + review dispatch-reviewer) = REQ-005 brief generators. TASK-018 implementer ALSO adds `export const validRelationTypes = RelationVerbEnum.options` to `shared/composition/src/schemas/common.ts` (per SPEC-008 Files Affected — Track 1 closed without it).
+4. THEN: TASK-032 (extend validateSpecDoneClaim for `[~]`) → unblocks TASK-014; add a prefix-collision path-containment TEST to one gate-point script before flipping REQ-004 → ACCEPTED (REQ-004 AC-9). THEN Wave 1c (022/023/027/028/031/035/036), Wave 4 hooks (024/038/041-045), Wave 5 smoke (046).
+5. **MANDATORY per batch close**: derived-view sync — SPEC-008 root all-5-lists + PLAN Wave Graph (per `feedback_spec_root_and_plan_graph_sync`).
+6. `move_note` (Pattern 2 Phase 3) MUST be serialized — never parallel (filesystem+DB race).
+7. Suite baseline: **891 pass / 2 fail / 893**.
+
+### Cumulative marathon state
+
+- build.SPEC-008: 27/47 (57%). ACCEPTED: REQ-001/002/003, DESIGN-001. SPEC-008 root Tasks rollup: 27 `[x]`.
+- 0 active blockers; 0 open user decisions.
