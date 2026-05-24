@@ -2,7 +2,7 @@
 title: 'TASK-009-SPEC-008: Implement validateEpicDoneClaim'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-009-spec-008-implement-validate-epic-done-claim
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -74,3 +74,4 @@ This TASK depends on TASK-003 (EPIC schema), TASK-006 (EPIC parser), and Track 4
 - depends_on [[TASK-003-SPEC-008: Implement EPIC Schema]]
 - depends_on [[TASK-006-SPEC-008: Implement ANALYSIS, EPIC, and CRIT Parsers]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-064-SPEC-008: Validation Report for TASK-009 Epic Done Claim Validator]]

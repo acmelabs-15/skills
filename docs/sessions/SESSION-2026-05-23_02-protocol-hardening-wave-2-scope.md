@@ -1947,3 +1947,43 @@ PLAN transitions (6):
 Wave graph T007/008/009 stay `inprogress` (impl-done; flip to done only on QA PASS per maintenance rule).
 
 Next: commit code + barrel + PLAN + Event 81 atomically, then dispatch 3 QAs in parallel.
+
+
+## Event 82 — Batch 6 fully CLOSED: qa-007/008/009 PASS; 21/47 TASKs DONE; REQ-003 + DESIGN-001 ACCEPTED
+
+3 brain:🧠-qa agents returned PASS independently (parallel; QA-062/063/064 authored Pattern 2):
+
+- **qa-007** (agent ab78e56d361d30228): PASS. 11 DoD + 3 ADR + REQ-003 ADR-validator ACs. 8/0/8. Clean pure-function; dotted-bracket paths verified.
+- **qa-008** (agent a984a9af14749d3b4): PASS. 10 DoD + 3 ADR. 6/0/6. **Input-contract judgment confirmed**: accepting `ParsedAnalysisNote` (not bare AnalysisNote) is correct — hasOpenQuestions is a parser-derived prop absent from the `.strict()` schema; DoD item 3 mandates reading it.
+- **qa-009** (agent a6b707c2ea3787f5d): PASS. 12 DoD + 3 ADR. 10/0/10. **Both no-silent-pass throw paths verified** (ADR-005 D-5 Phase 3 critic P1.1): missing resolver throws naming deps.resolveSpec; resolver-returns-undefined throws naming the SPEC ref.
+
+### Full Event 55 propagation (with 2 closures)
+
+- TASK-007/008/009 notes: status TODO → DONE; `relates_to` QA-062/063/064 added.
+- **REQ-003 ACs 1,2,3,4,7,8 flipped `[x]`** (AC-5/6 done Event 70 via TASK-010). All 8 REQ-003 ACs now satisfied.
+- **REQ-003 status DRAFT → ACCEPTED** (3rd REQ to close; all child TASKs 007/008/009/010 DONE).
+- **DESIGN-001 compliance: all 8 items `[x]`** (Coverage Module Layout — TASK-001..010 set complete: 5 schemas + 4 parsers + 4 validators; CRIT correctly no-validator; common.ts imports; shared/ paths).
+- **DESIGN-001 status DRAFT → ACCEPTED** (1st DESIGN to close).
+- SPEC-008 root: TASK-007/008/009 rollup `[x]` (**21/47**); REQ-003 rollup `[x]`; DESIGN-001 rollup `[x]`.
+- PLAN-001 qa-007/008/009: IN_PROGRESS → DONE (QA-062/063/064).
+- PLAN-001 wave graph: T007/008/009 `⚡`→`✅`; Wave 2/3 subgraph header → "3/3 DONE ✅; REQ-003 + DESIGN-001 ACCEPTED".
+
+### Marathon state after Event 82
+
+- **21 TASKs CLOSED** (45% of 47): 001-010, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040, 047.
+- **0 IN_PROGRESS.**
+- **26 PENDING**: 011-020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041-046.
+- **3 REQs ACCEPTED** (REQ-001 + REQ-002 + REQ-003 — the entire Track-1 coverage trilogy: schemas + parsers + validators).
+- **1 DESIGN ACCEPTED** (DESIGN-001 Coverage Module Layout).
+- Canonical suite baseline: **817 pass / 2 fail / 819 total**. 0 open findings.
+
+**Track 1 (composition-library coverage extension) is functionally COMPLETE**: every one of the 5 note-types missing schema/parser/validator coverage (ADR/ANALYSIS/EPIC/CRIT + PLAN-ext) now has full Track-1 treatment, mechanically validated. This was the P0/P1 core of SPEC-008.
+
+### Remaining waves
+
+- **Wave 1b** (TASK-011-020): per-skill scripts (Track 2) — 10 TASKs.
+- **Wave 1c** (TASK-022/023/027/028/031/032/035/036): cleanup + harness extensions — 8 TASKs.
+- **Wave 4** (TASK-024/038/041-045): hook handlers + final fixtures (Track 5) — 7 TASKs.
+- **Wave 5** (TASK-046): terminal smoke tests — 1 TASK.
+
+Marathon math: 21/47 (45%). Remaining 26 TASKs ≈ 5-6 batches.

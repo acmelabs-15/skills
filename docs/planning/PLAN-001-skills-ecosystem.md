@@ -208,11 +208,11 @@ graph TD
     T036["⏸ TASK-036"]
   end
 
-  subgraph W23 ["Wave 2/3 — Validators (3 PENDING; barrel-serialized)"]
+  subgraph W23 ["Wave 2/3 — Validators (3/3 DONE ✅; REQ-003 + DESIGN-001 ACCEPTED)"]
     direction LR
-    T007["⚡ TASK-007<br/><span style='font-size:9px'>validateAdrAcceptedClaim</span>"]
-    T008["⚡ TASK-008<br/><span style='font-size:9px'>validateAnalysisAcceptedClaim</span>"]
-    T009["⚡ TASK-009<br/><span style='font-size:9px'>validateEpicDoneClaim (cross-note)</span>"]
+    T007["✅ TASK-007<br/><span style='font-size:9px'>validateAdrAcceptedClaim</span>"]
+    T008["✅ TASK-008<br/><span style='font-size:9px'>validateAnalysisAcceptedClaim</span>"]
+    T009["✅ TASK-009<br/><span style='font-size:9px'>validateEpicDoneClaim (cross-note)</span>"]
   end
 
   subgraph W4 ["Wave 4 — Hook Handlers + Final Fixtures (7 PENDING)"]
@@ -254,8 +254,7 @@ graph TD
   T045 --> T046
 
   class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
-  class T047 done
-  class T007,T008,T009 inprogress
+  class T007,T008,T009,T047 done
   class T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
 ```
 
@@ -2827,12 +2826,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-007-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 81
+- **Transitioned At Event**: Event 82
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Test Report Ref**: QA-062-SPEC-008
+- **Fix Brief For Event**: brain:🧠-qa agent ab78e56d361d30228; 11 DoD + 3 ADR + REQ-003 ADR-validator ACs verified; 8/0/8; PASS
 
 #### impl-TASK-008-SPEC-008
 
@@ -2849,12 +2848,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-008-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 81
+- **Transitioned At Event**: Event 82
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Test Report Ref**: QA-063-SPEC-008
+- **Fix Brief For Event**: brain:🧠-qa agent a984a9af14749d3b4; 10 DoD + 3 ADR verified; input-contract judgment ParsedAnalysisNote correct; 6/0/6; PASS
 
 #### impl-TASK-009-SPEC-008
 
@@ -2871,12 +2870,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-009-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 81
+- **Transitioned At Event**: Event 82
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Test Report Ref**: QA-064-SPEC-008
+- **Fix Brief For Event**: brain:🧠-qa agent a6b707c2ea3787f5d; 12 DoD + 3 ADR verified; both no-silent-pass throw paths confirmed (critic P1.1); 10/0/10; PASS
 
 #### impl-TASK-010-SPEC-008
 

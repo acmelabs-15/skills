@@ -2,7 +2,7 @@
 title: 'DESIGN-001-SPEC-008: Coverage Module Layout'
 type: design
 permalink: specs/spec-008-protocol-hardening-wave-2/design/design-001-spec-008-coverage-module-layout
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-008
@@ -153,15 +153,16 @@ No circular dependencies are possible because each layer depends only on lower l
 Names use ASCII letters and hyphens; no underscores in filenames, no abbreviations beyond the canonical entity prefixes (ADR, CRIT). This matches the Wave 1 convention.
 
 ## Compliance
+- [x] Every NEW file lives at the path documented in the Module Structure section (no deviations to wave-specific subdirectories)
+- [x] Every NEW schema constant is named `<Type>NoteSchema`; every type alias is `<Type>Note`
+- [x] Every NEW parser function is named `parse<Type>Note` and is exported from `parsers/index.ts`
+- [x] Every NEW claim validator function is named `validate<Type><TerminalStatus>Claim` and is exported from `validators/index.ts`
+- [x] `validateEpicDoneClaim` accepts a `resolveSpec: SpecResolver` parameter and throws if missing when the EPIC has contains relations
+- [x] CRIT has NO claim validator file in `validators/`
+- [x] Every NEW file imports cross-cutting constants from `schemas/common.ts`, never duplicates them
+- [x] All paths in NEW files and in TASK references use `shared/` (post-rename), never `_shared/`
 
-- [ ] Every NEW file lives at the path documented in the Module Structure section (no deviations to wave-specific subdirectories)
-- [ ] Every NEW schema constant is named `<Type>NoteSchema`; every type alias is `<Type>Note`
-- [ ] Every NEW parser function is named `parse<Type>Note` and is exported from `parsers/index.ts`
-- [ ] Every NEW claim validator function is named `validate<Type><TerminalStatus>Claim` and is exported from `validators/index.ts`
-- [ ] `validateEpicDoneClaim` accepts a `resolveSpec: SpecResolver` parameter and throws if missing when the EPIC has contains relations
-- [ ] CRIT has NO claim validator file in `validators/`
-- [ ] Every NEW file imports cross-cutting constants from `schemas/common.ts`, never duplicates them
-- [ ] All paths in NEW files and in TASK references use `shared/` (post-rename), never `_shared/`
+_DESIGN-001 compliance fully satisfied at TASK-001..010 set closure (Event 82, 2026-05-24): all 5 schemas + 4 parsers + 4 claim validators landed; CRIT correctly has no validator; common.ts imports verified across QA notes; all paths post-rename._
 
 ## Algorithms
 

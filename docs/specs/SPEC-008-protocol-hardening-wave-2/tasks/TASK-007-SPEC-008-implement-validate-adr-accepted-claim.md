@@ -2,7 +2,7 @@
 title: 'TASK-007-SPEC-008: Implement validateAdrAcceptedClaim'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-007-spec-008-implement-validate-adr-accepted-claim
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -72,3 +72,4 @@ This TASK depends on TASK-001 (ADR schema), TASK-005 (ADR parser), and Track 4 r
 - depends_on [[TASK-001-SPEC-008: Implement ADR Schema]]
 - depends_on [[TASK-005-SPEC-008: Implement ADR Parser]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-062-SPEC-008: Validation Report for TASK-007 ADR Accepted Claim Validator]]

@@ -2,7 +2,7 @@
 title: 'REQ-003-SPEC-008: New Claim Validator Suite'
 type: requirement
 permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-003-spec-008-new-claim-validator-suite
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-008
@@ -37,14 +37,14 @@ Functional plus Quality (enforcement of structural claims is both feature and re
 
 ## Acceptance Criteria
 
-- [ ] GIVEN an ADR note with status ACCEPTED and one Clarifications item with an unchecked `[ ]` checkbox WHEN `validateAdrAcceptedClaim(adrNote)` is called THEN it returns `{ ok: false, unsatisfied: [...] }` with at least one entry naming the unchecked clarification
-- [ ] GIVEN an ADR note with status ACCEPTED and a Considered Options section where one option lacks a rationale field WHEN `validateAdrAcceptedClaim(adrNote)` is called THEN it returns `{ ok: false }` naming the option without rationale
-- [ ] GIVEN an ANALYSIS note with status ACCEPTED and a `## Open Questions` section present WHEN `validateAnalysisAcceptedClaim(analysisNote)` is called THEN it returns `{ ok: false }` identifying the forbidden section
-- [ ] GIVEN an EPIC note with status DONE and a `contains` relation pointing to a SPEC whose status is not DONE WHEN `validateEpicDoneClaim(epicNote, { resolveSpec })` is called with a resolver that reads contained SPEC notes THEN it returns `{ ok: false }` naming the non-DONE child SPEC
+- [x] GIVEN an ADR note with status ACCEPTED and one Clarifications item with an unchecked `[ ]` checkbox WHEN `validateAdrAcceptedClaim(adrNote)` is called THEN it returns `{ ok: false, unsatisfied: [...] }` with at least one entry naming the unchecked clarification (closed by TASK-007-SPEC-008 2026-05-24 Event 82; QA-062 PASS)
+- [x] GIVEN an ADR note with status ACCEPTED and a Considered Options section where one option lacks a rationale field WHEN `validateAdrAcceptedClaim(adrNote)` is called THEN it returns `{ ok: false }` naming the option without rationale (closed by TASK-007-SPEC-008 2026-05-24 Event 82; QA-062 PASS)
+- [x] GIVEN an ANALYSIS note with status ACCEPTED and a `## Open Questions` section present WHEN `validateAnalysisAcceptedClaim(analysisNote)` is called THEN it returns `{ ok: false }` identifying the forbidden section (closed by TASK-008-SPEC-008 2026-05-24 Event 82; QA-063 PASS)
+- [x] GIVEN an EPIC note with status DONE and a `contains` relation pointing to a SPEC whose status is not DONE WHEN `validateEpicDoneClaim(epicNote, { resolveSpec })` is called with a resolver that reads contained SPEC notes THEN it returns `{ ok: false }` naming the non-DONE child SPEC (closed by TASK-009-SPEC-008 2026-05-24 Event 82; QA-064 PASS)
 - [x] GIVEN a PLAN note with status DONE and one part whose substatus is `IN_PROGRESS` WHEN `validatePlanDoneClaim(planNote)` is called THEN it returns `{ ok: false }` naming the non-terminal part (closed by TASK-010-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 70; QA-058 PASS)
 - [x] GIVEN a PLAN note with status DONE and every part in a terminal substatus (DONE, DEFERRED, or ABANDONED) WHEN `validatePlanDoneClaim(planNote)` is called THEN it returns `{ ok: true, unsatisfied: [] }` (closed by TASK-010-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 70; QA-058 PASS)
-- [ ] GIVEN any of the four validators WHEN it is called with a note whose status is NOT the targeted terminal status (e.g., calling `validateAdrAcceptedClaim` on an ADR with status PROPOSED) THEN it returns `{ ok: true }` (the validator only fires at terminal transitions)
-- [ ] GIVEN `validateEpicDoneClaim` WHEN no `resolveSpec` resolver is provided and the EPIC has at least one `contains` relation THEN the validator throws an explicit error naming the missing resolver dependency (no silent pass)
+- [x] GIVEN any of the four validators WHEN it is called with a note whose status is NOT the targeted terminal status (e.g., calling `validateAdrAcceptedClaim` on an ADR with status PROPOSED) THEN it returns `{ ok: true }` (the validator only fires at terminal transitions) (closed by TASK-007/008/009/010 closure 2026-05-24 Event 82; all 4 validators status-gate; QA-062/063/064 + QA-058 verified)
+- [x] GIVEN `validateEpicDoneClaim` WHEN no `resolveSpec` resolver is provided and the EPIC has at least one `contains` relation THEN the validator throws an explicit error naming the missing resolver dependency (no silent pass) (closed by TASK-009-SPEC-008 2026-05-24 Event 82; QA-064 verified both throw paths per ADR-005 D-5 Phase 3 critic P1.1)
 
 ## Implementation Notes
 

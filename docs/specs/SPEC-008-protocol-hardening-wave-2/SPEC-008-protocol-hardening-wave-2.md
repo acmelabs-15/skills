@@ -56,7 +56,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 
 - [x] [[REQ-001-SPEC-008: New Schema Suite]]
 - [x] [[REQ-002-SPEC-008: New Parser Suite]]
-- [ ] [[REQ-003-SPEC-008: New Claim Validator Suite]]
+- [x] [[REQ-003-SPEC-008: New Claim Validator Suite]]
 - [ ] [[REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts]]
 - [ ] [[REQ-005-SPEC-008: Per-Skill Dispatch-Brief Generator Scripts]]
 - [ ] [[REQ-006-SPEC-008: Adversarial-Claim Test Harness and Initial Fixture Set]]
@@ -69,7 +69,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 
 ### Designs (4)
 
-- [ ] [[DESIGN-001-SPEC-008: Coverage Module Layout]]
+- [x] [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - [ ] [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]
 - [ ] [[DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape]]
 - [ ] [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
@@ -82,9 +82,9 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [x] [[TASK-004-SPEC-008: Implement CRIT Schema]]
 - [x] [[TASK-005-SPEC-008: Implement ADR Parser]]
 - [x] [[TASK-006-SPEC-008: Implement ANALYSIS EPIC and CRIT Parsers]]
-- [ ] [[TASK-007-SPEC-008: Implement validateAdrAcceptedClaim]]
-- [ ] [[TASK-008-SPEC-008: Implement validateAnalysisAcceptedClaim]]
-- [ ] [[TASK-009-SPEC-008: Implement validateEpicDoneClaim]]
+- [x] [[TASK-007-SPEC-008: Implement validateAdrAcceptedClaim]]
+- [x] [[TASK-008-SPEC-008: Implement validateAnalysisAcceptedClaim]]
+- [x] [[TASK-009-SPEC-008: Implement validateEpicDoneClaim]]
 - [x] [[TASK-010-SPEC-008: Extend PLAN Schema and Implement validatePlanDoneClaim]]
 - [ ] [[TASK-011-SPEC-008: Implement validate-task-done Script]]
 - [ ] [[TASK-012-SPEC-008: Implement transition-impl-item Script]]
