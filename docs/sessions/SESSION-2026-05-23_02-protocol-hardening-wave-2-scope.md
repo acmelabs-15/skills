@@ -2518,3 +2518,19 @@ Newly unblocked by Batch 10 closes (032/022/038 DONE):
 - PLAN impl-TASK-014/023/041/042/043/045-SPEC-008: IN_PROGRESS → DONE
 - PLAN impl-TASK-044-SPEC-008: IN_PROGRESS → BLOCKED (spec conflict; blocker recorded)
 - Code committed: skills/end/scripts/ + shared/composition/tests/adversarial-claims.test.ts + hooks/scripts/ (5 handlers from 041/042/043/045)
+
+
+## Event 105 — TASK-044 spec amended (user-approved Option A): transcript-walk → git status --porcelain
+
+User adjudicated the TASK-044 spec conflict → **Option A: adopt git-status, amend DESIGN/TASK** (verbatim: "Adopt REQ-012's `git status --porcelain` enumeration; amend DESIGN-004 + TASK-044 DoD to match. Rationale: REQ outranks DESIGN/TASK in the authority chain; REQ-012's reason is sound (transcript misses MCP edits, defeating the backstop's purpose); and TASK-044's OWN 'MCP-edit-bypass caught by Layer 6' smoke test is only satisfiable under git-status. Then re-dispatch TASK-044 on the amended spec.").
+
+Applied:
+- [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]] Layer-6 prose → git-status enumeration (was transcript-walk).
+- [[TASK-044-SPEC-008: Implement stop-backstop Handler (Layer 6)]] Description + DoD → git-status mechanism (DoD#2/#3/#4 + smoke test reframed); regression intent preserved (catch any unvalidated docs/** modification at turn end, incl. MCP edits).
+
+TASK-044 remains BLOCKED in the PLAN pending re-dispatch on the amended spec (next step).
+
+### State Changes
+
+- DESIGN-004-SPEC-008 (note): Layer-6 enumeration amended (user-approved)
+- TASK-044-SPEC-008 (note): Description + DoD amended to git-status mechanism (user-approved)
