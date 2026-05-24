@@ -178,7 +178,7 @@ graph TD
     T010["✅ TASK-010<br/><span style='font-size:9px'>PLAN done-claim ext</span>"]
     T030["✅ TASK-030<br/><span style='font-size:9px'>Delete dispatcher.ts</span>"]
     T004["✅ TASK-004<br/><span style='font-size:9px'>CRIT schema (5b)</span>"]
-    T006["⏸ TASK-006<br/><span style='font-size:9px'>ANALYSIS parser</span>"]
+    T006["⚡ TASK-006<br/><span style='font-size:9px'>ANALYSIS+EPIC+CRIT parsers</span>"]
   end
 
   subgraph W1b ["Wave 1b — Per-Skill Scripts (10 PENDING)"]
@@ -253,7 +253,8 @@ graph TD
   T045 --> T046
 
   class T001,T002,T003,T004,T005,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
-  class T006,T007,T008,T009,T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
+  class T006 inprogress
+  class T007,T008,T009,T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
 ```
 
 **Maintenance rule**: each TASK closure (impl + QA both PASS) flips its `class` declaration from `pending`/`inprogress` to `done`, alongside the SPEC-008 root rollup tick and full Event 55 propagation. Each Batch START flips IN_PROGRESS items from `pending` to `inprogress`. Keep this graph current per the same propagation cadence as the SPEC root rollup.
@@ -2791,12 +2792,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-006-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 74
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Fix Brief For Event**: Batch 5c solo dispatch — 3 parsers (ANALYSIS + EPIC + CRIT); Wave 1a closer
 
 #### qa-TASK-006-SPEC-008
 

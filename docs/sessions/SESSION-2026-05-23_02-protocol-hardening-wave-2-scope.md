@@ -1723,3 +1723,12 @@ TASK-006 (ANALYSIS + EPIC + CRIT parsers) is now dep-unblocked (all 4 schema dep
 Wave 1a closes at TASK-006 closure. Wave 1b (per-skill scripts 011-020) follows.
 
 Marathon math: 16/46 (35%). Remaining 30 TASKs ≈ 7 more batches at established cadence.
+
+
+## Event 74 — Batch 5c START: impl-TASK-006 dispatch (3-parser closer for Wave 1a)
+
+User adjudicated push-through. Solo dispatch of TASK-006 (3 parsers in one TASK) — largest single-TASK in the marathon. PLAN transition: impl-TASK-006 PENDING → IN_PROGRESS. Wave graph T006 inprogress.
+
+Dispatching bun-ts-engineer (foreground). Files: NEW `shared/composition/src/parsers/{analysis-note.ts,epic-note.ts,crit-note.ts}` + NEW `shared/composition/tests/parsers/{analysis-note.test.ts,epic-note.test.ts,crit-note.test.ts}` + MODIFY `shared/composition/src/parsers/index.ts`.
+
+Wave 1a closer: on impl + QA both PASS, all 8 Wave 1a TASKs close. REQ-001 AC-5 (H1 drift detection at parser layer) flips at TASK-006 closure. REQ-002 (parser suite) ACs flip per TASK-006 contribution.
