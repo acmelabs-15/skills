@@ -1,7 +1,7 @@
 ---
 title: 'SPEC-003: PLAN Adapter'
 type: spec
-status: ACCEPTED
+status: DONE
 permalink: specs/spec-003-plan-adapter/spec-003-plan-adapter
 tags:
 - spec

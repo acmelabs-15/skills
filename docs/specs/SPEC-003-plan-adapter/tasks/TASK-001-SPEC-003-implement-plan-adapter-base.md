@@ -1,7 +1,7 @@
 ---
 title: 'TASK-001-SPEC-003: Implement PLAN Adapter Base'
 type: task
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 permalink: specs/spec-003-plan-adapter/tasks/task-001-spec-003-implement-plan-adapter-base
@@ -50,14 +50,14 @@ Phase section boundaries use "### " as the delimiter. The identifier_pattern mat
 
 ## Definition of Done
 
-- [ ] PlanAdapter class exported from src/adapters/plan.ts
-- [ ] Implements CompositionAdapter directly (NOT extends BaseMarkdownAdapter)
-- [ ] sourceType === "plan"
-- [ ] Phase section extraction under Workflow Plan works correctly with ### delimiter
-- [ ] renumber_map mutations for {phase}.{part-id} identifiers work via single-pass replacement
-- [ ] wikilink_map mutations work correctly
-- [ ] parse/serialize round-trip identity holds
-- [ ] Unit tests pass for all 5 interface methods
+- [x] PlanAdapter class exported from src/adapters/plan.ts
+- [x] Implements CompositionAdapter directly (NOT extends BaseMarkdownAdapter)
+- [x] sourceType === "plan"
+- [x] Phase section extraction under Workflow Plan works correctly with ### delimiter
+- [x] renumber_map mutations for {phase}.{part-id} identifiers work via single-pass replacement
+- [x] wikilink_map mutations work correctly
+- [x] parse/serialize round-trip identity holds
+- [x] Unit tests pass for all 5 interface methods
 
 ## ADR Compliance
 
@@ -81,6 +81,7 @@ Phase section boundaries use "### " as the delimiter. The identifier_pattern mat
 
 ## Relations
 
+- validated_by [[QA-043-SPEC-003: Spec Aggregate Retro-Validation]]
 - part_of [[SPEC-003: PLAN Adapter]]
 - implements [[REQ-001-SPEC-003: PLAN Adapter Implementation]]
 - implements [[DESIGN-001-SPEC-003: PLAN Adapter Architecture]]

@@ -1,7 +1,7 @@
 ---
 title: 'TASK-003-SPEC-003: Implement PLAN Frontmatter Mutations'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 permalink: specs/spec-003-plan-adapter/tasks/task-003-spec-003-implement-plan-frontmatter-mutations
@@ -51,13 +51,13 @@ The reverse operation swaps keys and values in the frontmatter_map and applies t
 
 ## Definition of Done
 
-- [ ] applyFrontmatterMap function replaces frontmatter fields per frontmatter_map
-- [ ] reverseFrontmatterMap function recovers original values via inverse mapping
-- [ ] branches[] array handling via JSON-serialized string values works correctly
-- [ ] Integration with PlanAdapter.applyMutations applies frontmatter mutations
-- [ ] Integration with PlanAdapter.reverseMutations applies inverse frontmatter mutations
-- [ ] Frontmatter inverse contract holds: apply then reverse recovers original
-- [ ] Unit tests pass for all frontmatter mutation scenarios
+- [x] applyFrontmatterMap function replaces frontmatter fields per frontmatter_map
+- [x] reverseFrontmatterMap function recovers original values via inverse mapping
+- [x] branches[] array handling via JSON-serialized string values works correctly
+- [x] Integration with PlanAdapter.applyMutations applies frontmatter mutations
+- [x] Integration with PlanAdapter.reverseMutations applies inverse frontmatter mutations
+- [x] Frontmatter inverse contract holds: apply then reverse recovers original
+- [x] Unit tests pass for all frontmatter mutation scenarios
 
 ## ADR Compliance
 
@@ -79,6 +79,7 @@ The reverse operation swaps keys and values in the frontmatter_map and applies t
 
 ## Relations
 
+- validated_by [[QA-043-SPEC-003: Spec Aggregate Retro-Validation]]
 - part_of [[SPEC-003: PLAN Adapter]]
 - implements [[REQ-004-SPEC-003: PLAN Frontmatter Mutations]]
 - implements [[DESIGN-001-SPEC-003: PLAN Adapter Architecture]]

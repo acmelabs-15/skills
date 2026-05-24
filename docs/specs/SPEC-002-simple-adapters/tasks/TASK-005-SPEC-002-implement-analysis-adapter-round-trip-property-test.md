@@ -1,7 +1,7 @@
 ---
 title: 'TASK-005-SPEC-002: Implement ANALYSIS Adapter Round-Trip Property Test'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 permalink: specs/spec-002-simple-adapters/tasks/task-005-spec-002-implement-analysis-adapter-round-trip-property-test
@@ -26,11 +26,11 @@ Create the round-trip property test and fixtures for the ANALYSIS adapter. The t
 
 - [x] ANALYSIS fixture note at _shared/composition/tests/fixtures/analysis-sample.md following CONVENTIONS (flat layout — sanctioned by TASK-010-SPEC-002)
 - [x] ANALYSIS fixture plan YAMLs at _shared/composition/tests/fixtures/analysis-{distribution,composition}.plan.yaml (hand-crafted distribution + composition plans; documentation fixtures — round-trip test reads renumber_map as inline TS literal, mirroring the ADR convention)
-- [ ] Round-trip property test: parse fixture, decompose with plan, recompose with inverse plan
-- [ ] Assertion: SHA-256(original) === SHA-256(recomposed)
-- [ ] Test passes via bun test
-- [ ] Fixture note includes H3 findings with item-N identifiers to exercise identifier_pattern
-- [ ] biome lint passes with no errors
+- [x] Round-trip property test: parse fixture, decompose with plan, recompose with inverse plan
+- [x] Assertion: SHA-256(original) === SHA-256(recomposed)
+- [x] Test passes via bun test
+- [x] Fixture note includes H3 findings with item-N identifiers to exercise identifier_pattern
+- [x] biome lint passes with no errors
 
 ## Scope
 
@@ -68,6 +68,7 @@ Create the round-trip property test and fixtures for the ANALYSIS adapter. The t
 
 ## Relations
 
+- validated_by [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]]
 - implements [[REQ-005-SPEC-002: Round-Trip Property Tests for ANALYSIS and SESSION]]
 - implements [[REQ-001-SPEC-002: ANALYSIS Adapter Implementation]]
 - part_of [[SPEC-002: Simple Adapters]]

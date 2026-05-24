@@ -1,7 +1,7 @@
 ---
 title: 'TASK-006-SPEC-002: Implement SESSION Adapter Round-Trip Property Test'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 permalink: specs/spec-002-simple-adapters/tasks/task-006-spec-002-implement-session-adapter-round-trip-property-test
@@ -27,13 +27,13 @@ Create the round-trip property test and fixtures for the SESSION adapter. The te
 
 - [x] SESSION fixture note at _shared/composition/tests/fixtures/session-sample.md following CONVENTIONS with Event-NN entries (flat layout — sanctioned by TASK-010-SPEC-002)
 - [x] SESSION fixture plan YAMLs at _shared/composition/tests/fixtures/session-{distribution,composition}.plan.yaml (hand-crafted distribution plan with cross_source_updates + inverse composition plan; documentation fixtures — round-trip test reads renumber_map + cross_source_updates as inline TS literal, mirroring the ADR convention)
-- [ ] Round-trip property test: parse fixture, decompose with plan, recompose with inverse plan
-- [ ] Assertion: SHA-256(original) === SHA-256(recomposed)
-- [ ] Assertion: decompose output includes cross_source_updates array with correct target_note, part_id, field_name, new_value
-- [ ] Assertion: recompose reverses cross_source_updates (old_value and new_value swapped)
-- [ ] Test passes via bun test
-- [ ] Fixture note includes Event-NN entries with zero-padded sequential numbering
-- [ ] biome lint passes with no errors
+- [x] Round-trip property test: parse fixture, decompose with plan, recompose with inverse plan
+- [x] Assertion: SHA-256(original) === SHA-256(recomposed)
+- [x] Assertion: decompose output includes cross_source_updates array with correct target_note, part_id, field_name, new_value
+- [x] Assertion: recompose reverses cross_source_updates (old_value and new_value swapped)
+- [x] Test passes via bun test
+- [x] Fixture note includes Event-NN entries with zero-padded sequential numbering
+- [x] biome lint passes with no errors
 
 ## Scope
 
@@ -71,6 +71,7 @@ Create the round-trip property test and fixtures for the SESSION adapter. The te
 
 ## Relations
 
+- validated_by [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]]
 - implements [[REQ-005-SPEC-002: Round-Trip Property Tests for ANALYSIS and SESSION]]
 - implements [[REQ-002-SPEC-002: SESSION Adapter Implementation]]
 - implements [[REQ-003-SPEC-002: SESSION Cross-Source Updates Handling]]

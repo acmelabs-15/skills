@@ -1,7 +1,7 @@
 ---
 title: 'TASK-005-SPEC-003: Implement PLAN Adapter Round-Trip Property Test'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 permalink: specs/spec-003-plan-adapter/tasks/task-005-spec-003-implement-plan-adapter-round-trip-property-test
@@ -65,11 +65,11 @@ The test validates that frontmatter mutations (title, permalink, branches[]) are
 
 ## Definition of Done
 
-- [ ] parse(content) followed by serialize(parse(content)) produces char-identical output for PLAN fixture
-- [ ] SHA-256(original stripped) === SHA-256(recomposed stripped) for the full decompose/recompose cycle
-- [ ] Regenerated sections correctly excluded from hash scope
-- [ ] Frontmatter mutations applied during decompose and reversed during recompose
-- [ ] Test passes via bun test with deterministic fixture inputs
+- [x] parse(content) followed by serialize(parse(content)) produces char-identical output for PLAN fixture
+- [x] SHA-256(original stripped) === SHA-256(recomposed stripped) for the full decompose/recompose cycle
+- [x] Regenerated sections correctly excluded from hash scope
+- [x] Frontmatter mutations applied during decompose and reversed during recompose
+- [x] Test passes via bun test with deterministic fixture inputs
 
 ## ADR Compliance
 
@@ -92,6 +92,7 @@ The test validates that frontmatter mutations (title, permalink, branches[]) are
 
 ## Relations
 
+- validated_by [[QA-043-SPEC-003: Spec Aggregate Retro-Validation]]
 - part_of [[SPEC-003: PLAN Adapter]]
 - implements [[REQ-005-SPEC-003: PLAN Adapter Round-Trip Property Test]]
 - depends_on [[TASK-001-SPEC-003: Implement PLAN Adapter Base]]
