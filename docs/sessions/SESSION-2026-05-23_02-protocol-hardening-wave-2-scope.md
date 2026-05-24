@@ -1207,3 +1207,16 @@ Orchestrator actions this turn:
 - REQ-007 ACs 1, 2, 3 flipped `[x]` (TASK-025 satisfies; previously AC-4 flipped at TASK-026 closure).
 
 State after this turn: 5 TASKs fully CLOSED (001, 021, 025, 026, 029). 2 impl-only-done (033, 037; qa pending). 1 BLOCKED (034). 38 remaining of 46.
+
+
+## Event 58 — TASK-034 scope expansion locked; dispatching memory agent for 31 additional `validates` relations
+
+User adjudicated (AskUserQuestion). Selected verbatim: **"Expand TASK-034 to fix ALL `validates`"** — authorize fixing every `validates` relation in docs/qa/ NOW (still via brain:🧠-memory / Brain MCP). Re-dispatch impl-034 with expanded scope; QA validates against the broader grep.
+
+Scope determined by `grep -rn "^- validates \[\[" docs/`: 31 instances across 30 notes (QA-032-SPEC-003 has 3; all 30 in `docs/qa/`). The 4 Audit C named notes (QA-027-SPEC-004, QA-042-SPEC-002, QA-043-SPEC-003, QA-015-SPEC-003) are already clean from Batch 3 Event 56 work and do NOT appear in the current grep — agent must not re-touch them.
+
+PLAN `impl-TASK-034`: BLOCKED → IN_PROGRESS (Failed Iterations stays 0 — this is scope expansion, not a fix-cycle; the prior agent's work was correct per the original-scope DoD and is preserved).
+
+Dispatching brain:🧠-memory (foreground) with the full inventory of 30 notes + per-note grep lines. Mechanical work: replace each `- validates [[Target]]` Relations bullet with `- depends_on [[Target]]` (the canonical typed verb for QA-aggregate references per Audit C decision in the original TASK-034 brief). Brain MCP only; no raw Edit/Write on docs/**.
+
+On return: post-fix grep must return zero. Then full propagation per Event 55 protocol: TASK-034 DoD `[x]` (full broader DoD now satisfiable), then dispatch QA.

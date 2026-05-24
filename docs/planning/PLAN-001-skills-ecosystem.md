@@ -2447,12 +2447,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-034-SPEC-008
-- **Status**: BLOCKED
+- **Status**: IN_PROGRESS
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 57
+- **Transitioned At Event**: Event 58 (BLOCKED → IN_PROGRESS; scope expanded per user adjudication)
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: Event 57 — DoD-vs-reality contradiction surfaced; user decision pending on scope expansion vs DoD amendment vs new TASK
+- **Fix Brief For Event**: Event 58 — expand scope to fix ALL `validates` relations in docs/qa/ (31 in 30 notes; the 4 Audit C named already fixed)
 
 #### qa-TASK-034-SPEC-008
 
