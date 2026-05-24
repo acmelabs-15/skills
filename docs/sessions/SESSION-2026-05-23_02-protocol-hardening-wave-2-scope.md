@@ -328,3 +328,16 @@ PLAN-001 decisions.4 DoD: D-1 flipped `[ ]` → `[x]`.
 | 11 | **Structural: `_shared/` → `shared/` rename** | User directive (this event) |
 
 D-N progress: D-1 LOCKED (Event 10) → D-2 LOCKED (this event). Remaining: D-3, D-4, D-5, D-6, D-7.
+
+
+## Event 12 — D-3 LOCKED: shared fixture-driven harness
+
+**Decision** (verbatim from AskUserQuestion answer):
+
+> **Shared fixture-driven harness (Recommended)**
+>
+> Single test runner + fixture directory. Each lying-claim scenario lives as a named markdown file (e.g., `tests/fixtures/adversarial/task/drift-01-all-deferred-bypass.md`). A shared `testAdversarial({fixture, validator, expectedReject})` helper runs parse → validate → assert. New scenarios add a fixture file + a one-line table entry. Natural mapping to Audit E's drift-regression-marker request — each fixture *is* a drift surface.
+
+Implication: SPEC-008 will need a TASK for the harness implementation + a TASK for the initial fixture set covering the top-10 prioritized adversarial scenarios from Audit E + REQ-010's drift-regression markers feeding the fixture inventory.
+
+D-N progress: D-1 ✓, D-2 ✓, D-3 ✓. Remaining: D-4 (dispatch-brief), D-5 (P1 include/defer), D-6 (SPEC-007), D-7 (dispatcher.ts).
