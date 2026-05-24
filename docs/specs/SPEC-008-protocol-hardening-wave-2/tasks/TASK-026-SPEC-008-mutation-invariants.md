@@ -20,18 +20,22 @@ Author the mutation-invariant test file at `shared/composition/tests/mutation-in
 
 ## Definition of Done
 
-- [ ] File `shared/composition/tests/mutation-invariants.test.ts` exists (or new `describe` blocks added to an existing mutation test file)
-- [ ] Backward-transition test: assert `applyPlanMutation({type: "transition-impl-item", ...DONE→IN_PROGRESS})` throws or returns a rejection with a recognizable backward-transition error message
-- [ ] Backward-transition test: assert a forward transition (`IN_PROGRESS → DONE`) succeeds, proving the rejection is direction-specific not absolute
-- [ ] Idempotency test: load fresh fixture; apply mutation once; capture state hash; apply the same mutation again on the once-mutated state; capture state hash; assert hashes are equal
-- [ ] Idempotency test: cover at least three mutation types where idempotency is meaningful (e.g., `set-part-substatus`, `flip-dod-item`, `lock-decision`)
-- [ ] `bun test` passes with the new tests
-- [ ] `biome lint` and `tsc --noEmit` pass
+
+- [x] File `shared/composition/tests/mutation-invariants.test.ts` exists (or new `describe` blocks added to an existing mutation test file)
+- [x] Backward-transition test: assert `applyPlanMutation({type: "transition-impl-item", ...DONE→IN_PROGRESS})` throws or returns a rejection with a recognizable backward-transition error message
+- [x] Backward-transition test: assert a forward transition (`IN_PROGRESS → DONE`) succeeds, proving the rejection is direction-specific not absolute
+- [x] Idempotency test: load fresh fixture; apply mutation once; capture state hash; apply the same mutation again on the once-mutated state; capture state hash; assert hashes are equal
+- [x] Idempotency test: cover at least three mutation types where idempotency is meaningful (e.g., `set-part-substatus`, `flip-dod-item`, `lock-decision`)
+- [x] `bun test` passes with the new tests
+- [x] `biome lint` and `tsc --noEmit` pass
+
 
 ## ADR Compliance
 
-- [ ] Honors ADR-005 D-3 Phase 3 critic P1.2 verbatim: backward-transition rejection test exists; double-apply idempotency test exists
-- [ ] Honors REQ-007 AC-4: backward-transition AND idempotency assertions present
+
+- [x] Honors ADR-005 D-3 Phase 3 critic P1.2 verbatim: backward-transition rejection test exists; double-apply idempotency test exists
+- [x] Honors REQ-007 AC-4: backward-transition AND idempotency assertions present
+
 
 ## Files Affected
 

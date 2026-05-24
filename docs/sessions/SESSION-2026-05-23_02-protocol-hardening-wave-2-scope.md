@@ -1047,3 +1047,15 @@ Orchestrator actions this turn:
 
 - TASK-021 note: DoD (10) + ADR Compliance (4) flipped `[x]`. PLAN `impl-TASK-021` IN_PROGRESS → DONE (at Event 50). (TASK frontmatter status flips DONE only after qa PASS — step s.)
 - Pending in this Event: TASK-025 fixture cleanup + re-dispatch; TASK-026 partial-output verification; then TASK-021 qa dispatch. Atomic commit covers TASK-021 impl + scrap of TASK-025 partial.
+
+
+## Event 51 — TASK-026 partial salvaged + verified; impl-TASK-026 → DONE
+
+Orchestrator-verified TASK-026's partial output (agent's RETURN errored, but code was complete on disk). Verification:
+
+- Read 230-line `tests/mutation-invariants.test.ts` in full; verified each DoD item from source. 6/6 tests pass (`bun test`); tsc exit 0; biome clean.
+- API-discovery quality: agent probed `applyPlanMutation` and found the backward-transition rejection actually fires via the schema cross-field invariant (`qa-DONE requires paired impl-DONE`), NOT a literal direction guard — test asserts on the real error message `/requires paired impl-TASK-001-SPEC-007 to be DONE/`. Includes positive control (forward IN_PROGRESS→DONE succeeds) + asymmetry test (exceeds DoD).
+- 3 idempotent mutation types chosen with documented rationale: `flip-dod-item(done:true)` · `lock-decision(same topic)` · `set-part-substatus(DONE→DONE)`. Documented exclusions: transitions consume `from`; add-task throws on duplicate id; add-blocker appends unconditionally.
+- DoD (7) + ADR/REQ compliance (2) flipped `[x]`. PLAN `impl-TASK-026-SPEC-008`: IN_PROGRESS → DONE (at Event 51).
+
+Lesson for the marathon (partial-return recovery): when implementer tool surface errors but files were written, run gates → read source → verify each DoD item ourselves. The orchestrator-verification step happens anyway; the missing piece is the attested State Changes report. As long as DoD is verifiable from source + gates pass, salvage is sound.
