@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - protocol-hardening
@@ -21,19 +21,20 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 
 ## State
 
+
 - Starting commit: `eb0eb28` (end of PLAN-001 workflow close)
-- PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (stale DoD all-[x]-deferred)
-- Audits dispatched: 5 parallel (A composition coverage, B skill protocol-embedding, C Brain notes coherence, D code-vs-spec coherence, E test coverage gaps)
+- PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (umbrella; flips DONE when build.SPEC-008 DONE)
 - Scope shape: LOCKED — Option A (SPEC-008) per AskUserQuestion answer Event 09
 - ADR-005 ACCEPTED 2026-05-23 — 8 D-Ns; decisions.4 DONE
 - spec.SPEC-008 DONE — SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 46 TASK); all /spec gates PASS
-- build.SPEC-008 IN_PROGRESS — owning_session SESSION-2026-05-23_02 (this session, resumed from PAUSED at Event 33)
-- Build order: TASK-029 (`_shared/`→`shared/` rename) FIRST → Track 1 (TASK-001..010) → Track 4 cleanup + Track 3 harness → Track 2 scripts + Track 3 fixtures → Track 5 hooks
-- TASK-029 (rename) DONE — `_shared/`→`shared/`; qa PASS (QA-044-SPEC-008); full a–u cycle demonstrated
+- build.SPEC-008 IN_PROGRESS — owning_session SESSION-2026-05-23_02 (this session; RESUMED from PAUSED at Event 41 for PoC TASK-001)
+- Build order: TASK-029 (rename) DONE FIRST → Track 1 (TASK-001..010) → Track 4 cleanup + Track 3 harness → Track 2 scripts + Track 3 fixtures → Track 5 hooks
+- TASK-029 (rename) DONE — `_shared/`→`shared/`; qa PASS (QA-044-SPEC-008); full a–u cycle demonstrated; commit `8144429`
+- **CURRENT**: PoC TASK-001 (ADR schema — representative schema→parser→validator pattern). Rigid per-TASK cycle a–u. PAUSE for user PoC sign-off after TASK-001, then remaining 44 TASKs.
 - DEFERRED (Track 4 doc-hygiene sweep / TASK-034): flip `_shared/composition` in ~171 live Brain notes (TASK-029 DoD item 3; historical-immutability scope resolved there)
 - LATENT follow-up: skill scripts + `migrate-plan-001…ts` outside root tsconfig bun-typed scope (`Cannot find name 'Bun'`) — config-coherence fix, relevant to Tracks 1/2/5
 - OPEN: 2 pre-existing `defrag.test.ts` delegation failures (decide fix/track/accept); basic-memory move/edit transient flakiness (retry on failure)
-- PAUSED after TASK-029 per user PoC decision. NEXT (fresh context): /plan continue → resume THIS session → /build TASK-001 (ADR schema) → PoC sign-off → remaining 44 TASKs
+
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
@@ -905,3 +906,14 @@ User decision (AskUserQuestion): "Pause; run TASK-001 fresh." TASK-029 (rename) 
 - DECIDE: 2 pre-existing `defrag.test.ts` delegation failures (hash-mismatch + boom) — fix / track / accept.
 - CONFIG-COHERENCE: skill scripts + `migrate-plan-001…ts` outside root tsconfig bun-typed `include` (affects Tracks 1/2/5 tsc gate).
 - TOOLING: basic-memory `move_note`/`edit_note` transient failures — expect + retry across remaining TASKs.
+
+
+## Event 41 — Session resumed from PAUSED (2026-05-23 23:56 PDT); PoC TASK-001 begins
+
+User invoked `/skills:plan PLAN-001-skills-ecosystem` (continue mode) in a fresh context window. Per the Event 40 resume protocol + paused-session-resume rule, RESUMED THIS session (no new note): status PAUSED → IN_PROGRESS; State refreshed; Event numbering continued.
+
+Rehydration checklist completed (TIER-1): re-read TIER-1 protocol memories (per-task-build-qa-cycle, workflow-phase-rigor, post-compaction-rehydration, session-protocol, resume-paused-session); set active project `skills` + bootstrap_context; read PLAN-001 (build.SPEC-008 IN_PROGRESS; impl/qa-TASK-001 seeded PENDING) + this session's Events 01–40; read TASK-001-SPEC-008 subtree (TASK DoD + REQ-001 AC + DESIGN-001 compliance) for the dispatch brief; git state clean (HEAD `f7ea73e`, branch `feat/plan-001-protocol-hardening-wave-2-scope`).
+
+State confirmed: TASK-029 (rename) CLOSED (impl + qa PASS; commit `8144429`). No pending user decisions block TASK-001 (open items are marathon-time: ~171-note citation flip → Track 4 / TASK-034; defrag test failures; tsconfig bun-type gap; basic-memory transient flakiness).
+
+Next: rigid per-TASK cycle a–u for TASK-001 (ADR schema). Step (a) — PLAN `impl-TASK-001-SPEC-008` PENDING → IN_PROGRESS.
