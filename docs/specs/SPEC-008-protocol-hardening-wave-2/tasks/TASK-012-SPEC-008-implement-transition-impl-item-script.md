@@ -44,19 +44,19 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] Script accepts plan-path, item-id, target-status, owning-session, at-event flags from `Bun.argv`
-- [ ] Script reads the PLAN, validates path-containment, invokes `applyPlanMutation` with the transition-impl-item mutation, writes the result back, and exits 0/1/2 per the contract
-- [ ] Required-arg validation rejects missing owning-session or at-event with exit 2
-- [ ] Colocated test asserts exit 0 on a successful PENDING-to-IN_PROGRESS transition with all required args
-- [ ] Colocated test asserts exit 1 on attempted transition that violates PLAN schema cross-field invariants
-- [ ] Colocated test asserts exit 2 on missing required-args
-- [ ] Script imports only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus tsc --noEmit pass on the new files
+- [x] Script accepts plan-path, item-id, target-status, owning-session, at-event flags from `Bun.argv`
+- [x] Script reads the PLAN, validates path-containment, invokes `applyPlanMutation` with the transition-impl-item mutation, writes the result back, and exits 0/1/2 per the contract
+- [x] Required-arg validation rejects missing owning-session or at-event with exit 2
+- [x] Colocated test asserts exit 0 on a successful PENDING-to-IN_PROGRESS transition with all required args
+- [x] Colocated test asserts exit 1 on attempted transition that violates PLAN schema cross-field invariants
+- [x] Colocated test asserts exit 2 on missing required-args
+- [x] Script imports only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus tsc --noEmit pass on the new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
 
 ## Effort Summary
 

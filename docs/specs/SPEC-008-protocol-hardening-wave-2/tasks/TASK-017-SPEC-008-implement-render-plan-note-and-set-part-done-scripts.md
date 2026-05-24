@@ -49,21 +49,21 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] `render-plan-note.ts` accepts a plan-path flag, reads the PLAN via `Bun.file().text()`, invokes the PlanNote renderer from `shared/composition/src/`, writes the rendered markdown back, exits 0 on success / non-zero on render error
-- [ ] `render-plan-note.test.ts` asserts determinism: rendering the same PLAN twice produces byte-identical output
-- [ ] `set-part-done.ts` accepts plan-path, part-id, status (DONE|DEFERRED|ABANDONED), outcome-wikilink, owning-session, at-event, and optional rationale flags
-- [ ] `set-part-done.ts` invokes `applyPlanMutation` with the part-substatus mutation, writes the result back, exits 0/1/2 per the DESIGN-002 CLI contract
-- [ ] `set-part-done.ts` exits non-zero with a stderr message when status is DEFERRED or ABANDONED and no rationale flag is supplied
-- [ ] `set-part-done.test.ts` asserts the part substatus flips to the target status and that the rationale-required invariant holds for non-DONE terminal states
-- [ ] Both scripts include the `if (import.meta.main)` CLI guard and validate path-containment before reading the PLAN file
-- [ ] Both scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus `tsc --noEmit` pass on all four new files
+- [x] `render-plan-note.ts` accepts a plan-path flag, reads the PLAN via `Bun.file().text()`, invokes the PlanNote renderer from `shared/composition/src/`, writes the rendered markdown back, exits 0 on success / non-zero on render error
+- [x] `render-plan-note.test.ts` asserts determinism: rendering the same PLAN twice produces byte-identical output
+- [x] `set-part-done.ts` accepts plan-path, part-id, status (DONE|DEFERRED|ABANDONED), outcome-wikilink, owning-session, at-event, and optional rationale flags
+- [x] `set-part-done.ts` invokes `applyPlanMutation` with the part-substatus mutation, writes the result back, exits 0/1/2 per the DESIGN-002 CLI contract
+- [x] `set-part-done.ts` exits non-zero with a stderr message when status is DEFERRED or ABANDONED and no rationale flag is supplied
+- [x] `set-part-done.test.ts` asserts the part substatus flips to the target status and that the rationale-required invariant holds for non-DONE terminal states
+- [x] Both scripts include the `if (import.meta.main)` CLI guard and validate path-containment before reading the PLAN file
+- [x] Both scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus `tsc --noEmit` pass on all four new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern (thin wrappers importing from shared/composition)
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 deterministic-output requirement (render-plan-note is a generator; same args = same output)
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern (thin wrappers importing from shared/composition)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 deterministic-output requirement (render-plan-note is a generator; same args = same output)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
 
 ## Effort Summary
 

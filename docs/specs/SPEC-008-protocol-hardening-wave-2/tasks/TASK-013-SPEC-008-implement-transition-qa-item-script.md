@@ -44,18 +44,18 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] Script accepts plan-path, item-id, target-status, owning-session, at-event, optional test-report-ref, optional failed-iterations flags
-- [ ] Script reads PLAN, validates path-containment, invokes applyPlanMutation, writes the result back, exits 0/1/2 per the contract
-- [ ] Colocated test asserts exit 1 when transitioning to DONE without test_report_ref
-- [ ] Colocated test asserts exit 1 when the paired impl-item is not yet DONE
-- [ ] Colocated test asserts exit 0 on a successful IN_PROGRESS-to-DONE transition with all invariants met
-- [ ] Script imports only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus tsc --noEmit pass on the new files
+- [x] Script accepts plan-path, item-id, target-status, owning-session, at-event, optional test-report-ref, optional failed-iterations flags
+- [x] Script reads PLAN, validates path-containment, invokes applyPlanMutation, writes the result back, exits 0/1/2 per the contract
+- [x] Colocated test asserts exit 1 when transitioning to DONE without test_report_ref
+- [x] Colocated test asserts exit 1 when the paired impl-item is not yet DONE
+- [x] Colocated test asserts exit 0 on a successful IN_PROGRESS-to-DONE transition with all invariants met
+- [x] Script imports only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus tsc --noEmit pass on the new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
 
 ## Effort Summary
 

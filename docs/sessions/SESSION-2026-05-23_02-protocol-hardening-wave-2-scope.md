@@ -2122,3 +2122,27 @@ All REQ-004 (gate-point mutation/render scripts) + DESIGN-002. File-disjoint (01
 ### State Changes
 
 - PLAN impl-TASK-012/013/017-SPEC-008: PENDING → IN_PROGRESS
+
+
+## Event 89 — Batch 8 impls DONE (012+013+017); SPEC-root + PLAN-graph derived-view sync (user directive)
+
+3 `bun-ts-engineer` implementers returned. Orchestrator re-ran gates INDEPENDENTLY: `tsc --noEmit` exit 0; `biome check skills/` exit 0; `bun test` **891 pass / 2 fail / 893** (+46 = the 3 new test files: transition-impl 10 + transition-qa 11 + render+set-part-done 25; 2 fails = SPEC-007 deferred baseline; zero new regressions).
+
+New code: `skills/build/scripts/transition-impl-item.{ts,test.ts}` (170/216), `transition-qa-item.{ts,test.ts}` (192/353), `skills/plan/scripts/render-plan-note.{ts,test.ts}` (122/217) + `set-part-done.{ts,test.ts}` (199/320). Sound spec-vs-schema reconciliations: `transition-*` mutations key on `partId`+`taskRef` (item-id derived); qa items carry `fix_brief_for_event` (not `failed_iterations`, which is impl-only); `set-part-substatus` folds rationale into `outcome` text + script pre-checks missing rationale → exit 2.
+
+### USER DIRECTIVE (2× firm) — derived-view propagation is mandatory at ALL times
+
+User: keep the SPEC-008 root note (EVERY checkbox list — Requirements, Designs, Tasks, Acceptance Criteria, Success Criteria) AND the PLAN dependency graphs current at all times. [reflect-capture] I had wrongly DEFERRED these derived-view syncs to save budget — that violates CONVENTIONS Category 2 (derived views must stay in sync with source). CORRECTED: every batch close now propagates to SPEC root all-5-lists + PLAN task-level Wave Graph. Propagation rules: SPEC-root Tasks flip `[x]` when a TASK is fully DONE (impl+qa); Requirements flip when REQ status ACCEPTED (all its TASKs done); Designs when DESIGN ACCEPTED; Acceptance/Success Criteria are totality-gated.
+
+### Derived-view sync applied (debt cleared)
+
+- SPEC-008 root `### Tasks`: TASK-011/015/016 → `[x]` (Batch A fully-DONE; now 24 ticked). 012/013/017 stay `[ ]` (qa in flight). Requirements/Designs/Acceptance/Success correctly unchanged (totality-gated; REQ-004 needs 011-017 + 014; nothing newly complete).
+- PLAN "SPEC-008 Build Marathon" task-level Wave Graph: W1b nodes 011/015/016 → ✅, 012/013/017 → ⚡, `class` assignments + W1b/W1c labels + provenance line all updated. Part-level Progress Dashboard + Cross-Part graph unchanged (build.SPEC-008 still one IN_PROGRESS part).
+
+### State Changes
+
+- TASK-012/013/017-SPEC-008: DoD + ADR-Compliance checkboxes → [x]
+- PLAN impl-TASK-012/013/017-SPEC-008: IN_PROGRESS → DONE
+- PLAN qa-TASK-012/013/017-SPEC-008: PENDING → IN_PROGRESS
+- SPEC-008 root Tasks: 011/015/016 → [x] (24/47 ticked)
+- PLAN task-level Wave Graph: synced to current per-TASK status
