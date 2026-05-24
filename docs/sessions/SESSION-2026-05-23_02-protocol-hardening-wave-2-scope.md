@@ -647,9 +647,61 @@ These cross-track edges will be added in the bi-directional closure pass via Bra
 **Plan**:
 
 1. ADR-001: remove `pairs_with [[brain:---adr-review]]` Relations line (skill is not a Brain note)
-2. ADR-002: same removal at line 897 + neutralize 6 YAML-code-block placeholder wikilinks (SESSION-2026-05-19_02 hypothetical, SPEC-001/SPEC-003 Brain-Reorg hypothetical, REQ-001-SPEC-001/SPEC-003 hypothetical, TASK-001-SPEC-001/SPEC-003 hypothetical) by stripping `[[` `]]` brackets within the YAML strings
+2. ADR-002: same removal at line 897 + neutralize 6 YAML-code-block placeholder wikilinks (SESSION-2026-05-19_02 hypothetical, SPEC-001/SPEC-003 Brain-Reorg hypothetical, REQ-001-SPEC-001/SPEC-003 hypothetical, TASK-001-SPEC-001/SPEC-003 hypothetical) by stripping the double-bracket wikilink markers within the YAML strings
 3. ADR-003: verified clean — no unresolvable wikilinks (all `[[...]]` resolve to real notes; `brain:---adr-review` mentions are bare prose, not bracketed)
 4. Lint with markdownlint-cli2 --fix
 5. Trigger basic-memory re-sync via Brain MCP `read_note`
 6. Verify with benign `edit_note` append on each ADR, then revert the test edit
 7. Commit fix
+
+
+## Event 28 — basic-memory DB corruption resolved via user-authorized reset --reindex
+
+Mid bi-directional closure, Brain MCP `edit_note` on ADR-001/002/003 failed with pydantic validation error `relations.0.permalink Field required` for `links_to` relation entries. Root cause: basic-memory's wikilink parser scans EVERY wikilink in note body text (not just typed-relation bullets) and creates `links_to` relation index entries. Targets like the `brain:---adr-review` skill reference (skill, not a Brain note) and YAML-code-block placeholder wikilinks (`SPEC-001 Brain`, `SESSION-2026-05-19_02 New Session`, etc. in ADR-002 examples) couldn't be resolved to permalinks → DB rows stored with NULL permalink field → validation rejected subsequent edits.
+
+Dispatched fix agent (a970edbd0a7c047ee). Agent:
+
+- Identified 1 unresolvable wikilink in ADR-001 (skill ref), 7 in ADR-002 (skill + 6 YAML placeholders), 0 in ADR-003
+- Replaced the brain skill wikilinks with backtick-code form; YAML placeholders converted to angle-bracket placeholder notation
+- Markdownlint-fix passed
+- Commit `1f06eca`: `fix(adr): escape unresolvable wikilinks blocking basic-memory edit_note on ADR-001/002/003`
+- BLOCKER: post-disk-fix `edit_note` still failed with same Pydantic error — basic-memory DB retains stale NULL-permalink rows; only `basic-memory reset --reindex` rebuilds the relation index globally
+
+Surfaced 4-option AskUserQuestion to user. User locked: **"Run basic-memory reset --reindex (Recommended)"** — drops all DB tables across all 10 projects and rebuilds from filesystem; ~1-5 min reindex; notes safe on disk; affects all 10 basic-memory projects (brain, markdown-renderer, polar-ui-mcp, content-navigation, datatable, oncall, agx, datatable-v2, sidekick, skills).
+
+Executed `yes | basic-memory reset --reindex` (user-authorized destructive operation). Result: "Reindex complete" for all 10 projects.
+
+Post-reindex: re-set active_project=skills; bootstrap_context refreshed MCP project UUID cache; Brain MCP edit_note on all 3 ADRs SUCCEEDED. Added implemented_by SPEC-008 via find_replace to each ADR Relations section; deduped 4 leftover copies in ADR-001 + 3 in ADR-002 + 3 in ADR-003 left over from corruption-period append attempts. Final state: each of ADR-001/002/003/005 has exactly ONE implemented_by SPEC-008 relation.
+
+Track 1 cross-cutting flag also resolved this turn: appended depends_on TASK-029 to TASK-001..010 via parallel Brain MCP append (10 successes).
+
+Unrelated benign side effect: basic-memory reindex rewrote `skills/ingest/SKILL.md` (collapsed wrapped lines to single lines — content unchanged). Reverted via `git checkout`; not part of SPEC-008 scope.
+
+**Lesson captured**: this kind of `links_to` DB corruption is a basic-memory parser bug that should be reported upstream — body-text wikilinks should not auto-create relation entries when targets can't resolve. Mitigation in the meantime: avoid wikilinks for non-Brain-note references (skill names, hypothetical examples) — use backtick code formatting or placeholder syntax instead.
+
+Bi-dir closure now complete. Next: commit + Phase 3 syntactic validation → ADR coverage gate → Gate A → Gate B → flip ACCEPTED → set-part-done.
+
+
+## Event 28 — basic-memory DB corruption resolved via user-authorized reset --reindex
+
+Mid bi-directional closure, Brain MCP edit_note on ADR-001/002/003 failed with pydantic validation error `relations.0.permalink Field required` for `links_to` relation entries. Root cause: basic-memory's wikilink parser scans EVERY wikilink in note body text (not just typed-relation bullets) and creates `links_to` relation index entries. Targets like the brain skill reference (a skill, not a Brain note) and YAML-code-block placeholder wikilinks in ADR-002 examples couldn't be resolved to permalinks → DB rows stored with NULL permalink field → validation rejected subsequent edits.
+
+Dispatched fix agent (a970edbd0a7c047ee). Agent identified 1 unresolvable wikilink in ADR-001 (skill ref), 7 in ADR-002 (skill + 6 YAML placeholders), 0 in ADR-003. Replaced the brain skill references with backtick-code form; YAML placeholders converted to angle-bracket placeholder notation. Markdownlint-fix passed. Commit `1f06eca`: `fix(adr): escape unresolvable wikilinks blocking basic-memory edit_note on ADR-001/002/003`.
+
+BLOCKER: post-disk-fix edit_note still failed with same Pydantic error — basic-memory DB retains stale NULL-permalink rows; only `basic-memory reset --reindex` rebuilds the relation index globally.
+
+Surfaced 4-option AskUserQuestion to user. User locked: **Run basic-memory reset --reindex (Recommended)** — drops all DB tables across all 10 projects and rebuilds from filesystem; ~1-5 min reindex; notes safe on disk; affects all 10 basic-memory projects (brain, markdown-renderer, polar-ui-mcp, content-navigation, datatable, oncall, agx, datatable-v2, sidekick, skills).
+
+Executed `yes | basic-memory reset --reindex` (user-authorized destructive operation). Result: Reindex complete for all 10 projects.
+
+Post-reindex: re-set active_project=skills; bootstrap_context refreshed MCP project UUID cache; Brain MCP edit_note on all 3 ADRs SUCCEEDED. Added implemented_by SPEC-008 via find_replace to each ADR Relations section; deduped 4 leftover copies in ADR-001 + 3 in ADR-002 + 3 in ADR-003 left over from corruption-period append attempts. Final state: each of ADR-001/002/003/005 has exactly ONE implemented_by SPEC-008 relation.
+
+Track 1 cross-cutting flag also resolved this turn: appended depends_on TASK-029 to TASK-001..010 via parallel Brain MCP append (10 successes).
+
+Unrelated benign side effect: basic-memory reindex rewrote `skills/ingest/SKILL.md` (collapsed wrapped lines to single lines — content unchanged). Reverted via `git checkout`; not part of SPEC-008 scope.
+
+Secondary issue caught: the agent's session log entry contained literal double-bracket markers inside backticks describing the YAML fix; basic-memory's post-reindex strict parser flagged this as a malformed relation_type. Fixed via find_replace to use the prose phrase double-bracket wikilink markers instead.
+
+**Lesson captured**: this kind of `links_to` DB corruption is a basic-memory parser bug that should be reported upstream — body-text wikilinks should not auto-create relation entries when targets can't resolve, and backtick code spans should be respected. Mitigation in the meantime: avoid wikilink syntax for non-Brain-note references (skill names, hypothetical examples) AND avoid the literal double-bracket characters in prose discussing wikilinks — use prose phrases instead.
+
+Bi-dir closure now complete. Next: commit + Phase 3 syntactic validation → ADR coverage gate → Gate A → Gate B → flip ACCEPTED → set-part-done.
