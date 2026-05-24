@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - protocol-hardening
@@ -25,7 +25,9 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 - PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (stale DoD all-[x]-deferred)
 - Audits dispatched: 5 parallel (A composition coverage, B skill protocol-embedding, C Brain notes coherence, D code-vs-spec coherence, E test coverage gaps)
 - Scope shape: LOCKED — Option A (SPEC-008) per AskUserQuestion answer Event 09
-- Next: decisions.4 part (ADR-004 Wave 2 architecture) → spec.SPEC-008 → build.SPEC-008
+- ADR-005 ACCEPTED 2026-05-23 — 8 D-Ns; decisions.4 DONE
+- spec.SPEC-008 IN_PROGRESS — owning_session SESSION-2026-05-23_02; resumed fresh session post-pause
+- Next: dispatch `/skills:spec` Stage 2 for SPEC-008 → build.SPEC-008 → protocol-hardening DONE
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
@@ -593,3 +595,34 @@ Session status flipped `IN_PROGRESS → PAUSED`. PLAN-001 state preserved: decis
 - adr-review round 1 (6 parallel reviewers) + Phase 3 resolutions + pragmatic flip
 - PLAN-001 advances: decisions.4 DONE; spec.SPEC-008 IN_PROGRESS (ready for resume)
 - 10 atomic git commits on `feat/plan-001-protocol-hardening-wave-2-scope`
+
+
+## Event 26 — Session resumed fresh; auto-dispatching /skills:spec Stage 2 for SPEC-008
+
+User invoked `/skills:plan PLAN-001-skills-ecosystem` in a fresh conversation context per the Resume protocol locked in Event 25. Branch `feat/plan-001-protocol-hardening-wave-2-scope` retained (non-main; branch policy allows).
+
+State check (rehydration):
+
+- PLAN-001 status: IN_PROGRESS; dashboard 22 DONE / 25; 1 IN_PROGRESS (spec.SPEC-008) + 1 IN_PROGRESS (protocol-hardening umbrella) + 1 PENDING (build.SPEC-008)
+- ADR-005 status: ACCEPTED; 8 D-Ns locked (D-1..D-8 incl. D-8 automated enforcement gates via plugin hooks)
+- spec.SPEC-008: IN_PROGRESS (Event 24); owning_session SESSION-2026-05-23_02 → preserved for continuity
+- SPEC-008 folder: not yet present in `docs/specs/` — Stage 2 Step 1 creates it
+- Session note: flipped `PAUSED → IN_PROGRESS` this turn
+
+Per /plan continue mode for an IN_PROGRESS part: skip "find next-ready"; auto-dispatch to phase skill via Contract 2. The /spec skill handles resume via Stage 2 G2 (skip-done-work) for an IN_PROGRESS spec part.
+
+Auto-dispatching:
+
+```text
+Skill(skill="skills:spec",
+      args="plan=PLAN-001 part=spec.SPEC-008 spec=SPEC-008 source_adrs=ADR-005+ADR-001+ADR-002+ADR-003")
+```
+
+Source artifacts (ADR-005 primary, plus prior accepted ADRs that SPEC-008 must continue to honor):
+
+- [[ADR-005: Protocol Hardening Wave 2 Architecture]] — 8 D-Ns covering 5 tracks (schemas/parsers/validators; per-skill scripts; test harness; drift cleanup; plugin hooks)
+- [[ADR-001: Composition Library Architecture]] — composition library invariants (Zod, AST, YAML plans, discriminated unions, adr-review gate)
+- [[ADR-002: Adapter Contract and Plan Schema]] — adapter interface, capability matrix, hash invariants
+- [[ADR-003: Plan/Session Render Architecture]] — render layer (relevant to SPEC-008 dispatch-brief generators per D-4)
+
+Expected SPEC-008 shape (per Event 22 + ADR-005 Decision Summary): 5 REQ clusters (one per track), 3-4 DESIGN notes, 15-20 TASKs, 1 SPEC root. ~30-35 notes total.
