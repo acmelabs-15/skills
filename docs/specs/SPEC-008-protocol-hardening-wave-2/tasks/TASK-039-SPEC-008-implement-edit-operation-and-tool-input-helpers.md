@@ -2,7 +2,7 @@
 title: 'TASK-039-SPEC-008: Implement Edit Operation and Tool Input Helpers'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-039-spec-008-implement-edit-operation-and-tool-input-helpers
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -76,3 +76,4 @@ Implement three shared hook utilities under `hooks/lib/` per [[DESIGN-004-SPEC-0
 - implements [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]]
 - implements [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
+- relates_to [[QA-054-SPEC-008: Implement Hook Lib Edit Helpers]]

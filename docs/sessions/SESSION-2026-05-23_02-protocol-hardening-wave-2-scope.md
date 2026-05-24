@@ -1295,3 +1295,23 @@ PLAN transitions (8 this Event):
 - qa-002/005/039/040: PENDING → IN_PROGRESS
 
 Dispatching 4 brain:🧠-qa agents concurrently. File-disjoint validators (each reads different test files + different source files); QA contract notes will be QA-052..055.
+
+
+## Event 63 — Batch 4 fully CLOSED: 4 QAs PASS; TASK-002/005/039/040 DONE; full SPEC-008 propagation verified
+
+All 4 QAs returned PASS independently. QA-052/053/054/055 contract notes authored (Pattern 2). All 4 TASKs status TODO → DONE with bi-dir `relates_to QA-NNN` relations. PLAN `qa-TASK-002/005/039/040` IN_PROGRESS → DONE with Test Report Refs.
+
+SPEC-008 root rollup verified comprehensively current:
+- `### Tasks (46)`: 12 TASKs `[x]` (001, 002, 005, 021, 025, 026, 029, 033, 034, 037, 039, 040). Verified via grep.
+- `### Requirements (12)`: all 12 stay `[ ]` (no REQ has ALL its child TASKs done yet — REQ-001 needs 003/004/010; REQ-002 needs 006; REQ-003 needs 007-010; REQ-006 needs 022-024; REQ-007 needs 027/028; REQ-008 needs 031/032; REQ-009 needs 030; REQ-010 needs 035/036; REQ-011 needs 038/041-043; REQ-012 needs 044/045)
+- `### Designs (4)`: all 4 stay `[ ]` (none have ALL child TASKs done — DESIGN-001 covers 001-010 with 3/10 done; DESIGN-002 covers 011-020 with 0; DESIGN-003 covers 021-028 with 3/8 done; DESIGN-004 covers 037-046 with 3/10 done)
+- `## Acceptance Criteria` (10): 4 `[x]` (ADR coverage gate, Gate A, Gate B, CONVENTIONS amendment); 6 remain `[ ]` (totality-gated)
+- `## Success Criteria` (4): all `[ ]` (gate on full Wave 2 close)
+
+REQ AC flips: REQ-002 AC-1 `[x]` (TASK-005 ADR-specific). REQ-002 AC-6/AC-7 cross-cutting across 4 parsers — stay `[ ]` until TASK-006 closes (consistent with REQ-001 AC-7/8 partial-cross-cutting treatment). REQ-001 AC-3 `[x]` (TASK-002 ANALYSIS-specific) flipped. No fully-satisfied AC for TASK-039/040 alone — utilities-only; handler scripts (TASK-041..045) needed for REQ-011/012 satisfaction.
+
+State after this turn: **12 TASKs fully CLOSED** (001, 002, 005, 021, 025, 026, 029, 033, 034, 037, 039, 040). 34 TASKs PENDING. **Wave 0 + Wave 1a partial done; Wave 1a remaining**: TASK-003 (EPIC schema), TASK-004 (CRIT schema), TASK-010 (PLAN extension + validatePlanDoneClaim), TASK-030 (delete dispatcher).
+
+Tracked open items unchanged from Event 60: 2 pre-existing `plan-001-migration.test.ts` failures (DEFERRED SPEC-007 work); pre-existing tsconfig + biome `hooks/**` scope gaps (latent config-coherence issue); new flag from Event 60 (frontmatter `validates:` key in QA-032/033/034 — Track 4 followup, not in current scope). Suite count post-batch: 705 pass / 2 fail / 707.
+
+Marathon math: 12/46 TASKs done (26%). At ~4 TASKs per parallel batch with full propagation overhead, remaining 34 TASKs ≈ 8-9 batches. Bookkeeping is dense per batch (QA notes + status flips + REQ AC propagation + SPEC root verification + PLAN transitions + session Events + commits ≈ 25-35 tool calls per batch closure).

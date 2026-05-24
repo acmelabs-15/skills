@@ -2,7 +2,7 @@
 title: 'TASK-002-SPEC-008: Implement ANALYSIS Schema'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-002-spec-008-implement-analysis-schema
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -73,3 +73,4 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`; orchestrator rewi
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - depends_on [[TASK-001-SPEC-008: Implement ADR Schema]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-052-SPEC-008: Implement ANALYSIS Schema]]

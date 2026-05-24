@@ -77,10 +77,10 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 ### Tasks (46)
 
 - [x] [[TASK-001-SPEC-008: Implement ADR Schema]]
-- [ ] [[TASK-002-SPEC-008: Implement ANALYSIS Schema]]
+- [x] [[TASK-002-SPEC-008: Implement ANALYSIS Schema]]
 - [ ] [[TASK-003-SPEC-008: Implement EPIC Schema]]
 - [ ] [[TASK-004-SPEC-008: Implement CRIT Schema]]
-- [ ] [[TASK-005-SPEC-008: Implement ADR Parser]]
+- [x] [[TASK-005-SPEC-008: Implement ADR Parser]]
 - [ ] [[TASK-006-SPEC-008: Implement ANALYSIS EPIC and CRIT Parsers]]
 - [ ] [[TASK-007-SPEC-008: Implement validateAdrAcceptedClaim]]
 - [ ] [[TASK-008-SPEC-008: Implement validateAnalysisAcceptedClaim]]
@@ -114,8 +114,8 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [ ] [[TASK-036-SPEC-008: Amend REQ-009-SPEC-007 Mutation Count from 9 to 11]]
 - [x] [[TASK-037-SPEC-008: Author hooks.json Manifest]]
 - [ ] [[TASK-038-SPEC-008: Implement dispatch-validator Utility]]
-- [ ] [[TASK-039-SPEC-008: Implement Edit Operation and Tool Input Helpers]]
-- [ ] [[TASK-040-SPEC-008: Implement Git Helpers for Staged and Diff Content]]
+- [x] [[TASK-039-SPEC-008: Implement Edit Operation and Tool Input Helpers]]
+- [x] [[TASK-040-SPEC-008: Implement Git Helpers for Staged and Diff Content]]
 - [ ] [[TASK-041-SPEC-008: Implement pre-write-brain-note Handler Layer 1]]
 - [ ] [[TASK-042-SPEC-008: Implement pre-write-brain-note-mcp Handler Layer 2]]
 - [ ] [[TASK-043-SPEC-008: Implement pre-commit pre-push and pre-pr-create Handlers Layers 3-5]]

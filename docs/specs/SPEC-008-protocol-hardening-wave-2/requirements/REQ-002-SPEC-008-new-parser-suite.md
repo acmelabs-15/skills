@@ -37,7 +37,7 @@ Functional.
 
 ## Acceptance Criteria
 
-- [ ] GIVEN an ADR markdown fixture WHEN `parseAdrNote(markdown)` is called THEN it returns an `AdrNote` typed model that re-parses via `AdrNoteSchema.parse()` without error
+- [x] GIVEN an ADR markdown fixture WHEN `parseAdrNote(markdown)` is called THEN it returns an `AdrNote` typed model that re-parses via `AdrNoteSchema.parse()` without error
 - [ ] GIVEN an ANALYSIS markdown fixture with `## Open Questions` section present and status ACCEPTED WHEN `parseAnalysisNote(markdown)` is called THEN it throws a Zod validation error referencing the forbidden section
 - [ ] GIVEN an EPIC markdown fixture WHEN `parseEpicNote(markdown)` is called THEN it returns an `EpicNote` typed model with a `contains` relation array populated from the Relations section
 - [ ] GIVEN a CRIT markdown fixture WHEN `parseCritNote(markdown)` is called THEN it returns a `CritNote` typed model with findings parsed from `## Findings` section table rows

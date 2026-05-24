@@ -2,7 +2,7 @@
 title: 'TASK-040-SPEC-008: Implement Git Helpers for Staged and Diff Content'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-040-spec-008-implement-git-helpers-for-staged-and-diff-content
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -75,3 +75,4 @@ Both modules MUST resolve the repo root via `git rev-parse --show-toplevel` and 
 - implements [[REQ-011-SPEC-008: PreToolUse Blocking Gates]]
 - implements [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
+- relates_to [[QA-055-SPEC-008: Implement Hook Lib Git Helpers]]
