@@ -995,3 +995,18 @@ Parallelism reconciliation constraints (orchestrator pre-analysis):
 - TASK-029 + TASK-001 already DONE.
 
 Next: dispatch brain:🧠-analyst (read-only) for the dependency DAG + parallel-wave grouping + file-contention flags; synthesize; AskUserQuestion on the parallelization approach.
+
+
+## Event 47 — Parallelism analysis returned (brain:🧠-analyst, read-only)
+
+Agent `a72742cc285442ea9` analyzed the 44 remaining TASKs (depends_on DAG + Files Affected ownership map). Key findings:
+
+- **6 waves** (W0–W5), critical path 6 waves. Counts: W0=8 indep · W1=19 (sub-waves 1a–1e) · W2=6 · W3=3 · W4=7 · W5=1 (TASK-046 terminal). Total 44 ✓.
+- **W0 (zero deps, disjoint files; 8 TASKs)**: 021, 025, 026, 033, 034, 037, 039, 040.
+- **Primary bottleneck = barrel index files**: `schemas/index.ts` (TASK-002/003/004/010), `parsers/index.ts` (005/006), `validators/index.ts` (007/008/009/010) — multiple TASKs MODIFY the same barrel → forced serialization even when otherwise independent. `validators/index.ts` chain (010→007→008→009) is the longest serial constraint.
+- **REQ-003 gate**: Track 5 hook handlers (038, 041–045) + Track 3 TASK-024 + TASK-046 all blocked until the 4 validators (007/008/009/010) complete (end of W3).
+- **Brain-note-only TASKs** (031/033/034/035/036) use MCP, never conflict with code files at the file level.
+- **TASK-046 hard terminal** (smoke-tests all handlers + reuses adversarial fixtures).
+- **Analyst's practical ceiling: 4–5 concurrent builds/wave** — the PLAN/session/commit serial surface + serial QA processing bound real throughput; barrel files force sub-serialization.
+
+Protocol tension to adjudicate: the TIER-1 hard-locked per-TASK cycle says "one TASK at a time / no parallel-per-SPEC." Its lesson-source violation was PARALLEL BUILDS WITH NO PER-TASK QA GATE (integrate-later). Parallelism is reconcilable only if every TASK retains its own independent QA gate before DONE. Surfacing the parallelization-approach decision to the user next.
