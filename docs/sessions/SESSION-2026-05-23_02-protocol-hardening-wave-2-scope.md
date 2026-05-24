@@ -705,3 +705,27 @@ Secondary issue caught: the agent's session log entry contained literal double-b
 **Lesson captured**: this kind of `links_to` DB corruption is a basic-memory parser bug that should be reported upstream — body-text wikilinks should not auto-create relation entries when targets can't resolve, and backtick code spans should be respected. Mitigation in the meantime: avoid wikilink syntax for non-Brain-note references (skill names, hypothetical examples) AND avoid the literal double-bracket characters in prose discussing wikilinks — use prose phrases instead.
 
 Bi-dir closure now complete. Next: commit + Phase 3 syntactic validation → ADR coverage gate → Gate A → Gate B → flip ACCEPTED → set-part-done.
+
+
+## Event 29 — Phase 3 + ADR coverage PASS; Gate A HALT (9 flagged REQs)
+
+Phase 3 syntactic validation: PASS. Filenames kebab + CAPS-prefix correct (62 children + root); zero forbidden relation types; final two sections Observations→Relations on all sampled notes; observations ≥3; titles match H1. Fixed 134 wikilink-colon violations in SPEC-008 root (deliberately authored without colons during the DB-corruption window) via dispatched agent — commit `90789a7`.
+
+ADR coverage gate: PASS. ADR-001/002/003/005 (SPEC-008 source ADRs) each have exactly one `implemented_by [[SPEC-008: Protocol Hardening Wave 2]]`. ADR-004 (Cross-Source Coordinator) is unrelated to SPEC-008 — covered by SPEC-002.
+
+Gate A (analyst semantic gap, dispatched a89b2cbd14bdb62af): **HALT — 9 flagged REQs**. Findings are reviewer-asymmetry catches where two implementers would build materially different things:
+
+| REQ | Verdict | Finding |
+|---|---|---|
+| REQ-004 | VAGUE | path-traversal AC doesn't pin the detection mechanism (literal `..`? path.resolve containment? symlink-resolved?) |
+| REQ-005 | DIVERGENT | brief "contains X" ACs not mechanical — substring vs section-header vs regex unpinned; defeats the anti-drift purpose |
+| REQ-006 | VAGUE | fixture "self-documenting / realistic" is reviewer-judgment, not pass/fail |
+| REQ-007 | VAGUE | drift-marker test-to-surface mapping unpinned; implementer could mark 5 arbitrary tests |
+| REQ-009 | VAGUE | Brain-note `_shared/`→`shared/` path-rewrite preservation scope (which notes keep the literal) requires per-note judgment |
+| REQ-010 | RUNTIME-JUDGMENT | `validates`-replacement verb "recommended" not pinned per-note |
+| REQ-011 | RUNTIME-JUDGMENT (highest impact) | blocking vs non-blocking schema-issue partition is illustrative, not definitive — the load-bearing HYBRID failure-mode boundary |
+| REQ-012 | VAGUE | "modified during the turn" enumeration mechanism unspecified (transcript? git-diff? mtime?) |
+
+Analyst gave concrete suggested refinements for each. Per /spec Gate A semantics: refine the flagged REQs, re-run Gate A. Dispatching a refinement agent with the 8 specific fixes (REQ-006 had two sub-findings folded into one). REQ-011's failure-partition is the priority fix.
+
+Gate B (critic 4 binary checks) errored mid-run (internal tool error) — re-dispatching in parallel.
