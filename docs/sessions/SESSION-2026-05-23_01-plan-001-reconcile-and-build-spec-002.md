@@ -43,6 +43,10 @@ User chose retro-validation approach (Option 1) over fresh /build. Verification:
 
 Continued on same branch after build.SPEC-002 commit. SPEC-003 (PLAN adapter) shows identical drift pattern: 5 DONE TASKs (TASK-006..010, reconciliation) + 5 TODO TASKs (TASK-001..005, original implementation) but `_shared/composition/src/adapters/plan.ts` exists at 15K LOC implementing CompositionAdapter directly per ADR-002 D-3 + full mutation suite at `src/mutations/{plan-mutations,checkbox-mutations}.ts` + both PLAN schemas (`schemas/{distribution,composition}/plan.plan.schema.ts`) + fixtures at `tests/fixtures/plan-*` + 30/30 tests pass across 4-5 plan-* test files. Authored [[QA-043-SPEC-003: Spec Aggregate Retro-Validation]] with per-TASK file:line evidence. Zero non-blocking findings (cleaner spec authoring than SPEC-002). Flipped TASK-001..005 frontmatter status TODO → DONE + all DoD checkboxes [x] + added `validated_by [[QA-043-SPEC-003]]` relation. Flipped SPEC-003 root status ACCEPTED → DONE. PLAN-001 propagation: build.SPEC-003 READY → DONE; Progress Dashboard build row PENDING 1→0 + DONE 6→7 (full build phase 7/7 DONE); Total row PENDING 3→2 + DONE 18→19. Build phase complete; remaining: review + end. Bundled into PR #13.
 
+## Event 07 — review READY → IN_PROGRESS; /review dispatched
+
+PR #13 merged (build.SPEC-002 + build.SPEC-003 retro-validation). Main synced. All 7 builds DONE. New branch `feat/plan-001-review` off main. review substatus PENDING → IN_PROGRESS; owning_session bound. PLAN-001 propagation: Progress Dashboard review row PENDING 1→0 + IP 0→1; Total row PENDING 2→1 + IP 0→1. Auto-routing to `/review` skill with target=feature (full feature surface, all 7 SPECs of composition library + 4 user-facing skills) for multi-axis adversarial review (BLOCKING gate before /end).
+
 ## Observations
 
 - [decision] PR #12 merged reconciliation: PLAN-001 build statuses now match per-TASK frontmatter source-of-truth #plan-reconciliation #drift-fix

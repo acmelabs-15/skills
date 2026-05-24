@@ -50,9 +50,9 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec | 0 | 0 | 0 | 7 | 7 |
 | build | 0 | 0 | 0 | 7 | 7 |
-| review | 1 | 0 | 0 | 0 | 1 |
+| review | 0 | 1 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total** | **2** | **0** | **0** | **19** | **21** |
+| **Total** | **1** | **1** | **0** | **19** | **21** |
 
 ## Cross-Part Dependency Graph
 
@@ -737,9 +737,11 @@ graph TD
 
 - **Phase**: review
 - **Title**: Multi-axis Adversarial Review
-- **Substatus**: PENDING
+- **Substatus**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_01
 - **Source Artifacts**: (none)
-- **Depends On**: build.SPEC-005, build.SPEC-006, build.SPEC-007
+- **Depends On**: build.SPEC-001..007 (all DONE post-PR-#13 merge)
+- **Dispatched**: 2026-05-23 on branch `feat/plan-001-review`
 
 **DoD**:
 
