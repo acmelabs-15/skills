@@ -43,8 +43,8 @@ Functional.
 - [x] GIVEN an EPIC frontmatter shape (title regex, type literal `epic`, status, permalink regex, tags 2-5) WHEN `EpicNoteSchema.parse()` is called against valid input THEN validation passes (closed by TASK-003-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 70; QA-057 PASS)
 - [ ] GIVEN a CRIT note with the H1 not matching frontmatter title verbatim WHEN `CritNoteSchema.parse()` is called THEN validation fails with a message identifying the H1 drift
 - [x] GIVEN a PLAN note with frontmatter status DONE but one or more parts in non-terminal status WHEN the extended `PlanNoteSchema.parse()` is called THEN validation fails with a message naming the non-terminal parts (closed by TASK-010-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 70; QA-058 PASS)
-- [ ] GIVEN any of the five schemas WHEN it parses an input missing the mandatory `## Observations` then `## Relations` final-two-sections invariant THEN validation fails
-- [ ] GIVEN any of the five schemas WHEN it parses an input whose Relations section uses a verb outside the 11-verb allowlist from `shared/composition/src/schemas/common.ts` THEN validation fails
+- [x] GIVEN any of the five schemas WHEN it parses an input missing the mandatory `## Observations` then `## Relations` final-two-sections invariant THEN validation fails (closed by TASK-004-SPEC-008 closure 2026-05-24 SESSION-2026-05-23_02 Event 73; cross-cutting AC satisfied — all 5 schemas ADR/ANALYSIS/EPIC/CRIT/PLAN-ext now enforce the final-two-sections invariant)
+- [x] GIVEN any of the five schemas WHEN it parses an input whose Relations section uses a verb outside the 11-verb allowlist from `shared/composition/src/schemas/common.ts` THEN validation fails (closed by TASK-004-SPEC-008 closure 2026-05-24 SESSION-2026-05-23_02 Event 73; cross-cutting AC satisfied — all 5 schemas now enforce the relation verb allowlist via common.ts)
 
 ## Implementation Notes
 

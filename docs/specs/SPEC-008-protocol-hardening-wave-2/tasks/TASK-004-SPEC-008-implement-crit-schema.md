@@ -72,3 +72,4 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`.
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - depends_on [[TASK-001-SPEC-008: Implement ADR Schema]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-059-SPEC-008: Validation Report for TASK-004 CRIT Schema]]

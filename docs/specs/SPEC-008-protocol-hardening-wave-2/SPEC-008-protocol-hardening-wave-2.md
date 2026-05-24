@@ -79,7 +79,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [x] [[TASK-001-SPEC-008: Implement ADR Schema]]
 - [x] [[TASK-002-SPEC-008: Implement ANALYSIS Schema]]
 - [x] [[TASK-003-SPEC-008: Implement EPIC Schema]]
-- [ ] [[TASK-004-SPEC-008: Implement CRIT Schema]]
+- [x] [[TASK-004-SPEC-008: Implement CRIT Schema]]
 - [x] [[TASK-005-SPEC-008: Implement ADR Parser]]
 - [ ] [[TASK-006-SPEC-008: Implement ANALYSIS EPIC and CRIT Parsers]]
 - [ ] [[TASK-007-SPEC-008: Implement validateAdrAcceptedClaim]]

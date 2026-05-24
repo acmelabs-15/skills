@@ -1685,3 +1685,41 @@ PLAN transitions:
 - qa-TASK-004-SPEC-008: PENDING → IN_PROGRESS (Event 72; dispatching brain:🧠-qa next)
 
 Next: commit code + PLAN + session atomically, then dispatch qa-004.
+
+
+## Event 73 — Batch 5b CLOSED: qa-004 PASS; 16/46 TASKs DONE; REQ-001 ACs 7+8 cross-cutting flip
+
+brain:🧠-qa agent ad835e781b99f26dc (foreground; 45 tool_uses; 543s). PASS — QA-059-SPEC-008 authored.
+
+**Notable AC clarification surfaced by QA**: REQ-001 AC-5 (CRIT H1-drift detection) is N/A at schema layer — no schema in the suite has an `h1` field; H1 extraction is parser-layer (`ast-helpers.ts:140`). AC-5 stays `[ ]` on REQ-001 until TASK-006 (CRIT parser) lands. This is a documented + correct interpretation per the established schema-vs-parser separation; the schema enforces structural invariants intrinsic to the model, parsers handle AST extraction concerns.
+
+**Cross-cutting REQ-001 AC flips** (now that all 5 schemas landed):
+- REQ-001 AC-7 [x] — final-two-sections invariant enforced by ALL 5 schemas (ADR/ANALYSIS/EPIC/CRIT/PLAN-ext)
+- REQ-001 AC-8 [x] — relation verb allowlist enforced by ALL 5 schemas via common.ts
+
+REQ-001 still DRAFT (7/8 ACs flipped; AC-5 gates on TASK-006 parser; status flips DRAFT→ACCEPTED only when ALL ACs satisfied AND all child TASKs DONE).
+
+### Full Event 55 propagation
+
+- TASK-004 note: status TODO → DONE (agent flipped); Relations updated to add `relates_to` link to QA-059-SPEC-008.
+- REQ-001 AC-7 + AC-8 flipped `[x]` with cross-cutting "closed by TASK-004-SPEC-008 closure" annotations.
+- SPEC-008 root `### Tasks (46)` rollup: TASK-004 flipped `[ ]` → `[x]`. Rollup now: 16/46 tasks `[x]` (001, 002, 003, 004, 005, 010, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040).
+- SPEC-008 root REQ rollup: REQ-001 stays `[ ]` (AC-5 + TASK-006 still gating; will flip when CRIT parser lands).
+- SPEC-008 root DESIGN rollup: DESIGN-001 stays `[ ]` (covers TASK-001..010; only 6/10 closed: 001/002/003/004/005/010; TASK-006/007/008/009 still PENDING).
+- PLAN-001 qa-TASK-004: IN_PROGRESS → DONE (Test Report Ref QA-059).
+- PLAN-001 task-level wave graph: T004 `⚡` → `✅`; classDef → done; Wave 1a subgraph header updated `7 DONE, 1 PENDING — Batch 5c: TASK-006 ANALYSIS+EPIC+CRIT parsers; dep-unblocked`.
+
+### Marathon state after Event 73
+
+- **16 TASKs CLOSED** (impl + QA both PASS) — 35% complete.
+- **0 TASKs IN_PROGRESS**.
+- **30 TASKs PENDING**: 006, 007, 008, 009, 011-020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041-046.
+- Canonical suite baseline: 763 pass / 2 fail / 765 total (unchanged from Event 72; QA-059 added no new code).
+
+### Next: Batch 5c
+
+TASK-006 (ANALYSIS + EPIC + CRIT parsers) is now dep-unblocked (all 4 schema deps DONE: 002/003/004/005; rename 029 DONE). TASK-006 is a LARGER scope than prior batches (3 parsers + 12+ tests across 3 type-specific section handlers). Estimated effort per TASK note: AI-Dominant 2d. The implementer briefs MUST be precise about per-type variation (ANALYSIS Open Questions detection; EPIC Contained Specs section; CRIT Findings table parsing).
+
+Wave 1a closes at TASK-006 closure. Wave 1b (per-skill scripts 011-020) follows.
+
+Marathon math: 16/46 (35%). Remaining 30 TASKs ≈ 7 more batches at established cadence.
