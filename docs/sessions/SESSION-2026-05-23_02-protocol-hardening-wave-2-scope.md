@@ -30,7 +30,7 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 - build.SPEC-008 IN_PROGRESS — owning_session SESSION-2026-05-23_02 (this session; RESUMED from PAUSED at Event 41 for PoC TASK-001)
 - Build order: TASK-029 (rename) DONE FIRST → Track 1 (TASK-001..010) → Track 4 cleanup + Track 3 harness → Track 2 scripts + Track 3 fixtures → Track 5 hooks
 - TASK-029 (rename) DONE — `_shared/`→`shared/`; qa PASS (QA-044-SPEC-008); full a–u cycle demonstrated; commit `8144429`
-- **CURRENT**: PoC TASK-001 (ADR schema — representative schema→parser→validator pattern). Rigid per-TASK cycle a–u. PAUSE for user PoC sign-off after TASK-001, then remaining 44 TASKs.
+- **CURRENT**: PoC SIGNED OFF (Event 46) — TASK-029 + TASK-001 DONE (2/46). Marathon continues IN THIS session per user. FIRST: dependency/parallelism analysis across the 44 remaining TASKs → user decision on parallelization approach (reconciled with the rigid one-TASK-at-a-time + serial PLAN/session bookkeeping) → then Track 1 remainder (TASK-002..010).
 - DEFERRED (Track 4 doc-hygiene sweep / TASK-034): flip `_shared/composition` in ~171 live Brain notes (TASK-029 DoD item 3; historical-immutability scope resolved there)
 - LATENT follow-up: skill scripts + `migrate-plan-001…ts` outside root tsconfig bun-typed scope (`Cannot find name 'Bun'`) — config-coherence fix, relevant to Tracks 1/2/5
 - OPEN: 2 pre-existing `defrag.test.ts` delegation failures (decide fix/track/accept); basic-memory move/edit transient flakiness (retry on failure)
@@ -980,3 +980,18 @@ Orchestrator actions (steps o–t):
 1. `/skills:plan PLAN-001-skills-ecosystem` (continue mode) → RESUMES THIS session (PAUSED → IN_PROGRESS; continue Event numbering; do NOT create a new note).
 2. build.SPEC-008 IN_PROGRESS. Marathon order: Track 1 remainder (TASK-002..010) → Track 4 cleanup (incl. TASK-034 doc-hygiene + the 2-failure decision) → Track 3 harness → Track 2 scripts → Track 5 hooks (TASK-046 LAST, R2 mitigation).
 3. Seed each track's impl+qa workflow items into PLAN just-in-time as the track begins.
+
+
+## Event 46 — PoC SIGNED OFF; marathon continues this session; parallelism analysis first
+
+User adjudicated (AskUserQuestion) the PoC sign-off. Selected option verbatim: **"Approve + continue now"** — "Sign off and immediately start the marathon in THIS session, beginning Track 1 remainder TASK-002 (ANALYSIS schema). Risk: a 44-TASK marathon (each with impl+QA dispatch + multiple commits) will exhaust this context well before completion, likely forcing a mid-track pause." User refinement (verbatim): **"I'd also like us to make sure we've done analysis and established what work can be done in parallel."**
+
+Decision locked: pattern APPROVED; marathon proceeds in this session (session stays IN_PROGRESS). Before fanning out builds, run a dependency + file-ownership analysis across the 44 remaining SPEC-008 TASKs to establish safe parallel groups, then surface the parallelization approach for user decision.
+
+Parallelism reconciliation constraints (orchestrator pre-analysis):
+
+- Rigid cycle is one-TASK-per-agent + per-TASK QA gate + no integrate-later. Parallelism must keep each TASK as its own full impl→QA→done cycle; it may only fan out across INDEPENDENT TASKs (disjoint Files Affected + no in-flight dep).
+- Shared serial surfaces: the PLAN note + session note + git commits are single mutation points — orchestrator bookkeeping is serial even when agent builds run concurrently. Barrel index files (`schemas/index.ts`, `parsers/index.ts`, `validators/index.ts`) are multi-TASK contention points within Track 1.
+- TASK-029 + TASK-001 already DONE.
+
+Next: dispatch brain:🧠-analyst (read-only) for the dependency DAG + parallel-wave grouping + file-contention flags; synthesize; AskUserQuestion on the parallelization approach.
