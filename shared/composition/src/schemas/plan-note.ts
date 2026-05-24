@@ -233,6 +233,24 @@ const EditorMirrorEntrySchema = z
   })
   .strict();
 
+/**
+ * Terminal part substatuses for the PLAN done-claim invariant (SPEC-008
+ * REQ-001, TASK-010). A PLAN whose `frontmatter.status === "DONE"` requires
+ * every part to be in a terminal state — `DONE`, `DEFERRED`, or `ABANDONED`.
+ * Any other substatus (`PENDING`, `READY`, `IN_PROGRESS`, `BLOCKED`) means
+ * the PLAN cannot legitimately claim DONE.
+ *
+ * Mirrors the Wave 1 part-substatus enum from `common.ts`; redeclared as a
+ * literal tuple so the schema's `superRefine` arm and the runtime
+ * `validatePlanDoneClaim` validator share the same source-of-truth.
+ */
+const TERMINAL_PART_SUBSTATUSES = ["DONE", "DEFERRED", "ABANDONED"] as const;
+type TerminalPartSubstatus = (typeof TERMINAL_PART_SUBSTATUSES)[number];
+
+export function isTerminalPartSubstatus(value: string): value is TerminalPartSubstatus {
+  return (TERMINAL_PART_SUBSTATUSES as readonly string[]).includes(value);
+}
+
 export const PlanNoteSchema = z
   .object({
     frontmatter: PlanFrontmatterSchema,
@@ -266,6 +284,22 @@ export const PlanNoteSchema = z
             message: `Part ${part.id}: depends_on ${dep} not found in parts`,
           });
         }
+      }
+    }
+  })
+  // SPEC-008 REQ-001 / TASK-010: PLAN done-claim gate. When PLAN status is
+  // DONE, every part substatus must be terminal (DONE / DEFERRED / ABANDONED).
+  // This closes the Wave 1 gap where PLAN had schema + mutations + renderer +
+  // parser but no parse-time done-claim guard. Additive arm — preserves all
+  // existing PlanNoteSchema cross-field invariants.
+  .superRefine((data, ctx) => {
+    if (data.frontmatter.status !== "DONE") return;
+    for (const part of data.parts) {
+      if (!isTerminalPartSubstatus(part.substatus)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `PLAN status DONE requires every part substatus terminal; part ${part.id} has substatus ${part.substatus} (terminal set: DONE, DEFERRED, ABANDONED)`,
+        });
       }
     }
   });

@@ -2748,20 +2748,20 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-003-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 67
+- **Transitioned At Event**: Event 69
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Fix Brief For Event**: bun-ts-engineer agent aca83cfe30745acbe; 20/0/20 targeted tests; biome PASS; tsc PASS; suite 734/2/736 (delta +35 = TASK-003+010); 12 DoD + 3 ADR Compliance all [x]
 
 #### qa-TASK-003-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-003-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 69
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -2880,20 +2880,20 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-010-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 67
+- **Transitioned At Event**: Event 69
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Fix Brief For Event**: bun-ts-engineer agent a325feb5733a31296; 15/0/15 targeted tests (7 schema + 8 validator); biome PASS; tsc PASS; 18 baseline tests preserved (Wave 1 zero-regression); 14 DoD + 4 ADR Compliance all [x]
 
 #### qa-TASK-010-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-010-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 69
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —

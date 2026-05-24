@@ -9,6 +9,10 @@ tags:
 - wave-2
 - plan-001
 - skills-ecosystem
+status_history:
+- IN_PROGRESS → PAUSED 2026-05-23 (Event 64; batch 4 milestone)
+- PAUSED → IN_PROGRESS 2026-05-24 (Event 65; resume + rehydration)
+- IN_PROGRESS → PAUSED 2026-05-24 (Event 68; TASK-030 closed; before Batch 5a agent dispatch)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -1528,3 +1532,57 @@ User explicitly requested pause-before-agent-dispatch after TASK-030 closure. Ho
 6. Then Wave 1b (TASK-011-020 per-skill scripts; 10 TASKs in ~2-3 sub-batches).
 
 Marathon math after Event 68: 13/46 (28%). Remaining 33 TASKs ≈ 7-8 more batches at the established cadence.
+
+
+## Event 69 — Batch 5a remainder: impl-003 + impl-010 returned PASS; 4 PLAN transitions; dispatching qa-003 + qa-010
+
+User clarified ("sorry if I said I wanted to pause that was a mistake I want to continue") — reverting the prior pause intent. Continuing forward with Batch 5a remainder per Event 67 plan.
+
+Two bun-ts-engineer agents dispatched in parallel (foreground), file-disjoint:
+
+### impl-TASK-003 return (agent aca83cfe30745acbe; tool_uses 38; duration 532s)
+
+**Verdict: PASS** — all 12 DoD + 3 ADR Compliance items `[x]`.
+
+- New files: `shared/composition/src/schemas/epic-note.ts` (133 lines) + `shared/composition/tests/schemas/epic-note.test.ts` (209 lines)
+- Modified: `shared/composition/src/schemas/index.ts` (+1 line; +EpicNoteSchema, +EpicNote re-export)
+- Targeted tests: 20 pass / 0 fail / 20 total (DoD floor was ≥6; 3.3× exceeded)
+- Gates: biome scoped PASS; `bunx tsc --noEmit` PASS
+- EpicNoteSchema enforces title regex `^EPIC-\d{3}.*`, type literal `epic`, status enum, permalink regex `^roadmap/`, tags 2-5; Contained Specs section required when `contains` relations present; final-two-sections invariant; relation verb allowlist via common.ts; `.strict()` on frontmatter + outer + inherited sub-schemas; zero cross-note resolution (deferred to validateEpicDoneClaim TASK-009)
+- No HALT items
+
+### impl-TASK-010 return (agent a325feb5733a31296; tool_uses 66; duration 855s)
+
+**Verdict: PASS** — all 14 DoD + 4 ADR Compliance items `[x]`.
+
+- Modified: `shared/composition/src/schemas/plan-note.ts` (+33 lines additive superRefine + TERMINAL_PART_SUBSTATUSES tuple + isTerminalPartSubstatus predicate)
+- New files: `shared/composition/src/validators/plan-claim-validator.ts` (53 lines) + `shared/composition/src/validators/index.ts` (12 lines; new barrel) + `shared/composition/tests/schemas/plan-note.test.ts` (174 lines; 7 new superRefine tests) + `shared/composition/tests/validators/plan-claim-validator.test.ts` (170 lines; 8 new validator tests)
+- Wave 1 baseline preservation: `tests/plan-note-schema.test.ts` 18/18 pass identical to pre-change (zero regression)
+- Targeted new: 15 pass / 0 fail / 15 total (7 schema + 8 validator)
+- Composition package suite: 607 pass / 2 fail / 609 total (2 fails are SPEC-007 DEFERRED baseline only)
+- Gates: biome scoped PASS; tsc --noEmit PASS
+- Note from agent: TASK-010 DoD listed `tests/schemas/plan-note.test.ts` as MODIFY but path didn't exist pre-task (only legacy flat `tests/plan-note-schema.test.ts`). Agent created the new spec-008-convention path with 7 new superRefine tests, left legacy file untouched (Wave 1 baseline preserved). Matches Track-1 convention from adr-note.test.ts + analysis-note.test.ts.
+- No HALT items
+
+### Independent orchestrator verification
+
+Orchestrator-run independent checks (not relying on agent self-report):
+
+- `git status --short`: 5 new files + 3 modified files staged for next commit (epic-note.ts, validators/, tests/schemas/plan-note.test.ts, tests/validators/plan-claim-validator.test.ts; modified plan-note.ts, schemas/index.ts, 2 TASK notes, session note)
+- `bun test` independent run: 734 pass / 2 fail / 736 total. Delta from pre-batch baseline (699/2/701): +35 pass = 20 (TASK-003) + 15 (TASK-010). Matches exactly. The 2 fails ARE the SPEC-007 DEFERRED `tests/skills/plan/plan-001-migration.test.ts` baseline (D-1 locked).
+- TASK-003 note `[x]` count: 15 (12 DoD + 3 ADR Compliance) — matches agent claim
+- TASK-010 note `[x]` count: 18 (14 DoD + 4 ADR Compliance) — matches agent claim
+- New canonical suite baseline post-batch: **734 pass / 2 fail / 736 total**
+
+### PLAN transitions this Event (4)
+
+1. impl-TASK-003-SPEC-008: IN_PROGRESS → DONE (Event 69)
+2. impl-TASK-010-SPEC-008: IN_PROGRESS → DONE (Event 69)
+3. qa-TASK-003-SPEC-008: PENDING → IN_PROGRESS (Event 69; dispatching brain:🧠-qa next)
+4. qa-TASK-010-SPEC-008: PENDING → IN_PROGRESS (Event 69; dispatching brain:🧠-qa next)
+
+Wave graph: T003 + T010 stay `inprogress` (impl-done; QA pending; class flips to `done` only when both phases close per maintenance rule).
+
+### Next action (this same turn)
+
+Commit code + PLAN + Event 69 atomically, then dispatch qa-003 + qa-010 in parallel (foreground; brain:🧠-qa). QA brief MUST quote the TASK DoD + linked REQ AC + linked DESIGN compliance verbatim per `feedback_per_task_build_qa_cycle` step (m)-(n).

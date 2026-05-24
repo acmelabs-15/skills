@@ -23,24 +23,24 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`.
 
 ## Definition of Done
 
-- [ ] File `shared/composition/src/schemas/epic-note.ts` exists and exports `EpicNoteSchema` plus `type EpicNote`
-- [ ] Frontmatter sub-schema enforces title regex, type literal `epic`, status enum, permalink regex `^roadmap/`, tags 2-5
-- [ ] Schema requires a Contained Specs body section when the Relations section has any `contains` entry
-- [ ] Final-two-sections invariant is enforced
-- [ ] Relations verb allowlist enforced from `schemas/common.ts`
-- [ ] All sub-schemas use `.strict()`
-- [ ] No cross-note resolution in the schema itself (deferred to claim validator in TASK-009)
-- [ ] Unit tests cover: valid DRAFT, valid DONE with contains entries, missing Contained Specs section when contains present, frontmatter shape failures, forbidden relation verb rejection
-- [ ] `bun test shared/composition/tests/schemas/epic-note.test.ts` passes with at least 6 cases green
-- [ ] `biome check` passes
-- [ ] `tsc --noEmit` passes
-- [ ] `shared/composition/src/schemas/index.ts` re-exports `EpicNoteSchema` and `EpicNote`
+- [x] File `shared/composition/src/schemas/epic-note.ts` exists and exports `EpicNoteSchema` plus `type EpicNote`
+- [x] Frontmatter sub-schema enforces title regex, type literal `epic`, status enum, permalink regex `^roadmap/`, tags 2-5
+- [x] Schema requires a Contained Specs body section when the Relations section has any `contains` entry
+- [x] Final-two-sections invariant is enforced
+- [x] Relations verb allowlist enforced from `schemas/common.ts`
+- [x] All sub-schemas use `.strict()`
+- [x] No cross-note resolution in the schema itself (deferred to claim validator in TASK-009)
+- [x] Unit tests cover: valid DRAFT, valid DONE with contains entries, missing Contained Specs section when contains present, frontmatter shape failures, forbidden relation verb rejection
+- [x] `bun test shared/composition/tests/schemas/epic-note.test.ts` passes with at least 6 cases green
+- [x] `biome check` passes
+- [x] `tsc --noEmit` passes
+- [x] `shared/composition/src/schemas/index.ts` re-exports `EpicNoteSchema` and `EpicNote`
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (P1 EPIC coverage)
-- [ ] Honors [[ADR-001: Composition Library Architecture]]
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (P1 EPIC coverage)
+- [x] Honors [[ADR-001: Composition Library Architecture]]
 
 ## Files Affected
 

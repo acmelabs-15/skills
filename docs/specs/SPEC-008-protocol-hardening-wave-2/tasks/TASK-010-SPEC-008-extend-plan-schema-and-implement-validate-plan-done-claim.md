@@ -27,27 +27,27 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`. The existing PLAN
 
 ## Definition of Done
 
-- [ ] `PlanNoteSchema` at `shared/composition/src/schemas/plan-note.ts` includes a new `superRefine` arm rejecting status DONE plus any part substatus not in `{ DONE, DEFERRED, ABANDONED }`
-- [ ] The existing PlanNoteSchema cross-field invariants are preserved (no regressions; existing tests still pass)
-- [ ] File `shared/composition/src/validators/plan-claim-validator.ts` exists and exports `validatePlanDoneClaim` and `type PlanClaimResult`
-- [ ] Validator returns `{ ok: true }` when input status is not DONE
-- [ ] Validator returns `{ ok: false }` with one unsatisfied entry per non-terminal part when status is DONE
-- [ ] Validator returns `{ ok: true }` when status is DONE plus every part substatus is terminal
-- [ ] Validator is pure (no I/O, no mutation)
-- [ ] Unit tests for the superRefine: valid DONE plus all-terminal parts passes, DONE plus one IN_PROGRESS part rejected, IN_PROGRESS plus mixed parts unaffected, existing Wave 1 PlanNoteSchema tests still pass
-- [ ] Unit tests for the validator: DRAFT ok, DONE plus all-terminal ok, DONE plus one non-terminal failure naming the offending part
-- [ ] `bun test shared/composition/tests/schemas/plan-note.test.ts shared/composition/tests/validators/plan-claim-validator.test.ts` passes; existing Wave 1 case count plus at least 6 new cases
-- [ ] `biome check` passes
-- [ ] `tsc --noEmit` passes
-- [ ] `shared/composition/src/validators/index.ts` re-exports `validatePlanDoneClaim` and `PlanClaimResult`
-- [ ] `shared/composition/src/schemas/index.ts` PlanNoteSchema export is unchanged in name (no API break)
+- [x] `PlanNoteSchema` at `shared/composition/src/schemas/plan-note.ts` includes a new `superRefine` arm rejecting status DONE plus any part substatus not in `{ DONE, DEFERRED, ABANDONED }`
+- [x] The existing PlanNoteSchema cross-field invariants are preserved (no regressions; existing tests still pass)
+- [x] File `shared/composition/src/validators/plan-claim-validator.ts` exists and exports `validatePlanDoneClaim` and `type PlanClaimResult`
+- [x] Validator returns `{ ok: true }` when input status is not DONE
+- [x] Validator returns `{ ok: false }` with one unsatisfied entry per non-terminal part when status is DONE
+- [x] Validator returns `{ ok: true }` when status is DONE plus every part substatus is terminal
+- [x] Validator is pure (no I/O, no mutation)
+- [x] Unit tests for the superRefine: valid DONE plus all-terminal parts passes, DONE plus one IN_PROGRESS part rejected, IN_PROGRESS plus mixed parts unaffected, existing Wave 1 PlanNoteSchema tests still pass
+- [x] Unit tests for the validator: DRAFT ok, DONE plus all-terminal ok, DONE plus one non-terminal failure naming the offending part
+- [x] `bun test shared/composition/tests/schemas/plan-note.test.ts shared/composition/tests/validators/plan-claim-validator.test.ts` passes; existing Wave 1 case count plus at least 6 new cases
+- [x] `biome check` passes
+- [x] `tsc --noEmit` passes
+- [x] `shared/composition/src/validators/index.ts` re-exports `validatePlanDoneClaim` and `PlanClaimResult`
+- [x] `shared/composition/src/schemas/index.ts` PlanNoteSchema export is unchanged in name (no API break)
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (closes the Wave 1 PLAN done-claim gap)
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (additive extension to existing flat-directory file)
-- [ ] Honors [[ADR-001: Composition Library Architecture]] (Zod plus superRefine pattern)
-- [ ] Does not regress [[ADR-003: Plan Session Render Architecture]] D-4 (10 schema design decisions preserved)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (closes the Wave 1 PLAN done-claim gap)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (additive extension to existing flat-directory file)
+- [x] Honors [[ADR-001: Composition Library Architecture]] (Zod plus superRefine pattern)
+- [x] Does not regress [[ADR-003: Plan Session Render Architecture]] D-4 (10 schema design decisions preserved)
 
 ## Files Affected
 
