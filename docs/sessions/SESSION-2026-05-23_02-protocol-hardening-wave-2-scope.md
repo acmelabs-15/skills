@@ -428,3 +428,24 @@ Actions taken:
 - spec.SPEC-008 ADR coverage gate updated: clarifies ADR-004 is cross-source-coordinator (unrelated to Wave 2); ADR-005 is the Wave 2 architecture ADR
 
 Lesson: counter-availability check is part of the pre-flight, not post-flight. Should run `list_directory decisions` BEFORE drafting briefs that name a specific ADR number.
+
+
+## Event 19 — Architect agent stalled at write_note; orchestrator authored ADR-005 directly
+
+Background agent (a8793786d4f81157e) confirmed receipt of ADR-004→ADR-005 redirect via transcript inspection. Completed input-gathering phase (read PLAN-001, ANALYSIS-004, ADR-003 for precedent, list_directory decisions/). Last output verbatim: "Now I have everything needed to author ADR-005. Let me proceed with Pattern 2 Phase 1: write_note with NO-COLON title." Agent then stalled — no further tool calls observed after timestamp 02:04:10 UTC.
+
+User reported stall after ~5-minute silence; orchestrator killed the agent via TaskStop and authored ADR-005 directly. Orchestrator had full source material in context (ANALYSIS-004 inline + Events 10-16 verbatim D-N lock content + ADR-003 style precedent from page-1 read).
+
+ADR-005 authored via Pattern 2 three-phase write:
+
+- Phase 1: `write_note` with no-colon title; landed as `decisions/ADR-005 Protocol Hardening Wave 2 Architecture.md`
+- Phase 2: `edit_note` find_replace to insert colon into frontmatter title + H1 (expected_replacements=2; both replaced)
+- Phase 3: `move_note` to rename to kebab `decisions/ADR-005-protocol-hardening-wave-2-architecture.md`
+
+Permalink: `decisions/adr-005-protocol-hardening-wave-2-architecture-1` (Brain appended `-1` due to prior write collision; cosmetic, does not break wikilinks).
+
+ADR-005 structure: top-level Status / Context / Decision Summary / Detailed Decisions (7 D-Ns × 11-section template each) / Cross-Decision Coherence / Migration Plan / Validation / Clarifications / Observations / Relations. Total ~700 lines preserving verbatim D-N lock content from Events 10-16.
+
+**Step 6 detail-parity audit**: orchestrator self-audit (orchestrator was author + has Events 10-16 in context). Each per-D-N section quotes the AskUserQuestion answer verbatim in the "Decision" subsection (Pattern: `> **<Label>** > <description>`). Considered Options sections preserve all alternatives surfaced. PASS — detail parity confirmed.
+
+**Next**: /decisions Step 7 `brain:---adr-review` BLOCKING gate; Step 8 ACCEPTED flip on PASS; Step 9 set-part-done to /plan.
