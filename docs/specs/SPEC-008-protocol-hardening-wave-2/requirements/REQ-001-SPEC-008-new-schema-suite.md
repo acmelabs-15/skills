@@ -40,9 +40,9 @@ Functional.
 - [x] GIVEN a markdown file with valid ADR frontmatter, status PROPOSED, and one Considered Option with rationale WHEN `AdrNoteSchema.parse()` is called THEN validation passes
 - [x] GIVEN an ADR with status ACCEPTED and a Clarifications item with an unchecked `[ ]` checkbox WHEN `AdrNoteSchema.parse()` is called THEN validation fails with a message identifying the unchecked clarification
 - [x] GIVEN an ANALYSIS with status ACCEPTED and a `## Open Questions` section present WHEN `AnalysisNoteSchema.parse()` is called THEN validation fails with a message naming the forbidden section
-- [ ] GIVEN an EPIC frontmatter shape (title regex, type literal `epic`, status, permalink regex, tags 2-5) WHEN `EpicNoteSchema.parse()` is called against valid input THEN validation passes
+- [x] GIVEN an EPIC frontmatter shape (title regex, type literal `epic`, status, permalink regex, tags 2-5) WHEN `EpicNoteSchema.parse()` is called against valid input THEN validation passes (closed by TASK-003-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 70; QA-057 PASS)
 - [ ] GIVEN a CRIT note with the H1 not matching frontmatter title verbatim WHEN `CritNoteSchema.parse()` is called THEN validation fails with a message identifying the H1 drift
-- [ ] GIVEN a PLAN note with frontmatter status DONE but one or more parts in non-terminal status WHEN the extended `PlanNoteSchema.parse()` is called THEN validation fails with a message naming the non-terminal parts
+- [x] GIVEN a PLAN note with frontmatter status DONE but one or more parts in non-terminal status WHEN the extended `PlanNoteSchema.parse()` is called THEN validation fails with a message naming the non-terminal parts (closed by TASK-010-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 70; QA-058 PASS)
 - [ ] GIVEN any of the five schemas WHEN it parses an input missing the mandatory `## Observations` then `## Relations` final-two-sections invariant THEN validation fails
 - [ ] GIVEN any of the five schemas WHEN it parses an input whose Relations section uses a verb outside the 11-verb allowlist from `shared/composition/src/schemas/common.ts` THEN validation fails
 

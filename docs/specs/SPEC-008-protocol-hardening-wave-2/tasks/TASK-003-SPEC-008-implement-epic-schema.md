@@ -2,7 +2,7 @@
 title: 'TASK-003-SPEC-008: Implement EPIC Schema'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-003-spec-008-implement-epic-schema
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -72,3 +72,4 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`.
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - depends_on [[TASK-001-SPEC-008: Implement ADR Schema]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-057-SPEC-008: Validation Report for TASK-003 EPIC Schema]]

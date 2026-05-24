@@ -169,13 +169,13 @@ graph TD
     T040["✅ TASK-040<br/><span style='font-size:9px'>Git helpers</span>"]
   end
 
-  subgraph W1a ["Wave 1a — Schemas + Parsers (4 DONE, 2 IN PROGRESS Batch 5a, 2 PENDING Batch 5b)"]
+  subgraph W1a ["Wave 1a — Schemas + Parsers (6 DONE, 2 PENDING — Batch 5b: TASK-004 CRIT schema + TASK-006 ANALYSIS parser)"]
     direction LR
     T001["✅ TASK-001<br/><span style='font-size:9px'>ADR schema</span>"]
     T002["✅ TASK-002<br/><span style='font-size:9px'>ANALYSIS schema</span>"]
     T005["✅ TASK-005<br/><span style='font-size:9px'>ADR parser</span>"]
-    T003["⚡ TASK-003<br/><span style='font-size:9px'>EPIC schema</span>"]
-    T010["⚡ TASK-010<br/><span style='font-size:9px'>PLAN done-claim ext</span>"]
+    T003["✅ TASK-003<br/><span style='font-size:9px'>EPIC schema</span>"]
+    T010["✅ TASK-010<br/><span style='font-size:9px'>PLAN done-claim ext</span>"]
     T030["✅ TASK-030<br/><span style='font-size:9px'>Delete dispatcher.ts</span>"]
     T004["⏸ TASK-004<br/><span style='font-size:9px'>CRIT schema (5b)</span>"]
     T006["⏸ TASK-006<br/><span style='font-size:9px'>ANALYSIS parser</span>"]
@@ -252,8 +252,7 @@ graph TD
   T009 --> T046
   T045 --> T046
 
-  class T001,T002,T005,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
-  class T003,T010 inprogress
+  class T001,T002,T003,T005,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
   class T004,T006,T007,T008,T009,T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
 ```
 
@@ -2759,12 +2758,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-003-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 69
+- **Transitioned At Event**: Event 70
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Test Report Ref**: QA-057-SPEC-008
+- **Fix Brief For Event**: brain:🧠-qa agent ad9a7d20a7e67a7c1; 12 DoD + 3 ADR Compliance + REQ-001 AC-4/7/8 + DESIGN-001 compliance verified; 20/0/20 tests; biome PASS; tsc PASS; suite 734/2/736
 
 #### impl-TASK-004-SPEC-008
 
@@ -2891,12 +2890,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-010-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 69
+- **Transitioned At Event**: Event 70
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Test Report Ref**: QA-058-SPEC-008
+- **Fix Brief For Event**: brain:🧠-qa agent a4a19aa101027ac7f; 14 DoD + 4 ADR Compliance + REQ-001 AC-6 + REQ-003 AC-5/AC-6 + DESIGN-001 compliance verified; 15/0/15 targeted + Wave 1 baseline 18/18 zero-regression; biome PASS; tsc PASS
 
 #### impl-TASK-011-SPEC-008
 

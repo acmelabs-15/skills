@@ -1586,3 +1586,50 @@ Wave graph: T003 + T010 stay `inprogress` (impl-done; QA pending; class flips to
 ### Next action (this same turn)
 
 Commit code + PLAN + Event 69 atomically, then dispatch qa-003 + qa-010 in parallel (foreground; brain:🧠-qa). QA brief MUST quote the TASK DoD + linked REQ AC + linked DESIGN compliance verbatim per `feedback_per_task_build_qa_cycle` step (m)-(n).
+
+
+## Event 70 — Batch 5a fully CLOSED: qa-003 + qa-010 PASS; 15/46 TASKs DONE; full propagation
+
+Two brain:🧠-qa agents returned PASS independently (file-disjoint validation; foreground; Pattern 2 contract notes authored).
+
+### qa-TASK-003 return (agent ad9a7d20a7e67a7c1; tool_uses 37; duration 462s)
+
+**Verdict: PASS** — QA-057-SPEC-008 contract note authored. 12 DoD + 3 ADR Compliance + REQ-001 AC-4/AC-7/AC-8 contributions + DESIGN-001 compliance all verified with file:line evidence. Independent gate runs (bun test target, biome scoped, tsc, suite-wide) all PASS. Zero regression.
+
+### qa-TASK-010 return (agent a4a19aa101027ac7f; tool_uses 38; duration 492s)
+
+**Verdict: PASS** — QA-058-SPEC-008 contract note authored. 14 DoD + 4 ADR Compliance + REQ-001 AC-6 + REQ-003 AC-5/AC-6 + DESIGN-001 compliance all verified. Validator purity verified (JSON snapshot compare); Wave 1 baseline 18/18 zero-regression confirmed. Implementation characterized as "clean additive extension".
+
+### Full Event 55 propagation pass (both TASKs)
+
+- TASK-003 note: status TODO → DONE; Relations updated to add `relates_to` link to QA-057-SPEC-008.
+- TASK-010 note: status TODO → DONE; Relations updated to add `relates_to` link to QA-058-SPEC-008.
+- REQ-001 AC-4 flipped `[x]` (TASK-003 satisfies; EPIC frontmatter shape validation).
+- REQ-001 AC-6 flipped `[x]` (TASK-010 satisfies; PLAN DONE+non-terminal-part rejection).
+- REQ-001 AC-7/AC-8 stay `[ ]` — cross-cutting final-two-sections + verb-allowlist gates on ALL 5 schemas landing (CRIT schema TASK-004 still PENDING).
+- REQ-003 AC-5 flipped `[x]` (TASK-010 satisfies; validatePlanDoneClaim IN_PROGRESS-part rejection).
+- REQ-003 AC-6 flipped `[x]` (TASK-010 satisfies; all-terminal `{ok:true}` case).
+- REQ-003 AC-7 stays `[ ]` — cross-cutting validator-non-terminal-status gates on all 4 validators (TASK-007/008/009 PENDING).
+- REQ-001 + REQ-003 status stays DRAFT — partial AC coverage; flips to ACCEPTED only when all ACs `[x]` AND all child TASKs DONE.
+- SPEC-008 root `### Tasks (46)` rollup: TASK-003 + TASK-010 lines flipped `[ ]` → `[x]`. Rollup now: 15/46 tasks `[x]` (001, 002, 003, 005, 010, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040).
+- SPEC-008 root REQ/DESIGN/AC rollups: unchanged (no totality-gated rollup affected; REQ-001/REQ-003 still gate on remaining ACs and child TASKs).
+- PLAN-001 qa-TASK-003: IN_PROGRESS → DONE (Test Report Ref QA-057).
+- PLAN-001 qa-TASK-010: IN_PROGRESS → DONE (Test Report Ref QA-058).
+- PLAN-001 task-level wave graph: T003 + T010 node labels `⚡` → `✅`; classDef declaration moved both to `done`; Wave 1a subgraph header updated `4 DONE, 2 IN PROGRESS Batch 5a, 2 PENDING Batch 5b` → `6 DONE, 2 PENDING — Batch 5b: TASK-004 CRIT schema + TASK-006 ANALYSIS parser`.
+
+### Marathon state after Event 70
+
+- **15 TASKs CLOSED** (impl + QA both PASS): 001, 002, 003, 005, 010, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040. **33% complete.**
+- **0 TASKs IN_PROGRESS** (Batch 5a fully closed).
+- **31 TASKs PENDING**: 004, 006, 007, 008, 009, 011-020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041-046.
+- Canonical suite baseline (unchanged from Event 69): 734 pass / 2 fail / 736 total. The 2 fails are SPEC-007 DEFERRED `tests/skills/plan/plan-001-migration.test.ts` (D-1 locked).
+
+### Next batch (Batch 5b)
+
+Wave 1a remainder: TASK-004 (CRIT schema; sequential on `schemas/index.ts` barrel after TASK-003 lands — barrel safe now since TASK-003 closed). TASK-006 (ANALYSIS parser; different file `parsers/analysis-note.ts` + `parsers/index.ts` barrel — could parallel with TASK-004 if scope confirmed file-disjoint).
+
+Per R3 barrel-collision mitigation: TASK-004 + TASK-006 touch DIFFERENT barrels (`schemas/index.ts` vs `parsers/index.ts`), so parallel dispatch is safe. Both bun-ts-engineer.
+
+Batch 5b dispatch plan: impl-004 (bun-ts-engineer; CRIT schema) + impl-006 (bun-ts-engineer; ANALYSIS parser) in parallel.
+
+Marathon math: 15/46 (33%). Remaining 31 TASKs ≈ 7 more batches at the established cadence.

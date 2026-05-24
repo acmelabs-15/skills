@@ -2,7 +2,7 @@
 title: 'TASK-010-SPEC-008: Extend PLAN Schema and Implement validatePlanDoneClaim'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-010-spec-008-extend-plan-schema-and-implement-validate-plan-done-claim
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -81,3 +81,4 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`. The existing PLAN
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-058-SPEC-008: Validation Report for TASK-010 PLAN Done-Claim Extension and validatePlanDoneClaim]]
