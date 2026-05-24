@@ -245,12 +245,12 @@ cross_source_updates:
   - target_file: "docs/planning/PLAN-001-brain.md"
     target_part_id: "research.1"
     updates:
-      owning_session: "[[SESSION-2026-05-19_02: New Session]]"
-      completing_session: "[[SESSION-2026-05-19_02: New Session]]"
+      owning_session: "<SESSION-2026-05-19_02: New Session>"
+      completing_session: "<SESSION-2026-05-19_02: New Session>"
   - target_file: "docs/planning/PLAN-001-brain.md"
     target_part_id: "decisions.1"
     updates:
-      owning_session: "[[SESSION-2026-05-19_02: New Session]]"
+      owning_session: "<SESSION-2026-05-19_02: New Session>"
 ```
 
 Cross_source_updates handoff to PLAN adapter validated by PLAN adapter's own char-identity check; failure mode: SESSION adapter aborts if PLAN adapter rejects.
@@ -269,7 +269,7 @@ subtree_manifest:
     mutations:
       renumber_map: { "SPEC-001": "SPEC-003" }
       wikilink_map:
-        "[[SPEC-001: Brain]]": "[[SPEC-003: Brain Reorg]]"
+        "<SPEC-001: Brain>": "<SPEC-003: Brain Reorg>"
       frontmatter_map:
         title: "SPEC-003: Brain Reorg"
         permalink: "specs/spec-003-brain-reorg/spec-003-brain-reorg"
@@ -279,7 +279,7 @@ subtree_manifest:
       mutations:
         renumber_map: { "REQ-001-SPEC-001": "REQ-001-SPEC-003" }
         wikilink_map:
-          "[[REQ-001-SPEC-001: Injectable Data Source]]": "[[REQ-001-SPEC-003: Injectable Data Source]]"
+          "<REQ-001-SPEC-001: Injectable Data Source>": "<REQ-001-SPEC-003: Injectable Data Source>"
         frontmatter_map:
           title: "REQ-001-SPEC-003: Injectable Data Source"
           permalink: "specs/spec-003-brain-reorg/requirements/req-001-spec-003-injectable-data-source"
@@ -290,7 +290,7 @@ subtree_manifest:
       mutations:
         renumber_map: { "TASK-001-SPEC-001": "TASK-001-SPEC-003" }
         wikilink_map:
-          "[[TASK-001-SPEC-001: Create DataSource Interface]]": "[[TASK-001-SPEC-003: Create DataSource Interface]]"
+          "<TASK-001-SPEC-001: Create DataSource Interface>": "<TASK-001-SPEC-003: Create DataSource Interface>"
         frontmatter_map:
           title: "TASK-001-SPEC-003: Create DataSource Interface"
           permalink: "specs/spec-003-brain-reorg/tasks/task-001-spec-003-create-datasource-interface"
@@ -887,10 +887,13 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 
 ## Relations
 
+- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
+
+- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
+
 - implements [[ADR-001: Composition Library Architecture]]
 - part_of [[PLAN-001: Skills Ecosystem]]
 - relates_to [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
-- pairs_with [[brain:---adr-review]]
 - relates_to [[CRIT-002-ADR-002: Adapter Contract and Plan Schema Debate Log]]
 - implemented_by [[SPEC-001: Composition Core and ADR Adapter]]
 - implemented_by [[SPEC-002: Simple Adapters]]
@@ -899,3 +902,5 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - implemented_by [[SPEC-005: Decompose and Recompose Skills]]
 - implemented_by [[SPEC-006: Defrag and Ingest Skills]]
 - implemented_by [[SPEC-007: Plan/Session Render Implementation]]
+
+- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]

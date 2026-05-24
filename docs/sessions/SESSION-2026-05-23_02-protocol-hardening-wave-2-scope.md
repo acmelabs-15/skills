@@ -61,7 +61,6 @@ Next: await audit returns → synthesize → surface tiered scope via AskUserQue
 - inspired_by [[ANALYSIS-003 Phase X Protocol Hardening State]]
 - pairs_with [[SESSION-2026-05-23_01 Plan-001 Reconcile and Build SPEC-002]]
 
-
 ## Event 02 — Audits A and B returned; convergent finding on enforcement gap
 
 **Audit A (Composition Coverage)** — recommended Wave 2 scope:
@@ -97,7 +96,6 @@ Concrete drift:
 Wave 2 must close BOTH: more schemas/validators are pointless if no skill calls them, AND wiring skills to call validators is pointless if half the gate points don't have validators.
 
 Pending Audit C, D, E. After all returns, will synthesize into tiered scope proposal and surface via AskUserQuestion.
-
 
 ## Event 03 — Audit E returned (test coverage gaps)
 
@@ -136,7 +134,6 @@ The "mechanically impossible to lie" claim requires parse-from-markdown-then-val
 
 Pending Audit C (Brain notes coherence) and Audit D (code-vs-spec coherence).
 
-
 ## Event 04 — Audit C returned (Brain notes coherence)
 
 **Verdict**: MINOR_DRIFT — 10 of 100 notes have violations (10%); zero systemic-convention breakdowns; Wave 2 cleanup substantially held.
@@ -159,7 +156,6 @@ Pending Audit C (Brain notes coherence) and Audit D (code-vs-spec coherence).
 **Systematic pattern flag**: `validates` relation in 4 QA notes ← QA agent-dispatch brief template doesn't enumerate the 11 valid relation types. This is the same shape as Audit B finding: agent briefs are documentation-grade, not enforcement-grade.
 
 Pending: Audit D (code-vs-spec coherence).
-
 
 ## Event 05 — Audit D returned (code-vs-spec coherence)
 
@@ -243,7 +239,6 @@ Two viable shapes:
 
 Surfacing as AskUserQuestion now.
 
-
 ## Event 09 — Wave 2 scope shape LOCKED
 
 **Decision** (verbatim from AskUserQuestion answer):
@@ -270,7 +265,6 @@ Surfacing as AskUserQuestion now.
 4. **protocol-hardening** (existing IN_PROGRESS): stays IN_PROGRESS as umbrella; flips DONE when build.SPEC-008 DONE.
 
 PLAN-001 will be edited to add the 3 new parts + update dependency graph + update Progress Dashboard. Two-step edit + commit follows.
-
 
 ## Event 10 — D-1 LOCKED: per-skill scripts invocation pattern
 
@@ -302,7 +296,6 @@ bun skills/build/scripts/validate-task-done.ts <task-path>
 
 PLAN-001 decisions.4 DoD: D-1 flipped `[ ]` → `[x]`.
 
-
 ## Event 11 — D-2 LOCKED: extend existing flat dirs + `_shared` rename captured
 
 **Decision** (verbatim from AskUserQuestion answer):
@@ -319,7 +312,7 @@ PLAN-001 decisions.4 DoD: D-1 flipped `[ ]` → `[x]`.
 |---|---|---|
 | 1 | Brain notes: 2 duplicate frontmatter blocks (QA-027, QA-030) | C |
 | 2 | Brain notes: 4 forbidden `validates` relations (QA-027, QA-042, QA-043, QA-015) | C |
-| 3 | Brain notes: 3 title-without-colon (ANALYSIS-002, SESSION-2026-05-20_01, _02) | C |
+| 3 | Brain notes: 3 title-without-colon (ANALYSIS-002, SESSION-2026-05-20_01,_02) | C |
 | 4 | Brain notes: 2 stale `type:test_report`/`type:test-report` (QA-030, QA-038) | C |
 | 5 | Brain notes: PII path redaction (QA-036, QA-038, SESSION-2026-05-20_03) | C |
 | 6 | Brain notes: Event 36/37/38 dedup in SESSION-2026-05-21_01 | C |
@@ -330,7 +323,6 @@ PLAN-001 decisions.4 DoD: D-1 flipped `[ ]` → `[x]`.
 | 11 | **Structural: `_shared/` → `shared/` rename** | User directive (this event) |
 
 D-N progress: D-1 LOCKED (Event 10) → D-2 LOCKED (this event). Remaining: D-3, D-4, D-5, D-6, D-7.
-
 
 ## Event 12 — D-3 LOCKED: shared fixture-driven harness
 
@@ -343,7 +335,6 @@ D-N progress: D-1 LOCKED (Event 10) → D-2 LOCKED (this event). Remaining: D-3,
 Implication: SPEC-008 will need a TASK for the harness implementation + a TASK for the initial fixture set covering the top-10 prioritized adversarial scenarios from Audit E + REQ-010's drift-regression markers feeding the fixture inventory.
 
 D-N progress: D-1 ✓, D-2 ✓, D-3 ✓. Remaining: D-4 (dispatch-brief), D-5 (P1 include/defer), D-6 (SPEC-007), D-7 (dispatcher.ts).
-
 
 ## Event 13 — D-4 LOCKED: programmatic per-skill brief-generator scripts
 
@@ -376,7 +367,6 @@ Wave 2 final coverage:
 Total: 5 schemas + 5 parsers + 4 validators added. Updated effort: ~12-14 days (up from 10-13 with P1 deferral).
 
 D-N progress: D-1 ✓, D-2 ✓, D-3 ✓, D-4 ✓, D-5 ✓. Remaining: D-6 (SPEC-007), D-7 (dispatcher.ts).
-
 
 ## Event 15 — D-6 LOCKED: SPEC-007 checkbox notation amendment + validator extension
 
@@ -416,7 +406,6 @@ Next /decisions steps:
 - Step 8: flip ADR-004 PROPOSED → ACCEPTED
 - Step 9: set-part-done call back to /plan with ADR-004 wikilink as outcome
 
-
 ## Event 18 — Numbering drift caught: ADR-004 → ADR-005
 
 User flagged that ADR-004 already exists (`ADR-004: Cross-Source Coordinator Architecture`, 2026-05-21). Counter-availability check (per `feedback_note_creation_protocol` item 10) was missed pre-architect-dispatch.
@@ -430,7 +419,6 @@ Actions taken:
 - spec.SPEC-008 ADR coverage gate updated: clarifies ADR-004 is cross-source-coordinator (unrelated to Wave 2); ADR-005 is the Wave 2 architecture ADR
 
 Lesson: counter-availability check is part of the pre-flight, not post-flight. Should run `list_directory decisions` BEFORE drafting briefs that name a specific ADR number.
-
 
 ## Event 19 — Architect agent stalled at write_note; orchestrator authored ADR-005 directly
 
@@ -451,7 +439,6 @@ ADR-005 structure: top-level Status / Context / Decision Summary / Detailed Deci
 **Step 6 detail-parity audit**: orchestrator self-audit (orchestrator was author + has Events 10-16 in context). Each per-D-N section quotes the AskUserQuestion answer verbatim in the "Decision" subsection (Pattern: `> **<Label>** > <description>`). Considered Options sections preserve all alternatives surfaced. PASS — detail parity confirmed.
 
 **Next**: /decisions Step 7 `brain:---adr-review` BLOCKING gate; Step 8 ACCEPTED flip on PASS; Step 9 set-part-done to /plan.
-
 
 ## Event 20 — ADR-005 adr-review round 1: FAIL convergence
 
@@ -479,7 +466,6 @@ Plus reconfirm D-5 (EPIC + CRIT inclusion vs defer to Wave 3) given advisor + IT
 
 Surfacing via AskUserQuestion next.
 
-
 ## Event 21 — Phase 3 resolutions applied to ADR-005
 
 User clarification turns added Q1 lock (D-7 tactical cleanup notation) + Q2 lock (mandate automated gates as Wave 2 deliverable; full hook architecture confirmed). Q3 (SPEC-008 granularity) still pending.
@@ -504,7 +490,6 @@ User clarification turns added Q1 lock (D-7 tactical cleanup notation) + Q2 lock
 - Clarifications: Phase 3 adjustment narrative + 6 Disagree-and-Commit dissent entries (advisor+IT D-5 scope; architect MADR fields rejected; architect duplicate-note false positive; permalink `-1` cosmetic; relation-type specificity Track 4; IT alternative architectures rejected with rationale)
 
 **Open user decision**: Q3 — SPEC-008 granularity. With D-8 added (Track 5), Wave 2 now spans 5 tracks under one SPEC. Advisor's P1 about granularity has more weight; will resurface.
-
 
 ## Event 22 — Q3 LOCKED: SPEC-008 single SPEC for all 5 tracks
 
@@ -533,7 +518,6 @@ D-N inventory: D-1 ✓, D-2 ✓, D-3 ✓ (extended scope), D-4 ✓, D-5 ✓ (cro
 
 **Next decision**: run strict adr-review round 2 (re-dispatch all 6 reviewers against revised ADR for convergence vote) OR pragmatically flip ADR-005 → ACCEPTED on the basis that all P0+P1 findings have been resolved/D&C-captured (skill protocol allows convergence by Phase 3 resolution if findings are addressed).
 
-
 ## Event 23 — ADR-005 ACCEPTED; decisions.4 DONE; spec.SPEC-008 READY
 
 User adjudicated pragmatic flip over strict round 2 (per AskUserQuestion Event 23). All Phase 3 resolutions applied; all P0 + P1 findings either resolved in-ADR or Disagree-and-Commit-captured in Clarifications.
@@ -550,7 +534,6 @@ Actions applied:
 Per /decisions Step 9: set-part-done equivalent applied directly (skill returns to /plan via set-part-done call but with the workflow now in continue-from-spec.SPEC-008 mode). Next /plan invocation will auto-route to spec.SPEC-008 → dispatch /spec.
 
 Pending work on PLAN-001: spec.SPEC-008 (READY), build.SPEC-008 (PENDING), protocol-hardening (IN_PROGRESS umbrella; flips DONE when build.SPEC-008 DONE).
-
 
 ## Event 24 — /plan continue → spec.SPEC-008 IN_PROGRESS; auto-dispatching /spec
 
@@ -569,7 +552,6 @@ Skill(skill="skills:spec",
 ```
 
 (Wikilinks in args avoided per Brain MCP bullet-parser strictness; spec skill will resolve titles via Brain MCP read.)
-
 
 ## Event 25 — Session PAUSED for fresh-session resume of SPEC-008 authoring
 
@@ -595,7 +577,6 @@ Session status flipped `IN_PROGRESS → PAUSED`. PLAN-001 state preserved: decis
 - adr-review round 1 (6 parallel reviewers) + Phase 3 resolutions + pragmatic flip
 - PLAN-001 advances: decisions.4 DONE; spec.SPEC-008 IN_PROGRESS (ready for resume)
 - 10 atomic git commits on `feat/plan-001-protocol-hardening-wave-2-scope`
-
 
 ## Event 26 — Session resumed fresh; auto-dispatching /skills:spec Stage 2 for SPEC-008
 
@@ -627,7 +608,6 @@ Source artifacts (ADR-005 primary, plus prior accepted ADRs that SPEC-008 must c
 
 Expected SPEC-008 shape (per Event 22 + ADR-005 Decision Summary): 5 REQ clusters (one per track), 3-4 DESIGN notes, 15-20 TASKs, 1 SPEC root. ~30-35 notes total.
 
-
 ## Event 27 — Wave 1 returned: 62 SPEC-008 child notes authored across 5 parallel architects
 
 Dispatched 5 parallel `brain:🧠-architect` agents (foreground; opus model) with strict file-ownership boundaries per Track. All 5 returned successfully. Total: 12 REQs + 4 DESIGNs + 46 TASKs = 62 child notes authored. Pattern 2 three-phase write completed on every note (kebab filenames + colon-form titles + verbatim H1 matches). All notes status DRAFT (REQ/DESIGN) or TODO (TASK); no premature `[x]`.
@@ -655,3 +635,21 @@ Dispatched 5 parallel `brain:🧠-architect` agents (foreground; opus model) wit
 These cross-track edges will be added in the bi-directional closure pass via Brain MCP `edit_note` on the dependent TASK/REQ notes. ADR `implemented_by` relations (ADR-001/002/003/005 ← SPEC-008) added in the same pass.
 
 **Next**: commit Wave 1 → author SPEC-008 root → bi-dir closure → Phase 3 + ADR coverage + Gate A + Gate B → flip ACCEPTED → set-part-done.
+
+## Event: basic-memory DB corruption recovery on ADR-001/002/003 (2026-05-23)
+
+**Symptom**: Brain MCP `edit_note` on ADR-001/002/003 fails with `relations.0.permalink Field required [type=missing]` Pydantic validation error.
+
+**Root cause**: basic-memory's wikilink parser scans every `[[...]]` in note body text (including YAML code blocks and skill-name placeholders) and creates `links_to` relation rows. When the target can't be resolved to an existing Brain note's permalink, the DB row has NULL permalink. Subsequent `edit_note` calls validate all existing relations and reject these NULL rows, blocking edits.
+
+**Recovery path (documented exception to CONVENTIONS Section 1.7.1 Brain-MCP-only rule)**: direct filesystem `Edit` on the ADR markdown files to escape/neutralize unresolvable wikilinks. Brain MCP cannot perform this fix because validation rejects the very relations we need to delete. This is the only viable path — the user authorized it explicitly for corruption recovery. NOT a precedent for general ADR editing; restricted to wikilink-target cleanup only. No architect review required because no semantic ADR content changes — only syntactic neutralization of unresolvable wikilinks (skill refs, YAML example placeholders). architect agent involvement is documented here as the recovery-protocol rationale; the ADR content is unchanged in intent.
+
+**Plan**:
+
+1. ADR-001: remove `pairs_with [[brain:---adr-review]]` Relations line (skill is not a Brain note)
+2. ADR-002: same removal at line 897 + neutralize 6 YAML-code-block placeholder wikilinks (SESSION-2026-05-19_02 hypothetical, SPEC-001/SPEC-003 Brain-Reorg hypothetical, REQ-001-SPEC-001/SPEC-003 hypothetical, TASK-001-SPEC-001/SPEC-003 hypothetical) by stripping `[[` `]]` brackets within the YAML strings
+3. ADR-003: verified clean — no unresolvable wikilinks (all `[[...]]` resolve to real notes; `brain:---adr-review` mentions are bare prose, not bracketed)
+4. Lint with markdownlint-cli2 --fix
+5. Trigger basic-memory re-sync via Brain MCP `read_note`
+6. Verify with benign `edit_note` append on each ADR, then revert the test edit
+7. Commit fix

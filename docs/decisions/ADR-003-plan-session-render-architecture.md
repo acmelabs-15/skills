@@ -595,8 +595,14 @@ _No clarifications yet._
 
 ## Relations
 
+- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
+
+- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
+
 - implements [[ANALYSIS-002: Plan/Session Note Render Architecture]]
 - extends [[ADR-001: Composition Library Architecture]]
 - pairs_with [[ADR-002: Adapter Contract and Plan Schema]]
 - relates_to [[PLAN-001: Skills Ecosystem]]
 - implemented_by [[SPEC-007: Plan/Session Render Implementation]]
+
+- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
