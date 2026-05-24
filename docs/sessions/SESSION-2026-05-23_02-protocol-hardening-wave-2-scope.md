@@ -1032,3 +1032,18 @@ First bounded-parallel batch (3 file-disjoint, dep-satisfied, non-barrel Track-3
 - impl-TASK-026 — mutation backward-transition + idempotency tests → `tests/mutation-invariants.test.ts`
 
 File-disjointness confirmed (no shared file, no barrel). Dispatching 3 bun-ts-engineer implementers concurrently (foreground). Each brief: read existing composition API (parsers/validators/mutations/renderers) + relevant DESIGN/REQ; build code+tests only; no Brain-note edits; return per-DoD evidence. On return (serialized): per-TASK verify → impl→DONE → commit → qa gate → QA note → qa→DONE. No TASK flips DONE without its own QA PASS.
+
+
+## Event 50 — TASK-021 impl complete + parallel-batch recovery; impl-TASK-021 → DONE; TASK-025 partial scrap; TASK-026 partial salvage
+
+Wave 0 batch 1 returned partial: bun-ts-engineer `a54e71eb3026bc1cb` succeeded for TASK-021 with full State Changes; TASK-025 + TASK-026 dispatch tools errored on RETURN. Diagnosis:
+
+- TASK-021 (adversarial harness): SUCCESS. Files in place; tsc exit 0; biome clean; full suite 528+6=534/2/536 (the +6 is TASK-026 below — TASK-021 itself adds no tests per spec; harness exercised in TASK-023). DoD (10) + ADR/REQ compliance (4) all SATISFIED with file:line evidence. **Notable agent flag**: DESIGN-003's sketch shows `result.valid` / `u.message`; the REAL validator API is `{verdict, total, unsatisfied: {index, text, section?}[]}` — agent adapted to real API (correct per the no-guessing rule) and reported it. The exported harness contract matches DESIGN-003 verbatim; only internal dispatch matched real API. Track for the doc-sync sweep (Track 4) — DESIGN-003 sketch can be aligned to real API in a follow-up edit.
+- TASK-026 (mutation invariants): RETURN errored, but agent wrote a complete-looking 230-line `tests/mutation-invariants.test.ts` BEFORE failure. Tests RUN: 6 pass / 0 fail / 11 expect. No agent State Changes report — orchestrator will verify every DoD item from source (the verification step would happen anyway). Salvageable.
+- TASK-025 (integration tests): RETURN errored. Agent wrote 6 fixtures to `tests/fixtures/integration/` but NO test files (`tests/integration/` does not exist). Incomplete partial — scrap fixtures + re-dispatch fresh.
+- SCOPE CREEP caught + reverted: `skills/defrag/SKILL.md` was reformatted (long-line collapse) — no DoD authorized it, almost certainly a `biome --fix` side-effect from one of the parallel implementers. `git checkout` reverted before any commit. Adding to flags: parallel-implementer biome runs MUST be scoped (`biome check <specific-file>`, never bulk).
+
+Orchestrator actions this turn:
+
+- TASK-021 note: DoD (10) + ADR Compliance (4) flipped `[x]`. PLAN `impl-TASK-021` IN_PROGRESS → DONE (at Event 50). (TASK frontmatter status flips DONE only after qa PASS — step s.)
+- Pending in this Event: TASK-025 fixture cleanup + re-dispatch; TASK-026 partial-output verification; then TASK-021 qa dispatch. Atomic commit covers TASK-021 impl + scrap of TASK-025 partial.

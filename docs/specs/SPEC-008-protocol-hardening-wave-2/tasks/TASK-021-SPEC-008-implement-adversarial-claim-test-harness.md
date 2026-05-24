@@ -21,23 +21,27 @@ Implement the shared adversarial-claim test harness at `shared/composition/tests
 
 ## Definition of Done
 
-- [ ] File `shared/composition/tests/_helpers/adversarial.ts` exists
-- [ ] Exported function `testAdversarial(label: string, c: AdversarialCase)` signature matches DESIGN-003 verbatim
-- [ ] Exported type `AdversarialCase` includes `{fixture: string, validator: ValidatorType, expectedReject: RegExp}`
-- [ ] Internal helper `parseByValidatorType(type, md)` selects the correct parser per validator type and throws on malformed fixture
-- [ ] Internal helper `invokeValidator(type, parsed)` selects the correct validator from `shared/composition/src/validators/` per validator type
-- [ ] Parse failure path produces a distinct assertion message ("fixture malformed") separate from validator rejection
-- [ ] JSDoc on `testAdversarial` documents the regex-anchoring contract (specific anchors required, not loose matchers)
-- [ ] `bun test` passes with the harness in place (harness compiles and is callable; first invocations happen in TASK-023)
-- [ ] `biome lint` passes on the new file
-- [ ] `tsc --noEmit` passes (no type errors)
+
+- [x] File `shared/composition/tests/_helpers/adversarial.ts` exists
+- [x] Exported function `testAdversarial(label: string, c: AdversarialCase)` signature matches DESIGN-003 verbatim
+- [x] Exported type `AdversarialCase` includes `{fixture: string, validator: ValidatorType, expectedReject: RegExp}`
+- [x] Internal helper `parseByValidatorType(type, md)` selects the correct parser per validator type and throws on malformed fixture
+- [x] Internal helper `invokeValidator(type, parsed)` selects the correct validator from `shared/composition/src/validators/` per validator type
+- [x] Parse failure path produces a distinct assertion message ("fixture malformed") separate from validator rejection
+- [x] JSDoc on `testAdversarial` documents the regex-anchoring contract (specific anchors required, not loose matchers)
+- [x] `bun test` passes with the harness in place (harness compiles and is callable; first invocations happen in TASK-023)
+- [x] `biome lint` passes on the new file
+- [x] `tsc --noEmit` passes (no type errors)
+
 
 ## ADR Compliance
 
-- [ ] Honors ADR-005 D-3: shared fixture-driven harness pattern (single test runner plus fixture directory; per-validator test files NOT used)
-- [ ] Honors ADR-005 D-3 Implementation Notes verbatim: `tests/_helpers/adversarial.ts` location; signature `{fixture, validator, expectedReject}`
-- [ ] Honors REQ-006 AC-1: signature `({fixture: string, validator, expectedReject})` exported
-- [ ] Honors REQ-006 AC-3: parse-failure path surfaces distinctly from validator-rejection path
+
+- [x] Honors ADR-005 D-3: shared fixture-driven harness pattern (single test runner plus fixture directory; per-validator test files NOT used)
+- [x] Honors ADR-005 D-3 Implementation Notes verbatim: `tests/_helpers/adversarial.ts` location; signature `{fixture, validator, expectedReject}`
+- [x] Honors REQ-006 AC-1: signature `({fixture: string, validator, expectedReject})` exported
+- [x] Honors REQ-006 AC-3: parse-failure path surfaces distinctly from validator-rejection path
+
 
 ## Files Affected
 
