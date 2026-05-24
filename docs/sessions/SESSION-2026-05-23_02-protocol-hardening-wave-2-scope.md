@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - protocol-hardening
@@ -29,10 +29,11 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 - spec.SPEC-008 DONE — SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 46 TASK); all /spec gates PASS
 - build.SPEC-008 IN_PROGRESS — owning_session SESSION-2026-05-23_02 (this session, resumed from PAUSED at Event 33)
 - Build order: TASK-029 (`_shared/`→`shared/` rename) FIRST → Track 1 (TASK-001..010) → Track 4 cleanup + Track 3 harness → Track 2 scripts + Track 3 fixtures → Track 5 hooks
-- TASK-029 (rename) impl DONE — `_shared/`→`shared/` (Event 37); qa-TASK-029 next
-- DEFERRED (Track 4 doc-hygiene sweep): flip `_shared/composition` in ~171 live Brain notes (TASK-029 DoD item 3; folds into TASK-034; historical-immutability scope resolved there)
+- TASK-029 (rename) DONE — `_shared/`→`shared/`; qa PASS (QA-044-SPEC-008); full a–u cycle demonstrated
+- DEFERRED (Track 4 doc-hygiene sweep / TASK-034): flip `_shared/composition` in ~171 live Brain notes (TASK-029 DoD item 3; historical-immutability scope resolved there)
 - LATENT follow-up: skill scripts + `migrate-plan-001…ts` outside root tsconfig bun-typed scope (`Cannot find name 'Bun'`) — config-coherence fix, relevant to Tracks 1/2/5
-- Next: qa-TASK-029 cycle (steps j-u) → then PoC TASK-001 (ADR schema) → PAUSE for sign-off
+- OPEN: 2 pre-existing `defrag.test.ts` delegation failures (decide fix/track/accept); basic-memory move/edit transient flakiness (retry on failure)
+- PAUSED after TASK-029 per user PoC decision. NEXT (fresh context): /plan continue → resume THIS session → /build TASK-001 (ADR schema) → PoC sign-off → remaining 44 TASKs
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
@@ -883,3 +884,24 @@ State: TASK-029-SPEC-008 status TODO → DONE; `relates_to [[QA-044-SPEC-008: Re
 **TASK-029 (rename) CLOSED** — full rigid per-TASK cycle (a–u) demonstrated end-to-end. Flagged for attention: 2 pre-existing defrag-delegation test failures (out of scope); skill-script tsconfig `Bun`-type gap (config-coherence follow-up).
 
 Next (PoC): TASK-001 (ADR schema) — the representative schema→parser→validator pattern.
+
+
+## Event 40 — PoC paused after TASK-029; resume fresh for TASK-001
+
+User decision (AskUserQuestion): "Pause; run TASK-001 fresh." TASK-029 (rename) fully CLOSED (impl + qa PASS; commit `8144429`). Pausing the build marathon at a clean state; remaining PoC TASK-001 (ADR schema — the representative schema→parser→validator pattern) runs in a fresh context with full token budget, then user signs off before the remaining 44 TASKs. Session status IN_PROGRESS → PAUSED.
+
+### Resume protocol (next context)
+
+1. `/skills:plan PLAN-001-skills-ecosystem` (continue mode).
+2. Continue **resumes THIS session** (SESSION-2026-05-23_02, PAUSED) — flip PAUSED → IN_PROGRESS, continue Event numbering. DO NOT create a new session note (Event 33 lesson; [[feedback_resume_paused_session_not_new]] equivalent).
+3. build.SPEC-008 is IN_PROGRESS (owning_session SESSION-2026-05-23_02). Resume /build Stage A at TASK-001 (impl-TASK-001 + qa-TASK-001 already seeded PENDING in PLAN).
+4. Run the rigid per-TASK cycle (a–u) for TASK-001: impl → ADR schema → DoD flip → impl DONE → commit → qa → QA-045 note → qa DONE → commit.
+5. After TASK-001: PAUSE for user PoC sign-off on the schema pattern before the remaining 44 TASKs.
+6. Then marathon: seed remaining items per-track; order Track 1 (TASK-002..010; 001 done) → Track 4 cleanup (incl. TASK-034 doc-hygiene sweep for the deferred ~171-note citation flip) → Track 3 harness → Track 2 scripts → Track 5 hooks (TASK-046 LAST, with R2 mitigation).
+
+### Open items for the marathon
+
+- DEFERRED: ~171 live Brain-note `_shared/composition` citation flip → Track 4 (TASK-034); historical-immutability scope resolved there.
+- DECIDE: 2 pre-existing `defrag.test.ts` delegation failures (hash-mismatch + boom) — fix / track / accept.
+- CONFIG-COHERENCE: skill scripts + `migrate-plan-001…ts` outside root tsconfig bun-typed `include` (affects Tracks 1/2/5 tsc gate).
+- TOOLING: basic-memory `move_note`/`edit_note` transient failures — expect + retry across remaining TASKs.
