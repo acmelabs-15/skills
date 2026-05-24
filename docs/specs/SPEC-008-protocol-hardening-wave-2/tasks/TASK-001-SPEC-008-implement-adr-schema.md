@@ -2,7 +2,7 @@
 title: 'TASK-001-SPEC-008: Implement ADR Schema'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-001-spec-008-implement-adr-schema
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -75,3 +75,4 @@ This TASK depends on Track 4 of SPEC-008 renaming `_shared/` to `shared/` at the
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-045-SPEC-008: Implement ADR Schema]]

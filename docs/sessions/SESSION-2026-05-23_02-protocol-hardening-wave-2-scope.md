@@ -952,3 +952,31 @@ Next: step (i) commit (code + PLAN + TASK + session atomic) → then qa-TASK-001
 ## Event 44 — qa-TASK-001 PENDING → IN_PROGRESS; dispatching QA (ADR schema)
 
 PLAN `qa-TASK-001-SPEC-008`: PENDING → IN_PROGRESS (owning_session SESSION-2026-05-23_02; at Event 44; paired impl DONE precondition satisfied). Next: dispatch brain:🧠-qa (foreground) to INDEPENDENTLY validate each TASK-001 DoD item + the ADR-scoped REQ-001 AC clauses + DESIGN-001 compliance points with concrete evidence (file:line, test name, command output). QA returns per-checkbox findings + verdict ONLY; orchestrator authors the QA-045 contract note (binary rule — QA agent does not write docs/**).
+
+
+## Event 45 — qa-TASK-001 PASS; TASK-001 DONE (ADR schema closed); PoC complete
+
+brain:🧠-qa (agent `ab7f85c79f1bcb8dc`) independently re-validated TASK-001 against committed state (impl `63fea62`; qa-IN_PROGRESS `a06477c`). Verdict **PASS** — all 12 DoD + 3 ADR Compliance + 4 in-scope REQ-001 ACs + 5 DESIGN-001 compliance points PASS with source-line + command evidence; QA re-ran `bun test` (22/22 scoped), `tsc` (exit 0), `biome` (clean); confirmed zero new suite failures (the 2 pre-existing `plan-001-migration.test.ts` failures are DEFERRED SPEC-007 work). QA wrote no Brain note (binary rule).
+
+Orchestrator actions (steps o–t):
+
+- Authored QA contract note QA-045-SPEC-008 via Pattern 2 (counter-checked: QA-044 was latest → QA-045; kebab filename + colon title verified). Uses `relates_to` (NOT forbidden `validates` — Audit C lesson).
+- TASK-001 note: frontmatter status TODO → DONE; added a `relates_to` edge to QA-045-SPEC-008 (bi-dir; QA-045 carries the inverse).
+- PLAN `qa-TASK-001-SPEC-008`: IN_PROGRESS → DONE (Test Report Ref QA-045; at Event 45).
+
+**TASK-001 (ADR schema) CLOSED** — full rigid per-TASK cycle (a–u) demonstrated for the representative Track-1 schema pattern.
+
+**PoC COMPLETE (TASK-029 rename + TASK-001 ADR schema).** Per Event 40 + Event 34 plan: PAUSE for user sign-off on the established schema→parser→validator pattern before the remaining 44 TASKs. Session → PAUSED after commit.
+
+### Open items carried to the marathon (corrected + tracked)
+
+- CORRECTION: the 2 pre-existing suite failures are `plan-001-migration.test.ts` (`TASK-014-SPEC-007` AC#1 + AC#3), NOT `defrag.test.ts` as earlier State said. Both correspond to DEFERRED SPEC-007 work (REQ-012 DEFERRED per ADR-005 D-6). DECIDE at marathon start: fix / track / accept.
+- DEFERRED: ~171 live Brain-note `_shared/composition` citation flip → Track 4 (TASK-034).
+- CONFIG-COHERENCE: skill scripts + `migrate-plan-001…ts` outside root tsconfig bun-typed `include` (affects script-heavy Tracks 2/5; Track 1 schemas unaffected — they're in tsc scope).
+- TOOLING: basic-memory `move_note`/`edit_note` transient failures — expect + retry. Also: edit_note rejects double-bracket entity refs placed mid-prose in a bullet — keep Event-bullet entity refs as plain text, or lead the bullet with a typed relation verb.
+
+### Resume protocol (next context)
+
+1. `/skills:plan PLAN-001-skills-ecosystem` (continue mode) → RESUMES THIS session (PAUSED → IN_PROGRESS; continue Event numbering; do NOT create a new note).
+2. build.SPEC-008 IN_PROGRESS. Marathon order: Track 1 remainder (TASK-002..010) → Track 4 cleanup (incl. TASK-034 doc-hygiene + the 2-failure decision) → Track 3 harness → Track 2 scripts → Track 5 hooks (TASK-046 LAST, R2 mitigation).
+3. Seed each track's impl+qa workflow items into PLAN just-in-time as the track begins.
