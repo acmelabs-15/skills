@@ -70,3 +70,4 @@ This TASK depends on Track 4 of SPEC-008 renaming `_shared/` to `shared/` at the
 - implements [[REQ-001-SPEC-008: New Schema Suite]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
+- depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]

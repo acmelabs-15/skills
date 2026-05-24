@@ -517,9 +517,6 @@ SHA-256 is a NIST standard cryptographic primitive available in every runtime. B
 ## Relations
 
 - implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
-
-- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
-
 - part_of [[PLAN-001: Skills Ecosystem]]
 - relates_to [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 - leads_to [[ADR-002: Adapter Contract and Plan Schema]]
@@ -530,5 +527,3 @@ SHA-256 is a NIST standard cryptographic primitive available in every runtime. B
 - implemented_by [[SPEC-005: Decompose and Recompose Skills]]
 - implemented_by [[SPEC-006: Defrag and Ingest Skills]]
 - implemented_by [[SPEC-007: Plan/Session Render Implementation]]
-
-- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]

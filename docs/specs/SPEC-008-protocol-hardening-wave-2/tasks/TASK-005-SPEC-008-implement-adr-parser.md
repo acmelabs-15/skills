@@ -73,3 +73,4 @@ This TASK depends on TASK-001 (schema is the parser's contract) and Track 4 rena
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - depends_on [[TASK-001-SPEC-008: Implement ADR Schema]]
+- depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]

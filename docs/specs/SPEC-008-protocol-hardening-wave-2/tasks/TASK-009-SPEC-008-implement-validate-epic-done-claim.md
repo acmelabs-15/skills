@@ -73,3 +73,4 @@ This TASK depends on TASK-003 (EPIC schema), TASK-006 (EPIC parser), and Track 4
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - depends_on [[TASK-003-SPEC-008: Implement EPIC Schema]]
 - depends_on [[TASK-006-SPEC-008: Implement ANALYSIS, EPIC, and CRIT Parsers]]
+- depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]

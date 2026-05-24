@@ -575,6 +575,8 @@ Each D-N has corresponding validation in SPEC-008's REQ AC + TASK DoD + test sca
 
 ## Relations
 
+- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
+
 - implements [[PLAN-001 Skills Ecosystem]]
 - relates_to [[ANALYSIS-004 Protocol Hardening Wave 2 Audit Synthesis]]
 - relates_to [[SESSION-2026-05-23_02 Protocol Hardening Wave 2 Scope]]

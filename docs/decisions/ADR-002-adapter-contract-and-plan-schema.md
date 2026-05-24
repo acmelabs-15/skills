@@ -888,9 +888,6 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 ## Relations
 
 - implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
-
-- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
-
 - implements [[ADR-001: Composition Library Architecture]]
 - part_of [[PLAN-001: Skills Ecosystem]]
 - relates_to [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
@@ -902,5 +899,3 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - implemented_by [[SPEC-005: Decompose and Recompose Skills]]
 - implemented_by [[SPEC-006: Defrag and Ingest Skills]]
 - implemented_by [[SPEC-007: Plan/Session Render Implementation]]
-
-- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]

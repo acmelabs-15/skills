@@ -71,3 +71,4 @@ This TASK depends on TASK-001 (ADR schema), TASK-005 (ADR parser), and Track 4 r
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - depends_on [[TASK-001-SPEC-008: Implement ADR Schema]]
 - depends_on [[TASK-005-SPEC-008: Implement ADR Parser]]
+- depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
