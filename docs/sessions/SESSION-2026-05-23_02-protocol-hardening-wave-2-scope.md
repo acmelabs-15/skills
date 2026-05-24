@@ -2107,3 +2107,18 @@ Recovery note: parallel `move_note` (Pattern 2 Phase 3) raced — QA-065 moved, 
 - TASK-011/015/016-SPEC-008: status TODO then DONE; reciprocal QA relation added
 - PLAN qa-TASK-011/015/016-SPEC-008: IN_PROGRESS then DONE (Test Report Ref = QA-065/066/067)
 - Marathon: 21/47 then **24/47** CLOSED
+
+
+## Event 88 — Batch 8 START (Wave 1b-B): TASK-012 + 013 + 017
+
+impl PENDING → IN_PROGRESS for:
+
+- [[TASK-012-SPEC-008: Implement transition-impl-item Script]] → `skills/build/scripts/transition-impl-item.ts`
+- [[TASK-013-SPEC-008: Implement transition-qa-item Script]] → `skills/build/scripts/transition-qa-item.ts`
+- [[TASK-017-SPEC-008: Implement render-plan-note and set-part-done Scripts]] → `skills/plan/scripts/render-plan-note.ts` + `set-part-done.ts`
+
+All REQ-004 (gate-point mutation/render scripts) + DESIGN-002. File-disjoint (012/013 distinct build files; 017 in plan/). Deps satisfied (TASK-029 DONE). Config already covers `skills/**` (no per-batch config edits needed). Code TASKs → `bun-ts-engineer`.
+
+### State Changes
+
+- PLAN impl-TASK-012/013/017-SPEC-008: PENDING → IN_PROGRESS
