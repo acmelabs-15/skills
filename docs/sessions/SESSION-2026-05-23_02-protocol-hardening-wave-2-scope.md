@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - protocol-hardening
