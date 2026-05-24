@@ -2,7 +2,7 @@
 title: 'REQ-002-SPEC-008: New Parser Suite'
 type: requirement
 permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-002-spec-008-new-parser-suite
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-008
@@ -38,12 +38,12 @@ Functional.
 ## Acceptance Criteria
 
 - [x] GIVEN an ADR markdown fixture WHEN `parseAdrNote(markdown)` is called THEN it returns an `AdrNote` typed model that re-parses via `AdrNoteSchema.parse()` without error
-- [ ] GIVEN an ANALYSIS markdown fixture with `## Open Questions` section present and status ACCEPTED WHEN `parseAnalysisNote(markdown)` is called THEN it throws a Zod validation error referencing the forbidden section
-- [ ] GIVEN an EPIC markdown fixture WHEN `parseEpicNote(markdown)` is called THEN it returns an `EpicNote` typed model with a `contains` relation array populated from the Relations section
-- [ ] GIVEN a CRIT markdown fixture WHEN `parseCritNote(markdown)` is called THEN it returns a `CritNote` typed model with findings parsed from `## Findings` section table rows
-- [ ] GIVEN the existing PLAN parser at `shared/composition/src/parsers/plan-note.ts` WHEN parsing a PLAN note whose status is DONE THEN the parsed model exposes a `parts` array suitable for `validatePlanDoneClaim` (REQ-003) to scan for non-terminal substatuses
-- [ ] GIVEN any of the four new parsers WHEN the input markdown frontmatter does not match the expected `type` literal (e.g., feeding an ANALYSIS to `parseAdrNote`) THEN the parser throws a Zod validation error identifying the type mismatch
-- [ ] GIVEN any of the four new parsers WHEN parsing succeeds THEN the returned model survives a render-then-parse round-trip with identical structural fields (no information loss in the parser layer)
+- [x] GIVEN an ANALYSIS markdown fixture with `## Open Questions` section present and status ACCEPTED WHEN `parseAnalysisNote(markdown)` is called THEN it throws a Zod validation error referencing the forbidden section (closed by TASK-006-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 76; QA-060 PASS)
+- [x] GIVEN an EPIC markdown fixture WHEN `parseEpicNote(markdown)` is called THEN it returns an `EpicNote` typed model with a `contains` relation array populated from the Relations section (closed by TASK-006-SPEC-008 2026-05-24; QA-060 PASS — containedSpecs derived prop mirrors contains relations)
+- [x] GIVEN a CRIT markdown fixture WHEN `parseCritNote(markdown)` is called THEN it returns a `CritNote` typed model with findings parsed from `## Findings` section table rows (closed by TASK-006-SPEC-008 2026-05-24; QA-060 PASS)
+- [x] GIVEN the existing PLAN parser at `shared/composition/src/parsers/plan-note.ts` WHEN parsing a PLAN note whose status is DONE THEN the parsed model exposes a `parts` array suitable for `validatePlanDoneClaim` (REQ-003) to scan for non-terminal substatuses (confirmed by TASK-010-SPEC-008 + QA-058 2026-05-24 — validatePlanDoneClaim scans parts[] successfully; verify-only AC satisfied)
+- [x] GIVEN any of the four new parsers WHEN the input markdown frontmatter does not match the expected `type` literal (e.g., feeding an ANALYSIS to `parseAdrNote`) THEN the parser throws a Zod validation error identifying the type mismatch (closed by TASK-006-SPEC-008 2026-05-24; QA-060 PASS — all 4 parsers throw ZodError on wrong type literal; TASK-005 covered ADR)
+- [x] GIVEN any of the four new parsers WHEN parsing succeeds THEN the returned model survives a render-then-parse round-trip with identical structural fields (no information loss in the parser layer) (closed by TASK-006-SPEC-008 2026-05-24; QA-060 PASS — round-trip re-parse tests green for all 4)
 
 ## Implementation Notes
 

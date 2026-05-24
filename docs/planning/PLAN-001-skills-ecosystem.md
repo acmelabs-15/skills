@@ -169,7 +169,7 @@ graph TD
     T040["✅ TASK-040<br/><span style='font-size:9px'>Git helpers</span>"]
   end
 
-  subgraph W1a ["Wave 1a — Schemas + Parsers (7 DONE, 1 PENDING — Batch 5c: TASK-006 ANALYSIS+EPIC+CRIT parsers; dep-unblocked)"]
+  subgraph W1a ["Wave 1a — Schemas + Parsers (8/8 DONE ✅ — Wave 1a CLOSED; REQ-002 ACCEPTED)"]
     direction LR
     T001["✅ TASK-001<br/><span style='font-size:9px'>ADR schema</span>"]
     T002["✅ TASK-002<br/><span style='font-size:9px'>ANALYSIS schema</span>"]
@@ -178,7 +178,7 @@ graph TD
     T010["✅ TASK-010<br/><span style='font-size:9px'>PLAN done-claim ext</span>"]
     T030["✅ TASK-030<br/><span style='font-size:9px'>Delete dispatcher.ts</span>"]
     T004["✅ TASK-004<br/><span style='font-size:9px'>CRIT schema (5b)</span>"]
-    T006["⚡ TASK-006<br/><span style='font-size:9px'>ANALYSIS+EPIC+CRIT parsers</span>"]
+    T006["✅ TASK-006<br/><span style='font-size:9px'>ANALYSIS+EPIC+CRIT parsers</span>"]
   end
 
   subgraph W1b ["Wave 1b — Per-Skill Scripts (10 PENDING)"]
@@ -252,8 +252,7 @@ graph TD
   T009 --> T046
   T045 --> T046
 
-  class T001,T002,T003,T004,T005,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
-  class T006 inprogress
+  class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
   class T007,T008,T009,T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
 ```
 
@@ -2803,12 +2802,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-006-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 75
+- **Transitioned At Event**: Event 76
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Test Report Ref**: QA-060-SPEC-008
+- **Fix Brief For Event**: brain:🧠-qa agent abfb71cfd53115301; 15 DoD + 3 ADR Compliance + REQ-002 all 7 ACs + wrapper-vs-schema-field judgment (SATISFIES REQ-002) verified; 25/0/25; biome PASS; tsc PASS; suite 788/2/790. REQ-001 AC-5 contradiction surfaced (see Event 76)
 
 #### impl-TASK-007-SPEC-008
 

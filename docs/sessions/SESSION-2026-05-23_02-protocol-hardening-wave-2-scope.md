@@ -1765,3 +1765,44 @@ PLAN transitions:
 - qa-TASK-006-SPEC-008: PENDING → IN_PROGRESS (Event 75; dispatching brain:🧠-qa next)
 
 Next: commit code + PLAN + session atomically, then dispatch qa-006.
+
+
+## Event 76 — Batch 5c CLOSED: qa-006 PASS; Wave 1a 8/8 DONE; REQ-002 ACCEPTED; REQ-001 AC-5 contradiction surfaced (STOP-THE-LINE)
+
+brain:🧠-qa agent abfb71cfd53115301 (foreground; 49 tool_uses; 622s). PASS — QA-060-SPEC-008 authored.
+
+**REQ-002 wrapper-vs-schema-field judgment (the one non-mechanical call)**: QA confirmed the impl agent's wrapper approach (`ParsedAnalysisNote = AnalysisNote & { hasOpenQuestions }`) SATISFIES REQ-002. No REQ-002 AC mandates these as schema-validated fields; ACs require (1) accessible derived data on parser return + (2) schema-level structural rejection of invalid states. Both delivered; `.strict()` integrity preserved.
+
+### Full Event 55 propagation
+
+- TASK-006 note: status TODO → DONE; Relations + `relates_to` QA-060.
+- REQ-002 ALL 7 ACs flipped `[x]`: AC-1 (ADR, prior TASK-005); AC-2 (ANALYSIS Open Questions); AC-3 (EPIC contains array); AC-4 (CRIT findings); AC-5 (PLAN parser parts — confirmed via TASK-010/QA-058); AC-6 (all 4 parsers throw on wrong type); AC-7 (round-trip all 4).
+- **REQ-002 status DRAFT → ACCEPTED** — first REQ to fully close in SPEC-008 (all 7 ACs + both child TASKs 005+006 DONE).
+- SPEC-008 root: TASK-006 rollup `[x]` (17/46); REQ-002 rollup `[x]`.
+- PLAN-001 qa-TASK-006: IN_PROGRESS → DONE (QA-060).
+- PLAN-001 wave graph: T006 `⚡`→`✅`; classDef → done; **Wave 1a subgraph header → "8/8 DONE ✅ — Wave 1a CLOSED; REQ-002 ACCEPTED"**.
+
+### STOP-THE-LINE finding — REQ-001 AC-5 contradiction (per drift protocol)
+
+While processing closure I found a contradiction between two QA contract notes on **REQ-001 AC-5** (CRIT H1-drift detection):
+
+- AC-5 text: "GIVEN a CRIT note with the H1 not matching frontmatter title verbatim WHEN `CritNoteSchema.parse()` is called THEN validation fails with a message identifying the H1 drift"
+- **QA-059** (TASK-004 CRIT schema): ruled AC-5 N/A at schema layer — "no schema in the 12-schema suite has an h1 field; H1 extraction is parser-layer (ast-helpers.ts:140); AC-5 closable when the CRIT parser (REQ-002 scope) is implemented" → deferred AC-5 to the parser, left `[ ]`.
+- **QA-060** (TASK-006 CRIT parser): ruled AC-5 "targets the CritNoteSchema (TASK-004), not the parser; the parser at crit-note.ts does NOT implement H1-drift detection itself — it delegates to the schema; H1-drift is a cross-cutting schema concern; TASK-006 does not close AC-5; it was closed by TASK-004" → left `[ ]`, pointed back at TASK-004.
+
+**Each QA points at the other; neither confirms H1-drift detection is actually implemented anywhere.** Root cause: the AC text asserts `CritNoteSchema.parse()` detects H1 drift, but (a) the schema has no `h1` field by design (schemas validate the parsed model's intrinsic structure; the model carries no raw H1 string), and (b) the parser explicitly delegates structural validation to the schema and does NOT compare extracted H1 vs frontmatter title. So REQ-001 AC-5 is **UNMET by any landed code** — a coverage gap that fell between the schema TASK and the parser TASK.
+
+Both TASK-004 + TASK-006 correctly PASS their own DoDs (neither DoD enumerated an AC-5 mechanism — the DoD-vs-REQ-AC mapping for AC-5 was never assigned to a concrete TASK deliverable). This is a spec-decomposition gap, not an impl failure.
+
+**Action per `feedback_stop_the_line_on_drift`**: did NOT flip REQ-001 AC-5 `[x]` (it is genuinely unmet). REQ-001 stays DRAFT (7/8 ACs satisfied; AC-5 the lone holdout). Forward motion on OTHER TASKs is not blocked (AC-5 gates only REQ-001 ACCEPTED, not the marathon). Surfacing a fix-or-defer decision to the user next.
+
+### Marathon state after Event 76
+
+- **17 TASKs CLOSED** (37%): 001-006, 010, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040. **Wave 1a fully closed (8/8).**
+- **0 IN_PROGRESS.**
+- **29 PENDING**: 007, 008, 009, 011-020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041-046.
+- **REQ-002 ACCEPTED** (first REQ closed).
+- Canonical suite baseline: 788 pass / 2 fail / 790 total.
+- Open finding: REQ-001 AC-5 (CRIT H1-drift) unmet — fix-or-defer decision pending.
+
+Next: commit Batch 5c closure, then surface the REQ-001 AC-5 fix-or-defer decision.

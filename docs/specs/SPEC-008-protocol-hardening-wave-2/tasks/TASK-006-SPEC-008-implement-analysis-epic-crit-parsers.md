@@ -88,3 +88,4 @@ This TASK depends on TASK-002 (ANALYSIS schema), TASK-003 (EPIC schema), TASK-00
 - depends_on [[TASK-004-SPEC-008: Implement CRIT Schema]]
 - depends_on [[TASK-005-SPEC-008: Implement ADR Parser]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-060-SPEC-008: Validation Report for TASK-006 ANALYSIS EPIC CRIT Parsers]]

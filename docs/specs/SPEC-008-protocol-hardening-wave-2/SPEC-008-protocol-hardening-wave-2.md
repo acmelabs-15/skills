@@ -55,7 +55,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 ### Requirements (12)
 
 - [ ] [[REQ-001-SPEC-008: New Schema Suite]]
-- [ ] [[REQ-002-SPEC-008: New Parser Suite]]
+- [x] [[REQ-002-SPEC-008: New Parser Suite]]
 - [ ] [[REQ-003-SPEC-008: New Claim Validator Suite]]
 - [ ] [[REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts]]
 - [ ] [[REQ-005-SPEC-008: Per-Skill Dispatch-Brief Generator Scripts]]
@@ -81,7 +81,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [x] [[TASK-003-SPEC-008: Implement EPIC Schema]]
 - [x] [[TASK-004-SPEC-008: Implement CRIT Schema]]
 - [x] [[TASK-005-SPEC-008: Implement ADR Parser]]
-- [ ] [[TASK-006-SPEC-008: Implement ANALYSIS EPIC and CRIT Parsers]]
+- [x] [[TASK-006-SPEC-008: Implement ANALYSIS EPIC and CRIT Parsers]]
 - [ ] [[TASK-007-SPEC-008: Implement validateAdrAcceptedClaim]]
 - [ ] [[TASK-008-SPEC-008: Implement validateAnalysisAcceptedClaim]]
 - [ ] [[TASK-009-SPEC-008: Implement validateEpicDoneClaim]]
