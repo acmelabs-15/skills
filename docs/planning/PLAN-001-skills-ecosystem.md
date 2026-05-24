@@ -3499,20 +3499,20 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-047-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 77
+- **Transitioned At Event**: Event 78
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: REQ-001 AC-5 gap-closer (D-4 LOCKED); H1-drift detection in parseCritNote via existing extractH1 helper
+- **Fix Brief For Event**: bun-ts-engineer agent a0d2f0bc8a2d89bae; H1-drift check at crit-note.ts:194 (extractH1 vs frontmatter.title verbatim; plain Error not ZodError; runs before CritNoteSchema.parse); 13/0/13 parser tests (8 preserved + 5 new); 2 existing rejection tests fixed to .replaceAll() H1+title lockstep; biome PASS; tsc PASS; suite 793/2/795; 10 DoD + 2 ADR Compliance all [x]
 
 #### qa-TASK-047-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-047-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 78
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —

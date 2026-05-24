@@ -27,21 +27,21 @@ Scope is intentionally minimal: ONE comparison + throw added to the existing `pa
 
 ## Definition of Done
 
-- [ ] `parseCritNote` in `shared/composition/src/parsers/crit-note.ts` calls `extractH1(ast)` and compares the result against `frontmatter.title` verbatim
-- [ ] When the H1 does not match the frontmatter title verbatim, `parseCritNote` throws an error whose message identifies the H1 drift (includes both the H1 text and the frontmatter title for diagnosis)
-- [ ] When the H1 matches the frontmatter title verbatim, parsing proceeds normally (no false positive)
-- [ ] When no H1 is present (extractH1 returns null), the error message names the missing H1 explicitly (a CRIT note with no H1 is also drift)
-- [ ] The check runs BEFORE the final `CritNoteSchema.parse()` (drift is a parser-layer concern surfaced with a clear message, not a Zod schema error)
-- [ ] Unit tests cover: H1 matches title (pass), H1 differs from title (reject with drift message), H1 absent (reject), H1 matches but with trailing whitespace (verify `.trim()` semantics match `extractH1`)
-- [ ] `bun test shared/composition/tests/parsers/crit-note.test.ts` passes with the new cases green (existing cases preserved)
-- [ ] `biome check` passes
-- [ ] `tsc --noEmit` passes (from `shared/composition/`)
-- [ ] No regression in suite-wide `bun test` (baseline 788/2/790; the 2 fails are SPEC-007 DEFERRED per D-1)
+- [x] `parseCritNote` in `shared/composition/src/parsers/crit-note.ts` calls `extractH1(ast)` and compares the result against `frontmatter.title` verbatim
+- [x] When the H1 does not match the frontmatter title verbatim, `parseCritNote` throws an error whose message identifies the H1 drift (includes both the H1 text and the frontmatter title for diagnosis)
+- [x] When the H1 matches the frontmatter title verbatim, parsing proceeds normally (no false positive)
+- [x] When no H1 is present (extractH1 returns null), the error message names the missing H1 explicitly (a CRIT note with no H1 is also drift)
+- [x] The check runs BEFORE the final `CritNoteSchema.parse()` (drift is a parser-layer concern surfaced with a clear message, not a Zod schema error)
+- [x] Unit tests cover: H1 matches title (pass), H1 differs from title (reject with drift message), H1 absent (reject), H1 matches but with trailing whitespace (verify `.trim()` semantics match `extractH1`)
+- [x] `bun test shared/composition/tests/parsers/crit-note.test.ts` passes with the new cases green (existing cases preserved)
+- [x] `biome check` passes
+- [x] `tsc --noEmit` passes (from `shared/composition/`)
+- [x] No regression in suite-wide `bun test` (baseline 788/2/790; the 2 fails are SPEC-007 DEFERRED per D-1)
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (additive change to existing flat-directory parser file)
-- [ ] Honors [[ADR-001: Composition Library Architecture]] (unified + remark AST pattern; uses existing extractH1 helper)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (additive change to existing flat-directory parser file)
+- [x] Honors [[ADR-001: Composition Library Architecture]] (unified + remark AST pattern; uses existing extractH1 helper)
 
 ## Files Affected
 

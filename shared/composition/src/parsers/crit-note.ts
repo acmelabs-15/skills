@@ -9,6 +9,7 @@ import type { CritFinding, CritFrontmatter, CritNote } from "../schemas/crit-not
 import { CritNoteSchema } from "../schemas/crit-note.js";
 import {
   extractFrontmatter,
+  extractH1,
   findTable,
   proseFromChildren,
   sectionizeH2,
@@ -177,12 +178,30 @@ function parseRelations(children: RootContent[]): Relation[] {
  * Throws ZodError on any schema violation (wrong type, malformed parent
  * reference, missing required field, zero findings, etc.) with structured
  * `path` arrays. Throws ParseError on structural issues that predate schema
- * validation (missing frontmatter block).
+ * validation (missing frontmatter block). Throws a plain Error on H1 drift —
+ * the H1 heading must match the frontmatter title verbatim (CONVENTIONS
+ * Section 4.3); drift is a parser-layer concern surfaced with a diagnostic
+ * message, not a Zod schema error (SPEC-008 REQ-001 AC-5, TASK-047).
  */
 export function parseCritNote(markdown: string): CritNote {
   const ast = processor.parse(markdown);
   const fmRaw = extractFrontmatter(ast);
   const frontmatter = parseFrontmatter(fmRaw);
+
+  // H1-drift check (BEFORE schema validation): the H1 heading must match the
+  // frontmatter title character-for-character. A missing H1 is also drift. The
+  // comparison is verbatim against extractH1's trimmed result.
+  const h1 = extractH1(ast);
+  if (h1 === null) {
+    throw new Error(
+      `CRIT H1 drift: no H1 heading present; expected an H1 matching frontmatter title "${frontmatter.title}"`,
+    );
+  }
+  if (h1 !== frontmatter.title) {
+    throw new Error(
+      `CRIT H1 drift: H1 "${h1}" does not match frontmatter title "${frontmatter.title}"`,
+    );
+  }
 
   const sections = sectionizeH2(ast);
 

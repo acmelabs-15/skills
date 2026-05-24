@@ -82,10 +82,11 @@ describe("parseCritNote — happy path", () => {
 describe("parseCritNote — rejection paths", () => {
   test("rejects a malformed parent-reference title (un-parented CRIT)", () => {
     // Un-parented form `CRIT-NNN-...` (no PARENT-TYPE-NNN) fails the
-    // frontmatter title regex.
-    const unparented = CRIT_VALID.replace(
-      "title: 'CRIT-901-ADR-005: Wave 2 Architecture Review'",
-      "title: 'CRIT-901: Wave 2 Architecture Review'",
+    // frontmatter title regex. Mutate H1 in lockstep so the note reaches the
+    // schema layer (a title-only mutation would trip the H1-drift check first).
+    const unparented = CRIT_VALID.replaceAll(
+      "CRIT-901-ADR-005: Wave 2 Architecture Review",
+      "CRIT-901: Wave 2 Architecture Review",
     );
     expect(() => parseCritNote(unparented)).toThrow(ZodError);
     try {
@@ -99,9 +100,11 @@ describe("parseCritNote — rejection paths", () => {
 
   test("rejects a parent-reference with an out-of-allowlist PARENT-TYPE", () => {
     // PLAN is not in the six-type allowlist (ADR|ANALYSIS|SPEC|REQ|DESIGN|TASK).
-    const wrongParent = CRIT_VALID.replace(
-      "title: 'CRIT-901-ADR-005: Wave 2 Architecture Review'",
-      "title: 'CRIT-901-PLAN-005: Wave 2 Architecture Review'",
+    // Mutate both frontmatter title and H1 so the note clears the H1-drift
+    // check and the rejection comes from the schema's title regex.
+    const wrongParent = CRIT_VALID.replaceAll(
+      "CRIT-901-ADR-005: Wave 2 Architecture Review",
+      "CRIT-901-PLAN-005: Wave 2 Architecture Review",
     );
     expect(() => parseCritNote(wrongParent)).toThrow(ZodError);
   });
@@ -134,5 +137,59 @@ describe("parseCritNote — rejection paths", () => {
       const zerr = err as ZodError;
       expect(zerr.issues.some((i) => i.path.includes("findings"))).toBe(true);
     }
+  });
+});
+
+describe("parseCritNote — H1-drift detection (REQ-001 AC-5, TASK-047)", () => {
+  test("accepts a CRIT whose H1 matches the frontmatter title verbatim (no false positive)", () => {
+    // CRIT_VALID already has a matching H1 — parsing proceeds normally.
+    const note = parseCritNote(CRIT_VALID);
+    expect(note.frontmatter.title).toBe("CRIT-901-ADR-005: Wave 2 Architecture Review");
+  });
+
+  test("rejects a CRIT whose H1 differs from the frontmatter title (drift)", () => {
+    // Mutate only the H1 so it no longer matches the frontmatter title.
+    const driftedH1 = CRIT_VALID.replace(
+      "# CRIT-901-ADR-005: Wave 2 Architecture Review",
+      "# CRIT-901-ADR-005: Wave 2 Architecture REVIEW",
+    );
+    expect(() => parseCritNote(driftedH1)).toThrow(
+      'CRIT H1 drift: H1 "CRIT-901-ADR-005: Wave 2 Architecture REVIEW" does not match frontmatter title "CRIT-901-ADR-005: Wave 2 Architecture Review"',
+    );
+  });
+
+  test("drift is surfaced as a plain Error, not a ZodError (parser-layer concern)", () => {
+    const driftedH1 = CRIT_VALID.replace(
+      "# CRIT-901-ADR-005: Wave 2 Architecture Review",
+      "# CRIT-901-ADR-005: Mismatched Heading",
+    );
+    try {
+      parseCritNote(driftedH1);
+      throw new Error("expected parseCritNote to throw on H1 drift");
+    } catch (err) {
+      expect(err).toBeInstanceOf(Error);
+      expect(err).not.toBeInstanceOf(ZodError);
+      expect((err as Error).message).toContain("CRIT H1 drift");
+    }
+  });
+
+  test("rejects a CRIT with no H1 present (absent H1 is also drift)", () => {
+    // Drop the H1 line entirely. The error message names the missing H1 and
+    // the expected frontmatter title.
+    const noH1 = CRIT_VALID.replace("# CRIT-901-ADR-005: Wave 2 Architecture Review\n\n", "");
+    expect(() => parseCritNote(noH1)).toThrow(
+      'CRIT H1 drift: no H1 heading present; expected an H1 matching frontmatter title "CRIT-901-ADR-005: Wave 2 Architecture Review"',
+    );
+  });
+
+  test("H1 with trailing whitespace matches via extractH1's .trim() semantics (no false positive)", () => {
+    // extractH1 trims the heading text, so trailing whitespace after the H1
+    // text must still match the (untrimmed) frontmatter title.
+    const trailingWs = CRIT_VALID.replace(
+      "# CRIT-901-ADR-005: Wave 2 Architecture Review",
+      "# CRIT-901-ADR-005: Wave 2 Architecture Review   ",
+    );
+    const note = parseCritNote(trailingWs);
+    expect(note.frontmatter.title).toBe("CRIT-901-ADR-005: Wave 2 Architecture Review");
   });
 });

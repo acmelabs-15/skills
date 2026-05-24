@@ -1835,3 +1835,27 @@ Per `feedback_mid_implementation_halt` + `feedback_write_decisions_immediately`:
 Next: dispatch impl-TASK-047 (bun-ts-engineer; small additive parser change). Then qa-047. Then REQ-001 AC-5 flips on closure.
 
 Commit spec amendment + PLAN + Event 77 before dispatch.
+
+
+## Event 78 — impl-TASK-047 PASS; dispatching qa-047
+
+bun-ts-engineer agent a0d2f0bc8a2d89bae (foreground; 37 tool_uses; 409s). PASS — 10 DoD + 2 ADR Compliance all `[x]`.
+
+- MODIFY `crit-note.ts` (+21L): import extractH1; H1-drift block at line 194 (before CritNoteSchema.parse); plain Error not ZodError; message includes both H1 text + frontmatter title; null-H1 case explicitly named.
+- MODIFY `tests/parsers/crit-note.test.ts` (+55L net): 5 new H1-drift cases.
+
+**Two agent HALT items, both well-handled**:
+1. Two existing TASK-006 rejection tests (`unparented`, `wrongParent`) mutated only the `title:` frontmatter line, leaving H1 stale — after the new H1-drift check (runs first) they'd throw Error before reaching their intended ZodError. Agent fixed both to `.replaceAll()` (mutate title + H1 in lockstep), preserving original schema-layer test intent. Correct per CONVENTIONS Section 4.3. No production-fixture had mismatched H1 (CRIT_VALID already matched).
+2. bun-ts audit `--fix` tried to relocate the test into `__tests__/` subdir; agent reverted per the project's locked flat-directory convention (ADR-005 D-2; matches adr/analysis/epic parser test layout). Spec-is-authority override; correct.
+
+Independent verification:
+- `bun test`: 793 pass / 2 fail / 795 total (delta +5 = new H1-drift cases). Same 2 SPEC-007 DEFERRED fails (D-1).
+- TASK-047 note: 12 `[x]` (10 DoD + 2 ADR Compliance), 0 `[ ]`.
+- H1-drift wired at crit-note.ts:194 (verified via grep).
+- New canonical suite baseline post-Event-78: **793 pass / 2 fail / 795 total**.
+
+PLAN transitions:
+- impl-TASK-047-SPEC-008: IN_PROGRESS → DONE (Event 78)
+- qa-TASK-047-SPEC-008: PENDING → IN_PROGRESS (Event 78; dispatching brain:🧠-qa next)
+
+Next: commit, dispatch qa-047. On PASS: REQ-001 AC-5 flips `[x]` (the gap-closer's purpose). REQ-001 then 8/8 ACs but stays DRAFT until child TASKs 007/008/009 (validators) + TASK-002/003/004 (already done) + this — actually REQ-001 child TASKs = the schema TASKs 001/002/003/004/010 + now 047. With AC-5 closed, REQ-001 ACs all satisfied; REQ-001 → ACCEPTED iff all child TASKs DONE (verify at qa-047 closure).
