@@ -4,7 +4,6 @@ type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-031-spec-008-amend-spec-007-root-with-deferred-notation-and-legend-1
 status: TODO
 tags:
-- task
 - spec-008
 - track-4
 - spec-007-amendment

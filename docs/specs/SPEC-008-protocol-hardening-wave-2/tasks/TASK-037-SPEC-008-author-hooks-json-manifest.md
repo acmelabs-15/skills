@@ -6,7 +6,6 @@ status: DONE
 effort: S
 estimate: 0.5d
 tags:
-- task
 - spec-008
 - hooks
 - hooks-json
@@ -59,7 +58,7 @@ Author `${CLAUDE_PLUGIN_ROOT}/hooks/hooks.json` declaring all seven hook layers 
 
 ## Observations
 
-- [task] hooks.json is the manifest entry point; without it none of the handler scripts fire #manifest #entry-point
+- [fact] hooks.json is the manifest entry point; without it none of the handler scripts fire #manifest #entry-point
 - [constraint] Must use exact matcher and `if` filter strings from ADR-005 D-8 table; any deviation risks matcher gaps #verbatim #matcher
 - [technique] `${CLAUDE_PLUGIN_ROOT}` placeholder resolves at install time so the manifest is portable across install locations #placeholder #portability
 

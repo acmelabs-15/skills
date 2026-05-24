@@ -67,7 +67,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Script is a thin CLI wrapper around validateTaskDoneClaim no business logic lives here #thin-wrapper
+- [fact] Script is a thin CLI wrapper around validateTaskDoneClaim no business logic lives here #thin-wrapper
 - [decision] Path-containment uses `path.resolve(projectRoot, userPath).startsWith(projectRoot + sep)` matching the hook layer rule #d-8 #path-containment
 - [constraint] Exit code 0 on success 1 on validation failure 2 on usage or containment violation #exit-code-contract
 

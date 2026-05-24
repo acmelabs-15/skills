@@ -4,7 +4,6 @@ type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-036-spec-008-amend-req-009-spec-007-mutation-count-from-9-to-11-1
 status: TODO
 tags:
-- task
 - spec-008
 - track-4
 - req-amendment

@@ -6,7 +6,6 @@ status: TODO
 effort: M
 estimate: 1d
 tags:
-- task
 - spec-008
 - hooks
 - smoke-tests
@@ -70,7 +69,7 @@ Smoke tests run the actual hook handler scripts via `bun run` against simulated 
 
 ## Observations
 
-- [task] Smoke tests close the per-TASK validation loop — every hook handler from TASK-037 through TASK-045 has at least one fixture-driven end-to-end assertion #end-to-end-coverage
+- [fact] Smoke tests close the per-TASK validation loop — every hook handler from TASK-037 through TASK-045 has at least one fixture-driven end-to-end assertion #end-to-end-coverage
 - [technique] Reusing adversarial fixtures from Track 3 as smoke tests doubles the value of each fixture without doubling authoring cost #fixture-reuse
 - [constraint] Smoke tests MUST invoke handler scripts via `bun run`, not via in-process import, so the test surface includes the JSON-on-stdin/stdout wiring not just the inner logic #wire-coverage
 

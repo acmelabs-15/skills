@@ -6,7 +6,6 @@ status: DONE
 effort: M
 estimate: 1d
 tags:
-- task
 - spec-008
 - hooks
 - dispatch
@@ -54,7 +53,7 @@ Implement `hooks/lib/dispatch-validator.ts` per [[DESIGN-004-SPEC-008: Hook Laye
 
 ## Observations
 
-- [task] dispatch-validator is the single chokepoint between hook handlers and the validator catalog; new validators land in the routing table here and nowhere else #single-source-of-truth
+- [fact] dispatch-validator is the single chokepoint between hook handlers and the validator catalog; new validators land in the routing table here and nowhere else #single-source-of-truth
 - [decision] Three-way verdict (`deny` | `allow-with-warning` | `allow`) encodes the hybrid failure semantics from ADR-005 D-8 as a typed contract rather than ad-hoc strings #verdict-shape
 - [constraint] Module MUST NOT throw on validator-reachable rejection; it returns `deny`. Only unparseable input throws, mapping infrastructure failures away from schema rejections #error-boundary
 

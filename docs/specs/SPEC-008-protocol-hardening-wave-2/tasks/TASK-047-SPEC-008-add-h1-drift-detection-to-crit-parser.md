@@ -6,13 +6,11 @@ status: DONE
 effort: S
 estimate: 0.25d
 tags:
-- task
 - spec-008
 - parser
 - crit
 - h1-drift
 - wave-1c
-- follow-up
 ---
 
 # TASK-047-SPEC-008: Add H1-Drift Detection to CRIT Parser
@@ -60,7 +58,7 @@ Scope is intentionally minimal: ONE comparison + throw added to the existing `pa
 
 ## Observations
 
-- [task] Closes the REQ-001 AC-5 coverage gap that fell between TASK-004 (schema) and TASK-006 (parser) — neither owned the H1-drift mechanism #coverage-gap #req-001-ac-5
+- [fact] Closes the REQ-001 AC-5 coverage gap that fell between TASK-004 (schema) and TASK-006 (parser) — neither owned the H1-drift mechanism #coverage-gap #req-001-ac-5
 - [decision] H1-drift detection lives in parseCritNote, not CritNoteSchema, because the schema validates the parsed model which has no raw H1 string; the parser has the AST H1 via extractH1 #parser-layer #separation-of-concerns
 - [constraint] Check runs before CritNoteSchema.parse() and throws a parser-layer error (not a Zod error) with both H1 and title text for diagnosis #clear-diagnostics
 - [insight] extractH1 helper already exists at ast-helpers.ts:140 (returns trimmed H1 or null); this TASK only wires it into the CRIT parser's validation path #helper-reuse

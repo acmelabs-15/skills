@@ -6,7 +6,6 @@ status: DONE
 effort: M
 estimate: 1d
 tags:
-- task
 - spec-008
 - track-2
 - plan-skill
@@ -75,7 +74,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Two plan-skill scripts close the Audit B gate-point gap for the plan lifecycle skill #plan-skill #audit-b
+- [fact] Two plan-skill scripts close the Audit B gate-point gap for the plan lifecycle skill #plan-skill #audit-b
 - [decision] render-plan-note is the dispatch-brief source for the per-TASK build cycle; it must be deterministic so dispatch briefs are reproducible #determinism #dispatch-brief
 - [constraint] set-part-done enforces rationale-required for DEFERRED/ABANDONED per PLAN-part substatus enum (Contract 7) #status-enum #rationale
 - [constraint] Path-containment per D-8 security boundary; same rule as build-skill and decisions-skill scripts #security #path-containment

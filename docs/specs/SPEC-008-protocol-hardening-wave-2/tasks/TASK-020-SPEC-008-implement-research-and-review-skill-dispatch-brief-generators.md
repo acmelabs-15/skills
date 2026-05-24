@@ -7,7 +7,6 @@ status: DONE
 effort: M
 estimate: 2d
 tags:
-- task
 - spec-008
 - track-2
 - research-skill
@@ -70,7 +69,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Two brief generators close the dispatch-brief layer for research analyst and review reviewer agent dispatches #research-skill #review-skill
+- [fact] Two brief generators close the dispatch-brief layer for research analyst and review reviewer agent dispatches #research-skill #review-skill
 - [decision] dispatch-reviewer encodes the PR-type-to-axes mapping CODE-plus-DOCS-plus-CONFIG-plus-TEST as a switch so adding a new axis or PR type is a single-place change #single-source-of-truth
 - [constraint] dispatch-analyst mandates inlined as prose because they are principle-level not constant-level #prose-mandates
 

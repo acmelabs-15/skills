@@ -62,7 +62,7 @@ This TASK depends on TASK-001 (schema is the parser's contract) and Track 4 rena
 
 ## Observations
 
-- [task] Implements parser layer for the ADR P0 schema gap; gates the claim validator in TASK-007 #adr #parser #p0
+- [fact] Implements parser layer for the ADR P0 schema gap; gates the claim validator in TASK-007 #adr #parser #p0
 - [technique] Section dispatch via bulletFieldMap from SPEC-007 DESIGN-002; reuse keeps parser pattern uniform #pattern-reuse
 - [constraint] Parser throws on type mismatch at the frontmatter layer; misrouted markdown cannot succeed silently #type-guard
 - [risk] Path uses `shared/`; depends on Track 4 rename and TASK-001 schema #rename-dependency #task-001-dependency

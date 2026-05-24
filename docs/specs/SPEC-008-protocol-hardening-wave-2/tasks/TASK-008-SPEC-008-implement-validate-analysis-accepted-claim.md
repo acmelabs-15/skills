@@ -58,7 +58,7 @@ This TASK depends on TASK-002 (ANALYSIS schema), TASK-006 (ANALYSIS parser), and
 
 ## Observations
 
-- [task] Validator closes the Wave 7 Open Questions exploit at runtime; highest-value P1 enforcement #analysis #claim-validator #wave-7
+- [fact] Validator closes the Wave 7 Open Questions exploit at runtime; highest-value P1 enforcement #analysis #claim-validator #wave-7
 - [decision] Single check (Open Questions presence) keeps the validator minimal and unambiguous #minimal-validator
 - [constraint] Parser exposes `body.hasOpenQuestions` boolean; validator reads it directly without re-parsing #parser-contract
 - [risk] Path uses `shared/`; depends on Track 4 rename plus TASK-002 plus TASK-006 #rename-dependency #chain-dependency

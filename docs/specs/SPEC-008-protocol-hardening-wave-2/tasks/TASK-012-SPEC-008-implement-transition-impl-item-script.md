@@ -68,7 +68,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Script wraps applyPlanMutation no business logic in the script itself #thin-wrapper
+- [fact] Script wraps applyPlanMutation no business logic in the script itself #thin-wrapper
 - [constraint] Mutations transition-impl-item mandates owning-session and at-event context per Wave 1 schema #required-args
 - [decision] Post-mutation file write uses Bun.write to atomically replace the PLAN markdown #atomic-write
 

@@ -6,13 +6,11 @@ status: DONE
 effort: M
 estimate: 1d
 tags:
-- task
 - spec-008
 - hooks
 - edit-operation
 - parse-tool-input
 - format-response
-- wave-2
 ---
 
 # TASK-039-SPEC-008: Implement Edit Operation and Tool Input Helpers
@@ -66,7 +64,7 @@ Implement three shared hook utilities under `hooks/lib/` per [[DESIGN-004-SPEC-0
 
 ## Observations
 
-- [task] These three utilities are the I/O boundary between the Claude Code hook runtime and the validator pipeline; they isolate every tool_input shape quirk in one place #boundary-layer
+- [fact] These three utilities are the I/O boundary between the Claude Code hook runtime and the validator pipeline; they isolate every tool_input shape quirk in one place #boundary-layer
 - [technique] applyEditOperation runs the edit in memory so the validator sees the proposed post-edit content; the actual file write is gated downstream by the dispatch verdict #in-memory-apply
 - [constraint] format-hook-response MUST NOT pretty-print; Claude Code parses the response as a single JSON line on stdout #json-line-protocol
 

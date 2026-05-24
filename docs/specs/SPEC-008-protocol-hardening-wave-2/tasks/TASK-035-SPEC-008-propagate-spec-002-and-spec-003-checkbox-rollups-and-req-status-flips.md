@@ -4,7 +4,6 @@ type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-035-spec-008-propagate-spec-002-and-spec-003-checkbox-rollups-and-req-status-flips-1
 status: TODO
 tags:
-- task
 - spec-008
 - track-4
 - rollup-propagation

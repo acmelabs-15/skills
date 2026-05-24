@@ -62,7 +62,7 @@ Author the full-pipeline integration test at `shared/composition/tests/integrati
 
 ## Observations
 
-- [task] Three test files plus a fixtures subdirectory close the ZERO-dedicated-integration-tests finding from Audit E #closure #audit-e
+- [fact] Three test files plus a fixtures subdirectory close the ZERO-dedicated-integration-tests finding from Audit E #closure #audit-e
 - [technique] Cross-note tests synthesize fixture pairs (SPEC root + child TASK; TEST-REPORT + TASK) and assert the consistency rule across the pair rather than within a single note #cross-note-pattern
 - [constraint] Pipeline tests MUST run all four stages (parse, mutate, validate, render); skipping any stage defeats the end-to-end contract #end-to-end
 

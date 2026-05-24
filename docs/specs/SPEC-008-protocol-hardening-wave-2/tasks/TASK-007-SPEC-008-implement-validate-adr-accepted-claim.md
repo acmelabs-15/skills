@@ -59,7 +59,7 @@ This TASK depends on TASK-001 (ADR schema), TASK-005 (ADR parser), and Track 4 r
 
 ## Observations
 
-- [task] ADR claim validator is the runtime enforcement for the PROPOSED-to-ACCEPTED gate; the schema and parser are preconditions #adr #claim-validator #p0
+- [fact] ADR claim validator is the runtime enforcement for the PROPOSED-to-ACCEPTED gate; the schema and parser are preconditions #adr #claim-validator #p0
 - [constraint] Validator is pure; cross-note resolution is out of scope for ADR (no contains relations to resolve) #pure-function
 - [decision] Validator fires only at status ACCEPTED; non-targeted statuses return ok without inspecting body fields #status-gated
 - [risk] Path uses `shared/`; depends on Track 4 rename plus TASK-001 plus TASK-005 #rename-dependency #chain-dependency

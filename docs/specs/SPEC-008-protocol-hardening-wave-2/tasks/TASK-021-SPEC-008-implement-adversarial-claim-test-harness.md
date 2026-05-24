@@ -59,7 +59,7 @@ Implement the shared adversarial-claim test harness at `shared/composition/tests
 
 ## Observations
 
-- [task] Implementation is approximately 30 lines plus type definitions; design risk is zero because DESIGN-003 fixes the signature #lines #risk
+- [fact] Implementation is approximately 30 lines plus type definitions; design risk is zero because DESIGN-003 fixes the signature #lines #risk
 - [technique] Parser-selection dispatch via discriminated union on `validator` tag keeps callers parser-agnostic and harness centrally maintainable #dispatch #encapsulation
 - [constraint] Harness MUST NOT short-circuit parse failures into validator output; the test distinction between "fixture malformed" and "validator returned valid on a lying claim" is the core protocol-evidence rule #separation-of-concerns
 

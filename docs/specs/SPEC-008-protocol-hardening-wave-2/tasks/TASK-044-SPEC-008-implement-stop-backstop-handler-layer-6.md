@@ -6,13 +6,11 @@ status: TODO
 effort: M
 estimate: 1d
 tags:
-- task
 - spec-008
 - hooks
 - stop
 - layer-6
 - backstop
-- wave-2
 ---
 
 # TASK-044-SPEC-008: Implement stop-backstop Handler (Layer 6)
@@ -69,7 +67,7 @@ Unlike Layers 1-5 (fail-open on infrastructure error), Layer 6 fails closed: if 
 
 ## Observations
 
-- [task] Layer 6 is the defense-in-depth backstop; if Layers 1-2 miss anything (matcher gaps, MCP shape changes), turn end still validates the full modified set #defense-in-depth #backstop
+- [fact] Layer 6 is the defense-in-depth backstop; if Layers 1-2 miss anything (matcher gaps, MCP shape changes), turn end still validates the full modified set #defense-in-depth #backstop
 - [decision] Layer 6 fails CLOSED (block on infrastructure error) while Layers 1-5 fail OPEN; the turn boundary is the protocol's outermost gate where conservative defaults outrank availability #fail-mode-asymmetry
 - [risk] Transcript walking depends on Claude Code's `transcript_path` schema; schema changes break enumeration. Mitigation: unit test against a representative transcript fixture; surface schema drift early #transcript-schema-risk
 

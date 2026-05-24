@@ -6,7 +6,6 @@ status: DONE
 effort: M
 estimate: 1d
 tags:
-- task
 - spec-008
 - claim-validator
 - epic
@@ -61,7 +60,7 @@ This TASK depends on TASK-003 (EPIC schema), TASK-006 (EPIC parser), and Track 4
 
 ## Observations
 
-- [task] Only Wave 2 validator with a cross-note dependency; resolver injection is the critical design move #epic #cross-note #claim-validator
+- [fact] Only Wave 2 validator with a cross-note dependency; resolver injection is the critical design move #epic #cross-note #claim-validator
 - [decision] Validator THROWS when resolver is missing or returns undefined; no silent pass per ADR-005 D-5 Phase 3 critic P1.1 #explicit-failure #critic-p1-1
 - [constraint] Resolver is injected via deps parameter; validator never reads filesystem directly; hook handler in Track 5 supplies the resolver #injected-dependency #pure-validator
 - [risk] Path uses `shared/`; depends on Track 4 rename plus TASK-003 plus TASK-006 #rename-dependency #chain-dependency

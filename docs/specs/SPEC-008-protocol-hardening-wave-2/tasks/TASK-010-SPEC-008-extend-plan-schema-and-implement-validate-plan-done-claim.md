@@ -69,7 +69,7 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`. The existing PLAN
 
 ## Observations
 
-- [task] Paired delivery (schema superRefine plus claim validator) closes the Wave 1 PLAN done-claim gap at both parse-time and call-time #plan #claim-validator #paired-delivery
+- [fact] Paired delivery (schema superRefine plus claim validator) closes the Wave 1 PLAN done-claim gap at both parse-time and call-time #plan #claim-validator #paired-delivery
 - [decision] Terminal substatuses are DONE, DEFERRED, and ABANDONED; mirrors the existing Wave 1 part-substatus enum #terminal-set
 - [constraint] superRefine arm is additive; existing PlanNoteSchema tests must still pass without modification #non-breaking
 - [risk] Path uses `shared/`; depends on Track 4 rename #rename-dependency

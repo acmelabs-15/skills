@@ -53,7 +53,7 @@ Insert `// drift-marker: <PHASE-X-DRIFT-SURFACE-ID> — <one-line>` source-code 
 
 ## Observations
 
-- [task] Source-code comment marker chosen over a separate registry to keep mappings greppable from any test entry-point #grep-friendly
+- [decision] Source-code comment marker chosen over a separate registry to keep mappings greppable from any test entry-point #grep-friendly
 - [technique] Drift surface IDs come from RETRO-003 Phase X enumeration; consistent IDs lower future contributor confusion #consistent-ids
 - [constraint] Marker insertion MUST NOT alter test behavior; comments only, no logic changes #behavior-preservation
 

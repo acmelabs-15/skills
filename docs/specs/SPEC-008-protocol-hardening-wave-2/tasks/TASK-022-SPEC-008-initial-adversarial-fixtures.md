@@ -56,7 +56,7 @@ Author the initial set of adversarial fixture markdown files at `shared/composit
 
 ## Observations
 
-- [task] Ten fixtures across five validator types is the Audit E top-10 closure; each fixture is one realistic lying scenario #closure #audit-e
+- [fact] Ten fixtures across five validator types is the Audit E top-10 closure; each fixture is one realistic lying scenario #closure #audit-e
 - [technique] Author each fixture by copying the matching `*-sample.md` canonical fixture, then introducing exactly one lying mutation per file; keeps the diff between honest and lying minimal and reviewable #minimal-diff
 - [constraint] Each fixture MUST parse successfully against its type's schema; the lying behavior lives at the claim-validator level not the schema level (otherwise the schema would reject it before the validator runs) #schema-vs-validator
 

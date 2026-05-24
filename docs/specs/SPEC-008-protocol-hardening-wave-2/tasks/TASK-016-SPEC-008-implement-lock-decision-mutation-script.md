@@ -65,7 +65,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Wraps applyPlanMutation lock-decision for the decisions skill D-N micro-cycle #decisions-skill
+- [fact] Wraps applyPlanMutation lock-decision for the decisions skill D-N micro-cycle #decisions-skill
 - [decision] Idempotency mandatory; re-running a lock that already happened is a no-op not an error #idempotency
 - [constraint] Path-containment per D-8 security boundary same rule as build-skill scripts #d-8
 

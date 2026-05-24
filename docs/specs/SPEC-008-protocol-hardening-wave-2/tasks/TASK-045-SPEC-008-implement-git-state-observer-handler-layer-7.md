@@ -6,13 +6,11 @@ status: TODO
 effort: S
 estimate: 0.5d
 tags:
-- task
 - spec-008
 - hooks
 - file-changed
 - layer-7
 - observability
-- wave-2
 ---
 
 # TASK-045-SPEC-008: Implement git-state-observer Handler (Layer 7)
@@ -67,7 +65,7 @@ The handler cannot block (FileChanged is observe-only). Its purpose is to make t
 
 ## Observations
 
-- [task] Layer 7 cannot block; it is the transcript ledger of post-commit graph state, surfacing the enforcement outcome to the agent and operator #observe-only #transcript-ledger
+- [fact] Layer 7 cannot block; it is the transcript ledger of post-commit graph state, surfacing the enforcement outcome to the agent and operator #observe-only #transcript-ledger
 - [constraint] FileChanged matcher uses literal filenames (`.git/HEAD|.git/index|.git/logs/HEAD`), not globs; cannot watch `docs/**/*.md` for external edits — out of scope per ADR-005 D-8 threat model #literal-matcher #threat-model
 - [technique] additionalContext is the FileChanged response field; emitting a structured summary makes the post-commit state machine-readable from later turns #structured-summary
 

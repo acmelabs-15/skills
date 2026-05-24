@@ -69,7 +69,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Two brief generators replace inline SKILL.md prose with programmatic emission importing cross-cutting constants #drift-prevention
+- [fact] Two brief generators replace inline SKILL.md prose with programmatic emission importing cross-cutting constants #drift-prevention
 - [decision] dispatch-qa imports validRelationTypes from common.ts so the brief always reflects the schema's current allowlist #single-source-of-truth #audit-c
 - [constraint] Determinism mandatory same args yield byte-identical stdout enabling diff-based brief reviews #determinism
 

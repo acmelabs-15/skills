@@ -6,13 +6,11 @@ status: TODO
 effort: S
 estimate: 0.5d
 tags:
-- task
 - spec-008
 - hooks
 - pre-tool-use
 - layer-2
 - mcp
-- wave-2
 ---
 
 # TASK-042-SPEC-008: Implement pre-write-brain-note-mcp Handler (Layer 2)
@@ -60,7 +58,7 @@ For `edit_note` the handler reads the current note via the file path resolved fr
 
 ## Observations
 
-- [task] Layer 2 closes the MCP write path that Layer 1 cannot reach; without it Brain MCP edits bypass all PreToolUse validation #mcp-coverage
+- [fact] Layer 2 closes the MCP write path that Layer 1 cannot reach; without it Brain MCP edits bypass all PreToolUse validation #mcp-coverage
 - [risk] Claude Code matcher quirks may cause `mcp__plugin_brain_brain__*` patterns to not fire; the smoke test in DoD is the matcher-risk mitigation per ADR-005 D-8 Failure Modes #matcher-risk
 - [technique] MCP tool_input shape differs from local file tools; resolving `identifier` and the four operation types is the bulk of the handler complexity #mcp-shape
 

@@ -60,7 +60,7 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`.
 
 ## Observations
 
-- [task] EPIC schema closes a P1 coverage gap; no current consumers exist but the schema is ready when the first EPIC note is authored #epic #p1 #ahead-of-need
+- [fact] EPIC schema closes a P1 coverage gap; no current consumers exist but the schema is ready when the first EPIC note is authored #epic #p1 #ahead-of-need
 - [decision] Cross-note done-claim check lives in the validator (TASK-009), not the schema; schema only validates intrinsic structure #separation-of-concerns
 - [constraint] Schema requires Contained Specs section when contains relations exist; rejects the implicit-only-relations pattern #explicit-structure
 - [risk] Path uses `shared/`; depends on Track 4 rename completing first #rename-dependency

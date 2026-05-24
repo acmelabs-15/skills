@@ -4,7 +4,6 @@ type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-032-spec-008-extend-validate-spec-done-claim-for-deferred-notation-2
 status: DONE
 tags:
-- task
 - spec-008
 - track-4
 - validator-extension

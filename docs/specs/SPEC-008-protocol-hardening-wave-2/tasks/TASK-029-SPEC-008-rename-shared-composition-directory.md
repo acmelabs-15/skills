@@ -4,7 +4,6 @@ type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-029-spec-008-rename-shared-composition-directory-1
 status: DONE
 tags:
-- task
 - spec-008
 - track-4
 - rename

@@ -6,7 +6,6 @@ status: DONE
 effort: M
 estimate: 1d
 tags:
-- task
 - spec-008
 - track-4
 - audit-c
@@ -73,7 +72,7 @@ The six violation categories (10 notes):
 
 ## Observations
 
-- [task] Closes Audit C MINOR_DRIFT verdict — 10 notes, 6 violation categories, zero systemic breakdown #audit-c #hygiene
+- [fact] Closes Audit C MINOR_DRIFT verdict — 10 notes, 6 violation categories, zero systemic breakdown #audit-c #hygiene
 - [decision] `validates` replaced with `depends_on` for QA-aggregate references — the canonical typed verb; `relates_to` reserved for genuinely non-directional links #relation-verb #allowlist
 - [constraint] All repairs via Brain MCP edit_note per binary tool rule; raw Edit/Write forbidden on docs/** #binary-tool-rule
 - [insight] The `validates` drift root cause was the QA dispatch-brief template lacking the 11-verb allowlist — REQ-005 brief-generator scripts close the recurrence path; this TASK cleans the existing instances #root-cause #recurrence-prevention

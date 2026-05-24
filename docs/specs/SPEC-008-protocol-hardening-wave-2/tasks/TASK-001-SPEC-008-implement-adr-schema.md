@@ -64,7 +64,7 @@ This TASK depends on Track 4 of SPEC-008 renaming `_shared/` to `shared/` at the
 
 ## Observations
 
-- [task] Implements the ADR P0 coverage gap; the schema is the precondition for the parser (TASK-005) and claim validator (TASK-007) #adr #schema #p0
+- [fact] Implements the ADR P0 coverage gap; the schema is the precondition for the parser (TASK-005) and claim validator (TASK-007) #adr #schema #p0
 - [constraint] superRefine rejects ACCEPTED when Clarifications has unchecked items OR Considered Options lack rationale; both rules must coexist in one superRefine pass #superrefine #adr-gate
 - [technique] Final-two-sections invariant enforced via shared structural helper from common.ts; rule centralized to prevent drift #shared-invariant #drift-prevention
 - [risk] Path `shared/composition/` assumes Track 4 rename completed; orchestrator must order Track 4 rename before this TASK starts #rename-dependency #orchestrator-wiring

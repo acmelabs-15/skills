@@ -70,7 +70,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Three schema-only validators serve the spec authoring phase before TASK or REQ reach DoD-complete state #spec-skill
+- [fact] Three schema-only validators serve the spec authoring phase before TASK or REQ reach DoD-complete state #spec-skill
 - [decision] Schema-only validation distinct from claim validation; schema failure means malformed structure, claim failure means premature terminal status #separation-of-concerns
 - [constraint] Failure surfaces the Zod issue tree to stderr so spec authors see exactly which field is malformed #traceability
 

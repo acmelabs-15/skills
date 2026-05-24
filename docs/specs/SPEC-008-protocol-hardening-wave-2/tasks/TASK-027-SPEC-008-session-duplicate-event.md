@@ -53,7 +53,7 @@ Add a test to `shared/composition/tests/mutation-invariants.test.ts` (the file a
 
 ## Observations
 
-- [task] Test closes the third Phase 3 critic P1.2 gap (duplicate-event-number rejection) and regression-locks a real Phase X drift surface #closure #regression
+- [fact] Test closes the third Phase 3 critic P1.2 gap (duplicate-event-number rejection) and regression-locks a real Phase X drift surface #closure #regression
 - [technique] Drift-marker comment on the new block doubles as one of the five regression markers required by REQ-007 AC-6 #dual-purpose
 - [constraint] Positive control (Event NN+1 succeeds) MUST accompany the rejection assertion to prove the rejection is duplicate-specific, not a general append failure #positive-control
 

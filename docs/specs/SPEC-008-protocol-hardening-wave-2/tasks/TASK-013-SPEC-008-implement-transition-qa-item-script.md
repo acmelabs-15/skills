@@ -67,7 +67,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Wraps applyPlanMutation transition-qa-item enforcing cross-field invariants centrally #thin-wrapper
+- [fact] Wraps applyPlanMutation transition-qa-item enforcing cross-field invariants centrally #thin-wrapper
 - [constraint] test_report_ref MUST be supplied when target status is DONE or FAILED per Wave 1 PlanNoteSchema superRefine #required-args
 - [decision] Cross-field invariants enforced by composition library; script only assembles args and surfaces error #single-source-of-truth
 

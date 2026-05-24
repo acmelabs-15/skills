@@ -68,7 +68,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Two scripts for the end skill validate-spec-done is the spec done-claim gate run-pre-flight is the CONVENTIONS Section 8.1 enumeration #end-skill
+- [fact] Two scripts for the end skill validate-spec-done is the spec done-claim gate run-pre-flight is the CONVENTIONS Section 8.1 enumeration #end-skill
 - [decision] run-pre-flight surfaces each failing checklist item with its CONVENTIONS Section 8.1 number not just a generic error #traceability
 - [constraint] Both scripts apply path-containment per D-8 security boundary #d-8 #path-containment
 

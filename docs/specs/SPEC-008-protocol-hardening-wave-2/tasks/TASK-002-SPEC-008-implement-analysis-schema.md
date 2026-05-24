@@ -61,7 +61,7 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`; orchestrator rewi
 
 ## Observations
 
-- [task] Closes the highest-impact P1 coverage gap; the Open-Questions-at-ACCEPTED rule prevents the Wave 7 exploit pattern from recurring #analysis #p1 #wave-7
+- [fact] Closes the highest-impact P1 coverage gap; the Open-Questions-at-ACCEPTED rule prevents the Wave 7 exploit pattern from recurring #analysis #p1 #wave-7
 - [decision] The superRefine rule is conditional on status; ACCEPTED triggers the check, DRAFT does not #conditional-refinement
 - [risk] Schema must distinguish section presence from heading text; AST-based section detection avoids false positives from prose mentioning Open Questions #ast-section-detection
 - [constraint] Path uses `shared/`; orchestrator must order Track 4 rename first #rename-dependency

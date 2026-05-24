@@ -6,13 +6,11 @@ status: DONE
 effort: L
 estimate: 2d
 tags:
-- task
 - spec-008
 - parser
 - analysis
 - epic
 - crit
-- wave-2
 ---
 
 # TASK-006-SPEC-008: Implement ANALYSIS, EPIC, and CRIT Parsers
@@ -73,7 +71,7 @@ This TASK depends on TASK-002 (ANALYSIS schema), TASK-003 (EPIC schema), TASK-00
 
 ## Observations
 
-- [task] Three parsers batched because they share TASK-005's template; per-type variation is limited to one or two section handlers each #batched-parsers #pattern-reuse
+- [fact] Three parsers batched because they share TASK-005's template; per-type variation is limited to one or two section handlers each #batched-parsers #pattern-reuse
 - [technique] ANALYSIS parser detects Open Questions section by AST heading match; case-sensitive to avoid false positives from prose #ast-section-detection
 - [constraint] EPIC parser requires Contained Specs section when contains relations exist; mismatch is a schema failure #explicit-structure
 - [risk] Path uses `shared/`; depends on Track 4 rename plus TASK-002, TASK-003, TASK-004, TASK-005 #rename-dependency #chain-dependency

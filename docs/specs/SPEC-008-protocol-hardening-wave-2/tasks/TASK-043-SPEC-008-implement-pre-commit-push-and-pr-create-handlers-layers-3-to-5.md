@@ -6,13 +6,11 @@ status: TODO
 effort: M
 estimate: 1d
 tags:
-- task
 - spec-008
 - hooks
 - pre-tool-use
 - layers-3-5
 - git
-- wave-2
 ---
 
 # TASK-043-SPEC-008: Implement pre-commit, pre-push, and pre-pr-create Handlers (Layers 3-5)
@@ -74,7 +72,7 @@ All three handlers share the same scaffold: parse hook input, validate path/comm
 
 ## Observations
 
-- [task] Layers 3-5 are the outbound gates; if Layers 1-2 miss something the agent's commit/push/PR open still catches it #defense-in-depth
+- [fact] Layers 3-5 are the outbound gates; if Layers 1-2 miss something the agent's commit/push/PR open still catches it #defense-in-depth
 - [decision] All three layers deny on ANY failing note (not per-note allow-with-warning) because once a batch reaches the commit boundary the hybrid semantics no longer apply — the batch must be clean #batch-semantics
 - [constraint] All `Bash` matcher handlers MUST parse the actual command arguments rather than trusting `tool_input` shape; the `Bash` tool's `command` is a single string per Claude Code's hook contract #command-parsing
 

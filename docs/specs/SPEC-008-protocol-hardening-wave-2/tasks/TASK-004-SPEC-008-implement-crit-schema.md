@@ -60,7 +60,7 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`.
 
 ## Observations
 
-- [task] CRIT schema closes the structural gap supporting adr-review convergence; no claim validator per D-5 #crit #p1 #no-claim-validator
+- [fact] CRIT schema closes the structural gap supporting adr-review convergence; no claim validator per D-5 #crit #p1 #no-claim-validator
 - [constraint] Parent-reference regex is required at the frontmatter layer; un-parented CRIT notes are invalid #parent-reference
 - [decision] No claim validator authored; D-5 documents CRIT has no terminal-status claim that warrants mechanical check #d-5 #no-validator
 - [risk] Path uses `shared/`; depends on Track 4 rename #rename-dependency

@@ -6,13 +6,11 @@ status: DONE
 effort: M
 estimate: 1d
 tags:
-- task
 - spec-008
 - hooks
 - git
 - staged-files
 - diff-commits
-- wave-2
 ---
 
 # TASK-040-SPEC-008: Implement Git Helpers for Staged and Diff Content
@@ -66,7 +64,7 @@ Both modules MUST resolve the repo root via `git rev-parse --show-toplevel` and 
 
 ## Observations
 
-- [task] git-staged-files and git-diff-commits are the read paths for Layers 3-5; they isolate every git subprocess invocation in one place #git-subprocess #isolation
+- [fact] git-staged-files and git-diff-commits are the read paths for Layers 3-5; they isolate every git subprocess invocation in one place #git-subprocess #isolation
 - [constraint] All subprocesses MUST set `cwd` to the resolved repo root; relying on process `cwd` opens a non-validated path surface #cwd-isolation
 - [risk] No-upstream case at pre-push must not silently no-op the handler. Falling back to walking ahead-of-`@{u}` or returning empty with a logged warning is the safe behavior #no-upstream
 

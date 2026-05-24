@@ -53,7 +53,7 @@ Author the test runner at `shared/composition/tests/adversarial-claims.test.ts` 
 
 ## Observations
 
-- [task] Coverage-verification block prevents the fixture-orphan and broken-pointer failure modes that table-driven runners are vulnerable to #coverage-block #orphan-detection
+- [fact] Coverage-verification block prevents the fixture-orphan and broken-pointer failure modes that table-driven runners are vulnerable to #coverage-block #orphan-detection
 - [technique] Label derivation from fixture filename stem keeps test output traceable to fixture file via grep #traceability
 - [constraint] `expectedReject` regex MUST anchor on specific error wording per DESIGN-003 contract; loose matchers defeat the lying-detection purpose #regex-tightness
 

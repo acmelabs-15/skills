@@ -59,7 +59,7 @@ This task depends on Track 1 (REQ-001-SPEC-008 schemas + REQ-002-SPEC-008 parser
 
 ## Observations
 
-- [task] Track-1 dependency makes this TASK a Wave-2-second-wave deliverable; cannot ship until validators land #cross-track #dependency
+- [fact] Track-1 dependency makes this TASK a Wave-2-second-wave deliverable; cannot ship until validators land #cross-track #dependency
 - [technique] Harness extension is purely additive: new union members on the `validator` tag, new switch cases in dispatch helpers, zero changes to `testAdversarial` signature #additive-extension
 - [constraint] CRIT receives no fixture subdirectory because no claim validator exists for it per ADR-005 D-5 Implementation Notes; do not author a `crit/` subdirectory #explicit-non-coverage
 

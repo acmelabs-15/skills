@@ -53,7 +53,7 @@ Author the mutation-invariant test file at `shared/composition/tests/mutation-in
 
 ## Observations
 
-- [task] Two invariant blocks close two of three Phase 3 critic P1.2 gaps; duplicate-event-number rejection is the third gap and lives in TASK-027 #scope-split
+- [fact] Two invariant blocks close two of three Phase 3 critic P1.2 gaps; duplicate-event-number rejection is the third gap and lives in TASK-027 #scope-split
 - [technique] State-hash comparison via Bun.hash on rendered output is the simplest idempotency assertion; structural comparison via parser-output equality is equivalent but heavier #hash-vs-structural
 - [constraint] Backward-transition test MUST include a positive control (forward transition succeeds) to prove the rejection is direction-specific not a general error #positive-control
 

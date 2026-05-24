@@ -68,7 +68,7 @@ Out of Scope:
 
 ## Observations
 
-- [task] Two brief generators for the decisions skill architect for ADR authoring decision-critic for adversarial stress-test #decisions-skill
+- [fact] Two brief generators for the decisions skill architect for ADR authoring decision-critic for adversarial stress-test #decisions-skill
 - [decision] Architect brief imports the structural ADR requirements that AdrNoteSchema enforces so brief stays in sync with the schema #single-source-of-truth
 - [constraint] Decision-critic brief includes the reviewer-asymmetry mandate verbatim so the critic's role boundary is unambiguous #reviewer-asymmetry
 

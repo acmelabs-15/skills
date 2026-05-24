@@ -6,7 +6,6 @@ status: TODO
 effort: S
 estimate: 0.5d
 tags:
-- task
 - spec-008
 - hooks
 - pre-tool-use
@@ -56,7 +55,7 @@ Implement `hooks/scripts/pre-write-brain-note.ts` per [[DESIGN-004-SPEC-008: Hoo
 
 ## Observations
 
-- [task] Layer 1 is the earliest defense: catches lying claims before they hit disk in a local Edit/Write/MultiEdit flow #earliest-gate
+- [fact] Layer 1 is the earliest defense: catches lying claims before they hit disk in a local Edit/Write/MultiEdit flow #earliest-gate
 - [constraint] Path containment validation MUST run before any disk read so a `..` traversal attempt cannot escape the repo root #path-containment
 - [decision] Fail-open on validator exception preserves agent throughput when infrastructure fails; the Stop backstop (Layer 6) catches anything Layer 1 misses #fail-mode
 

@@ -4,7 +4,6 @@ type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-030-spec-008-delete-core-dispatcher-and-its-test-1
 status: DONE
 tags:
-- task
 - spec-008
 - track-4
 - deletion
