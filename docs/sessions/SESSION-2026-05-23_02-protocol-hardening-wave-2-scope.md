@@ -872,3 +872,14 @@ PLAN `impl-TASK-029-SPEC-008`: IN_PROGRESS → DONE (at Event 37). Next: commit 
 ## Event 38 — qa-TASK-029 PENDING → IN_PROGRESS; dispatching QA
 
 PLAN `qa-TASK-029-SPEC-008`: PENDING → IN_PROGRESS (owning_session SESSION-2026-05-23_02; at Event 38). Next: dispatch brain:🧠-qa to independently validate TASK-029 DoD (items 1-2,4-9; item 3 deferred) + REQ-009 acceptance criteria with evidence; QA returns per-checkbox findings + verdict; orchestrator authors the QA note (binary rule — QA agent does not write docs/**).
+
+
+## Event 39 — qa-TASK-029 PASS; TASK-029 DONE (rename closed)
+
+brain:🧠-qa (agent `a73fb5d28f9461d35`) independently re-validated TASK-029 against committed state. Verdict **PASS** — DoD items 1-2,4-9 PASS with command evidence; item 3 deferral ruled sound; REQ-009 ACs PASS. QA contract note authored: [[QA-044-SPEC-008: Rename Shared Composition Directory]] (created via Pattern 2; a transient `move_note` tmp-rename failure left a duplicate — recovered via delete_note + filesystem cleanup + clean re-create).
+
+State: TASK-029-SPEC-008 status TODO → DONE; `relates_to [[QA-044-SPEC-008: Rename Shared Composition Directory]]` added (bi-dir). PLAN `qa-TASK-029-SPEC-008`: IN_PROGRESS → DONE (Test Report Ref QA-044; at Event 39).
+
+**TASK-029 (rename) CLOSED** — full rigid per-TASK cycle (a–u) demonstrated end-to-end. Flagged for attention: 2 pre-existing defrag-delegation test failures (out of scope); skill-script tsconfig `Bun`-type gap (config-coherence follow-up).
+
+Next (PoC): TASK-001 (ADR schema) — the representative schema→parser→validator pattern.

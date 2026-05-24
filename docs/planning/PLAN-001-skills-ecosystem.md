@@ -2329,11 +2329,11 @@ Build-phase pre-mortem (SESSION-2026-05-23_02 Event 35; brain:🧠-analyst prosp
 
 - **Type**: qa
 - **Task Ref**: TASK-029-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 38
+- **Transitioned At Event**: Event 39
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **Test Report Ref**: QA-044-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-001-SPEC-008

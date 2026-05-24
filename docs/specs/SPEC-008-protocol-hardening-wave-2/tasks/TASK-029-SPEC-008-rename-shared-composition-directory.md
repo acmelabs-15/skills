@@ -2,7 +2,7 @@
 title: 'TASK-029-SPEC-008: Rename Shared Composition Directory'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-029-spec-008-rename-shared-composition-directory-1
-status: TODO
+status: DONE
 tags:
 - task
 - spec-008
@@ -73,3 +73,4 @@ Steps:
 - implements [[REQ-009-SPEC-008: Structural Cleanup Dispatcher Deletion and Shared Rename]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - leads_to [[TASK-030-SPEC-008: Delete Core Dispatcher and Its Test]]
+- relates_to [[QA-044-SPEC-008: Rename Shared Composition Directory]]
