@@ -97,6 +97,7 @@ export const RelationVerbEnum = z.enum([
   "superseded_by",
   "inspires",
 ]);
+export const validRelationTypes = RelationVerbEnum.options;
 
 export const ObservationSchema = z
   .object({

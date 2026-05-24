@@ -47,18 +47,18 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] dispatch-analyst accepts a per-requirement scope, emits analyst brief embedding the no-open-questions, rubric-as-floor, and analysis-surfaces-options mandates as inline prose
-- [ ] dispatch-reviewer accepts a PR-type classification (CODE, DOCS, CONFIG, TEST), emits reviewer brief listing the relevant review axes for that PR type plus the reviewer-asymmetry mandate
-- [ ] Both scripts include the `if (import.meta.main)` CLI guard
-- [ ] Colocated tests assert determinism and structural-mandate presence
-- [ ] dispatch-reviewer test asserts the emitted axis list matches the PR-type-to-axes mapping for each of the four PR types
-- [ ] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus tsc --noEmit pass on the new files
+- [x] dispatch-analyst accepts a per-requirement scope, emits analyst brief embedding the no-open-questions, rubric-as-floor, and analysis-surfaces-options mandates as inline prose
+- [x] dispatch-reviewer accepts a PR-type classification (CODE, DOCS, CONFIG, TEST), emits reviewer brief listing the relevant review axes for that PR type plus the reviewer-asymmetry mandate
+- [x] Both scripts include the `if (import.meta.main)` CLI guard
+- [x] Colocated tests assert determinism and structural-mandate presence
+- [x] dispatch-reviewer test asserts the emitted axis list matches the PR-type-to-axes mapping for each of the four PR types
+- [x] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus tsc --noEmit pass on the new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 programmatic per-skill brief-generator pattern
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 brief-generator trust-boundary section
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 programmatic per-skill brief-generator pattern
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 brief-generator trust-boundary section
 
 ## Effort Summary
 

@@ -134,7 +134,7 @@ graph TD
 
 ## SPEC-008 Build Marathon — Task-Level Wave Graph
 
-Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part (the part-level graph above shows `build_SPEC_008` as the umbrella node; this graph expands it to show all 46 TASKs grouped by wave, with status from the PLAN workflow items below). Updated 2026-05-24 SESSION-2026-05-23_02 Event 90 (Wave 1b Batches A+B CLOSED — 011/012/013/015/016/017 DONE; 27/47 total).
+Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part (the part-level graph above shows `build_SPEC_008` as the umbrella node; this graph expands it to show all 46 TASKs grouped by wave, with status from the PLAN workflow items below). Updated 2026-05-24 SESSION-2026-05-23_02 Event 94 (Wave 1b Batch C impls DONE — 018/019/020 ⚡ in QA; 27/47 fully closed).
 
 **Status legend**: ✅ DONE (impl + QA both PASS) · ⚡ IN_PROGRESS (impl or qa in flight) · ⏸ PENDING (workflow item seeded, awaiting batch).
 
@@ -181,7 +181,7 @@ graph TD
     T006["✅ TASK-006<br/><span style='font-size:9px'>ANALYSIS+EPIC+CRIT parsers</span>"]
   end
 
-  subgraph W1b ["Wave 1b — Per-Skill Scripts (6 DONE ✅ · 4 pending — REQ-004 needs 014; REQ-005 needs 018-020)"]
+  subgraph W1b ["Wave 1b — Per-Skill Scripts (6 DONE ✅ · 3 ⚡ 018-020 in QA · 1 pending 014 — REQ-005 impls done; REQ-004 needs 014)"]
     direction LR
     T011["✅ TASK-011<br/><span style='font-size:9px'>validate-task-done</span>"]
     T012["✅ TASK-012<br/><span style='font-size:9px'>transition-impl-item</span>"]
@@ -190,9 +190,9 @@ graph TD
     T015["✅ TASK-015<br/><span style='font-size:9px'>spec schema validators</span>"]
     T016["✅ TASK-016<br/><span style='font-size:9px'>lock-decision-mutation</span>"]
     T017["✅ TASK-017<br/><span style='font-size:9px'>render-plan-note + set-part-done</span>"]
-    T018["⏸ TASK-018<br/><span style='font-size:9px'>dispatch-implementer + qa</span>"]
-    T019["⏸ TASK-019<br/><span style='font-size:9px'>dispatch-architect + critic</span>"]
-    T020["⏸ TASK-020<br/><span style='font-size:9px'>dispatch-analyst + reviewer</span>"]
+    T018["⚡ TASK-018<br/><span style='font-size:9px'>dispatch-implementer + qa</span>"]
+    T019["⚡ TASK-019<br/><span style='font-size:9px'>dispatch-architect + critic</span>"]
+    T020["⚡ TASK-020<br/><span style='font-size:9px'>dispatch-analyst + reviewer</span>"]
   end
 
   subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (8 PENDING; TASK-047 follow-up DONE ✅)"]
@@ -255,7 +255,8 @@ graph TD
 
   class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
   class T007,T008,T009,T047,T011,T012,T013,T015,T016,T017 done
-  class T014,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
+  class T018,T019,T020 inprogress
+  class T014,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
 ```
 
 **Maintenance rule**: each TASK closure (impl + QA both PASS) flips its `class` declaration from `pending`/`inprogress` to `done`, alongside the SPEC-008 root rollup tick and full Event 55 propagation. Each Batch START flips IN_PROGRESS items from `pending` to `inprogress`. Keep this graph current per the same propagation cadence as the SPEC root rollup.
@@ -3069,9 +3070,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-018-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 93
+- **Transitioned At Event**: 94
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -3091,9 +3092,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-019-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 93
+- **Transitioned At Event**: 94
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -3113,9 +3114,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-020-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 93
+- **Transitioned At Event**: 94
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —

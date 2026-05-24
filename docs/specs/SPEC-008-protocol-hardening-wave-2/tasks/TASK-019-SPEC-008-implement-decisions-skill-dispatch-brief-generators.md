@@ -46,17 +46,17 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] dispatch-architect accepts ADR scope args, emits architect brief including structural ADR requirements (Considered Options with rationale, Clarifications section, etc.) imported from the AdrNoteSchema requirements
-- [ ] dispatch-decision-critic accepts analysis-option set args, emits decision-critic brief including the adversarial-reviewer asymmetry mandate verbatim
-- [ ] Both scripts include the `if (import.meta.main)` CLI guard
-- [ ] Colocated tests assert determinism and structural-mandate presence
-- [ ] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus tsc --noEmit pass on the new files
+- [x] dispatch-architect accepts ADR scope args, emits architect brief including structural ADR requirements (Considered Options with rationale, Clarifications section, etc.) imported from the AdrNoteSchema requirements
+- [x] dispatch-decision-critic accepts analysis-option set args, emits decision-critic brief including the adversarial-reviewer asymmetry mandate verbatim
+- [x] Both scripts include the `if (import.meta.main)` CLI guard
+- [x] Colocated tests assert determinism and structural-mandate presence
+- [x] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus tsc --noEmit pass on the new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 programmatic per-skill brief-generator pattern
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 brief-generator trust-boundary section
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 programmatic per-skill brief-generator pattern
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 brief-generator trust-boundary section
 
 ## Effort Summary
 

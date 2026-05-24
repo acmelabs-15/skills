@@ -2252,3 +2252,35 @@ All implement [[REQ-005-SPEC-008: Per-Skill Dispatch-Brief Generators]] + [[DESI
 - PLAN impl-TASK-018-SPEC-008: PENDING → IN_PROGRESS
 - PLAN impl-TASK-019-SPEC-008: PENDING → IN_PROGRESS
 - PLAN impl-TASK-020-SPEC-008: PENDING → IN_PROGRESS
+
+
+## Event 94 — Batch 9 impls DONE (018+019+020); spec-authority adjudication recorded; gates clean
+
+3 `bun-ts-engineer` implementers returned. Orchestrator re-ran gates INDEPENDENTLY: `tsc --noEmit` exit 0 (whole repo); `biome check` clean (20 files); `bun test` **967 pass / 2 fail / 969** (+76 = 30 dispatch-implementer/qa + 26 dispatch-architect/critic + 20 dispatch-analyst/reviewer; 2 fails = SPEC-007 DEFERRED `plan-001-migration.test.ts` baseline; zero new regressions).
+
+New code:
+- `skills/build/scripts/dispatch-implementer.{ts,test.ts}` + `dispatch-qa.{ts,test.ts}` (TASK-018)
+- `skills/decisions/scripts/dispatch-architect.{ts,test.ts}` + `dispatch-decision-critic.{ts,test.ts}` (TASK-019)
+- `skills/research/scripts/dispatch-analyst.{ts,test.ts}` + `skills/review/scripts/dispatch-reviewer.{ts,test.ts}` (TASK-020)
+- `shared/composition/src/schemas/common.ts`: +`export const validRelationTypes = RelationVerbEnum.options;` (line 100).
+
+### Spec-authority adjudication (recorded per Chesterton's-fence / spec-is-authority)
+
+TASK-018's `## Scope` "Out of Scope" line says adding the `validRelationTypes` export to common.ts is "separate Track 1 work" — but its DoD + REQ-005 AC#1 + DESIGN-002 representative shape ALL require `dispatch-qa` to IMPORT `validRelationTypes` from common.ts, and Track 1 closed without that export (only `RelationVerbEnum` existed). Resolved by SPEC-008 root authority: Files Affected explicitly lists "`shared/composition/src/schemas/common.ts`: add `validRelationTypes` export (gap flagged by Track 2 agent)". SPEC root supersedes the narrower TASK Out-of-Scope line for this item → export is in-scope for TASK-018. Confirms the Event-90 carried-forward note; no user halt needed. `validRelationTypes = RelationVerbEnum.options` = all 16 verbs (11 base + 5 bidirectional inverses); REQ-005 AC binds the test to the imported constant (`validRelationTypes.every(...)`), not the literal "11" — dispatch-qa iterates the import; 16 emitted.
+
+### Process notes (drift signals, non-damaging — captured for the rest of the marathon)
+
+- [reflect-capture] Batch C was NOT truly file-disjoint: TASK-019 `dispatch-architect` imports `validRelationTypes` which TASK-018 creates in `common.ts` (a shared file). Ran in parallel; worked only because TASK-018's change was a single additive export read by 019 after it landed. `common.ts` is a shared-code file → my own batch rule (Event 48) says it forces same-batch exclusion. Should have sequenced the common.ts export ahead, or kept 018/019 in separate batches. No damage (gates clean) but a latent ordering hazard.
+- [reflect-capture] I dispatched only 2 of the 3 batch implementers in the first wave (018+019), not all 3; 020 dispatched in a follow-up. Event 93 declared all 3 — the dispatch fell short of the declared batch. Corrected by dispatching 020 immediately after. Self-caught + surfaced to user.
+- [reflect-capture] Earlier this context I attached an "explicit sonnet model override per the harness flag" to the 018/019 dispatches, rationalized from a stray harness model-warning (`claude-sonnet[1m]`). That reasoning was unfounded — the warning is the conversation model-picker layer, not subagent dispatch; the override was a no-op. Dropped it for the 020 dispatch (agent default). User flagged this twice; corrected.
+
+### Derived-view sync (impl-done; per mandatory rule)
+
+- PLAN task-level Wave Graph: W1b nodes 018/019/020 ⏸ → ⚡ (impl done, in QA); `class` → inprogress; W1b label + provenance (Event 94) updated. SPEC-008 root `### Tasks` 018/019/020 stay `[ ]` (totality-gated on full DONE incl QA — flip at batch close). Part-level dashboard + Cross-Part graph unchanged (build.SPEC-008 still one IN_PROGRESS part).
+
+### State Changes
+
+- TASK-018/019/020-SPEC-008: DoD + ADR-Compliance checkboxes → [x]
+- PLAN impl-TASK-018/019/020-SPEC-008: IN_PROGRESS → DONE
+- common.ts: validRelationTypes export added
+- PLAN task-level Wave Graph: 018/019/020 → ⚡ (inprogress)

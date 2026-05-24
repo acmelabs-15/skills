@@ -46,18 +46,18 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] dispatch-implementer accepts TASK ref plus rendered TASK content as args, emits full implementer brief to stdout
-- [ ] dispatch-qa accepts TASK ref plus REQ refs as args, emits full QA brief including the 11 valid relation verbs imported from `shared/composition/src/schemas/common.ts`
-- [ ] Both scripts include the `if (import.meta.main)` CLI guard
-- [ ] Colocated test asserts determinism (same args yield byte-identical stdout)
-- [ ] Colocated test asserts the dispatch-qa brief contains every entry in validRelationTypes verbatim
-- [ ] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus tsc --noEmit pass on the new files
+- [x] dispatch-implementer accepts TASK ref plus rendered TASK content as args, emits full implementer brief to stdout
+- [x] dispatch-qa accepts TASK ref plus REQ refs as args, emits full QA brief including the 11 valid relation verbs imported from `shared/composition/src/schemas/common.ts`
+- [x] Both scripts include the `if (import.meta.main)` CLI guard
+- [x] Colocated test asserts determinism (same args yield byte-identical stdout)
+- [x] Colocated test asserts the dispatch-qa brief contains every entry in validRelationTypes verbatim
+- [x] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus tsc --noEmit pass on the new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 programmatic per-skill brief-generator pattern
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 brief-generator trust-boundary section (no path resolution against external input)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 programmatic per-skill brief-generator pattern
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 brief-generator trust-boundary section (no path resolution against external input)
 
 ## Effort Summary
 
