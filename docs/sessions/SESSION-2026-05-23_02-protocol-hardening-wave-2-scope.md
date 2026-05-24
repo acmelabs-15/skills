@@ -2482,3 +2482,39 @@ Newly unblocked by Batch 10 closes (032/022/038 DONE):
 ### State Changes
 
 - PLAN impl-TASK-014/023/041/042/043/044/045-SPEC-008: PENDING → IN_PROGRESS
+
+
+## Event 104 — Batch 11 impls returned: 6 DONE (014/023/041/042/043/045); 044 BLOCKED (spec conflict)
+
+7-wide parallel `bun-ts-engineer` wave returned. Orchestrator re-ran full suite INDEPENDENTLY: **1151 pass / 2 fail / 1153** (+155 = TASK-014:30 + 023:13 + 041:18 + 042:25 + 043:48 + 045:21; 2 fails = SPEC-007 deferred baseline; zero new regressions). All hook tests pass under `bun test` (172 hooks tests green).
+
+### 6 implementations DONE (impl-level; DoD-flip + Wave-graph + QA deferred to next step — see below)
+
+- [[TASK-014-SPEC-008: Implement validate-spec-done and run-pre-flight Scripts]] — `skills/end/scripts/` gate scripts; 30 tests; path-containment + 3 adversarial cases.
+- [[TASK-023-SPEC-008: Wire Adversarial-Claims Table-Driven Test Runner]] — `adversarial-claims.test.ts`; 13 tests; coverage block (no orphans/broken pointers); tight expectedReject regexes over TASK-022's 10 fixtures.
+- [[TASK-041-SPEC-008: Implement pre-write-brain-note Handler Layer 1]] — 18 tests; binds existing hooks.json Layer 1.
+- [[TASK-042-SPEC-008: Implement pre-write-brain-note-mcp Handler Layer 2]] — 25 tests; MCP tool_input shapes; Layer-2 deny smoke test.
+- [[TASK-043-SPEC-008: Implement pre-commit pre-push and pre-pr-create Handlers Layers 3-5]] — 48 tests; arg-parsing + traversal rejection + deny-on-any.
+- [[TASK-045-SPEC-008: Implement git-state-observer Handler Layer 7]] — 21 tests; observe-only, additionalContext shape.
+
+### TASK-044 BLOCKED — spec conflict (mid-implementation halt; NO file written)
+
+[[TASK-044-SPEC-008: Implement stop-backstop Handler Layer 6]] implementer correctly STOPPED (no guess). TASK-044 DoD + DESIGN-004 prescribe **transcript-walk** enumeration (read `transcript_path`, walk tool calls, dedup); REQ-012 AC1 mandates **`git status --porcelain`** AND explicitly rejects transcript-parsing by name ("misses MCP edits") with mtime-scanning also rejected ("misses reverts"). Mutually exclusive; load-bearing (changes enumeration source, fixtures, dedup, and whether MCP edits are caught — the very purpose of the Layer 6 backstop). Authority chain (REQ > DESIGN/TASK) + the sound MCP-coverage rationale both favor REQ-012's git-status approach. Surfaced via AskUserQuestion (recommend: adopt git-status, amend DESIGN-004 + TASK-044 DoD).
+
+### Cross-cutting follow-ups flagged (from 5 agents)
+
+- **FU-4 — `hooks/**` config-wiring gap**: root `tsconfig.json` `include` + `biome.json` `files.include` omit `hooks/**` (and `tsconfig` excludes `shared/composition`). Project `tsc`/`biome` do NOT gate any `hooks/**` file (incl. DONE TASK-038/039/040 lib). Agents verified their files via scoped temp configs; `bun test` covers them at runtime. NEEDS a config fix (add `hooks/**/*.ts` to both includes + make `shared/composition` resolvable from hooks) so CI genuinely gates the hook layer. Non-correctness (all tests pass); CI-coverage debt.
+- **FU-5 — TASK-039 `parse-tool-input.ts` MCP schema divergence**: its `ToolInputSchemas.McpEditNote`/`McpWriteNote` model `{permalink, content}`, but the real MCP shapes are `write_note {title,directory,content,tags,note_type}` / `edit_note {identifier,operation,content,find_text,section,expected_replacements}`. TASK-041/042 worked around with local Zod schemas. NEEDS TASK-039 reconciliation so the shared schemas are usable.
+
+### DEFERRED to immediate next step (turn-boundary + blocking 044 decision; NOT abandoned)
+
+- TASK-note DoD checkbox flips for the 6 DONE tasks (orchestrator flips at QA-close after QA validates each).
+- PLAN Wave-graph ⚡ sync for 014/023/041/042/043/045 (+ 044 🚧) — sync at the QA-close batch.
+- QA dispatch for the 6 DONE tasks (batched).
+- REQ-004 acceptance + AC-9 prefix-collision test (after TASK-014 QA — all REQ-004 tasks now impl-DONE).
+
+### State Changes
+
+- PLAN impl-TASK-014/023/041/042/043/045-SPEC-008: IN_PROGRESS → DONE
+- PLAN impl-TASK-044-SPEC-008: IN_PROGRESS → BLOCKED (spec conflict; blocker recorded)
+- Code committed: skills/end/scripts/ + shared/composition/tests/adversarial-claims.test.ts + hooks/scripts/ (5 handlers from 041/042/043/045)
