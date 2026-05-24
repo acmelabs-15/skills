@@ -1633,3 +1633,31 @@ Per R3 barrel-collision mitigation: TASK-004 + TASK-006 touch DIFFERENT barrels 
 Batch 5b dispatch plan: impl-004 (bun-ts-engineer; CRIT schema) + impl-006 (bun-ts-engineer; ANALYSIS parser) in parallel.
 
 Marathon math: 15/46 (33%). Remaining 31 TASKs ≈ 7 more batches at the established cadence.
+
+
+## Event 71 — Batch 5b dependency catch + solo TASK-004 dispatch
+
+Pre-dispatch read of TASK-004 + TASK-006 surfaced a dependency that the Event 70 Batch 5b plan glossed over. TASK-006's frontmatter `depends_on` list includes `[[TASK-004-SPEC-008: Implement CRIT Schema]]` — TASK-006 (ANALYSIS + EPIC + CRIT parsers) cannot be authored until TASK-004 (CRIT schema) lands, because `parseCritNote` imports + validates against `CritNoteSchema` per the established TASK-005 parser pattern (parser ends with `*NoteSchema.parse()` for final validation).
+
+This is an R3-like dependency collision (different shape than barrel collision but same parallel-unsafe class). Per `feedback_stop_the_line_on_drift` + `feedback_spec_implementation_no_assumptions`, the Event 70 closing paragraph that proposed TASK-004 + TASK-006 in parallel was wrong; correcting course before dispatch.
+
+**Corrected plan**:
+- **Batch 5b**: TASK-004 (CRIT schema) ALONE — sequential dispatch.
+- **Batch 5c** (next): TASK-006 (ANALYSIS + EPIC + CRIT parsers) — after TASK-004 closes, all 4 schema deps available (002 + 003 + 004 + 005 + 029 all DONE).
+
+PLAN transitions this Event:
+- impl-TASK-004-SPEC-008: PENDING → IN_PROGRESS (Event 71; solo dispatch note in Fix Brief)
+- PLAN-001 task-level wave graph: T004 label `⏸` → `⚡`; classDef declaration moves T004 to `inprogress` class.
+
+Dispatch: bun-ts-engineer (foreground) for impl-TASK-004. File set: NEW `shared/composition/src/schemas/crit-note.ts` + NEW `shared/composition/tests/schemas/crit-note.test.ts` + MODIFY `shared/composition/src/schemas/index.ts` (+CritNoteSchema, +CritNote re-export).
+
+Critical brief contents:
+- 12 DoD items + 3 ADR Compliance items
+- DEFERRED SPEC-007 baseline (734/2/736 expected; 2 fails in plan-001-migration.test.ts per D-1)
+- Parent-reference regex `^CRIT-\d{3}-(ADR|ANALYSIS|SPEC|REQ|DESIGN|TASK)-\d{3}.*`
+- No claim validator per ADR-005 D-5 (CRIT has no terminal-status claim)
+- Findings table with severity enum + description + recommendation
+- common.ts relation verb allowlist + `.strict()` on sub-schemas
+- File-disjoint with no concurrent batch member (solo)
+
+Commit will land impl returns + PLAN transitions + this Event + session note in one atomic state-sync after agent returns.
