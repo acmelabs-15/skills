@@ -49,16 +49,16 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] Each script reads a note path, validates path-containment, calls the matching schema parser, exits 0 on valid input, exit 2 with Zod issues on invalid input
-- [ ] Each script includes the `if (import.meta.main)` CLI guard
-- [ ] Colocated tests assert exit 0 on a conformant note and exit 2 with Zod issue payload on malformed input
-- [ ] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus tsc --noEmit pass on the new files
+- [x] Each script reads a note path, validates path-containment, calls the matching schema parser, exits 0 on valid input, exit 2 with Zod issues on invalid input
+- [x] Each script includes the `if (import.meta.main)` CLI guard
+- [x] Colocated tests assert exit 0 on a conformant note and exit 2 with Zod issue payload on malformed input
+- [x] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus tsc --noEmit pass on the new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
 
 ## Effort Summary
 

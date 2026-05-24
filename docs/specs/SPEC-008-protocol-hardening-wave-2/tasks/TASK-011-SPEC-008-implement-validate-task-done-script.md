@@ -44,18 +44,18 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] Script reads a TASK note path from `Bun.argv`, validates path-containment against `process.cwd()`, parses via `TaskNoteSchema`, invokes `validateTaskDoneClaim`, and exits 0/1/2 per the contract
-- [ ] Script includes the `if (import.meta.main)` CLI guard and exports `main` for programmatic invocation
-- [ ] Colocated test asserts exit 0 on a fixture TASK with all DoD checked
-- [ ] Colocated test asserts exit 1 on a fixture TASK with an unchecked DoD and `status: DONE`
-- [ ] Colocated test asserts exit 2 on a path containing `..` segments
-- [ ] Script imports only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus tsc --noEmit pass on the new files
+- [x] Script reads a TASK note path from `Bun.argv`, validates path-containment against `process.cwd()`, parses via `TaskNoteSchema`, invokes `validateTaskDoneClaim`, and exits 0/1/2 per the contract
+- [x] Script includes the `if (import.meta.main)` CLI guard and exports `main` for programmatic invocation
+- [x] Colocated test asserts exit 0 on a fixture TASK with all DoD checked
+- [x] Colocated test asserts exit 1 on a fixture TASK with an unchecked DoD and `status: DONE`
+- [x] Colocated test asserts exit 2 on a path containing `..` segments
+- [x] Script imports only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus tsc --noEmit pass on the new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
 
 ## Effort Summary
 

@@ -43,17 +43,17 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] Script accepts plan-path, decision-id, option-text, owning-session, at-event flags
-- [ ] Script validates path-containment, invokes applyPlanMutation with the lock-decision mutation, writes the result back, exits 0/1/2 per the contract
-- [ ] Colocated test asserts the matching `decisions.N` part substatus flips from IN_PROGRESS to DONE when the decision is locked
-- [ ] Colocated test asserts idempotency: re-running the same lock with identical args is a no-op (exit 0, no rewrite)
-- [ ] Script imports only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus tsc --noEmit pass on the new files
+- [x] Script accepts plan-path, decision-id, option-text, owning-session, at-event flags
+- [x] Script validates path-containment, invokes applyPlanMutation with the lock-decision mutation, writes the result back, exits 0/1/2 per the contract
+- [x] Colocated test asserts the matching `decisions.N` part substatus flips from IN_PROGRESS to DONE when the decision is locked
+- [x] Colocated test asserts idempotency: re-running the same lock with identical args is a no-op (exit 0, no rewrite)
+- [x] Script imports only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus tsc --noEmit pass on the new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
 
 ## Effort Summary
 

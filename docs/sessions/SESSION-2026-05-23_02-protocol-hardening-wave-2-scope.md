@@ -2063,3 +2063,31 @@ All three implement [[REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts]
 - PLAN impl-TASK-011-SPEC-008: PENDING → IN_PROGRESS
 - PLAN impl-TASK-015-SPEC-008: PENDING → IN_PROGRESS
 - PLAN impl-TASK-016-SPEC-008: PENDING → IN_PROGRESS
+
+
+## Event 86 — Batch 7 impls DONE (011+015+016); config drift fixed; dispatching QA
+
+3 `bun-ts-engineer` implementers returned. Orchestrator re-ran gates INDEPENDENTLY (per Event-48):
+
+- `bunx tsc --noEmit`: exit 0, clean across `skills/**`
+- `bunx biome check skills/`: exit 0 (24 files)
+- `bun test`: 845 pass / 2 fail / 847 — the 2 fails are EXACTLY the known-deferred SPEC-007 baseline (`TASK-014-SPEC-007: PLAN-001 trimmed-template migration` AC#1 + AC#3 in `plan-001-migration.test.ts`). Zero new regressions.
+- Targeted: validate-task-done 6/6, spec schema-validators 15/15, lock-decision-mutation 7/7.
+
+New code: `skills/build/scripts/validate-task-done.{ts,test.ts}` (61/131), `skills/spec/scripts/validate-{task,req,design}-schema.{ts,test.ts}` (3×), `skills/decisions/scripts/lock-decision-mutation.{ts,test.ts}` (171/293). All reconciled the DESIGN-002 representative-shape mismatch against the REAL API (`parseTaskNote`/`parseRequirementNote`/`parseDesignNote` do the markdown→object parse, then `Schema.parse`; `applyPlanMutation` discriminants).
+
+### Config drift fixed (stop-the-line; in-build, not deferred)
+
+- **`.gitignore` BLOCKER**: unanchored `build/` (line 15) ignored `skills/build/` everywhere — the `/build` skill's own `SKILL.md` + `references/**` were NEVER tracked. Fixed: `build/` → `/build/` (anchored to root build-output only). Side effect (correct): `skills/build/SKILL.md` + 3 references now properly tracked.
+- **FU-2 config gap**: tsconfig `include` used `defrag/**`/`ingest/**` (NO `skills/` prefix → matched nothing; only explicit-path runs covered skill dirs); biome same. Fixed both to `skills/**` — now uniformly covers all skill script dirs. Supersedes the partial per-skill edits the implementers attempted (015 spec, 016 decisions).
+
+### Findings carried forward (non-blocking for per-TASK closure)
+
+- [finding] `lock-decision-mutation.ts` is 171 lines, exceeding DESIGN-002's SOFT "80-line ceiling for mutation scripts." TASK-016's own DoD has NO line-count item → per-TASK closure clean. The length is driven by DoD#3's dual-mutation (lock-decision + set-part-substatus) + multi-flag parsing. DISPOSITION: adjudicate at DESIGN-002 acceptance (totality-gated, later) — trim vs amend ceiling vs accept-as-soft. #design-002 #open-item
+- [insight] TASK-011 DoD#4 ("exit 1 on status:DONE+unchecked") is mechanically a PARSE failure (schema superRefine) → exit 2, which satisfies parent REQ-004 AC wording "exits non-zero." Accepted with reconciliation. #spec-reconciliation
+
+### State Changes
+
+- TASK-011/015/016-SPEC-008: DoD + ADR-Compliance checkboxes → [x]
+- PLAN impl-TASK-011/015/016-SPEC-008: IN_PROGRESS → DONE
+- PLAN qa-TASK-011/015/016-SPEC-008: PENDING → IN_PROGRESS

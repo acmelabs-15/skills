@@ -31,8 +31,7 @@
   },
   "files": {
     "include": [
-      "defrag/**",
-      "ingest/**",
+      "skills/**",
       "shared/detect-context.ts",
       "shared/detect-context.test.ts"
     ],

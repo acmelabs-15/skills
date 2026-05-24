@@ -15,8 +15,7 @@
     "allowImportingTsExtensions": true
   },
   "include": [
-    "defrag/**/*.ts",
-    "ingest/**/*.ts",
+    "skills/**/*.ts",
     "shared/detect-context.ts",
     "shared/detect-context.test.ts"
   ],
