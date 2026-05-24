@@ -848,3 +848,8 @@ Step 1 inputs validated: complexity_tier TIER_4 (PLAN authoritative); SPEC-008 A
 - R3 — cross-track barrel-index / `common.ts` collisions. Already prevented by the rigid one-TASK-at-a-time cycle; `common.ts` single-owner.
 
 No risk invalidates the SPEC (no `build-step3-spec-invalidated-halt`). Next: seed the 92 build workflow items into build.SPEC-008, then begin PoC TASK-029.
+
+
+## Event 36 — impl-TASK-029 PENDING → IN_PROGRESS; PoC build begins (rename)
+
+/build Stage A — TASK-029 (`_shared/`→`shared/` rename; Track 4 dependency root, executes FIRST). PLAN build.SPEC-008 `impl-TASK-029-SPEC-008`: PENDING → IN_PROGRESS (owning_session SESSION-2026-05-23_02; at Event 36). PoC items TASK-029 + TASK-001 seeded into build.SPEC-008 (remaining 44 deferred to per-track seeding on resume). Next: dispatch brain:🧠-implementer with TASK-029 DoD verbatim + R1 mitigation (config-file checklist + mandatory post-rename `bun tsc --noEmit` + `biome check` + diff review).
