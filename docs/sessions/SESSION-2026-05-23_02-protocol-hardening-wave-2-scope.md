@@ -1895,3 +1895,26 @@ Two natural next directions:
 Recommend validators next (007/008/009) — small, closes REQ-003 + DESIGN-001, completes the Track-1 coverage suite. Barrel-serialized so sequential within the sub-wave.
 
 Marathon math: 18/47 (38%). Remaining 29 TASKs ≈ 6-7 batches.
+
+
+## Event 80 — Batch 6 START: validators TASK-007 + 008 + 009 (parallel; barrel orchestrator-owned per R3)
+
+User adjudicated push-through for the validators batch. 3 impls dispatched in PARALLEL (bun-ts-engineer × 3; foreground). Each writes its own validator file + own test file; tests import directly from their validator file (matching plan-claim-validator.test.ts pattern), NOT the barrel. **Critical R3 coordination**: all 3 DoDs require `validators/index.ts` re-export, but the barrel is the single shared file → agents are instructed NOT to touch it; the orchestrator adds all 3 barrel exports in ONE coordinated edit after all 3 return, then flips those barrel DoD items. This honors "batch" (parallel) + R3 barrel-serialization (no concurrent barrel writes).
+
+File-disjointness (excluding the orchestrator-owned barrel):
+- impl-007 → `validators/adr-claim-validator.ts` + `tests/validators/adr-claim-validator.test.ts`
+- impl-008 → `validators/analysis-claim-validator.ts` + `tests/validators/analysis-claim-validator.test.ts`
+- impl-009 → `validators/epic-claim-validator.ts` + `tests/validators/epic-claim-validator.test.ts`
+
+All deps satisfied: TASK-001/002/003 (schemas) + TASK-005/006 (parsers) + TASK-010 (barrel exists) + TASK-029 (rename) all DONE.
+
+Per-validator scope:
+- **007 validateAdrAcceptedClaim** (P0): fires at status ACCEPTED; checks (1) all Clarifications `[x]`, (2) all Considered Options have rationale. Pure. unsatisfied[] with dotted-bracket path.
+- **008 validateAnalysisAcceptedClaim** (P1; closes Wave 7 exploit): fires at ACCEPTED; rejects body.hasOpenQuestions. Single check. Pure.
+- **009 validateEpicDoneClaim** (P1; only cross-note validator): fires at DONE; iterates contains relations via injected `deps.resolveSpec`; THROWS on missing resolver or undefined resolution (no silent pass per ADR-005 D-5 Phase 3 critic P1.1). Pure given resolver.
+
+8 PLAN workflow items already seeded (impl 007/008/009 IN_PROGRESS; qa 007/008/009 PENDING — wait, 6 items: 3 impl + 3 qa). Wave graph T007/008/009 inprogress.
+
+Closes on completion: REQ-003 (claim validator suite; AC-5/6 already done via TASK-010) + DESIGN-001 (Coverage Module Layout; completes TASK-001..010 set). Track-1 coverage suite fully landed.
+
+Commit PLAN transitions + Event 80, then process returns.

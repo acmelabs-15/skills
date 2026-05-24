@@ -210,9 +210,9 @@ graph TD
 
   subgraph W23 ["Wave 2/3 — Validators (3 PENDING; barrel-serialized)"]
     direction LR
-    T007["⏸ TASK-007<br/><span style='font-size:9px'>validateAdrDoneClaim</span>"]
-    T008["⏸ TASK-008<br/><span style='font-size:9px'>validateAnalysisDoneClaim</span>"]
-    T009["⏸ TASK-009<br/><span style='font-size:9px'>validateEpicDoneClaim</span>"]
+    T007["⚡ TASK-007<br/><span style='font-size:9px'>validateAdrAcceptedClaim</span>"]
+    T008["⚡ TASK-008<br/><span style='font-size:9px'>validateAnalysisAcceptedClaim</span>"]
+    T009["⚡ TASK-009<br/><span style='font-size:9px'>validateEpicDoneClaim (cross-note)</span>"]
   end
 
   subgraph W4 ["Wave 4 — Hook Handlers + Final Fixtures (7 PENDING)"]
@@ -255,7 +255,8 @@ graph TD
 
   class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
   class T047 done
-  class T007,T008,T009,T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
+  class T007,T008,T009 inprogress
+  class T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
 ```
 
 **Maintenance rule**: each TASK closure (impl + QA both PASS) flips its `class` declaration from `pending`/`inprogress` to `done`, alongside the SPEC-008 root rollup tick and full Event 55 propagation. Each Batch START flips IN_PROGRESS items from `pending` to `inprogress`. Keep this graph current per the same propagation cadence as the SPEC root rollup.
@@ -2815,12 +2816,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-007-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 80
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Fix Brief For Event**: Batch 6 (validators) parallel; barrel index.ts orchestrator-owned per R3
 
 #### qa-TASK-007-SPEC-008
 
@@ -2837,12 +2838,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-008-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 80
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Fix Brief For Event**: Batch 6 (validators) parallel; barrel index.ts orchestrator-owned per R3
 
 #### qa-TASK-008-SPEC-008
 
@@ -2859,12 +2860,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-009-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 80
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Fix Brief For Event**: Batch 6 (validators) parallel; barrel index.ts orchestrator-owned per R3; cross-note resolver injection
 
 #### qa-TASK-009-SPEC-008
 
