@@ -48,11 +48,11 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | research | 0 | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 0 | 4 | 4 |
 | spec-decomposition | 0 | 0 | 0 | 0 | 1 | 1 |
-| spec | 0 | 0 | 0 | 1 | 7 | 8 |
+| spec | 0 | 1 | 0 | 0 | 7 | 8 |
 | build | 1 | 1 | 0 | 0 | 7 | 9 |
 | review | 0 | 0 | 0 | 0 | 1 | 1 |
 | end | 0 | 0 | 0 | 0 | 1 | 1 |
-| **Total** | **1** | **1** | **0** | **1** | **22** | **25** |
+| **Total** | **1** | **2** | **0** | **0** | **22** | **25** |
 
 
 ## Cross-Part Dependency Graph
@@ -2258,7 +2258,8 @@ graph TD
 
 - **Phase**: spec
 - **Title**: SPEC-008 Protocol Hardening Wave 2 (5 REQ clusters: coverage gaps + skill invocation + tests + drift cleanup + automated enforcement hooks)
-- **Substatus**: READY
+- **Substatus**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
 - **Source Artifacts**: ADR-005 Protocol Hardening Wave 2 Architecture (ACCEPTED 2026-05-23)
 - **Depends On**: decisions.4
 

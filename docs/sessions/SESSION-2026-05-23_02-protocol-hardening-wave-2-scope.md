@@ -548,3 +548,22 @@ Actions applied:
 Per /decisions Step 9: set-part-done equivalent applied directly (skill returns to /plan via set-part-done call but with the workflow now in continue-from-spec.SPEC-008 mode). Next /plan invocation will auto-route to spec.SPEC-008 → dispatch /spec.
 
 Pending work on PLAN-001: spec.SPEC-008 (READY), build.SPEC-008 (PENDING), protocol-hardening (IN_PROGRESS umbrella; flips DONE when build.SPEC-008 DONE).
+
+
+## Event 24 — /plan continue → spec.SPEC-008 IN_PROGRESS; auto-dispatching /spec
+
+User invoked /skills:plan PLAN-001-skills-ecosystem. Single READY part identified: spec.SPEC-008 (build.SPEC-008 blocked on it; review/end are Wave 1 closures). No multi-READY ambiguity. Current branch `feat/plan-001-protocol-hardening-wave-2-scope` retained (non-main; branch policy allows).
+
+PLAN-001 edits:
+
+- spec.SPEC-008 substatus: `READY → IN_PROGRESS`; owning_session set to SESSION-2026-05-23_02
+- Progress Dashboard: spec column 7 DONE + 1 READY → 7 DONE + 1 IN_PROGRESS; total IN_PROGRESS row 1 → 2
+
+Auto-dispatching skills:spec with Stage 2 args:
+
+```text
+Skill(skill="skills:spec",
+      args="plan=PLAN-001 part=spec.SPEC-008 spec=SPEC-008 source_adrs=ADR-005+ADR-001+ADR-002+ADR-003")
+```
+
+(Wikilinks in args avoided per Brain MCP bullet-parser strictness; spec skill will resolve titles via Brain MCP read.)
