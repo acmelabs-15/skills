@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - protocol-hardening
@@ -16,6 +16,7 @@ status_history:
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 83; Track-1 trilogy milestone 21/47)
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 84; resume Wave 1b)
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 91; Wave 1b Batches A+B closed, 27/47 — budget pause)
+- PAUSED → IN_PROGRESS 2026-05-24 (Event 92; resume + rehydration; Wave 1b Batch C next)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -2201,3 +2202,34 @@ This context resumed at 21/47 (Event 84) and closed **6 TASKs** (Wave 1b Batches
 
 - build.SPEC-008: 27/47 (57%). ACCEPTED: REQ-001/002/003, DESIGN-001. SPEC-008 root Tasks rollup: 27 `[x]`.
 - 0 active blockers; 0 open user decisions.
+
+
+## Event 92 — Session RESUMED (PAUSED → IN_PROGRESS); rehydration complete; Wave 1b Batch C next
+
+`/skills:plan PLAN-001-skills-ecosystem` continue mode, fresh context window. Resumed this session per the Event-91 resume protocol — continuing Event numbering from 92; no new note created (resume-paused-session-not-new rule).
+
+### Rehydration (TIER-1, full checklist)
+
+- Auto-memory sweep: re-read post-compaction-rehydration-protocol, resume-paused-session-not-new, per-task-build-qa-cycle, spec-root-and-plan-graph-sync (all TIER-1 build memories).
+- Active project `skills` set + `bootstrap_context` (7d) run.
+- Read [[PLAN-001: Skills Ecosystem]]: `build.SPEC-008` Substatus IN_PROGRESS (owning SESSION-2026-05-23_02); verified impl/qa items — 011-013/015-017 DONE, 018/019/020 PENDING; build sequencing approach LOCKED (Event 48, bounded-parallel ≤4 file-disjoint + per-TASK QA gate); Pending User Decisions (none); SPEC-008 blockers none.
+- Read this session Events 84-91 (Wave 1b Batches A+B close + budget pause + resume protocol).
+- Git verified: branch `feat/plan-001-protocol-hardening-wave-2-scope` at `168fb10` (Event-91 PAUSE commit); working tree clean.
+- Suite baseline: 891 pass / 2 fail / 893 (2 = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1 LOCKED; new failures elsewhere = regression).
+
+### Harness note
+
+Stray harness message surfaced at skill launch: "issue with the selected model (claude-sonnet[1m])". This conversation runs on `claude-opus-4-7[1m]`. Flagged to user; subagent dispatches will carry explicit model overrides to avoid a broken default.
+
+### Next-ready
+
+`build.SPEC-008` **Wave 1b Batch C** — REQ-005 brief-generator scripts (file-disjoint across build/ decisions/ research/ skill dirs):
+- [[TASK-018-SPEC-008: Implement build-Skill Dispatch Brief Generators]] — build dispatch-implementer + dispatch-qa; ALSO adds `export const validRelationTypes = RelationVerbEnum.options` to `shared/composition/src/schemas/common.ts` (per SPEC-008 Files Affected).
+- [[TASK-019-SPEC-008: Implement decisions-Skill Dispatch Brief Generators]] — decisions dispatch-architect + critic.
+- [[TASK-020-SPEC-008: Implement research-Skill Dispatch Brief Generators]] — research dispatch-analyst + review dispatch-reviewer.
+
+Routing to `/build` (spec=SPEC-008) for the rigid per-TASK build+QA cycle (steps a-u). THEN: TASK-032 → unblocks TASK-014 + add REQ-004 AC-9 prefix-collision test before REQ-004 ACCEPTED; THEN Wave 1c (022/023/027/028/031/035/036), Wave 4 hooks (024/038/041-045), Wave 5 smoke (046). Derived-view sync MANDATORY at every batch close.
+
+### State Changes
+
+- SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 92)
