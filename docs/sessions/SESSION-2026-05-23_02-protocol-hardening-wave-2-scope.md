@@ -828,3 +828,23 @@ Actions:
 - Next: dispatch `Skill(skill="build", args="plan=PLAN-001 part=build.SPEC-008 spec=SPEC-008")` for Stage A — seed per-TASK impl+qa workflow items into PLAN, then begin TASK-029.
 
 Deferred (known drift, non-blocking): this note has pre-existing structural drift — `## Observations`/`## Relations` sit after Event 01 instead of at the end, duplicate `## Event 28` headings, non-canonical `## Resume protocol` / `## deliverables` sections. Overlaps the Brain-note hygiene scope (TASK-034); not restructured mid-marathon to avoid churn.
+
+
+## Event 34 — TIER_4 build approach approved; PoC = TASK-029 + TASK-001
+
+/build Step 2.5 TIER_4 oversight gate. AskUserQuestion → user LOCKED option (a) "PoC: rename + 1st schema":
+
+> Run pre-mortem → record risks → seed the 92 impl/qa workflow items into the PLAN → execute TASK-029 (`_shared`→`shared` rename) + TASK-001 (ADR schema) through the full rigid per-TASK cycle → PAUSE for sign-off on the established pattern, then continue the remaining 44 TASKs across sessions.
+
+Step 1 inputs validated: complexity_tier TIER_4 (PLAN authoritative); SPEC-008 ACCEPTED; subtree complete (root + 12 REQ + 4 DESIGN + 46 TASK). Next: Step 3 pre-mortem (delegated to analyst) → seed build workflow items → PoC cycle (TASK-029 then TASK-001) → pause.
+
+
+## Event 35 — Pre-mortem complete; 3 critical build risks recorded in PLAN ## Risks
+
+/build Step 3. Delegated pre-mortem to brain:🧠-analyst (prospective hindsight against the SPEC-008 subtree; agent `ac2a239c193c2e396`). Top 3 critical build risks recorded in PLAN-001 `## Risks` (new section before `## Phase Progression`):
+
+- R1 — `_shared`→`shared` rename cascade breaks mid-build (config files + ~549 doc refs; surfaces 5-10 TASKs late). Mitigation folded into TASK-029 brief (config checklist + post-rename tsc/biome gate + QA canary import).
+- R2 — hook handlers untestable without live Claude Code runtime (matchers silently fail → unenforced enforcement, the Wave 1 failure). Mitigation folded into TASK-046 brief (per-layer integration proof; document MCP matcher; BLOCKED over untested-DONE).
+- R3 — cross-track barrel-index / `common.ts` collisions. Already prevented by the rigid one-TASK-at-a-time cycle; `common.ts` single-owner.
+
+No risk invalidates the SPEC (no `build-step3-spec-invalidated-halt`). Next: seed the 92 build workflow items into build.SPEC-008, then begin PoC TASK-029.
