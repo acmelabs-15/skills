@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - protocol-hardening
@@ -13,6 +13,8 @@ status_history:
 - IN_PROGRESS → PAUSED 2026-05-23 (Event 64; batch 4 milestone)
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 65; resume + rehydration)
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 68; TASK-030 closed; before Batch 5a agent dispatch)
+- IN_PROGRESS → PAUSED 2026-05-24 (Event 83; Track-1 trilogy milestone 21/47)
+- PAUSED → IN_PROGRESS 2026-05-24 (Event 84; resume Wave 1b)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -25,33 +27,21 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 
 ## State
 
-
 - Starting commit: `eb0eb28` (end of PLAN-001 workflow close)
 - PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (umbrella; flips DONE when build.SPEC-008 DONE)
 - ADR-005 ACCEPTED (8 D-Ns; decisions.4 DONE)
-- spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 46 TASK)
+- spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 47 TASK — grew 46→47 via TASK-047 follow-up)
 - build.SPEC-008 IN_PROGRESS (owning_session SESSION-2026-05-23_02; this session)
-- **PAUSED at commit `054a065`** — natural milestone after batch 4 closure
-- **12/46 TASKs fully CLOSED** (impl + QA both DONE): TASK-001, 002, 005, 021, 025, 026, 029, 033, 034, 037, 039, 040
-- **34/46 TASKs PENDING**: 003, 004, 006, 007, 008, 009, 010, 011-020, 022, 023, 024, 027, 028, 030, 031, 032, 035, 036, 038, 041-046
-- QA contract notes: QA-044..055 (12 notes; bi-dir `relates_to` to their TASKs)
-- SPEC-008 root verified current: 12/46 Task rollup `[x]`; 4/10 Acceptance Criteria `[x]` (ADR coverage gate, Gate A, Gate B, CONVENTIONS amendment); 0 REQ + 0 DESIGN + 0 Success Criteria flipped (all totality-gated; none have full child coverage yet)
-- Cross-Part Dependency Graph: Mermaid reserved-word `end → end_part` fix applied (Event 59)
-- Suite count: 705 pass / 2 fail / 707 (2 pre-existing `plan-001-migration.test.ts` deferred SPEC-007 work; zero new failures introduced this session)
-
-**Wave plan progress**:
-- W0 (zero deps): DONE — TASK-021, 025, 026, 029, 033, 034, 037, 039, 040 all closed
-- W1a (schemas + parsers; barrel-serialized): 50% — TASK-002 + 005 closed; TASK-003, 004, 010, 030 PENDING
-- W1b/c/d/e: PENDING
-- W2/3/4/5: PENDING (TASK-046 hard terminal)
-
-**Open marathon items** (carried forward; none blocking resume):
-- 2 pre-existing `plan-001-migration.test.ts` failures (DEFERRED SPEC-007 work; REQ-012 DEFERRED per ADR-005 D-6); DECIDE fix/track/accept at marathon resume
-- pre-existing tsconfig + biome `hooks/**` scope gap (LSP shows diagnostic noise; runtime `tsc --noEmit` from workspace exits 0); not blocking, but worth resolving for hooks/** files to surface real errors in LSP
-- Zod version mismatch (root v4.1.13; composition workspace v3.25.76); TASK-039 worked around with forward-compatible signatures
-- NEW finding (Event 60): QA-032/033/034 carry a `validates:` key in YAML **frontmatter** (not Relations bullet); semantically distinct from Phase 2 sweep; Track-4 follow-up candidate
-- basic-memory `move_note`/`edit_note` transient flakiness — expect + retry
-
+- **RESUMED Event 84 at commit `bfeb589`** (Event-83 PAUSE point) — Track-1 trilogy milestone
+- **21/47 TASKs fully CLOSED** (impl + QA both DONE): TASK-001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040, 047
+- **26/47 TASKs PENDING**: 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041, 042, 043, 044, 045, 046
+- REQs ACCEPTED: REQ-001 (schemas) + REQ-002 (parsers) + REQ-003 (validators) — full Track-1 coverage trilogy. DESIGN-001 (Coverage Module Layout) ACCEPTED.
+- Still DRAFT (totality-gated): REQ-004..012; DESIGN-002/003/004; SPEC-008 root Success/Acceptance Criteria (flip at full Wave close)
+- QA contract notes: QA-044..064 (bi-dir `relates_to` to their TASKs)
+- Suite baseline: **817 pass / 2 fail / 819 total** (2 fails = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1 LOCKED; NEW failures elsewhere = regression)
+- Next-ready: **Wave 1b** — per-skill scripts TASK-011..020 (Track 2; wires composition lib into /ingest /decompose /recompose /defrag). Then Wave 1c (cleanup), Wave 4 (hooks), Wave 5 (smoke).
+- Open follow-ups (deferred, non-gating): FU-1 (`validates:` frontmatter key in QA-032/033/034), FU-2 (`hooks/**` tsconfig+biome scope gap), FU-3 (this session Obs/Relations placement drift → fix at session-end), D-3 (DESIGN-004 DiffNote.sha → revisit at TASK-043)
+- 0 active blockers; 0 open findings
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
@@ -2028,3 +2018,24 @@ Session status IN_PROGRESS → PAUSED at the upcoming commit. All durable state 
 - build.SPEC-008: 21/47 TASKs CLOSED (45%).
 - ACCEPTED: REQ-001, REQ-002, REQ-003; DESIGN-001.
 - Still DRAFT (totality-gated): REQ-004..012; DESIGN-002/003/004; SPEC-008 root (Success/Acceptance Criteria; flips at full Wave close).
+
+
+## Event 84 — Session RESUMED (PAUSED → IN_PROGRESS); rehydration complete; Wave 1b next
+
+`/skills:plan PLAN-001-skills-ecosystem` continue mode. Resumed this session per the Event-83 resume protocol — continuing Event numbering from 84; no new note created (resume-paused-session-not-new rule).
+
+### Rehydration (TIER-1)
+
+- Active project `skills` set + `bootstrap_context` run.
+- Read [[PLAN-001: Skills Ecosystem]]: `build.SPEC-008` IN_PROGRESS; 21/47 TASKs CLOSED; `protocol-hardening` umbrella IN_PROGRESS (flips DONE when build.SPEC-008 DONE).
+- Read this session Events 76-83 (Track-1 trilogy close + pause point + resume protocol).
+- Git verified: branch `feat/plan-001-protocol-hardening-wave-2-scope` at `bfeb589` (Event-83 PAUSE commit); working tree clean.
+- Suite baseline confirmed: 817 pass / 2 fail / 819 (2 = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1 LOCKED; new failures elsewhere = regression).
+
+### Next-ready
+
+`build.SPEC-008` Wave 1b — per-skill scripts TASK-011..020 (Track 2; wires the composition library into the /ingest /decompose /recompose /defrag skills). Routing to `/build` (spec=SPEC-008) for the rigid per-TASK build+QA cycle (steps a-u). Subsequent waves: Wave 1c cleanup (022/023/027/028/031/032/035/036), Wave 4 hooks (024/038/041-045), Wave 5 smoke (046).
+
+### State Changes
+
+- SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 84)
