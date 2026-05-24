@@ -2390,20 +2390,20 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-021-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 52
+- **Transitioned At Event**: Event 53
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **Test Report Ref**: QA-046-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-025-SPEC-008
 
 - **Type**: impl
 - **Task Ref**: TASK-025-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 52 (re-dispatch; prior attempt errored on return — Event 50)
+- **Transitioned At Event**: Event 53 (re-dispatch from Event 52; prior attempt errored at Event 50)
 - **Failed Iterations**: 1
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -2434,11 +2434,11 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-026-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 52
+- **Transitioned At Event**: Event 53
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **Test Report Ref**: QA-047-SPEC-008
 - **Fix Brief For Event**: —
 
 ## Tasks

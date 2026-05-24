@@ -1076,3 +1076,29 @@ Dispatching 3 concurrent agents (bounded-parallel; QA agents are file-disjoint b
 - bun-ts-engineer for TASK-025 (re-dispatch) — integration parse→mutate→validate→render + 2 cross-note tests, with explicit lessons from the first attempt (real API discovery; scope-fenced `biome` invocation; no scope creep).
 
 QA agents return verdicts only; orchestrator authors QA-046 + QA-047 notes. impl-025 returns State Changes for orchestrator verification.
+
+
+## Event 53 — Batch 2 returns: qa-021 PASS, qa-026 PASS, impl-025 PASS+verified; TASKs 021/026 CLOSED, TASK-025 impl DONE
+
+3-agent concurrent batch returned (qa-021 + qa-026 + impl-025-v2). All clean.
+
+**qa-TASK-021** (agent `a6586bbf1106ddaf1`): PASS. 10 DoD + 4 ADR/REQ + 4 API-drift-verification all PASS. Verified harness uses real `ClaimResult` shape (`{verdict, total, unsatisfied: [{index, text, section?}]}`); zero `.valid`/`u.message` artifacts; `FixtureMalformedError` keeps fixture-authorship debugging distinct from validator-behavior debugging. QA-046-SPEC-008 contract note authored (Pattern 2; uses `relates_to`).
+
+**qa-TASK-026** (agent `a316a0a64e7401b9f`): PASS. 7 DoD + 2 ADR/REQ all PASS. Source-traced confirmation of the backward-transition mechanism (`plan-note.ts:168-179` superRefine fires `qa-DONE requires paired impl-DONE`; transition guard at `plan-mutations.ts:289-328` passes; rejection is invariant-backed). Confirmed 3 idempotent mutations are genuinely idempotent in source. QA-047-SPEC-008 contract note authored.
+
+**impl-TASK-025-v2** (agent `a52e3dce08dee60ca`): PASS (full State Changes returned this time). 12 DoD all SATISFIED. 8 new tests across 3 integration files + 8 fixtures: parse-mutate-validate-render PLAN/SPEC/TASK pipelines + cross-note SPEC-TASK consistency + TEST-REPORT-vs-TASK-DoD cross-validation. Suite 534→542 (+8 pass, 0 new fails). tsc exit 0; biome clean (SCOPED invocation — `biome check tests/integration/ tests/fixtures/integration/`; no scope-creep). Implementer honestly reported 3 API-gap adaptations: no `validatePlanDoneClaim` yet (TASK-010 lands it; used `PlanNoteSchema.safeParse` as equivalent claim contract); no TASK renderer (used `applyCheckboxMutation`'s string-in/string-out re-parser-validated round-trip); no SPEC mutation API beyond model-level edits (in-model edit + `SpecRootNoteSchema.safeParse` + `validateSpecDoneClaim`). Adaptations sound — the TASK-025 acceptance allows "equivalent claim validator for the touched note" for the still-pending validator.
+
+Orchestrator actions (steps o–t, batched across 3 closures):
+
+- TASK-021 note: DoD/Compliance flipped Event 50; status TODO → DONE; `relates_to QA-046-SPEC-008` added.
+- TASK-026 note: DoD/Compliance flipped Event 51; status TODO → DONE; `relates_to QA-047-SPEC-008` added.
+- TASK-025 note: DoD (12) + ADR/REQ Compliance (4) flipped `[x]` after orchestrator-verified gates. Status TODO holds until qa-025 PASS (step s).
+- PLAN `qa-TASK-021`: IN_PROGRESS → DONE (Test Report Ref QA-046).
+- PLAN `qa-TASK-026`: IN_PROGRESS → DONE (Test Report Ref QA-047).
+- PLAN `impl-TASK-025`: IN_PROGRESS → DONE (Failed Iterations 1 reflects the prior errored attempt).
+
+**TASKs 021 + 026 CLOSED** — both Track 3 test-infra tasks ship; the adversarial harness is callable from TASK-023, and mutation invariants stand as a permanent regression guard. TASK-025 mid-cycle (impl DONE; qa next).
+
+Wave 0 progress: 8 TASKs total. 2 fully CLOSED (021, 026). 1 mid-cycle (025: impl DONE, qa pending). 5 not yet started (025-then-marathon already accounted; 033/034/037/039/040 remain — Brain notes + user doc + hooks scaffolding).
+
+Bounded-parallel observations to carry: (a) concurrent dispatches DO error on the return-channel intermittently (~33% rate in batch 1) — salvage protocol (verify on-disk + run gates + orchestrator-verify DoD-from-source) works; (b) ALL biome calls MUST be path-scoped — bare `biome check --fix` reformats anything it can see; (c) QA agents reliably return clean verdicts even when impl agents have return-channel issues (different agent type).

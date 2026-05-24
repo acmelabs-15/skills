@@ -2,7 +2,7 @@
 title: 'TASK-021-SPEC-008: Implement Adversarial-Claim Test Harness'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-021-spec-008-implement-adversarial-claim-test-harness-1
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -69,3 +69,4 @@ Implement the shared adversarial-claim test harness at `shared/composition/tests
 - implements [[REQ-006-SPEC-008: Adversarial-Claim Test Harness and Initial Fixture Set]]
 - implements [[DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape]]
 - depends_on [[ADR-005: Protocol Hardening Wave 2 Architecture]]
+- relates_to [[QA-046-SPEC-008: Implement Adversarial Claim Test Harness]]

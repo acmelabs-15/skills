@@ -2,7 +2,7 @@
 title: 'TASK-026-SPEC-008: Mutation Backward Transition and Idempotency Tests'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-026-spec-008-mutation-invariants
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -62,3 +62,4 @@ Author the mutation-invariant test file at `shared/composition/tests/mutation-in
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - implements [[REQ-007-SPEC-008: Integration Tests and Mutation Tests and Drift Regression Markers]]
 - depends_on [[ADR-005: Protocol Hardening Wave 2 Architecture]]
+- relates_to [[QA-047-SPEC-008: Mutation Backward Transition and Idempotency Tests]]
