@@ -1059,3 +1059,20 @@ Orchestrator-verified TASK-026's partial output (agent's RETURN errored, but cod
 - DoD (7) + ADR/REQ compliance (2) flipped `[x]`. PLAN `impl-TASK-026-SPEC-008`: IN_PROGRESS → DONE (at Event 51).
 
 Lesson for the marathon (partial-return recovery): when implementer tool surface errors but files were written, run gates → read source → verify each DoD item ourselves. The orchestrator-verification step happens anyway; the missing piece is the attested State Changes report. As long as DoD is verifiable from source + gates pass, salvage is sound.
+
+
+## Event 52 — Batch 2 dispatches: qa-TASK-021 + qa-TASK-026 + impl-TASK-025 (re-dispatch)
+
+PLAN transitions (3, this Event):
+
+- qa-TASK-021-SPEC-008: PENDING → IN_PROGRESS (owning_session SESSION-2026-05-23_02)
+- qa-TASK-026-SPEC-008: PENDING → IN_PROGRESS (owning_session SESSION-2026-05-23_02)
+- impl-TASK-025-SPEC-008: stays IN_PROGRESS; Failed Iterations 0 → 1 (prior partial scrapped; fresh re-dispatch)
+
+Dispatching 3 concurrent agents (bounded-parallel; QA agents are file-disjoint by code surface AND author disjoint QA-NNN notes; impl-025 writes to disjoint test files):
+
+- brain:🧠-qa for TASK-021 — validate adversarial harness against TASK-021 DoD + REQ-006 AC-1/AC-3 + ADR-005 D-3.
+- brain:🧠-qa for TASK-026 — validate mutation invariants against TASK-026 DoD + REQ-007 AC-4 + ADR-005 D-3 P1.2.
+- bun-ts-engineer for TASK-025 (re-dispatch) — integration parse→mutate→validate→render + 2 cross-note tests, with explicit lessons from the first attempt (real API discovery; scope-fenced `biome` invocation; no scope creep).
+
+QA agents return verdicts only; orchestrator authors QA-046 + QA-047 notes. impl-025 returns State Changes for orchestrator verification.
