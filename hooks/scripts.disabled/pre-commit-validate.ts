@@ -7,10 +7,13 @@
  * staged note fails its status-flip claim — naming every failing note.
  * Allows otherwise.
  *
- * Batch semantics (ADR-005 D-8 HYBRID, per-batch hardening): once a batch
- * reaches the commit boundary the per-note allow-with-warning ergonomics no
- * longer apply — the batch must be clean, so any single failing note denies
- * the whole commit.
+ * Layered-severity semantics (REQ-011 amended Event 114): Layer 3 is a BOUNDARY
+ * gate, so it maps BOTH `deny` AND `allow-with-warning` to a commit-block. Once
+ * a batch reaches the commit boundary, full conformance is required — nothing
+ * non-conformant (claim-lie OR hygiene) may enter git history. Any single
+ * non-conforming staged note denies the whole commit, naming every offender.
+ * The per-write ergonomics (allow-with-warning proceeds so notes stay editable)
+ * apply only at Layers 1-2; they do not apply here.
  *
  * Security boundary (Phase 3 reviewer P1): the working directory (`cwd`)
  * arrives from the trusted Claude Code hook dispatcher, but the handler still
@@ -27,7 +30,7 @@
 import { isAbsolute } from "node:path";
 
 import type { DispatchOutcome } from "../lib/dispatch-validator.ts";
-import { dispatchValidator } from "../lib/dispatch-validator.ts";
+import { UnparseableNoteError, dispatchValidator } from "../lib/dispatch-validator.ts";
 import { emitResponse } from "../lib/format-hook-response.ts";
 import type { StagedNote } from "../lib/git-staged-files.ts";
 import { readStagedBrainNotes } from "../lib/git-staged-files.ts";
@@ -64,43 +67,51 @@ export function assertSafeRepoRoot(repoRoot: string): string {
   return repoRoot;
 }
 
-/** Allow/deny decision plus optional advisory warning text. */
+/** Allow/deny decision plus optional reason text. */
 export interface CommitDecision {
   verdict: "allow" | "deny";
   /** Populated when `verdict === "deny"`. */
   reason?: string;
-  /** Populated for an allow carrying advisory text. */
-  warning?: string;
 }
 
 /**
- * Apply per-batch HYBRID semantics across the staged note set. Any note whose
- * dispatch verdict is `deny` denies the whole commit; the reason names every
- * failing note. A clean set allows, surfacing the first advisory warning (if
- * any) as `additionalContext`.
+ * Apply BOUNDARY-gate layered-severity semantics across the staged note set
+ * (REQ-011 amended Event 114). Any note whose dispatch verdict is `deny` OR
+ * `allow-with-warning` — i.e. ANY non-conformance, claim OR hygiene — denies the
+ * whole commit; the reason names every non-conforming note with its specific
+ * cause. A fully clean set (every note `allow`) allows.
  */
 export function decideForNotes(
   notes: readonly StagedNote[],
   dispatch: (content: string, filePath: string) => DispatchOutcome,
 ): CommitDecision {
   const failures: string[] = [];
-  const warnings: string[] = [];
   for (const note of notes) {
-    const outcome = dispatch(note.content, note.filePath);
+    // An UnparseableNoteError on a single staged note is a per-note structural
+    // defect. At a BOUNDARY gate the conservative default is FAIL-CLOSED
+    // (REQ-011 AC#9): the unparseable note denies the commit rather than slipping
+    // through. Only git/infra failures (raised before this loop) fail-open.
+    let outcome: DispatchOutcome;
+    try {
+      outcome = dispatch(note.content, note.filePath);
+    } catch (err) {
+      if (err instanceof UnparseableNoteError) {
+        failures.push(`${note.filePath}: unparseable note (fail-closed at commit boundary)`);
+        continue;
+      }
+      throw err;
+    }
     if (outcome.verdict === "deny") {
       failures.push(`${note.filePath}: ${outcome.reason ?? "claim validation failed"}`);
-    } else if (outcome.verdict === "allow-with-warning" && outcome.warning !== undefined) {
-      warnings.push(`${note.filePath}: ${outcome.warning}`);
+    } else if (outcome.verdict === "allow-with-warning") {
+      failures.push(`${note.filePath}: ${outcome.warning ?? "schema hygiene issue"}`);
     }
   }
   if (failures.length > 0) {
     return {
       verdict: "deny",
-      reason: `Commit blocked — ${failures.length} staged Brain note(s) failed claim validation:\n${failures.join("\n")}`,
+      reason: `Commit blocked — ${failures.length} staged Brain note(s) failed full-conformance validation:\n${failures.join("\n")}`,
     };
-  }
-  if (warnings.length > 0) {
-    return { verdict: "allow", warning: warnings.join("\n") };
   }
   return { verdict: "allow" };
 }
@@ -142,7 +153,6 @@ async function main(): Promise<void> {
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
         permissionDecision: "allow",
-        ...(decision.warning !== undefined ? { additionalContext: decision.warning } : {}),
       },
     });
   } catch (err) {

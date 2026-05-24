@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import type { DispatchOutcome } from "../../lib/dispatch-validator.ts";
+import { UnparseableNoteError } from "../../lib/dispatch-validator.ts";
 import type { StagedNote } from "../../lib/git-staged-files.ts";
 import {
   PathContainmentError,
@@ -58,6 +59,21 @@ async function taskSample(): Promise<string> {
 /** Flip the canonical sample to DONE with an unsatisfied DoD — a lying claim. */
 function asDenying(content: string): string {
   return content.replace(/^status:.*$/m, "status: DONE");
+}
+
+/**
+ * The canonical sample sits at the structural floor (3 observations, 2
+ * relations), so its dispatch verdict is `allow-with-warning`, which a BOUNDARY
+ * gate denies. For the "fully clean note allows" cases, lift BOTH counts above
+ * the floor (a 4th observation + a 3rd relation) so the floor warning does not
+ * fire and the verdict is `allow`.
+ */
+function asFullyClean(content: string): string {
+  const withObs = content.replace(
+    "## Relations",
+    "- [outcome] Fourth observation lifts the count above the floor #clean\n\n## Relations",
+  );
+  return `${withObs.trimEnd()}\n- relates_to [[ANALYSIS-001: Sample]]\n`;
 }
 
 describe("assertSafeRepoRoot", () => {
@@ -137,14 +153,56 @@ describe("decideForNotes", () => {
     expect(decision.reason).not.toContain("docs/b.md");
   });
 
-  test("surfaces allow-with-warning as advisory on a clean set", () => {
+  test("BOUNDARY gate: allow-with-warning (hygiene) denies the commit", () => {
+    // Layer 3 maps allow-with-warning → deny (full conformance required at the
+    // commit boundary; nothing non-conformant enters history).
     const notes: StagedNote[] = [{ filePath: "docs/a.md", content: "x" }];
     const decision = decideForNotes(
       notes,
       stub({ "docs/a.md": { verdict: "allow-with-warning", warning: "floor" } }),
     );
-    expect(decision.verdict).toBe("allow");
-    expect(decision.warning).toContain("floor");
+    expect(decision.verdict).toBe("deny");
+    expect(decision.reason).toContain("floor");
+    expect(decision.reason).toContain("docs/a.md");
+  });
+
+  test("BOUNDARY gate: a deny and an allow-with-warning are both named", () => {
+    const notes: StagedNote[] = [
+      { filePath: "docs/a.md", content: "x" },
+      { filePath: "docs/b.md", content: "y" },
+    ];
+    const decision = decideForNotes(
+      notes,
+      stub({
+        "docs/a.md": { verdict: "deny", reason: "DoD unchecked" },
+        "docs/b.md": { verdict: "allow-with-warning", warning: "bad category" },
+      }),
+    );
+    expect(decision.verdict).toBe("deny");
+    expect(decision.reason).toContain("DoD unchecked");
+    expect(decision.reason).toContain("bad category");
+    expect(decision.reason).toContain("2 staged Brain note(s)");
+  });
+
+  test("BOUNDARY fail-closed: an unparseable staged note denies the commit", () => {
+    // A per-note UnparseableNoteError at the commit boundary fails CLOSED
+    // (REQ-011 AC#9): it denies rather than slipping through fail-open.
+    const notes: StagedNote[] = [{ filePath: "docs/a.md", content: "garbage" }];
+    const decision = decideForNotes(notes, () => {
+      throw new UnparseableNoteError("docs/a.md", [], "no frontmatter");
+    });
+    expect(decision.verdict).toBe("deny");
+    expect(decision.reason).toContain("unparseable note");
+    expect(decision.reason).toContain("docs/a.md");
+  });
+
+  test("a non-Unparseable dispatch throw propagates (infra fail-open at main level)", () => {
+    const notes: StagedNote[] = [{ filePath: "docs/a.md", content: "x" }];
+    expect(() =>
+      decideForNotes(notes, () => {
+        throw new Error("unexpected infra failure");
+      }),
+    ).toThrow("unexpected infra failure");
   });
 });
 
@@ -165,10 +223,24 @@ describe("evaluateStagedCommit (integration against a real repo)", () => {
     expect((await evaluateStagedCommit(repoRoot)).verdict).toBe("allow");
   });
 
-  test("allows when a staged Brain note passes its claim", async () => {
-    await writeFixture(repoRoot, "docs/specs/SPEC-001/tasks/TASK-001.md", await taskSample());
+  test("allows when a fully clean staged Brain note passes its claim", async () => {
+    await writeFixture(
+      repoRoot,
+      "docs/specs/SPEC-001/tasks/TASK-001.md",
+      asFullyClean(await taskSample()),
+    );
     await runGit(repoRoot, ["add", "."]);
     expect((await evaluateStagedCommit(repoRoot)).verdict).toBe("allow");
+  });
+
+  test("denies a staged note with only a hygiene issue (floor warning)", async () => {
+    // The canonical sample at 3 observations trips the floor warning →
+    // allow-with-warning → BOUNDARY deny at the commit gate.
+    await writeFixture(repoRoot, "docs/specs/SPEC-001/tasks/TASK-001.md", await taskSample());
+    await runGit(repoRoot, ["add", "."]);
+    const decision = await evaluateStagedCommit(repoRoot);
+    expect(decision.verdict).toBe("deny");
+    expect(decision.reason).toContain("docs/specs/SPEC-001/tasks/TASK-001.md");
   });
 
   test("denies when a staged Brain note fails its claim", async () => {

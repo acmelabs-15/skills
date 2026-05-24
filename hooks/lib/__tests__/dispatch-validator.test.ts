@@ -150,9 +150,74 @@ describe("dispatchValidator — status-flip claim failures deny", () => {
     );
     expectDeny(dispatchValidator(lying, PATH), "AnalysisNoteSchema", "ACCEPTED");
   });
+});
 
-  test("epic DONE that is structurally malformed denies", () => {
-    expectDeny(dispatchValidator(EPIC_DENYING, PATH), "EpicNoteSchema", "DONE");
+describe("dispatchValidator — LAYERED-SEVERITY classification (REQ-011 amended)", () => {
+  /**
+   * The decisive cases the amendment adds. A claim-lie ALWAYS denies; a
+   * hygiene-only issue (claim satisfied) is `allow-with-warning`; a claim-lie
+   * WITH a co-occurring hygiene defect still denies (the CRITICAL INVARIANT —
+   * the lie is never masked by the hygiene defect that fails the strict parse
+   * first and suppresses the superRefine claim issue).
+   */
+
+  test("claim-lie ONLY (DONE + unchecked DoD) → deny", async () => {
+    const lying = withStatus(await sample("task-note-sample.md"), "DONE");
+    const out = dispatchValidator(lying, PATH);
+    expect(out.verdict).toBe("deny");
+    expect(out.reason).toContain("TaskNoteSchema");
+  });
+
+  test("hygiene ONLY (claim satisfied + bad observation category) → allow-with-warning", () => {
+    const out = dispatchValidator(TASK_DRAFT_BAD_CATEGORY, PATH);
+    expect(out.verdict).toBe("allow-with-warning");
+    expect(out.warning).toContain("Schema warning:");
+    expect(out.warning).toContain("(non-blocking)");
+  });
+
+  test("hygiene ONLY (claim satisfied + 6 frontmatter tags) → allow-with-warning", () => {
+    const out = dispatchValidator(TASK_DRAFT_TOO_MANY_TAGS, PATH);
+    expect(out.verdict).toBe("allow-with-warning");
+  });
+
+  test("CRITICAL INVARIANT: claim-lie + hygiene together (DONE + unchecked DoD + bad category) → deny", () => {
+    const out = dispatchValidator(TASK_DONE_LYING_AND_BAD_CATEGORY, PATH);
+    // The claim lie wins despite the co-occurring hygiene defect that fails the
+    // strict parse first and suppresses the superRefine claim issue.
+    expect(out.verdict).toBe("deny");
+    expect(out.reason).toContain("TaskNoteSchema");
+    expect(out.reason).toContain("status=DONE");
+  });
+
+  test("CRITICAL INVARIANT: claim-lie + hygiene together (DONE + unchecked DoD + 6 tags) → deny", () => {
+    const out = dispatchValidator(TASK_DONE_LYING_AND_TOO_MANY_TAGS, PATH);
+    expect(out.verdict).toBe("deny");
+    expect(out.reason).toContain("status=DONE");
+  });
+
+  test("clean (DONE + all DoD checked, no hygiene issues) → allow", () => {
+    const out = dispatchValidator(TASK_DONE_CLEAN, PATH);
+    expect(out.verdict).toBe("allow");
+  });
+
+  test("requirement: claim-lie + bad category together → deny (claim wins)", () => {
+    const out = dispatchValidator(REQ_ACCEPTED_LYING_AND_BAD_CATEGORY, PATH);
+    expect(out.verdict).toBe("deny");
+    expect(out.reason).toContain("RequirementNoteSchema");
+  });
+
+  test("requirement: hygiene only (ACCEPTED + all AC checked + bad category) → allow-with-warning", () => {
+    const out = dispatchValidator(REQ_ACCEPTED_CLEAN_BAD_CATEGORY, PATH);
+    expect(out.verdict).toBe("allow-with-warning");
+  });
+
+  test("epic structurally malformed (contains without Contained Specs) → allow-with-warning", () => {
+    // Under the amendment this is a recoverable schema-rule violation, NOT a
+    // claim-validator failure (the EPIC done-claim needs cross-note SPEC
+    // resolution the hook boundary cannot perform), so it classifies
+    // allow-with-warning. Boundary gates (L3/L4/L5/L6) still DENY it.
+    const out = dispatchValidator(EPIC_DENYING, PATH);
+    expect(out.verdict).toBe("allow-with-warning");
   });
 });
 
@@ -419,3 +484,171 @@ floor warning path is exercised.
 - part_of [[SPEC-001: Sample]]
 - implements [[ADR-001: Sample]]
 `;
+
+/**
+ * TASK fixtures for the LAYERED-SEVERITY matrix. Built around a single valid
+ * TASK shape with controlled mutations so each case isolates exactly one axis
+ * (claim, hygiene, or both). The DoD is a single item; `[x]` = claim satisfied,
+ * `[ ]` = claim lie at DONE.
+ */
+function taskFixture(opts: {
+  status: string;
+  dodChecked: boolean;
+  badCategory?: boolean;
+  tooManyTags?: boolean;
+}): string {
+  const box = opts.dodChecked ? "[x]" : "[ ]";
+  const tags = opts.tooManyTags
+    ? "  - task\n  - spec-001\n  - a\n  - b\n  - c\n  - d"
+    : "  - task\n  - spec-001";
+  const firstObs = opts.badCategory
+    ? "- [NOT_A_CATEGORY] bad category to fail base parse #hygiene"
+    : "- [decision] A real categorized observation #ok";
+  return `---
+title: 'TASK-002-SPEC-001: Matrix Fixture'
+type: task
+permalink: specs/spec-001-x/tasks/task-002-spec-001-matrix-fixture
+status: ${opts.status}
+tags:
+${tags}
+---
+
+# TASK-002-SPEC-001: Matrix Fixture
+
+## Objective
+
+Exercise the layered-severity dispatch matrix with one controlled axis at a time.
+
+## Scope
+
+**In Scope**:
+
+- One DoD item
+
+**Out of Scope**:
+
+- Everything else
+
+## Files Affected
+
+| File | Action | Purpose |
+| --- | --- | --- |
+| \`src/x.ts\` | NEW | matrix fixture target |
+
+## Testing Requirements
+
+- The single DoD item gates the done-claim
+
+## Definition of Done
+
+- ${box} The one and only DoD item
+
+## Observations
+
+${firstObs}
+- [fact] Second observation above the floor #ok
+- [insight] Third observation above the floor #ok
+- [constraint] Fourth observation keeps the count above the floor warning #ok
+
+## Relations
+
+- part_of [[SPEC-001: Sample]]
+- implements [[ADR-001: Sample]]
+- relates_to [[REQ-001-SPEC-001: Sample]]
+`;
+}
+
+/** DRAFT (claim N/A) + bad observation category → hygiene only. */
+const TASK_DRAFT_BAD_CATEGORY = taskFixture({
+  status: "TODO",
+  dodChecked: false,
+  badCategory: true,
+});
+
+/** DRAFT (claim N/A) + 6 frontmatter tags (exceeds max 5) → hygiene only. */
+const TASK_DRAFT_TOO_MANY_TAGS = taskFixture({
+  status: "TODO",
+  dodChecked: true,
+  tooManyTags: true,
+});
+
+/** DONE + unchecked DoD + bad category → claim-lie AND hygiene (CRITICAL). */
+const TASK_DONE_LYING_AND_BAD_CATEGORY = taskFixture({
+  status: "DONE",
+  dodChecked: false,
+  badCategory: true,
+});
+
+/** DONE + unchecked DoD + 6 tags → claim-lie AND hygiene (CRITICAL). */
+const TASK_DONE_LYING_AND_TOO_MANY_TAGS = taskFixture({
+  status: "DONE",
+  dodChecked: false,
+  tooManyTags: true,
+});
+
+/** DONE + all DoD checked + no hygiene defect → clean allow. */
+const TASK_DONE_CLEAN = taskFixture({
+  status: "DONE",
+  dodChecked: true,
+});
+
+/**
+ * REQUIREMENT fixture builder for the cross-type claim-wins case. A single AC
+ * item; `[x]` = claim satisfied, `[ ]` = claim lie at ACCEPTED. `badCategory`
+ * injects a base-parse hygiene failure that suppresses the superRefine claim
+ * issue — the partition-trap the lenient extractor sidesteps.
+ */
+function reqFixture(opts: { status: string; acChecked: boolean; badCategory?: boolean }): string {
+  const box = opts.acChecked ? "[x]" : "[ ]";
+  const firstObs = opts.badCategory
+    ? "- [NOT_A_CATEGORY] bad category to fail base parse #hygiene"
+    : "- [requirement] A real categorized observation #ok";
+  return `---
+title: 'REQ-002-SPEC-001: Matrix Requirement'
+type: requirement
+status: ${opts.status}
+permalink: specs/spec-001-x/requirements/req-002-spec-001-matrix
+tags:
+  - requirement
+  - spec-001
+---
+
+# REQ-002-SPEC-001: Matrix Requirement
+
+## Requirement Statement
+
+WHEN the matrix requirement is parsed THE SYSTEM SHALL exercise the AC gate SO
+THAT the claim-wins invariant is verified at the REQ layer.
+
+## Acceptance Criteria
+
+- ${box} GIVEN the matrix requirement WHEN evaluated THEN the AC gates the claim
+
+## Observations
+
+${firstObs}
+- [fact] Second observation above the floor #ok
+- [insight] Third observation above the floor #ok
+- [constraint] Fourth observation keeps the count above the floor warning #ok
+
+## Relations
+
+- part_of [[SPEC-001: Sample]]
+- implements [[ADR-001: Sample]]
+- relates_to [[DESIGN-001-SPEC-001: Sample]]
+`;
+}
+
+/** ACCEPTED + unchecked AC + bad category → claim-lie AND hygiene (claim wins). */
+const REQ_ACCEPTED_LYING_AND_BAD_CATEGORY = reqFixture({
+  status: "ACCEPTED",
+  acChecked: false,
+  badCategory: true,
+});
+
+/** ACCEPTED + checked AC + bad category → hygiene only (claim satisfied). */
+const REQ_ACCEPTED_CLEAN_BAD_CATEGORY = reqFixture({
+  status: "ACCEPTED",
+  acChecked: true,
+  badCategory: true,
+});

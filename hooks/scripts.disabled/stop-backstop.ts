@@ -194,28 +194,37 @@ export interface BackstopDecision {
 }
 
 /**
- * Apply per-note validation across the modified set. Any note whose dispatch
- * verdict is `deny` blocks turn completion; the reason names every failing
- * note. A clean (or empty) set allows the turn to complete.
+ * Apply BACKSTOP-gate layered-severity semantics across the modified set
+ * (REQ-011 amended Event 114). Any note whose dispatch verdict is `deny` OR
+ * `allow-with-warning` — i.e. ANY non-conformance, claim OR hygiene — blocks
+ * turn completion; the reason names every non-conforming note. A fully clean
+ * (or empty) set allows the turn to complete.
  *
- * `allow-with-warning` does NOT block at the turn boundary — the backstop's
- * job is to catch lying terminal-status claims, not advisory quality issues.
+ * `allow-with-warning` DOES block here: Layer 6 is the turn-end backstop where
+ * full conformance is required — nothing non-conformant may survive turn-end.
+ * The per-write ergonomics (allow-with-warning proceeds so a note stays
+ * editable) apply only at Layers 1-2; the backstop is a boundary-class gate.
  */
 export function decideForNotes(
   notes: readonly ModifiedNote[],
-  dispatch: (content: string, filePath: string) => { verdict: string; reason?: string },
+  dispatch: (
+    content: string,
+    filePath: string,
+  ) => { verdict: string; reason?: string; warning?: string },
 ): BackstopDecision {
   const failures: string[] = [];
   for (const note of notes) {
     const outcome = dispatch(note.content, note.filePath);
     if (outcome.verdict === "deny") {
       failures.push(`${note.filePath}: ${outcome.reason ?? "claim validation failed"}`);
+    } else if (outcome.verdict === "allow-with-warning") {
+      failures.push(`${note.filePath}: ${outcome.warning ?? "schema hygiene issue"}`);
     }
   }
   if (failures.length > 0) {
     return {
       verdict: "block",
-      reason: `Turn-end backstop: ${failures.length} docs/** notes modified this turn fail validation: ${failures.join("; ")}`,
+      reason: `Turn-end backstop: ${failures.length} docs/** notes modified this turn fail full-conformance validation: ${failures.join("; ")}`,
     };
   }
   return { verdict: "allow" };

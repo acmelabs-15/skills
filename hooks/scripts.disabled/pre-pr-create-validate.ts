@@ -25,7 +25,7 @@
 import { isAbsolute } from "node:path";
 
 import type { DispatchOutcome } from "../lib/dispatch-validator.ts";
-import { dispatchValidator } from "../lib/dispatch-validator.ts";
+import { UnparseableNoteError, dispatchValidator } from "../lib/dispatch-validator.ts";
 import { emitResponse } from "../lib/format-hook-response.ts";
 import { readPrDiffBrainNotes } from "../lib/git-diff-commits.ts";
 import type { StagedNote } from "../lib/git-staged-files.ts";
@@ -118,39 +118,48 @@ export function parsePrCreateBase(command: string): string {
   return DEFAULT_BASE_REF;
 }
 
-/** Allow/deny decision plus optional advisory warning text. */
+/** Allow/deny decision plus optional reason text. */
 export interface PrCreateDecision {
   verdict: "allow" | "deny";
   reason?: string;
-  warning?: string;
 }
 
 /**
- * Apply per-batch HYBRID semantics across the PR-diff note set. Any `deny`
- * verdict denies the whole PR open, naming every failing note.
+ * Apply BOUNDARY-gate layered-severity semantics across the PR-diff note set
+ * (REQ-011 amended Event 114). Any `deny` OR `allow-with-warning` verdict —
+ * i.e. ANY non-conformance, claim OR hygiene — denies the whole PR open, naming
+ * every non-conforming note. Full conformance is required before the diff is
+ * proposed for merge.
  */
 export function decideForNotes(
   notes: readonly StagedNote[],
   dispatch: (content: string, filePath: string) => DispatchOutcome,
 ): PrCreateDecision {
   const failures: string[] = [];
-  const warnings: string[] = [];
   for (const note of notes) {
-    const outcome = dispatch(note.content, note.filePath);
+    // BOUNDARY fail-closed (REQ-011 AC#9): a per-note UnparseableNoteError denies
+    // the PR open; only git/infra failures (raised before this loop) fail-open.
+    let outcome: DispatchOutcome;
+    try {
+      outcome = dispatch(note.content, note.filePath);
+    } catch (err) {
+      if (err instanceof UnparseableNoteError) {
+        failures.push(`${note.filePath}: unparseable note (fail-closed at PR boundary)`);
+        continue;
+      }
+      throw err;
+    }
     if (outcome.verdict === "deny") {
       failures.push(`${note.filePath}: ${outcome.reason ?? "claim validation failed"}`);
-    } else if (outcome.verdict === "allow-with-warning" && outcome.warning !== undefined) {
-      warnings.push(`${note.filePath}: ${outcome.warning}`);
+    } else if (outcome.verdict === "allow-with-warning") {
+      failures.push(`${note.filePath}: ${outcome.warning ?? "schema hygiene issue"}`);
     }
   }
   if (failures.length > 0) {
     return {
       verdict: "deny",
-      reason: `PR open blocked — ${failures.length} PR-diff Brain note(s) failed claim validation:\n${failures.join("\n")}`,
+      reason: `PR open blocked — ${failures.length} PR-diff Brain note(s) failed full-conformance validation:\n${failures.join("\n")}`,
     };
-  }
-  if (warnings.length > 0) {
-    return { verdict: "allow", warning: warnings.join("\n") };
   }
   return { verdict: "allow" };
 }
@@ -205,7 +214,6 @@ async function main(): Promise<void> {
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
         permissionDecision: "allow",
-        ...(decision.warning !== undefined ? { additionalContext: decision.warning } : {}),
       },
     });
   } catch (err) {

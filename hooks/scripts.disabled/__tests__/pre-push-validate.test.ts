@@ -64,6 +64,20 @@ function asDenying(content: string): string {
   return content.replace(/^status:.*$/m, "status: DONE");
 }
 
+/**
+ * The canonical sample sits at the structural floor (3 observations, 2
+ * relations), so its dispatch verdict is `allow-with-warning`, which a BOUNDARY
+ * gate (Layer 4) denies. Lift BOTH counts above the floor (a 4th observation +
+ * a 3rd relation) so a genuinely clean note verdicts `allow`.
+ */
+function asFullyClean(content: string): string {
+  const withObs = content.replace(
+    "## Relations",
+    "- [outcome] Fourth observation lifts the count above the floor #clean\n\n## Relations",
+  );
+  return `${withObs.trimEnd()}\n- relates_to [[ANALYSIS-001: Sample]]\n`;
+}
+
 describe("parsePushCommand", () => {
   test("defaults to origin/HEAD with no positional args", () => {
     expect(parsePushCommand("git push")).toEqual({ remote: "origin", branch: "HEAD" });
@@ -182,11 +196,24 @@ describe("evaluatePush (integration against a real repo)", () => {
     await rm(baseDir, { recursive: true, force: true });
   });
 
-  test("allows when pushed Brain notes pass their claims", async () => {
-    await writeFixture(repoRoot, "docs/specs/SPEC-001/tasks/TASK-001.md", await taskSample());
+  test("allows when fully clean pushed Brain notes pass their claims", async () => {
+    await writeFixture(
+      repoRoot,
+      "docs/specs/SPEC-001/tasks/TASK-001.md",
+      asFullyClean(await taskSample()),
+    );
     await runGit(repoRoot, ["add", "."]);
     await runGit(repoRoot, ["commit", "-m", "add task", "--quiet"]);
     expect((await evaluatePush(repoRoot, "git push origin main")).verdict).toBe("allow");
+  });
+
+  test("denies a pushed note with only a hygiene issue (floor warning)", async () => {
+    await writeFixture(repoRoot, "docs/specs/SPEC-001/tasks/TASK-001.md", await taskSample());
+    await runGit(repoRoot, ["add", "."]);
+    await runGit(repoRoot, ["commit", "-m", "add task", "--quiet"]);
+    const decision = await evaluatePush(repoRoot, "git push origin main");
+    expect(decision.verdict).toBe("deny");
+    expect(decision.reason).toContain("docs/specs/SPEC-001/tasks/TASK-001.md");
   });
 
   test("denies when a pushed Brain note fails its claim", async () => {

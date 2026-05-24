@@ -196,6 +196,118 @@ describe("decide — verdict mapping", () => {
   });
 });
 
+// ── PER-WRITE layered-severity matrix (Layer 2) ────────────────────────────
+
+describe("decide — Layer 2 PER-WRITE matrix (REQ-011 amended)", () => {
+  test("claim-lie ONLY (DONE + unchecked DoD) → deny", async () => {
+    const lying = withStatus(await sample("task-note-sample.md"), "DONE");
+    expect(decide(lying, "docs/sample.md").hookSpecificOutput.permissionDecision).toBe("deny");
+  });
+
+  test("hygiene ONLY (claim satisfied + bad category) → ALLOW + additionalContext", () => {
+    const out = decide(TASK_DRAFT_BAD_CATEGORY, "docs/sample.md");
+    // PER-WRITE gates map allow-with-warning → allow so the note stays editable.
+    expect(out.hookSpecificOutput.permissionDecision).toBe("allow");
+    const ctx =
+      "additionalContext" in out.hookSpecificOutput
+        ? out.hookSpecificOutput.additionalContext
+        : undefined;
+    expect(ctx).toContain("Schema warning:");
+  });
+
+  test("CRITICAL: claim-lie + hygiene together → deny", () => {
+    expect(
+      decide(TASK_DONE_LYING_AND_BAD_CATEGORY, "docs/sample.md").hookSpecificOutput
+        .permissionDecision,
+    ).toBe("deny");
+  });
+
+  test("clean (DONE + all DoD checked, no hygiene) → allow", () => {
+    const out = decide(TASK_DONE_CLEAN, "docs/sample.md");
+    expect(out.hookSpecificOutput.permissionDecision).toBe("allow");
+    expect("additionalContext" in out.hookSpecificOutput).toBe(false);
+  });
+});
+
+/**
+ * TASK matrix fixture builder (shared shape with the dispatch-validator + Layer
+ * 1 tests). One DoD item; `[x]` = claim satisfied, `[ ]` = claim lie at DONE.
+ * Four observations + three relations keep clean cases above the floor.
+ */
+function taskFixture(opts: { status: string; dodChecked: boolean; badCategory?: boolean }): string {
+  const box = opts.dodChecked ? "[x]" : "[ ]";
+  const firstObs = opts.badCategory
+    ? "- [NOT_A_CATEGORY] bad category to fail base parse #hygiene"
+    : "- [decision] A real categorized observation #ok";
+  return `---
+title: 'TASK-002-SPEC-001: Matrix Fixture'
+type: task
+permalink: specs/spec-001-x/tasks/task-002-spec-001-matrix-fixture
+status: ${opts.status}
+tags:
+  - task
+  - spec-001
+---
+
+# TASK-002-SPEC-001: Matrix Fixture
+
+## Objective
+
+Exercise the layered-severity handler matrix with one controlled axis at a time.
+
+## Scope
+
+**In Scope**:
+
+- One DoD item
+
+**Out of Scope**:
+
+- Everything else
+
+## Files Affected
+
+| File | Action | Purpose |
+| --- | --- | --- |
+| \`src/x.ts\` | NEW | matrix fixture target |
+
+## Testing Requirements
+
+- The single DoD item gates the done-claim
+
+## Definition of Done
+
+- ${box} The one and only DoD item
+
+## Observations
+
+${firstObs}
+- [fact] Second observation above the floor #ok
+- [insight] Third observation above the floor #ok
+- [constraint] Fourth observation keeps the count above the floor warning #ok
+
+## Relations
+
+- part_of [[SPEC-001: Sample]]
+- implements [[ADR-001: Sample]]
+- relates_to [[REQ-001-SPEC-001: Sample]]
+`;
+}
+
+const TASK_DRAFT_BAD_CATEGORY = taskFixture({
+  status: "TODO",
+  dodChecked: false,
+  badCategory: true,
+});
+
+const TASK_DONE_LYING_AND_BAD_CATEGORY = taskFixture({
+  status: "DONE",
+  dodChecked: false,
+  badCategory: true,
+});
+
+const TASK_DONE_CLEAN = taskFixture({ status: "DONE", dodChecked: true });
+
 describe("handle — write_note branch", () => {
   test("write_note happy path allows", async () => {
     const input = writeNoteInput(await sample("task-note-sample.md"), "/repo");

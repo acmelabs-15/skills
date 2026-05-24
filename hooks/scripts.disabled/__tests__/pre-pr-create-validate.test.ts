@@ -61,6 +61,20 @@ function asDenying(content: string): string {
   return content.replace(/^status:.*$/m, "status: DONE");
 }
 
+/**
+ * The canonical sample sits at the structural floor (3 observations, 2
+ * relations), so its dispatch verdict is `allow-with-warning`, which a BOUNDARY
+ * gate (Layer 5) denies. Lift BOTH counts above the floor (a 4th observation +
+ * a 3rd relation) so a genuinely clean note verdicts `allow`.
+ */
+function asFullyClean(content: string): string {
+  const withObs = content.replace(
+    "## Relations",
+    "- [outcome] Fourth observation lifts the count above the floor #clean\n\n## Relations",
+  );
+  return `${withObs.trimEnd()}\n- relates_to [[ANALYSIS-001: Sample]]\n`;
+}
+
 describe("parsePrCreateBase", () => {
   test("defaults to origin/HEAD when no --base is present", () => {
     expect(parsePrCreateBase("gh pr create --fill")).toBe(DEFAULT_BASE_REF);
@@ -174,11 +188,24 @@ describe("evaluatePrCreate (integration against a real repo)", () => {
     await rm(parentDir, { recursive: true, force: true });
   });
 
-  test("allows when PR-diff Brain notes pass their claims", async () => {
-    await writeFixture(repoRoot, "docs/specs/SPEC-001/tasks/TASK-001.md", await taskSample());
+  test("allows when fully clean PR-diff Brain notes pass their claims", async () => {
+    await writeFixture(
+      repoRoot,
+      "docs/specs/SPEC-001/tasks/TASK-001.md",
+      asFullyClean(await taskSample()),
+    );
     await runGit(repoRoot, ["add", "."]);
     await runGit(repoRoot, ["commit", "-m", "add task", "--quiet"]);
     expect((await evaluatePrCreate(repoRoot, "gh pr create --base main")).verdict).toBe("allow");
+  });
+
+  test("denies a PR-diff note with only a hygiene issue (floor warning)", async () => {
+    await writeFixture(repoRoot, "docs/specs/SPEC-001/tasks/TASK-001.md", await taskSample());
+    await runGit(repoRoot, ["add", "."]);
+    await runGit(repoRoot, ["commit", "-m", "add task", "--quiet"]);
+    const decision = await evaluatePrCreate(repoRoot, "gh pr create --base main");
+    expect(decision.verdict).toBe("deny");
+    expect(decision.reason).toContain("docs/specs/SPEC-001/tasks/TASK-001.md");
   });
 
   test("denies when a PR-diff Brain note fails its claim", async () => {

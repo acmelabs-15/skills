@@ -89,6 +89,38 @@ describe("decide — verdict to PreToolUse response", () => {
   });
 });
 
+// ── PER-WRITE layered-severity matrix (Layer 1) ────────────────────────────
+
+describe("decide — Layer 1 PER-WRITE matrix (REQ-011 amended)", () => {
+  test("claim-lie ONLY (DONE + unchecked DoD) → deny", async () => {
+    const lying = withStatus(await sample("task-note-sample.md"), "DONE");
+    expect(decide(lying, REL_PATH).hookSpecificOutput.permissionDecision).toBe("deny");
+  });
+
+  test("hygiene ONLY (claim satisfied + bad category) → ALLOW + additionalContext", () => {
+    const response = decide(TASK_DRAFT_BAD_CATEGORY, REL_PATH);
+    // PER-WRITE gates map allow-with-warning → allow so the note stays editable.
+    expect(response.hookSpecificOutput.permissionDecision).toBe("allow");
+    const ctx =
+      "additionalContext" in response.hookSpecificOutput
+        ? response.hookSpecificOutput.additionalContext
+        : undefined;
+    expect(ctx).toContain("Schema warning:");
+  });
+
+  test("CRITICAL: claim-lie + hygiene together (DONE + unchecked DoD + bad category) → deny", () => {
+    // The claim lie wins at L1 despite the co-occurring hygiene defect.
+    const response = decide(TASK_DONE_LYING_AND_BAD_CATEGORY, REL_PATH);
+    expect(response.hookSpecificOutput.permissionDecision).toBe("deny");
+  });
+
+  test("clean (DONE + all DoD checked, no hygiene) → allow", () => {
+    const response = decide(TASK_DONE_CLEAN, REL_PATH);
+    expect(response.hookSpecificOutput.permissionDecision).toBe("allow");
+    expect("additionalContext" in response.hookSpecificOutput).toBe(false);
+  });
+});
+
 // ── resolveWithinRoot() — Phase 3 security P1 path containment ─────────────
 
 describe("resolveWithinRoot — path containment", () => {
@@ -278,3 +310,82 @@ floor warning path is exercised.
 - part_of [[SPEC-001: Sample]]
 - implements [[ADR-001: Sample]]
 `;
+
+/**
+ * TASK matrix fixture builder (shared shape with the dispatch-validator tests).
+ * One DoD item; `[x]` = claim satisfied, `[ ]` = claim lie at DONE. Four
+ * observations + three relations keep clean cases above the structural floor.
+ */
+function taskFixture(opts: { status: string; dodChecked: boolean; badCategory?: boolean }): string {
+  const box = opts.dodChecked ? "[x]" : "[ ]";
+  const firstObs = opts.badCategory
+    ? "- [NOT_A_CATEGORY] bad category to fail base parse #hygiene"
+    : "- [decision] A real categorized observation #ok";
+  return `---
+title: 'TASK-002-SPEC-001: Matrix Fixture'
+type: task
+permalink: specs/spec-001-x/tasks/task-002-spec-001-matrix-fixture
+status: ${opts.status}
+tags:
+  - task
+  - spec-001
+---
+
+# TASK-002-SPEC-001: Matrix Fixture
+
+## Objective
+
+Exercise the layered-severity handler matrix with one controlled axis at a time.
+
+## Scope
+
+**In Scope**:
+
+- One DoD item
+
+**Out of Scope**:
+
+- Everything else
+
+## Files Affected
+
+| File | Action | Purpose |
+| --- | --- | --- |
+| \`src/x.ts\` | NEW | matrix fixture target |
+
+## Testing Requirements
+
+- The single DoD item gates the done-claim
+
+## Definition of Done
+
+- ${box} The one and only DoD item
+
+## Observations
+
+${firstObs}
+- [fact] Second observation above the floor #ok
+- [insight] Third observation above the floor #ok
+- [constraint] Fourth observation keeps the count above the floor warning #ok
+
+## Relations
+
+- part_of [[SPEC-001: Sample]]
+- implements [[ADR-001: Sample]]
+- relates_to [[REQ-001-SPEC-001: Sample]]
+`;
+}
+
+const TASK_DRAFT_BAD_CATEGORY = taskFixture({
+  status: "TODO",
+  dodChecked: false,
+  badCategory: true,
+});
+
+const TASK_DONE_LYING_AND_BAD_CATEGORY = taskFixture({
+  status: "DONE",
+  dodChecked: false,
+  badCategory: true,
+});
+
+const TASK_DONE_CLEAN = taskFixture({ status: "DONE", dodChecked: true });

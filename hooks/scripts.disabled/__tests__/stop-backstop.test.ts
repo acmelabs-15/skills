@@ -63,6 +63,20 @@ function asDenying(content: string): string {
   return content.replace(/^status:.*$/m, "status: DONE");
 }
 
+/**
+ * The canonical sample sits at the structural floor (3 observations, 2
+ * relations), so its dispatch verdict is `allow-with-warning`, which the
+ * BACKSTOP gate (Layer 6) blocks. Lift BOTH counts above the floor (a 4th
+ * observation + a 3rd relation) so a genuinely clean note lets the turn complete.
+ */
+function asFullyClean(content: string): string {
+  const withObs = content.replace(
+    "## Relations",
+    "- [outcome] Fourth observation lifts the count above the floor #clean\n\n## Relations",
+  );
+  return `${withObs.trimEnd()}\n- relates_to [[ANALYSIS-001: Sample]]\n`;
+}
+
 // REGRESSION (FU-6): the Layer-6 Stop backstop previously validated its hook
 // input against the PreToolUse schema (requiring `tool_name` + `tool_input`).
 // A real `Stop` event carries NEITHER — only session metadata + `cwd`. That
@@ -160,8 +174,8 @@ describe("assertContainedAbsolutePath", () => {
 
 describe("decideForNotes", () => {
   const stub =
-    (verdicts: Record<string, { verdict: string; reason?: string }>) =>
-    (_content: string, filePath: string): { verdict: string; reason?: string } =>
+    (verdicts: Record<string, { verdict: string; reason?: string; warning?: string }>) =>
+    (_content: string, filePath: string): { verdict: string; reason?: string; warning?: string } =>
       verdicts[filePath] ?? { verdict: "allow" };
 
   test("allows an empty modified set (empty-modification turn)", () => {
@@ -176,13 +190,17 @@ describe("decideForNotes", () => {
     expect(decideForNotes(notes, stub({})).verdict).toBe("allow");
   });
 
-  test("does not block on allow-with-warning (advisory only)", () => {
+  test("BACKSTOP gate: blocks on allow-with-warning (hygiene blocks turn-end)", () => {
+    // Layer 6 maps allow-with-warning → block (full conformance required at the
+    // turn boundary; nothing non-conformant may survive turn-end).
     const notes: ModifiedNote[] = [{ filePath: "docs/a.md", content: "x" }];
     const decision = decideForNotes(
       notes,
-      stub({ "docs/a.md": { verdict: "allow-with-warning", reason: "floor" } }),
+      stub({ "docs/a.md": { verdict: "allow-with-warning", warning: "floor" } }),
     );
-    expect(decision.verdict).toBe("allow");
+    expect(decision.verdict).toBe("block");
+    expect(decision.reason).toContain("floor");
+    expect(decision.reason).toContain("docs/a.md");
   });
 
   test("blocks a one-failing turn and lists the failing file", () => {
@@ -196,7 +214,7 @@ describe("decideForNotes", () => {
     );
     expect(decision.verdict).toBe("block");
     expect(decision.reason).toContain("docs/b.md");
-    expect(decision.reason).toContain("1 docs/** notes modified this turn fail validation");
+    expect(decision.reason).toContain("1 docs/** notes modified this turn fail");
     expect(decision.reason).not.toContain("docs/a.md");
   });
 
@@ -300,9 +318,20 @@ describe("evaluateTurnEnd (integration against a real repo)", () => {
     expect((await evaluateTurnEnd(repoRoot)).verdict).toBe("allow");
   });
 
-  test("allows an all-passing turn", async () => {
-    await writeFixture(repoRoot, "docs/specs/SPEC-001/tasks/TASK-001.md", await taskSample());
+  test("allows an all-passing turn (fully clean note)", async () => {
+    await writeFixture(
+      repoRoot,
+      "docs/specs/SPEC-001/tasks/TASK-001.md",
+      asFullyClean(await taskSample()),
+    );
     expect((await evaluateTurnEnd(repoRoot)).verdict).toBe("allow");
+  });
+
+  test("blocks a turn whose note has only a hygiene issue (floor warning)", async () => {
+    await writeFixture(repoRoot, "docs/specs/SPEC-001/tasks/TASK-001.md", await taskSample());
+    const decision = await evaluateTurnEnd(repoRoot);
+    expect(decision.verdict).toBe("block");
+    expect(decision.reason).toContain("docs/specs/SPEC-001/tasks/TASK-001.md");
   });
 
   test("blocks a one-failing turn and lists the file", async () => {

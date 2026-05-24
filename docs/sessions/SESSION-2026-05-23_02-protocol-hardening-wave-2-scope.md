@@ -2744,3 +2744,17 @@ Scope note: this amends behavior of TASK-038 (validator classification) + TASK-0
 - DECISION LOCKED: layered-severity enforcement (per-write warn-on-hygiene + boundary/stop deny-on-hygiene)
 - REQ-011 AC being amended to encode it (next); DESIGN-004 matrix amended (next)
 - P1 reclassified: NOT "keep strict" — fix dispatchValidator to classify hygiene as allow-with-warning
+
+
+## Event 115 — Layered-severity IMPLEMENTED (verified); test-report→qa rename requested
+
+`bun-ts-engineer` implemented the layered-severity refactor. Key finding (preserved as a regression test): Zod `superRefine` does NOT run when a base field fails → a claim-lie issue is ABSENT when a hygiene error co-occurs → partitioning thrown issues (approach a) would hide a lie. So used approach (b): new `shared/composition/src/validators/lenient-claim-extract.ts` extracts the claim INDEPENDENTLY of hygiene (reads claim-bearing fields from the AST, runs the real claim validators). Classification: claim-fail → `deny` (claim wins over co-occurring hygiene — critical invariant); claim-pass + only-hygiene issues → `allow-with-warning`; clean → `allow`; truly-unparseable → `UnparseableNoteError`. Handler verdict-mapping: L1/L2 `allow-with-warning`→allow+additionalContext; L3/L4/L5 + L6 `allow-with-warning`→DENY; L7 observe. Verified: composition tsc 0; 233 hook + 10 extractor tests pass; suite 719/2/721 (2 = SPEC-007 baseline); biome clean. Editor module-resolution diagnostics = FU-4 noise (composition has its own tsconfig + deps; LSP not using it). NEEDS formal QA before REQ-011 acceptance.
+
+### USER REQUEST (mid-Event) — rename test-report → qa
+User: "update test-report-note parser, render, schema and validator to the right name which is 'qa-note' and 'qa-claim-validator' and anywhere else." The canonical entity type is `qa` (test-report renamed 2026-05-21 per CONVENTIONS); the composition code still uses `test-report-note` / `TestReportNoteSchema` / `parseTestReportNote` / `validateTestReportPassClaim`. Rename to align with canon: `qa-note` (schema+parser+renderer), `QaNoteSchema`/`QaNote`, `parseQaNote`, `qa-claim-validator` / `validateQaPassClaim`, + all refs (index re-exports, dispatch-validator `qa` route, lenient-claim-extract, tests, fixtures dir `adversarial/test-report/`, CLAUDE.md). Dispatching as a focused refactor (next).
+
+### State Changes
+
+- Layered-severity refactor implemented + orchestrator-verified (composition tsc 0; 243 new/affected tests pass); needs formal QA
+- New file: shared/composition/src/validators/lenient-claim-extract.ts
+- test-report→qa rename requested; dispatching

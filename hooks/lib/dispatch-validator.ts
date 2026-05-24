@@ -7,27 +7,46 @@
  * module reads the frontmatter `type:`, routes to the matching parser +
  * claim validator, and returns a three-way `DispatchOutcome`.
  *
- * Three-way verdict (hybrid failure semantics):
- *   - `deny`               — a status-flip claim failed: the note declares a
+ * Three-way verdict (LAYERED-SEVERITY model, REQ-011 amended Event 114):
+ *   - `deny`               — a CLAIM-validator failure: the note declares a
  *                            terminal status (TASK DONE, REQ/DESIGN/ADR/ANALYSIS
  *                            ACCEPTED, SPEC/PLAN/EPIC/QA DONE) but its DoD /
  *                            acceptance / compliance / completion contract is
- *                            unsatisfied. Hard-blocks the write.
- *   - `allow-with-warning` — the note parses and its claim (if any) passes, but
- *                            a non-blocking quality issue is present (e.g. the
- *                            structural floor of observations/relations is only
- *                            just met). Surfaces advisory text; never blocks.
+ *                            unsatisfied.
+ *   - `allow-with-warning` — the note's claim passes (or is N/A) but a NON-claim
+ *                            hygiene/schema issue is present (observation
+ *                            `category` outside the enum, observation/frontmatter
+ *                            `tags` count bounds, observation/relation count
+ *                            below floor, or another recoverable schema-rule
+ *                            violation).
  *   - `allow`              — the note parses cleanly and every claim passes.
  *
- * Error boundary: this module MUST NOT throw on any validator-reachable
- * rejection — those map to `deny`. It throws `UnparseableNoteError` ONLY when
- * the input cannot be structurally parsed for a reason that is NOT a
- * terminal-status claim violation (a genuine shape/structural defect). The
- * caller converts that throw into a structured stderr error and exits
- * non-zero, where the runtime fail-open semantics apply (DESIGN-004).
+ * The verdict is severity-neutral here; each hook handler maps it per its layer
+ * class (per-write gates ALLOW `allow-with-warning`; boundary + backstop gates
+ * DENY it). This module only classifies.
+ *
+ * CRITICAL INVARIANT: a claim lie is NEVER downgraded to `allow-with-warning`,
+ * even when hygiene issues co-occur. Claim-satisfaction is determined
+ * INDEPENDENTLY of hygiene (via `extractAndCheckClaim`, which reads only the
+ * claim-bearing fields from the AST). This is required because Zod runs a
+ * schema's `superRefine` — the terminal-status claim arm — ONLY after the base
+ * object parse succeeds. A co-occurring hygiene defect (e.g. a bad observation
+ * category) fails the base parse first, so the thrown `ZodError` carries ONLY
+ * the hygiene issue and the claim issue is absent. Partitioning the thrown
+ * issues (approach a) would therefore mask the lie; this module instead checks
+ * the claim leniently first, so `deny` always wins over a co-occurring
+ * hygiene issue.
+ *
+ * Error boundary: this module throws `UnparseableNoteError` ONLY when the input
+ * has a genuine structural defect that prevents any model AND its claim passes
+ * (or is N/A). A claim-validator failure is always `deny`, never a throw. The
+ * caller converts the throw into a structured stderr error and exits non-zero,
+ * where the runtime fail-open semantics apply (DESIGN-004).
  */
 
 import { load as loadYaml } from "js-yaml";
+
+import { extractAndCheckClaim } from "../../shared/composition/src/validators/lenient-claim-extract.ts";
 
 import { parseAdrNote } from "../../shared/composition/src/parsers/adr-note.ts";
 import { parseAnalysisNote } from "../../shared/composition/src/parsers/analysis-note.ts";
@@ -98,6 +117,56 @@ function zodIssues(err: unknown): unknown[] | undefined {
     if (Array.isArray(issues)) return issues;
   }
   return undefined;
+}
+
+/**
+ * Recognized HYGIENE issue path prefixes — recoverable schema-rule violations
+ * that do NOT defeat the structural model. A thrown `ZodError` whose issues are
+ * ALL hygiene (after the claim has been independently determined to pass)
+ * classifies as `allow-with-warning`; any non-hygiene issue means a genuine
+ * structural defect and classifies as `UnparseableNoteError`.
+ *
+ * Hygiene paths cover: observation category enum / text / tags-count, relation
+ * verb / count, observation/relation array `.min` floors, and frontmatter
+ * tags-count bounds. Each is a quality rule on an otherwise-structurally-present
+ * note, not a missing required section.
+ */
+const HYGIENE_PATH_PREFIXES: readonly string[] = ["observations", "relations"];
+
+/** Path forms (joined with ".") that are hygiene-class even at the top level. */
+const HYGIENE_EXACT_PATHS: ReadonlySet<string> = new Set([
+  "frontmatter.tags",
+  "tags",
+  // EPIC `contains`-without-`## Contained Specs` gate: a recoverable schema-rule
+  // violation (add the section), NOT a claim-validator failure — the EPIC
+  // done-claim requires cross-note SPEC resolution that the hook boundary cannot
+  // perform, so it is N/A here. Classifies allow-with-warning (boundary gates
+  // still DENY it; per-write gates allow the note to be fixed incrementally).
+  "sections.Contained Specs",
+]);
+
+/** Dotted path string from a Zod issue's `path` array, or "" when unavailable. */
+function issuePath(issue: unknown): string {
+  if (typeof issue === "object" && issue !== null && "path" in issue) {
+    const { path } = issue as { path: unknown };
+    if (Array.isArray(path)) return path.map((p) => String(p)).join(".");
+  }
+  return "";
+}
+
+/**
+ * True when EVERY thrown issue is a recognized hygiene-class rule. An empty
+ * issue list (a non-Zod throw, e.g. a pre-schema ParseError with no `issues`)
+ * is NOT hygiene — it is a structural defect.
+ */
+function allIssuesAreHygiene(issues: readonly unknown[]): boolean {
+  if (issues.length === 0) return false;
+  return issues.every((issue) => {
+    const path = issuePath(issue);
+    if (HYGIENE_EXACT_PATHS.has(path)) return true;
+    const head = path.split(".")[0] ?? "";
+    return HYGIENE_PATH_PREFIXES.includes(head);
+  });
 }
 
 /** Best-effort human-readable detail from a thrown parser error. */
@@ -364,10 +433,69 @@ function floorWarning(note: unknown): string | null {
 }
 
 /**
+ * Classify a strict-parse THROW into a three-way verdict (or an
+ * `UnparseableNoteError` throw). This is the load-bearing layered-severity
+ * classification:
+ *
+ *   1. Determine claim-satisfaction INDEPENDENTLY of hygiene via
+ *      `extractAndCheckClaim` (reads only the claim-bearing fields from the AST,
+ *      never the strict schema). This guarantees a claim lie is detected even
+ *      when a co-occurring hygiene defect made the strict parse fail before
+ *      `superRefine` ran — the CRITICAL INVARIANT.
+ *   2. If the claim FAILS → `deny` (claim wins, hygiene notwithstanding).
+ *   3. If the claim PASSES, the strict-parse throw was caused by hygiene and/or
+ *      a structural defect. Partition the thrown issues: when EVERY issue is a
+ *      recognized hygiene rule → `allow-with-warning` (recoverable); otherwise
+ *      the note has a genuine structural defect → throw `UnparseableNoteError`
+ *      (the caller routes it to the runtime fail-open/closed semantics).
+ *
+ * Step 3's issue-partition is safe here precisely because the claim verdict is
+ * already settled in steps 1-2 — partitioning never decides a claim outcome.
+ */
+function classifyParseThrow(
+  type: DispatchNoteType,
+  status: string,
+  noteContent: string,
+  filePath: string,
+  parseErr: unknown,
+): DispatchOutcome {
+  // Step 1-2: hygiene-independent claim determination. A throw inside the
+  // lenient extractor itself (e.g. remark fails on truly unparseable input) is
+  // a structural defect — surface it as UnparseableNoteError.
+  let claim: ReturnType<typeof extractAndCheckClaim>;
+  try {
+    claim = extractAndCheckClaim(type, status, noteContent);
+  } catch (extractErr) {
+    throw new UnparseableNoteError(filePath, zodIssues(parseErr) ?? [], errorDetail(extractErr));
+  }
+  if (claim.kind === "claim-fail") {
+    return {
+      verdict: "deny",
+      reason: denyReason(
+        `${capitalize(type)}NoteSchema`,
+        status,
+        "the note to satisfy its terminal-status claim contract",
+        claim.failing,
+      ),
+    };
+  }
+
+  // Step 3: claim passes — the throw is hygiene and/or structural.
+  const issues = zodIssues(parseErr) ?? [];
+  if (allIssuesAreHygiene(issues)) {
+    return {
+      verdict: "allow-with-warning",
+      warning: `Schema warning: ${errorDetail(parseErr)} (non-blocking)`,
+    };
+  }
+  throw new UnparseableNoteError(filePath, issues, errorDetail(parseErr));
+}
+
+/**
  * Route a Brain note to its claim validator and return a three-way verdict.
  *
- * @throws {UnparseableNoteError} when the input cannot be parsed for a reason
- *   that is NOT a terminal-status claim violation.
+ * @throws {UnparseableNoteError} when the input has a genuine structural defect
+ *   AND its claim passes (a claim failure is always `deny`, never a throw).
  */
 export function dispatchValidator(noteContent: string, filePath: string): DispatchOutcome {
   const head = readFrontmatterHead(noteContent, filePath);
@@ -383,25 +511,13 @@ export function dispatchValidator(noteContent: string, filePath: string): Dispat
   try {
     note = route.parse(noteContent);
   } catch (err) {
-    const issues = zodIssues(err) ?? [];
-    // A parse throw on a note that declares the terminal status is a
-    // status-flip claim failure → deny. The schema superRefine rejects the
-    // exact lying-claim transition at parse time, so the throw carries the
-    // failing-item detail.
-    if (head.status === route.terminalStatus) {
-      return {
-        verdict: "deny",
-        reason: denyReason(
-          `${capitalize(head.type)}NoteSchema`,
-          head.status,
-          "the note to satisfy its terminal-status claim contract",
-          errorDetail(err),
-        ),
-      };
-    }
-    // Otherwise the note is not claiming completion; the parse failure is a
-    // genuine structural defect → unparseable.
-    throw new UnparseableNoteError(filePath, issues, errorDetail(err));
+    return classifyParseThrow(
+      head.type as DispatchNoteType,
+      head.status,
+      noteContent,
+      filePath,
+      err,
+    );
   }
 
   // Claim checks gate only at the terminal status. The Wave 1 checkbox

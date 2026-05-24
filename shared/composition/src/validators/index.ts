@@ -20,3 +20,8 @@ export {
   type EpicClaimResult,
   type SpecResolver,
 } from "./epic-claim-validator.js";
+export {
+  extractAndCheckClaim,
+  type ClaimNoteType,
+  type LenientClaimResult,
+} from "./lenient-claim-extract.js";
