@@ -2,7 +2,7 @@
 title: 'REQ-001-SPEC-008: New Schema Suite'
 type: requirement
 permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-001-spec-008-new-schema-suite
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-008
@@ -41,7 +41,7 @@ Functional.
 - [x] GIVEN an ADR with status ACCEPTED and a Clarifications item with an unchecked `[ ]` checkbox WHEN `AdrNoteSchema.parse()` is called THEN validation fails with a message identifying the unchecked clarification
 - [x] GIVEN an ANALYSIS with status ACCEPTED and a `## Open Questions` section present WHEN `AnalysisNoteSchema.parse()` is called THEN validation fails with a message naming the forbidden section
 - [x] GIVEN an EPIC frontmatter shape (title regex, type literal `epic`, status, permalink regex, tags 2-5) WHEN `EpicNoteSchema.parse()` is called against valid input THEN validation passes (closed by TASK-003-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 70; QA-057 PASS)
-- [ ] GIVEN a CRIT note with the H1 not matching frontmatter title verbatim WHEN `parseCritNote(markdown)` is called THEN parsing fails with an error identifying the H1 drift (AC-5 reworded 2026-05-24 SESSION-2026-05-23_02 Event 77 per D-4 LOCKED: original wording said `CritNoteSchema.parse()` but the schema validates the parsed model which carries no raw H1 string by design — H1 extraction is parser-layer; the verbatim-match check belongs in `parseCritNote` which has the raw AST H1. Mechanism owned by TASK-047-SPEC-008.)
+- [x] GIVEN a CRIT note with the H1 not matching frontmatter title verbatim WHEN `parseCritNote(markdown)` is called THEN parsing fails with an error identifying the H1 drift (AC-5 reworded Event 77 per D-4; closed by TASK-047-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 79; QA-061 PASS — parseCritNote at crit-note.ts:194 calls extractH1, compares verbatim vs frontmatter.title, throws plain Error on drift/absent-H1 before CritNoteSchema.parse; 5 dedicated tests prove it)
 - [x] GIVEN a PLAN note with frontmatter status DONE but one or more parts in non-terminal status WHEN the extended `PlanNoteSchema.parse()` is called THEN validation fails with a message naming the non-terminal parts (closed by TASK-010-SPEC-008 2026-05-24 SESSION-2026-05-23_02 Event 70; QA-058 PASS)
 - [x] GIVEN any of the five schemas WHEN it parses an input missing the mandatory `## Observations` then `## Relations` final-two-sections invariant THEN validation fails (closed by TASK-004-SPEC-008 closure 2026-05-24 SESSION-2026-05-23_02 Event 73; cross-cutting AC satisfied — all 5 schemas ADR/ANALYSIS/EPIC/CRIT/PLAN-ext now enforce the final-two-sections invariant)
 - [x] GIVEN any of the five schemas WHEN it parses an input whose Relations section uses a verb outside the 11-verb allowlist from `shared/composition/src/schemas/common.ts` THEN validation fails (closed by TASK-004-SPEC-008 closure 2026-05-24 SESSION-2026-05-23_02 Event 73; cross-cutting AC satisfied — all 5 schemas now enforce the relation verb allowlist via common.ts)

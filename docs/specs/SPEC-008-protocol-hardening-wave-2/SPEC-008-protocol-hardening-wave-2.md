@@ -54,7 +54,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 
 ### Requirements (12)
 
-- [ ] [[REQ-001-SPEC-008: New Schema Suite]]
+- [x] [[REQ-001-SPEC-008: New Schema Suite]]
 - [x] [[REQ-002-SPEC-008: New Parser Suite]]
 - [ ] [[REQ-003-SPEC-008: New Claim Validator Suite]]
 - [ ] [[REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts]]
@@ -122,7 +122,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [ ] [[TASK-044-SPEC-008: Implement stop-backstop Handler Layer 6]]
 - [ ] [[TASK-045-SPEC-008: Implement git-state-observer Handler Layer 7]]
 - [ ] [[TASK-046-SPEC-008: Author Hook Smoke Tests and Adversarial Fixture Reuse]]
-- [ ] [[TASK-047-SPEC-008: Add H1-Drift Detection to CRIT Parser]]
+- [x] [[TASK-047-SPEC-008: Add H1-Drift Detection to CRIT Parser]]
 
 ## ADR Cross-cutting Constraints
 

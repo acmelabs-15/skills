@@ -1859,3 +1859,39 @@ PLAN transitions:
 - qa-TASK-047-SPEC-008: PENDING → IN_PROGRESS (Event 78; dispatching brain:🧠-qa next)
 
 Next: commit, dispatch qa-047. On PASS: REQ-001 AC-5 flips `[x]` (the gap-closer's purpose). REQ-001 then 8/8 ACs but stays DRAFT until child TASKs 007/008/009 (validators) + TASK-002/003/004 (already done) + this — actually REQ-001 child TASKs = the schema TASKs 001/002/003/004/010 + now 047. With AC-5 closed, REQ-001 ACs all satisfied; REQ-001 → ACCEPTED iff all child TASKs DONE (verify at qa-047 closure).
+
+
+## Event 79 — TASK-047 CLOSED; qa-047 PASS; REQ-001 ACCEPTED (gap fully closed); 18/47 TASKs DONE
+
+brain:🧠-qa agent a0e6b42a1c862cb69 (foreground; 22 tool_uses; 298s). PASS — QA-061-SPEC-008 authored.
+
+**REQ-001 AC-5 closure verdict: YES.** parseCritNote (crit-note.ts:194) calls extractH1, compares verbatim vs frontmatter.title, throws plain Error (not ZodError) on drift OR absent-H1, before CritNoteSchema.parse. 5 dedicated tests mechanically prove the AC. Both agent HALT-resolutions verified correct by QA: (1) the 2 lockstep-fixed rejection tests still test their original schema-layer ZodError intent; (2) test file is at the flat path (not `__tests__/`).
+
+### Full Event 55 propagation (with REQ-001 closure)
+
+- TASK-047 note: status TODO → DONE; Relations + `relates_to` QA-061.
+- **REQ-001 AC-5 flipped `[x]`** — the gap-closer's purpose achieved. All 8 REQ-001 ACs now `[x]`.
+- **REQ-001 status DRAFT → ACCEPTED** — all 8 ACs satisfied AND all child schema TASKs DONE (001/002/003/004/010/047). Second REQ to fully close (after REQ-002).
+- SPEC-008 root: TASK-047 rollup `[x]` (**18/47**); REQ-001 rollup `[x]`.
+- PLAN-001 qa-TASK-047: IN_PROGRESS → DONE (QA-061).
+- PLAN-001 wave graph: T047 `⚡`→`✅`; classDef → done.
+- DESIGN-001 (Coverage Module Layout, covers TASK-001..010): stays `[ ]` — 7/10 child TASKs done (001-006+010); 007/008/009 validators still PENDING.
+
+### Marathon state after Event 79
+
+- **18 TASKs CLOSED** (38% of 47): 001-006, 010, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040, 047.
+- **0 IN_PROGRESS.**
+- **29 PENDING**: 007, 008, 009, 011-020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041-046.
+- **2 REQs ACCEPTED**: REQ-001 (schema suite) + REQ-002 (parser suite).
+- Canonical suite baseline: **793 pass / 2 fail / 795 total**.
+- REQ-001 AC-5 gap CLOSED — no open findings.
+
+### Next: Wave 1b or validators
+
+Two natural next directions:
+- **Wave 2/3 validators** (TASK-007 validateAdrAcceptedClaim + 008 validateAnalysisAcceptedClaim + 009 validateEpicDoneClaim) — barrel-serialized on `validators/index.ts`; closes REQ-003 (which already has AC-5/6 done via TASK-010); DESIGN-001 closes when 007/008/009 land (completing TASK-001..010 set).
+- **Wave 1b per-skill scripts** (TASK-011-020) — 10 TASKs; Track 2.
+
+Recommend validators next (007/008/009) — small, closes REQ-003 + DESIGN-001, completes the Track-1 coverage suite. Barrel-serialized so sequential within the sub-wave.
+
+Marathon math: 18/47 (38%). Remaining 29 TASKs ≈ 6-7 batches.

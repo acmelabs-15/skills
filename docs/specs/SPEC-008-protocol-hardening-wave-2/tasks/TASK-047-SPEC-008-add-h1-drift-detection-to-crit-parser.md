@@ -2,7 +2,7 @@
 title: 'TASK-047-SPEC-008: Add H1-Drift Detection to CRIT Parser'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-047-spec-008-add-h1-drift-detection-to-crit-parser
-status: TODO
+status: DONE
 effort: S
 estimate: 0.25d
 tags:
@@ -72,3 +72,4 @@ Scope is intentionally minimal: ONE comparison + throw added to the existing `pa
 - relates_to [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - depends_on [[TASK-006-SPEC-008: Implement ANALYSIS EPIC and CRIT Parsers]]
 - relates_to [[QA-060-SPEC-008: Validation Report for TASK-006 ANALYSIS EPIC CRIT Parsers]]
+- relates_to [[QA-061-SPEC-008: Validation Report for TASK-047 CRIT H1-Drift Detection]]

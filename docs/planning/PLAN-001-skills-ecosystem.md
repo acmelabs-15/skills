@@ -197,7 +197,7 @@ graph TD
 
   subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (8 PENDING) + TASK-047 follow-up (IN PROGRESS)"]
     direction LR
-    T047["⚡ TASK-047<br/><span style='font-size:9px'>CRIT H1-drift (REQ-001 AC-5 gap)</span>"]
+    T047["✅ TASK-047<br/><span style='font-size:9px'>CRIT H1-drift (REQ-001 AC-5 gap)</span>"]
     T022["⏸ TASK-022"]
     T023["⏸ TASK-023"]
     T027["⏸ TASK-027"]
@@ -254,7 +254,7 @@ graph TD
   T045 --> T046
 
   class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
-  class T047 inprogress
+  class T047 done
   class T007,T008,T009,T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
 ```
 
@@ -3510,12 +3510,12 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-047-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 78
+- **Transitioned At Event**: Event 79
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
-- **Fix Brief For Event**: —
+- **Test Report Ref**: QA-061-SPEC-008
+- **Fix Brief For Event**: brain:🧠-qa agent a0e6b42a1c862cb69; 10 DoD + 2 ADR Compliance + REQ-001 AC-5 closure verified; 13/0/13 parser tests; both agent HALT-resolutions verified correct; biome PASS; tsc PASS; suite 793/2/795. REQ-001 → ACCEPTED (all 8 ACs + all schema TASKs done)
 
 ## Tasks
 
