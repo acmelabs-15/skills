@@ -2534,3 +2534,18 @@ TASK-044 remains BLOCKED in the PLAN pending re-dispatch on the amended spec (ne
 
 - DESIGN-004-SPEC-008 (note): Layer-6 enumeration amended (user-approved)
 - TASK-044-SPEC-008 (note): Description + DoD amended to git-status mechanism (user-approved)
+
+
+## Event 106 — QA START for 6 impl-done + TASK-044 re-pickup (parallel: 1 QA agent + 1 impl)
+
+Continuing per user "keep going now with the qa wave and the re-dispatch." Dispatching 2 agents in parallel (1 concurrent Brain writer = the QA agent, to avoid the move_note race):
+
+1. `brain:🧠-qa` validates ALL 6 impl-done tasks (014/023/041/042/043/045) → authors QA-078..083 (serialized move_note).
+2. `bun-ts-engineer` re-implements TASK-044 (stop-backstop Layer 6) on the amended git-status spec → `hooks/scripts/stop-backstop.ts`.
+
+Disjoint: 044 writes a new handler file; QA reads 041/042/043/045 (distinct handlers) + 014/023.
+
+### State Changes
+
+- PLAN qa-TASK-014/023/041/042/043/045-SPEC-008: PENDING → IN_PROGRESS
+- PLAN impl-TASK-044-SPEC-008: BLOCKED → IN_PROGRESS (amended spec)
