@@ -2719,3 +2719,28 @@ Reading REQ-011 to accept it (all its tasks 037-043 DONE) surfaced a real spec t
 - SPEC-008 root Tasks: 014/023/041/042/043/045 → [x] (40/47)
 - REQ-011: HELD DRAFT (AC#6/AC#7 tension = P1; needs adjudication)
 - Marathon: 34/47 → **40/47** CLOSED
+
+
+## Event 114 — DECISION LOCKED: layered-severity enforcement (resolves P1 + AC#6/AC#7); REQ-011 AC amended
+
+User adjudicated the P1 / AC#6-AC#7 tension. Decision (verbatim intent): "deny both [claim-lies AND hygiene] ... there should be a way" + endorsed the layered-severity model. **Layered-severity enforcement**:
+
+- **dispatchValidator** returns the existing 3-way verdict, classified correctly: `deny` = claim-validator failure (terminal status + unsatisfied DoD/AC/compliance/completion); `allow-with-warning` = a NON-claim hygiene/schema issue (observation category outside enum, obs/frontmatter tag-count bounds, observation count, malformed-but-recoverable); `allow` = clean. (P1 FIX: today it lumps hygiene parse-throws into `deny` at terminal status — must distinguish claim-throw from hygiene-throw via Zod issue paths, or split the schema into a fatal structural+claim core vs a soft hygiene layer.)
+- **Per-layer verdict mapping** (the mechanism): per-write gates **L1/L2** map `allow-with-warning` → ALLOW (surface warning; write proceeds → notes stay editable/fixable). Boundary + backstop gates **L3/L4/L5/L6** map `allow-with-warning` → **DENY** (nothing non-conformant is committed/pushed/PR'd or survives turn-end). L7 observes.
+- **Result**: denies BOTH claim-lies and hygiene (at the boundary), ensures fixes (can't commit dirty), and NO brick (per-write edits never blocked on hygiene, so a dirty note is always fixable incrementally; the commit gate blocks until clean).
+
+Why plain B was rejected: it denies the FIX — per-write deny-on-any-violation means incremental/unrelated edits to a dirty terminal-status note are blocked, so the note self-locks (exactly the [task]-notes brick).
+
+### Plan
+1. Amend REQ-011 AC (this Event) — encode layered severity: L1/L2 claim-deny + hygiene-warn; L3/L4/L5 + L6 full-conformance deny; AC#7 per-layer fail semantics. [done next]
+2. Amend DESIGN-004 failure-semantics matrix (per-layer verdict mapping).
+3. Implement: dispatchValidator P1 classification fix + handler verdict-mapping (L3/L4/L5/L6 treat allow-with-warning as deny). Re-QA against amended REQ-011.
+4. Then REQ-011 → ACCEPTED; continue (044 QA, 024/028/031/035/036, FU-6b, re-enable+smoke).
+
+Scope note: this amends behavior of TASK-038 (validator classification) + TASK-043/044 (boundary/stop verdict mapping); their original DoD didn't preclude it — this closes the spec gap (REQ-011 AC#6/AC#7 contradiction). Tracked as the layered-severity refactor; QA verifies against amended REQ-011 AC.
+
+### State Changes
+
+- DECISION LOCKED: layered-severity enforcement (per-write warn-on-hygiene + boundary/stop deny-on-hygiene)
+- REQ-011 AC being amended to encode it (next); DESIGN-004 matrix amended (next)
+- P1 reclassified: NOT "keep strict" — fix dispatchValidator to classify hygiene as allow-with-warning

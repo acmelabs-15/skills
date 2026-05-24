@@ -21,41 +21,27 @@ THE SYSTEM SHALL fire a `PreToolUse` hook handler that loads the proposed/staged
 SO THAT the rigid per-TASK build+QA cycle and SPEC/REQ/DESIGN/ADR/PLAN/ANALYSIS/EPIC status-flip claims fire mechanically without orchestrator cooperation, closing the voluntary-invocation gap that defined the Wave 1 failure mode (independent-thinker P2 surfacing).
 
 ## Acceptance Criteria
+> Amended 2026-05-24 (SESSION-2026-05-23_02 Event 114, user-approved): LAYERED-SEVERITY model resolves the prior AC#6↔AC#7 contradiction. `dispatchValidator` returns a 3-way verdict; each layer maps `allow-with-warning` per its position — per-write gates ALLOW it (notes stay fixable), boundary + backstop gates DENY it (nothing non-conformant lands). This denies BOTH claim-lies and hygiene without self-locking terminal-status notes.
 
-- [ ] GIVEN a Layer 1 `PreToolUse` hook declared for `Edit|Write|MultiEdit` with `if: "Edit(docs/**/*.md)|Write(docs/**/*.md)|MultiEdit(docs/**/*.md)"`
-      WHEN an agent invokes `Edit` on `docs/specs/SPEC-NNN/tasks/TASK-NNN-*.md` with content that flips status to `DONE` while DoD checkbox `[ ]` remains unsatisfied
-      THEN the handler script `hooks/scripts/pre-write-brain-note.ts` runs the Edit operation in memory, parses the resulting markdown via `TaskNoteSchema`, calls `validateTaskDoneClaim`, and emits `{ hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: "TaskNoteSchema: status=DONE requires all DoD [x]; failing: <item>" } }`
+- [ ] GIVEN `dispatchValidator(noteContent, filePath)` WHEN it evaluates a routed note THEN it returns exactly one of three verdicts: `deny` (a CLAIM-validator failure — terminal status with an unsatisfied DoD/AC/compliance/completion contract), `allow-with-warning` (the note's claim passes or is N/A but a NON-claim hygiene/schema issue is present — observation `category` outside the enum, observation `tags` or frontmatter `tags` count bounds, observation/relation count below floor, or other recoverable schema-rule violation), or `allow` (clean). A hygiene defect on a note whose claim is satisfied MUST classify as `allow-with-warning`, NOT `deny`.
 
-- [ ] GIVEN a Layer 2 `PreToolUse` hook declared for `mcp__plugin_brain_brain__edit_note|mcp__plugin_brain_brain__write_note`
-      WHEN an agent invokes the MCP `edit_note` tool with content that flips a REQ status to `ACCEPTED` while any AC checkbox `[ ]` remains unsatisfied
-      THEN the handler script `hooks/scripts/pre-write-brain-note-mcp.ts` parses the proposed content via `RequirementNoteSchema`, calls `validateRequirementAcClaim`, and returns `permissionDecision: "deny"` with `permissionDecisionReason` naming the unsatisfied AC
+- [ ] GIVEN a Layer 1 `PreToolUse` hook (`Edit|Write|MultiEdit`, `if: "Edit(docs/**/*.md)|Write(docs/**/*.md)|MultiEdit(docs/**/*.md)"`) WHEN an agent edits `docs/specs/.../TASK-NNN-*.md` flipping status to `DONE` with a DoD `[ ]` unsatisfied THEN `pre-write-brain-note.ts` runs the edit in memory and emits `permissionDecision: "deny"` with reason naming the failing DoD item (verdict `deny` → deny).
 
-- [ ] GIVEN a Layer 3 `PreToolUse` hook declared for `Bash` with `if: "Bash(git commit *)"`
-      WHEN an agent invokes `Bash` with command `git commit -m "..."` and the staged set contains a Brain note whose content fails its claim validator
-      THEN the handler script `hooks/scripts/pre-commit-validate.ts` reads each staged Brain note via `git show :<file>`, dispatches it to the validator matching its frontmatter `type:` field, and returns `permissionDecision: "deny"` IF ANY staged note fails
+- [ ] GIVEN a Layer 2 `PreToolUse` hook (`mcp__plugin_brain_brain__edit_note|mcp__plugin_brain_brain__write_note`) WHEN an agent flips a REQ to `ACCEPTED` with an AC `[ ]` unsatisfied THEN `pre-write-brain-note-mcp.ts` emits `permissionDecision: "deny"` naming the unsatisfied AC (verdict `deny` → deny).
 
-- [ ] GIVEN a Layer 4 `PreToolUse` hook declared for `Bash` with `if: "Bash(git push *)"`
-      WHEN an agent invokes `Bash` with command `git push ...` and the commits being pushed contain a Brain note whose content fails its claim validator
-      THEN the handler script `hooks/scripts/pre-push-validate.ts` computes the diff for commits being pushed via git-diff-commits helpers, dispatches each touched Brain note to its validator, and returns `permissionDecision: "deny"` IF ANY pushed note fails
+- [ ] GIVEN per-write gates (Layers 1-2) WHEN `dispatchValidator` returns `allow-with-warning` (a hygiene issue, claim satisfied) THEN the handler emits `permissionDecision: "allow"` with `additionalContext` surfacing the warning — the write PROCEEDS, so an imperfect note remains editable and can be fixed incrementally (no self-lock).
 
-- [ ] GIVEN a Layer 5 `PreToolUse` hook declared for `Bash` with `if: "Bash(gh pr create *)"`
-      WHEN an agent invokes `Bash` with command `gh pr create ...` and the PR diff contains a Brain note whose content fails its claim validator
-      THEN the handler script `hooks/scripts/pre-pr-create-validate.ts` computes the PR diff, dispatches each touched Brain note to its validator, and returns `permissionDecision: "deny"` IF ANY note in the PR diff fails
+- [ ] GIVEN a Layer 3 `PreToolUse` hook (`Bash`, `if: "Bash(git commit *)"`) WHEN any staged Brain note returns verdict `deny` OR `allow-with-warning` (i.e. ANY non-conformance — claim OR hygiene) THEN `pre-commit-validate.ts` emits `permissionDecision: "deny"` naming every non-conforming staged note. Boundary gates enforce FULL conformance.
 
-- [ ] GIVEN any Layer 1-5 handler script
-      WHEN the script classifies a validation result against the definitive blocking/non-blocking partition derived from ADR-005 D-8 HYBRID semantics
-      THEN the partition is applied exactly as follows so two implementers classify every case identically:
-  - BLOCKING (`permissionDecision: "deny"`): any failure from a status-flip claim validator — `validateTaskDoneClaim`, `validateRequirementAcClaim`, `validateDesignComplianceClaim`, `validateSpecDoneClaim`, `validateTestReportPassClaim`, `validateAdrAcceptedClaim`, `validateAnalysisAcceptedClaim`, `validateEpicDoneClaim`, `validatePlanDoneClaim`
-  - NON-BLOCKING (`permissionDecision: "allow"` with `additionalContext: "Schema warning: <detail> (non-blocking)"`): any schema issue surfaced by a per-type Note schema's `superRefine` that is NOT a claim-validator failure (e.g., observation count below minimum, missing inline `#tag` on an observation, tag-count bounds, malformed-but-parseable frontmatter)
+- [ ] GIVEN a Layer 4 `PreToolUse` hook (`Bash`, `if: "Bash(git push *)"`) WHEN any Brain note in the pushed commits returns `deny` OR `allow-with-warning` THEN `pre-push-validate.ts` emits `permissionDecision: "deny"` naming every non-conforming note.
 
-- [ ] GIVEN any Layer 1-5 handler script
-      WHEN the script encounters an unparseable note or an unhandled exception during validation
-      THEN the handler emits a structured error response to stderr and exits non-zero, with the `PreToolUse` runtime treating non-zero exit as a non-blocking error so the tool call proceeds (fail-open on infrastructure error; fail-closed on schema violation)
+- [ ] GIVEN a Layer 5 `PreToolUse` hook (`Bash`, `if: "Bash(gh pr create *)"`) WHEN any Brain note in the PR diff returns `deny` OR `allow-with-warning` THEN `pre-pr-create-validate.ts` emits `permissionDecision: "deny"` naming every non-conforming note.
 
-- [ ] GIVEN the per-edit hook overhead budget of ~80-250ms (Bun startup ~30-50ms plus validation ~50-200ms per note)
-      WHEN measured against a representative TASK note edit
-      THEN end-to-end hook latency stays within the budget; per-commit hook overhead for a 5-10 file commit stays within ~500ms-2s
+- [ ] GIVEN the per-layer verdict-mapping is the single mechanism distinguishing the layers WHEN any handler receives a `DispatchOutcome` THEN it maps the verdict by its layer class: PER-WRITE (L1/L2) → {`deny`→deny, `allow-with-warning`→allow+additionalContext, `allow`→allow}; BOUNDARY + BACKSTOP (L3/L4/L5/L6) → {`deny`→deny, `allow-with-warning`→deny, `allow`→allow}; OBSERVE (L7) → never blocks. This partition is applied identically by every handler.
 
+- [ ] GIVEN any handler WHEN `dispatchValidator` throws `UnparseableNoteError` (cannot extract `type`/`status`, or a structural defect preventing any model — distinct from a classified hygiene/claim verdict) THEN per-write gates (L1/L2) and FileChanged (L7) FAIL-OPEN (non-zero exit, tool proceeds — infrastructure error); boundary gates (L3/L4/L5) and Stop (L6) FAIL-CLOSED (block). A claim-validator failure is always `deny` (fail-closed) at every gate.
+
+- [ ] GIVEN the per-edit hook overhead budget (~80-250ms per note edit; ~500ms-2s per 5-10 file commit) WHEN measured against a representative TASK note edit / commit THEN end-to-end latency stays within budget.
 ## Observations
 
 - [requirement] Five PreToolUse blocking gates cover the four exit ramps a Brain note can take from an agent process: local file edit, MCP edit, commit, push, PR open #enforcement #defense-in-depth
