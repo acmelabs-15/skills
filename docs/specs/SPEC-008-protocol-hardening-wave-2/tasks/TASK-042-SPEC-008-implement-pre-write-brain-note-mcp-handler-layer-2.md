@@ -2,7 +2,7 @@
 title: 'TASK-042-SPEC-008: Implement pre-write-brain-note-mcp Handler (Layer 2)'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-042-spec-008-implement-pre-write-brain-note-mcp-handler-layer-2
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -23,23 +23,23 @@ For `edit_note` the handler reads the current note via the file path resolved fr
 
 ## Definition of Done
 
-- [ ] `hooks/scripts/pre-write-brain-note-mcp.ts` exists
-- [ ] Script handles `mcp__plugin_brain_brain__edit_note` tool_input shape: `identifier`, `operation`, plus operation-specific fields (`content`, `find_text`, `section`, `expected_replacements`)
-- [ ] Script handles `mcp__plugin_brain_brain__write_note` tool_input shape: `title`, `directory`, `content`, `tags`
-- [ ] Script resolves `identifier` to a file path within the project root (path containment validated before disk read)
-- [ ] Script applies the MCP operation in memory and dispatches the proposed full content to `dispatchValidator`
-- [ ] Script emits the matching PreToolUse response per the verdict (deny / allow-with-warning / allow)
-- [ ] Script wraps validator invocation in try/catch and emits structured stderr error on exception (fail-open)
-- [ ] Unit tests cover write_note happy path, edit_note find_replace path, edit_note replace_section path, deny path against status-flip claim failure, traversal rejection
-- [ ] Smoke test asserts that invoking `mcp__plugin_brain_brain__edit_note` against a known-failing fixture triggers Layer 2 deny (closes ADR-005 D-8 matcher-risk mitigation requirement)
-- [ ] biome lint passes
-- [ ] `bun tsc --noEmit` passes
+- [x] `hooks/scripts/pre-write-brain-note-mcp.ts` exists
+- [x] Script handles `mcp__plugin_brain_brain__edit_note` tool_input shape: `identifier`, `operation`, plus operation-specific fields (`content`, `find_text`, `section`, `expected_replacements`)
+- [x] Script handles `mcp__plugin_brain_brain__write_note` tool_input shape: `title`, `directory`, `content`, `tags`
+- [x] Script resolves `identifier` to a file path within the project root (path containment validated before disk read)
+- [x] Script applies the MCP operation in memory and dispatches the proposed full content to `dispatchValidator`
+- [x] Script emits the matching PreToolUse response per the verdict (deny / allow-with-warning / allow)
+- [x] Script wraps validator invocation in try/catch and emits structured stderr error on exception (fail-open)
+- [x] Unit tests cover write_note happy path, edit_note find_replace path, edit_note replace_section path, deny path against status-flip claim failure, traversal rejection
+- [x] Smoke test asserts that invoking `mcp__plugin_brain_brain__edit_note` against a known-failing fixture triggers Layer 2 deny (closes ADR-005 D-8 matcher-risk mitigation requirement)
+- [x] biome lint passes
+- [x] `bun tsc --noEmit` passes
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Layer 2 declaration (matcher `mcp__plugin_brain_brain__edit_note|mcp__plugin_brain_brain__write_note`)
-- [ ] Honors Failure Modes section — smoke test asserts MCP write triggers Layer 2 handler (mitigation requirement)
-- [ ] Honors Phase 3 security P1 — `identifier` resolution validated within project root
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Layer 2 declaration (matcher `mcp__plugin_brain_brain__edit_note|mcp__plugin_brain_brain__write_note`)
+- [x] Honors Failure Modes section — smoke test asserts MCP write triggers Layer 2 handler (mitigation requirement)
+- [x] Honors Phase 3 security P1 — `identifier` resolution validated within project root
 
 ## Files Affected
 
@@ -68,3 +68,4 @@ For `edit_note` the handler reads the current note via the file path resolved fr
 - implements [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[REQ-003-SPEC-008: New Claim Validator Suite]]
+- relates_to [[QA-081-SPEC-008: Validation Report for TASK-042 pre-write-brain-note-mcp Handler Layer 2]]

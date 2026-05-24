@@ -2,7 +2,7 @@
 title: 'TASK-014-SPEC-008: Implement validate-spec-done and run-pre-flight Scripts'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-014-spec-008-implement-validate-spec-done-and-run-pre-flight-scripts-1
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 tags:
@@ -46,17 +46,17 @@ Out of Scope:
 
 ## Definition of Done
 
-- [ ] validate-spec-done reads a SPEC path, validates path-containment, parses via SpecRootNoteSchema, invokes validateSpecDoneClaim, exits 0/1/2 per the contract
-- [ ] run-pre-flight reads any Brain note, enumerates the 11 pre-flight checklist items, surfaces each violation to stderr with the item number from CONVENTIONS Section 8.1
-- [ ] Both scripts include the `if (import.meta.main)` CLI guard
-- [ ] Colocated tests assert success and failure paths for each script
-- [ ] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
-- [ ] biome lint plus tsc --noEmit pass on the new files
+- [x] validate-spec-done reads a SPEC path, validates path-containment, parses via SpecRootNoteSchema, invokes validateSpecDoneClaim, exits 0/1/2 per the contract
+- [x] run-pre-flight reads any Brain note, enumerates the 11 pre-flight checklist items, surfaces each violation to stderr with the item number from CONVENTIONS Section 8.1
+- [x] Both scripts include the `if (import.meta.main)` CLI guard
+- [x] Colocated tests assert success and failure paths for each script
+- [x] Scripts import only from `shared/composition/src/` plus Node and Bun standard runtime
+- [x] biome lint plus tsc --noEmit pass on the new files
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-1 per-skill scripts pattern
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 security boundary path-containment requirement
 
 ## Effort Summary
 
@@ -79,3 +79,4 @@ Out of Scope:
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
 - depends_on [[TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation]]
+- relates_to [[QA-078-SPEC-008: Validation Report for TASK-014 validate-spec-done and run-pre-flight Scripts]]

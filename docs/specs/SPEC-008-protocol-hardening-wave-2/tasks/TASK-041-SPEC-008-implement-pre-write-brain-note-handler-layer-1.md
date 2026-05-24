@@ -2,7 +2,7 @@
 title: 'TASK-041-SPEC-008: Implement pre-write-brain-note Handler (Layer 1)'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-041-spec-008-implement-pre-write-brain-note-handler-layer-1
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -21,22 +21,22 @@ Implement `hooks/scripts/pre-write-brain-note.ts` per [[DESIGN-004-SPEC-008: Hoo
 
 ## Definition of Done
 
-- [ ] `hooks/scripts/pre-write-brain-note.ts` exists
-- [ ] Script entry point reads HookInput from stdin via `readHookInput()`
-- [ ] Script validates `tool_input.file_path` resolves to an absolute path within the repo root; on traversal attempt the script exits non-zero with a structured stderr error (fail-open)
-- [ ] Script reads existing file content via Bun.file (or returns empty string for Write of new file)
-- [ ] Script applies the edit via `applyEditOperation(op, currentContent)`
-- [ ] Script calls `dispatchValidator(proposedContent, filePath)` and emits the matching response: `permissionDecision: "deny"` with reason for `deny` verdict; `permissionDecision: "allow"` with `additionalContext` warning for `allow-with-warning` verdict; bare allow response for `allow` verdict
-- [ ] Script wraps validator invocation in try/catch; unhandled exception emits structured stderr error and exits non-zero (fail-open per [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]] AC)
-- [ ] Unit tests cover deny path (TaskNoteSchema status=DONE with unsatisfied DoD), allow-with-warning path (missing tag), allow path (clean note), traversal rejection, and exception fail-open
-- [ ] biome lint passes
-- [ ] `bun tsc --noEmit` passes
+- [x] `hooks/scripts/pre-write-brain-note.ts` exists
+- [x] Script entry point reads HookInput from stdin via `readHookInput()`
+- [x] Script validates `tool_input.file_path` resolves to an absolute path within the repo root; on traversal attempt the script exits non-zero with a structured stderr error (fail-open)
+- [x] Script reads existing file content via Bun.file (or returns empty string for Write of new file)
+- [x] Script applies the edit via `applyEditOperation(op, currentContent)`
+- [x] Script calls `dispatchValidator(proposedContent, filePath)` and emits the matching response: `permissionDecision: "deny"` with reason for `deny` verdict; `permissionDecision: "allow"` with `additionalContext` warning for `allow-with-warning` verdict; bare allow response for `allow` verdict
+- [x] Script wraps validator invocation in try/catch; unhandled exception emits structured stderr error and exits non-zero (fail-open per [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]] AC)
+- [x] Unit tests cover deny path (TaskNoteSchema status=DONE with unsatisfied DoD), allow-with-warning path (missing tag), allow path (clean note), traversal rejection, and exception fail-open
+- [x] biome lint passes
+- [x] `bun tsc --noEmit` passes
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Layer 1 declaration (matcher and `if` filter)
-- [ ] Honors Phase 3 security P1 — path containment validated before reading disk content
-- [ ] Honors hybrid failure semantics — deny on status-flip claim failures; allow-with-warning otherwise
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Layer 1 declaration (matcher and `if` filter)
+- [x] Honors Phase 3 security P1 — path containment validated before reading disk content
+- [x] Honors hybrid failure semantics — deny on status-flip claim failures; allow-with-warning otherwise
 
 ## Files Affected
 
@@ -65,3 +65,4 @@ Implement `hooks/scripts/pre-write-brain-note.ts` per [[DESIGN-004-SPEC-008: Hoo
 - implements [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[REQ-003-SPEC-008: New Claim Validator Suite]]
+- relates_to [[QA-080-SPEC-008: Validation Report for TASK-041 pre-write-brain-note Handler Layer 1]]

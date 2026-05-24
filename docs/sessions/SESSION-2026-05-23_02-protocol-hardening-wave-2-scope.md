@@ -2691,3 +2691,31 @@ Files (kept under `hooks/scripts.disabled/` + `hooks/lib/` — hooks stay disabl
 - hooks/lib/parse-tool-input.ts: +StopHookInputSchema +readStopHookInput (per-event-type; additive)
 - hooks/scripts.disabled/stop-backstop.ts: uses readStopHookInput; +5 regression tests (FU-6 FIXED)
 - FU-6b logged (Layer-7 git-state-observer same mismatch, fails-open)
+
+
+## Event 113 — Batch 11 CLOSED: 014/023/041/042/043/045 DONE (40/47); REQ-011 acceptance HELD (AC#6/AC#7 tension = P1)
+
+Closed the 6 QA-passed tasks (memory agent reconciled the 6 TASK notes: DoD+ADR [x], status DONE, QA relation; all validate-task-schema exit 0). Orchestrator applied: PLAN qa-014/023/041/042/043/045 → DONE (Test Report Ref QA-078..083); SPEC-008 root Tasks → [x] (now **40/47**); PLAN Wave Graph nodes 014/023/041/042/043/045 ⏸ → ✅ + class → done + provenance Event 113.
+
+### REQ-011 acceptance HELD (do NOT accept yet)
+
+Reading REQ-011 to accept it (all its tasks 037-043 DONE) surfaced a real spec tension that IS P1:
+- **AC#6**: non-claim schema issues (observation count below min, missing inline #tag, tag-count bounds, "malformed-but-parseable frontmatter") → `allow-with-warning`, NOT deny.
+- **AC#7**: unparseable note / schema violation → fail-CLOSED (deny); infra error → fail-open.
+- **Conflict**: schema-enforced hygiene (e.g. obs-count-below-min) is enforced by Zod `superRefine` → THROWS on parse → lands in AC#7's fail-closed path, even though AC#6 lists it as non-blocking. The dispatch-validator (TASK-038) currently denies on ALL terminal-status parse-throws → satisfies AC#7 but may violate AC#6.
+- **Consequence**: REQ-011 AC#6 is NOT cleanly satisfied by the current dispatch-validator. REQ-011 stays DRAFT pending adjudication of the AC#6/AC#7 partition (= the P1 decision). This CORRECTS the earlier "keep validator strict" framing — the SPEC (AC#6) itself mandates warn-on-hygiene for non-claim issues; whether a schema-enforced hygiene issue that throws should warn (AC#6) or fail-closed (AC#7) is the open question. Note: the actual [task]-category case was an INVALID ENUM (hard parse failure) — arguably AC#7 fail-closed is correct there; the tension is specifically about non-enum hygiene (counts/tags) that AC#6 names as non-blocking.
+
+### Marathon state
+
+- **40/47 fully closed.** REQ-005 + REQ-011-tasks done; REQ-001/002/003/005 ACCEPTED; REQ-011 HELD (AC#6/AC#7).
+- Remaining tasks: 024, 028, 031, 035, 036 (PENDING) + 044 (impl+FU-6 done, needs QA).
+- Pending REQ acceptances: REQ-004 (after 014 ✓ + AC-9 prefix-collision test), REQ-006 (after 024), REQ-007 (after 028), REQ-008 (after 031), REQ-010 (after 035), REQ-011 (after AC#6/AC#7 adjudication + P1 fix if warranted), REQ-012 (after 044 QA + FU-6b Layer-7 fix).
+- Hooks DISABLED; re-enable only after the layer is complete + QA'd (incl. P1/AC#6 resolution + FU-6/FU-6b).
+
+### State Changes
+
+- TASK-014/023/041/042/043/045-SPEC-008: status DONE; DoD+ADR [x]; QA relations (QA-078..083)
+- PLAN qa-014/023/041/042/043/045: IN_PROGRESS → DONE; Wave Graph synced (40/47)
+- SPEC-008 root Tasks: 014/023/041/042/043/045 → [x] (40/47)
+- REQ-011: HELD DRAFT (AC#6/AC#7 tension = P1; needs adjudication)
+- Marathon: 34/47 → **40/47** CLOSED

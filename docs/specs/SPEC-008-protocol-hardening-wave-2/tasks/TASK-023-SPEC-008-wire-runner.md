@@ -2,7 +2,7 @@
 title: 'TASK-023-SPEC-008: Wire Adversarial-Claims Table-Driven Test Runner'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-023-spec-008-wire-runner
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -21,21 +21,21 @@ Author the test runner at `shared/composition/tests/adversarial-claims.test.ts` 
 
 ## Definition of Done
 
-- [ ] File `shared/composition/tests/adversarial-claims.test.ts` exists
-- [ ] File imports `testAdversarial` from `./_helpers/adversarial.ts`
-- [ ] File declares a `cases: AdversarialCase[]` array with at least ten entries covering Audit E top-10
-- [ ] Loop over `cases` invokes `testAdversarial(label, c)` per entry where `label` is derived from the fixture filename stem
-- [ ] Coverage block asserts that every file under `tests/fixtures/adversarial/<type>/` appears as a `cases` entry (no orphan fixtures)
-- [ ] Coverage block asserts that every `cases[i].fixture` path exists on disk (no broken table rows)
-- [ ] Each `expectedReject` regex is anchored on specific validator error wording (not a loose `/error/` match)
-- [ ] `bun test shared/composition/tests/adversarial-claims.test.ts` runs all ten cases AND all pass
-- [ ] `biome lint` and `tsc --noEmit` pass
+- [x] File `shared/composition/tests/adversarial-claims.test.ts` exists
+- [x] File imports `testAdversarial` from `./_helpers/adversarial.ts`
+- [x] File declares a `cases: AdversarialCase[]` array with at least ten entries covering Audit E top-10
+- [x] Loop over `cases` invokes `testAdversarial(label, c)` per entry where `label` is derived from the fixture filename stem
+- [x] Coverage block asserts that every file under `tests/fixtures/adversarial/<type>/` appears as a `cases` entry (no orphan fixtures)
+- [x] Coverage block asserts that every `cases[i].fixture` path exists on disk (no broken table rows)
+- [x] Each `expectedReject` regex is anchored on specific validator error wording (not a loose `/error/` match)
+- [x] `bun test shared/composition/tests/adversarial-claims.test.ts` runs all ten cases AND all pass
+- [x] `biome lint` and `tsc --noEmit` pass
 
 ## ADR Compliance
 
-- [ ] Honors ADR-005 D-3: single test runner over fixture directory; per-validator adversarial test files NOT created
-- [ ] Honors REQ-006 AC-5: `bun test` passes; no orphan fixture; no broken table-row pointers
-- [ ] Honors REQ-006 AC-6: adding a new scenario requires exactly two file operations (one fixture file + one table row)
+- [x] Honors ADR-005 D-3: single test runner over fixture directory; per-validator adversarial test files NOT created
+- [x] Honors REQ-006 AC-5: `bun test` passes; no orphan fixture; no broken table-row pointers
+- [x] Honors REQ-006 AC-6: adding a new scenario requires exactly two file operations (one fixture file + one table row)
 
 ## Files Affected
 
@@ -64,3 +64,4 @@ Author the test runner at `shared/composition/tests/adversarial-claims.test.ts` 
 - implements [[DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape]]
 - depends_on [[TASK-021-SPEC-008: Implement Adversarial-Claim Test Harness]]
 - depends_on [[TASK-022-SPEC-008: Author Initial Adversarial Fixture Set for Five Existing Validators]]
+- relates_to [[QA-079-SPEC-008: Validation Report for TASK-023 Adversarial-Claims Test Runner]]
