@@ -23,7 +23,7 @@ This skill follows the locked three-phase workflow from `KICKOFF-BRIEF.md`:
 
 1. LLM authoring — you read the source, classify its `source_type`, identify cluster seams, and author a distribution plan YAML
 2. User adjudication — you present the plan via AskUserQuestion; the user approves, rejects with feedback (refinement loop), or aborts
-3. Script execution — on approval, you invoke `bun run _shared/composition/src/decompose.ts --plan <path>` and report the audit log
+3. Script execution — on approval, you invoke `bun run shared/composition/src/decompose.ts --plan <path>` and report the audit log
 
 Never write to destination files directly. Never bypass the adjudication step.
 
@@ -90,7 +90,7 @@ Summary format:
 Run the CLI entry point via Bun.$:
 
 ```bash
-bun run _shared/composition/src/decompose.ts --plan docs/_restructure/decompose-{id}-plan.yaml
+bun run shared/composition/src/decompose.ts --plan docs/_restructure/decompose-{id}-plan.yaml
 ```
 
 The script:

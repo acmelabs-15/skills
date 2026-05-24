@@ -29,7 +29,10 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 - spec.SPEC-008 DONE — SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 46 TASK); all /spec gates PASS
 - build.SPEC-008 IN_PROGRESS — owning_session SESSION-2026-05-23_02 (this session, resumed from PAUSED at Event 33)
 - Build order: TASK-029 (`_shared/`→`shared/` rename) FIRST → Track 1 (TASK-001..010) → Track 4 cleanup + Track 3 harness → Track 2 scripts + Track 3 fixtures → Track 5 hooks
-- Next: /build Stage A seeds per-TASK impl+qa workflow items into PLAN; begins TASK-029
+- TASK-029 (rename) impl DONE — `_shared/`→`shared/` (Event 37); qa-TASK-029 next
+- DEFERRED (Track 4 doc-hygiene sweep): flip `_shared/composition` in ~171 live Brain notes (TASK-029 DoD item 3; folds into TASK-034; historical-immutability scope resolved there)
+- LATENT follow-up: skill scripts + `migrate-plan-001…ts` outside root tsconfig bun-typed scope (`Cannot find name 'Bun'`) — config-coherence fix, relevant to Tracks 1/2/5
+- Next: qa-TASK-029 cycle (steps j-u) → then PoC TASK-001 (ADR schema) → PAUSE for sign-off
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
@@ -853,3 +856,14 @@ No risk invalidates the SPEC (no `build-step3-spec-invalidated-halt`). Next: see
 ## Event 36 — impl-TASK-029 PENDING → IN_PROGRESS; PoC build begins (rename)
 
 /build Stage A — TASK-029 (`_shared/`→`shared/` rename; Track 4 dependency root, executes FIRST). PLAN build.SPEC-008 `impl-TASK-029-SPEC-008`: PENDING → IN_PROGRESS (owning_session SESSION-2026-05-23_02; at Event 36). PoC items TASK-029 + TASK-001 seeded into build.SPEC-008 (remaining 44 deferred to per-track seeding on resume). Next: dispatch brain:🧠-implementer with TASK-029 DoD verbatim + R1 mitigation (config-file checklist + mandatory post-rename `bun tsc --noEmit` + `biome check` + diff review).
+
+
+## Event 37 — TASK-029 impl complete (rename); DoD item 3 deferred to Track 4 doc-hygiene
+
+brain:🧠-implementer (agent `a0116bbeb5c5200d9`) renamed `_shared/`→`shared/`. Evidence: `bun test` 590 pass / 2 pre-existing fail / 592 (identical to baseline); `bun tsc --noEmit` exit 0 (in-scope); `biome check` clean; canary import verified + deleted; 186 files changed (166 renames + 32 path-line edits across configs / SKILL.md / scripts / README / CHANGELOG / KICKOFF). No stray `_shared/` in production code/config.
+
+DoD: items 1-2, 4-9 satisfied `[x]`. **Item 3 DEFERRED** per user decision (AskUserQuestion this event) → dedicated Track 4 doc-hygiene sweep: flip `_shared/composition` in ~171 live Brain notes (folds into TASK-034 hygiene scope; historical-immutability scope for completed QA-000..043 + SPEC-001..007 subtrees + ADR-002/003 resolved there). Tracking: TASK-029 DoD item 3 annotation + this event + session State.
+
+Pre-existing latent (NOT a rename regression): skill scripts (`ingest`/`parse`/`audit`) + `migrate-plan-001…ts` show `Cannot find name 'Bun'` / `import.meta.dir` LSP errors — outside the root tsconfig `include`, so `tsc --noEmit` passes while the LSP flags them. Flagged for a config-coherence follow-up (relevant to Tracks 1/2/5 which add many new scripts).
+
+PLAN `impl-TASK-029-SPEC-008`: IN_PROGRESS → DONE (at Event 37). Next: commit (code rename + state), then qa-TASK-029 cycle.

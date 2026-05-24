@@ -291,7 +291,7 @@ Implementer and QA do NOT figure out what counts as done from prose. The contrac
 
 ## Schema-validated agent-claim verification
 
-The composition library at `_shared/composition/` provides programmatic validators:
+The composition library at `shared/composition/` provides programmatic validators:
 
 - `TaskNoteSchema` + `validateTaskDoneClaim()` — rejects implementer "DONE" claim if any DoD `[ ]` unsatisfied
 - `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`

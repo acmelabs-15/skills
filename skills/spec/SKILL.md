@@ -279,7 +279,7 @@ When dispatching QA: brief MUST quote the TASK DoD + linked REQ AC + linked DESI
 
 ## Schema-validated agent-claim verification
 
-The composition library at `_shared/composition/` provides programmatic validators:
+The composition library at `shared/composition/` provides programmatic validators:
 
 - `TaskNoteSchema` + `validateTaskDoneClaim()` — rejects implementer "DONE" claim if any DoD `[ ]` unsatisfied
 - `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`

@@ -68,7 +68,7 @@ Summary format:
 ### Step 4: Execute on approval
 
 ```bash
-bun run _shared/composition/src/recompose.ts --plan docs/_restructure/recompose-{id}-plan.yaml
+bun run shared/composition/src/recompose.ts --plan docs/_restructure/recompose-{id}-plan.yaml
 ```
 
 The script:

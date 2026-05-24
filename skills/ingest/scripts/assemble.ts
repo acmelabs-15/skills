@@ -14,7 +14,7 @@
  */
 
 import yaml from "js-yaml";
-import type { CanonicalEntityType } from "../../../_shared/detect-context.ts";
+import type { CanonicalEntityType } from "../../../shared/detect-context.ts";
 import type { ParsedSource } from "./parse.ts";
 
 export interface AssembleOptions {

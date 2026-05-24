@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "workspaces": ["_shared/composition"],
+  "workspaces": ["shared/composition"],
   "scripts": {
-    "test": "bun test skills/defrag skills/ingest _shared",
+    "test": "bun test skills/defrag skills/ingest shared",
     "test:all": "bun test",
-    "check": "biome check skills/defrag skills/ingest _shared/detect-context.ts _shared/detect-context.test.ts",
-    "check:fix": "biome check --fix skills/defrag skills/ingest _shared/detect-context.ts _shared/detect-context.test.ts",
+    "check": "biome check skills/defrag skills/ingest shared/detect-context.ts shared/detect-context.test.ts",
+    "check:fix": "biome check --fix skills/defrag skills/ingest shared/detect-context.ts shared/detect-context.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

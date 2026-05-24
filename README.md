@@ -168,6 +168,6 @@ bunx biome check .    # lint
 ```
 
 Composition library (the SHA-256 zero-drift engine) lives at
-`_shared/composition/` and is consumed by `/decompose` and `/recompose`; the
+`shared/composition/` and is consumed by `/decompose` and `/recompose`; the
 two composer skills (`/defrag`, `/ingest`) invoke the primitives via Claude
 Code's skill dispatch rather than importing the library directly.

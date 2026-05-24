@@ -242,7 +242,7 @@ Implementer and QA do NOT figure out what counts as done from prose. The contrac
 
 ## Schema-validated agent-claim verification
 
-The composition library at `_shared/composition/` provides programmatic validators across TaskNote, RequirementNote, DesignNote, SpecRootNote, TestReportNote. Lying agents are mechanically caught.
+The composition library at `shared/composition/` provides programmatic validators across TaskNote, RequirementNote, DesignNote, SpecRootNote, TestReportNote. Lying agents are mechanically caught.
 
 ## Defense in depth
 

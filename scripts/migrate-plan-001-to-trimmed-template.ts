@@ -23,9 +23,9 @@
  */
 
 import { createHash } from "node:crypto";
-import { renderPlanNote } from "../_shared/composition/src/renderers/plan-note.js";
-import { parsePlanNote } from "../_shared/composition/src/parsers/plan-note.js";
-import type { Part, PlanNote, Task } from "../_shared/composition/src/schemas/plan-note.js";
+import { renderPlanNote } from "../shared/composition/src/renderers/plan-note.js";
+import { parsePlanNote } from "../shared/composition/src/parsers/plan-note.js";
+import type { Part, PlanNote, Task } from "../shared/composition/src/schemas/plan-note.js";
 
 const PLAN_PATH = `${import.meta.dir}/../docs/planning/PLAN-001-skills-ecosystem.md`;
 
@@ -545,7 +545,7 @@ const plan: PlanNote = {
     "Build a zero-content-drift restructuring capability for Brain knowledge-graph notes via a deterministic composition library (Bun + TS) plus four Claude Code skills (/ingest, /decompose, /recompose, /defrag). Workflow Type: Standard Development with Strategic Decision sub-flow for the architectural ADRs. Scope spans 5 per-type adapters (~1,200 LOC total) with SHA-256 char-identity hash validation as a BLOCKING invariant. Agent Sequence: orchestrator → architect (decisions.1 + decisions.2 + decisions.3) → analyst (spec-decomposition clustering) → bun-ts-engineer (build) → qa (per-spec coverage gate) → review → end. Complexity: TIER_4. Risk: HIGH — the bootstrapping incident (3,680-line ADR split with 35% content drift on 10/12 D-Ns) is the explicit reason this work exists; the entire architecture exists to make a recurrence mathematically impossible via round-trip property testing.",
   source_reference: "KICKOFF-BRIEF.md in the project root for full background, locked design decisions (8 items), build order, LLM-script division of labor, and the 5 open design questions adjudicated in decisions.1.",
   objectives: [
-    { id: "O-1", text: "Composition library at `_shared/composition/` produces SHA-256 char-identity verified decompose/recompose for the ADR adapter (PROOF)", done: true },
+    { id: "O-1", text: "Composition library at `shared/composition/` produces SHA-256 char-identity verified decompose/recompose for the ADR adapter (PROOF)", done: true },
     { id: "O-2", text: "Round-trip property test (decompose ∘ recompose = identity on SHA-256) passes for ADR adapter", done: true },
     { id: "O-3", text: "/decompose and /recompose skills operational against ADR notes", done: true },
     { id: "O-4", text: "All 5 adapters (ADR, ANALYSIS, SESSION, PLAN, SPEC subtree) ship with passing round-trip tests", done: true },
