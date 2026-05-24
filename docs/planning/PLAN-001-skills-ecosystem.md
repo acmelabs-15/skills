@@ -46,13 +46,14 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | Phase | PENDING | IN_PROGRESS | BLOCKED | DONE | Total |
 |:--|--:|--:|--:|--:|--:|
 | research | 0 | 0 | 0 | 1 | 1 |
-| decisions | 0 | 0 | 0 | 3 | 3 |
+| decisions | 0 | 1 | 0 | 3 | 4 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
-| spec | 0 | 0 | 0 | 7 | 7 |
-| build | 0 | 1 | 0 | 7 | 8 |
+| spec | 1 | 0 | 0 | 7 | 8 |
+| build | 1 | 1 | 0 | 7 | 9 |
 | review | 0 | 0 | 0 | 1 | 1 |
 | end | 0 | 0 | 0 | 1 | 1 |
-| **Total** | **0** | **1** | **0** | **21** | **22** |
+| **Total** | **2** | **2** | **0** | **21** | **25** |
+
 
 ## Cross-Part Dependency Graph
 
@@ -2229,6 +2230,65 @@ graph TD
 - [x] PR created
 - [x] npx markdownlint-cli2 --fix "**/*.md" clean
 - [x] All commits pushed to local branch
+
+### decisions.4
+
+- **Phase**: decisions
+- **Title**: Wave 2 Architecture Decisions (ADR-004)
+- **Substatus**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Source Artifacts**: SESSION-2026-05-23_02 Events 02-08 (5 audit returns synthesized into 4-track Wave 2 scope)
+- **Depends On**: protocol-hardening
+
+**DoD**:
+
+- [ ] D-1 LOCKED — Composition library invocation pattern (in-process import vs `bun run` CLI vs per-validator script wrapper)
+- [ ] D-2 LOCKED — Directory layout for new schemas/parsers/validators (extend `src/schemas|parsers|validators/` flat OR new `wave-2/` subdir)
+- [ ] D-3 LOCKED — Adversarial-claim test scaffold pattern (fixture-based parse-then-validate template)
+- [ ] D-4 LOCKED — Dispatch-brief template persistence + enforcement mechanism (file location + how skills consume)
+- [ ] D-5 LOCKED — P1 include/defer adjudication (ANALYSIS schema/validator; EPIC; CRIT)
+- [ ] D-6 LOCKED — SPEC-007 status resolution (downgrade DONE→ACCEPTED vs complete TASK-014 vs amend REQ-012 scope)
+- [ ] D-7 LOCKED — `core/dispatcher.ts` disposition (fix-add-spec vs deprecate-in-favor-of-registry)
+- [ ] ADR-004 authored and frontmatter status ACCEPTED; date + updated populated
+- [ ] /brain:---adr-review PASS verdict (round-1 convergence ≥5 ACCEPT + 0 BLOCK)
+
+### spec.SPEC-008
+
+- **Phase**: spec
+- **Title**: SPEC-008 Protocol Hardening Wave 2 (4 REQ clusters: coverage gaps + skill invocation + tests + drift cleanup)
+- **Substatus**: PENDING
+- **Source Artifacts**: ADR-004 Wave 2 Architecture (pending decisions.4 close)
+- **Depends On**: decisions.4
+
+**DoD**:
+
+- [ ] SPEC-008 root note authored at docs/specs/SPEC-008-...
+- [ ] REQ notes authored — ~12 (one per Wave 2 cluster: coverage gaps × 5, skill invocation × 1-2, tests × 3, drift cleanup × 2)
+- [ ] DESIGN notes authored — ~3-4 (composition library extension, skill invocation pattern, test scaffold, dispatch-brief template)
+- [ ] TASK notes authored — ~15-20 (atomic with DoD checklists)
+- [ ] ADR coverage gate PASS (ADR-001 + ADR-002 + ADR-003 + ADR-004 referenced)
+- [ ] Gate A semantic gap analysis PASS
+- [ ] Gate B 4 binary drift checks PASS
+- [ ] SPEC-008 status ACCEPTED (born so at Stage 2 close)
+
+### build.SPEC-008
+
+- **Phase**: build
+- **Title**: Build SPEC-008 — Wave 2 Protocol Hardening implementation
+- **Substatus**: PENDING
+- **Source Artifacts**: SPEC-008 Protocol Hardening Wave 2 (pending spec.SPEC-008 close)
+- **Depends On**: spec.SPEC-008
+
+**DoD**:
+
+- [ ] All TASKs from SPEC-008 implemented per rigid per-TASK build+QA cycle (steps a-u, no exceptions)
+- [ ] Adversarial + integration + regression tests pass (per SPEC-008 REQ scope)
+- [ ] Per-task QA gate PASS via composition library claim validators
+- [ ] Final spec-level coverage matrix PASS
+- [ ] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint
+- [ ] SPEC-008 status flipped IN_PROGRESS → DONE post-build
+- [ ] protocol-hardening part flips IN_PROGRESS → DONE (Wave 2 closes the umbrella)
+- [ ] PLAN-001 frontmatter status flips IN_PROGRESS → DONE (Wave 2 closes the PLAN)
 
 ## Tasks
 
