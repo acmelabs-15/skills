@@ -1661,3 +1661,27 @@ Critical brief contents:
 - File-disjoint with no concurrent batch member (solo)
 
 Commit will land impl returns + PLAN transitions + this Event + session note in one atomic state-sync after agent returns.
+
+
+## Event 72 — impl-TASK-004 PASS; dispatching qa-004
+
+bun-ts-engineer agent a7ab239f5d807ed9d (foreground; 33 tool_uses; 478s). PASS.
+
+- NEW: `shared/composition/src/schemas/crit-note.ts` (137 lines; CritNoteSchema + CritFindingSchema + parent-ref regex superRefine + `.strict()` on all sub-schemas)
+- NEW: `shared/composition/tests/schemas/crit-note.test.ts` (262 lines; 29 cases — far above ≥5 floor)
+- MODIFY: `shared/composition/src/schemas/index.ts` (+1 line; CritNoteSchema + CritNote re-export)
+- 12 DoD + 3 ADR Compliance all `[x]` on TASK note
+- Verified NEGATIVE DoD #7: no `validators/crit-claim-validator.ts` created (CRIT has no terminal-status claim per ADR-005 D-5)
+
+Independent orchestrator verification:
+- `bun test`: 763 pass / 2 fail / 765 total (delta +29 = exact CRIT test count). Same 2 fails (SPEC-007 DEFERRED baseline per D-1).
+- TASK-004 note `[x]` count: 15 (12 DoD + 3 ADR Compliance) — matches agent claim
+- Wave 1a now: 7 DONE (001/002/003/004/005/010/030); 1 PENDING (006). TASK-006 dep-unblocked.
+
+New canonical suite baseline post-Event-72: **763 pass / 2 fail / 765 total**.
+
+PLAN transitions:
+- impl-TASK-004-SPEC-008: IN_PROGRESS → DONE (Event 72)
+- qa-TASK-004-SPEC-008: PENDING → IN_PROGRESS (Event 72; dispatching brain:🧠-qa next)
+
+Next: commit code + PLAN + session atomically, then dispatch qa-004.

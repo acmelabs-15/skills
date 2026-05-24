@@ -2770,20 +2770,20 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-004-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 71
+- **Transitioned At Event**: Event 72
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: Batch 5b solo dispatch (TASK-006 deferred to Batch 5c due to dependency on TASK-004)
+- **Fix Brief For Event**: bun-ts-engineer agent a7ab239f5d807ed9d; 29/0/29 targeted tests; biome PASS; tsc PASS; suite 763/2/765 (delta +29); 12 DoD + 3 ADR Compliance all [x]
 
 #### qa-TASK-004-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-004-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 72
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —

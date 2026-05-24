@@ -2,7 +2,7 @@
 title: 'TASK-004-SPEC-008: Implement CRIT Schema'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-004-spec-008-implement-crit-schema
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -23,24 +23,24 @@ This TASK depends on Track 4 renaming `_shared/` to `shared/`.
 
 ## Definition of Done
 
-- [ ] File `shared/composition/src/schemas/crit-note.ts` exists and exports `CritNoteSchema` plus `type CritNote`
-- [ ] Frontmatter title regex matches parent-referenced form (CRIT-NNN-PARENT-NNN)
-- [ ] Body sub-schema includes a Findings array with per-finding fields (severity enum, description, recommendation)
-- [ ] Final-two-sections invariant is enforced
-- [ ] Relations verb allowlist enforced from `schemas/common.ts`
-- [ ] All sub-schemas use `.strict()`
-- [ ] No claim validator file is authored under this TASK (CRIT has no terminal-status claim per D-5)
-- [ ] Unit tests cover: valid CRIT note, malformed parent-reference regex rejection, missing Findings rejection, forbidden relation verb rejection
-- [ ] `bun test shared/composition/tests/schemas/crit-note.test.ts` passes with at least 5 cases green
-- [ ] `biome check` passes
-- [ ] `tsc --noEmit` passes
-- [ ] `shared/composition/src/schemas/index.ts` re-exports `CritNoteSchema` and `CritNote`
+- [x] File `shared/composition/src/schemas/crit-note.ts` exists and exports `CritNoteSchema` plus `type CritNote`
+- [x] Frontmatter title regex matches parent-referenced form (CRIT-NNN-PARENT-NNN)
+- [x] Body sub-schema includes a Findings array with per-finding fields (severity enum, description, recommendation)
+- [x] Final-two-sections invariant is enforced
+- [x] Relations verb allowlist enforced from `schemas/common.ts`
+- [x] All sub-schemas use `.strict()`
+- [x] No claim validator file is authored under this TASK (CRIT has no terminal-status claim per D-5)
+- [x] Unit tests cover: valid CRIT note, malformed parent-reference regex rejection, missing Findings rejection, forbidden relation verb rejection
+- [x] `bun test shared/composition/tests/schemas/crit-note.test.ts` passes with at least 5 cases green
+- [x] `biome check` passes
+- [x] `tsc --noEmit` passes
+- [x] `shared/composition/src/schemas/index.ts` re-exports `CritNoteSchema` and `CritNote`
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (P1 CRIT coverage; no claim validator per spec)
-- [ ] Honors [[ADR-001: Composition Library Architecture]]
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (P1 CRIT coverage; no claim validator per spec)
+- [x] Honors [[ADR-001: Composition Library Architecture]]
 
 ## Files Affected
 
