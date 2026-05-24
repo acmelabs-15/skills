@@ -1,7 +1,7 @@
 ---
 title: 'TASK-003-SPEC-002: Implement SESSION Cross-Source Updates Handler'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 permalink: specs/spec-002-simple-adapters/tasks/task-003-spec-002-implement-session-cross-source-updates-handler
@@ -24,16 +24,16 @@ Implement the cross_source_updates handler: the CrossSourceUpdate Zod schema and
 
 ## Definition of Done
 
-- [ ] crossSourceUpdateSchema defined and exported from _shared/composition/schemas/distribution/session.plan.schema.ts with shape: target_source_type (literal "plan"), target_path (string min 1), optional frontmatter_map, optional wikilink_map
-- [ ] CrossSourceUpdate type exported from the same file
-- [ ] SessionAdapter.getCrossSourceUpdates method implemented as pass-through returning distributionPlan.cross_source_updates or empty array
-- [ ] SessionAdapter.supportsCrossSourceUpdates flag set to true
-- [ ] cross_source_updates array validated by Zod at plan load time as optional array of crossSourceUpdateSchema
-- [ ] Unit tests for crossSourceUpdateSchema validation (valid + invalid entries)
-- [ ] Unit test for getCrossSourceUpdates returning plan entries when present
-- [ ] Unit test for getCrossSourceUpdates returning empty array when cross_source_updates absent
-- [ ] TypeScript compiles without errors
-- [ ] biome lint passes with no errors
+- [x] crossSourceUpdateSchema defined and exported from _shared/composition/schemas/distribution/session.plan.schema.ts with shape: target_source_type (literal "plan"), target_path (string min 1), optional frontmatter_map, optional wikilink_map
+- [x] CrossSourceUpdate type exported from the same file
+- [x] SessionAdapter.getCrossSourceUpdates method implemented as pass-through returning distributionPlan.cross_source_updates or empty array
+- [x] SessionAdapter.supportsCrossSourceUpdates flag set to true
+- [x] cross_source_updates array validated by Zod at plan load time as optional array of crossSourceUpdateSchema
+- [x] Unit tests for crossSourceUpdateSchema validation (valid + invalid entries)
+- [x] Unit test for getCrossSourceUpdates returning plan entries when present
+- [x] Unit test for getCrossSourceUpdates returning empty array when cross_source_updates absent
+- [x] TypeScript compiles without errors
+- [x] biome lint passes with no errors
 
 ## Scope
 
@@ -76,6 +76,7 @@ Implement the cross_source_updates handler: the CrossSourceUpdate Zod schema and
 
 ## Relations
 
+- validated_by [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]]
 - implements [[DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol]]
 - implements [[REQ-003-SPEC-002: SESSION Cross-Source Updates Handling]]
 - part_of [[SPEC-002: Simple Adapters]]

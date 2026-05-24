@@ -1,7 +1,7 @@
 ---
 title: 'TASK-001-SPEC-002: Implement ANALYSIS Adapter'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 permalink: specs/spec-002-simple-adapters/tasks/task-001-spec-002-implement-analysis-adapter
@@ -24,14 +24,14 @@ Implement the ANALYSIS adapter as a concrete subclass of BaseMarkdownAdapter at 
 
 ## Definition of Done
 
-- [ ] _shared/composition/src/adapters/analysis.ts exists and exports AnalysisAdapter class
-- [ ] AnalysisAdapter extends BaseMarkdownAdapter
-- [ ] sourceType property returns "analysis"
-- [ ] sectionDelimiter property returns "### "
-- [ ] identifierPattern property returns regex matching item-N format
-- [ ] identifierPrefix property returns "item-"
-- [ ] TypeScript compiles without errors (bun build validates)
-- [ ] biome lint passes with no errors
+- [x] _shared/composition/src/adapters/analysis.ts exists and exports AnalysisAdapter class
+- [x] AnalysisAdapter extends BaseMarkdownAdapter
+- [x] sourceType property returns "analysis"
+- [x] sectionDelimiter property returns "### "
+- [x] identifierPattern property returns regex matching item-N format
+- [x] identifierPrefix property returns "item-"
+- [x] TypeScript compiles without errors (bun build validates)
+- [x] biome lint passes with no errors
 
 ## Scope
 
@@ -65,6 +65,7 @@ Implement the ANALYSIS adapter as a concrete subclass of BaseMarkdownAdapter at 
 
 ## Relations
 
+- validated_by [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]]
 - implements [[DESIGN-001-SPEC-002: BaseMarkdownAdapter Configuration Pattern]]
 - implements [[REQ-001-SPEC-002: ANALYSIS Adapter Implementation]]
 - part_of [[SPEC-002: Simple Adapters]]

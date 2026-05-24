@@ -1,7 +1,7 @@
 ---
 title: 'TASK-002-SPEC-002: Implement SESSION Adapter'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 permalink: specs/spec-002-simple-adapters/tasks/task-002-spec-002-implement-session-adapter
@@ -24,15 +24,15 @@ Implement the SESSION adapter as a concrete subclass of BaseMarkdownAdapter at _
 
 ## Definition of Done
 
-- [ ] _shared/composition/src/adapters/session.ts exists and exports SessionAdapter class
-- [ ] SessionAdapter extends BaseMarkdownAdapter
-- [ ] sourceType property returns "session"
-- [ ] sectionDelimiter property returns "## Event "
-- [ ] identifierPattern property returns regex matching Event NN format (zero-padded)
-- [ ] identifierPrefix property returns "Event "
-- [ ] supportsCrossSourceUpdates property returns true
-- [ ] TypeScript compiles without errors (bun build validates)
-- [ ] biome lint passes with no errors
+- [x] _shared/composition/src/adapters/session.ts exists and exports SessionAdapter class
+- [x] SessionAdapter extends BaseMarkdownAdapter
+- [x] sourceType property returns "session"
+- [x] sectionDelimiter property returns "## Event "
+- [x] identifierPattern property returns regex matching Event NN format (zero-padded)
+- [x] identifierPrefix property returns "Event "
+- [x] supportsCrossSourceUpdates property returns true
+- [x] TypeScript compiles without errors (bun build validates)
+- [x] biome lint passes with no errors
 
 ## Scope
 
@@ -66,6 +66,7 @@ Implement the SESSION adapter as a concrete subclass of BaseMarkdownAdapter at _
 
 ## Relations
 
+- validated_by [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]]
 - implements [[DESIGN-001-SPEC-002: BaseMarkdownAdapter Configuration Pattern]]
 - implements [[REQ-002-SPEC-002: SESSION Adapter Implementation]]
 - part_of [[SPEC-002: Simple Adapters]]

@@ -49,10 +49,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 3 | 3 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec | 0 | 0 | 0 | 7 | 7 |
-| build | 1 | 1 | 0 | 5 | 7 |
+| build | 1 | 0 | 0 | 6 | 7 |
 | review | 1 | 0 | 0 | 0 | 1 |
 | end | 1 | 0 | 0 | 0 | 1 |
-| **Total** | **3** | **1** | **0** | **17** | **21** |
+| **Total** | **3** | **0** | **0** | **18** | **21** |
 
 ## Cross-Part Dependency Graph
 
@@ -602,14 +602,14 @@ graph TD
 ### build.SPEC-002
 
 - **Phase**: build
-- **Title**: Simple Adapters Build (partial; 6 TODO TASKs remaining)
-- **Substatus**: IN_PROGRESS
+- **Title**: Simple Adapters Build
+- **Substatus**: DONE
 - **Owning Session**: SESSION-2026-05-23_01
+- **Completing Session**: SESSION-2026-05-23_01
 - **Source Artifacts**: [[SPEC-002: Simple Adapters]]
 - **Depends On**: spec.SPEC-002, build.SPEC-001
-- **Partial State**: 3/10 TASKs DONE per task frontmatter; 6 TODO (TASK-001..006 — analysis adapter, session adapter, cross-source handler, dispatcher registration, 2 round-trip property tests)
-- **Reconciled**: 2026-05-23
-- **Build dispatched**: 2026-05-23 (this session) on branch `feat/plan-001-build-spec-002-simple-adapters`
+- **Outcome**: 9/10 TASKs DONE + 1 CANCELLED (TASK-009 superseded); SPEC-002 root DONE; 24/24 SPEC-002 tests pass; retro-validated via [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]]
+- **Reconciled**: 2026-05-23 (TASK-001..006 retro-validated as DONE)
 
 **DoD**:
 

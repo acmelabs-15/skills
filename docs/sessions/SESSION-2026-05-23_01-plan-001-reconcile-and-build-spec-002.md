@@ -35,6 +35,10 @@ SPEC-007 TASK-013 (BLOCKED, dogfood PLAN-001 migration) was superseded by gap-TA
 
 User selected build.SPEC-002 (Simple Adapters) as the next-ready part via AskUserQuestion (default lowest-numbered). 6 TODO TASKs remaining (TASK-001 analysis adapter, TASK-002 session adapter, TASK-003 cross-source updates handler, TASK-004 dispatcher registration, TASK-005 + TASK-006 round-trip property tests). New branch `feat/plan-001-build-spec-002-simple-adapters` off main (post-PR-#12 merge). PLAN-001 propagation: build.SPEC-002 substatus READY → IN_PROGRESS; owning_session bound; Progress Dashboard build row PENDING 2→1 + IP 0→1. Auto-routing to `/build` with `spec=SPEC-002`.
 
+## Event 05 — SPEC-002 retro-validation complete; build.SPEC-002 DONE
+
+User chose retro-validation approach (Option 1) over fresh /build. Verification: 24/24 SPEC-002 tests pass; `bun run tsc --noEmit` clean; biome lint clean (65 files checked, no fixes); existing code in `_shared/composition/src/adapters/{analysis,session}.ts` + `schemas/distribution/session.plan.schema.ts` + 5 test files matches TASK-001..006 DoD requirements. Authored [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]] with per-TASK evidence (file:line citations). One non-blocking finding: TASK-002 DoD literal says `identifierPrefix "Event "` (with space); code uses `"Event-"` (hyphen-suffixed, matching regex `/Event-(\d+)/i`) — functionality correct, doc typo. Flipped TASK-001..006 frontmatter status TODO → DONE + all DoD checkboxes [x] + added `validated_by [[QA-042-SPEC-002]]` relation. Flipped SPEC-002 root status ACCEPTED → DONE. PLAN-001 propagation: build.SPEC-002 IN_PROGRESS → DONE; Progress Dashboard build row IP 1→0 + DONE 5→6; Total row IP 1→0 + DONE 17→18. Build phase summary: 6/7 builds DONE; 1 PENDING remaining (build.SPEC-003).
+
 ## Observations
 
 - [decision] PR #12 merged reconciliation: PLAN-001 build statuses now match per-TASK frontmatter source-of-truth #plan-reconciliation #drift-fix

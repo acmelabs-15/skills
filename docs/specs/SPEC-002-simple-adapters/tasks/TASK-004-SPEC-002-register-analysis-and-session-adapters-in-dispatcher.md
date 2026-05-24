@@ -1,7 +1,7 @@
 ---
 title: 'TASK-004-SPEC-002: Register ANALYSIS and SESSION Adapters in Dispatcher'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 1d
 permalink: specs/spec-002-simple-adapters/tasks/task-004-spec-002-register-analysis-and-session-adapters-in-dispatcher
@@ -24,15 +24,15 @@ Extend the adapter dispatcher established in SPEC-001 to register AnalysisAdapte
 
 ## Definition of Done
 
-- [ ] Adapter dispatcher imports and registers AnalysisAdapter for source_type "analysis"
-- [ ] Adapter dispatcher imports and registers SessionAdapter for source_type "session"
-- [ ] Zod discriminated union extended with ANALYSIS variant (analysis-specific plan fields)
-- [ ] Zod discriminated union extended with SESSION variant (session-specific plan fields including cross_source_updates)
-- [ ] Dispatcher resolves source_type "analysis" to AnalysisAdapter instance
-- [ ] Dispatcher resolves source_type "session" to SessionAdapter instance
-- [ ] Existing ADR adapter registration unchanged (regression safe)
-- [ ] TypeScript compiles without errors
-- [ ] biome lint passes with no errors
+- [x] Adapter dispatcher imports and registers AnalysisAdapter for source_type "analysis"
+- [x] Adapter dispatcher imports and registers SessionAdapter for source_type "session"
+- [x] Zod discriminated union extended with ANALYSIS variant (analysis-specific plan fields)
+- [x] Zod discriminated union extended with SESSION variant (session-specific plan fields including cross_source_updates)
+- [x] Dispatcher resolves source_type "analysis" to AnalysisAdapter instance
+- [x] Dispatcher resolves source_type "session" to SessionAdapter instance
+- [x] Existing ADR adapter registration unchanged (regression safe)
+- [x] TypeScript compiles without errors
+- [x] biome lint passes with no errors
 
 ## Scope
 
@@ -76,6 +76,7 @@ Extend the adapter dispatcher established in SPEC-001 to register AnalysisAdapte
 
 ## Relations
 
+- validated_by [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]]
 - implements [[REQ-004-SPEC-002: Adapter Registry Extension]]
 - implements [[DESIGN-001-SPEC-002: BaseMarkdownAdapter Configuration Pattern]]
 - part_of [[SPEC-002: Simple Adapters]]
