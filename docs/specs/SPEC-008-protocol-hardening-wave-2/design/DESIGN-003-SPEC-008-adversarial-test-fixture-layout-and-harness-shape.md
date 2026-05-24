@@ -109,6 +109,7 @@ for (const c of cases) {
 Plus one verification block that walks the on-disk fixture tree and asserts every fixture file is referenced in `cases` (no orphan fixtures; no broken table rows).
 
 ### Drift-surface to fixture mapping (Audit E item 10 alignment)
+
 Each fixture's `drift-NN-<slug>` filename IS the drift regression marker; the slug names the drift surface. A contributor reading the test output sees the slug directly in the test label ("adversarial: drift-01-all-deferred-bypass"), and the slug greps back to the fixture file. No external mapping table is required because the filename IS the mapping.
 
 For Phase X drift surfaces (per [[RETRO-003: Phase X Execution and Composition Library Completion]]), TASK-022 enumerates which fixture file regression-locks which Phase X surface in the fixture's frontmatter `tags` array (e.g., `tags: [drift-marker, phase-x-surface-12, task-validator]`). This keeps the linkage greppable without forcing an external registry.

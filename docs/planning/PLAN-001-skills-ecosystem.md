@@ -48,12 +48,11 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | research | 0 | 0 | 0 | 0 | 1 | 1 |
 | decisions | 0 | 0 | 0 | 0 | 4 | 4 |
 | spec-decomposition | 0 | 0 | 0 | 0 | 1 | 1 |
-| spec | 0 | 1 | 0 | 0 | 7 | 8 |
-| build | 1 | 1 | 0 | 0 | 7 | 9 |
+| spec | 0 | 0 | 0 | 0 | 8 | 8 |
+| build | 0 | 1 | 0 | 1 | 7 | 9 |
 | review | 0 | 0 | 0 | 0 | 1 | 1 |
 | end | 0 | 0 | 0 | 0 | 1 | 1 |
-| **Total** | **1** | **2** | **0** | **0** | **22** | **25** |
-
+| **Total** | **0** | **1** | **0** | **1** | **23** | **25** |
 
 ## Cross-Part Dependency Graph
 
@@ -64,6 +63,7 @@ graph TD
   classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
   classDef inprogress fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12,rx:14,ry:14
   classDef pending fill:#fafafa,stroke:#d1d5db,stroke-width:1px,color:#6b7280,stroke-dasharray:3 3,rx:14,ry:14
+  classDef ready fill:#dbeafe,stroke:#3b82f6,stroke-width:1.5px,color:#1e3a8a,rx:14,ry:14
 
   research("✅ <b>research</b><br/><span style='color:#6b7280;font-size:11px'>Bootstrap Research</span>")
   decisions_1("✅ <b>decisions.1</b><br/><span style='color:#6b7280;font-size:11px'>Composition Library Architecture ADR</span>")
@@ -87,6 +87,9 @@ graph TD
   protocol_hardening("⚡ <b>protocol-hardening</b><br/><span style='color:#6b7280;font-size:11px'>Phase X — Protocol Hardening (Drift Remediation)</span>")
   review("✅ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
   end("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
+  decisions_4("✅ <b>decisions.4</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Architecture Decisions (ADR-005)</span>")
+  spec_SPEC_008("✅ <b>spec.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Protocol Hardening Wave 2</span>")
+  build_SPEC_008("🔵 <b>build.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Protocol Hardening Build</span>")
 
   research --> decisions_1
   decisions_1 --> decisions_2
@@ -121,9 +124,13 @@ graph TD
   build_SPEC_006 --> review
   build_SPEC_007 --> review
   review --> end
+  protocol_hardening --> decisions_4
+  decisions_4 --> spec_SPEC_008
+  spec_SPEC_008 --> build_SPEC_008
 
-  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end done
+  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end,decisions_4,spec_SPEC_008 done
   class protocol_hardening inprogress
+  class build_SPEC_008 ready
 ```
 
 ## Phase Progression
@@ -2258,28 +2265,30 @@ graph TD
 
 - **Phase**: spec
 - **Title**: SPEC-008 Protocol Hardening Wave 2 (5 REQ clusters: coverage gaps + skill invocation + tests + drift cleanup + automated enforcement hooks)
-- **Substatus**: IN_PROGRESS
+- **Substatus**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
+- **Completing Session**: SESSION-2026-05-23_02
+- **Outcome**: SPEC-008 Protocol Hardening Wave 2 — 63 notes (12 REQ + 4 DESIGN + 46 TASK + root) authored across 5 parallel tracks; ADR coverage gate + Gate A (semantic gap) + Gate B (4 binary drift checks) all PASS after 1 refinement round; born ACCEPTED
 - **Source Artifacts**: ADR-005 Protocol Hardening Wave 2 Architecture (ACCEPTED 2026-05-23)
 - **Depends On**: decisions.4
 
 **DoD**:
 
-- [ ] SPEC-008 root note authored at docs/specs/SPEC-008-...
-- [ ] REQ notes authored — ~12 (one per Wave 2 cluster: coverage gaps × 5, skill invocation × 1-2, tests × 3, drift cleanup × 2)
-- [ ] DESIGN notes authored — ~3-4 (composition library extension, skill invocation pattern, test scaffold, dispatch-brief template)
-- [ ] TASK notes authored — ~15-20 (atomic with DoD checklists)
-- [ ] ADR coverage gate PASS (ADR-001 + ADR-002 + ADR-003 + ADR-005 referenced; ADR-004 is cross-source-coordinator, unrelated)
-- [ ] Gate A semantic gap analysis PASS
-- [ ] Gate B 4 binary drift checks PASS
-- [ ] SPEC-008 status ACCEPTED (born so at Stage 2 close)
+- [x] SPEC-008 root note authored at docs/specs/SPEC-008-protocol-hardening-wave-2/
+- [x] REQ notes authored — 12 (REQ-001..012: coverage gaps + skill invocation + tests + drift cleanup + hooks)
+- [x] DESIGN notes authored — 4 (DESIGN-001 coverage layout, DESIGN-002 per-skill script CLI, DESIGN-003 adversarial fixture harness, DESIGN-004 hook layer)
+- [x] TASK notes authored — 46 (TASK-001..046, atomic with DoD checklists)
+- [x] ADR coverage gate PASS (ADR-001 + ADR-002 + ADR-003 + ADR-005 each implemented_by SPEC-008; ADR-004 is cross-source-coordinator, unrelated)
+- [x] Gate A semantic gap analysis PASS (9 findings across 8 REQs refined to mechanical assertions; re-run PASS)
+- [x] Gate B 4 binary drift checks PASS (2 empty TASK stubs authored; 46/46 TASK→REQ traceability)
+- [x] SPEC-008 status ACCEPTED (born so at Stage 2 close)
 
 ### build.SPEC-008
 
 - **Phase**: build
 - **Title**: Build SPEC-008 — Wave 2 Protocol Hardening implementation
-- **Substatus**: PENDING
-- **Source Artifacts**: SPEC-008 Protocol Hardening Wave 2 (pending spec.SPEC-008 close)
+- **Substatus**: READY
+- **Source Artifacts**: SPEC-008 Protocol Hardening Wave 2 (ACCEPTED 2026-05-23; spec.SPEC-008 DONE)
 - **Depends On**: spec.SPEC-008
 
 **DoD**:

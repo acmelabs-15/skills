@@ -75,6 +75,7 @@ The harness lives at `shared/composition/tests/_helpers/adversarial.ts` (matches
 - [outcome] Mechanical-impossibility-of-lying claim becomes provable by parse-then-validate evidence across all five validators, closing the Audit E gap that only 3 of 5 had any such test #protocol-evidence
 
 ## Relations
+
 - implements [[ADR-005: Protocol Hardening Wave 2 Architecture]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis]]

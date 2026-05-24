@@ -24,7 +24,7 @@ Steps:
 2. `edit_note` find_replace: `- [ ] REQ-012-SPEC-007: PLAN-001 Dogfood Migration` → `- [~] REQ-012-SPEC-007: PLAN-001 Dogfood Migration`
 3. `edit_note` find_replace: `- [ ] TASK-013-SPEC-007: Dogfood PLAN-001 Migration (BLOCKED; superseded by TASK-014)` → `- [~] TASK-013-SPEC-007: Dogfood PLAN-001 Migration (BLOCKED; superseded by TASK-014)`
 4. `edit_note` find_replace: `- [ ] TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template (TODO; gap-TASK)` → `- [~] TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template (TODO; gap-TASK)`
-5. `edit_note` prepend a notation legend line before the `### Requirements` subheading inside `## Artifact Status`, reading: `> **Legend**: `[ ]` = TODO, `[x]` = DONE, `[~]` = DEFERRED (status terminal but artifact intentionally not completed; see REQ-008-SPEC-008).`
+5. `edit_note` prepend a notation legend line before the `### Requirements` subheading inside `## Artifact Status`, reading: `> **Legend**:`[ ]` = TODO, `[x]` = DONE, `[~]`= DEFERRED (status terminal but artifact intentionally not completed; see REQ-008-SPEC-008).`
 6. Verify SPEC-007 status remains DONE (no status change)
 
 ## Definition of Done

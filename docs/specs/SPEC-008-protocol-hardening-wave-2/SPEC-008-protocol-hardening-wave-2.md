@@ -17,6 +17,7 @@ tags:
 ## Scope
 
 ### In Scope
+
 Wave 2 of the protocol-hardening initiative closes the convergent root finding from the 5 parallel audits captured in [[ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis]]: the rigid per-TASK build+QA protocol exists as PROSE, not as RUNTIME ENFORCEMENT. SPEC-008 implements the architecture locked in [[ADR-005: Protocol Hardening Wave 2 Architecture]] across 5 tracks:
 
 - Track 1 — Library coverage gaps: 5 new schemas + 5 new parsers + 4 new claim validators in `shared/composition/src/{schemas,parsers,validators}/` covering ADR, ANALYSIS, EPIC, CRIT (new) plus PLAN-done-claim extension. Closes Audit A coverage gaps.
@@ -52,6 +53,7 @@ Phase ordering: Phase 4 TASK-029 (rename) MUST land first (every Track touches p
 All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child note transitions to DONE/ACCEPTED. Notation: `[ ]` = TODO; `[x]` = DONE; `[~]` = DEFERRED-with-rationale (D-6 canonical notation — recognized as terminal by `validateSpecDoneClaim`).
 
 ### Requirements (12)
+
 - [ ] [[REQ-001-SPEC-008: New Schema Suite]]
 - [ ] [[REQ-002-SPEC-008: New Parser Suite]]
 - [ ] [[REQ-003-SPEC-008: New Claim Validator Suite]]
@@ -66,12 +68,14 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [ ] [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]]
 
 ### Designs (4)
+
 - [ ] [[DESIGN-001-SPEC-008: Coverage Module Layout]]
 - [ ] [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]
 - [ ] [[DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape]]
 - [ ] [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
 
 ### Tasks (46)
+
 - [ ] [[TASK-001-SPEC-008: Implement ADR Schema]]
 - [ ] [[TASK-002-SPEC-008: Implement ANALYSIS Schema]]
 - [ ] [[TASK-003-SPEC-008: Implement EPIC Schema]]
@@ -140,6 +144,7 @@ Render layer architecture; T2 dispatch-brief generators import cross-cutting con
 8 D-Ns (D-1..D-8) define every Wave 2 architectural choice; every REQ in this SPEC `implements` ≥1 ADR-005 D-N; every TASK `implements` ≥1 REQ.
 
 ## Acceptance Criteria
+
 - [ ] All 12 REQs status ACCEPTED with their `## Acceptance Criteria` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateRequirementAcClaim`)
 - [ ] All 4 DESIGN notes status ACCEPTED with `## Compliance` checkboxes `[x]` where present (Wave 2 acceptance verifiable via `validateDesignComplianceClaim`)
 - [ ] All 46 TASKs status DONE with all `## Definition of Done` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateTaskDoneClaim`)
@@ -201,6 +206,7 @@ Build parallelism opportunity: ~30-40% reduction possible per cross-track depend
 - [fact] 5 schemas + 5 parsers + 4 claim validators + 10-20 per-skill scripts + 7 hook handlers + ~15 adversarial fixtures + ~5 integration/mutation tests = post-Wave 2 composition layer surface area #scope-summary
 
 ## Relations
+
 - implements [[ADR-005: Protocol Hardening Wave 2 Architecture]]
 - implements [[ADR-001: Composition Library Architecture]]
 - implements [[ADR-002: Adapter Contract and Plan Schema]]

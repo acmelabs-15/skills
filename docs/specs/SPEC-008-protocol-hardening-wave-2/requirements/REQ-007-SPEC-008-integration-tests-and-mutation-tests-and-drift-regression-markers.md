@@ -41,9 +41,11 @@ P0 — integration coverage closes the ZERO-dedicated-integration-tests finding 
 Non-Functional (Test Coverage).
 
 ## Context
+
 [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-3 was scope-expanded in Phase 3 per critic findings P1.2 and P1.3: integration tests covering parse-mutate-validate-render full path, cross-note SPEC-vs-TASK consistency, and TEST-REPORT-vs-TASK-DoD cross-validation; mutation tests covering `DONE` → `IN_PROGRESS` backward transition rejection, double-apply idempotency, and session-mutation duplicate-event-number rejection. [[ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis]] Audit E surfaced ZERO dedicated integration tests across 508 passing tests, AND the absence of any backward-transition / idempotency / duplicate-event coverage, AND 37 Phase X drift surfaces NOT captured as regression tests. The five Phase X drift surfaces selected for regression markers in this REQ are drawn from the Phase X retro: (1) SESSION-2026-05-21_01 duplicate event-number drift after killed-agent re-entry (covered by the new duplicate-event-number mutation test); (2) SPEC-002 / SPEC-003 SPEC-vs-TASK rollup drift (covered by the new cross-note consistency test); (3) QA-027 / QA-030 duplicate-frontmatter-block drift (covered by an existing schema parser test); (4) QA-027 forbidden `validates` relation type drift (covered by an existing relation-verb validator test); (5) PLAN-001 trimmed-template canonical-form drift (covered by an existing round-trip test).
 
 ## Acceptance Criteria
+
 - [ ] GIVEN the integration-test file `shared/composition/tests/integration/parse-mutate-validate-render.test.ts` WHEN it runs THEN it exercises the full pipeline (`parsePlanNote` → `applyPlanMutation` → `validatePlanDoneClaim` or equivalent claim validator for the touched note → `renderPlanNote`) on at least three representative fixtures covering PLAN, SPEC, and TASK note types
 - [ ] GIVEN the integration-test file `shared/composition/tests/integration/cross-note-spec-task-consistency.test.ts` WHEN it runs THEN it asserts the rule: for every TASK note with `status: DONE`, the parent SPEC's `## Artifact Status` row for that TASK MUST be `[x]` or `[~]` (terminal markers per REQ-008); the test fails when given a fixture with a DONE TASK and an unchecked SPEC-root row
 - [ ] GIVEN the integration-test file `shared/composition/tests/integration/test-report-vs-task-dod.test.ts` WHEN it runs THEN it asserts the rule: every TEST-REPORT row marked PASS MUST correspond to a TASK DoD line marked `[x]`; the test fails when given a fixture pair where a TEST-REPORT claims PASS but the linked TASK DoD line is still `[ ]`
@@ -62,6 +64,7 @@ Non-Functional (Test Coverage).
 - [ ] GIVEN the new integration plus mutation tests WHEN `bun test` runs THEN total test count increases by at least eight tests over the pre-Track-3 baseline AND all new tests pass on first run
 
 ## Implementation Notes
+
 Integration tests live in a new `tests/integration/` subdirectory to keep them visually separate from per-component unit tests; this also makes future CI segmentation (run unit tests on every commit; run integration tests on PRs) mechanically simple. The cross-note tests synthesize fixture pairs (a SPEC root + a child TASK; a TEST-REPORT + a TASK) inline in the test file or load them from `tests/fixtures/integration/`. The mutation-invariant test file is single-purpose: backward-transition rejection, idempotency, duplicate-event rejection are three top-level `describe` blocks. The drift-regression-marker comment format is canonicalized: `// drift-marker: <PHASE-X-DRIFT-SURFACE-ID> — <one-line>`. The five marker insertions are surgical edits — one comment line per file — and do not change test behavior. Phase X drift surfaces are enumerated in [[RETRO-003: Phase X Execution and Composition Library Completion]] (37 surfaces); the five selected for this REQ are listed in the Context section of this REQ.
 
 ## Files Affected
@@ -85,6 +88,7 @@ Integration tests live in a new `tests/integration/` subdirectory to keep them v
 - [outcome] Audit E's three top-priority integration gaps (full pipeline, SPEC-vs-TASK, TEST-REPORT-vs-TASK) become regression-locked; the protocol's end-to-end correctness moves from prose to runtime #end-to-end-contract
 
 ## Relations
+
 - implements [[ADR-005: Protocol Hardening Wave 2 Architecture]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis]]

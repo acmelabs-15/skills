@@ -654,7 +654,6 @@ These cross-track edges will be added in the bi-directional closure pass via Bra
 6. Verify with benign `edit_note` append on each ADR, then revert the test edit
 7. Commit fix
 
-
 ## Event 28 — basic-memory DB corruption resolved via user-authorized reset --reindex
 
 Mid bi-directional closure, Brain MCP `edit_note` on ADR-001/002/003 failed with pydantic validation error `relations.0.permalink Field required` for `links_to` relation entries. Root cause: basic-memory's wikilink parser scans EVERY wikilink in note body text (not just typed-relation bullets) and creates `links_to` relation index entries. Targets like the `brain:---adr-review` skill reference (skill, not a Brain note) and YAML-code-block placeholder wikilinks (`SPEC-001 Brain`, `SESSION-2026-05-19_02 New Session`, etc. in ADR-002 examples) couldn't be resolved to permalinks → DB rows stored with NULL permalink field → validation rejected subsequent edits.
@@ -681,7 +680,6 @@ Unrelated benign side effect: basic-memory reindex rewrote `skills/ingest/SKILL.
 
 Bi-dir closure now complete. Next: commit + Phase 3 syntactic validation → ADR coverage gate → Gate A → Gate B → flip ACCEPTED → set-part-done.
 
-
 ## Event 28 — basic-memory DB corruption resolved via user-authorized reset --reindex
 
 Mid bi-directional closure, Brain MCP edit_note on ADR-001/002/003 failed with pydantic validation error `relations.0.permalink Field required` for `links_to` relation entries. Root cause: basic-memory's wikilink parser scans EVERY wikilink in note body text (not just typed-relation bullets) and creates `links_to` relation index entries. Targets like the brain skill reference (a skill, not a Brain note) and YAML-code-block placeholder wikilinks in ADR-002 examples couldn't be resolved to permalinks → DB rows stored with NULL permalink field → validation rejected subsequent edits.
@@ -706,7 +704,6 @@ Secondary issue caught: the agent's session log entry contained literal double-b
 
 Bi-dir closure now complete. Next: commit + Phase 3 syntactic validation → ADR coverage gate → Gate A → Gate B → flip ACCEPTED → set-part-done.
 
-
 ## Event 29 — Phase 3 + ADR coverage PASS; Gate A HALT (9 flagged REQs)
 
 Phase 3 syntactic validation: PASS. Filenames kebab + CAPS-prefix correct (62 children + root); zero forbidden relation types; final two sections Observations→Relations on all sampled notes; observations ≥3; titles match H1. Fixed 134 wikilink-colon violations in SPEC-008 root (deliberately authored without colons during the DB-corruption window) via dispatched agent — commit `90789a7`.
@@ -729,3 +726,44 @@ Gate A (analyst semantic gap, dispatched a89b2cbd14bdb62af): **HALT — 9 flagge
 Analyst gave concrete suggested refinements for each. Per /spec Gate A semantics: refine the flagged REQs, re-run Gate A. Dispatching a refinement agent with the 8 specific fixes (REQ-006 had two sub-findings folded into one). REQ-011's failure-partition is the priority fix.
 
 Gate B (critic 4 binary checks) errored mid-run (internal tool error) — re-dispatching in parallel.
+
+## Event 30 — Gate B remediation + Gate A refinement; both gates PASS
+
+Gate B first run: HALT on check (c) — TASK-017 + TASK-034 were empty stubs (frontmatter permalink only; Track 2 + Track 4 Pattern-2 writes that never materialized bodies). Checks (a) REQ→ADR, (b) scope conservation, (d) Scope-In match all PASSed first run (12/12 REQs trace to ADR-005; Track 5 4→5-track expansion documented via D-8 Phase 3 addition).
+
+Remediation: deleted both stubs, re-authored full bodies via Pattern 2 — TASK-017 (render-plan-note + set-part-done scripts, implements REQ-004; 87 lines) + TASK-034 (Audit C hygiene repair, 6 categories / 10 notes, implements REQ-010; 81 lines). Also caught + fixed TASK-035 frontmatter title missing its colon (Phase 2 miss by Track 4 agent). Commit `d057dda`.
+
+Gate A first run: HALT — 9 findings across 8 REQs (REQ-008 clean). All were "two implementers build different things" gaps. Dispatched refinement agent (acfaaa62306b4164e) to pin each flagged AC to a mechanical assertion:
+
+- REQ-004: path-containment pinned to `resolved === projectRoot || startsWith(projectRoot + path.sep)` + 3 named adversarial cases (banned bare `.startsWith`)
+- REQ-005: brief "contains" ACs bound to `validRelationTypes.every(v => stdout.includes(v))` + literal marker strings
+- REQ-006: fixture self-documentation → parseable `<!-- drift-marker: ...; expected-reject: <regex> -->` HTML-comment contract
+- REQ-007: drift-marker surface-to-test mapping pinned for the 5 named surfaces + no-arbitrary-marker clause
+- REQ-009: `_shared/` preservation scope enumerated (SESSION-all + ADR-005 + ANALYSIS-004 + RETRO-003 preserve; all other SPEC/REQ/DESIGN/TASK rewritten)
+- REQ-010: `validates`→`depends_on` pinned MUST for all 4 named notes (dropped "recommended")
+- REQ-011 (highest impact): blocking/non-blocking partition made definitive — 9 named status-flip claim validators = deny; all other superRefine schema issues = allow + additionalContext (derives directly from D-8's locked HYBRID semantics)
+- REQ-012: turn-modification enumeration pinned to `git status --porcelain` (chosen over transcript-parsing + mtime-scanning)
+
+Commit `b4ae304`.
+
+Re-run results:
+
+- **Gate A re-run** (ad7cd3dde88b096b3): `GATE A PASS` — all 8 refined REQs VERIFIABLE
+- **Gate B check (c) re-verify**: 46/46 TASKs trace to ≥1 REQ (was 44/46); zero orphans. Combined with first-run (a)/(b)/(d) PASS → **GATE B PASS**
+
+All /spec Stage 2 gates clear: Phase 3 syntactic PASS, ADR coverage PASS, Gate A PASS, Gate B PASS. SPEC-008 root born ACCEPTED (status set at authoring per Stage 2 Step 5 invariant). Next: PLAN-001 spec.SPEC-008 → DONE; build.SPEC-008 PENDING → READY; dashboard update; set-part-done.
+
+## Event 31 — spec.SPEC-008 set-part-done; build.SPEC-008 READY
+
+/spec Stage 2 complete for SPEC-008. All gates PASS. Applied set-part-done to PLAN-001:
+
+- spec.SPEC-008 part: Substatus IN_PROGRESS → DONE; Completing Session SESSION-2026-05-23_02; Outcome line written (63 notes; ADR coverage + Gate A + Gate B all PASS); all 8 DoD checkboxes flipped `[x]`
+- build.SPEC-008 part: Substatus PENDING → READY (dependency spec.SPEC-008 now DONE)
+- Progress Dashboard: spec 7 DONE + 1 IN_PROGRESS → 8 DONE; build 1 PENDING + 1 IN_PROGRESS → 1 IN_PROGRESS + 1 READY; totals PENDING 1→0, IN_PROGRESS 2→1, READY 0→1, DONE 22→23 (of 25)
+- Cross-Part Dependency Graph: added 3 missing Wave 2 nodes (decisions_4 done, spec_SPEC_008 done, build_SPEC_008 ready) + `ready` classDef + edges protocol_hardening → decisions_4 → spec_SPEC_008 → build_SPEC_008; updated class assignments. Graph was stale (Wave 2 parts never added since the reopen).
+
+Workaround note: PLAN-part Outcome bullet could not use the `**Outcome**: [[wikilink]]` form (basic-memory strict parser rejects `[[` after a non-relation bullet prefix) — used plain-text "SPEC-008 Protocol Hardening Wave 2" reference instead. SPEC-008↔PLAN-001 graph linkage preserved via SPEC-008's `part_of [[PLAN-001: Skills Ecosystem]]` relation.
+
+**PLAN-001 state**: 23/25 parts DONE. Remaining: build.SPEC-008 (READY — next available), protocol-hardening (IN_PROGRESS umbrella; flips DONE when build.SPEC-008 DONE). review + end parts were Wave 1 closures already DONE; PLAN frontmatter status flip to DONE happens after build.SPEC-008 + protocol-hardening close.
+
+**Next available**: build.SPEC-008 — re-invoke `/skills:plan PLAN-001-skills-ecosystem` to auto-route to /build for the 46-TASK Wave 2 implementation (per-TASK build+QA cycle; TASK-029 `_shared`→`shared` rename runs FIRST per dependency graph).
