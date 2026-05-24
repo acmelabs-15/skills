@@ -29,19 +29,18 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 
 - Starting commit: `eb0eb28` (end of PLAN-001 workflow close)
 - PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (umbrella; flips DONE when build.SPEC-008 DONE)
-- ADR-005 ACCEPTED (8 D-Ns; decisions.4 DONE)
-- spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 47 TASK)
-- build.SPEC-008 IN_PROGRESS (owning_session SESSION-2026-05-23_02; this session)
-- **24/47 TASKs fully CLOSED** (impl + QA both DONE): 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, **011, 015, 016**, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040, 047
-- **23/47 TASKs PENDING**: 012, 013, 014, 017, 018, 019, 020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041, 042, 043, 044, 045, 046
-- REQs ACCEPTED: REQ-001/002/003; DESIGN-001. Still DRAFT (totality-gated): REQ-004..012 (REQ-004 needs 012/013/014/017 + 011/015/016 done = 4 left; REQ-005 needs 018/019/020); DESIGN-002/003/004; SPEC-008 root Success/Acceptance Criteria.
-- QA contract notes: QA-044..067 (added QA-065/066/067 this context)
-- Suite baseline: **845 pass / 2 fail / 847 total** (2 fails = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1; NEW failures elsewhere = regression)
-- Config corrected this context: `.gitignore` `build/`→`/build/` (skills/build/ now tracked); tsconfig + biome `include` → `skills/**` (FU-2 gap closed)
-- Next-ready: **Wave 1b Batch B** — TASK-012 (transition-impl-item) + 013 (transition-qa-item) + 017 (render-plan-note + set-part-done). Then Batch C (018/019/020 — 018 needs `validRelationTypes` symbol-name adjudication). TASK-014 needs TASK-032 (Wave 1c) first.
-- **Deferred derived-view sync** (do at Wave 1b close): SPEC-008 root `## Task` rollup checkboxes + PLAN "SPEC-008 Build Marathon" task-level Mermaid graph (flip 011/015/016 → ✅). Canonical state (TASK status + PLAN items + QA notes) IS current; these are derived views.
-- Open follow-ups (deferred, non-gating): FU-1 (`validates:` frontmatter key in QA-032/033/034); FU-3 (this session Obs/Relations placement → fix at session-end); `lock-decision-mutation.ts` 171-line DESIGN-002 soft-ceiling overage (adjudicate at DESIGN-002 acceptance); `validate-task-schema.ts` 81 lines (1 over, cosmetic); D-3 (DESIGN-004 DiffNote.sha → TASK-043). FU-2 now RESOLVED (config fixed).
-- 0 active blockers; 1 open decision (validRelationTypes naming — Batch C)
+- ADR-005 ACCEPTED (8 D-Ns; decisions.4 DONE); spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 47 TASK)
+- build.SPEC-008 IN_PROGRESS (owning_session SESSION-2026-05-23_02)
+- **27/47 TASKs fully CLOSED** (impl + QA both DONE): 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, **011, 012, 013, 015, 016, 017**, 021, 025, 026, 029, 030, 033, 034, 037, 039, 040, 047
+- **20/47 TASKs PENDING**: 014, 018, 019, 020, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041, 042, 043, 044, 045, 046
+- REQs ACCEPTED: REQ-001/002/003; DESIGN-001. DRAFT (totality-gated): REQ-004 (needs 011-017 done + 014 — only 014 left), REQ-005 (needs 018/019/020), REQ-006..012; DESIGN-002 (needs all REQ-004/005 tasks)/003/004; SPEC-008 root Success/Acceptance Criteria.
+- QA contract notes: QA-044..070 (added QA-065..070 this context)
+- Suite baseline: **891 pass / 2 fail / 893 total** (2 fails = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1; NEW failures elsewhere = regression)
+- Config corrected this context: `.gitignore` `build/`→`/build/` (skills/build/ now tracked); tsconfig + biome `include` → `skills/**` (FU-2 RESOLVED)
+- **Derived-view propagation = MANDATORY at every batch close** (user directive, Event 89): SPEC-008 root ALL 5 checkbox lists (Requirements/Designs/Tasks/Acceptance/Success) + PLAN task-level Wave Graph kept current. NO deferral. Currently: SPEC root Tasks 27 [x]; Wave Graph synced.
+- **Next-ready: Wave 1b Batch C** — TASK-018 (build dispatch-implementer + dispatch-qa) + 019 (decisions dispatch-architect + critic) + 020 (research dispatch-analyst + review dispatch-reviewer) = REQ-005 brief generators. TASK-018 implementer adds `validRelationTypes` export to common.ts per SPEC Files Affected. THEN: TASK-032 → unblocks TASK-014 (closes REQ-004; add prefix-collision test before REQ-004 ACCEPTED). THEN Wave 1c (022/023/027/028/031/035/036), Wave 4 hooks (024/038/041-045), Wave 5 smoke (046).
+- Open follow-ups (deferred, non-gating): REQ-004 AC-9 prefix-collision test (before REQ-004 ACCEPTED); FU-1 (`validates:` key in QA-032/033/034); FU-3 (this session Obs/Relations placement → session-end); `lock-decision`/transition scripts line-count vs DESIGN-002 soft ceiling (adjudicate at DESIGN-002 acceptance); D-3 (DESIGN-004 DiffNote.sha → TASK-043).
+- 0 active blockers; 0 open user decisions (validRelationTypes resolved via SPEC Files Affected)
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
@@ -2146,3 +2145,29 @@ User: keep the SPEC-008 root note (EVERY checkbox list — Requirements, Designs
 - PLAN qa-TASK-012/013/017-SPEC-008: PENDING → IN_PROGRESS
 - SPEC-008 root Tasks: 011/015/016 → [x] (24/47 ticked)
 - PLAN task-level Wave Graph: synced to current per-TASK status
+
+
+## Event 90 — Batch 8 CLOSED (Wave 1b-B): TASK-012 + 013 + 017 DONE; 27/47
+
+Independent QA (`brain:🧠-qa`) returned **3× PASS** — 46/46 tests, tsc + biome clean, mutation discriminants all match the real `PlanMutation` union (transition-impl-item / transition-qa-item / set-part-substatus), path-containment exact rule in all 4 scripts.
+
+QA contract notes authored (Pattern 2; move_note SERIALIZED per Batch-A lesson — no race): [[QA-068-SPEC-008: Validation Report for TASK-012 Transition Impl Item Script]], [[QA-069-SPEC-008: Validation Report for TASK-013 Transition QA Item Script]], [[QA-070-SPEC-008: Validation Report for TASK-017 Render Plan Note and Set Part Done Scripts]]. Bi-directional relates_to set.
+
+### Derived-view sync (per user directive — applied at batch close)
+
+- SPEC-008 root `### Tasks`: 012/013/017 → `[x]` (now **27 ticked**). Requirements/Designs/Acceptance/Success unchanged (REQ-004 still needs 014; REQ-005 needs 018-020 — all totality-gated).
+- PLAN task-level Wave Graph: W1b nodes 012/013/017 → ✅, `class` → done, label "6 DONE · 4 pending", provenance line → Event 90. Part-level dashboard + Cross-Part graph unchanged (build.SPEC-008 still one IN_PROGRESS part).
+
+### Open items carried to next context
+
+- **REQ-004 AC-9 test gap**: the 6 gate-point scripts implement the path-containment prefix-collision defense correctly (`+ sep`) but lack an explicit prefix-collision TEST. REQ-004 AC-9 mandates the 3 adversarial cases be VERIFIED. Add a prefix-collision test to one gate-point script BEFORE flipping REQ-004 → ACCEPTED (after 014 done).
+- **validRelationTypes** (Batch C / TASK-018): SPEC-008 root Files Affected sanctions "add `validRelationTypes` export to common.ts" — so TASK-018 implementer adds the 1-line `export const validRelationTypes = RelationVerbEnum.options` (Track 1 closed without it). No user halt needed.
+- TASK-014 still blocked on TASK-032 (Wave 1c). Sequence 032 → 014.
+
+### State Changes
+
+- QA-068/069/070-SPEC-008: created (DONE) + bi-dir relates_to to TASK-012/013/017
+- TASK-012/013/017-SPEC-008: status DONE; reciprocal QA relation added
+- PLAN qa-TASK-012/013/017-SPEC-008: IN_PROGRESS → DONE (Test Report Ref QA-068/069/070)
+- SPEC-008 root Tasks: 012/013/017 → [x] (27/47 ticked); PLAN Wave Graph synced
+- Marathon: 24/47 → **27/47** CLOSED

@@ -2,7 +2,7 @@
 title: 'TASK-017-SPEC-008: Implement render-plan-note and set-part-done Scripts'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-017-spec-008-implement-render-plan-note-and-set-part-done-scripts
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -86,3 +86,4 @@ Out of Scope:
 - implements [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]]]
+- relates_to [[QA-070-SPEC-008: Validation Report for TASK-017 Render Plan Note and Set Part Done Scripts]]
