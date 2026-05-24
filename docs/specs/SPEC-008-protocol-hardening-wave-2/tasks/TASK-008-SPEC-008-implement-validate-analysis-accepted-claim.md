@@ -23,22 +23,22 @@ This TASK depends on TASK-002 (ANALYSIS schema), TASK-006 (ANALYSIS parser), and
 
 ## Definition of Done
 
-- [ ] File `shared/composition/src/validators/analysis-claim-validator.ts` exists and exports `validateAnalysisAcceptedClaim` and `type AnalysisClaimResult`
-- [ ] Validator returns `{ ok: true }` when input status is not ACCEPTED
-- [ ] Validator returns `{ ok: false }` with one unsatisfied entry when ACCEPTED plus Open Questions present; `path` field is `body.hasOpenQuestions`
-- [ ] Validator returns `{ ok: true }` when ACCEPTED plus Open Questions absent
-- [ ] Validator is pure (no I/O, no mutation)
-- [ ] Unit tests cover: status DRAFT plus Open Questions ok, status ACCEPTED without Open Questions ok, status ACCEPTED plus Open Questions rejection
-- [ ] `bun test shared/composition/tests/validators/analysis-claim-validator.test.ts` passes with at least 4 cases green
-- [ ] `biome check` passes
-- [ ] `tsc --noEmit` passes
-- [ ] `shared/composition/src/validators/index.ts` re-exports `validateAnalysisAcceptedClaim` and `AnalysisClaimResult`
+- [x] File `shared/composition/src/validators/analysis-claim-validator.ts` exists and exports `validateAnalysisAcceptedClaim` and `type AnalysisClaimResult`
+- [x] Validator returns `{ ok: true }` when input status is not ACCEPTED
+- [x] Validator returns `{ ok: false }` with one unsatisfied entry when ACCEPTED plus Open Questions present; `path` field is `body.hasOpenQuestions`
+- [x] Validator returns `{ ok: true }` when ACCEPTED plus Open Questions absent
+- [x] Validator is pure (no I/O, no mutation)
+- [x] Unit tests cover: status DRAFT plus Open Questions ok, status ACCEPTED without Open Questions ok, status ACCEPTED plus Open Questions rejection
+- [x] `bun test shared/composition/tests/validators/analysis-claim-validator.test.ts` passes with at least 4 cases green
+- [x] `biome check` passes
+- [x] `tsc --noEmit` passes
+- [x] `shared/composition/src/validators/index.ts` re-exports `validateAnalysisAcceptedClaim` and `AnalysisClaimResult` (orchestrator coordinated barrel pass Event 81 per R3 barrel-serialization; tsc + biome clean post-edit)
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (closes Wave 7 exploit)
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2
-- [ ] Honors [[ADR-001: Composition Library Architecture]]
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (closes Wave 7 exploit)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2
+- [x] Honors [[ADR-001: Composition Library Architecture]]
 
 ## Files Affected
 

@@ -10,3 +10,13 @@
  * additional validator exports land in subsequent Track 1 TASKs.
  */
 export { validatePlanDoneClaim, type PlanClaimResult } from "./plan-claim-validator.js";
+export { validateAdrAcceptedClaim, type AdrClaimResult } from "./adr-claim-validator.js";
+export {
+  validateAnalysisAcceptedClaim,
+  type AnalysisClaimResult,
+} from "./analysis-claim-validator.js";
+export {
+  validateEpicDoneClaim,
+  type EpicClaimResult,
+  type SpecResolver,
+} from "./epic-claim-validator.js";

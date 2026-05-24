@@ -1918,3 +1918,32 @@ Per-validator scope:
 Closes on completion: REQ-003 (claim validator suite; AC-5/6 already done via TASK-010) + DESIGN-001 (Coverage Module Layout; completes TASK-001..010 set). Track-1 coverage suite fully landed.
 
 Commit PLAN transitions + Event 80, then process returns.
+
+
+## Event 81 — Batch 6 impls all PASS; coordinated barrel pass; 3 impls DONE; dispatching 3 QAs
+
+All 3 validator impls returned PASS (parallel; zero return-channel errors):
+
+- **impl-007** (agent aeab033f3684366a2): `adr-claim-validator.ts` (95L) + test (187L; 8/0/8). Pure `{ok, unsatisfied}` with dotted-bracket paths (`clarifications[1].checkbox`, `considered_options[1].rationale`). Fires only at ACCEPTED; checks all-clarifications-checked + all-options-have-rationale. 11 DoD + 3 ADR `[x]` (barrel item left for orchestrator).
+- **impl-008** (agent a5159c3aa1fe22472): `analysis-claim-validator.ts` (78L) + test (109L; 6/0/6). Reads `body.hasOpenQuestions`; **input-contract note**: accepts `ParsedAnalysisNote` (= AnalysisNote & {hasOpenQuestions}), NOT bare AnalysisNote, because hasOpenQuestions is a parser-derived prop absent from the `.strict()` schema. Reverted a bun-ts audit `__tests__/` auto-move per locked flat-dir convention. 10 DoD + 3 ADR `[x]`.
+- **impl-009** (agent a45183b66f19b747f): `epic-claim-validator.ts` (110L) + test (205L; 10/0/10). Cross-note resolver injection; THROWS on missing resolver AND undefined resolution (no silent pass per ADR-005 D-5 Phase 3 critic P1.1). Reads `contains` via the Relations array (`relations.filter(verb==='contains')`), NOT the parser's containedSpecs derived prop, because input type is schema-validated EpicNote. Notable: SpecRootNoteStatusEnum has no DEFERRED/ABANDONED (unlike PLAN substatuses) so "satisfied" = `status==='DONE'` — TASK Description parenthetical doesn't apply. 12 DoD + 3 ADR `[x]`.
+
+All 3 correctly left `validators/index.ts` untouched (R3).
+
+### Orchestrator coordinated barrel pass (Event 81)
+
+Per the R3-coordination plan, orchestrator added all 3 barrel exports to `shared/composition/src/validators/index.ts` in ONE Edit-tool pass (non-graph file): `validateAdrAcceptedClaim`+`AdrClaimResult`; `validateAnalysisAcceptedClaim`+`AnalysisClaimResult`; `validateEpicDoneClaim`+`EpicClaimResult`+`SpecResolver`. Post-edit verification: `cd shared/composition && tsc --noEmit` exit 0; biome on barrel clean. Then flipped the 3 orchestrator-owned barrel DoD items `[x]` on each TASK note with the Event-81 annotation.
+
+### Independent orchestrator verification
+
+- Repo-root `bun test`: **817 pass / 2 fail / 819 total**. Delta from 793/2/795 = +24 = exact sum of new validator tests (8+6+10). Same 2 SPEC-007 DEFERRED fails (D-1).
+- New validator targeted run: 24/0/24 across 3 files.
+- New canonical suite baseline post-Event-81: **817 pass / 2 fail / 819 total**.
+
+PLAN transitions (6):
+- impl-007/008/009: IN_PROGRESS → DONE (Event 81)
+- qa-007/008/009: PENDING → IN_PROGRESS (Event 81; dispatching brain:🧠-qa ×3 next)
+
+Wave graph T007/008/009 stay `inprogress` (impl-done; flip to done only on QA PASS per maintenance rule).
+
+Next: commit code + barrel + PLAN + Event 81 atomically, then dispatch 3 QAs in parallel.

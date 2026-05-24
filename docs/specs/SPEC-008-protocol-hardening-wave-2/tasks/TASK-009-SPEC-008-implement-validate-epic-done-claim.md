@@ -24,24 +24,24 @@ This TASK depends on TASK-003 (EPIC schema), TASK-006 (EPIC parser), and Track 4
 
 ## Definition of Done
 
-- [ ] File `shared/composition/src/validators/epic-claim-validator.ts` exists and exports `validateEpicDoneClaim`, `type EpicClaimResult`, and `type SpecResolver`
-- [ ] Validator returns `{ ok: true }` when input status is not DONE
-- [ ] Validator returns `{ ok: true }` when status is DONE plus zero contains relations (no resolver invocation)
-- [ ] Validator returns `{ ok: false }` with one unsatisfied entry per non-DONE child SPEC when DONE plus contains entries
-- [ ] Validator THROWS explicitly when status is DONE plus at least one contains entry AND `deps.resolveSpec` is undefined; error message names the missing dependency
-- [ ] Validator THROWS explicitly when `deps.resolveSpec` returns undefined for any referenced SPEC; error message names the missing SPEC reference
-- [ ] Validator is pure given the resolver callback (no internal I/O)
-- [ ] Unit tests cover: status DRAFT ok, status DONE plus zero contains ok, status DONE plus all-DONE child SPECs ok, status DONE plus one non-DONE child SPEC failure, missing resolver throw, resolver-returns-undefined throw
-- [ ] `bun test shared/composition/tests/validators/epic-claim-validator.test.ts` passes with at least 7 cases green
-- [ ] `biome check` passes
-- [ ] `tsc --noEmit` passes
-- [ ] `shared/composition/src/validators/index.ts` re-exports `validateEpicDoneClaim`, `EpicClaimResult`, and `SpecResolver`
+- [x] File `shared/composition/src/validators/epic-claim-validator.ts` exists and exports `validateEpicDoneClaim`, `type EpicClaimResult`, and `type SpecResolver`
+- [x] Validator returns `{ ok: true }` when input status is not DONE
+- [x] Validator returns `{ ok: true }` when status is DONE plus zero contains relations (no resolver invocation)
+- [x] Validator returns `{ ok: false }` with one unsatisfied entry per non-DONE child SPEC when DONE plus contains entries
+- [x] Validator THROWS explicitly when status is DONE plus at least one contains entry AND `deps.resolveSpec` is undefined; error message names the missing dependency
+- [x] Validator THROWS explicitly when `deps.resolveSpec` returns undefined for any referenced SPEC; error message names the missing SPEC reference
+- [x] Validator is pure given the resolver callback (no internal I/O)
+- [x] Unit tests cover: status DRAFT ok, status DONE plus zero contains ok, status DONE plus all-DONE child SPECs ok, status DONE plus one non-DONE child SPEC failure, missing resolver throw, resolver-returns-undefined throw
+- [x] `bun test shared/composition/tests/validators/epic-claim-validator.test.ts` passes with at least 7 cases green
+- [x] `biome check` passes
+- [x] `tsc --noEmit` passes
+- [x] `shared/composition/src/validators/index.ts` re-exports `validateEpicDoneClaim`, `EpicClaimResult`, and `SpecResolver` (orchestrator coordinated barrel pass Event 81 per R3 barrel-serialization; tsc + biome clean post-edit)
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (EPIC P1 coverage; cross-note mechanism explicit per Phase 3 critic P1.1)
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2
-- [ ] Honors [[ADR-001: Composition Library Architecture]]
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (EPIC P1 coverage; cross-note mechanism explicit per Phase 3 critic P1.1)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2
+- [x] Honors [[ADR-001: Composition Library Architecture]]
 
 ## Files Affected
 

@@ -23,23 +23,23 @@ This TASK depends on TASK-001 (ADR schema), TASK-005 (ADR parser), and Track 4 r
 
 ## Definition of Done
 
-- [ ] File `shared/composition/src/validators/adr-claim-validator.ts` exists and exports `validateAdrAcceptedClaim` and `type AdrClaimResult`
-- [ ] Validator returns `{ ok: true, unsatisfied: [] }` when input status is not ACCEPTED
-- [ ] Validator returns `{ ok: false }` with an entry per unchecked Clarifications item when ACCEPTED
-- [ ] Validator returns `{ ok: false }` with an entry per Considered Option lacking rationale when ACCEPTED
-- [ ] Validator is pure (no I/O, no mutation, no console output)
-- [ ] `path` field in unsatisfied entries follows the dotted-bracket form used by Wave 1 validators
-- [ ] Unit tests cover: status PROPOSED returns ok, status ACCEPTED with all clarifications checked returns ok, status ACCEPTED with one unchecked clarification returns failure with correct path, status ACCEPTED with option lacking rationale returns failure
-- [ ] `bun test shared/composition/tests/validators/adr-claim-validator.test.ts` passes with at least 6 cases green
-- [ ] `biome check` passes
-- [ ] `tsc --noEmit` passes
-- [ ] `shared/composition/src/validators/index.ts` re-exports `validateAdrAcceptedClaim` and `AdrClaimResult`
+- [x] File `shared/composition/src/validators/adr-claim-validator.ts` exists and exports `validateAdrAcceptedClaim` and `type AdrClaimResult`
+- [x] Validator returns `{ ok: true, unsatisfied: [] }` when input status is not ACCEPTED
+- [x] Validator returns `{ ok: false }` with an entry per unchecked Clarifications item when ACCEPTED
+- [x] Validator returns `{ ok: false }` with an entry per Considered Option lacking rationale when ACCEPTED
+- [x] Validator is pure (no I/O, no mutation, no console output)
+- [x] `path` field in unsatisfied entries follows the dotted-bracket form used by Wave 1 validators
+- [x] Unit tests cover: status PROPOSED returns ok, status ACCEPTED with all clarifications checked returns ok, status ACCEPTED with one unchecked clarification returns failure with correct path, status ACCEPTED with option lacking rationale returns failure
+- [x] `bun test shared/composition/tests/validators/adr-claim-validator.test.ts` passes with at least 6 cases green
+- [x] `biome check` passes
+- [x] `tsc --noEmit` passes
+- [x] `shared/composition/src/validators/index.ts` re-exports `validateAdrAcceptedClaim` and `AdrClaimResult` (orchestrator coordinated barrel pass Event 81 per R3 barrel-serialization; tsc + biome clean post-edit)
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (P0 ADR claim validator closes the highest-consequence gap)
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (flat directory placement)
-- [ ] Honors [[ADR-001: Composition Library Architecture]] (pure-function validator pattern from Wave 1)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (P0 ADR claim validator closes the highest-consequence gap)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (flat directory placement)
+- [x] Honors [[ADR-001: Composition Library Architecture]] (pure-function validator pattern from Wave 1)
 
 ## Files Affected
 

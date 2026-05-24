@@ -2816,20 +2816,20 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-007-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 80
+- **Transitioned At Event**: Event 81
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: Batch 6 (validators) parallel; barrel index.ts orchestrator-owned per R3
+- **Fix Brief For Event**: bun-ts-engineer agent aeab033f3684366a2; 8/0/8 targeted; pure-fn {ok,unsatisfied} w/ dotted-bracket path; biome+tsc PASS; barrel added by orchestrator Event 81; 11 DoD + 3 ADR all [x]
 
 #### qa-TASK-007-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-007-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 81
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -2838,20 +2838,20 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-008-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 80
+- **Transitioned At Event**: Event 81
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: Batch 6 (validators) parallel; barrel index.ts orchestrator-owned per R3
+- **Fix Brief For Event**: bun-ts-engineer agent a5159c3aa1fe22472; 6/0/6 targeted; reads body.hasOpenQuestions on ParsedAnalysisNote (input-contract note); biome+tsc PASS; barrel added by orchestrator Event 81; 10 DoD + 3 ADR all [x]
 
 #### qa-TASK-008-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-008-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 81
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -2860,20 +2860,20 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-009-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 80
+- **Transitioned At Event**: Event 81
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
-- **Fix Brief For Event**: Batch 6 (validators) parallel; barrel index.ts orchestrator-owned per R3; cross-note resolver injection
+- **Fix Brief For Event**: bun-ts-engineer agent a45183b66f19b747f; 10/0/10 targeted; cross-note resolver injection; THROWS on missing resolver + undefined resolution (no silent pass per critic P1.1); reads contains via relations array; biome+tsc PASS; barrel added by orchestrator Event 81; 12 DoD + 3 ADR all [x]
 
 #### qa-TASK-009-SPEC-008
 
 - **Type**: qa
 - **Task Ref**: TASK-009-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 81
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
