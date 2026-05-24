@@ -2329,3 +2329,27 @@ REQ-005's tasks are exactly TASK-018/019/020 — all now DONE with all 9 AC QA-v
 - SPEC-008 root: Tasks 018/019/020 → [x] (30/47); Requirements REQ-005 → [x]
 - PLAN Wave Graph: 018/019/020 → ✅ (done); W1b label + provenance synced
 - Marathon: 27/47 → **30/47** CLOSED
+
+
+## Event 97 — Batch 10 START (4-wide parallel, max-parallelism directive): TASK-022 + 027 + 032 + 038
+
+User directive (this context): "we should be doing as much work as can be done in parallel." Widened from a planned solo TASK-032 to the maximal SAFE parallel wave — 4 file-disjoint, deps-satisfied code tasks. Raises the Event-48 ≤4 bounded-parallel cap utilization to its ceiling (4 concurrent). Per-TASK QA gate retained for each.
+
+Disjointness verified via Files Affected:
+- [[TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation]] → `shared/composition/src/validators/spec-claim-validator.ts` + `schemas/spec-root-note.ts` + test + fixture `spec-root-with-deferred.md`. Deps: TASK-029 ✅.
+- [[TASK-022-SPEC-008: Author Initial Adversarial Fixture Set for Five Existing Validators]] → NEW fixtures `shared/composition/tests/fixtures/adversarial/{task,requirement,design,spec,test-report}/drift-NN-*.md`. Deps: TASK-021 ✅. No shared-helper modification.
+- [[TASK-027-SPEC-008: Session Mutation Duplicate Event Number Test]] → MODIFY `shared/composition/tests/mutation-invariants.test.ts`. Deps: TASK-026 ✅.
+- [[TASK-038-SPEC-008: Implement dispatch-validator Utility]] → NEW `hooks/lib/dispatch-validator.ts` + `__tests__/`. Deps: REQ-003 ✅.
+
+4 disjoint regions: composition validators/schemas · adversarial fixtures · mutation-invariants test · hooks/lib. All → `bun-ts-engineer` (agent default model).
+
+### Excluded from this wave (not safely parallelizable now)
+
+- TASK-023 (wire runner) → TASK-024 (AAE fixtures): chain; 024 modifies shared `_helpers/adversarial.ts` + `adversarial-claims.test.ts` + depends on 023 which depends on 022's fixtures. Sequence after 022.
+- TASK-028 (annotate existing tests with drift markers): cross-cutting test edits → would collide with 022/027. Solo later.
+- TASK-031/035/036 (Brain-note hygiene): concurrent Brain writes risk SQLite write-lock contention → orchestrator-direct, sequential, after code wave.
+- TASK-041-046: depend on TASK-038.
+
+### State Changes
+
+- PLAN impl-TASK-022/027/032/038-SPEC-008: PENDING → IN_PROGRESS
