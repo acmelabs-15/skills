@@ -2427,3 +2427,12 @@ TASK-027 re-implementation (parallel, on the amended spec) returned clean: 9 pas
 - TASK-027-SPEC-008: DoD checkboxes → [x] (amended); PLAN impl-TASK-027 IN_PROGRESS → DONE
 - SPEC-008 root Tasks: 022/032/038 → [x] (33/47); PLAN Wave Graph synced
 - Marathon: 30/47 → **33/47** CLOSED
+
+
+## Event 101 — TASK-027 QA START: qa-027 → IN_PROGRESS; dispatching QA
+
+Per rigid cycle (j-m): PLAN qa-TASK-027 PENDING → IN_PROGRESS (Event 101). Dispatching `brain:🧠-qa` to validate TASK-027 against its AMENDED DoD + REQ-007 AC-5/AC-6, with per-checkbox evidence to QA-077.
+
+### State Changes
+
+- PLAN qa-TASK-027-SPEC-008: PENDING → IN_PROGRESS
