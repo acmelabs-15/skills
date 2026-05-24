@@ -2293,3 +2293,39 @@ Per rigid cycle step (j-l): PLAN qa-TASK-018/019/020 PENDING → IN_PROGRESS (ow
 ### State Changes
 
 - PLAN qa-TASK-018/019/020-SPEC-008: PENDING → IN_PROGRESS
+
+
+## Event 96 — Batch 9 CLOSED (Wave 1b-C): TASK-018 + 019 + 020 DONE; REQ-005 ACCEPTED; 30/47
+
+Independent QA (`brain:🧠-qa`, single batch agent) returned **3× PASS**. QA executed the gates independently (tsc 0, biome clean, full per-dir tests) AND ran the scripts at runtime (dispatch-qa emits all validRelationTypes entries; dispatch-reviewer axis lists match the SKILL.md PR-type table for CODE/DOCS/CONFIG/TEST; unknown PR-type → exit 2). Per-checkbox PASS/FAIL evidence written to:
+- [[QA-071-SPEC-008: Validation Report for TASK-018 Build Dispatch-Brief Generators]]
+- [[QA-072-SPEC-008: Validation Report for TASK-019 Decisions Dispatch-Brief Generators]]
+- [[QA-073-SPEC-008: Validation Report for TASK-020 Research and Review Dispatch-Brief Generators]]
+
+Bi-directional `relates_to` set on each TASK↔QA pair (QA side authored by QA agent; TASK side added by orchestrator). QA notes authored Pattern 2 three-phase; move_note serialized (no race).
+
+### REQ-005 ACCEPTED (batch-close consequence)
+
+REQ-005's tasks are exactly TASK-018/019/020 — all now DONE with all 9 AC QA-verified → REQ-005 status DRAFT → ACCEPTED + all 9 AC checkboxes `[x]`. DESIGN-002 stays DRAFT (its compliance is gated on REQ-004 tasks too; REQ-004 still needs TASK-014).
+
+### Derived-view sync (batch close; per mandatory rule — applied, not deferred)
+
+- SPEC-008 root `### Tasks`: 018/019/020 → `[x]` (now **30/47 ticked**).
+- SPEC-008 root `### Requirements`: REQ-005 → `[x]` (REQ-005 ACCEPTED). Designs/Acceptance/Success unchanged (DESIGN-002 needs 014; totality-gated criteria not yet met).
+- PLAN task-level Wave Graph: W1b nodes 018/019/020 ⚡ → ✅; `class` → done; W1b label "9 DONE ✅ · 1 pending 014"; provenance → Event 96. Part-level dashboard + Cross-Part graph unchanged (build.SPEC-008 still one IN_PROGRESS part).
+
+### Marathon state
+
+- **30/47 (64%) CLOSED.** ACCEPTED: REQ-001/002/003/005, DESIGN-001. 17 PENDING: 014, 022, 023, 024, 027, 028, 031, 032, 035, 036, 038, 041, 042, 043, 044, 045, 046.
+- Suite: **967 pass / 2 fail / 969** (2 = SPEC-007 deferred baseline; 0 new regressions).
+- Next-ready: **TASK-032** (extend validateSpecDoneClaim for `[~]`) → then unblocks **TASK-014** (validate-spec-done + run-pre-flight; closes REQ-004 after adding REQ-004 AC-9 prefix-collision test). Then Wave 1c remainder (022/023/027/028/031/035/036), Wave 4 hooks (024/038/041-045), Wave 5 smoke (046).
+
+### State Changes
+
+- QA-071/072/073-SPEC-008: created (DONE) + bi-dir relates_to to TASK-018/019/020
+- TASK-018/019/020-SPEC-008: status TODO → DONE; reciprocal QA relation added
+- PLAN qa-TASK-018/019/020-SPEC-008: IN_PROGRESS → DONE (Test Report Ref QA-071/072/073)
+- REQ-005-SPEC-008: DRAFT → ACCEPTED; 9 AC checkboxes → [x]
+- SPEC-008 root: Tasks 018/019/020 → [x] (30/47); Requirements REQ-005 → [x]
+- PLAN Wave Graph: 018/019/020 → ✅ (done); W1b label + provenance synced
+- Marathon: 27/47 → **30/47** CLOSED

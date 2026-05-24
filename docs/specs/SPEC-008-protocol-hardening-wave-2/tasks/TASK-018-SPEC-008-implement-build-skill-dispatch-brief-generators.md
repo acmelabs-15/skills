@@ -2,7 +2,7 @@
 title: 'TASK-018-SPEC-008: Implement build-Skill Dispatch-Brief Generators'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-018-spec-008-implement-build-skill-dispatch-brief-generators-2
-status: TODO
+status: DONE
 effort: M
 estimate: 2d
 tags:
@@ -79,3 +79,4 @@ Out of Scope:
 - implements [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-071-SPEC-008: Validation Report for TASK-018 Build Dispatch-Brief Generators]]

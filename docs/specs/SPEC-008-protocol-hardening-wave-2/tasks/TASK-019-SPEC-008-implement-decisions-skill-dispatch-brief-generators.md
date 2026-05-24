@@ -2,7 +2,7 @@
 title: 'TASK-019-SPEC-008: Implement decisions-Skill Dispatch-Brief Generators'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-019-spec-008-implement-decisions-skill-dispatch-brief-generators-1
-status: TODO
+status: DONE
 effort: M
 estimate: 2d
 tags:
@@ -79,3 +79,4 @@ Out of Scope:
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[TASK-007-SPEC-008: Implement validateAdrAcceptedClaim]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-072-SPEC-008: Validation Report for TASK-019 Decisions Dispatch-Brief Generators]]

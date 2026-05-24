@@ -2,7 +2,7 @@
 title: 'REQ-005-SPEC-008: Per-Skill Dispatch-Brief Generator Scripts'
 type: requirement
 permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-005-spec-008-per-skill-dispatch-brief-generator-scripts
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-008
@@ -45,17 +45,15 @@ Wave 2 coverage of agent-skill pairings:
 - review dispatches reviewer for the multi-axis adaptive review
 
 ## Acceptance Criteria
-
-- [ ] GIVEN the dispatch-implementer.ts script WHEN executed with a TASK note path THEN stdout contains the full implementer brief including the rendered TASK content
-- [ ] GIVEN the dispatch-qa.ts script WHEN executed with a TASK and REQ scope set THEN stdout contains the full QA brief such that `validRelationTypes.every(v => stdout.includes(v))` is true, where `validRelationTypes` is imported from `shared/composition/src/schemas/common.ts` (the assertion MUST be bound to the imported constant, not a human reading the brief)
-- [ ] GIVEN `shared/composition/src/schemas/common.ts` adds a new entry to validRelationTypes WHEN any dispatch-brief script runs THEN the emitted brief automatically includes the new entry without prose edits
-- [ ] GIVEN the dispatch-architect.ts script WHEN executed with an ADR scope set THEN stdout contains the literal section-header marker string `## Structural ADR Requirements` AND the test asserts its presence via `stdout.includes("## Structural ADR Requirements")`, the section enumerating the requirements that validateAdrAcceptedClaim enforces
-- [ ] GIVEN the dispatch-decision-critic.ts script WHEN executed with an analysis option set THEN stdout includes the adversarial-claim reviewer asymmetry mandate
-- [ ] GIVEN the dispatch-analyst.ts script WHEN executed with a per-requirement scope THEN stdout contains the literal marker strings `NO OPEN QUESTIONS` and `RUBRIC IS FLOOR` AND the test asserts both via `stdout.includes("NO OPEN QUESTIONS")` and `stdout.includes("RUBRIC IS FLOOR")`, encoding the no-open-questions and rubric-as-floor mandates
-- [ ] GIVEN the dispatch-reviewer.ts script WHEN executed with a PR-type classification THEN stdout includes the axis-selection logic and the reviewer-asymmetry mandate
-- [ ] GIVEN any dispatch-brief script WHEN invoked with the same args twice THEN stdout output is byte-identical (determinism)
-- [ ] GIVEN any dispatch-brief script WHEN tested via its colocated test file THEN the test asserts brief structure presence of the cross-cutting allowlist and per-agent context block
-
+- [x] GIVEN the dispatch-implementer.ts script WHEN executed with a TASK note path THEN stdout contains the full implementer brief including the rendered TASK content
+- [x] GIVEN the dispatch-qa.ts script WHEN executed with a TASK and REQ scope set THEN stdout contains the full QA brief such that `validRelationTypes.every(v => stdout.includes(v))` is true, where `validRelationTypes` is imported from `shared/composition/src/schemas/common.ts` (the assertion MUST be bound to the imported constant, not a human reading the brief)
+- [x] GIVEN `shared/composition/src/schemas/common.ts` adds a new entry to validRelationTypes WHEN any dispatch-brief script runs THEN the emitted brief automatically includes the new entry without prose edits
+- [x] GIVEN the dispatch-architect.ts script WHEN executed with an ADR scope set THEN stdout contains the literal section-header marker string `## Structural ADR Requirements` AND the test asserts its presence via `stdout.includes("## Structural ADR Requirements")`, the section enumerating the requirements that validateAdrAcceptedClaim enforces
+- [x] GIVEN the dispatch-decision-critic.ts script WHEN executed with an analysis option set THEN stdout includes the adversarial-claim reviewer asymmetry mandate
+- [x] GIVEN the dispatch-analyst.ts script WHEN executed with a per-requirement scope THEN stdout contains the literal marker strings `NO OPEN QUESTIONS` and `RUBRIC IS FLOOR` AND the test asserts both via `stdout.includes("NO OPEN QUESTIONS")` and `stdout.includes("RUBRIC IS FLOOR")`, encoding the no-open-questions and rubric-as-floor mandates
+- [x] GIVEN the dispatch-reviewer.ts script WHEN executed with a PR-type classification THEN stdout includes the axis-selection logic and the reviewer-asymmetry mandate
+- [x] GIVEN any dispatch-brief script WHEN invoked with the same args twice THEN stdout output is byte-identical (determinism)
+- [x] GIVEN any dispatch-brief script WHEN tested via its colocated test file THEN the test asserts brief structure presence of the cross-cutting allowlist and per-agent context block
 ## Implementation Notes
 
 Each script is structured as: (1) parse CLI args from `Bun.argv`; (2) import cross-cutting constants (`validRelationTypes`, status enums, observation categories) from `shared/composition/src/schemas/common.ts`; (3) read any per-skill data (e.g., rendered TASK markdown for an implementer brief); (4) assemble the brief via template literals or a markdown builder; (5) write to stdout. Determinism is preserved by avoiding any timestamp, random, or environment lookups in the brief body. The trust boundary differs from the per-skill validator scripts of REQ-004: brief generators do not validate paths against project-root containment because they receive their args from the trusted orchestrator runtime, not from external user input; this is documented in [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-4 trust-boundary section.

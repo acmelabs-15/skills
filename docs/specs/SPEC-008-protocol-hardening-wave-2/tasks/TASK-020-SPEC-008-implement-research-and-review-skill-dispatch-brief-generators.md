@@ -3,7 +3,7 @@ title: 'TASK-020-SPEC-008: Implement research-Skill and review-Skill Dispatch-Br
   Generators'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-020-spec-008-implement-research-and-review-skill-dispatch-brief-generators-1
-status: TODO
+status: DONE
 effort: M
 estimate: 2d
 tags:
@@ -80,3 +80,4 @@ Out of Scope:
 - implements [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- relates_to [[QA-073-SPEC-008: Validation Report for TASK-020 Research and Review Dispatch-Brief Generators]]
