@@ -68,7 +68,7 @@ When user picks Migrate, classify each existing artifact by phase per `reference
 | ANALYSIS notes | `research` part (cluster all analyses; or split into multiple research-style parts by wave if a wave structure is detectable) |
 | ADR notes (any status) | `decisions.{N}` parts (one cluster per coherent ADR group; usually 1:1 with ADRs unless they're tightly related) |
 | SPEC root + subtree | `spec.SPEC-NNN` part (Spec authoring) + `build.SPEC-NNN` part (Build cycle) |
-| TEST-REPORT notes | `build.SPEC-NNN` Stage B or `review` part |
+| QA notes | `build.SPEC-NNN` Stage B or `review` part |
 | IN_PROGRESS / PAUSED SESSION notes | Bind to most-recent matching part via `owning_session` |
 | RETRO notes | `end` part (terminal) |
 | PRD / EPIC / FEATURE | Top-level PLAN Scope reference (not a phase part) |

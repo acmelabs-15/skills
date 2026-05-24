@@ -60,7 +60,7 @@ The oversight level calibrates Step 4 per-TASK cycle behavior:
 | Tier | Stage A behavior |
 |---|---|
 | 1-2 | Proceed directly to per-TASK loop; async user review sufficient (user can check after the fact) |
-| 3 | After Step 4 first TASK completes, AskUserQuestion: "First TASK done: [[TASK-1-SPEC-NNN]] outcome [[TEST-REPORT-...]]. Surfaced approach: <implementer summary>. Continue with remaining TASKs, refine approach, or pause?" |
+| 3 | After Step 4 first TASK completes, AskUserQuestion: "First TASK done: [[TASK-1-SPEC-NNN]] outcome [[QA-...]]. Surfaced approach: <implementer summary>. Continue with remaining TASKs, refine approach, or pause?" |
 | 4-5 | BEFORE Step 4 first TASK: AskUserQuestion to confirm implementation approach (analyst-recommended approach from Step 2 brief). Then build a SMALL PoC TASK first (typically the riskiest or most-foundational TASK from the SPEC). Get user sign-off on PoC outcome. THEN proceed with remaining TASKs |
 
 ## Step 3 — Pre-mortem (BEFORE coding)
@@ -219,7 +219,7 @@ Brief:
 - The TASK's DoD checklist (now annotated with implementer's `[x]` marks for completed items)
 - Mandate: "Verify each DoD item passes. Cite test results (`bun test`, `pytest`, etc.) per item. Surface regressions in adjacent modules. Reviewer-asymmetry framing — review as a stranger; cite file:line evidence."
 
-QA writes `TEST-REPORT-NNN-SPEC-NNN-{task-slug}.md` to `docs/qa/` via Brain MCP Pattern 2 three-phase. Frontmatter status: `PASS | FAIL | PARTIAL`.
+QA writes `QA-NNN-SPEC-NNN-{task-slug}.md` to `docs/qa/` via Brain MCP Pattern 2 three-phase. Frontmatter status: `PASS | FAIL | PARTIAL`.
 
 ### 4d — On QA FAIL: fix-implementer loop
 
@@ -238,10 +238,10 @@ After QA PASS:
 
 1. TASK frontmatter `status: IN_PROGRESS → DONE` via Brain MCP `edit_note`
 2. Add outcome observation: `- [outcome] TASK completed: {1-line summary} #task #done`
-3. Add `validated_by [[TEST-REPORT-NNN-SPEC-NNN: ...]]` relation to TASK Relations
-4. Add inverse `validates [[TASK-NNN-SPEC-NNN: ...]]` to TEST-REPORT Relations
+3. Add `validated_by [[QA-NNN-SPEC-NNN: ...]]` relation to TASK Relations
+4. Add inverse `validates [[TASK-NNN-SPEC-NNN: ...]]` to QA note Relations
 
-Two-step edit pattern: TASK edit → SESSION Event NN append (Type: `state-change`; Outcome: `TASK-NNN-SPEC-NNN: IN_PROGRESS → DONE; validated_by [[TEST-REPORT...]]`).
+Two-step edit pattern: TASK edit → SESSION Event NN append (Type: `state-change`; Outcome: `TASK-NNN-SPEC-NNN: IN_PROGRESS → DONE; validated_by [[QA-...]]`).
 
 ### 4f — sync-jira push
 
@@ -256,7 +256,7 @@ Pushes TASK status + description to the corresponding Jira ticket. If sync-jira 
 1. Edit PLAN body via `mcp__plugin_brain_brain__edit_note` to mark the TASK's DoD checkbox `[x]` in PLAN's build.SPEC-NNN part body
 2. Project repo commit (`git add . && git commit -m "build: {task-slug} done"`)
 
-The commit covers BOTH source code changes AND Brain note edits (TASK status, SESSION Event, PLAN tick, TEST-REPORT) — atomic per TASK.
+The commit covers BOTH source code changes AND Brain note edits (TASK status, SESSION Event, PLAN tick, QA note) — atomic per TASK.
 
 Loop returns to step 4a for the next TASK in dependency order.
 
@@ -271,20 +271,20 @@ Task(subagent_type="brain:🧠-qa")
 Brief includes:
 
 - Full SPEC scope (root + REQ + DESIGN + TASK notes)
-- All per-task TEST-REPORTs from Stage A
-- Mandate: "Verify spec-level integration. Cross-task integration tests pass; no regressions across the SPEC. Verify EACH REQ EARS clause has at least one test in the per-task TEST-REPORTs."
+- All per-task QA notes from Stage A
+- Mandate: "Verify spec-level integration. Cross-task integration tests pass; no regressions across the SPEC. Verify EACH REQ EARS clause has at least one test in the per-task QA notes."
 
-QA writes `TEST-REPORT-NNN-SPEC-NNN-spec-level.md` to `docs/qa/` with frontmatter status `PASS | FAIL | PARTIAL`.
+QA writes `QA-NNN-SPEC-NNN-spec-level.md` to `docs/qa/` with frontmatter status `PASS | FAIL | PARTIAL`.
 
 ### 5b — Coverage matrix
 
 For each REQ in the SPEC:
 
 - Extract EARS clauses + GIVEN/WHEN/THEN acceptance criteria
-- For each clause, search per-task TEST-REPORTs for evidence the clause is tested
-- Build a coverage matrix: REQ × TEST-REPORT × test-name
+- For each clause, search per-task QA notes for evidence the clause is tested
+- Build a coverage matrix: REQ × QA note × test-name
 
-Any REQ EARS clause without ≥1 test: HALT via `build-step5b-coverage-halt`; surface to user. Resolution: (a) add a new TASK + TEST-REPORT to cover, or (b) revise an existing TEST-REPORT to cover.
+Any REQ EARS clause without ≥1 test: HALT via `build-step5b-coverage-halt`; surface to user. Resolution: (a) add a new TASK + QA note to cover, or (b) revise an existing QA note to cover.
 
 ## Step 6 — STAGE C spec-level propagation
 

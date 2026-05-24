@@ -1,7 +1,7 @@
 ---
 title: "TASK-001-SPEC-203: Drifted Task for QA"
 type: task
-permalink: specs/spec-203-test-report-drifted/tasks/task-001-spec-203-drifted-task-for-qa
+permalink: specs/spec-203-qa-drifted/tasks/task-001-spec-203-drifted-task-for-qa
 status: IN_PROGRESS
 effort: S
 tags:
@@ -36,7 +36,7 @@ the TASK schema-internally valid; the drift is cross-note only.
 
 ## Testing Requirements
 
-- TEST-REPORT-vs-TASK FAIL path exercised
+- QA-vs-TASK FAIL path exercised
 
 ## Definition of Done
 
@@ -51,5 +51,5 @@ the TASK schema-internally valid; the drift is cross-note only.
 
 ## Relations
 
-- part_of [[SPEC-203: TEST-REPORT vs TASK Drifted Fixture]]
-- relates_to [[QA-001-SPEC-203: Drifted Test Report]]
+- part_of [[SPEC-203: QA vs TASK Drifted Fixture]]
+- relates_to [[QA-001-SPEC-203: Drifted QA Report]]

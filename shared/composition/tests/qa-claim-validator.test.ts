@@ -1,21 +1,21 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import { parseTestReportNote } from "../src/parsers/test-report-note.js";
-import type { TestReportNote, TestReportVerdict } from "../src/schemas/test-report-note.js";
-import { validateTestReportPassClaim } from "../src/validators/test-report-claim-validator.js";
+import { parseQaNote } from "../src/parsers/qa-note.js";
+import type { QaNote, QaVerdict } from "../src/schemas/qa-note.js";
+import { validateQaPassClaim } from "../src/validators/qa-claim-validator.js";
 
 const fixtureDir = join(import.meta.dir, "fixtures");
 
 function makeReport(
   overrides: {
-    verdict?: TestReportVerdict;
+    verdict?: QaVerdict;
     failed?: number;
     skipped?: number;
     tests_run?: number;
     passed?: number;
     failingRows?: number;
   } = {},
-): TestReportNote {
+): QaNote {
   const failed = overrides.failed ?? 0;
   const skipped = overrides.skipped ?? 0;
   const passed = overrides.passed ?? 3;
@@ -23,7 +23,7 @@ function makeReport(
   const verdict = overrides.verdict ?? (failed === 0 && tests_run > 0 ? "PASS" : "FAIL");
   const failingRows = overrides.failingRows ?? failed;
 
-  const test_results: TestReportNote["test_results"] = [];
+  const test_results: QaNote["test_results"] = [];
   for (let i = 0; i < passed; i++) {
     test_results.push({ test: `pass-${i}`, category: "Unit", status: "PASS" });
   }
@@ -36,11 +36,11 @@ function makeReport(
 
   return {
     frontmatter: {
-      title: "TEST-REPORT-001-SPEC-001: Validator Fixture",
-      type: "test-report",
-      permalink: "qa/test-report-001-spec-001-validator-fixture",
+      title: "QA-001-SPEC-001: Validator Fixture",
+      type: "qa",
+      permalink: "qa/qa-001-spec-001-validator-fixture",
       status: "DONE",
-      tags: ["test-report", "validator"],
+      tags: ["qa", "validator"],
     },
     objective: "Sample.",
     approach: {
@@ -69,17 +69,17 @@ function makeReport(
   };
 }
 
-describe("validateTestReportPassClaim", () => {
+describe("validateQaPassClaim", () => {
   test("PASS when declared PASS and data matches", () => {
     const report = makeReport({ verdict: "PASS", passed: 3, failed: 0 });
-    const result = validateTestReportPassClaim(report);
+    const result = validateQaPassClaim(report);
     expect(result.verdict).toBe("PASS");
     expect(result.total).toBe(3);
   });
 
   test("FAIL when declared FAIL with failing rows", () => {
     const report = makeReport({ verdict: "FAIL", passed: 2, failed: 1, failingRows: 1 });
-    const result = validateTestReportPassClaim(report);
+    const result = validateQaPassClaim(report);
     if (result.verdict !== "FAIL") throw new Error("setup");
     expect(result.unsatisfied).toHaveLength(1);
     expect(result.unsatisfied[0]?.text).toMatch(/fail-0/);
@@ -87,28 +87,28 @@ describe("validateTestReportPassClaim", () => {
 
   test("FAIL when verdict declared PARTIAL", () => {
     const report = makeReport({ verdict: "PARTIAL", passed: 2, skipped: 1 });
-    const result = validateTestReportPassClaim(report);
+    const result = validateQaPassClaim(report);
     if (result.verdict !== "FAIL") throw new Error("setup");
     expect(result.unsatisfied[0]?.text).toMatch(/PARTIAL/);
   });
 
   test("round-trips through parser on canonical fixture (PASS)", async () => {
-    const md = await Bun.file(join(fixtureDir, "test-report-note-sample.md")).text();
-    const note = parseTestReportNote(md);
-    const result = validateTestReportPassClaim(note);
+    const md = await Bun.file(join(fixtureDir, "qa-note-sample.md")).text();
+    const note = parseQaNote(md);
+    const result = validateQaPassClaim(note);
     expect(result.verdict).toBe("PASS");
     expect(result.total).toBe(5);
   });
 
   test("total reflects tests_run", () => {
     const report = makeReport({ verdict: "FAIL", passed: 5, failed: 2, failingRows: 2 });
-    const result = validateTestReportPassClaim(report);
+    const result = validateQaPassClaim(report);
     expect(result.total).toBe(7);
   });
 
   test("multiple failing rows enumerated", () => {
     const report = makeReport({ verdict: "FAIL", passed: 1, failed: 3, failingRows: 3 });
-    const result = validateTestReportPassClaim(report);
+    const result = validateQaPassClaim(report);
     if (result.verdict !== "FAIL") throw new Error("setup");
     expect(result.unsatisfied).toHaveLength(3);
     expect(result.unsatisfied[0]?.text).toMatch(/fail-0/);

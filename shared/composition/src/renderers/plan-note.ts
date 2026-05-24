@@ -197,7 +197,7 @@ function renderBuildWorkflowItem(item: BuildWorkflowItem): string[] {
     `- **Owning Session**: ${item.owning_session ?? "—"}`,
     `- **Transitioned At Event**: ${item.transitioned_at_event ?? "—"}`,
     `- **Failed Iterations**: ${item.failed_iterations}`,
-    `- **Test Report Ref**: ${item.test_report_ref ?? "—"}`,
+    `- **QA Ref**: ${item.qa_ref ?? "—"}`,
     `- **Fix Brief For Event**: ${item.fix_brief_for_event ?? "—"}`,
   ];
 }

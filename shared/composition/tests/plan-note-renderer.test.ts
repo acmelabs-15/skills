@@ -131,7 +131,7 @@ describe("renderPlanNote Build Workflow Items", () => {
     expect(implBlock).toContain("- **Owning Session**: —");
     expect(implBlock).toContain("- **Transitioned At Event**: —");
     expect(implBlock).toContain("- **Failed Iterations**: 0");
-    expect(implBlock).toContain("- **Test Report Ref**: —");
+    expect(implBlock).toContain("- **QA Ref**: —");
     expect(implBlock).toContain("- **Fix Brief For Event**: —");
   });
 
@@ -185,7 +185,7 @@ describe("renderPlanNote Build Workflow Items", () => {
     expect(i2).toBeLessThan(q2);
   });
 
-  test("qa item with test_report_ref set renders the ref string verbatim", () => {
+  test("qa item with qa_ref set renders the ref string verbatim", () => {
     const items: BuildWorkflowItem[] = [
       {
         id: "impl-TASK-001-SPEC-003",
@@ -200,7 +200,7 @@ describe("renderPlanNote Build Workflow Items", () => {
         task_ref: "TASK-001-SPEC-003",
         status: "DONE",
         failed_iterations: 0,
-        test_report_ref: "TEST-REPORT-005-SPEC-003",
+        qa_ref: "QA-005-SPEC-003",
       },
     ];
     const plan = makePlan(makeBuildPart(items, "IN_PROGRESS"));
@@ -208,7 +208,7 @@ describe("renderPlanNote Build Workflow Items", () => {
 
     const qaIdx = out.indexOf("#### qa-TASK-001-SPEC-003");
     const tail = out.slice(qaIdx);
-    expect(tail).toContain("- **Test Report Ref**: TEST-REPORT-005-SPEC-003");
+    expect(tail).toContain("- **QA Ref**: QA-005-SPEC-003");
   });
 
   test("impl item with owning_session + transitioned_at_event + failed_iterations renders all three verbatim", () => {

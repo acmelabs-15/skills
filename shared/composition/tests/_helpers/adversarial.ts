@@ -1,15 +1,15 @@
 import { expect, test } from "bun:test";
 import { isAbsolute, join } from "node:path";
 import { parseDesignNote } from "../../src/parsers/design-note.js";
+import { parseQaNote } from "../../src/parsers/qa-note.js";
 import { parseRequirementNote } from "../../src/parsers/requirement-note.js";
 import { parseSpecRootNote } from "../../src/parsers/spec-root-note.js";
 import { parseTaskNote } from "../../src/parsers/task-note.js";
-import { parseTestReportNote } from "../../src/parsers/test-report-note.js";
 import { validateDesignComplianceClaim } from "../../src/validators/design-claim-validator.js";
+import { validateQaPassClaim } from "../../src/validators/qa-claim-validator.js";
 import { validateRequirementAcClaim } from "../../src/validators/requirement-claim-validator.js";
 import { validateSpecDoneClaim } from "../../src/validators/spec-claim-validator.js";
 import { validateTaskDoneClaim } from "../../src/validators/task-claim-validator.js";
-import { validateTestReportPassClaim } from "../../src/validators/test-report-claim-validator.js";
 import type { ClaimResult } from "../../src/validators/types.js";
 
 /**
@@ -32,7 +32,7 @@ export type ValidatorType =
   | "spec"
   | "requirement"
   | "design"
-  | "test-report"
+  | "qa"
   | "adr"
   | "analysis"
   | "epic";
@@ -93,8 +93,8 @@ function parseByValidatorType(type: ValidatorType, md: string): unknown {
         return parseRequirementNote(md);
       case "design":
         return parseDesignNote(md);
-      case "test-report":
-        return parseTestReportNote(md);
+      case "qa":
+        return parseQaNote(md);
       default:
         throw new Error(`no parser registered for validator type "${type}"`);
     }
@@ -121,10 +121,8 @@ function invokeValidator(type: ValidatorType, parsed: unknown): ClaimResult {
       return validateDesignComplianceClaim(
         parsed as Parameters<typeof validateDesignComplianceClaim>[0],
       );
-    case "test-report":
-      return validateTestReportPassClaim(
-        parsed as Parameters<typeof validateTestReportPassClaim>[0],
-      );
+    case "qa":
+      return validateQaPassClaim(parsed as Parameters<typeof validateQaPassClaim>[0]);
     default:
       throw new Error(`no validator registered for validator type "${type}"`);
   }

@@ -179,7 +179,7 @@ describe("PlanNoteSchema", () => {
     expect(result.success).toBe(false);
   });
 
-  test("rejects qa item DONE without test_report_ref", () => {
+  test("rejects qa item DONE without qa_ref", () => {
     const plan = minimalPlan();
     const part = plan.parts[1];
     if (!part || !part.build_workflow_items) throw new Error("setup");
@@ -188,7 +188,7 @@ describe("PlanNoteSchema", () => {
     if (!impl || !qa) throw new Error("setup");
     impl.status = "DONE";
     qa.status = "DONE";
-    // test_report_ref intentionally omitted
+    // qa_ref intentionally omitted
     const result = PlanNoteSchema.safeParse(plan);
     expect(result.success).toBe(false);
   });
@@ -216,7 +216,7 @@ describe("PlanNoteSchema", () => {
     expect(result.success).toBe(false);
   });
 
-  test("accepts build.SPEC-NNN DONE when all items DONE with valid test_report_ref", () => {
+  test("accepts build.SPEC-NNN DONE when all items DONE with valid qa_ref", () => {
     const plan = minimalPlan();
     const part = plan.parts[1];
     if (!part || !part.build_workflow_items) throw new Error("setup");
@@ -228,7 +228,7 @@ describe("PlanNoteSchema", () => {
     for (const item of part.build_workflow_items) {
       item.status = "DONE";
       if (item.type === "qa") {
-        item.test_report_ref = "TEST-REPORT-001-SPEC-001";
+        item.qa_ref = "QA-001-SPEC-001";
       }
     }
     const result = PlanNoteSchema.safeParse(plan);

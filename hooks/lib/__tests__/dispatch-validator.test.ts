@@ -56,12 +56,8 @@ describe("dispatchValidator — passing inputs allow", () => {
   });
 
   test("qa (DONE, verdict PASS) allows", async () => {
-    // The canonical sample uses the legacy `type: test-report`; the dispatch
-    // routes the current `type: qa` value (TASK-038 DoD), so rewrite it.
-    const note = (await sample("test-report-note-sample.md")).replace(
-      "type: test-report",
-      "type: qa",
-    );
+    // Canonical sample uses `type: qa`; the dispatch routes on that value.
+    const note = await sample("qa-note-sample.md");
     const out = dispatchValidator(note, PATH);
     expect(out.verdict).not.toBe("deny");
   });
@@ -115,14 +111,11 @@ describe("dispatchValidator — status-flip claim failures deny", () => {
     expectDeny(dispatchValidator(lying, PATH), "SpecNoteSchema", "DONE");
   });
 
-  test("qa/test-report DONE with verdict mismatch denies", async () => {
+  test("qa DONE with verdict mismatch denies", async () => {
     // Set the Failed summary count to 1 while the Failed-row Status marker
     // still reads [PASS] → declared verdict PASS but derived verdict FAIL →
     // the schema rejects the verdict mismatch at parse time (status DONE).
-    const base = (await sample("test-report-note-sample.md")).replace(
-      "type: test-report",
-      "type: qa",
-    );
+    const base = await sample("qa-note-sample.md");
     const lying = base.replace("| Failed | 0 | 0 | [PASS] |", "| Failed | 1 | 0 | [PASS] |");
     const out = dispatchValidator(lying, PATH);
     expect(out.verdict).toBe("deny");

@@ -116,7 +116,7 @@ graph TD
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-007
@@ -127,7 +127,7 @@ graph TD
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 ## Tasks

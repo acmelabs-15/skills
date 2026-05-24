@@ -1,8 +1,8 @@
-import type { TestReportNote, TestReportVerdict } from "../schemas/test-report-note.js";
+import type { QaNote, QaVerdict } from "../schemas/qa-note.js";
 import type { ClaimResult, UnsatisfiedItem } from "./types.js";
 
 /**
- * TestReport PASS-claim validator (Phase X.D.7, 2026-05-21).
+ * Qa PASS-claim validator (Phase X.D.7, 2026-05-21).
  *
  * Defensive runtime check beyond the schema's superRefine. Re-derives the
  * expected verdict from the summary numbers (`failed === 0 && tests_run > 0`
@@ -18,14 +18,14 @@ import type { ClaimResult, UnsatisfiedItem } from "./types.js";
  * structured PASS/FAIL with enumerated failing-test evidence.
  */
 
-function deriveVerdict(report: TestReportNote): TestReportVerdict {
+function deriveVerdict(report: QaNote): QaVerdict {
   const { failed, tests_run, skipped } = report.summary;
   if (failed === 0 && tests_run > 0 && skipped > 0) return "PARTIAL";
   if (failed === 0 && tests_run > 0) return "PASS";
   return "FAIL";
 }
 
-export function validateTestReportPassClaim(report: TestReportNote): ClaimResult {
+export function validateQaPassClaim(report: QaNote): ClaimResult {
   const declared = report.summary.verdict;
   const derived = deriveVerdict(report);
   const total = report.summary.tests_run;

@@ -75,7 +75,7 @@ function driveImplAndQaToDone(md: string): string {
       to: "DONE",
       owning_session: SESSION,
       at_event: 7,
-      test_report_ref: "TEST-REPORT-001-SPEC-007",
+      qa_ref: "QA-001-SPEC-007",
     },
   ]);
 }

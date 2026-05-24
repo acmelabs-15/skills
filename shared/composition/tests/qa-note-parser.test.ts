@@ -1,25 +1,25 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import { parseTestReportNote } from "../src/parsers/test-report-note.js";
+import { parseQaNote } from "../src/parsers/qa-note.js";
 
 const fixtureDir = join(import.meta.dir, "fixtures");
 
 async function loadFixture(): Promise<string> {
-  return Bun.file(join(fixtureDir, "test-report-note-sample.md")).text();
+  return Bun.file(join(fixtureDir, "qa-note-sample.md")).text();
 }
 
-describe("parseTestReportNote — canonical fixture", () => {
+describe("parseQaNote — canonical fixture", () => {
   test("parses fixture without throwing", async () => {
     const md = await loadFixture();
-    const note = parseTestReportNote(md);
-    expect(note.frontmatter.title).toBe("TEST-REPORT-099-SPEC-099: Sample Test Report");
-    expect(note.frontmatter.type).toBe("test-report");
+    const note = parseQaNote(md);
+    expect(note.frontmatter.title).toBe("QA-099-SPEC-099: Sample QA Report");
+    expect(note.frontmatter.type).toBe("qa");
     expect(note.frontmatter.status).toBe("DONE");
   });
 
   test("parses Objective prose and structured bullets", async () => {
     const md = await loadFixture();
-    const note = parseTestReportNote(md);
+    const note = parseQaNote(md);
     expect(note.objective).toMatch(/Verify TASK-099-SPEC-099/);
     expect(note.feature).toMatch(/Sample Feature/);
     expect(note.scope).toMatch(/src\/sample/);
@@ -32,7 +32,7 @@ describe("parseTestReportNote — canonical fixture", () => {
 
   test("parses Approach bullets into typed fields", async () => {
     const md = await loadFixture();
-    const note = parseTestReportNote(md);
+    const note = parseQaNote(md);
     expect(note.approach.test_types).toEqual(["Unit", "Integration"]);
     expect(note.approach.environment).toMatch(/Bun/);
     expect(note.approach.data_strategy).toMatch(/Inline fixtures/);
@@ -41,7 +41,7 @@ describe("parseTestReportNote — canonical fixture", () => {
 
   test("parses Summary table", async () => {
     const md = await loadFixture();
-    const note = parseTestReportNote(md);
+    const note = parseQaNote(md);
     expect(note.summary.tests_run).toBe(5);
     expect(note.summary.passed).toBe(5);
     expect(note.summary.failed).toBe(0);
@@ -53,7 +53,7 @@ describe("parseTestReportNote — canonical fixture", () => {
 
   test("parses Test Results by Category table", async () => {
     const md = await loadFixture();
-    const note = parseTestReportNote(md);
+    const note = parseQaNote(md);
     expect(note.test_results).toHaveLength(5);
     expect(note.test_results[0]?.status).toBe("PASS");
     expect(note.test_results[3]?.category).toBe("Integration");
@@ -61,32 +61,32 @@ describe("parseTestReportNote — canonical fixture", () => {
 
   test("parses Findings section when present", async () => {
     const md = await loadFixture();
-    const note = parseTestReportNote(md);
+    const note = parseQaNote(md);
     expect(note.findings).toBeDefined();
     expect(note.findings).toMatch(/ADR-001 F-1/);
   });
 
   test("parses Observations and Relations", async () => {
     const md = await loadFixture();
-    const note = parseTestReportNote(md);
+    const note = parseQaNote(md);
     expect(note.observations.length).toBeGreaterThanOrEqual(3);
     expect(note.relations.length).toBeGreaterThanOrEqual(2);
   });
 });
 
-describe("parseTestReportNote — variants", () => {
-  test("TEST-REPORT without Findings section omits findings field", () => {
+describe("parseQaNote — variants", () => {
+  test("QA note without Findings section omits findings field", () => {
     const md = `---
-title: "TEST-REPORT-100-SPEC-001: No Findings"
-type: test-report
-permalink: qa/test-report-100-spec-001-no-findings
+title: "QA-100-SPEC-001: No Findings"
+type: qa
+permalink: qa/qa-100-spec-001-no-findings
 status: DONE
 tags:
-  - test-report
+  - qa
   - spec-001
 ---
 
-# TEST-REPORT-100-SPEC-001: No Findings
+# QA-100-SPEC-001: No Findings
 
 ## Objective
 
@@ -127,23 +127,23 @@ Sample objective.
 - relates_to [[TASK-001-SPEC-001: Test]]
 - part_of [[SPEC-001: Test]]
 `;
-    const note = parseTestReportNote(md);
+    const note = parseQaNote(md);
     expect(note.findings).toBeUndefined();
     expect(note.summary.execution_time_ms).toBeUndefined();
   });
 
   test("derives FAIL verdict when summary.failed > 0", () => {
     const md = `---
-title: "TEST-REPORT-101-SPEC-001: Failing"
-type: test-report
-permalink: qa/test-report-101-spec-001-failing
+title: "QA-101-SPEC-001: Failing"
+type: qa
+permalink: qa/qa-101-spec-001-failing
 status: DONE
 tags:
-  - test-report
+  - qa
   - spec-001
 ---
 
-# TEST-REPORT-101-SPEC-001: Failing
+# QA-101-SPEC-001: Failing
 
 ## Objective
 
@@ -186,17 +186,17 @@ Sample.
 - relates_to [[TASK-001-SPEC-001: Test]]
 - part_of [[SPEC-001: Test]]
 `;
-    const note = parseTestReportNote(md);
+    const note = parseQaNote(md);
     expect(note.summary.verdict).toBe("FAIL");
     expect(note.summary.failed).toBe(1);
     expect(note.test_results.filter((r) => r.status === "FAIL")).toHaveLength(1);
   });
 
-  test("ID derived from title matches TEST-REPORT regex", async () => {
+  test("ID derived from title matches QA regex", async () => {
     const md = await loadFixture();
-    const note = parseTestReportNote(md);
-    const m = note.frontmatter.title.match(/^(TEST-REPORT-\d{3,}-SPEC-\d{3,}):/);
-    expect(m?.[1]).toBe("TEST-REPORT-099-SPEC-099");
+    const note = parseQaNote(md);
+    const m = note.frontmatter.title.match(/^(QA-\d{3,}-SPEC-\d{3,}):/);
+    expect(m?.[1]).toBe("QA-099-SPEC-099");
   });
 
   // QA-NNN convention (post-2026-05-21 rename)
@@ -254,7 +254,7 @@ Sample objective for QA-NNN convention.
 - relates_to [[TASK-001-SPEC-006: Test]]
 - part_of [[SPEC-006: Test]]
 `;
-    const note = parseTestReportNote(md);
+    const note = parseQaNote(md);
     expect(note.frontmatter.title).toBe("QA-200-SPEC-006: Post Rename Sample");
     expect(note.frontmatter.type).toBe("qa");
     expect(note.frontmatter.permalink).toBe("qa/qa-200-spec-006-post-rename-sample");

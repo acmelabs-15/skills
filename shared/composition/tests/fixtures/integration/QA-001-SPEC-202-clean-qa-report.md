@@ -1,7 +1,7 @@
 ---
-title: "QA-001-SPEC-202: Clean Test Report"
+title: "QA-001-SPEC-202: Clean QA Report"
 type: qa
-permalink: qa/qa-001-spec-202-clean-test-report
+permalink: qa/qa-001-spec-202-clean-qa-report
 status: DONE
 tags:
   - qa
@@ -9,7 +9,7 @@ tags:
   - clean-pair
 ---
 
-# QA-001-SPEC-202: Clean Test Report
+# QA-001-SPEC-202: Clean QA Report
 
 ## Objective
 
@@ -59,4 +59,4 @@ All TASK-001-SPEC-202 DoD items satisfied. PASS verdict matches per-row data.
 ## Relations
 
 - relates_to [[TASK-001-SPEC-202: Aligned Task for QA]]
-- part_of [[SPEC-202: TEST-REPORT vs TASK Clean Fixture]]
+- part_of [[SPEC-202: QA vs TASK Clean Fixture]]

@@ -9,7 +9,7 @@ import { type PlanNote, PlanNoteSchema } from "../../src/schemas/plan-note.js";
  *
  * Companion file to the Wave 1 `tests/plan-note-schema.test.ts`. Those
  * legacy cases continue to cover the pre-Wave-2 PlanNoteSchema invariants
- * (build_workflow_items pairing, qa-DONE-requires-test_report_ref, task
+ * (build_workflow_items pairing, qa-DONE-requires-qa_ref, task
  * part-reference validity, etc.) and MUST still pass — DoD item 2.
  */
 function minimalPlan(): PlanNote {

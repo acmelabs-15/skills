@@ -56,7 +56,7 @@ describe("Plan/Session render round-trip property test (ADR-003 D-8 gate)", () =
       to: "DONE",
       owning_session: "SESSION-2026-05-20_04",
       at_event: 7,
-      test_report_ref: "TEST-REPORT-001-SPEC-007",
+      qa_ref: "QA-001-SPEC-007",
     });
     const mutated = applyPlanMutation(m3, {
       type: "set-part-substatus",

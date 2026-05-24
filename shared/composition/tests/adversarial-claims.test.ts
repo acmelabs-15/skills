@@ -20,7 +20,7 @@ import { type AdversarialCase, testAdversarial } from "./_helpers/adversarial.js
  * Each `expectedReject` regex anchors on the SPECIFIC text the matching
  * validator emits for that scenario, never a loose `/error/`. For the task /
  * requirement / design / spec validators the emitted `unsatisfied[].text` is the
- * verbatim checkbox-item text from the fixture; for the test-report validator it
+ * verbatim checkbox-item text from the fixture; for the qa validator it
  * is the structured `verdict mismatch: declared <X> vs derived <Y>` message. The
  * anchor for each row matches the `expected-reject:` value the fixture author
  * encoded in that fixture's `drift-marker` HTML comment.
@@ -96,10 +96,10 @@ const cases: AdversarialCase[] = [
     expectedReject: /DESIGN-001-SPEC-092: Coverage Design/,
   },
 
-  // --- test-report validator (validateTestReportPassClaim) ---
+  // --- qa validator (validateQaPassClaim) ---
   {
-    fixture: join(ADVERSARIAL_DIR, "test-report", "drift-01-test-report-all-deferred-verdict.md"),
-    validator: "test-report",
+    fixture: join(ADVERSARIAL_DIR, "qa", "drift-01-qa-all-deferred-verdict.md"),
+    validator: "qa",
     // Declared PASS, but skipped>0 → derived PARTIAL → verdict-mismatch message.
     expectedReject: /verdict mismatch: declared PASS vs derived PARTIAL/,
   },

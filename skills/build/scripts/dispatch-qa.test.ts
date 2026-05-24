@@ -48,7 +48,7 @@ describe("renderQaBrief()", () => {
 
   test("brief contains schema-validated claim verification section", () => {
     const brief = renderQaBrief({ taskRef: TASK_REF, reqRefs: REQ_REFS });
-    expect(brief).toContain("validateTestReportPassClaim");
+    expect(brief).toContain("validateQaPassClaim");
   });
 
   test("brief works with no REQ refs (graceful empty case)", () => {

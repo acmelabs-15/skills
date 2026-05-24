@@ -77,7 +77,7 @@ Map each existing artifact to a phase per the canonical mapping:
 | ANALYSIS notes | `research` (one ANALYSIS = one item under the research part; multiple analyses cluster into one research part by default) |
 | ADR notes | `decisions.N` (one ADR cluster = one decisions part) |
 | SPEC root + subtree | `spec.SPEC-NNN` + `build.SPEC-NNN` (Spec authoring + Build cycle) |
-| TEST-REPORT notes | `build.SPEC-NNN` Stage B sweep or `review` |
+| QA notes | `build.SPEC-NNN` Stage B sweep or `review` |
 | SESSION notes | Cross-phase — each session is bound to one or more phase parts via `owning_session` |
 | RETRO notes | `end` (terminal phase) |
 | PRD / EPIC / FEATURE | Pre-workflow context; referenced in PLAN top-level Scope (not a phase part) |

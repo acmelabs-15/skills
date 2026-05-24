@@ -1,14 +1,14 @@
 ---
-title: 'QA-091-SPEC-008: Adversarial Test Report All Deferred Verdict'
+title: 'QA-091-SPEC-008: Adversarial QA All Deferred Verdict'
 type: qa
 permalink: qa/qa-091-spec-008-adversarial-all-deferred-verdict
 status: DRAFT
-tags: [drift-marker, phase-x-surface-test-report-deferred-verdict, test-report-validator]
+tags: [drift-marker, phase-x-surface-qa-deferred-verdict, qa-validator]
 ---
 
-<!-- drift-marker: drift-01-test-report-all-deferred-verdict; lying-behavior: QA declares an unconditional PASS verdict while a portion of the suite was skipped (deferred/unrun) — failed=0 and tests_run>0 but skipped>0, so the validator DERIVES a PARTIAL verdict and reports a mismatch against the declared PASS; the summary numbers stay self-consistent (tests_run = passed+failed+skipped) so the schema accepts the note; expected-reject: /verdict mismatch: declared PASS vs derived PARTIAL/ -->
+<!-- drift-marker: drift-01-qa-all-deferred-verdict; lying-behavior: QA declares an unconditional PASS verdict while a portion of the suite was skipped (deferred/unrun) — failed=0 and tests_run>0 but skipped>0, so the validator DERIVES a PARTIAL verdict and reports a mismatch against the declared PASS; the summary numbers stay self-consistent (tests_run = passed+failed+skipped) so the schema accepts the note; expected-reject: /verdict mismatch: declared PASS vs derived PARTIAL/ -->
 
-# QA-091-SPEC-008: Adversarial Test Report All Deferred Verdict
+# QA-091-SPEC-008: Adversarial QA All Deferred Verdict
 
 ## Objective
 

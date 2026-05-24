@@ -8,7 +8,7 @@
  * centrally — this wrapper only assembles the mutation args and surfaces any
  * invariant violation as a non-zero exit:
  *   - session context (owning_session + at_event) is mandatory
- *   - transitioning to DONE or FAILED requires test_report_ref
+ *   - transitioning to DONE or FAILED requires qa_ref
  *   - transitioning to IN_PROGRESS or DONE requires the paired impl item DONE
  *
  * Thin wrapper: reads PLAN markdown, applies the mutation, writes back via
@@ -41,7 +41,7 @@ interface TransitionQaArgs {
   to: BuildWorkflowStatus;
   owningSession: string;
   atEvent: number;
-  testReportRef?: string;
+  qaRef?: string;
   fixBriefForEvent?: number;
   projectRoot: string;
 }
@@ -54,7 +54,7 @@ const FLAGS = new Set([
   "--to",
   "--owning-session",
   "--at-event",
-  "--test-report-ref",
+  "--qa-ref",
   "--fix-brief-for-event",
   "--project-root",
 ]);
@@ -121,9 +121,7 @@ function parseArgs(argv: string[]): ParseResult {
       owningSession: raw["--owning-session"] ?? "",
       atEvent,
       projectRoot: raw["--project-root"] ?? process.cwd(),
-      ...(raw["--test-report-ref"] !== undefined
-        ? { testReportRef: raw["--test-report-ref"] }
-        : {}),
+      ...(raw["--qa-ref"] !== undefined ? { qaRef: raw["--qa-ref"] } : {}),
       ...(fixBriefForEvent !== undefined ? { fixBriefForEvent } : {}),
     },
   };
@@ -145,7 +143,7 @@ function transitionedMarkdown(markdown: string, args: TransitionQaArgs): string 
     to: args.to,
     owning_session: args.owningSession,
     at_event: args.atEvent,
-    ...(args.testReportRef !== undefined ? { test_report_ref: args.testReportRef } : {}),
+    ...(args.qaRef !== undefined ? { qa_ref: args.qaRef } : {}),
     ...(args.fixBriefForEvent !== undefined ? { fix_brief_for_event: args.fixBriefForEvent } : {}),
   });
 }

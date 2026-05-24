@@ -152,7 +152,7 @@ Brief: "Review this diff as a stranger to the work. Surface: architectural fit i
 Task(subagent_type="brain:🧠-qa")
 ```
 
-Brief: "Review this diff as a stranger. Surface: test coverage gaps (are new code paths tested? are edge cases covered?), regression risks (does the change break adjacent modules?), happy-path bias (only happy-path tests added; failure modes uncovered). Cite file:line per finding. **CRITICAL for /build output** — review trusts implementer's TEST-REPORTs if self-review mode + tier 1-2; full adversarial review otherwise."
+Brief: "Review this diff as a stranger. Surface: test coverage gaps (are new code paths tested? are edge cases covered?), regression risks (does the change break adjacent modules?), happy-path bias (only happy-path tests added; failure modes uncovered). Cite file:line per finding. **CRITICAL for /build output** — review trusts implementer's QA notes if self-review mode + tier 1-2; full adversarial review otherwise."
 
 ### Security
 
@@ -333,17 +333,17 @@ k. Session note Event
 l. Git commit
 m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
 n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `TEST-REPORT-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
-p. QA returns verdict ONLY: `PASS` or `FAILED + see TEST-REPORT-NNN`
+o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
+p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN`
 q. Session note Event
-r. Orchestrator updates TASK note with `validated_by` relation to TEST-REPORT
+r. Orchestrator updates TASK note with `validated_by` relation to the QA note
 s. On PASS: PLAN `qa-TASK-NNN → DONE`; TASK note status → DONE. On FAILED: PLAN `qa-TASK-NNN → FAILED`; PLAN `impl-TASK-NNN DONE → IN_PROGRESS`; orchestrator translates QA findings into a fix-brief that quotes each unchecked item verbatim with QA evidence
 t. Git commit
 u. Move to TASK N+1; repeat from (a)
 
 ### Role of /review in the rigid cycle
 
-/review provides multi-axis validation against the diff under inspection. Adds a checkbox-vs-diff cross-check axis: for every TASK / REQ / DESIGN checkbox claimed `[x]` in the diff, verify evidence in the diff supports the claim (test file added, function defined, behavior asserted). A claim of `[x]` without supporting diff evidence is a P1 finding. Verdicts: PASS / WARN / FAIL with per-axis findings (architect, qa, security, code-qualities, incoherence, orphan-ref, markdown-lint, biome). The TEST-REPORT schema's superRefine already rejects mismatched verdicts at write-time; /review's checkbox-vs-diff axis is a second layer catching gaps before the diff lands.
+/review provides multi-axis validation against the diff under inspection. Adds a checkbox-vs-diff cross-check axis: for every TASK / REQ / DESIGN checkbox claimed `[x]` in the diff, verify evidence in the diff supports the claim (test file added, function defined, behavior asserted). A claim of `[x]` without supporting diff evidence is a P1 finding. Verdicts: PASS / WARN / FAIL with per-axis findings (architect, qa, security, code-qualities, incoherence, orphan-ref, markdown-lint, biome). The QA note schema's superRefine already rejects mismatched verdicts at write-time; /review's checkbox-vs-diff axis is a second layer catching gaps before the diff lands.
 
 ## Checkbox-as-contract
 
@@ -361,7 +361,7 @@ The composition library at `shared/composition/` provides programmatic validator
 - `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`
 - `DesignNoteSchema` + `validateDesignComplianceClaim()` — same for DESIGN
 - `SpecRootNoteSchema` + `validateSpecDoneClaim()` — same for SPEC root
-- `TestReportNoteSchema` + `validateTestReportPassClaim()` + schema superRefine — rejects QA "PASS" verdict that doesn't match per-row results
+- `QaNoteSchema` + `validateQaPassClaim()` + schema superRefine — rejects QA "PASS" verdict that doesn't match per-row results
 
 Lying agents are mechanically caught.
 

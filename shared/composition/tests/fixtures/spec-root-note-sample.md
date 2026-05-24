@@ -85,7 +85,7 @@ Standard analyst clustering applied. No CVA needed at this scope.
 
 | Risk | Severity | Mitigation |
 | --- | --- | --- |
-| Test-report schema brittleness | Medium | Semantic round-trip suffices for X.D.7 |
+| QA schema brittleness | Medium | Semantic round-trip suffices for X.D.7 |
 
 ## Observations
 

@@ -81,7 +81,7 @@ export function renderQaBrief(args: QaBriefArgs): string {
     "## Schema-validated claim verification",
     "",
     "The composition library validators will be run against your QA note:",
-    "- `validateTestReportPassClaim()` — rejects PASS verdict that does not match per-row results",
+    "- `validateQaPassClaim()` — rejects PASS verdict that does not match per-row results",
     "- Rejects `tests_run !== passed + failed + skipped`",
     "Lying about PASS when per-row results show failures is mechanically caught.",
   ].join("\n");

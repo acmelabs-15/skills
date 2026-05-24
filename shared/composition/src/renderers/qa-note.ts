@@ -1,31 +1,26 @@
 import yaml from "js-yaml";
 import type { Observation, Relation } from "../schemas/common.js";
-import type {
-  TestReportApproach,
-  TestReportNote,
-  TestReportSummary,
-  TestResultRow,
-} from "../schemas/test-report-note.js";
+import type { QaApproach, QaNote, QaSummary, TestResultRow } from "../schemas/qa-note.js";
 
 /**
- * TestReportNote renderer (Phase X.D.7 → tightened X.C, 2026-05-21).
+ * QaNote renderer (Phase X.D.7 → tightened X.C, 2026-05-21).
  *
  * Deterministic markdown render matching the parsed structure. Section order:
  *   frontmatter → H1 → Objective → Approach → Results (Summary + Test Results
  *   by Category) → Findings (optional) → Observations → Relations.
  *
  * Round-trip is BYTE-IDENTICAL against the canonical fixture
- * (tests/fixtures/test-report-note-sample.md), matching the PlanNote pattern.
+ * (tests/fixtures/qa-note-sample.md), matching the PlanNote pattern.
  * The parser still tolerates phrasing variants seen in docs/qa exemplars
  * (inline code in Scope bullet, custom Target/Status cells on Execution Time
  * row) — those are normalized to the canonical renderer-output form on
- * re-render, so adapter-driven mutations of fixture-form TEST-REPORTs survive
+ * re-render, so adapter-driven mutations of fixture-form QA notes survive
  * decompose → recompose unchanged.
  */
 
 const NL = "\n";
 
-function renderFrontmatter(fm: TestReportNote["frontmatter"]): string {
+function renderFrontmatter(fm: QaNote["frontmatter"]): string {
   const ordered: Record<string, unknown> = {
     title: fm.title,
     type: fm.type,
@@ -39,7 +34,7 @@ function renderFrontmatter(fm: TestReportNote["frontmatter"]): string {
   return `---${NL}${body}${NL}---`;
 }
 
-function renderObjective(note: TestReportNote): string {
+function renderObjective(note: QaNote): string {
   const lines: string[] = ["## Objective", ""];
   lines.push(note.objective);
   const bullets: string[] = [];
@@ -55,7 +50,7 @@ function renderObjective(note: TestReportNote): string {
   return lines.join(NL);
 }
 
-function renderApproach(approach: TestReportApproach): string {
+function renderApproach(approach: QaApproach): string {
   const lines: string[] = ["## Approach", ""];
   lines.push(`- **Test Types**: ${approach.test_types.join(", ")}`);
   lines.push(`- **Environment**: ${approach.environment}`);
@@ -66,7 +61,7 @@ function renderApproach(approach: TestReportApproach): string {
   return lines.join(NL);
 }
 
-function renderSummary(summary: TestReportSummary): string {
+function renderSummary(summary: QaSummary): string {
   const lines: string[] = ["### Summary", ""];
   lines.push("| Metric | Value | Target | Status |");
   lines.push("|--------|-------|--------|--------|");
@@ -97,7 +92,7 @@ function renderTestResults(results: TestResultRow[]): string {
   return lines.join(NL);
 }
 
-function renderResults(note: TestReportNote): string {
+function renderResults(note: QaNote): string {
   const sections: string[] = ["## Results", ""];
   sections.push(renderSummary(note.summary));
   sections.push("");
@@ -122,7 +117,7 @@ function renderRelations(rels: Relation[]): string {
   return lines.join(NL);
 }
 
-export function renderTestReportNote(note: TestReportNote): string {
+export function renderQaNote(note: QaNote): string {
   const sections: string[] = [];
   sections.push(renderFrontmatter(note.frontmatter));
   sections.push("");

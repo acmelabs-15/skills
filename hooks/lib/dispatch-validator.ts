@@ -56,7 +56,7 @@ import { parsePlanNote } from "../../shared/composition/src/parsers/plan-note.ts
 import { parseRequirementNote } from "../../shared/composition/src/parsers/requirement-note.ts";
 import { parseSpecRootNote } from "../../shared/composition/src/parsers/spec-root-note.ts";
 import { parseTaskNote } from "../../shared/composition/src/parsers/task-note.ts";
-import { parseTestReportNote } from "../../shared/composition/src/parsers/test-report-note.ts";
+import { parseQaNote } from "../../shared/composition/src/parsers/qa-note.ts";
 import { validateAdrAcceptedClaim } from "../../shared/composition/src/validators/adr-claim-validator.ts";
 import { validateAnalysisAcceptedClaim } from "../../shared/composition/src/validators/analysis-claim-validator.ts";
 import { validateDesignComplianceClaim } from "../../shared/composition/src/validators/design-claim-validator.ts";
@@ -65,7 +65,7 @@ import { validatePlanDoneClaim } from "../../shared/composition/src/validators/p
 import { validateRequirementAcClaim } from "../../shared/composition/src/validators/requirement-claim-validator.ts";
 import { validateSpecDoneClaim } from "../../shared/composition/src/validators/spec-claim-validator.ts";
 import { validateTaskDoneClaim } from "../../shared/composition/src/validators/task-claim-validator.ts";
-import { validateTestReportPassClaim } from "../../shared/composition/src/validators/test-report-claim-validator.ts";
+import { validateQaPassClaim } from "../../shared/composition/src/validators/qa-claim-validator.ts";
 
 /** Brain-note `type:` values that carry a claim contract (CRIT excluded per ADR-005 D-5). */
 export type DispatchNoteType =
@@ -318,15 +318,15 @@ const ROUTES: Record<DispatchNoteType, RouteEntry> = {
     },
   },
   qa: {
-    parse: parseTestReportNote,
+    parse: parseQaNote,
     terminalStatus: "DONE",
     check: (note) => {
-      const result = validateTestReportPassClaim(
-        note as Parameters<typeof validateTestReportPassClaim>[0],
+      const result = validateQaPassClaim(
+        note as Parameters<typeof validateQaPassClaim>[0],
       );
       if (result.verdict === "FAIL") {
         return denyReason(
-          "TestReportNoteSchema",
+          "QaNoteSchema",
           "DONE",
           "declared verdict matches derived verdict with zero failing rows",
           result.unsatisfied.map((u) => u.text).join(" | "),

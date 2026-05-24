@@ -18,7 +18,7 @@ function applyChain(md: string, mutations: PlanMutation[]): string {
 const SESSION = "SESSION-2026-05-20_04";
 const TASK_REF = "TASK-001-SPEC-007";
 const PART = "build.SPEC-007";
-const TEST_REPORT = "TEST-REPORT-001-SPEC-007";
+const QA_REF = "QA-001-SPEC-007";
 
 describe("transition-impl-item", () => {
   test("advances impl IN_PROGRESS → DONE and stamps session context", async () => {
@@ -206,7 +206,7 @@ describe("transition-qa-item", () => {
     ).toThrow(/requires paired impl-TASK-001-SPEC-007 to be DONE/);
   });
 
-  test("rejects DONE transition when test_report_ref is missing", async () => {
+  test("rejects DONE transition when qa_ref is missing", async () => {
     const md = await loadFixture();
     const ready = applyChain(md, [
       {
@@ -237,12 +237,12 @@ describe("transition-qa-item", () => {
         to: "DONE",
         owning_session: SESSION,
         at_event: 7,
-        // no test_report_ref
+        // no qa_ref
       }),
-    ).toThrow(/requires test_report_ref/);
+    ).toThrow(/requires qa_ref/);
   });
 
-  test("rejects FAILED transition when test_report_ref is missing", async () => {
+  test("rejects FAILED transition when qa_ref is missing", async () => {
     const md = await loadFixture();
     const ready = implDonePrelude(md);
     const inProgress = applyPlanMutation(ready, {
@@ -264,10 +264,10 @@ describe("transition-qa-item", () => {
         owning_session: SESSION,
         at_event: 7,
       }),
-    ).toThrow(/requires test_report_ref/);
+    ).toThrow(/requires qa_ref/);
   });
 
-  test("DONE with test_report_ref + fix_brief_for_event records both", async () => {
+  test("DONE with qa_ref + fix_brief_for_event records both", async () => {
     const md = await loadFixture();
     const out = applyChain(md, [
       {
@@ -296,14 +296,14 @@ describe("transition-qa-item", () => {
         to: "DONE",
         owning_session: SESSION,
         at_event: 7,
-        test_report_ref: TEST_REPORT,
+        qa_ref: QA_REF,
         fix_brief_for_event: 6,
       },
     ]);
     const part = parsePlanNote(out).parts.find((p) => p.id === PART);
     const qa = part?.build_workflow_items?.find((i) => i.type === "qa" && i.task_ref === TASK_REF);
     expect(qa?.status).toBe("DONE");
-    expect(qa?.test_report_ref).toBe(TEST_REPORT);
+    expect(qa?.qa_ref).toBe(QA_REF);
     expect(qa?.fix_brief_for_event).toBe(6);
   });
 
@@ -368,7 +368,7 @@ describe("build_workflow_items full-cycle round-trip", () => {
         to: "DONE",
         owning_session: SESSION,
         at_event: 7,
-        test_report_ref: TEST_REPORT,
+        qa_ref: QA_REF,
       },
     ]);
     const reparsed = parsePlanNote(out);

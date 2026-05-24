@@ -571,7 +571,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-001-SPEC-001
@@ -582,7 +582,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-001
@@ -593,7 +593,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: TEST-REPORT-001-SPEC-001
+- **QA Ref**: QA-001-SPEC-001
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-001
@@ -604,7 +604,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-000-SPEC-001
+- **QA Ref**: QA-000-SPEC-001
 - **Fix Brief For Event**: —
 
 #### impl-TASK-002-SPEC-001
@@ -615,7 +615,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-002-SPEC-001
@@ -626,7 +626,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-002-SPEC-001
@@ -637,7 +637,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: TEST-REPORT-002-SPEC-001
+- **QA Ref**: QA-002-SPEC-001
 - **Fix Brief For Event**: —
 
 #### qa-TASK-002-SPEC-001
@@ -648,7 +648,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-000-SPEC-001
+- **QA Ref**: QA-000-SPEC-001
 - **Fix Brief For Event**: —
 
 #### impl-TASK-003-SPEC-001
@@ -659,7 +659,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-003-SPEC-001
@@ -670,7 +670,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-003-SPEC-001
@@ -681,7 +681,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: TEST-REPORT-003-SPEC-001
+- **QA Ref**: QA-003-SPEC-001
 - **Fix Brief For Event**: —
 
 #### qa-TASK-003-SPEC-001
@@ -692,7 +692,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-000-SPEC-001
+- **QA Ref**: QA-000-SPEC-001
 - **Fix Brief For Event**: —
 
 #### impl-TASK-004-SPEC-001
@@ -703,7 +703,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-004-SPEC-001
@@ -714,7 +714,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-004-SPEC-001
@@ -725,7 +725,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: TEST-REPORT-004-SPEC-001
+- **QA Ref**: QA-004-SPEC-001
 - **Fix Brief For Event**: —
 
 #### qa-TASK-004-SPEC-001
@@ -736,7 +736,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-000-SPEC-001
+- **QA Ref**: QA-000-SPEC-001
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-001
@@ -747,7 +747,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-001
@@ -758,7 +758,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-005-SPEC-001
@@ -769,7 +769,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: TEST-REPORT-005-SPEC-001
+- **QA Ref**: QA-005-SPEC-001
 - **Fix Brief For Event**: —
 
 #### qa-TASK-005-SPEC-001
@@ -780,7 +780,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-000-SPEC-001
+- **QA Ref**: QA-000-SPEC-001
 - **Fix Brief For Event**: —
 
 #### impl-TASK-006-SPEC-001
@@ -791,7 +791,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-006-SPEC-001
@@ -802,7 +802,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-006-SPEC-001
@@ -813,7 +813,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: TEST-REPORT-006-SPEC-001
+- **QA Ref**: QA-006-SPEC-001
 - **Fix Brief For Event**: —
 
 #### qa-TASK-006-SPEC-001
@@ -824,7 +824,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-000-SPEC-001
+- **QA Ref**: QA-000-SPEC-001
 - **Fix Brief For Event**: —
 
 #### impl-TASK-007-SPEC-001
@@ -835,7 +835,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-007-SPEC-001
@@ -846,7 +846,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-007-SPEC-001
@@ -857,7 +857,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: TEST-REPORT-007-SPEC-001
+- **QA Ref**: QA-007-SPEC-001
 - **Fix Brief For Event**: —
 
 #### qa-TASK-007-SPEC-001
@@ -868,7 +868,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-000-SPEC-001
+- **QA Ref**: QA-000-SPEC-001
 - **Fix Brief For Event**: —
 
 #### impl-TASK-008-SPEC-001
@@ -879,7 +879,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-008-SPEC-001
@@ -890,7 +890,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-008-SPEC-001
@@ -901,7 +901,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: TEST-REPORT-008-SPEC-001
+- **QA Ref**: QA-008-SPEC-001
 - **Fix Brief For Event**: —
 
 #### qa-TASK-008-SPEC-001
@@ -912,7 +912,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-000-SPEC-001
+- **QA Ref**: QA-000-SPEC-001
 - **Fix Brief For Event**: —
 
 #### impl-TASK-009-SPEC-001
@@ -923,7 +923,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-009-SPEC-001
@@ -934,7 +934,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-009-SPEC-001
@@ -945,7 +945,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: TEST-REPORT-009-SPEC-001
+- **QA Ref**: QA-009-SPEC-001
 - **Fix Brief For Event**: —
 
 #### qa-TASK-009-SPEC-001
@@ -956,7 +956,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-000-SPEC-001
+- **QA Ref**: QA-000-SPEC-001
 - **Fix Brief For Event**: —
 
 ### build.SPEC-002
@@ -988,7 +988,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-002
@@ -999,7 +999,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-042-SPEC-002
+- **QA Ref**: QA-042-SPEC-002
 - **Fix Brief For Event**: —
 
 #### impl-TASK-002-SPEC-002
@@ -1010,7 +1010,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-002-SPEC-002
@@ -1021,7 +1021,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-042-SPEC-002
+- **QA Ref**: QA-042-SPEC-002
 - **Fix Brief For Event**: —
 
 #### impl-TASK-003-SPEC-002
@@ -1032,7 +1032,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-003-SPEC-002
@@ -1043,7 +1043,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-042-SPEC-002
+- **QA Ref**: QA-042-SPEC-002
 - **Fix Brief For Event**: —
 
 #### impl-TASK-004-SPEC-002
@@ -1054,7 +1054,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-004-SPEC-002
@@ -1065,7 +1065,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-042-SPEC-002
+- **QA Ref**: QA-042-SPEC-002
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-002
@@ -1076,7 +1076,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-005-SPEC-002
@@ -1087,7 +1087,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-042-SPEC-002
+- **QA Ref**: QA-042-SPEC-002
 - **Fix Brief For Event**: —
 
 #### impl-TASK-006-SPEC-002
@@ -1098,7 +1098,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-006-SPEC-002
@@ -1109,7 +1109,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-042-SPEC-002
+- **QA Ref**: QA-042-SPEC-002
 - **Fix Brief For Event**: —
 
 #### impl-TASK-007-SPEC-002
@@ -1120,7 +1120,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-007-SPEC-002
@@ -1131,7 +1131,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-042-SPEC-002
+- **QA Ref**: QA-042-SPEC-002
 - **Fix Brief For Event**: —
 
 #### impl-TASK-008-SPEC-002
@@ -1142,7 +1142,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-008-SPEC-002
@@ -1153,7 +1153,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-042-SPEC-002
+- **QA Ref**: QA-042-SPEC-002
 - **Fix Brief For Event**: —
 
 #### impl-TASK-010-SPEC-002
@@ -1164,7 +1164,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-010-SPEC-002
@@ -1175,7 +1175,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-042-SPEC-002
+- **QA Ref**: QA-042-SPEC-002
 - **Fix Brief For Event**: —
 
 ### build.SPEC-003
@@ -1207,7 +1207,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-003
@@ -1218,7 +1218,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 #### impl-TASK-002-SPEC-003
@@ -1229,7 +1229,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-002-SPEC-003
@@ -1240,7 +1240,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 #### impl-TASK-003-SPEC-003
@@ -1251,7 +1251,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-003-SPEC-003
@@ -1262,7 +1262,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 #### impl-TASK-004-SPEC-003
@@ -1273,7 +1273,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-004-SPEC-003
@@ -1284,7 +1284,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-003
@@ -1295,7 +1295,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-005-SPEC-003
@@ -1306,7 +1306,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 #### impl-TASK-006-SPEC-003
@@ -1317,7 +1317,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-006-SPEC-003
@@ -1328,7 +1328,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 #### impl-TASK-007-SPEC-003
@@ -1339,7 +1339,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-007-SPEC-003
@@ -1350,7 +1350,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 #### impl-TASK-008-SPEC-003
@@ -1361,7 +1361,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-008-SPEC-003
@@ -1372,7 +1372,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 #### impl-TASK-009-SPEC-003
@@ -1383,7 +1383,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-009-SPEC-003
@@ -1394,7 +1394,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 #### impl-TASK-010-SPEC-003
@@ -1405,7 +1405,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-010-SPEC-003
@@ -1416,7 +1416,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-043-SPEC-003
+- **QA Ref**: QA-043-SPEC-003
 - **Fix Brief For Event**: —
 
 ### build.SPEC-004
@@ -1446,7 +1446,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-004
@@ -1457,7 +1457,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-002-SPEC-004
@@ -1468,7 +1468,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-002-SPEC-004
@@ -1479,7 +1479,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-003-SPEC-004
@@ -1490,7 +1490,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-003-SPEC-004
@@ -1501,7 +1501,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-004-SPEC-004
@@ -1512,7 +1512,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-004-SPEC-004
@@ -1523,7 +1523,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-004
@@ -1534,7 +1534,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-005-SPEC-004
@@ -1545,7 +1545,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-006-SPEC-004
@@ -1556,7 +1556,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-006-SPEC-004
@@ -1567,7 +1567,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-007-SPEC-004
@@ -1578,7 +1578,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-007-SPEC-004
@@ -1589,7 +1589,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-008-SPEC-004
@@ -1600,7 +1600,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-008-SPEC-004
@@ -1611,7 +1611,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-009-SPEC-004
@@ -1622,7 +1622,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-009-SPEC-004
@@ -1633,7 +1633,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-010-SPEC-004
@@ -1644,7 +1644,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-010-SPEC-004
@@ -1655,7 +1655,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-011-SPEC-004
@@ -1666,7 +1666,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-011-SPEC-004
@@ -1677,7 +1677,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 #### impl-TASK-012-SPEC-004
@@ -1688,7 +1688,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-012-SPEC-004
@@ -1699,7 +1699,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-027-SPEC-004
+- **QA Ref**: QA-027-SPEC-004
 - **Fix Brief For Event**: —
 
 ### build.SPEC-005
@@ -1729,7 +1729,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-005
@@ -1740,7 +1740,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-039-SPEC-005
+- **QA Ref**: QA-039-SPEC-005
 - **Fix Brief For Event**: —
 
 #### impl-TASK-002-SPEC-005
@@ -1751,7 +1751,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-002-SPEC-005
@@ -1762,7 +1762,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-039-SPEC-005
+- **QA Ref**: QA-039-SPEC-005
 - **Fix Brief For Event**: —
 
 #### impl-TASK-003-SPEC-005
@@ -1773,7 +1773,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-003-SPEC-005
@@ -1784,7 +1784,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-039-SPEC-005
+- **QA Ref**: QA-039-SPEC-005
 - **Fix Brief For Event**: —
 
 #### impl-TASK-004-SPEC-005
@@ -1795,7 +1795,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-004-SPEC-005
@@ -1806,7 +1806,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-039-SPEC-005
+- **QA Ref**: QA-039-SPEC-005
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-005
@@ -1817,7 +1817,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-005-SPEC-005
@@ -1828,7 +1828,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-039-SPEC-005
+- **QA Ref**: QA-039-SPEC-005
 - **Fix Brief For Event**: —
 
 #### impl-TASK-006-SPEC-005
@@ -1839,7 +1839,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-006-SPEC-005
@@ -1850,7 +1850,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-039-SPEC-005
+- **QA Ref**: QA-039-SPEC-005
 - **Fix Brief For Event**: —
 
 ### build.SPEC-006
@@ -1881,7 +1881,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-006
@@ -1892,7 +1892,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-040-SPEC-006
+- **QA Ref**: QA-040-SPEC-006
 - **Fix Brief For Event**: —
 
 #### impl-TASK-002-SPEC-006
@@ -1903,7 +1903,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-002-SPEC-006
@@ -1914,7 +1914,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-040-SPEC-006
+- **QA Ref**: QA-040-SPEC-006
 - **Fix Brief For Event**: —
 
 #### impl-TASK-003-SPEC-006
@@ -1925,7 +1925,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-003-SPEC-006
@@ -1936,7 +1936,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-040-SPEC-006
+- **QA Ref**: QA-040-SPEC-006
 - **Fix Brief For Event**: —
 
 #### impl-TASK-004-SPEC-006
@@ -1947,7 +1947,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-004-SPEC-006
@@ -1958,7 +1958,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-040-SPEC-006
+- **QA Ref**: QA-040-SPEC-006
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-006
@@ -1969,7 +1969,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-005-SPEC-006
@@ -1980,7 +1980,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-040-SPEC-006
+- **QA Ref**: QA-040-SPEC-006
 - **Fix Brief For Event**: —
 
 #### impl-TASK-006-SPEC-006
@@ -1991,7 +1991,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-006-SPEC-006
@@ -2002,7 +2002,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-040-SPEC-006
+- **QA Ref**: QA-040-SPEC-006
 - **Fix Brief For Event**: —
 
 #### impl-TASK-007-SPEC-006
@@ -2013,7 +2013,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-007-SPEC-006
@@ -2024,7 +2024,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-040-SPEC-006
+- **QA Ref**: QA-040-SPEC-006
 - **Fix Brief For Event**: —
 
 ### build.SPEC-007
@@ -2056,7 +2056,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-007
@@ -2067,7 +2067,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-002-SPEC-007
@@ -2078,7 +2078,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-002-SPEC-007
@@ -2089,7 +2089,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-003-SPEC-007
@@ -2100,7 +2100,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-003-SPEC-007
@@ -2111,7 +2111,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-004-SPEC-007
@@ -2122,7 +2122,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-004-SPEC-007
@@ -2133,7 +2133,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-007
@@ -2144,7 +2144,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-005-SPEC-007
@@ -2155,7 +2155,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-006-SPEC-007
@@ -2166,7 +2166,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-006-SPEC-007
@@ -2177,7 +2177,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-007-SPEC-007
@@ -2188,7 +2188,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-007-SPEC-007
@@ -2199,7 +2199,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-008-SPEC-007
@@ -2210,7 +2210,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-008-SPEC-007
@@ -2221,7 +2221,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-009-SPEC-007
@@ -2232,7 +2232,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-009-SPEC-007
@@ -2243,7 +2243,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-010-SPEC-007
@@ -2254,7 +2254,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-010-SPEC-007
@@ -2265,7 +2265,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-011-SPEC-007
@@ -2276,7 +2276,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-011-SPEC-007
@@ -2287,7 +2287,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-012-SPEC-007
@@ -2298,7 +2298,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-012-SPEC-007
@@ -2309,7 +2309,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 #### impl-TASK-014-SPEC-007
@@ -2320,7 +2320,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-014-SPEC-007
@@ -2331,7 +2331,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-033-SPEC-007
+- **QA Ref**: QA-033-SPEC-007
 - **Fix Brief For Event**: —
 
 ### protocol-hardening
@@ -2481,7 +2481,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 37
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-029-SPEC-008
@@ -2492,7 +2492,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 39
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-044-SPEC-008
+- **QA Ref**: QA-044-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-001-SPEC-008
@@ -2503,7 +2503,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 43
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-001-SPEC-008
@@ -2514,7 +2514,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 45
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-045-SPEC-008
+- **QA Ref**: QA-045-SPEC-008
 - **Fix Brief For Event**: —
 
 <!-- Wave 0 batch 1 (seeded Event 49; bounded-parallel) -->
@@ -2527,7 +2527,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 50
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-021-SPEC-008
@@ -2538,7 +2538,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 53
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-046-SPEC-008
+- **QA Ref**: QA-046-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-025-SPEC-008
@@ -2549,7 +2549,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 53 (re-dispatch from Event 52; prior attempt errored at Event 50)
 - **Failed Iterations**: 1
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-025-SPEC-008
@@ -2560,7 +2560,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 57
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-048-SPEC-008
+- **QA Ref**: QA-048-SPEC-008
 - **Fix Brief For Event**: —
 
 <!-- Wave 0 batch 3 (seeded Event 56) -->
@@ -2573,7 +2573,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 57
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-033-SPEC-008
@@ -2584,7 +2584,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 59
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-049-SPEC-008
+- **QA Ref**: QA-049-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-034-SPEC-008
@@ -2595,7 +2595,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 59 (expanded sweep PASS; 31 additional `validates` → `depends_on` across 30 notes; broader-grep verification now clean)
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-034-SPEC-008
@@ -2606,7 +2606,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 60
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-051-SPEC-008
+- **QA Ref**: QA-051-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-037-SPEC-008
@@ -2617,7 +2617,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 57
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-037-SPEC-008
@@ -2628,7 +2628,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 59
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-050-SPEC-008
+- **QA Ref**: QA-050-SPEC-008
 - **Fix Brief For Event**: —
 
 <!-- Wave 0 finish + Wave 1a start (seeded Event 61) -->
@@ -2641,7 +2641,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 62
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-002-SPEC-008
@@ -2652,7 +2652,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 63
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-052-SPEC-008
+- **QA Ref**: QA-052-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-008
@@ -2663,7 +2663,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 62
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-005-SPEC-008
@@ -2674,7 +2674,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 63
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-053-SPEC-008
+- **QA Ref**: QA-053-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-039-SPEC-008
@@ -2685,7 +2685,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 62
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-039-SPEC-008
@@ -2696,7 +2696,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 63
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-054-SPEC-008
+- **QA Ref**: QA-054-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-040-SPEC-008
@@ -2707,7 +2707,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 62
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-040-SPEC-008
@@ -2718,7 +2718,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 63
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-055-SPEC-008
+- **QA Ref**: QA-055-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-026-SPEC-008
@@ -2729,7 +2729,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 51
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-026-SPEC-008
@@ -2740,7 +2740,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 53
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-047-SPEC-008
+- **QA Ref**: QA-047-SPEC-008
 - **Fix Brief For Event**: —
 
 <!-- BULK-SEED 2026-05-24 SESSION-2026-05-23_02 Event 67: 68 workflow items (impl+qa) for the 34 remaining SPEC-008 TASKs seeded as PENDING (except Batch 5a impl items 003/010/030 seeded as IN_PROGRESS at Event 67). Numerical task-ID order. -->
@@ -2753,7 +2753,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 69
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: bun-ts-engineer agent aca83cfe30745acbe; 20/0/20 targeted tests; biome PASS; tsc PASS; suite 734/2/736 (delta +35 = TASK-003+010); 12 DoD + 3 ADR Compliance all [x]
 
 #### qa-TASK-003-SPEC-008
@@ -2764,7 +2764,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 70
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-057-SPEC-008
+- **QA Ref**: QA-057-SPEC-008
 - **Fix Brief For Event**: brain:🧠-qa agent ad9a7d20a7e67a7c1; 12 DoD + 3 ADR Compliance + REQ-001 AC-4/7/8 + DESIGN-001 compliance verified; 20/0/20 tests; biome PASS; tsc PASS; suite 734/2/736
 
 #### impl-TASK-004-SPEC-008
@@ -2775,7 +2775,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 72
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: bun-ts-engineer agent a7ab239f5d807ed9d; 29/0/29 targeted tests; biome PASS; tsc PASS; suite 763/2/765 (delta +29); 12 DoD + 3 ADR Compliance all [x]
 
 #### qa-TASK-004-SPEC-008
@@ -2786,7 +2786,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 73
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-059-SPEC-008
+- **QA Ref**: QA-059-SPEC-008
 - **Fix Brief For Event**: brain:🧠-qa agent ad835e781b99f26dc; 12 DoD + 3 ADR Compliance verified; REQ-001 AC-5 N/A at schema layer (parser-gated to TASK-006); ACs 7+8 cross-cutting now satisfied (all 5 schemas landed); 29/0/29 tests; biome PASS; tsc PASS; suite 763/2/765
 
 #### impl-TASK-006-SPEC-008
@@ -2797,7 +2797,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 75
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: bun-ts-engineer agent a147cc52d67dbb7ab (1st dispatch died on internal error w/ zero partial work; clean re-dispatch); 25/0/25 targeted; biome PASS; tsc PASS; suite 788/2/790 (+25); 15 DoD + 3 ADR Compliance all [x]; design-note: hasOpenQuestions/containedSpecs derived as attached props (not schema fields) per .strict() — QA to verify vs REQ-002
 
 #### qa-TASK-006-SPEC-008
@@ -2808,7 +2808,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 76
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-060-SPEC-008
+- **QA Ref**: QA-060-SPEC-008
 - **Fix Brief For Event**: brain:🧠-qa agent abfb71cfd53115301; 15 DoD + 3 ADR Compliance + REQ-002 all 7 ACs + wrapper-vs-schema-field judgment (SATISFIES REQ-002) verified; 25/0/25; biome PASS; tsc PASS; suite 788/2/790. REQ-001 AC-5 contradiction surfaced (see Event 76)
 
 #### impl-TASK-007-SPEC-008
@@ -2819,7 +2819,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 81
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: bun-ts-engineer agent aeab033f3684366a2; 8/0/8 targeted; pure-fn {ok,unsatisfied} w/ dotted-bracket path; biome+tsc PASS; barrel added by orchestrator Event 81; 11 DoD + 3 ADR all [x]
 
 #### qa-TASK-007-SPEC-008
@@ -2830,7 +2830,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 82
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-062-SPEC-008
+- **QA Ref**: QA-062-SPEC-008
 - **Fix Brief For Event**: brain:🧠-qa agent ab78e56d361d30228; 11 DoD + 3 ADR + REQ-003 ADR-validator ACs verified; 8/0/8; PASS
 
 #### impl-TASK-008-SPEC-008
@@ -2841,7 +2841,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 81
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: bun-ts-engineer agent a5159c3aa1fe22472; 6/0/6 targeted; reads body.hasOpenQuestions on ParsedAnalysisNote (input-contract note); biome+tsc PASS; barrel added by orchestrator Event 81; 10 DoD + 3 ADR all [x]
 
 #### qa-TASK-008-SPEC-008
@@ -2852,7 +2852,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 82
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-063-SPEC-008
+- **QA Ref**: QA-063-SPEC-008
 - **Fix Brief For Event**: brain:🧠-qa agent a984a9af14749d3b4; 10 DoD + 3 ADR verified; input-contract judgment ParsedAnalysisNote correct; 6/0/6; PASS
 
 #### impl-TASK-009-SPEC-008
@@ -2863,7 +2863,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 81
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: bun-ts-engineer agent a45183b66f19b747f; 10/0/10 targeted; cross-note resolver injection; THROWS on missing resolver + undefined resolution (no silent pass per critic P1.1); reads contains via relations array; biome+tsc PASS; barrel added by orchestrator Event 81; 12 DoD + 3 ADR all [x]
 
 #### qa-TASK-009-SPEC-008
@@ -2874,7 +2874,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 82
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-064-SPEC-008
+- **QA Ref**: QA-064-SPEC-008
 - **Fix Brief For Event**: brain:🧠-qa agent a6b707c2ea3787f5d; 12 DoD + 3 ADR verified; both no-silent-pass throw paths confirmed (critic P1.1); 10/0/10; PASS
 
 #### impl-TASK-010-SPEC-008
@@ -2885,7 +2885,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 69
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: bun-ts-engineer agent a325feb5733a31296; 15/0/15 targeted tests (7 schema + 8 validator); biome PASS; tsc PASS; 18 baseline tests preserved (Wave 1 zero-regression); 14 DoD + 4 ADR Compliance all [x]
 
 #### qa-TASK-010-SPEC-008
@@ -2896,7 +2896,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 70
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-058-SPEC-008
+- **QA Ref**: QA-058-SPEC-008
 - **Fix Brief For Event**: brain:🧠-qa agent a4a19aa101027ac7f; 14 DoD + 4 ADR Compliance + REQ-001 AC-6 + REQ-003 AC-5/AC-6 + DESIGN-001 compliance verified; 15/0/15 targeted + Wave 1 baseline 18/18 zero-regression; biome PASS; tsc PASS
 
 #### impl-TASK-011-SPEC-008
@@ -2907,7 +2907,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 86
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 
@@ -2919,7 +2919,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 87
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-065-SPEC-008
+- **QA Ref**: QA-065-SPEC-008
 - **Fix Brief For Event**: —
 
 
@@ -2931,7 +2931,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 89
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 
@@ -2943,7 +2943,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 90
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-068-SPEC-008
+- **QA Ref**: QA-068-SPEC-008
 - **Fix Brief For Event**: —
 
 
@@ -2955,7 +2955,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 89
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 
@@ -2967,7 +2967,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 90
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-069-SPEC-008
+- **QA Ref**: QA-069-SPEC-008
 - **Fix Brief For Event**: —
 
 
@@ -2979,7 +2979,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 104
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-014-SPEC-008
@@ -2990,7 +2990,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 113
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-078-SPEC-008
+- **QA Ref**: QA-078-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-015-SPEC-008
@@ -3001,7 +3001,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 86
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 
@@ -3013,7 +3013,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 87
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-066-SPEC-008
+- **QA Ref**: QA-066-SPEC-008
 - **Fix Brief For Event**: —
 
 
@@ -3025,7 +3025,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 86
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 
@@ -3037,7 +3037,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 87
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-067-SPEC-008
+- **QA Ref**: QA-067-SPEC-008
 - **Fix Brief For Event**: —
 
 
@@ -3049,7 +3049,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 89
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 
@@ -3061,7 +3061,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 90
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-070-SPEC-008
+- **QA Ref**: QA-070-SPEC-008
 - **Fix Brief For Event**: —
 
 
@@ -3073,7 +3073,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 94
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-018-SPEC-008
@@ -3084,7 +3084,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 96
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-071-SPEC-008
+- **QA Ref**: QA-071-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-019-SPEC-008
@@ -3095,7 +3095,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 94
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-019-SPEC-008
@@ -3106,7 +3106,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 96
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-072-SPEC-008
+- **QA Ref**: QA-072-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-020-SPEC-008
@@ -3117,7 +3117,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 94
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-020-SPEC-008
@@ -3128,7 +3128,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 96
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-073-SPEC-008
+- **QA Ref**: QA-073-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-022-SPEC-008
@@ -3139,7 +3139,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 98
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-022-SPEC-008
@@ -3150,7 +3150,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 100
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-075-SPEC-008
+- **QA Ref**: QA-075-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-023-SPEC-008
@@ -3161,7 +3161,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 104
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-023-SPEC-008
@@ -3172,7 +3172,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 113
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-079-SPEC-008
+- **QA Ref**: QA-079-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-024-SPEC-008
@@ -3183,7 +3183,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-024-SPEC-008
@@ -3194,7 +3194,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-027-SPEC-008
@@ -3205,7 +3205,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 100
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-027-SPEC-008
@@ -3216,7 +3216,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 102
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-077-SPEC-008
+- **QA Ref**: QA-077-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-028-SPEC-008
@@ -3227,7 +3227,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-028-SPEC-008
@@ -3238,7 +3238,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-030-SPEC-008
@@ -3249,7 +3249,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 68
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: orchestrator-inline (commit 64dd1ca; per ADR-005 D-7 small-scope deletion permission)
 
 #### qa-TASK-030-SPEC-008
@@ -3260,7 +3260,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 68
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-056-SPEC-008
+- **QA Ref**: QA-056-SPEC-008
 - **Fix Brief For Event**: orchestrator-inline self-verification (no QA agent dispatched; per-DoD + per-AC mechanical evidence in QA-056)
 
 #### impl-TASK-031-SPEC-008
@@ -3271,7 +3271,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-031-SPEC-008
@@ -3282,7 +3282,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-032-SPEC-008
@@ -3293,7 +3293,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 98
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-032-SPEC-008
@@ -3304,7 +3304,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 100
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-074-SPEC-008
+- **QA Ref**: QA-074-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-035-SPEC-008
@@ -3315,7 +3315,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-035-SPEC-008
@@ -3326,7 +3326,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-036-SPEC-008
@@ -3337,7 +3337,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-036-SPEC-008
@@ -3348,7 +3348,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-038-SPEC-008
@@ -3359,7 +3359,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 98
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-038-SPEC-008
@@ -3370,7 +3370,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 100
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-076-SPEC-008
+- **QA Ref**: QA-076-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-041-SPEC-008
@@ -3381,7 +3381,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 104
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-041-SPEC-008
@@ -3392,7 +3392,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 113
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-080-SPEC-008
+- **QA Ref**: QA-080-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-042-SPEC-008
@@ -3403,7 +3403,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 104
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-042-SPEC-008
@@ -3414,7 +3414,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 113
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-081-SPEC-008
+- **QA Ref**: QA-081-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-043-SPEC-008
@@ -3425,7 +3425,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 104
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-043-SPEC-008
@@ -3436,7 +3436,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 113
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-082-SPEC-008
+- **QA Ref**: QA-082-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-044-SPEC-008
@@ -3447,7 +3447,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 106
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-044-SPEC-008
@@ -3458,7 +3458,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### impl-TASK-045-SPEC-008
@@ -3469,7 +3469,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 104
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-045-SPEC-008
@@ -3480,7 +3480,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: 113
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-083-SPEC-008
+- **QA Ref**: QA-083-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-046-SPEC-008
@@ -3491,7 +3491,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 #### qa-TASK-046-SPEC-008
@@ -3502,7 +3502,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: —
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: —
 
 <!-- TASK-047 added 2026-05-24 Event 77 — follow-up TASK closing REQ-001 AC-5 coverage gap (CRIT H1-drift); marathon 46 → 47 TASKs -->
@@ -3515,7 +3515,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 78
 - **Failed Iterations**: 0
-- **Test Report Ref**: —
+- **QA Ref**: —
 - **Fix Brief For Event**: bun-ts-engineer agent a0d2f0bc8a2d89bae; H1-drift check at crit-note.ts:194 (extractH1 vs frontmatter.title verbatim; plain Error not ZodError; runs before CritNoteSchema.parse); 13/0/13 parser tests (8 preserved + 5 new); 2 existing rejection tests fixed to .replaceAll() H1+title lockstep; biome PASS; tsc PASS; suite 793/2/795; 10 DoD + 2 ADR Compliance all [x]
 
 #### qa-TASK-047-SPEC-008
@@ -3526,7 +3526,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Owning Session**: SESSION-2026-05-23_02
 - **Transitioned At Event**: Event 79
 - **Failed Iterations**: 0
-- **Test Report Ref**: QA-061-SPEC-008
+- **QA Ref**: QA-061-SPEC-008
 - **Fix Brief For Event**: brain:🧠-qa agent a0e6b42a1c862cb69; 10 DoD + 2 ADR Compliance + REQ-001 AC-5 closure verified; 13/0/13 parser tests; both agent HALT-resolutions verified correct; biome PASS; tsc PASS; suite 793/2/795. REQ-001 → ACCEPTED (all 8 ACs + all schema TASKs done)
 
 ## Tasks

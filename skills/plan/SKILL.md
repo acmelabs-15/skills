@@ -47,10 +47,10 @@ k. Session note Event
 l. Git commit
 m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
 n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `TEST-REPORT-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
-p. QA returns verdict ONLY: `PASS` or `FAILED + see TEST-REPORT-NNN` — nothing more; the TEST-REPORT is the contract document
+o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
+p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN` — nothing more; the QA note is the contract document
 q. Session note Event
-r. Orchestrator updates TASK note with `validated_by` relation to TEST-REPORT
+r. Orchestrator updates TASK note with `validated_by` relation to the QA note
 s. On PASS: PLAN `qa-TASK-NNN → DONE`; TASK note status → DONE. On FAILED: PLAN `qa-TASK-NNN → FAILED`; PLAN `impl-TASK-NNN DONE → IN_PROGRESS`; orchestrator translates QA findings into a fix-brief that quotes each unchecked item verbatim with QA evidence (file:line, test name)
 t. Git commit
 u. Move to TASK N+1; repeat from (a)
@@ -65,7 +65,7 @@ Implementer and QA do NOT figure out what counts as done from prose. The contrac
 
 When dispatching implementer: brief MUST quote the TASK DoD verbatim + link the linked REQs/DESIGNs + state "you implement against the checkboxes; you check [x] as each is satisfied".
 
-When dispatching QA: brief MUST quote the TASK DoD + linked REQ AC + linked DESIGN compliance verbatim + state "you validate each checkbox individually with evidence; you mark [x] for satisfied items, leave [ ] for unsatisfied; per-item PASS/FAIL/PARTIAL evidence to TEST-REPORT".
+When dispatching QA: brief MUST quote the TASK DoD + linked REQ AC + linked DESIGN compliance verbatim + state "you validate each checkbox individually with evidence; you mark [x] for satisfied items, leave [ ] for unsatisfied; per-item PASS/FAIL/PARTIAL evidence to the QA note".
 
 ## Schema-validated agent-claim verification
 
@@ -75,7 +75,7 @@ The composition library at `shared/composition/` provides programmatic validator
 - `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`
 - `DesignNoteSchema` + `validateDesignComplianceClaim()` — same for DESIGN
 - `SpecRootNoteSchema` + `validateSpecDoneClaim()` — same for SPEC root
-- `TestReportNoteSchema` + `validateTestReportPassClaim()` + schema superRefine — rejects QA "PASS" verdict that doesn't match per-row results AND rejects `tests_run !== passed + failed + skipped`
+- `QaNoteSchema` + `validateQaPassClaim()` + schema superRefine — rejects QA "PASS" verdict that doesn't match per-row results AND rejects `tests_run !== passed + failed + skipped`
 - `PlanNoteSchema.BuildWorkflowItem` + `transition-impl-item` / `transition-qa-item` mutations — mandate session context (`owning_session` + `at_event`), throw on missing
 
 Lying agents are mechanically caught. The agent must actually do the work to satisfy the schema.

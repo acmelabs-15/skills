@@ -1,15 +1,15 @@
 ---
-title: "TEST-REPORT-099-SPEC-099: Sample Test Report"
-type: test-report
-permalink: qa/test-report-099-spec-099-sample
+title: "QA-099-SPEC-099: Sample QA Report"
+type: qa
+permalink: qa/qa-099-spec-099-sample
 status: DONE
 tags:
-  - test-report
+  - qa
   - sample
   - spec-099
 ---
 
-# TEST-REPORT-099-SPEC-099: Sample Test Report
+# QA-099-SPEC-099: Sample QA Report
 
 ## Objective
 

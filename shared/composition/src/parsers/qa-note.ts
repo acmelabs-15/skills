@@ -6,15 +6,15 @@ import remarkParse from "remark-parse";
 import { unified } from "unified";
 import type { Observation, Relation } from "../schemas/common.js";
 import type {
-  TestReportApproach,
-  TestReportFrontmatter,
-  TestReportNote,
-  TestReportSummary,
-  TestReportVerdict,
+  QaApproach,
+  QaFrontmatter,
+  QaNote,
+  QaSummary,
+  QaVerdict,
   TestResultRow,
   TestRowStatus,
-} from "../schemas/test-report-note.js";
-import { TestReportNoteSchema } from "../schemas/test-report-note.js";
+} from "../schemas/qa-note.js";
+import { QaNoteSchema } from "../schemas/qa-note.js";
 import {
   ParseError,
   bulletFieldMap,
@@ -38,16 +38,15 @@ function asStringArray(v: unknown): string[] {
   return v.map((x) => asString(x));
 }
 
-function parseFrontmatter(raw: Record<string, unknown>): TestReportFrontmatter {
-  // Schema accepts both legacy `test-report` and current `qa` per 2026-05-21
-  // rename. Preserve the actual frontmatter value rather than hard-coding;
-  // schema rejects anything outside the two-value enum at parse time.
+function parseFrontmatter(raw: Record<string, unknown>): QaFrontmatter {
+  // Preserve the actual frontmatter `type` value rather than hard-coding;
+  // schema rejects anything other than the literal `qa` at parse time.
   const rawType = asString(raw["type"]);
   return {
     title: asString(raw["title"]),
-    type: rawType as TestReportFrontmatter["type"],
+    type: rawType as QaFrontmatter["type"],
     permalink: asString(raw["permalink"]),
-    status: asString(raw["status"]) as TestReportFrontmatter["status"],
+    status: asString(raw["status"]) as QaFrontmatter["status"],
     tags: asStringArray(raw["tags"]),
   };
 }
@@ -92,7 +91,7 @@ function parseObjective(children: RootContent[]): {
   };
 }
 
-function parseApproach(children: RootContent[]): TestReportApproach {
+function parseApproach(children: RootContent[]): QaApproach {
   const fields = bulletFieldMap(children);
   const typesRaw = fields.get("Test Types") ?? "";
   const test_types = typesRaw
@@ -107,7 +106,7 @@ function parseApproach(children: RootContent[]): TestReportApproach {
       ? test_file_raw.replace(/^`/, "").replace(/`$/, "")
       : undefined;
 
-  const out: TestReportApproach = {
+  const out: QaApproach = {
     test_types,
     environment,
     data_strategy,
@@ -139,7 +138,7 @@ function parseStatusMarker(text: string): TestRowStatus | undefined {
  * Passed=N or Failed=0); when no explicit verdict signal is present, derive
  * from failed===0.
  */
-function parseSummary(children: RootContent[]): TestReportSummary {
+function parseSummary(children: RootContent[]): QaSummary {
   const tbl = findTable(children);
   if (!tbl) {
     return {
@@ -171,7 +170,7 @@ function parseSummary(children: RootContent[]): TestReportSummary {
   // Derive verdict: prefer the Status column on the Failed row (canonical
   // PASS/FAIL marker per the exemplar). Fall back to derived rule.
   const failedRow = byMetric.get("Failed");
-  let verdict: TestReportVerdict;
+  let verdict: QaVerdict;
   const explicit = failedRow ? parseStatusMarker(failedRow["Status"] ?? "") : undefined;
   if (explicit === "PASS" || explicit === "FAIL" || explicit === "PARTIAL") {
     verdict = explicit;
@@ -183,7 +182,7 @@ function parseSummary(children: RootContent[]): TestReportSummary {
     verdict = "FAIL";
   }
 
-  const summary: TestReportSummary = {
+  const summary: QaSummary = {
     tests_run,
     passed,
     failed,
@@ -269,7 +268,7 @@ function serializeSectionContent(children: RootContent[]): string {
   return blocks.join("\n\n").trim();
 }
 
-export function parseTestReportNote(markdown: string): TestReportNote {
+export function parseQaNote(markdown: string): QaNote {
   const ast = processor.parse(markdown);
   const fmRaw = extractFrontmatter(ast);
   const frontmatter = parseFrontmatter(fmRaw);
@@ -283,7 +282,7 @@ export function parseTestReportNote(markdown: string): TestReportNote {
   const summary = parseSummary(resultsH3.get("Summary") ?? []);
   const test_results = parseTestResults(resultsH3.get("Test Results by Category") ?? []);
 
-  const model: TestReportNote = {
+  const model: QaNote = {
     frontmatter,
     objective: objective.prose,
     approach,
@@ -302,5 +301,5 @@ export function parseTestReportNote(markdown: string): TestReportNote {
     if (findings.length > 0) model.findings = findings;
   }
 
-  return TestReportNoteSchema.parse(model);
+  return QaNoteSchema.parse(model);
 }

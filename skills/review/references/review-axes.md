@@ -176,7 +176,7 @@ For every finding:
 
 **CRITICAL for /build output**: when self-review mode + plan binding, the diff
 likely came from /build implementer dispatches. Trust the implementer's
-TEST-REPORTs at Tier 1-2 (light adversarial); apply full adversarial framing
+QA notes at Tier 1-2 (light adversarial); apply full adversarial framing
 at Tier 3+ regardless of self-review mode.
 
 "Looks good" is a failure mode.

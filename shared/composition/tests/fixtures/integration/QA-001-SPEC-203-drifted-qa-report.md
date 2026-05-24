@@ -1,7 +1,7 @@
 ---
-title: "QA-001-SPEC-203: Drifted Test Report"
+title: "QA-001-SPEC-203: Drifted QA Report"
 type: qa
-permalink: qa/qa-001-spec-203-drifted-test-report
+permalink: qa/qa-001-spec-203-drifted-qa-report
 status: DONE
 tags:
   - qa
@@ -9,7 +9,7 @@ tags:
   - drifted-pair
 ---
 
-# QA-001-SPEC-203: Drifted Test Report
+# QA-001-SPEC-203: Drifted QA Report
 
 ## Objective
 
@@ -62,4 +62,4 @@ unchecked item — drift to be caught by cross-note consistency test.
 ## Relations
 
 - relates_to [[TASK-001-SPEC-203: Drifted Task for QA]]
-- part_of [[SPEC-203: TEST-REPORT vs TASK Drifted Fixture]]
+- part_of [[SPEC-203: QA vs TASK Drifted Fixture]]

@@ -1,7 +1,7 @@
 ---
 title: "TASK-001-SPEC-202: Aligned Task for QA"
 type: task
-permalink: specs/spec-202-test-report-clean/tasks/task-001-spec-202-aligned-task-for-qa
+permalink: specs/spec-202-qa-clean/tasks/task-001-spec-202-aligned-task-for-qa
 status: DONE
 effort: S
 tags:
@@ -15,7 +15,7 @@ tags:
 ## Objective
 
 Aligned TASK paired with QA-001-SPEC-202. All DoD items [x]; QA PASS
-verdict matches. TEST-REPORT-vs-TASK-DoD consistency PASS path.
+verdict matches. QA-vs-TASK-DoD consistency PASS path.
 
 ## Scope
 
@@ -35,7 +35,7 @@ verdict matches. TEST-REPORT-vs-TASK-DoD consistency PASS path.
 
 ## Testing Requirements
 
-- TEST-REPORT-vs-TASK PASS path exercised
+- QA-vs-TASK PASS path exercised
 
 ## Definition of Done
 
@@ -45,10 +45,10 @@ verdict matches. TEST-REPORT-vs-TASK-DoD consistency PASS path.
 ## Observations
 
 - [outcome] All DoD items checked; QA PASS verdict aligned #aligned
-- [decision] Clean pair for TEST-REPORT-vs-TASK PASS path #fixture
+- [decision] Clean pair for QA-vs-TASK PASS path #fixture
 - [fact] Paired with QA-001-SPEC-202 verdict PASS #consistency
 
 ## Relations
 
-- part_of [[SPEC-202: TEST-REPORT vs TASK Clean Fixture]]
-- relates_to [[QA-001-SPEC-202: Clean Test Report]]
+- part_of [[SPEC-202: QA vs TASK Clean Fixture]]
+- relates_to [[QA-001-SPEC-202: Clean QA Report]]

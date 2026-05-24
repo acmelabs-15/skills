@@ -18,20 +18,17 @@ export const SessionIdSchema = z.string().regex(/^SESSION-\d{4}-\d{2}-\d{2}_\d{2
 export const EventNumberSchema = z.number().int().positive();
 
 // SPEC-scoped entity IDs (distinct from session-scoped T-NN above).
-// Used by TaskNote/RequirementNote/DesignNote/TestReportNote schemas (added X.D).
+// Used by TaskNote/RequirementNote/DesignNote/QaNote schemas (added X.D).
 // PLAN's per-TASK build-workflow items reference these IDs.
 export const SpecIdSchema = z.string().regex(/^SPEC-\d{3,}$/);
 export const SpecTaskIdSchema = z.string().regex(/^TASK-\d{3,}-SPEC-\d{3,}$/);
 export const ReqIdSchema = z.string().regex(/^REQ-\d{3,}-SPEC-\d{3,}$/);
 export const DesignIdSchema = z.string().regex(/^DESIGN-\d{3,}-SPEC-\d{3,}$/);
-// TEST-REPORT-NNN-SPEC-NNN was the original convention; renamed 2026-05-21 to
-// QA-NNN-SPEC-NNN (CONVENTIONS Section 3 canonical 16-type list, type `qa`,
-// folder docs/qa/, file prefix QA-NNN). The regex accepts both forms for
-// backward compatibility with pre-rename TEST-REPORT notes still living in
-// docs/qa/ (e.g. TEST-REPORT-007-SPEC-001-atomic-write-helper.md, prior
-// fixtures, prior test-report-claim-validator inputs). New authoring should
-// use QA-NNN-SPEC-NNN.
-export const TestReportIdSchema = z.string().regex(/^(TEST-REPORT|QA)-\d{3,}-SPEC-\d{3,}/);
+// QA-NNN-SPEC-NNN convention (CONVENTIONS Section 3 canonical 16-type list,
+// type `qa`, folder docs/qa/, file prefix QA-NNN). Renamed to the `qa` type
+// on 2026-05-21; only the `qa` form is accepted — qa-claim-validator inputs
+// and all fixtures use QA-NNN-SPEC-NNN.
+export const QaIdSchema = z.string().regex(/^QA-\d{3,}-SPEC-\d{3,}/);
 
 // Status enums
 export const PartSubstatusEnum = z.enum([

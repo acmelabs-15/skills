@@ -12,7 +12,7 @@ import {
   SpecTaskIdSchema,
   TaskIdSchema,
   TaskStatusEnum,
-  TestReportIdSchema,
+  QaIdSchema,
 } from "./common.js";
 
 /**
@@ -47,7 +47,7 @@ const BuildWorkflowItemSchema = z
     owning_session: SessionIdSchema.optional(),
     transitioned_at_event: EventNumberSchema.optional(),
     failed_iterations: z.number().int().min(0).max(3).default(0),
-    test_report_ref: TestReportIdSchema.optional(),
+    qa_ref: QaIdSchema.optional(),
     fix_brief_for_event: EventNumberSchema.optional(),
   })
   .strict()
@@ -60,10 +60,10 @@ const BuildWorkflowItemSchema = z
       });
     }
     if (data.type === "qa" && (data.status === "DONE" || data.status === "FAILED")) {
-      if (!data.test_report_ref) {
+      if (!data.qa_ref) {
         ctx.addIssue({
           code: "custom",
-          message: `qa item ${data.id} with status ${data.status} requires test_report_ref`,
+          message: `qa item ${data.id} with status ${data.status} requires qa_ref`,
         });
       }
     }

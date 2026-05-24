@@ -40,7 +40,7 @@ or deferred-with-rationale.
 **Out of Scope**:
 
 - TaskNote renderer (current write-path stays through opaque mutations)
-- RequirementNote / DesignNote / SpecRootNote / TestReportNote schemas (X.D.6, X.D.7)
+- RequirementNote / DesignNote / SpecRootNote / QaNote schemas (X.D.6, X.D.7)
 - Adapter or mutation layer changes
 
 ## Implementation Notes

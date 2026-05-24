@@ -2758,3 +2758,28 @@ User: "update test-report-note parser, render, schema and validator to the right
 - Layered-severity refactor implemented + orchestrator-verified (composition tsc 0; 243 new/affected tests pass); needs formal QA
 - New file: shared/composition/src/validators/lenient-claim-extract.ts
 - test-report→qa rename requested; dispatching
+
+
+## Event 116 — test-report → qa COMPLETE SWITCH (code + field/label + PLAN-001); no back-compat
+
+User: complete switchover, no back-compat ("not allowing the old name and the new name"); "create a script to change all of those." Done:
+
+- **Back-compat removed**: `QaNoteSchema` `type` → `z.literal("qa")` (was `z.enum(["test-report","qa"])`); permalink regex qa-only; `QaIdSchema` → `/^QA-\d{3,}-SPEC-\d{3,}/`; parser no longer accepts legacy form.
+- **Symbols/files** (already qa from prior): `QaNoteSchema`/`QaNote`/`parseQaNote`/`validateQaPassClaim`/`renderQaNote`/`qa-note.ts`/`qa-claim-validator.ts`.
+- **skills/ token refs** (~70 across 16 files): `--test-report-ref` flag → `--qa-ref` (+ all callers), `transition-qa-item`/`dispatch-qa`, 12 SKILL.md/references prose (`TEST-REPORT-NNN`→`QA-NNN`, symbol refs).
+- **Field/label rename** (scripted, user-approved): `test_report_ref` → `qa_ref` (PLAN schema field), `testReportRef` → `qaRef`, `Test Report Ref` → `QA Ref` (rendered label) — across composition plan-note schema/parser/renderer/mutations/tests/fixtures + scripts + skills/build + **PLAN-001 (244 `QA Ref`, 0 `Test Report Ref`)**.
+- **PLAN-001 data**: 9 legacy `TEST-REPORT-NNN-SPEC-001` `test_report_ref` values → `QA-NNN-SPEC-001` (Brain MCP).
+- **Cleanup**: deleted the one-shot `scripts/rename-test-report-to-qa.ts` migration script (Option A) + stray `tmp-scoped-tsconfig.json`.
+
+Verified: composition tsc 0; scoped hooks tsc 0; full suite **1216 pass / 2 fail** (2 = SPEC-007-deferred baseline; AC#2/AC#4 now PASS; zero new fails); biome clean; repo-wide grep for `test-report`/`testreport`/`test_report_ref`/`Test Report Ref` in CODE = ZERO.
+
+### FLAGGED (NOT blanket-renamed — corruption risk): docs/** historical prose
+~37 docs/** notes still mention `test-report`/`TestReportNoteSchema`/`validateTestReportPassClaim` in PROSE — but these are HISTORICAL/NARRATIVE records: QA validation reports, session logs (incl. THIS session note, which literally documents "rename test-report → qa" — sed-ing it would make it nonsense), ADR-005, ANALYSIS-003/004, and SPEC-008 REQ/DESIGN/TASK descriptive prose. Blanket-renaming would rewrite history. Recommendation: leave temporal records (QA/session/ADR/ANALYSIS) as point-in-time; OPTIONALLY do a targeted accuracy-update of the SPEC-008 REQ/DESIGN/TASK prose symbol refs (validateTestReportPassClaim→validateQaPassClaim etc.) since they describe current code — user's call. NOT done in this pass.
+
+### State Changes
+
+- QaNoteSchema/QaIdSchema/parser: qa-only (back-compat removed)
+- Field/label: test_report_ref→qa_ref, Test Report Ref→QA Ref (code + PLAN-001, 244 labels)
+- skills/ token refs + --qa-ref flag done; migration script + temp tsconfig deleted
+- Suite 1216/2 (0 new fails); test-report token ZERO in code
+- FLAGGED: docs/** historical-prose test-report refs (left as records; spec-prose accuracy-update pending user call)

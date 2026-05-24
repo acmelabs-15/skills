@@ -273,10 +273,10 @@ k. Session note Event
 l. Git commit
 m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
 n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `TEST-REPORT-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
-p. QA returns verdict ONLY: `PASS` or `FAILED + see TEST-REPORT-NNN`
+o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
+p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN`
 q. Session note Event
-r. Orchestrator updates TASK note with `validated_by` relation to TEST-REPORT
+r. Orchestrator updates TASK note with `validated_by` relation to the QA note
 s. On PASS: PLAN `qa-TASK-NNN → DONE`; TASK note status → DONE. On FAILED: PLAN `qa-TASK-NNN → FAILED`; PLAN `impl-TASK-NNN DONE → IN_PROGRESS`; orchestrator translates QA findings into a fix-brief that quotes each unchecked item verbatim with QA evidence
 t. Git commit
 u. Move to TASK N+1; repeat from (a)
@@ -297,7 +297,7 @@ The composition library at `shared/composition/` provides programmatic validator
 - `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`
 - `DesignNoteSchema` + `validateDesignComplianceClaim()` — same for DESIGN
 - `SpecRootNoteSchema` + `validateSpecDoneClaim()` — same for SPEC root
-- `TestReportNoteSchema` + `validateTestReportPassClaim()` — rejects QA "PASS" that doesn't match per-row results
+- `QaNoteSchema` + `validateQaPassClaim()` — rejects QA "PASS" that doesn't match per-row results
 - `PlanNoteSchema.BuildWorkflowItem` + `transition-impl-item` / `transition-qa-item` mutations — mandate session context, throw on missing
 
 Lying agents are mechanically caught.

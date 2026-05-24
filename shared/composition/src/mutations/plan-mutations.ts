@@ -106,7 +106,7 @@ export type TransitionImplItem = {
  * Advance a `qa-TASK-NNN-SPEC-MMM` workflow item to a new status.
  *
  * Same context-mandate as TransitionImplItem. Additional defensive checks:
- * - transitioning to DONE or FAILED requires `test_report_ref`
+ * - transitioning to DONE or FAILED requires `qa_ref`
  * - transitioning to IN_PROGRESS or DONE requires the paired impl item to
  *   already be DONE (the schema enforces this too — this throws earlier
  *   with a clearer message).
@@ -119,7 +119,7 @@ export type TransitionQaItem = {
   to: BuildWorkflowStatus;
   owning_session: string;
   at_event: number;
-  test_report_ref?: string;
+  qa_ref?: string;
   fix_brief_for_event?: number;
 };
 
@@ -348,8 +348,8 @@ function transitionQaItem(plan: PlanNote, m: TransitionQaItem): PlanNote {
       `transition-qa-item: qa-${m.taskRef} expected status ${m.from}, got ${item.status}`,
     );
   }
-  if ((m.to === "DONE" || m.to === "FAILED") && !m.test_report_ref) {
-    throw new Error(`transition-qa-item: qa-${m.taskRef} → ${m.to} requires test_report_ref`);
+  if ((m.to === "DONE" || m.to === "FAILED") && !m.qa_ref) {
+    throw new Error(`transition-qa-item: qa-${m.taskRef} → ${m.to} requires qa_ref`);
   }
   if (m.to === "IN_PROGRESS" || m.to === "DONE") {
     const impl = items.find((i) => i.type === "impl" && i.task_ref === m.taskRef);
@@ -371,7 +371,7 @@ function transitionQaItem(plan: PlanNote, m: TransitionQaItem): PlanNote {
           owning_session: m.owning_session,
           transitioned_at_event: m.at_event,
         };
-        if (m.test_report_ref !== undefined) next.test_report_ref = m.test_report_ref;
+        if (m.qa_ref !== undefined) next.qa_ref = m.qa_ref;
         if (m.fix_brief_for_event !== undefined) next.fix_brief_for_event = m.fix_brief_for_event;
         return next;
       });

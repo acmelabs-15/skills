@@ -198,8 +198,8 @@ function parseBuildWorkflowItems(children: RootContent[]): BuildWorkflowItem[] {
     if (owningSession !== undefined) item.owning_session = owningSession;
     const transitionedAt = optNum(fm.get("Transitioned At Event"));
     if (transitionedAt !== undefined) item.transitioned_at_event = transitionedAt;
-    const testReportRef = optStr(fm.get("Test Report Ref"));
-    if (testReportRef !== undefined) item.test_report_ref = testReportRef;
+    const qaRef = optStr(fm.get("QA Ref"));
+    if (qaRef !== undefined) item.qa_ref = qaRef;
     const fixBriefFor = optNum(fm.get("Fix Brief For Event"));
     if (fixBriefFor !== undefined) item.fix_brief_for_event = fixBriefFor;
     items.push(item);

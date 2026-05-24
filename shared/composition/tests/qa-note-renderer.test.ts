@@ -1,23 +1,23 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import { parseTestReportNote } from "../src/parsers/test-report-note.js";
-import { renderTestReportNote } from "../src/renderers/test-report-note.js";
-import type { TestReportNote } from "../src/schemas/test-report-note.js";
+import { parseQaNote } from "../src/parsers/qa-note.js";
+import { renderQaNote } from "../src/renderers/qa-note.js";
+import type { QaNote } from "../src/schemas/qa-note.js";
 
 const fixtureDir = join(import.meta.dir, "fixtures");
 
 async function loadFixture(): Promise<string> {
-  return Bun.file(join(fixtureDir, "test-report-note-sample.md")).text();
+  return Bun.file(join(fixtureDir, "qa-note-sample.md")).text();
 }
 
-function makeNote(): TestReportNote {
+function makeNote(): QaNote {
   return {
     frontmatter: {
-      title: "TEST-REPORT-001-SPEC-001: Renderer Fixture",
-      type: "test-report",
-      permalink: "qa/test-report-001-spec-001-renderer-fixture",
+      title: "QA-001-SPEC-001: Renderer Fixture",
+      type: "qa",
+      permalink: "qa/qa-001-spec-001-renderer-fixture",
       status: "DONE",
-      tags: ["test-report", "renderer"],
+      tags: ["qa", "renderer"],
     },
     objective: "Sample objective.",
     feature: "Sample Feature",
@@ -56,16 +56,16 @@ function makeNote(): TestReportNote {
   };
 }
 
-function normalizeNote(note: TestReportNote): unknown {
+function normalizeNote(note: QaNote): unknown {
   // Strip optional empty differences for semantic comparison: just JSON-compare.
   return JSON.parse(JSON.stringify(note));
 }
 
-describe("renderTestReportNote", () => {
+describe("renderQaNote", () => {
   test("renders frontmatter + H1 + canonical section order", () => {
-    const md = renderTestReportNote(makeNote());
+    const md = renderQaNote(makeNote());
     expect(md).toMatch(/^---\ntitle:/);
-    expect(md).toMatch(/^# TEST-REPORT-001-SPEC-001: Renderer Fixture$/m);
+    expect(md).toMatch(/^# QA-001-SPEC-001: Renderer Fixture$/m);
     // Sections must appear in order: Objective → Approach → Results → Findings → Observations → Relations
     const idxObjective = md.indexOf("## Objective");
     const idxApproach = md.indexOf("## Approach");
@@ -85,12 +85,12 @@ describe("renderTestReportNote", () => {
     const base = makeNote();
     const { findings: _unused, ...rest } = base;
     void _unused;
-    const md = renderTestReportNote(rest as TestReportNote);
+    const md = renderQaNote(rest as QaNote);
     expect(md).not.toMatch(/## Findings/);
   });
 
   test("includes Test File bullet when present", () => {
-    const md = renderTestReportNote(makeNote());
+    const md = renderQaNote(makeNote());
     expect(md).toMatch(/\*\*Test File\*\*: `tests\/sample.test.ts`/);
   });
 
@@ -98,40 +98,40 @@ describe("renderTestReportNote", () => {
     const base = makeNote();
     const { execution_time_ms: _u, ...summaryRest } = base.summary;
     void _u;
-    const note: TestReportNote = { ...base, summary: summaryRest as TestReportNote["summary"] };
-    const md = renderTestReportNote(note);
+    const note: QaNote = { ...base, summary: summaryRest as QaNote["summary"] };
+    const md = renderQaNote(note);
     expect(md).not.toMatch(/Execution Time/);
   });
 
   test("renders Status column markers in test_results", () => {
-    const md = renderTestReportNote(makeNote());
+    const md = renderQaNote(makeNote());
     expect(md).toMatch(/\| t1 \| Unit \| \[PASS\] \| happy \|/);
     expect(md).toMatch(/\| t2 \| Unit \| \[PASS\] \| - \|/);
   });
 });
 
-describe("renderTestReportNote round-trip — byte-identical", () => {
+describe("renderQaNote round-trip — byte-identical", () => {
   test("parse(fixture) → render === fixture (byte-identical)", async () => {
     const fixture = await loadFixture();
-    const parsed = parseTestReportNote(fixture);
-    const rendered = renderTestReportNote(parsed);
+    const parsed = parseQaNote(fixture);
+    const rendered = renderQaNote(parsed);
     expect(rendered).toBe(fixture);
   });
 });
 
-describe("renderTestReportNote round-trip — semantic equality", () => {
+describe("renderQaNote round-trip — semantic equality", () => {
   test("render(parse(fixture)) re-parses to equivalent model", async () => {
     const md = await loadFixture();
-    const parsed1 = parseTestReportNote(md);
-    const rendered = renderTestReportNote(parsed1);
-    const parsed2 = parseTestReportNote(rendered);
+    const parsed1 = parseQaNote(md);
+    const rendered = renderQaNote(parsed1);
+    const parsed2 = parseQaNote(rendered);
     expect(normalizeNote(parsed2)).toEqual(normalizeNote(parsed1));
   });
 
   test("synthetic note survives render→parse round-trip", () => {
     const note = makeNote();
-    const rendered = renderTestReportNote(note);
-    const reparsed = parseTestReportNote(rendered);
+    const rendered = renderQaNote(note);
+    const reparsed = parseQaNote(rendered);
     expect(normalizeNote(reparsed)).toEqual(normalizeNote(note));
   });
 
@@ -146,13 +146,13 @@ describe("renderTestReportNote round-trip — semantic equality", () => {
     void _tf;
     const { execution_time_ms: _e, ...summaryRest } = rest.summary;
     void _e;
-    const note: TestReportNote = {
+    const note: QaNote = {
       ...rest,
-      approach: approachRest as TestReportNote["approach"],
-      summary: summaryRest as TestReportNote["summary"],
+      approach: approachRest as QaNote["approach"],
+      summary: summaryRest as QaNote["summary"],
     };
-    const rendered = renderTestReportNote(note);
-    const reparsed = parseTestReportNote(rendered);
+    const rendered = renderQaNote(note);
+    const reparsed = parseQaNote(rendered);
     expect(normalizeNote(reparsed)).toEqual(normalizeNote(note));
   });
 });

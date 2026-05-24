@@ -1,7 +1,7 @@
 /**
- * Cross-note integration test — TEST-REPORT (QA) verdict vs TASK DoD state.
+ * Cross-note integration test — QA verdict vs TASK DoD state.
  *
- * Closes REQ-007-SPEC-008 AC-3 (Audit E TEST-REPORT-vs-TASK-DoD coverage
+ * Closes REQ-007-SPEC-008 AC-3 (Audit E QA-vs-TASK-DoD coverage
  * gap). The cross-note rule: every QA note whose summary.verdict === "PASS"
  * MUST correspond to a linked TASK whose Definition of Done items are ALL
  * checked or deferred-with-rationale. A QA PASS verdict over an
@@ -20,10 +20,10 @@
 
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
+import { parseQaNote } from "../../src/parsers/qa-note.js";
 import { parseTaskNote } from "../../src/parsers/task-note.js";
-import { parseTestReportNote } from "../../src/parsers/test-report-note.js";
+import type { QaNote } from "../../src/schemas/qa-note.js";
 import type { TaskNote } from "../../src/schemas/task-note.js";
-import type { TestReportNote } from "../../src/schemas/test-report-note.js";
 
 const integrationFixtureDir = join(import.meta.dir, "..", "fixtures", "integration");
 
@@ -38,16 +38,16 @@ interface ConsistencyResult {
 }
 
 /**
- * Cross-note consistency check. Given a parsed QA / TEST-REPORT note and
- * a parsed TASK note linked by reference, verify the rule:
+ * Cross-note consistency check. Given a parsed QA note and a parsed TASK
+ * note linked by reference, verify the rule:
  *
- *   If TEST-REPORT summary.verdict === "PASS", then every TASK DoD item
+ *   If QA summary.verdict === "PASS", then every TASK DoD item
  *   MUST be done OR deferred-with-rationale.
  *
  * Returns FAIL with the list of unsatisfied DoD items when the rule is
  * violated; otherwise PASS.
  */
-function checkTestReportVsTaskDoD(report: TestReportNote, task: TaskNote): ConsistencyResult {
+function checkQaVsTaskDoD(report: QaNote, task: TaskNote): ConsistencyResult {
   if (report.summary.verdict !== "PASS") {
     return { verdict: "PASS" };
   }
@@ -62,38 +62,38 @@ function checkTestReportVsTaskDoD(report: TestReportNote, task: TaskNote): Consi
 
   return {
     verdict: "FAIL",
-    reason: `TEST-REPORT verdict PASS but TASK ${task.frontmatter.title} has ${unsatisfied.length} unsatisfied DoD item(s)`,
+    reason: `QA verdict PASS but TASK ${task.frontmatter.title} has ${unsatisfied.length} unsatisfied DoD item(s)`,
     unsatisfied,
   };
 }
 
-describe("Cross-note TEST-REPORT ↔ TASK DoD consistency", () => {
+describe("Cross-note QA ↔ TASK DoD consistency", () => {
   test("aligned pair: PASS verdict with every DoD item [x] → PASS", async () => {
-    const reportMd = await loadIntegrationFixture("QA-001-SPEC-202-clean-test-report.md");
+    const reportMd = await loadIntegrationFixture("QA-001-SPEC-202-clean-qa-report.md");
     const taskMd = await loadIntegrationFixture("TASK-001-SPEC-202-aligned-task-for-qa.md");
 
-    const report = parseTestReportNote(reportMd);
+    const report = parseQaNote(reportMd);
     const task = parseTaskNote(taskMd);
 
     expect(report.summary.verdict).toBe("PASS");
     expect(task.definition_of_done.every((d) => d.done)).toBe(true);
 
-    const result = checkTestReportVsTaskDoD(report, task);
+    const result = checkQaVsTaskDoD(report, task);
     expect(result.verdict).toBe("PASS");
   });
 
   test("drifted pair: PASS verdict with [ ] DoD item → FAIL", async () => {
-    const reportMd = await loadIntegrationFixture("QA-001-SPEC-203-drifted-test-report.md");
+    const reportMd = await loadIntegrationFixture("QA-001-SPEC-203-drifted-qa-report.md");
     const taskMd = await loadIntegrationFixture("TASK-001-SPEC-203-drifted-task-for-qa.md");
 
-    const report = parseTestReportNote(reportMd);
+    const report = parseQaNote(reportMd);
     const task = parseTaskNote(taskMd);
 
     expect(report.summary.verdict).toBe("PASS");
     const incomplete = task.definition_of_done.filter((d) => !d.done && !d.deferred_rationale);
     expect(incomplete.length).toBeGreaterThanOrEqual(1);
 
-    const result = checkTestReportVsTaskDoD(report, task);
+    const result = checkQaVsTaskDoD(report, task);
     expect(result.verdict).toBe("FAIL");
     if (result.verdict === "FAIL") {
       expect(result.unsatisfied).toBeDefined();

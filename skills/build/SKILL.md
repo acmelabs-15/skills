@@ -22,14 +22,14 @@ Step 4 STAGE A — per-TASK atomic cycle (loop over each TASK):
   4a: brain:🧠-implementer (foreground; TDD + canonical-source-mirror
       + evidence-hierarchy + quality self-check)
   4b: Process State Changes; cross-check status enum (Contract 7)
-  4c: brain:🧠-qa → TEST-REPORT-NNN-SPEC-NNN-{task-slug}.md to docs/qa/
+  4c: brain:🧠-qa → QA-NNN-SPEC-NNN-{task-slug}.md to docs/qa/
   4d: On qa FAIL: fix-implementer loop (max 3 iterations; halt thereafter)
   4e: State propagation — TASK status DONE + outcome + validated_by
   4f: sync-jira push target=[[TASK-NNN-SPEC-NNN]]
   4g: PLAN tick + atomic commit
 
 Step 5 STAGE B — final spec-level QA sweep:
-  5a: brain:🧠-qa with full SPEC scope + all per-task TEST-REPORTs
+  5a: brain:🧠-qa with full SPEC scope + all per-task QA notes
   5b: Coverage matrix — every REQ EARS clause traced to ≥1 test;
       HALT on uncovered clause
 
@@ -82,10 +82,10 @@ k. Session note Event
 l. Git commit
 m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
 n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `TEST-REPORT-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
-p. QA returns verdict ONLY: `PASS` or `FAILED + see TEST-REPORT-NNN` — nothing more; the TEST-REPORT is the contract document
+o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
+p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN` — nothing more; the QA note is the contract document
 q. Session note Event
-r. Orchestrator updates TASK note with `validated_by` relation to TEST-REPORT
+r. Orchestrator updates TASK note with `validated_by` relation to the QA note
 s. On PASS: PLAN `qa-TASK-NNN → DONE`; TASK note status → DONE. On FAILED: PLAN `qa-TASK-NNN → FAILED`; PLAN `impl-TASK-NNN DONE → IN_PROGRESS`; orchestrator translates QA findings into a fix-brief that quotes each unchecked item verbatim with QA evidence (file:line, test name)
 t. Git commit
 u. Move to TASK N+1; repeat from (a)
@@ -100,7 +100,7 @@ Implementer and QA do NOT figure out what counts as done from prose. The contrac
 
 When dispatching implementer: brief MUST quote the TASK DoD verbatim + link the linked REQs/DESIGNs + state "you implement against the checkboxes; you check [x] as each is satisfied".
 
-When dispatching QA: brief MUST quote the TASK DoD + linked REQ AC + linked DESIGN compliance verbatim + state "you validate each checkbox individually with evidence; you mark [x] for satisfied items, leave [ ] for unsatisfied; per-item PASS/FAIL/PARTIAL evidence to TEST-REPORT".
+When dispatching QA: brief MUST quote the TASK DoD + linked REQ AC + linked DESIGN compliance verbatim + state "you validate each checkbox individually with evidence; you mark [x] for satisfied items, leave [ ] for unsatisfied; per-item PASS/FAIL/PARTIAL evidence to the QA note".
 
 ## Schema-validated agent-claim verification
 
@@ -110,7 +110,7 @@ The composition library at `shared/composition/` provides programmatic validator
 - `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`
 - `DesignNoteSchema` + `validateDesignComplianceClaim()` — same for DESIGN
 - `SpecRootNoteSchema` + `validateSpecDoneClaim()` — same for SPEC root
-- `TestReportNoteSchema` + `validateTestReportPassClaim()` + schema superRefine — rejects QA "PASS" verdict that doesn't match per-row results AND rejects `tests_run !== passed + failed + skipped`
+- `QaNoteSchema` + `validateQaPassClaim()` + schema superRefine — rejects QA "PASS" verdict that doesn't match per-row results AND rejects `tests_run !== passed + failed + skipped`
 - `PlanNoteSchema.BuildWorkflowItem` + `transition-impl-item` / `transition-qa-item` mutations — mandate session context (`owning_session` + `at_event`), throw on missing
 
 Lying agents are mechanically caught.
@@ -131,7 +131,7 @@ This protocol embeds at every enforcement layer — Zod schemas + templates + re
 | Output | Location |
 |---|---|
 | Source code changes | Project repo (per TASK Files Affected) |
-| TEST-REPORT notes (one per TASK + one spec-level) | `docs/qa/` |
+| QA notes (one per TASK + one spec-level) | `docs/qa/` |
 | TASK status flips TODO → DONE | TASK frontmatter (per Contract 7) |
 | SPEC status flips ACCEPTED → IN_PROGRESS → DONE | SPEC root frontmatter |
 | Jira ticket pushes | Via `sync-jira` (per-TASK + per-SPEC) |
@@ -141,9 +141,9 @@ This protocol embeds at every enforcement layer — Zod schemas + templates + re
 
 ### Brain MCP binary rule
 
-All `docs/**` operations use Brain MCP tools. TEST-REPORT titles contain colons; creation uses Pattern 2 three-phase write:
+All `docs/**` operations use Brain MCP tools. QA note titles contain colons; creation uses Pattern 2 three-phase write:
 
-1. `write_note` with no-colon title (e.g., `TEST-REPORT-001-SPEC-001 Login Auth Path`)
+1. `write_note` with no-colon title (e.g., `QA-001-SPEC-001 Login Auth Path`)
 2. `edit_note` (find_replace) to insert colons in frontmatter title + H1
 3. `move_note` to rename file to kebab form
 
@@ -171,7 +171,7 @@ On resume:
 |---|---|
 | Step 1-3 (read + tier + pre-mortem) | Skip if PLAN ## Risks populated AND complexity_tier set |
 | Step 4 per-TASK loop | Skip TASKs already DONE in their frontmatter status |
-| Step 5a spec-level QA | Skip if spec-level TEST-REPORT exists |
+| Step 5a spec-level QA | Skip if spec-level QA note exists |
 | Step 5b coverage matrix | Re-run on resume (cheap; catches drift) |
 | Step 6 Stage C propagation | Skip already-propagated sub-steps |
 | Step 7 exit gates | Re-run each gate (cheap; surfaces drift) |
@@ -223,16 +223,16 @@ For each TASK in dependency order:
    - `Task(subagent_type="brain:🧠-implementer")` with TASK scope + parent SPEC + applicable ADRs
    - Brief MUST include: **TDD directive** ("If project has tests, write failing test for each acceptance criterion BEFORE implementation code"), **canonical-source-mirror constraint** ("If code mirrors an existing source, cite path + quote verbatim"), **evidence hierarchy** ("Cite tool output > files read > web/docs > training knowledge"), **quality self-check questions** (hard to test? methods read like sentences? coupling intentional?), **memory-first gate** (search Brain memory before changing existing code)
 2. **4b — Process State Changes**: implementer returns `## State Changes` listing every status transition. Cross-check each against Contract 7 task enum (`TODO | IN_PROGRESS | DONE | BLOCKED`). HALT via `build-step4b-invalid-status-halt` on any non-canonical status.
-3. **4c — QA dispatch**: `Task(subagent_type="brain:🧠-qa")` → writes `TEST-REPORT-NNN-SPEC-NNN-{task-slug}.md` to `docs/qa/`.
+3. **4c — QA dispatch**: `Task(subagent_type="brain:🧠-qa")` → writes `QA-NNN-SPEC-NNN-{task-slug}.md` to `docs/qa/`.
 4. **4d — On QA FAIL**: dispatch fix-implementer with the QA findings as context; loop 4a → 4c until PASS. **Max 3 iterations**; HALT via `build-step4d-iteration-halt` for user intervention.
-5. **4e — State propagation**: TASK frontmatter `status: DONE` + outcome observation + `validated_by [[TEST-REPORT-NNN-SPEC-NNN: ...]]` relation. Two-step edit (TASK edit → SESSION Event NN append).
+5. **4e — State propagation**: TASK frontmatter `status: DONE` + outcome observation + `validated_by [[QA-NNN-SPEC-NNN: ...]]` relation. Two-step edit (TASK edit → SESSION Event NN append).
 6. **4f — sync-jira push**: `Skill(skill="sync-jira", args="push target=[[TASK-NNN-SPEC-NNN: ...]]")`.
 7. **4g — PLAN tick + commit**: mark TASK DoD checkbox in PLAN body via `edit_note`; atomic project repo commit covering source code + Brain note edits.
 
 ## Step 5 — STAGE B final spec-level QA sweep
 
-1. **5a — Spec-level QA**: `Task(subagent_type="brain:🧠-qa")` with full SPEC scope + all per-task TEST-REPORTs. Writes `TEST-REPORT-NNN-SPEC-NNN-spec-level.md`.
-2. **5b — Coverage matrix**: every REQ's EARS clause traced to ≥1 test in TEST-REPORTs. HALT via `build-step5b-coverage-halt` on any uncovered clause; require additional TASK OR revised TEST-REPORT.
+1. **5a — Spec-level QA**: `Task(subagent_type="brain:🧠-qa")` with full SPEC scope + all per-task QA notes. Writes `QA-NNN-SPEC-NNN-spec-level.md`.
+2. **5b — Coverage matrix**: every REQ's EARS clause traced to ≥1 test in QA notes. HALT via `build-step5b-coverage-halt` on any uncovered clause; require additional TASK OR revised QA note.
 
 ## Step 6 — STAGE C spec-level propagation
 
@@ -288,7 +288,7 @@ Full halt inventory:
 | `build-step4b-invalid-status-halt` | Implementer returns non-canonical status (e.g., "TESTING" instead of IN_PROGRESS) | Re-dispatch implementer with status enum embedded; re-process State Changes |
 | `build-step4d-iteration-halt` | Fix-implementer loop exceeds 3 iterations | Surface QA findings to user; user intervenes |
 | `build-step4f-sync-jira-halt` | Per-TASK sync-jira push fails (network, credentials, ticket mismatch) | User adjudicates: retry, skip-with-manual-sync, halt |
-| `build-step5b-coverage-halt` | Coverage matrix uncovered REQ clauses | Add TASK OR revise TEST-REPORT to cover; re-run 5b |
+| `build-step5b-coverage-halt` | Coverage matrix uncovered REQ clauses | Add TASK OR revise the QA note to cover; re-run 5b |
 | `build-step6-sync-jira-halt` | SPEC-level sync-jira push fails | User adjudicates: retry, skip-with-manual-sync, halt |
 | `build-step7-gate1-halt` | code-qualities-assessment critical finding | Address finding; re-run Gate 1 |
 | `build-step7-gate2-halt` | incoherence critical finding | Address finding; re-run Gate 2 |

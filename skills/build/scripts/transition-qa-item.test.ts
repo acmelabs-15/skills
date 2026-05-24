@@ -8,7 +8,7 @@ import { transitionQaItemCli } from "./transition-qa-item.ts";
 const SESSION = "SESSION-2026-05-24_01";
 const PART = "build.SPEC-007";
 const TASK_REF = "TASK-001-SPEC-007";
-const TEST_REPORT = "TEST-REPORT-001-SPEC-007";
+const QA_REF = "QA-001-SPEC-007";
 
 /**
  * Hermetic PLAN fixture with a `build.SPEC-007` part carrying a paired
@@ -68,7 +68,7 @@ function planFixture(): string {
     "- **Owning Session**: —",
     "- **Transitioned At Event**: —",
     "- **Failed Iterations**: 0",
-    "- **Test Report Ref**: —",
+    "- **QA Ref**: —",
     "- **Fix Brief For Event**: —",
     "",
     "#### qa-TASK-001-SPEC-007",
@@ -79,7 +79,7 @@ function planFixture(): string {
     "- **Owning Session**: —",
     "- **Transitioned At Event**: —",
     "- **Failed Iterations**: 0",
-    "- **Test Report Ref**: —",
+    "- **QA Ref**: —",
     "- **Fix Brief For Event**: —",
     "",
     "## Tasks",
@@ -178,8 +178,8 @@ describe("transitionQaItemCli", () => {
     ];
   }
 
-  // DoD item 3: exit 1 when transitioning to DONE without test_report_ref.
-  test("exit 1 transitioning to DONE without --test-report-ref", async () => {
+  // DoD item 3: exit 1 when transitioning to DONE without qa_ref.
+  test("exit 1 transitioning to DONE without --qa-ref", async () => {
     await Bun.write(planPath, readyForQaDone(planFixture()));
     const code = await transitionQaItemCli(
       baseArgs(["--from", "IN_PROGRESS", "--to", "DONE", "--at-event", "7"]),
@@ -196,24 +196,15 @@ describe("transitionQaItemCli", () => {
   });
 
   // DoD item 5: exit 0 on a successful IN_PROGRESS → DONE transition, all invariants met.
-  test("exit 0 on IN_PROGRESS → DONE with paired impl DONE and test_report_ref present", async () => {
+  test("exit 0 on IN_PROGRESS → DONE with paired impl DONE and qa_ref present", async () => {
     await Bun.write(planPath, readyForQaDone(planFixture()));
     const code = await transitionQaItemCli(
-      baseArgs([
-        "--from",
-        "IN_PROGRESS",
-        "--to",
-        "DONE",
-        "--at-event",
-        "7",
-        "--test-report-ref",
-        TEST_REPORT,
-      ]),
+      baseArgs(["--from", "IN_PROGRESS", "--to", "DONE", "--at-event", "7", "--qa-ref", QA_REF]),
     );
     expect(code).toBe(0);
     const after = await Bun.file(planPath).text();
     expect(after).toMatch(/#### qa-TASK-001-SPEC-007[\s\S]*?- \*\*Status\*\*: DONE/);
-    expect(after).toContain(`- **Test Report Ref**: ${TEST_REPORT}`);
+    expect(after).toContain(`- **QA Ref**: ${QA_REF}`);
   });
 
   test("exit 0 advancing qa PENDING → IN_PROGRESS once paired impl is DONE", async () => {
