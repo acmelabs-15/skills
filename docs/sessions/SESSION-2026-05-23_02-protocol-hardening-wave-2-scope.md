@@ -626,3 +626,32 @@ Source artifacts (ADR-005 primary, plus prior accepted ADRs that SPEC-008 must c
 - [[ADR-003: Plan/Session Render Architecture]] — render layer (relevant to SPEC-008 dispatch-brief generators per D-4)
 
 Expected SPEC-008 shape (per Event 22 + ADR-005 Decision Summary): 5 REQ clusters (one per track), 3-4 DESIGN notes, 15-20 TASKs, 1 SPEC root. ~30-35 notes total.
+
+
+## Event 27 — Wave 1 returned: 62 SPEC-008 child notes authored across 5 parallel architects
+
+Dispatched 5 parallel `brain:🧠-architect` agents (foreground; opus model) with strict file-ownership boundaries per Track. All 5 returned successfully. Total: 12 REQs + 4 DESIGNs + 46 TASKs = 62 child notes authored. Pattern 2 three-phase write completed on every note (kebab filenames + colon-form titles + verbatim H1 matches). All notes status DRAFT (REQ/DESIGN) or TODO (TASK); no premature `[x]`.
+
+**Track-by-track outputs**:
+
+| Track | Owner agent | Notes | Range |
+|---|---|---|---|
+| 1 Library coverage | a84e965e2e4cfe0cd | 14 (REQ-001..003 + DESIGN-001 + TASK-001..010) | D-2, D-5 |
+| 2 Per-skill scripts | a3a22bdbcae3b2fe3 | 13 (REQ-004..005 + DESIGN-002 + TASK-011..020) | D-1, D-4 |
+| 3 Tests | a1e232a5eb0a4c912 | 11 (REQ-006..007 + DESIGN-003 + TASK-021..028) | D-3 |
+| 4 Drift cleanup | aa6637442a92138ed | 11 (REQ-008..010 + TASK-029..036; no DESIGN) | D-6, D-7, rename, hygiene, code-vs-spec |
+| 5 Plugin hooks | a529acb3e09ecb033 | 13 (REQ-011..012 + DESIGN-004 + TASK-037..046) | D-8 |
+
+**Cross-track dependency flags** (surfaced by agents for the bi-directional closure pass):
+
+1. **`_shared/` → `shared/` rename precedence (TASK-029)**: Tracks 1, 2, 4, 5 TASKs that touch composition library files need `depends_on [[TASK-029-SPEC-008: Rename Shared Composition Directory]]`. TASK-029 runs FIRST in any build sequencing.
+2. **Track 1 validators → Track 5 hook handlers**: TASK-038..045 (hook handlers) `depends_on [[REQ-003-SPEC-008: New Claim Validator Suite]]`. Hooks cannot validate without the new validators existing.
+3. **Track 1 validators → Track 3 fixture authoring**: TASK-024 `depends_on [[REQ-003-SPEC-008: New Claim Validator Suite]]`. ADR/ANALYSIS/EPIC adversarial fixtures require their validators to exist.
+4. **Track 3 fixtures → Track 5 smoke tests**: TASK-046 `depends_on [[REQ-006-SPEC-008: Adversarial-Claim Test Harness and Initial Fixture Set]]`. Hook smoke tests reuse the adversarial fixture set.
+5. **REQ-008 `[~]` notation → Track 2 end-skill wrapper**: TASK-014 `depends_on [[TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation]]`. The end-skill `validate-spec-done.ts` wrapper must reflect the extended validator.
+6. **REQ-008 `[~]` notation → Track 5 Layer 6 Stop**: TASK-044 `depends_on [[REQ-008-SPEC-008: Deferred Checkbox Notation and Validator Extension]]`. Without it, legitimate deferred SPECs would be blocked by the turn-end backstop.
+7. **`validRelationTypes` export gap**: Track 2 agent verified `_shared/composition/src/schemas/common.ts` does NOT currently export `validRelationTypes`. REQ-005 + TASK-018 assume Track 1 adds this export. Orchestrator MUST verify REQ-001 covers it or amend Track 1 to slot it in before Track 2 build phase enters IN_PROGRESS.
+
+These cross-track edges will be added in the bi-directional closure pass via Brain MCP `edit_note` on the dependent TASK/REQ notes. ADR `implemented_by` relations (ADR-001/002/003/005 ← SPEC-008) added in the same pass.
+
+**Next**: commit Wave 1 → author SPEC-008 root → bi-dir closure → Phase 3 + ADR coverage + Gate A + Gate B → flip ACCEPTED → set-part-done.
