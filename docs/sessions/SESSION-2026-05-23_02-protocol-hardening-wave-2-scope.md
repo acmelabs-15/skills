@@ -947,3 +947,8 @@ PLAN `impl-TASK-001-SPEC-008`: IN_PROGRESS → DONE (at Event 43). TASK frontmat
 - `src/schemas/index.ts` did not previously exist (DESIGN-001 marked it MODIFIED, implying it existed). Created fresh with only the ADR export (other Wave 2 schema files are out of scope; exporting them would break tsc). Mechanical execution of the explicit DoD/DESIGN contract.
 
 Next: step (i) commit (code + PLAN + TASK + session atomic) → then qa-TASK-001 cycle (steps j–u).
+
+
+## Event 44 — qa-TASK-001 PENDING → IN_PROGRESS; dispatching QA (ADR schema)
+
+PLAN `qa-TASK-001-SPEC-008`: PENDING → IN_PROGRESS (owning_session SESSION-2026-05-23_02; at Event 44; paired impl DONE precondition satisfied). Next: dispatch brain:🧠-qa (foreground) to INDEPENDENTLY validate each TASK-001 DoD item + the ADR-scoped REQ-001 AC clauses + DESIGN-001 compliance points with concrete evidence (file:line, test name, command output). QA returns per-checkbox findings + verdict ONLY; orchestrator authors the QA-045 contract note (binary rule — QA agent does not write docs/**).
