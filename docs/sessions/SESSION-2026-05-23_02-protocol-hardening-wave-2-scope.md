@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - protocol-hardening
@@ -767,3 +767,46 @@ Workaround note: PLAN-part Outcome bullet could not use the `**Outcome**: [[wiki
 **PLAN-001 state**: 23/25 parts DONE. Remaining: build.SPEC-008 (READY — next available), protocol-hardening (IN_PROGRESS umbrella; flips DONE when build.SPEC-008 DONE). review + end parts were Wave 1 closures already DONE; PLAN frontmatter status flip to DONE happens after build.SPEC-008 + protocol-hardening close.
 
 **Next available**: build.SPEC-008 — re-invoke `/skills:plan PLAN-001-skills-ecosystem` to auto-route to /build for the 46-TASK Wave 2 implementation (per-TASK build+QA cycle; TASK-029 `_shared`→`shared` rename runs FIRST per dependency graph).
+
+
+## Event 32 — /plan continue → build.SPEC-008 IN_PROGRESS; PAUSED for fresh-session build marathon
+
+User invoked `/skills:plan PLAN-001-skills-ecosystem` (3rd continue). Single READY part: build.SPEC-008 (spec.SPEC-008 DONE; protocol-hardening is the IN_PROGRESS umbrella, not auto-routable). Branch `feat/plan-001-protocol-hardening-wave-2-scope` retained (non-main; branch policy allows).
+
+Orchestrator surfaced the build pacing decision: build.SPEC-008 is a 46-TASK marathon through the rigid per-TASK build+QA cycle (steps a-u each; impl + qa dispatch + TEST-REPORT + multiple commits per TASK) with a cross-track dependency graph. ~2-3x the SPEC-008 authoring workload that was pause-and-resume-fresh at Event 25. This session is heavy (31 events + DB-corruption recovery + full SPEC authoring).
+
+User locked (AskUserQuestion): **Fresh session (Recommended)** — flip build.SPEC-008 → IN_PROGRESS + commit durable state now, then PAUSE; resume in a clean session with full token budget.
+
+PLAN-001 edits applied:
+
+- build.SPEC-008 part: Substatus READY → IN_PROGRESS; Owning Session SESSION-2026-05-23_02
+- Progress Dashboard: build IN_PROGRESS 1→2, READY 1→0; total IN_PROGRESS 1→2, READY 1→0 (23 DONE / 25)
+- Cross-Part Dependency Graph: build_SPEC_008 node ready (🔵) → inprogress (⚡); class moved to inprogress group alongside protocol_hardening
+
+Session status flipped IN_PROGRESS → PAUSED.
+
+## Resume protocol (next session)
+
+1. `/skills:plan PLAN-001-skills-ecosystem` — continue mode
+2. Plan continue identifies build.SPEC-008 is IN_PROGRESS (not READY) — auto-resumes via /build (Stage A) for the per-TASK cycle
+3. /build reads the SPEC-008 subtree + complexity_tier (TIER_4) + the PlanNote renderer emits per-TASK impl + qa instruction blocks
+4. **Build order (cross-track dependency graph)**:
+   - FIRST: TASK-029 (`_shared/` → `shared/` rename) — every other TASK cites post-rename paths
+   - THEN Track 1 (TASK-001..010 schemas/parsers/validators) — unblocks Tracks 2/3/5
+   - THEN Track 4 cleanup (TASK-030..036) + Track 3 harness (TASK-021..023, 025..028) in parallel where files disjoint
+   - THEN Track 2 scripts (TASK-011..020, need Track 1 validators) + Track 3 TASK-024 (needs Track 1 validators)
+   - THEN Track 5 hooks (TASK-037..046, need Track 1 validators + Track 3 fixtures for smoke tests)
+5. Per-TASK rigid cycle steps a-u; QA writes TEST-REPORT per TASK; PLAN impl/qa items transition with owning_session + at_event context
+6. On all 46 TASKs DONE: spec-level QA coverage sweep → 4 exit gates → SPEC-008 IN_PROGRESS → DONE
+7. build.SPEC-008 → DONE → protocol-hardening umbrella → DONE → PLAN-001 frontmatter status → DONE (Wave 2 closes the PLAN)
+
+## Session 23 final deliverables (this session, across the pause/resume)
+
+- 5 parallel audits → ANALYSIS-004 omnibus
+- ADR-005 ACCEPTED (8 D-Ns: D-1..D-8 incl. D-8 automated enforcement hooks); decisions.4 DONE
+- SPEC-008 authored: 63 notes (12 REQ + 4 DESIGN + 46 TASK + root) across 5 parallel architect tracks; spec.SPEC-008 DONE
+- All /spec gates PASS: Phase 3 syntactic + ADR coverage + Gate A (9 REQs refined) + Gate B (2 empty TASKs authored)
+- basic-memory DB corruption resolved (user-authorized reset --reindex)
+- build.SPEC-008 → IN_PROGRESS (ready for fresh-session build marathon)
+- PLAN-001: 23/25 parts DONE; 2 IN_PROGRESS (build.SPEC-008 + protocol-hardening umbrella)
+- Commits this turn: Wave 1 (89f35cb) → SPEC root (06d2c9f) → ADR wikilink fix (1f06eca) → bi-dir + DB recovery (409e6ba) → Event 28 (213422f) → wikilink colons (90789a7) → Gate B fix (d057dda) → Gate A fix (b4ae304) → set-part-done (73f8db7) → build.SPEC-008 IN_PROGRESS + pause (this commit)

@@ -49,10 +49,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 0 | 4 | 4 |
 | spec-decomposition | 0 | 0 | 0 | 0 | 1 | 1 |
 | spec | 0 | 0 | 0 | 0 | 8 | 8 |
-| build | 0 | 1 | 0 | 1 | 7 | 9 |
+| build | 0 | 2 | 0 | 0 | 7 | 9 |
 | review | 0 | 0 | 0 | 0 | 1 | 1 |
 | end | 0 | 0 | 0 | 0 | 1 | 1 |
-| **Total** | **0** | **1** | **0** | **1** | **23** | **25** |
+| **Total** | **0** | **2** | **0** | **0** | **23** | **25** |
 
 ## Cross-Part Dependency Graph
 
@@ -89,7 +89,7 @@ graph TD
   end("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
   decisions_4("✅ <b>decisions.4</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Architecture Decisions (ADR-005)</span>")
   spec_SPEC_008("✅ <b>spec.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Protocol Hardening Wave 2</span>")
-  build_SPEC_008("🔵 <b>build.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Protocol Hardening Build</span>")
+  build_SPEC_008("⚡ <b>build.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Protocol Hardening Build</span>")
 
   research --> decisions_1
   decisions_1 --> decisions_2
@@ -129,8 +129,7 @@ graph TD
   spec_SPEC_008 --> build_SPEC_008
 
   class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end,decisions_4,spec_SPEC_008 done
-  class protocol_hardening inprogress
-  class build_SPEC_008 ready
+  class protocol_hardening,build_SPEC_008 inprogress
 ```
 
 ## Phase Progression
@@ -2287,7 +2286,8 @@ graph TD
 
 - **Phase**: build
 - **Title**: Build SPEC-008 — Wave 2 Protocol Hardening implementation
-- **Substatus**: READY
+- **Substatus**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
 - **Source Artifacts**: SPEC-008 Protocol Hardening Wave 2 (ACCEPTED 2026-05-23; spec.SPEC-008 DONE)
 - **Depends On**: spec.SPEC-008
 
