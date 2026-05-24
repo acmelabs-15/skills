@@ -15,7 +15,7 @@ tags:
 
 # TASK-045-SPEC-008: Implement git-state-observer Handler (Layer 7)
 
-## Description
+## Objective
 
 Implement `hooks/scripts/git-state-observer.ts` per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]] and [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]]. The script binds to the `FileChanged` event with matcher `.git/HEAD|.git/index|.git/logs/HEAD`. Triggered when a commit lands. The handler:
 

@@ -13,7 +13,7 @@ tags:
 
 # TASK-035-SPEC-008: Propagate SPEC-002 and SPEC-003 Checkbox Rollups and REQ Status Flips
 
-## Description
+## Objective
 
 ANALYSIS-004 Audit D identified SPEC-002 and SPEC-003 marked DONE with all `## Artifact Status` checkboxes still `[ ]` (Category 2 derived-view drift per CONVENTIONS Information Model), and four REQ notes in SPEC-002 (REQ-001, REQ-002, REQ-004, REQ-005) carrying `status: DRAFT` despite being implemented. Propagate the rollup correctly: flip completed-artifact rows to `[x]`, flip verified-DEFERRED rows to `[~]` (per REQ-008-SPEC-008 notation; depends on TASK-031 for SPEC-007 pattern reference), and flip the 4 REQ statuses to ACCEPTED.
 

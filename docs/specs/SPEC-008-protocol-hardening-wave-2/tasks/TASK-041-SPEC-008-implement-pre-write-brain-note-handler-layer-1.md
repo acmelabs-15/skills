@@ -15,7 +15,7 @@ tags:
 
 # TASK-041-SPEC-008: Implement pre-write-brain-note Handler (Layer 1)
 
-## Description
+## Objective
 
 Implement `hooks/scripts/pre-write-brain-note.ts` per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]] and [[REQ-011-SPEC-008: PreToolUse Blocking Gates]]. The script binds to Layer 1 (`PreToolUse` matcher `Edit|Write|MultiEdit` with `if: "Edit(docs/**/*.md)|Write(docs/**/*.md)|MultiEdit(docs/**/*.md)"`). On each invocation it: reads hook input via `parse-tool-input.ts`; validates the resolved file path falls within the project root (Phase 3 security P1); reads the existing file content from disk; applies the Edit/Write/MultiEdit operation in memory via `apply-edit-operation.ts`; calls `dispatchValidator(proposedContent, filePath)`; emits the corresponding PreToolUse response via `format-hook-response.ts`.
 

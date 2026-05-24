@@ -15,7 +15,7 @@ tags:
 
 # TASK-023-SPEC-008: Wire Adversarial-Claims Table-Driven Test Runner
 
-## Description
+## Objective
 
 Author the test runner at `shared/composition/tests/adversarial-claims.test.ts` that iterates a table of `AdversarialCase` entries over the initial fixture set (authored by TASK-022) and invokes `testAdversarial` per row. Add a coverage verification block that walks the on-disk fixture tree and asserts every fixture file is referenced in the table (no orphans) and every table row's `fixture` path resolves to an existing file on disk (no broken pointers).
 

@@ -15,7 +15,7 @@ tags:
 
 # TASK-046-SPEC-008: Author Hook Smoke Tests and Adversarial Fixture Reuse
 
-## Description
+## Objective
 
 Author end-to-end smoke tests that wire the hook layer (TASK-037 through TASK-045) against the adversarial fixture set authored by Track 3 ([[REQ-006-SPEC-008: Adversarial-Claim Test Harness and Initial Fixture Set]]). Per [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Cross-D-N Implications: "D-3 adversarial fixtures can be reused as hook smoke tests (the fixture *is* the lying claim the hook should deny)." Each fixture under `tests/fixtures/adversarial/<type>/drift-NN-<slug>.md` becomes both a validator-level test (Track 3) and a hook-level smoke test (this TASK).
 

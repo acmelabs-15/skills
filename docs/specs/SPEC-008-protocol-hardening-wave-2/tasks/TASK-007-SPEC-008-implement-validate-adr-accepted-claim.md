@@ -15,7 +15,7 @@ tags:
 
 # TASK-007-SPEC-008: Implement validateAdrAcceptedClaim
 
-## Description
+## Objective
 
 Implement `validateAdrAcceptedClaim(adrNote: AdrNote): AdrClaimResult` at `shared/composition/src/validators/adr-claim-validator.ts` per [[REQ-003-SPEC-008: New Claim Validator Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. The validator is a pure function that takes an already-parsed AdrNote (produced by TASK-005's `parseAdrNote`) and returns `{ ok: boolean, unsatisfied: Array<{ path, reason }> }`. The validator fires only when `adrNote.frontmatter.status === 'ACCEPTED'`; for any other status it returns `{ ok: true, unsatisfied: [] }` without inspecting body fields. When firing, it checks: (1) every Clarifications item has a checked `[x]` checkbox; (2) every Considered Option entry has a non-empty rationale field. Each failing item contributes an entry to the `unsatisfied` array with a structured `path` (e.g., `clarifications[2].checkbox`) and a human-readable `reason`.
 

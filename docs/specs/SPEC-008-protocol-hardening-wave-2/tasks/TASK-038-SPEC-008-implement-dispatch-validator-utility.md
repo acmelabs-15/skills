@@ -15,7 +15,7 @@ tags:
 
 # TASK-038-SPEC-008: Implement dispatch-validator Utility
 
-## Description
+## Objective
 
 Implement `hooks/lib/dispatch-validator.ts` per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]. The module reads parsed Brain note content, identifies the frontmatter `type:` value, routes to the matching claim validator from `shared/composition/src/validators/`, and returns a `DispatchOutcome` of `{ verdict: "deny" | "allow-with-warning" | "allow", reason?, warning? }`. The dispatch routing table covers the Wave 1 validators (`validateTaskDoneClaim`, `validateRequirementAcClaim`, `validateDesignComplianceClaim`, `validateSpecDoneClaim`, `validateTestReportPassClaim`) plus the Wave 2 validators authored under [[REQ-003-SPEC-008: New Claim Validator Suite]]. Schema parse failures map to deny if they touch status-flip claim contracts; non-blocking schema issues (missing tags, observation count below threshold) map to allow-with-warning. Unparseable input throws and surfaces to the caller, which converts to a structured stderr error.
 

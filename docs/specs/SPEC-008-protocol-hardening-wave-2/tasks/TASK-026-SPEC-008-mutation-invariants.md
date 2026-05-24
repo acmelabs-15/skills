@@ -14,7 +14,7 @@ tags:
 
 # TASK-026-SPEC-008: Mutation Backward Transition and Idempotency Tests
 
-## Description
+## Objective
 
 Author the mutation-invariant test file at `shared/composition/tests/mutation-invariants.test.ts` (or extend an existing structure if one exists) with two top-level `describe` blocks: (1) backward-transition rejection — `applyPlanMutation({type: "transition-impl-item", from: "DONE", to: "IN_PROGRESS"})` is rejected with an explicit backward-transition error; (2) double-apply idempotency — applying the same mutation twice in sequence on a fresh fixture yields a final state byte-identical to a single-apply result (idempotency invariant). These tests close two of the three gaps surfaced in ADR-005 D-3 Phase 3 critic P1.2.
 

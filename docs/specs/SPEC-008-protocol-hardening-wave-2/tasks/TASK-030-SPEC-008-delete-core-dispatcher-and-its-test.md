@@ -13,7 +13,7 @@ tags:
 
 # TASK-030-SPEC-008: Delete Core Dispatcher and Its Test
 
-## Description
+## Objective
 
 Delete the prototype dispatcher `shared/composition/src/core/dispatcher.ts` (33 lines; registers only 4 of 5 source_types — missing `spec`; superseded by SPEC-005 `registry.ts`) and its paired test file per ADR-005 D-7. Evidence captured pre-lock: zero production imports of `core/dispatcher`; only `core/adapter.ts` interface is consumed by adapters. Deletion is over fix because keeping a duplicate dispatcher creates ambiguity about which is authoritative.
 

@@ -15,7 +15,7 @@ tags:
 
 # TASK-040-SPEC-008: Implement Git Helpers for Staged and Diff Content
 
-## Description
+## Objective
 
 Implement two shared hook utilities under `hooks/lib/` per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]:
 
@@ -25,26 +25,22 @@ Implement two shared hook utilities under `hooks/lib/` per [[DESIGN-004-SPEC-008
 Both modules MUST resolve the repo root via `git rev-parse --show-toplevel` and pass that as the `cwd` to every git subprocess. Path containment validation runs in the per-handler entry scripts before these utilities are invoked.
 
 ## Definition of Done
-
-- [ ] `hooks/lib/git-staged-files.ts` exists with `readStagedBrainNotes(repoRoot: string): Promise<StagedNote[]>`
-- [ ] readStagedBrainNotes invokes `git diff --cached --name-only --diff-filter=ACM` filtered to `docs/**/*.md`
-- [ ] readStagedBrainNotes invokes `git show :<file>` per result and returns `{ filePath, content }`
-- [ ] readStagedBrainNotes handles the empty-staged-set case (returns `[]`)
-- [ ] `hooks/lib/git-diff-commits.ts` exists with `readPushDiffBrainNotes(repoRoot, remote, branch)` and `readPrDiffBrainNotes(repoRoot, baseBranch)`
-- [ ] readPushDiffBrainNotes invokes `git diff <remote>/<branch>...HEAD --name-only` filtered to `docs/**/*.md`
-- [ ] readPushDiffBrainNotes handles the no-upstream case by falling back to walking commits ahead of `@{u}` if reachable, otherwise returns `[]` with a logged warning
-- [ ] readPrDiffBrainNotes invokes `git diff <baseBranch>...HEAD --name-only` filtered to `docs/**/*.md`
-- [ ] All git subprocess calls use Bun.spawn or equivalent with `cwd` set to repo root
-- [ ] Unit tests cover the staged, push-diff, and PR-diff happy paths against a fixture repo
-- [ ] Unit tests cover empty-set, no-upstream, and non-`docs/**` file path filtering
-- [ ] biome lint passes
-- [ ] `bun tsc --noEmit` passes
-
+- [x] `hooks/lib/git-staged-files.ts` exists with `readStagedBrainNotes(repoRoot: string): Promise<StagedNote[]>`
+- [x] readStagedBrainNotes invokes `git diff --cached --name-only --diff-filter=ACM` filtered to `docs/**/*.md`
+- [x] readStagedBrainNotes invokes `git show :<file>` per result and returns `{ filePath, content }`
+- [x] readStagedBrainNotes handles the empty-staged-set case (returns `[]`)
+- [x] `hooks/lib/git-diff-commits.ts` exists with `readPushDiffBrainNotes(repoRoot, remote, branch)` and `readPrDiffBrainNotes(repoRoot, baseBranch)`
+- [x] readPushDiffBrainNotes invokes `git diff <remote>/<branch>...HEAD --name-only` filtered to `docs/**/*.md`
+- [x] readPushDiffBrainNotes handles the no-upstream case by falling back to walking commits ahead of `@{u}` if reachable, otherwise returns `[]` with a logged warning
+- [x] readPrDiffBrainNotes invokes `git diff <baseBranch>...HEAD --name-only` filtered to `docs/**/*.md`
+- [x] All git subprocess calls use Bun.spawn or equivalent with `cwd` set to repo root
+- [x] Unit tests cover the staged, push-diff, and PR-diff happy paths against a fixture repo
+- [x] Unit tests cover empty-set, no-upstream, and non-`docs/**` file path filtering
+- [x] biome lint passes
+- [x] `bun tsc --noEmit` passes
 ## ADR Compliance
-
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Implementation Notes (git-staged-files and git-diff-commits listed in lib/)
-- [ ] Honors Phase 3 security P1 — modules accept already-validated paths; path containment is the entry-script responsibility
-
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Implementation Notes (git-staged-files and git-diff-commits listed in lib/)
+- [x] Honors Phase 3 security P1 — modules accept already-validated paths; path containment is the entry-script responsibility
 ## Files Affected
 
 | File | Action | Purpose |

@@ -15,7 +15,7 @@ tags:
 
 # TASK-008-SPEC-008: Implement validateAnalysisAcceptedClaim
 
-## Description
+## Objective
 
 Implement `validateAnalysisAcceptedClaim(analysisNote: AnalysisNote): AnalysisClaimResult` at `shared/composition/src/validators/analysis-claim-validator.ts` per [[REQ-003-SPEC-008: New Claim Validator Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. The validator fires only when `analysisNote.frontmatter.status === 'ACCEPTED'`. When firing, it rejects the presence of any `## Open Questions` section detected by the ANALYSIS parser (TASK-006). This is the single highest-value P1 enforcement because it prevents the Wave 7 pattern (41 analyses with Open Questions sections in ACCEPTED status) from recurring.
 

@@ -14,7 +14,7 @@ tags:
 
 # TASK-025-SPEC-008: Integration Test Parse Mutate Validate Render
 
-## Description
+## Objective
 
 Author the full-pipeline integration test at `shared/composition/tests/integration/parse-mutate-validate-render.test.ts`. The test exercises the composition library's end-to-end contract on at least three representative fixtures (one PLAN, one SPEC, one TASK): load fixture markdown → parse via the type's parser → apply a representative mutation via `applyPlanMutation` (or equivalent) → invoke the claim validator on the mutated note → render via the type's renderer → assert the final rendered output is byte-equivalent to the expected post-mutation state. Also author the two cross-note consistency tests: `cross-note-spec-task-consistency.test.ts` (SPEC root rollup vs child TASK status) and `test-report-vs-task-dod.test.ts` (TEST-REPORT row PASS vs TASK DoD `[x]`).
 

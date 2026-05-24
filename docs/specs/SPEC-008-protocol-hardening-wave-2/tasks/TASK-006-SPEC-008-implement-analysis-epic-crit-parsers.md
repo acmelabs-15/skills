@@ -15,7 +15,7 @@ tags:
 
 # TASK-006-SPEC-008: Implement ANALYSIS, EPIC, and CRIT Parsers
 
-## Description
+## Objective
 
 Implement `parseAnalysisNote`, `parseEpicNote`, and `parseCritNote` at `shared/composition/src/parsers/analysis-note.ts`, `epic-note.ts`, and `crit-note.ts` per [[REQ-002-SPEC-008: New Parser Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. Each parser follows the pattern established by TASK-005 (ADR parser): unified plus remark-parse, frontmatter via js-yaml, section dispatch via `bulletFieldMap`, Observations and Relations via shared AST helpers, final schema validation via the corresponding `*NoteSchema.parse()` call.
 

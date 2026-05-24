@@ -15,7 +15,7 @@ tags:
 
 # TASK-027-SPEC-008: Session Mutation Duplicate Event Number Test
 
-## Description
+## Objective
 
 Add a test to `shared/composition/tests/mutation-invariants.test.ts` (the file authored by TASK-026) asserting that a session mutation that attempts to append an `Event NN` whose `NN` is already present in the note is rejected with a recognizable duplicate-event-number error. The test regression-locks Phase X drift surface where SESSION-2026-05-21_01 acquired duplicate Event 36 / 37 / 38 after killed-agent re-entry — exactly the failure mode this test prevents.
 

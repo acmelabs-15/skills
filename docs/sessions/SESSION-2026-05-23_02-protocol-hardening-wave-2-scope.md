@@ -2652,3 +2652,27 @@ These reinforce P1 (validator strictness is a recurring fix-notes-vs-fix-parser/
 - 40 SPEC-008 TASK notes: `[task]` observation category → valid category (39 [fact] + 1 [decision]); P2 RESOLVED
 - 24 TASK notes: frontmatter tags trimmed to ≤5
 - P3 logged (37 notes `## Description`≠`## Objective`); P4 logged (4 notes false-DONE: 002/005/039/040)
+
+
+## Event 111 — P3 + P4 RESOLVED: all 47 TASK notes schema-conformant
+
+`brain:🧠-memory` agent (keep-validator-strict, fix-the-notes per user directive):
+
+- **P3 RESOLVED**: renamed `## Description` → `## Objective` on 37 notes (canonical per NOTE-TEMPLATES + `parseTaskNote`). 10 Track-2 notes (011-020) already used `## Objective`. 0 edge cases (none had both/neither).
+- **P4 RESOLVED**: 4 DONE-with-unchecked-DoD notes (002/005/039/040) — all VERIFIED genuinely done (QA-052/053/054/055 reports exist + all `## Files Affected` deliverables present on disk + suite green) → DoD + ADR-Compliance checkboxes flipped `[x]` to reconcile the record. NONE were false-DONEs — prior sessions flipped `status: DONE` without ticking the boxes (a process gap, not a lie). 0 flagged for reopen.
+- **Result: 47/47 TASK notes exit 0 on `validate-task-schema`.** Full SPEC-008 TASK-note conformance achieved.
+
+Confirms the enforcement's value: it caught [task]-category drift (P2), Description/Objective drift (P3), and unticked-DoD-on-DONE (P4) — all pre-existing, all authored before the layer existed.
+
+### Remaining before SPEC-008 can close
+- **FU-6**: fix the Stop hook (TASK-044) per-event input-shape bug before re-enabling hooks.
+- **Close the 6 QA-passed tasks** (014/023/041/042/043/045) + TASK-044 (after its FU-6 fix + QA).
+- **Remaining PENDING**: 024, 028, 031, 035, 036, 046.
+- **Re-enable hooks + run TASK-046 smoke** as the proper go-live (the layer stays disabled until complete + QA'd).
+- **P1**: keep validator strict (user-endorsed); no change.
+
+### State Changes
+
+- 37 TASK notes: `## Description` → `## Objective` (P3 RESOLVED)
+- TASK-002/005/039/040: DoD + ADR-Compliance checkboxes → [x] (P4 RESOLVED; verified done)
+- All 47 SPEC-008 TASK notes now pass TaskNoteSchema validation

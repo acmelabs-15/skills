@@ -15,7 +15,7 @@ tags:
 
 # TASK-043-SPEC-008: Implement pre-commit, pre-push, and pre-pr-create Handlers (Layers 3-5)
 
-## Description
+## Objective
 
 Implement three `PreToolUse` `Bash` handlers per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]] and [[REQ-011-SPEC-008: PreToolUse Blocking Gates]]:
 

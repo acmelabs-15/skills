@@ -15,7 +15,7 @@ tags:
 
 # TASK-047-SPEC-008: Add H1-Drift Detection to CRIT Parser
 
-## Description
+## Objective
 
 Follow-up TASK authored 2026-05-24 SESSION-2026-05-23_02 Event 77 to close the REQ-001 AC-5 coverage gap surfaced during Batch 5c closure (Event 76). REQ-001 AC-5 requires that a CRIT note whose H1 does not match its frontmatter title verbatim is rejected. The original AC text said `CritNoteSchema.parse()` would detect this, but the schema validates the parsed model which carries no raw H1 string by design (schemas validate intrinsic structure; AST extraction is parser-layer). QA-059 (CRIT schema) and QA-060 (CRIT parser) each deferred the AC to the other; neither implemented the check. AC-5 was reworded (Event 77 per D-4 LOCKED) to assert parser-layer detection.
 

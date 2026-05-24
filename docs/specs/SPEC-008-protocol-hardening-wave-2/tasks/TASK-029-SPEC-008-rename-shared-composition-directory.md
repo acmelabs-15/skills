@@ -13,7 +13,7 @@ tags:
 
 # TASK-029-SPEC-008: Rename Shared Composition Directory
 
-## Description
+## Objective
 
 Rename the composition library directory from `_shared/` to `shared/` at project root per ADR-005 D-2 user-clarification scope addition (SESSION-2026-05-23_02 Event 11). This is the load-bearing structural change in Track 4 — every other Track 4 TASK and every other Wave 2 track operates against the renamed path. Execute first.
 

@@ -15,7 +15,7 @@ tags:
 
 # TASK-037-SPEC-008: Author hooks.json Manifest
 
-## Description
+## Objective
 
 Author `${CLAUDE_PLUGIN_ROOT}/hooks/hooks.json` declaring all seven hook layers from [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 and [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]. The manifest binds `PreToolUse` Layers 1-5, the `Stop` Layer 6, and the `FileChanged` Layer 7 to their handler scripts under `hooks/scripts/`. Use the exact matchers and `if` filters from the ADR table verbatim. Reference handler scripts via `${CLAUDE_PLUGIN_ROOT}/hooks/scripts/<name>.ts` and invoke with `bun`.
 

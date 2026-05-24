@@ -13,7 +13,7 @@ tags:
 
 # TASK-036-SPEC-008: Amend REQ-009-SPEC-007 Mutation Count from 9 to 11
 
-## Description
+## Objective
 
 ANALYSIS-004 Audit D identified REQ-009-SPEC-007 body text "9 mutation types" as stale — the composition library now ships 11 mutation types (added `transition-impl-item` and `transition-qa-item` via PR #14 during Phase X Wave 1). Amend the requirement body to read "11 mutation types" and add a provenance line citing the PR. Use Brain MCP `edit_note` per binary tool rule.
 

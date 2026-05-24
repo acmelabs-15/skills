@@ -15,7 +15,7 @@ tags:
 
 # TASK-021-SPEC-008: Implement Adversarial-Claim Test Harness
 
-## Description
+## Objective
 
 Implement the shared adversarial-claim test harness at `shared/composition/tests/_helpers/adversarial.ts` per DESIGN-003-SPEC-008. The harness exports `testAdversarial(label, {fixture, validator, expectedReject})` and two internal helpers (`parseByValidatorType`, `invokeValidator`). The harness loads a markdown fixture, parses it via the validator-appropriate parser, invokes the matching claim validator, and asserts that the result is a rejection matching `expectedReject`. Parse failures surface as a distinct "fixture malformed" assertion. The harness signature MUST match the DESIGN verbatim; no API drift permitted.
 

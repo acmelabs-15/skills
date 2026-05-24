@@ -15,35 +15,31 @@ tags:
 
 # TASK-005-SPEC-008: Implement ADR Parser
 
-## Description
+## Objective
 
 Implement `parseAdrNote(markdown: string): AdrNote` at `shared/composition/src/parsers/adr-note.ts` per [[REQ-002-SPEC-008: New Parser Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. The parser uses unified plus remark-parse plus remark-frontmatter to produce an AST, extracts frontmatter via js-yaml, dispatches body sections via the `bulletFieldMap` pattern from SPEC-007 DESIGN-002, parses Observations and Relations via the existing AST helpers, then validates the assembled model via `AdrNoteSchema.parse()` from TASK-001. Parsing failures throw Zod errors with structured paths. Mismatched `type` literals (e.g., feeding a non-ADR file) fail at the frontmatter layer.
 
 This TASK depends on TASK-001 (schema is the parser's contract) and Track 4 renaming `_shared/` to `shared/`.
 
 ## Definition of Done
-
-- [ ] File `shared/composition/src/parsers/adr-note.ts` exists and exports `parseAdrNote`
-- [ ] Frontmatter is parsed via js-yaml and validated against `AdrNoteSchema['frontmatter']`
-- [ ] Body sections are dispatched via `bulletFieldMap`; unknown sections are reported through the schema (not silently dropped)
-- [ ] Considered Options table rows are parsed into the `considered_options` array with rationale per row
-- [ ] Clarifications items including checkbox state are parsed into the `clarifications` array
-- [ ] Observations and Relations are parsed via shared `parseObservations` and `parseRelations` AST helpers
-- [ ] Parser throws Zod error when input `type` field is not `decision`
-- [ ] Parser throws Zod error when input violates any superRefine rule from TASK-001
-- [ ] Unit tests cover: valid PROPOSED parse round-trips, valid ACCEPTED parse round-trips, wrong type rejection, malformed frontmatter rejection, missing required section rejection
-- [ ] Render-then-parse round-trip test passes (structural fields identical) where a renderer is available; if no renderer exists, integration test uses a fixture
-- [ ] `bun test shared/composition/tests/parsers/adr-note.test.ts` passes with at least 6 cases green
-- [ ] `biome check` passes
-- [ ] `tsc --noEmit` passes
-- [ ] `shared/composition/src/parsers/index.ts` re-exports `parseAdrNote`
-
+- [x] File `shared/composition/src/parsers/adr-note.ts` exists and exports `parseAdrNote`
+- [x] Frontmatter is parsed via js-yaml and validated against `AdrNoteSchema['frontmatter']`
+- [x] Body sections are dispatched via `bulletFieldMap`; unknown sections are reported through the schema (not silently dropped)
+- [x] Considered Options table rows are parsed into the `considered_options` array with rationale per row
+- [x] Clarifications items including checkbox state are parsed into the `clarifications` array
+- [x] Observations and Relations are parsed via shared `parseObservations` and `parseRelations` AST helpers
+- [x] Parser throws Zod error when input `type` field is not `decision`
+- [x] Parser throws Zod error when input violates any superRefine rule from TASK-001
+- [x] Unit tests cover: valid PROPOSED parse round-trips, valid ACCEPTED parse round-trips, wrong type rejection, malformed frontmatter rejection, missing required section rejection
+- [x] Render-then-parse round-trip test passes (structural fields identical) where a renderer is available; if no renderer exists, integration test uses a fixture
+- [x] `bun test shared/composition/tests/parsers/adr-note.test.ts` passes with at least 6 cases green
+- [x] `biome check` passes
+- [x] `tsc --noEmit` passes
+- [x] `shared/composition/src/parsers/index.ts` re-exports `parseAdrNote`
 ## ADR Compliance
-
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (flat directory placement)
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5
-- [ ] Honors [[ADR-001: Composition Library Architecture]] (unified plus remark AST pattern)
-
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (flat directory placement)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5
+- [x] Honors [[ADR-001: Composition Library Architecture]] (unified plus remark AST pattern)
 ## Files Affected
 
 | File | Action | Purpose |

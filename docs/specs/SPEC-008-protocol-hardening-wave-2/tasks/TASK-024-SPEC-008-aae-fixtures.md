@@ -15,7 +15,7 @@ tags:
 
 # TASK-024-SPEC-008: Author ADR ANALYSIS EPIC Adversarial Fixtures
 
-## Description
+## Objective
 
 Once Track 1 lands the new claim validators (`validateAdrAcceptedClaim`, `validateAnalysisAcceptedClaim`, `validateEpicDoneClaim` per REQ-003-SPEC-008), add three new fixture subdirectories under `shared/composition/tests/fixtures/adversarial/` (one each for `adr/`, `analysis/`, `epic/`), author at least one drift fixture per new validator covering its highest-value rejection scenario, and add the corresponding rows to `tests/adversarial-claims.test.ts`. CRIT has no claim validator (per ADR-005 D-5 Implementation Notes) and so receives no adversarial fixture subdirectory.
 

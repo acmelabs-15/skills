@@ -15,7 +15,7 @@ tags:
 
 # TASK-022-SPEC-008: Author Initial Adversarial Fixture Set for Five Existing Validators
 
-## Description
+## Objective
 
 Author the initial set of adversarial fixture markdown files at `shared/composition/tests/fixtures/adversarial/<type>/drift-NN-<slug>.md` covering Audit E's top-10 prioritized scenarios across the five existing claim validators (task, spec, requirement, design, test-report). Each fixture encodes one realistic lying-claim scenario as a canonical Brain note (frontmatter + H1 + sections + Observations + Relations) with the lying behavior identifiable from the markdown content alone. Fixture filenames double as drift regression markers per DESIGN-003 and REQ-006 AC-4.
 

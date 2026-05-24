@@ -15,7 +15,7 @@ tags:
 
 # TASK-034-SPEC-008 Repair Brain Note Hygiene Violations from Audit C
 
-## Description
+## Objective
 
 [[ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis]] Audit C found a 10% violation rate across 100 Brain notes (MINOR_DRIFT verdict — cleanup substantially held, no systemic breakdown). This TASK repairs the six categories of violation it identified, across the ten affected notes. All edits via Brain MCP `edit_note` per the binary tool rule (CONVENTIONS Section 1.7.1) — NEVER raw Edit/Write on `docs/**`.
 

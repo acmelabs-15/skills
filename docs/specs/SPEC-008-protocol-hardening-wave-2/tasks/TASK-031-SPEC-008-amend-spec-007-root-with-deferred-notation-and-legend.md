@@ -13,7 +13,7 @@ tags:
 
 # TASK-031-SPEC-008: Amend SPEC-007 Root with Deferred Notation and Legend
 
-## Description
+## Objective
 
 Apply the `[~]` deferred-notation amendment to the SPEC-007 root note per REQ-008-SPEC-008 + ADR-005 D-6. Three artifact rows (REQ-012, TASK-013, TASK-014) currently show `[ ]` despite their notes carrying `status: DEFERRED`. Flip each to `[~]` and prepend a one-line notation legend to the `## Artifact Status` section. Use Brain MCP `edit_note` (NEVER raw Edit on `docs/**` per binary tool rule).
 

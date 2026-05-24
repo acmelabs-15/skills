@@ -15,7 +15,7 @@ tags:
 
 # TASK-044-SPEC-008: Implement stop-backstop Handler (Layer 6)
 
-## Description
+## Objective
 > Amended 2026-05-24 (SESSION-2026-05-23_02 Event 105, user-approved Option A): enumeration mechanism changed from transcript-walk to `git status --porcelain` per REQ-012 AC1 (transcript-parsing misses Brain-MCP edits; mtime-scanning misses reverts; git-status catches tool-mediated edits regardless of the Edit/Write vs MCP path). DESIGN-004 Layer-6 prose amended to match.
 
 Implement `hooks/scripts/stop-backstop.ts` per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]] and [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]]. The script binds to the `Stop` event with no matcher (fires on every turn end). On invocation it:

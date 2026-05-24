@@ -13,7 +13,7 @@ tags:
 
 # TASK-033-SPEC-008: Document Deferred Notation in CONVENTIONS Sections 4.6 and 4.7
 
-## Description
+## Objective
 
 Amend `KNOWLEDGE-GRAPH-STRUCTURES.md` (the progressive-disclosure breakout that holds Section 4.5-Section 4.12 per-note-type structures) to document the `[~]` deferred-notation marker as canonical for PLAN parts (Section 4.6) and SPEC root artifact rows (Section 4.7). This closes the documentation gap so future spec/plan authors and validator implementers share one source of truth. Per REQ-008-SPEC-008 EARS clause 3.
 

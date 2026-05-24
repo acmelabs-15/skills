@@ -15,7 +15,7 @@ tags:
 
 # TASK-039-SPEC-008: Implement Edit Operation and Tool Input Helpers
 
-## Description
+## Objective
 
 Implement three shared hook utilities under `hooks/lib/` per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]:
 
@@ -24,25 +24,21 @@ Implement three shared hook utilities under `hooks/lib/` per [[DESIGN-004-SPEC-0
 3. `format-hook-response.ts` — emits the four hook response shapes (`PreToolUseDeny`, `PreToolUseAllow`, `StopBlock`, `FileChangedObserve`) as JSON on stdout with the exact key names the Claude Code runtime expects.
 
 ## Definition of Done
-
-- [ ] `hooks/lib/apply-edit-operation.ts` exists with `applyEditOperation(op: EditOperation, currentContent: string): string`
-- [ ] applyEditOperation handles `Edit` (single `oldString`/`newString` find-replace), `Write` (full content overwrite), and `MultiEdit` (sequential application of `edits[]`)
-- [ ] applyEditOperation throws an explicit error when `oldString` does not exist or matches non-uniquely (for Edit/MultiEdit) so the caller can fall back to fail-open
-- [ ] `hooks/lib/parse-tool-input.ts` exists with `readHookInput(): Promise<HookInput>`
-- [ ] readHookInput reads stdin to EOF, parses JSON, validates the shape against a Zod schema, returns the typed HookInput
-- [ ] parse-tool-input handles tool_input shape variation between local Edit/Write/MultiEdit and MCP `edit_note`/`write_note` (the latter carries `permalink` and `content` rather than `file_path` and `new_string`)
-- [ ] `hooks/lib/format-hook-response.ts` exists with `emitResponse(response): void`
-- [ ] emitResponse writes JSON to stdout with no trailing whitespace, calls `process.stdout.write` followed by `\n`, does not pretty-print
-- [ ] Unit tests cover each Edit/Write/MultiEdit shape against representative current content
-- [ ] Unit tests cover the four response shapes for emitResponse byte-for-byte against fixtures
-- [ ] biome lint passes
-- [ ] `bun tsc --noEmit` passes
-
+- [x] `hooks/lib/apply-edit-operation.ts` exists with `applyEditOperation(op: EditOperation, currentContent: string): string`
+- [x] applyEditOperation handles `Edit` (single `oldString`/`newString` find-replace), `Write` (full content overwrite), and `MultiEdit` (sequential application of `edits[]`)
+- [x] applyEditOperation throws an explicit error when `oldString` does not exist or matches non-uniquely (for Edit/MultiEdit) so the caller can fall back to fail-open
+- [x] `hooks/lib/parse-tool-input.ts` exists with `readHookInput(): Promise<HookInput>`
+- [x] readHookInput reads stdin to EOF, parses JSON, validates the shape against a Zod schema, returns the typed HookInput
+- [x] parse-tool-input handles tool_input shape variation between local Edit/Write/MultiEdit and MCP `edit_note`/`write_note` (the latter carries `permalink` and `content` rather than `file_path` and `new_string`)
+- [x] `hooks/lib/format-hook-response.ts` exists with `emitResponse(response): void`
+- [x] emitResponse writes JSON to stdout with no trailing whitespace, calls `process.stdout.write` followed by `\n`, does not pretty-print
+- [x] Unit tests cover each Edit/Write/MultiEdit shape against representative current content
+- [x] Unit tests cover the four response shapes for emitResponse byte-for-byte against fixtures
+- [x] biome lint passes
+- [x] `bun tsc --noEmit` passes
 ## ADR Compliance
-
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Implementation Notes (lib/ utilities listed: apply-edit-operation, parse-tool-input, format-hook-response)
-- [ ] Honors Phase 3 security P1 — applyEditOperation does not resolve paths or shell out; path containment validation lives in the per-handler entry scripts
-
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Implementation Notes (lib/ utilities listed: apply-edit-operation, parse-tool-input, format-hook-response)
+- [x] Honors Phase 3 security P1 — applyEditOperation does not resolve paths or shell out; path containment validation lives in the per-handler entry scripts
 ## Files Affected
 
 | File | Action | Purpose |

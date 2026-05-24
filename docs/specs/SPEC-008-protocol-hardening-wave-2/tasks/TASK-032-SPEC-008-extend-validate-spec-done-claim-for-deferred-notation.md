@@ -13,7 +13,7 @@ tags:
 
 # TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation
 
-## Description
+## Objective
 
 Extend the composition library `validateSpecDoneClaim` validator at `shared/composition/src/validators/spec-claim-validator.ts` to recognize `[~]` (deferred marker) as a terminal artifact-status indicator alongside `[x]` (done) when validating SPEC root `## Artifact Status` sections. Scope the extension to SPEC root rows only — TASK DoD checkboxes remain binary `[ ]` / `[x]` per Phase X invariants and per REQ-008-SPEC-008 AC-4.
 

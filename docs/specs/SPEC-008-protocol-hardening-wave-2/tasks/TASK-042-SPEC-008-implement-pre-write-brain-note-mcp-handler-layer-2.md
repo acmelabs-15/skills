@@ -15,7 +15,7 @@ tags:
 
 # TASK-042-SPEC-008: Implement pre-write-brain-note-mcp Handler (Layer 2)
 
-## Description
+## Objective
 
 Implement `hooks/scripts/pre-write-brain-note-mcp.ts` per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]] and [[REQ-011-SPEC-008: PreToolUse Blocking Gates]]. The script binds to Layer 2 (`PreToolUse` matcher `mcp__plugin_brain_brain__edit_note|mcp__plugin_brain_brain__write_note`). MCP tool inputs differ from local file tool inputs: `write_note` carries `title`, `directory`, `content`, `tags`; `edit_note` carries `identifier` and `operation` (`append`, `prepend`, `find_replace`, `replace_section`) plus operation-specific fields. The handler resolves the target Brain note's full content after the proposed MCP operation, then runs the dispatch validator and emits the matching response.
 

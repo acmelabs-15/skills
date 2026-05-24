@@ -15,7 +15,7 @@ tags:
 
 # TASK-010-SPEC-008: Extend PLAN Schema and Implement validatePlanDoneClaim
 
-## Description
+## Objective
 
 Two paired changes delivered as one TASK because they form a single logical unit (the superRefine and the claim validator both enforce the same all-parts-terminal invariant; splitting them risks one landing without the other):
 

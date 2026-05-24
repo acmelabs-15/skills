@@ -15,7 +15,7 @@ tags:
 
 # TASK-003-SPEC-008: Implement EPIC Schema
 
-## Description
+## Objective
 
 Implement `EpicNoteSchema` at `shared/composition/src/schemas/epic-note.ts` per [[REQ-001-SPEC-008: New Schema Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. The schema validates frontmatter (title regex `^EPIC-\d{3}.*`, type literal `epic`, status enum, permalink regex `^roadmap/`, tags 2-5), body sections (Context, Scope, Contained Specs section that mirrors the `contains` Relations entries), Observations, Relations (with at least one `contains` relation when the EPIC contains any SPEC). The schema does NOT include a done-claim refinement at the schema layer; the cross-note done-claim check lives in `validateEpicDoneClaim` (TASK-009) because it requires resolving SPEC files outside the EPIC itself.
 

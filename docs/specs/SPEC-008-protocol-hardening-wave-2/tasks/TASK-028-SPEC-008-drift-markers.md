@@ -15,7 +15,7 @@ tags:
 
 # TASK-028-SPEC-008: Annotate Existing Tests with Phase X Drift Markers
 
-## Description
+## Objective
 
 Insert `// drift-marker: <PHASE-X-DRIFT-SURFACE-ID> — <one-line>` source-code comments on five existing test cases in `shared/composition/tests/` that regression-lock Phase X drift surfaces from [[RETRO-003: Phase X Execution and Composition Library Completion]] (37 surfaces enumerated). The five selected for this REQ are listed in REQ-007 Context. Each insertion is a one-line surgical edit that does not alter test behavior. The drift-marker convention makes the test-to-drift-surface mapping greppable from any test entry-point.
 
