@@ -2242,7 +2242,7 @@ graph TD
 
 **DoD**:
 
-- [ ] D-1 LOCKED — Composition library invocation pattern (in-process import vs `bun run` CLI vs per-validator script wrapper)
+- [x] D-1 LOCKED — Per-skill scripts: each lifecycle skill ships gate-point scripts at `skills/<name>/scripts/<verb>.ts` as thin wrappers importing from `_shared/composition/`. Matches existing defrag/ingest pattern; skills become self-contained; new validators colocate with the skill that needs them.
 - [ ] D-2 LOCKED — Directory layout for new schemas/parsers/validators (extend `src/schemas|parsers|validators/` flat OR new `wave-2/` subdir)
 - [ ] D-3 LOCKED — Adversarial-claim test scaffold pattern (fixture-based parse-then-validate template)
 - [ ] D-4 LOCKED — Dispatch-brief template persistence + enforcement mechanism (file location + how skills consume)

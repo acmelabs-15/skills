@@ -268,3 +268,34 @@ Surfacing as AskUserQuestion now.
 4. **protocol-hardening** (existing IN_PROGRESS): stays IN_PROGRESS as umbrella; flips DONE when build.SPEC-008 DONE.
 
 PLAN-001 will be edited to add the 3 new parts + update dependency graph + update Progress Dashboard. Two-step edit + commit follows.
+
+
+## Event 10 — D-1 LOCKED: per-skill scripts invocation pattern
+
+**Decision** (verbatim from AskUserQuestion answer):
+
+> **Per-skill scripts (extends existing pattern; Recommended)**
+>
+> Each lifecycle skill ships gate-point scripts in `skills/<name>/scripts/<verb>.ts`. Thin wrappers that import from `_shared/composition/`. Matches the established defrag/ingest pattern. New validators add new scripts colocated with the skill that needs them. Skills become fully self-contained — to understand what `/build` does, you read `skills/build/SKILL.md` + `skills/build/scripts/`.
+
+Preview accepted:
+
+```text
+skills/build/scripts/validate-task-done.ts
+skills/build/scripts/transition-impl-item.ts
+skills/end/scripts/validate-spec-done.ts
+skills/spec/scripts/validate-task-schema.ts
+
+# SKILL.md Step 4b becomes:
+bun skills/build/scripts/validate-task-done.ts <task-path>
+```
+
+**Clarification context**: User pushed back on D-1's original options (in-process import vs CLI binary vs per-validator wrapper) — pointed out skills can simply ship scripts. Original options conflated "scripts" with "in-process TS import". Reframed options around the real existing pattern (defrag/ingest already ship per-skill scripts). User selected the recommended per-skill pattern.
+
+**Cascading implications**:
+
+- D-2 (directory layout): partially answered — scripts live under `skills/<name>/scripts/`. Library logic stays in `_shared/composition/src/`. D-2 narrows to: where do the new schemas/parsers/validators in the library live? (probably extend existing flat dirs)
+- Skill-update scope (Track 2): each lifecycle skill needs its own `scripts/` subdir created + populated. 5 lifecycle skills × ~2-4 scripts each = 10-20 new files.
+- Composition library exposes TS API only; no CLI. The CLI exists per-skill.
+
+PLAN-001 decisions.4 DoD: D-1 flipped `[ ]` → `[x]`.

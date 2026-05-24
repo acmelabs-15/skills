@@ -176,4 +176,3 @@ For each P1 gap (ANALYSIS schema/validator, EPIC schema/validator, CRIT schema),
 - relates_to [[SESSION-2026-05-23_02 Protocol Hardening Wave 2 Scope]]
 - leads_to [[ADR-004 Wave 2 Architecture]]
 - leads_to [[SPEC-008 Protocol Hardening Wave 2]]
-- 
