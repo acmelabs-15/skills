@@ -928,3 +928,22 @@ Scope: ONE TASK only — author `shared/composition/src/schemas/adr-note.ts` (`A
 R1-related guardrail folded into brief: post-author `bun tsc --noEmit` (root) + `biome check` + `bun test` on the new test file must pass. Implementer writes CODE + tests only; returns `## State Changes` with per-DoD evidence; does NOT edit Brain notes (orchestrator flips TASK DoD checkboxes after claim validation).
 
 Next: dispatch brain:🧠-implementer (foreground) with the verbatim rendered impl brief.
+
+
+## Event 43 — TASK-001 impl complete (ADR schema); orchestrator-verified; impl-TASK-001 → DONE
+
+bun-ts-engineer (agent `a87f3a4a17661630e`) authored `AdrNoteSchema`. Files (3, scope-clean — no unrelated edits):
+
+- `shared/composition/src/schemas/adr-note.ts` NEW — `AdrNoteSchema` + `type AdrNote`; Zod + `superRefine` (2 ACCEPTED-gate rules: unchecked Clarification rejection + option-without-rationale rejection); `.strict()` on all sub-schemas; relation-verb allowlist imported from `common.ts`; final-two-sections invariant.
+- `shared/composition/src/schemas/index.ts` NEW barrel — `export { AdrNoteSchema, type AdrNote } from "./adr-note.js";`
+- `shared/composition/tests/schemas/adr-note.test.ts` NEW — 22 cases.
+
+**Orchestrator independent verification** (did NOT trust the claim — re-ran all gates): `bun test tests/schemas/adr-note.test.ts` → 22 pass / 0 fail; `bunx tsc --noEmit` → exit 0; `biome check` (3 files) → clean; full suite 528 pass / 2 fail / 530 (baseline 506+22 new = 528; zero new failures). All 12 DoD items + 3 ADR Compliance items verified SATISFIED → flipped `[x]` in [[TASK-001-SPEC-008: Implement ADR Schema]].
+
+PLAN `impl-TASK-001-SPEC-008`: IN_PROGRESS → DONE (at Event 43). TASK frontmatter status stays TODO until qa PASS (step s).
+
+**Flags from implementer (verified, tracked for the pause):**
+- Stale baseline label corrected: the 2 pre-existing suite failures are `TASK-014-SPEC-007: PLAN-001 trimmed-template migration` (AC#1 no-forbidden-sections + AC#3 SHA-256 round-trip), NOT `defrag.test.ts` as the session State open-item said. These correspond to DEFERRED SPEC-007 work (REQ-012 status DEFERRED per ADR-005 D-6). Open-item label to be corrected at pause.
+- `src/schemas/index.ts` did not previously exist (DESIGN-001 marked it MODIFIED, implying it existed). Created fresh with only the ADR export (other Wave 2 schema files are out of scope; exporting them would break tsc). Mechanical execution of the explicit DoD/DESIGN contract.
+
+Next: step (i) commit (code + PLAN + TASK + session atomic) → then qa-TASK-001 cycle (steps j–u).

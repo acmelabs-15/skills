@@ -23,24 +23,28 @@ This TASK depends on Track 4 of SPEC-008 renaming `_shared/` to `shared/` at the
 
 ## Definition of Done
 
-- [ ] File `shared/composition/src/schemas/adr-note.ts` exists and exports `AdrNoteSchema` plus `type AdrNote`
-- [ ] Frontmatter sub-schema validates title regex `^ADR-\d{3}.*`, type literal `decision`, status enum `PROPOSED|ACCEPTED|DEPRECATED|SUPERSEDED`, permalink regex `^decisions/adr-\d{3}-`, tags array length 2-5, date and updated date fields
-- [ ] superRefine rejects ACCEPTED status when any Clarifications item checkbox is `[ ]`
-- [ ] superRefine rejects ACCEPTED status when any Considered Option lacks a non-empty rationale
-- [ ] Final-two-sections invariant is enforced (last two sections are `## Observations` then `## Relations`)
-- [ ] Relations verb allowlist enforced from `schemas/common.ts` (never duplicated)
-- [ ] All sub-schemas use `.strict()` to reject unknown keys
-- [ ] Unit tests cover: valid PROPOSED, valid ACCEPTED, ACCEPTED plus unchecked Clarification rejection, ACCEPTED plus option without rationale rejection, frontmatter shape failures, forbidden relation verb rejection
-- [ ] `bun test shared/composition/tests/schemas/adr-note.test.ts` passes with at least 8 cases green
-- [ ] `biome check` passes on the new file
-- [ ] `tsc --noEmit` passes for the workspace
-- [ ] `shared/composition/src/schemas/index.ts` re-exports `AdrNoteSchema` and `AdrNote`
+
+- [x] File `shared/composition/src/schemas/adr-note.ts` exists and exports `AdrNoteSchema` plus `type AdrNote`
+- [x] Frontmatter sub-schema validates title regex `^ADR-\d{3}.*`, type literal `decision`, status enum `PROPOSED|ACCEPTED|DEPRECATED|SUPERSEDED`, permalink regex `^decisions/adr-\d{3}-`, tags array length 2-5, date and updated date fields
+- [x] superRefine rejects ACCEPTED status when any Clarifications item checkbox is `[ ]`
+- [x] superRefine rejects ACCEPTED status when any Considered Option lacks a non-empty rationale
+- [x] Final-two-sections invariant is enforced (last two sections are `## Observations` then `## Relations`)
+- [x] Relations verb allowlist enforced from `schemas/common.ts` (never duplicated)
+- [x] All sub-schemas use `.strict()` to reject unknown keys
+- [x] Unit tests cover: valid PROPOSED, valid ACCEPTED, ACCEPTED plus unchecked Clarification rejection, ACCEPTED plus option without rationale rejection, frontmatter shape failures, forbidden relation verb rejection
+- [x] `bun test shared/composition/tests/schemas/adr-note.test.ts` passes with at least 8 cases green
+- [x] `biome check` passes on the new file
+- [x] `tsc --noEmit` passes for the workspace
+- [x] `shared/composition/src/schemas/index.ts` re-exports `AdrNoteSchema` and `AdrNote`
+
 
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (file lands in existing flat `schemas/` directory, named `<type>-note.ts`)
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (ADR schema closes the highest-consequence P0 coverage gap)
-- [ ] Honors [[ADR-001: Composition Library Architecture]] Zod plus superRefine invariant
+
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (file lands in existing flat `schemas/` directory, named `<type>-note.ts`)
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5 (ADR schema closes the highest-consequence P0 coverage gap)
+- [x] Honors [[ADR-001: Composition Library Architecture]] Zod plus superRefine invariant
+
 
 ## Files Affected
 
