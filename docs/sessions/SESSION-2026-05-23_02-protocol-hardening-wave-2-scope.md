@@ -1102,3 +1102,51 @@ Orchestrator actions (steps o–t, batched across 3 closures):
 Wave 0 progress: 8 TASKs total. 2 fully CLOSED (021, 026). 1 mid-cycle (025: impl DONE, qa pending). 5 not yet started (025-then-marathon already accounted; 033/034/037/039/040 remain — Brain notes + user doc + hooks scaffolding).
 
 Bounded-parallel observations to carry: (a) concurrent dispatches DO error on the return-channel intermittently (~33% rate in batch 1) — salvage protocol (verify on-disk + run gates + orchestrator-verify DoD-from-source) works; (b) ALL biome calls MUST be path-scoped — bare `biome check --fix` reformats anything it can see; (c) QA agents reliably return clean verdicts even when impl agents have return-channel issues (different agent type).
+
+
+## Event 54 — SPEC-008 root rollup propagated for 4 closed TASKs
+
+User flagged: keep SPEC-008 root note up to date alongside per-TASK closures. Propagated the 4 fully-CLOSED TASKs (impl + QA both PASS) to the SPEC-008 root `### Tasks (46)` rollup, flipping each from `[ ]` to `[x]`: TASK-001 (ADR schema), TASK-021 (adversarial harness), TASK-026 (mutation invariants), TASK-029 (rename).
+
+TASK-025 stays `[ ]` (impl DONE; qa-025 pending — TASK is not DONE until both halves PASS per the rigid cycle).
+
+REQ/DESIGN rollups in SPEC-008 root remain `[ ]` — none of their child sets are fully covered yet (REQ-001 needs TASK-001..004,010; REQ-006 needs TASK-021..024; REQ-007 needs TASK-025..028; REQ-009 needs TASK-029..030; DESIGN-001 needs TASK-001..010; DESIGN-003 needs TASK-021..024). These flip mechanically when the last child of each set closes.
+
+Going forward in the marathon: every TASK closure (impl + QA both DONE) triggers the same `[ ]` → `[x]` propagation in the SPEC-008 root rollup. PLAN-001 Progress Dashboard follows at SPEC-008 completion.
+
+Next: qa-TASK-025 dispatch + remaining Wave 0 batch — 033 user-doc edit + 034 Brain-note hygiene (memory agent per the binary rule) + 037 hooks.json manifest. 4 concurrent agents, all file-disjoint.
+
+Operational lesson tracked: basic-memory's bullet parser treats `- \`[x]\` [[...]]` as a malformed relation bullet (the backtick-checkbox prefix becomes a candidate relation_type and trips validation). When recording rollup state in Event prose, use plain-text task IDs instead of double-bracketed wikilinks at bullet starts.
+
+
+## Event 55 — REQ AC propagation; full-propagation protocol locked
+
+User: "make sure anything that needs propagation gets it." Comprehensive propagation pass for the 4 closed TASKs (001, 021, 026, 029):
+
+**REQ AC checkboxes flipped (10 across 4 REQs)**:
+
+- REQ-001 (New Schema Suite): AC-1 (valid PROPOSED ADR parses) + AC-2 (ACCEPTED + unchecked Clarification rejected). Cross-cutting AC-7/AC-8 stay `[ ]` — they require all 5 schemas to land.
+- REQ-006 (Adversarial Harness + Fixtures): AC-1 (harness signature exported) + AC-3 (parse-failure distinct from validator-rejection). AC-2/4-7 wait for TASK-022/023/024.
+- REQ-007 (Integration + Mutation + Drift Markers): AC-4 (backward-transition rejection + idempotency). AC-1/2/3 wait for qa-TASK-025 PASS; AC-5/6/7/8/9 wait for TASK-027/028.
+- REQ-009 (Structural Cleanup): AC-1 (git mv rename) + AC-2 (zero `_shared/` TS imports) + AC-3 (configs reference `shared/composition/`) + AC-4 (bun test baseline preserved). AC-5/6/7 wait for TASK-030; AC-8 deferred (TASK-034).
+
+REQ statuses stay DRAFT — none have ALL their ACs satisfied yet (the cross-cutting and multi-TASK ACs gate the DRAFT→ACCEPTED flip until the last contributing TASK closes).
+
+DESIGN compliance checkboxes intentionally NOT flipped this pass — DESIGN-001 (Coverage Module Layout) and DESIGN-003 (Adversarial Test Fixture Layout) compliance items aggregate over their full TASK sets (DESIGN-001 covers TASK-001..010; DESIGN-003 covers TASK-021..028); they flip on last-child closure rather than partial-progress.
+
+**Full-propagation protocol locked for every TASK closure going forward**:
+
+1. TASK DoD `[x]` on impl PASS (orchestrator-verified, not agent-claimed).
+2. TASK ADR Compliance `[x]` on QA PASS.
+3. TASK `status: TODO → DONE` on QA PASS.
+4. TASK `relates_to QA-NNN` added (bi-dir; QA-NNN carries the inverse).
+5. SPEC-008 root `### Tasks (46)` rollup `[ ]→[x]` for this TASK (plain-text bullet, not double-bracketed at bullet start — basic-memory parser constraint).
+6. REQ AC checkboxes that this TASK fully satisfies → `[x]` (NOT aggregate ACs gated on multi-TASK sets).
+7. REQ status DRAFT → ACCEPTED ONLY when ALL ACs `[x]` AND all child TASKs DONE.
+8. DESIGN compliance checkbox `[x]` ONLY on last-child closure of that DESIGN's TASK set.
+9. SPEC-008 status flip end-of-marathon (Success/Acceptance Criteria all `[x]` + 46/46 TASKs DONE).
+10. PLAN-001 Progress Dashboard flip end-of-marathon.
+11. Session State + Events kept current per turn (already in-cycle).
+12. PLAN workflow items (impl-/qa-) transition with each step (already in-cycle).
+
+This protocol is now the standing closure contract. The bookkeeping per TASK is heavier than just "flip TASK DoD" — full propagation pass before moving to the next TASK.

@@ -22,10 +22,10 @@ WHEN the composition library is referenced anywhere in the project root, the dir
 
 ## Acceptance Criteria
 
-- [ ] GIVEN `_shared/` directory at project root WHEN orchestrator dispatches TASK-029 THEN `_shared/` is renamed to `shared/` via `git mv _shared shared`
-- [ ] GIVEN every `.ts` source file in the renamed `shared/` tree WHEN ripgrep audits `import.*_shared/` THEN zero matches remain
-- [ ] GIVEN every `package.json`, `tsconfig.json`, `bunfig.toml`, and skill `scripts/` entry referencing the library WHEN read after rename THEN every reference reads `shared/composition/` (not `_shared/composition/`)
-- [ ] GIVEN repo-wide `bun test` invocation after rename WHEN run THEN test count matches pre-rename baseline (508 minimum; +N for any new TASK-031 added tests) and verdict is pass
+- [x] GIVEN `_shared/` directory at project root WHEN orchestrator dispatches TASK-029 THEN `_shared/` is renamed to `shared/` via `git mv _shared shared`
+- [x] GIVEN every `.ts` source file in the renamed `shared/` tree WHEN ripgrep audits `import.*_shared/` THEN zero matches remain
+- [x] GIVEN every `package.json`, `tsconfig.json`, `bunfig.toml`, and skill `scripts/` entry referencing the library WHEN read after rename THEN every reference reads `shared/composition/` (not `_shared/composition/`)
+- [x] GIVEN repo-wide `bun test` invocation after rename WHEN run THEN test count matches pre-rename baseline (508 minimum; +N for any new TASK-031 added tests) and verdict is pass
 - [ ] GIVEN `shared/composition/src/core/dispatcher.ts` and `shared/composition/src/tests/dispatcher.test.ts` WHEN TASK-030 executes THEN both files are deleted via `git rm`
 - [ ] GIVEN post-deletion repo WHEN ripgrep audits for imports of `core/dispatcher` THEN zero production imports remain (only `core/adapter.ts` interface retained per ADR-005 D-7 evidence)
 - [ ] GIVEN `bun test` after dispatcher deletion WHEN run THEN test count equals pre-deletion count minus the dispatcher.test.ts case count and verdict is pass

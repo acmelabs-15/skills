@@ -37,8 +37,8 @@ Functional.
 
 ## Acceptance Criteria
 
-- [ ] GIVEN a markdown file with valid ADR frontmatter, status PROPOSED, and one Considered Option with rationale WHEN `AdrNoteSchema.parse()` is called THEN validation passes
-- [ ] GIVEN an ADR with status ACCEPTED and a Clarifications item with an unchecked `[ ]` checkbox WHEN `AdrNoteSchema.parse()` is called THEN validation fails with a message identifying the unchecked clarification
+- [x] GIVEN a markdown file with valid ADR frontmatter, status PROPOSED, and one Considered Option with rationale WHEN `AdrNoteSchema.parse()` is called THEN validation passes
+- [x] GIVEN an ADR with status ACCEPTED and a Clarifications item with an unchecked `[ ]` checkbox WHEN `AdrNoteSchema.parse()` is called THEN validation fails with a message identifying the unchecked clarification
 - [ ] GIVEN an ANALYSIS with status ACCEPTED and a `## Open Questions` section present WHEN `AnalysisNoteSchema.parse()` is called THEN validation fails with a message naming the forbidden section
 - [ ] GIVEN an EPIC frontmatter shape (title regex, type literal `epic`, status, permalink regex, tags 2-5) WHEN `EpicNoteSchema.parse()` is called against valid input THEN validation passes
 - [ ] GIVEN a CRIT note with the H1 not matching frontmatter title verbatim WHEN `CritNoteSchema.parse()` is called THEN validation fails with a message identifying the H1 drift
