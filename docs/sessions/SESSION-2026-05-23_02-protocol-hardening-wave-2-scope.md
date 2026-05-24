@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - protocol-hardening
@@ -26,8 +26,10 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 - Audits dispatched: 5 parallel (A composition coverage, B skill protocol-embedding, C Brain notes coherence, D code-vs-spec coherence, E test coverage gaps)
 - Scope shape: LOCKED — Option A (SPEC-008) per AskUserQuestion answer Event 09
 - ADR-005 ACCEPTED 2026-05-23 — 8 D-Ns; decisions.4 DONE
-- spec.SPEC-008 IN_PROGRESS — owning_session SESSION-2026-05-23_02; resumed fresh session post-pause
-- Next: dispatch `/skills:spec` Stage 2 for SPEC-008 → build.SPEC-008 → protocol-hardening DONE
+- spec.SPEC-008 DONE — SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 46 TASK); all /spec gates PASS
+- build.SPEC-008 IN_PROGRESS — owning_session SESSION-2026-05-23_02 (this session, resumed from PAUSED at Event 33)
+- Build order: TASK-029 (`_shared/`→`shared/` rename) FIRST → Track 1 (TASK-001..010) → Track 4 cleanup + Track 3 harness → Track 2 scripts + Track 3 fixtures → Track 5 hooks
+- Next: /build Stage A seeds per-TASK impl+qa workflow items into PLAN; begins TASK-029
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
@@ -810,3 +812,19 @@ Session status flipped IN_PROGRESS → PAUSED.
 - build.SPEC-008 → IN_PROGRESS (ready for fresh-session build marathon)
 - PLAN-001: 23/25 parts DONE; 2 IN_PROGRESS (build.SPEC-008 + protocol-hardening umbrella)
 - Commits this turn: Wave 1 (89f35cb) → SPEC root (06d2c9f) → ADR wikilink fix (1f06eca) → bi-dir + DB recovery (409e6ba) → Event 28 (213422f) → wikilink colons (90789a7) → Gate B fix (d057dda) → Gate A fix (b4ae304) → set-part-done (73f8db7) → build.SPEC-008 IN_PROGRESS + pause (this commit)
+
+
+## Event 33 — Session resumed from PAUSED; build.SPEC-008 marathon begins
+
+User invoked `/skills:plan PLAN-001-skills-ecosystem` (continue mode) in a fresh context window. Orchestrator initially mis-created a new session note `SESSION-2026-05-23_03`; user corrected — a PAUSED session for this exact work already exists, so the correct action is to resume THIS session, not branch a new one. The `_03` note was deleted (never committed; working tree returned clean). Learning: "fresh session" at Event 32 meant a fresh Claude Code context window, NOT a new Brain session note; a PAUSED session is resumed via `PAUSED → IN_PROGRESS` with continued Event numbering.
+
+Rehydration (session-resume protocol) completed: read PLAN-001, SPEC-008 subtree (root + 12 REQ + 4 DESIGN + 46 TASK), this session's events, git state (clean tree; HEAD `91ef7bc`).
+
+Actions:
+
+- This session status PAUSED → IN_PROGRESS.
+- State section updated (spec.SPEC-008 DONE; build.SPEC-008 IN_PROGRESS; build order; next step).
+- build.SPEC-008 already IN_PROGRESS in PLAN-001 with owning_session SESSION-2026-05-23_02 — no PLAN rebind needed (the `_03` rebind was reverted with the deletion).
+- Next: dispatch `Skill(skill="build", args="plan=PLAN-001 part=build.SPEC-008 spec=SPEC-008")` for Stage A — seed per-TASK impl+qa workflow items into PLAN, then begin TASK-029.
+
+Deferred (known drift, non-blocking): this note has pre-existing structural drift — `## Observations`/`## Relations` sit after Event 01 instead of at the end, duplicate `## Event 28` headings, non-canonical `## Resume protocol` / `## deliverables` sections. Overlaps the Brain-note hygiene scope (TASK-034); not restructured mid-marathon to avoid churn.
