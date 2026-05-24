@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - protocol-hardening
@@ -17,6 +17,7 @@ status_history:
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 84; resume Wave 1b)
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 91; Wave 1b Batches A+B closed, 27/47 — budget pause)
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 92; resume + rehydration; Wave 1b Batch C next)
+- IN_PROGRESS → PAUSED 2026-05-24 (Event 117; 40/47, budget pause at 97% ctx; resume to complete SPEC-008 + docs test-report→qa rename)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -28,22 +29,17 @@ User reopened the `protocol-hardening` part of [[PLAN-001 Skills Ecosystem]] wit
 Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `main` at `eb0eb28`).
 
 ## State
-- Starting commit: `eb0eb28`. Latest commit: `73346d2` (Event 105). Branch `feat/plan-001-protocol-hardening-wave-2-scope`; working tree clean.
-- PLAN-001 status: IN_PROGRESS; protocol-hardening part: IN_PROGRESS (umbrella; flips DONE when build.SPEC-008 DONE).
-- ADR-005 ACCEPTED; spec.SPEC-008 DONE; SPEC-008 ACCEPTED (root + 12 REQ + 4 DESIGN + 47 TASK).
-- build.SPEC-008 IN_PROGRESS (owning_session SESSION-2026-05-23_02).
-- **34/47 TASKs fully CLOSED** (impl + QA both DONE): 001-013, 015-022, 025-027, 029-034, 037-040, 047, 032, 038. (i.e. the original 27 + 018/019/020 + 022/027/032/038.)
-- **6 IMPL-DONE, QA PENDING** (in flight): 014, 023, 041, 042, 043, 045. Code committed (`c7bccae`); DoD-flips + Wave-graph ✅ + QA happen at their close.
-- **1 BLOCKED→amended, pending re-build**: 044 (Layer 6 stop-backstop; spec amended Event 105 to `git status --porcelain`; ready to re-dispatch).
-- **6 PENDING** (not started): 024 (needs 023 QA), 028 (cross-cutting drift-markers), 031/035/036 (Brain-note hygiene), 046 (hook smoke — needs 041-045 + fixtures).
-- REQs ACCEPTED: REQ-001/002/003/005; DESIGN-001. Pending-acceptance (totality-gated): REQ-004 (after 014 QA + AC-9 prefix-collision test), REQ-006 (after 023 QA + 024), REQ-007 (after 028), REQ-008 (after 031), REQ-010 (after 035), REQ-011 (after 041/042/043 QA), REQ-012 (after 044 build + 045 QA); DESIGN-002 (after REQ-004), DESIGN-003 (after 023/024), DESIGN-004 (after all hooks).
-- QA contract notes: QA-044..077 (added QA-065..077 this session).
-- Suite baseline: **1151 pass / 2 fail / 1153** (2 = SPEC-007 DEFERRED `plan-001-migration.test.ts` per D-1; NEW failures elsewhere = regression).
-- **Derived-view propagation MANDATORY at every batch close** (user directive): SPEC-008 root ALL 5 lists + PLAN Wave Graph. Currently: SPEC root Tasks 34 [x]; Requirements REQ-005 [x]; Wave Graph synced through Event 102 (the 6 impl-done + 044 NOT yet reflected as ✅/🚧 — sync at their close).
-- **User directive (2×): maximize parallelism** — raised the Event-48 ≤4 bounded-parallel cap; Batch 11 ran 7-wide. Keep filling the safe-disjoint runnable set, not one task at a time.
-- Open follow-ups: **FU-4** `hooks/**` not in tsconfig/biome `include` (CI doesn't gate hook layer; agents verified via scoped configs; needs config fix + `shared/composition` resolvable from hooks). **FU-5** TASK-039 `parse-tool-input.ts` MCP schemas (`{permalink,content}`) diverge from real MCP shapes (handlers used local schemas; reconcile). REQ-004 AC-9 prefix-collision test before REQ-004 ACCEPTED. FU-1 (`validates:` key in QA-032/033/034). FU-3 (session Obs/Relations placement → session-end). DESIGN-002 mutation-script line-count soft-ceiling (adjudicate at DESIGN-002 acceptance).
-- 0 active code blockers; 0 open user decisions (both TASK-027 + TASK-044 spec conflicts adjudicated Option A + applied).
-- **Next-ready (wide parallel wave)**: (1) QA the 6 impl-done (014/023/041/042/043/045) — batch into ~2 QA agents → close each (DoD flip + SPEC-root + Wave-graph). (2) Re-dispatch TASK-044 on amended spec (bun-ts-engineer). (3) Brain-note tasks 031/035/036 (orchestrator-direct, sequential — Brain DB write-serialization). (4) THEN 024 (after 023 closed), 028 (solo, cross-cutting). (5) FU-4 config fix. (6) THEN 046 (terminal smoke). (7) REQ DRAFT→ACCEPTED flips as each REQ's tasks close. (8) Final: spec-level QA sweep + 4 exit gates + SPEC-008 DONE + protocol-hardening part DONE + PLAN-001 DONE.
+- Latest commit: `6838a87` (Event 116). Branch `feat/plan-001-protocol-hardening-wave-2-scope`; working tree clean.
+- PLAN-001 IN_PROGRESS; `protocol-hardening` part IN_PROGRESS; `build.SPEC-008` IN_PROGRESS (owning SESSION-2026-05-23_02).
+- **40/47 TASKs fully CLOSED.** Remaining **7**: 044 (impl + FU-6 done → needs QA + close), 024, 028, 031, 035, 036 (PENDING), 046 (terminal hook smoke — needs 041-045 ✓ + adversarial fixtures + 024).
+- REQs ACCEPTED: REQ-001/002/003/005; DESIGN-001. **REQ-011 HELD** (needs the layered-severity refactor QA'd first). Pending acceptances: REQ-004 (after AC-9 prefix-collision test added), REQ-006 (after 024), REQ-007 (after 028), REQ-008 (after 031), REQ-009 (after 036), REQ-010 (after 035), REQ-012 (after 044 QA + FU-6b); DESIGN-002/003/004 totality-gated.
+- **Layered-severity enforcement**: spec-amended (REQ-011 AC + DESIGN-004, Event 114) + IMPLEMENTED (Event 115, commit 7ce874e) — dispatchValidator classifies claim-lie→`deny` vs hygiene→`allow-with-warning` (independent claim extraction in `shared/composition/src/validators/lenient-claim-extract.ts`); per-layer mapping: L1/L2 warn→allow, L3/L4/L5/L6 warn→deny, L7 observe. Orchestrator-verified (tsc 0, 243 tests) but **NEEDS FORMAL QA** before REQ-011 acceptance.
+- **Hooks DISABLED**: `hooks/hooks.json.disabled` + `hooks/scripts.disabled/`. Re-enable ONLY at go-live (after layer complete + QA'd + FU-6b fixed + all notes conformant). They auto-activate when files land in `hooks/scripts/` + `hooks/hooks.json` — keep disabled until ready (per feedback_enforcement_layer_build_isolation).
+- **test-report → qa rename**: COMPLETE in code + field/label + PLAN-001 (no back-compat; QaNoteSchema/QaIdSchema qa-only; `qa_ref`/`QA Ref`/`--qa-ref`). **REMAINING (user wants done): ~37 docs/** notes** still reference `test-report`/`TestReportNoteSchema`/`validateTestReportPassClaim` in prose. NUANCE: the SPEC-008 REQ/DESIGN/TASK prose should update to current symbol names (accuracy); QA/session/ADR-005/ANALYSIS-003/004 are temporal records — rename references-to-the-entity but PRESERVE narrative where "test-report" is the OLD name in a rename/history discussion (esp. THIS session note's Events 114-116 + the rename discussion — do NOT make "rename test-report→qa" into "rename qa→qa"). Brain MCP edits (docs/** binary rule); a careful per-note pass, not a blanket sed.
+- Suite baseline: **1216 pass / 2 fail / 1218** (2 = SPEC-007 DEFERRED `plan-001-migration` AC#1+AC#3 per D-1; any other fail = regression).
+- Open follow-ups: **FU-4** (`hooks/**` not in tsconfig/biome include — CI doesn't gate hook layer); **FU-5** (TASK-039 `parse-tool-input.ts` MCP schemas diverge from real shapes); **FU-6b** (Layer-7 `git-state-observer` has the PreToolUse-input-shape bug, fails-open — fix before Layer-7 go-live); **REQ-004 AC-9** prefix-collision path-containment test (before REQ-004 ACCEPTED); **FU-3** (session Obs/Relations placement → tail); QaIdSchema-qa-only data note (PLAN-001 has `QA-000-SPEC-001` placeholder refs — format-valid but bogus note numbers).
+- User cadence/preferences (auto-memories written this session): run-to-completion (pause on budget); maximize parallelism (fill the safe-disjoint batch ceiling); QA = one `brain:🧠-qa` per TASK in parallel (`feedback_qa_one_agent_per_task_parallel`); enforcement-layer build isolation (`feedback_enforcement_layer_build_isolation`); no unfounded subagent model override (`feedback_no_unfounded_subagent_model_override`); complete rename, no back-compat (`feedback_complete_rename_no_backcompat`); keep SPEC-root + PLAN graph synced every batch close; derived-view sync mandatory.
+- 0 active blockers; 0 open user decisions (REQ-011 acceptance gated on the layered-severity QA, not a decision).
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
 User invoked `/plan PLAN-001-skills-ecosystem`. Orchestrator surfaced PLAN-001 functionally complete (21/22 parts DONE; protocol-hardening stale IN_PROGRESS). User selected option (b) "Reopen protocol-hardening for fresh work" then directed "everything that needs to be done for it — figure out what that is, ultrathink".
@@ -2783,3 +2779,29 @@ Verified: composition tsc 0; scoped hooks tsc 0; full suite **1216 pass / 2 fail
 - skills/ token refs + --qa-ref flag done; migration script + temp tsconfig deleted
 - Suite 1216/2 (0 new fails); test-report token ZERO in code
 - FLAGGED: docs/** historical-prose test-report refs (left as records; spec-prose accuracy-update pending user call)
+
+
+## Event 117 — Session PAUSED at 40/47 (97% context); resume protocol to COMPLETE SPEC-008
+
+Budget pause (97% context). User directive for next context: "finish EVERYTHING to complete SPEC-008" + complete the test-report→qa rename including the ~37 docs/** notes. Pausing at a clean, fully-committed boundary (commit `6838a87`, tree clean).
+
+### Resume protocol (next context — fresh window)
+1. `/skills:plan PLAN-001-skills-ecosystem` continue mode → **RESUME this session** (PAUSED → IN_PROGRESS; continue Event numbering from 118; NO new note — resume-paused-session-not-new rule).
+2. **Rehydrate (TIER-1)**: set active project `skills` + bootstrap_context; read this session's `## State` block (fully refreshed Event 116/117) + Events 107-117; read PLAN-001 build.SPEC-008 items; verify git on `feat/plan-001-protocol-hardening-wave-2-scope` at `6838a87`; re-read auto-memories incl. the 4 new (qa-one-agent-per-task, enforcement-build-isolation, no-unfounded-model-override, complete-rename-no-backcompat) + per-task-build-qa-cycle + spec-root-and-plan-graph-sync. Suite baseline 1216/2.
+
+### Remaining work to COMPLETE SPEC-008 (suggested order; parallelize per the max-parallelism + one-qa-agent-per-task rules)
+A. **QA the layered-severity refactor** (dispatch-validator + lenient-claim-extract + the L1-L6 handler verdict-mapping) against the AMENDED REQ-011 AC (Event 114) — verify the matrix: claim-lie→deny everywhere; hygiene-only→L1/L2 allow+warn, L3/L4/L5/L6 deny; claim-lie+hygiene→deny (critical invariant); unparseable→fail-open per-write / fail-closed boundary+stop. On PASS → **REQ-011 → ACCEPTED** + SPEC-root Requirements REQ-011 [x].
+B. **QA + close TASK-044** (stop-backstop, impl+FU-6 done) → REQ-012 progresses.
+C. **FU-6b**: fix Layer-7 `git-state-observer.ts` per-event input shape (same bug class as FU-6; it fails-open so silent). Needed before Layer-7 go-live.
+D. **Remaining PENDING tasks** (per-TASK build+QA cycle; one qa-agent-per-task in parallel where disjoint): 024 (AAE adversarial fixtures — needs 023 ✓; modifies `_helpers/adversarial.ts` + `adversarial-claims.test.ts`), 028 (drift-markers on existing tests — cross-cutting, likely solo), 031 (amend SPEC-007 root `[~]` notation — Brain-note), 035 (propagate SPEC-002/003 rollups + REQ flips — Brain-note), 036 (amend REQ-009-SPEC-007 count 9→11 — Brain-note). Then 046 (hook smoke — terminal; needs 041-045 + fixtures + 024).
+E. **REQ-004 AC-9**: add the prefix-collision path-containment TEST to one gate-point script before flipping REQ-004 → ACCEPTED.
+F. **REQ acceptances** as each REQ's tasks complete (REQ-004/006/007/008/009/010/011/012) + DESIGN-002/003/004 → SPEC-root all-5-lists synced.
+G. **test-report→qa in docs/**** (user wants complete): careful per-note Brain-MCP pass over the ~37 notes — update entity/symbol references (`TestReportNoteSchema`→`QaNoteSchema`, `validateTestReportPassClaim`→`validateQaPassClaim`, `test-report` type mentions→`qa`) for forward-accuracy in SPEC-008 REQ/DESIGN/TASK + QA/ADR/ANALYSIS prose, BUT preserve rename-narrative semantics where "test-report" is the OLD name in a history/rename discussion (esp. this session's Events 114-116 — do NOT corrupt "rename test-report→qa"). Hooks stay disabled during this (or it gates the edits).
+H. **Re-enable hooks** (`mv hooks/hooks.json.disabled hooks/hooks.json` + `mv hooks/scripts.disabled hooks/scripts`) ONLY after A-G complete + all notes conformant + FU-6/FU-6b fixed, then run **TASK-046 smoke** as go-live proof.
+I. **Final close**: spec-level QA sweep + coverage matrix + 4 exit gates (code-qualities + incoherence + orphan-ref + lint) + conditional prompt-engineer gate → flip SPEC-008 IN_PROGRESS→DONE → protocol-hardening part DONE → **PLAN-001 DONE**. Session-end: fix FU-3 (Obs/Relations → tail), markdownlint, retrospective, final commit + PR per /end.
+J. Address the open FUs: FU-4 (add `hooks/**` to tsconfig+biome include so CI gates the hook layer), FU-5 (reconcile TASK-039 MCP schemas to real shapes).
+
+### State Changes
+
+- SESSION-2026-05-23_02: IN_PROGRESS → PAUSED (Event 117; budget, 40/47, clean boundary)
+- Resume protocol recorded; State block fully refreshed for fresh-context rehydration
