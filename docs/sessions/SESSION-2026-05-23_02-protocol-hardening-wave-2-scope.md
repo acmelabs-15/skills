@@ -1806,3 +1806,32 @@ Both TASK-004 + TASK-006 correctly PASS their own DoDs (neither DoD enumerated a
 - Open finding: REQ-001 AC-5 (CRIT H1-drift) unmet — fix-or-defer decision pending.
 
 Next: commit Batch 5c closure, then surface the REQ-001 AC-5 fix-or-defer decision.
+
+
+## Event 77 — D-4 LOCKED; REQ-001 AC-5 gap closed via TASK-047 amendment (spec-amend first, then dispatch)
+
+User adjudicated the Event 76 stop-the-line REQ-001 AC-5 finding (AskUserQuestion):
+
+> **D-4 LOCKED — Add H1-drift check to CRIT parser via TASK amendment (Recommended)** — Amend TASK-006 (or author a small follow-up TASK) to add H1-vs-frontmatter-title verbatim comparison in parseCritNote — the parser DOES have the raw H1 from the AST, so it's the natural home. On drift, throw a Zod-style error naming the mismatch. Re-dispatch a small impl + qa cycle. Closes AC-5 properly; unblocks REQ-001 ACCEPTED once TASK-007/008/009 also land. parser-layer is the correct mechanism; AC wording is slightly off but intent is clear.
+
+Per `feedback_mid_implementation_halt` + `feedback_write_decisions_immediately`: amended the spec FIRST (user authorized the approach), then dispatch. Two design calls within the authorization:
+
+1. **AC-5 wording corrected**: REQ-001 AC-5 reworded from `CritNoteSchema.parse()` → `parseCritNote(markdown)` (parser-layer; matches design reality — schema validates the parsed model which has no raw H1 string). Rationale annotated inline in the AC.
+2. **New TASK-047 rather than reopen closed TASK-006**: keeps closures immutable (clean audit trail) + correctly files the work as REQ-001 AC-5 (not REQ-002). TASK-047 modifies the parser file TASK-006 created but satisfies a REQ-001 AC. Reopening TASK-006 would cascade un-closure (DONE→IN_PROGRESS, re-QA) and conflate REQ-002 work with a REQ-001 AC.
+
+### Spec amendment writes (this Event)
+
+- REQ-001 AC-5 reworded (parser-layer) with inline rationale.
+- TASK-047-SPEC-008 authored (Pattern 2 three-phase write): `S` effort, 0.25d AI-Dominant; MODIFY `crit-note.ts` parser + tests; 10 DoD + 2 ADR Compliance. Uses existing `extractH1(ast)` helper at `ast-helpers.ts:140`. depends_on TASK-006; relates_to QA-060 + REQ-001 + DESIGN-001.
+- SPEC-008 root: `### Tasks (46)` → `(47)`; TASK-047 added to rollup `[ ]` + Relations `contains`.
+- REQ-001 Relations: `implemented_by TASK-047` added (bi-dir with TASK-047's `implements REQ-001`).
+- PLAN-001: seeded impl-TASK-047 (IN_PROGRESS Event 77) + qa-TASK-047 (PENDING).
+- PLAN-001 wave graph: T047 node added to Wave 1c subgraph (inprogress); classDef updated; Wave 1c header notes the follow-up.
+
+### Marathon scope adjusted
+
+46 → **47 TASKs**. 17 CLOSED (now 36% of 47). REQ-001 AC-5 mechanism now owned by a concrete TASK; REQ-001 unblockable once AC-5 (TASK-047) + the cross-cutting validator ACs land.
+
+Next: dispatch impl-TASK-047 (bun-ts-engineer; small additive parser change). Then qa-047. Then REQ-001 AC-5 flips on closure.
+
+Commit spec amendment + PLAN + Event 77 before dispatch.

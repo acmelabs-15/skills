@@ -74,7 +74,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [ ] [[DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape]]
 - [ ] [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
 
-### Tasks (46)
+### Tasks (47)
 
 - [x] [[TASK-001-SPEC-008: Implement ADR Schema]]
 - [x] [[TASK-002-SPEC-008: Implement ANALYSIS Schema]]
@@ -122,6 +122,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [ ] [[TASK-044-SPEC-008: Implement stop-backstop Handler Layer 6]]
 - [ ] [[TASK-045-SPEC-008: Implement git-state-observer Handler Layer 7]]
 - [ ] [[TASK-046-SPEC-008: Author Hook Smoke Tests and Adversarial Fixture Reuse]]
+- [ ] [[TASK-047-SPEC-008: Add H1-Drift Detection to CRIT Parser]]
 
 ## ADR Cross-cutting Constraints
 
@@ -276,3 +277,4 @@ Build parallelism opportunity: ~30-40% reduction possible per cross-track depend
 - contains [[TASK-044-SPEC-008: Implement stop-backstop Handler Layer 6]]
 - contains [[TASK-045-SPEC-008: Implement git-state-observer Handler Layer 7]]
 - contains [[TASK-046-SPEC-008: Author Hook Smoke Tests and Adversarial Fixture Reuse]]
+- contains [[TASK-047-SPEC-008: Add H1-Drift Detection to CRIT Parser]]

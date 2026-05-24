@@ -195,8 +195,9 @@ graph TD
     T020["⏸ TASK-020"]
   end
 
-  subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (8 PENDING)"]
+  subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (8 PENDING) + TASK-047 follow-up (IN PROGRESS)"]
     direction LR
+    T047["⚡ TASK-047<br/><span style='font-size:9px'>CRIT H1-drift (REQ-001 AC-5 gap)</span>"]
     T022["⏸ TASK-022"]
     T023["⏸ TASK-023"]
     T027["⏸ TASK-027"]
@@ -253,6 +254,7 @@ graph TD
   T045 --> T046
 
   class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
+  class T047 inprogress
   class T007,T008,T009,T011,T012,T013,T014,T015,T016,T017,T018,T019,T020,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
 ```
 
@@ -3484,6 +3486,30 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-046-SPEC-008
+- **Status**: PENDING
+- **Owning Session**: —
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: —
+
+<!-- TASK-047 added 2026-05-24 Event 77 — follow-up TASK closing REQ-001 AC-5 coverage gap (CRIT H1-drift); marathon 46 → 47 TASKs -->
+
+#### impl-TASK-047-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-047-SPEC-008
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: Event 77
+- **Failed Iterations**: 0
+- **Test Report Ref**: —
+- **Fix Brief For Event**: REQ-001 AC-5 gap-closer (D-4 LOCKED); H1-drift detection in parseCritNote via existing extractH1 helper
+
+#### qa-TASK-047-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-047-SPEC-008
 - **Status**: PENDING
 - **Owning Session**: —
 - **Transitioned At Event**: —
