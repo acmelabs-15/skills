@@ -7,3 +7,4 @@
  * DESIGN-001-SPEC-008 (Coverage Module Layout).
  */
 export { AdrNoteSchema, type AdrNote } from "./adr-note.js";
+export { AnalysisNoteSchema, type AnalysisNote } from "./analysis-note.js";

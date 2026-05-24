@@ -1280,3 +1280,18 @@ File-disjointness confirmed: TASK-002 touches `schemas/index.ts` (different barr
 Agent routing: all 4 → bun-ts-engineer (foreground). Each brief carries: scope discipline (touch only the in-scope files), real-API discovery (no inventing missing symbols), scoped biome invocation (never `--fix` across non-in-scope paths — TASK-021 batch lesson), per-DoD evidence return format.
 
 8 PLAN workflow items seeded this Event (4 impl IN_PROGRESS + 4 qa PENDING).
+
+
+## Event 62 — Batch 4 impls all PASS; 4 impls DONE; dispatching 4 QAs in parallel
+
+All 4 implementers returned cleanly (zero return-channel errors this batch). Orchestrator-verified gates: TASK-002 20/0/20, TASK-005 16/0/50, TASK-039 30/0/47, TASK-040 13/0/19. Composition workspace `tsc --noEmit` exit 0; full suite 578/2/580 (only the pre-existing SPEC-007 fails); barrels updated (schemas/index.ts adds AnalysisNoteSchema; parsers/index.ts adds parseAdrNote).
+
+**LSP diagnostic noise flagged + resolved**: user surfaced new-diagnostics with "Cannot find module bun:test" + "Cannot find name Bun" + "no exported member 'readStagedBrainNotes'/'readPrDiffBrainNotes'" errors in `hooks/lib/**`. Grep-verified all exports ARE present on disk. Tests run 43/0/66 across hooks/lib/__tests__/. The errors are stale LSP-state artifacts from the **pre-existing tsconfig-coherence gap** (`hooks/**` not in root `tsconfig.json` `include`; also not in root `biome.json` `files.include`). Both impl agents flagged this honestly in their returns. The gap is a marathon open-item already tracked since Event 37; not a TASK-039/040 defect. Will become a follow-up TASK or config-tweak.
+
+Also flagged by TASK-039 agent: Zod v4 deprecation warnings at top-level `hooks/lib/parse-tool-input.ts` due to a zod-version mismatch (root resolves `~/node_modules/zod` v4.1.13; composition workspace has v3.25.76). Agent wrote forward-compatible signatures. Not blocking.
+
+PLAN transitions (8 this Event):
+- impl-002/005/039/040: IN_PROGRESS → DONE
+- qa-002/005/039/040: PENDING → IN_PROGRESS
+
+Dispatching 4 brain:🧠-qa agents concurrently. File-disjoint validators (each reads different test files + different source files); QA contract notes will be QA-052..055.
