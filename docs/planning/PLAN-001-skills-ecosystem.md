@@ -2237,7 +2237,7 @@ graph TD
 - **Title**: Wave 2 Architecture Decisions (ADR-004)
 - **Substatus**: IN_PROGRESS
 - **Owning Session**: SESSION-2026-05-23_02
-- **Source Artifacts**: SESSION-2026-05-23_02 Events 02-08 (5 audit returns synthesized into 4-track Wave 2 scope)
+- **Source Artifacts**: ANALYSIS-004 Protocol Hardening Wave 2 Audit Synthesis (omnibus over 5 audits captured in SESSION-2026-05-23_02 Events 02-08)
 - **Depends On**: protocol-hardening
 
 **DoD**:
