@@ -1,7 +1,7 @@
 ---
 title: 'TASK-004-SPEC-003: Create PLAN Adapter Test Fixtures'
 type: task
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 permalink: specs/spec-003-plan-adapter/tasks/task-004-spec-003-create-plan-adapter-test-fixtures
@@ -61,12 +61,12 @@ The distribution plan YAML splits the fixture into 2 destination plans, each rec
 
 ## Definition of Done
 
-- [ ] plan-sample.md contains realistic PLAN note with all required structural features
-- [ ] plan-distribution-plan.yaml passes Zod validation for source_type "plan" distribution variant
-- [ ] plan-composition-plan.yaml passes Zod validation for source_type "plan" composition variant
-- [ ] Fixtures include regenerated_sections listing "Progress Dashboard" and "Cross-Part Dependency Graph"
-- [ ] Fixtures include frontmatter_map with title and permalink mutations
-- [ ] Fixtures include branches[] in frontmatter and frontmatter_map
+- [x] plan-sample.md contains realistic PLAN note with all required structural features
+- [x] plan-distribution-plan.yaml passes Zod validation for source_type "plan" distribution variant
+- [x] plan-composition-plan.yaml passes Zod validation for source_type "plan" composition variant
+- [x] Fixtures include regenerated_sections listing "Progress Dashboard" and "Cross-Part Dependency Graph"
+- [x] Fixtures include frontmatter_map with title and permalink mutations
+- [x] Fixtures include branches[] in frontmatter and frontmatter_map
 
 ## ADR Compliance
 
@@ -89,6 +89,7 @@ The distribution plan YAML splits the fixture into 2 destination plans, each rec
 
 ## Relations
 
+- validated_by [[QA-043-SPEC-003: Spec Aggregate Retro-Validation]]
 - part_of [[SPEC-003: PLAN Adapter]]
 - implements [[REQ-005-SPEC-003: PLAN Adapter Round-Trip Property Test]]
 - depends_on [[TASK-002-SPEC-003: Implement Regenerated Sections Handler and Integrity Floor]]

@@ -1,7 +1,7 @@
 ---
 title: 'TASK-002-SPEC-003: Implement Regenerated Sections Handler and Integrity Floor'
 type: task
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 permalink: specs/spec-003-plan-adapter/tasks/task-002-spec-003-implement-regen-sections-and-integrity-floor
@@ -55,14 +55,14 @@ The Zod schema adds regenerated_sections to the PLAN variant's MutationSpec. The
 
 ## Definition of Done
 
-- [ ] identifyRegenerativeSections function identifies sections by heading text match
-- [ ] stripRegenerativeSections removes identified section line ranges from content
-- [ ] PLAN distribution Zod schema validates regenerated_sections field
-- [ ] PLAN composition Zod schema validates regenerated_sections field
-- [ ] Schema index.ts includes PLAN variants in discriminated union
-- [ ] Zod schema rejects regenerated_sections arrays with >10 entries
-- [ ] validateIntegrityFloor rejects plans where regen sections cover >50% of lines
-- [ ] Unit tests pass for all regen section and integrity floor scenarios
+- [x] identifyRegenerativeSections function identifies sections by heading text match
+- [x] stripRegenerativeSections removes identified section line ranges from content
+- [x] PLAN distribution Zod schema validates regenerated_sections field
+- [x] PLAN composition Zod schema validates regenerated_sections field
+- [x] Schema index.ts includes PLAN variants in discriminated union
+- [x] Zod schema rejects regenerated_sections arrays with >10 entries
+- [x] validateIntegrityFloor rejects plans where regen sections cover >50% of lines
+- [x] Unit tests pass for all regen section and integrity floor scenarios
 
 ## ADR Compliance
 
@@ -86,6 +86,7 @@ The Zod schema adds regenerated_sections to the PLAN variant's MutationSpec. The
 
 ## Relations
 
+- validated_by [[QA-043-SPEC-003: Spec Aggregate Retro-Validation]]
 - part_of [[SPEC-003: PLAN Adapter]]
 - implements [[REQ-002-SPEC-003: Regenerated Sections Field Handling]]
 - implements [[REQ-003-SPEC-003: Fifty Percent Integrity Floor on Regenerated Sections]]
