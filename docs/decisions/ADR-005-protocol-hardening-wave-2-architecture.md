@@ -2,7 +2,7 @@
 title: 'ADR-005: Protocol Hardening Wave 2 Architecture'
 type: decision
 permalink: decisions/adr-005-protocol-hardening-wave-2-architecture-1
-status: PROPOSED
+status: ACCEPTED
 date: 2026-05-23
 updated: 2026-05-23
 tags:
@@ -18,7 +18,7 @@ tags:
 
 ## Status
 
-PROPOSED 2026-05-23 — adr-review round 1 result: 3 ACCEPT (critic, security, analyst) + 3 CONCERNS (architect, independent-thinker, advisor) + 0 BLOCK + 1 P0 surfaced (advisor). Phase 3 resolutions applied in-ADR: D-7 tactical cleanup notation (advisor P0); D-8 added (IT P2 elevation — automated enforcement gates); D-1 security path-containment requirement (security P1); D-4 brief-generator trust-boundary documentation (security P1); D-5 EPIC cross-note resolution mechanism (critic P1.1); D-3 integration + backward-transition + idempotency + duplicate-event test additions (critic P1.2/P1.3); effort estimate buffer + expect() count corrected (analyst P1); Disagree-and-Commit captured for D-5 scope (advisor + IT P1) in Clarifications. Pending: adr-review round 2 convergence on revised ADR. Source: decisions.4 part of [[PLAN-001 Skills Ecosystem]], D-N micro-cycle adjudicating 8 architectural decisions captured in [[SESSION-2026-05-23_02 Protocol Hardening Wave 2 Scope]] Events 10-16 + 20-22 (Phase 3 resolution events).
+ACCEPTED 2026-05-23 — adr-review round 1 result: 3 ACCEPT (critic, security, analyst) + 3 CONCERNS (architect, independent-thinker, advisor) + 0 BLOCK + 1 P0 surfaced (advisor). Phase 3 resolutions applied in-ADR; user-adjudicated pragmatic flip on the basis that all P0 + P1 findings are resolved or Disagree-and-Commit-captured (per /decisions Step 7 skill semantics allowing convergence-by-resolution when findings are addressed). Phase 3 resolutions: D-7 tactical cleanup notation (advisor P0); D-8 added (IT P2 elevation — automated enforcement gates); D-1 security path-containment requirement (security P1); D-4 brief-generator trust-boundary documentation (security P1); D-5 EPIC cross-note resolution mechanism (critic P1.1); D-3 integration + backward-transition + idempotency + duplicate-event test additions (critic P1.2/P1.3); effort estimate buffer + expect() count corrected (analyst P1); Disagree-and-Commit captured for D-5 scope (advisor + IT P1) in Clarifications. Pending: adr-review round 2 convergence on revised ADR. Source: decisions.4 part of [[PLAN-001 Skills Ecosystem]], D-N micro-cycle adjudicating 8 architectural decisions captured in [[SESSION-2026-05-23_02 Protocol Hardening Wave 2 Scope]] Events 10-16 + 20-22 (Phase 3 resolution events).
 
 ## Context and Problem Statement
 

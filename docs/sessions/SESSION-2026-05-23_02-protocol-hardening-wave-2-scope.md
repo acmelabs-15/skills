@@ -530,3 +530,21 @@ All 3 Phase 3 user-input decisions resolved: Q1 (D-7 tactical notation) ✓; Q2 
 D-N inventory: D-1 ✓, D-2 ✓, D-3 ✓ (extended scope), D-4 ✓, D-5 ✓ (cross-note resolver), D-6 ✓, D-7 ✓ (tactical), D-8 ✓ NEW. Total 8 D-Ns; ADR ~900 lines post-Phase-3.
 
 **Next decision**: run strict adr-review round 2 (re-dispatch all 6 reviewers against revised ADR for convergence vote) OR pragmatically flip ADR-005 → ACCEPTED on the basis that all P0+P1 findings have been resolved/D&C-captured (skill protocol allows convergence by Phase 3 resolution if findings are addressed).
+
+
+## Event 23 — ADR-005 ACCEPTED; decisions.4 DONE; spec.SPEC-008 READY
+
+User adjudicated pragmatic flip over strict round 2 (per AskUserQuestion Event 23). All Phase 3 resolutions applied; all P0 + P1 findings either resolved in-ADR or Disagree-and-Commit-captured in Clarifications.
+
+Actions applied:
+
+- ADR-005 frontmatter: `status: PROPOSED → ACCEPTED`
+- ADR-005 Status section: updated to ACCEPTED with round-1 verdict + Phase 3 resolution summary + user-adjudicated pragmatic flip rationale
+- PLAN-001 decisions.4 DoD: ADR-005 authored + adr-review verdict checkboxes flipped `[x]`
+- PLAN-001 decisions.4 substatus: `IN_PROGRESS → DONE`; Completing Session set; Outcome line written
+- PLAN-001 spec.SPEC-008 substatus: `PENDING → READY`; Source Artifacts updated to cite ACCEPTED ADR-005
+- PLAN-001 Progress Dashboard: decisions 3 DONE + 1 IN_PROGRESS → 4 DONE; spec 7 DONE + 1 PENDING → 7 DONE + 1 READY; total 21 DONE / 22 → 22 DONE / 25
+
+Per /decisions Step 9: set-part-done equivalent applied directly (skill returns to /plan via set-part-done call but with the workflow now in continue-from-spec.SPEC-008 mode). Next /plan invocation will auto-route to spec.SPEC-008 → dispatch /spec.
+
+Pending work on PLAN-001: spec.SPEC-008 (READY), build.SPEC-008 (PENDING), protocol-hardening (IN_PROGRESS umbrella; flips DONE when build.SPEC-008 DONE).
