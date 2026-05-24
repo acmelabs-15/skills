@@ -1150,3 +1150,30 @@ DESIGN compliance checkboxes intentionally NOT flipped this pass — DESIGN-001 
 12. PLAN workflow items (impl-/qa-) transition with each step (already in-cycle).
 
 This protocol is now the standing closure contract. The bookkeeping per TASK is heavier than just "flip TASK DoD" — full propagation pass before moving to the next TASK.
+
+
+## Event 56 — Batch 3 dispatch: qa-TASK-025 + impl-TASK-033 + impl-TASK-034 + impl-TASK-037
+
+PLAN transitions (4 transitions + 6 new items seeded this Event):
+
+- qa-TASK-025-SPEC-008: PENDING → IN_PROGRESS (TASK-025 impl DONE precondition holds; commit `30a3c98`)
+- impl-TASK-033-SPEC-008: PENDING → IN_PROGRESS (user-doc edit; `~/KNOWLEDGE-GRAPH-STRUCTURES.md` Sections 4.6/4.7 `[~]` notation)
+- impl-TASK-034-SPEC-008: PENDING → IN_PROGRESS (Brain note hygiene; 6 categories × 10 notes; brain:🧠-memory agent per binary tool rule)
+- impl-TASK-037-SPEC-008: PENDING → IN_PROGRESS (hooks.json manifest; 7 hook layers from ADR-005 D-8)
+
+Also seeded PENDING: qa-TASK-033, qa-TASK-034, qa-TASK-037 (3 items).
+
+Dispatching 4 concurrent agents (bounded-parallel; file-disjoint; agents type-specialized):
+
+- brain:🧠-qa for TASK-025 — validate the 3 integration test files + 8 fixtures against TASK-025 DoD + REQ-007 AC-1/2/3 + DESIGN-003 compliance.
+- general-purpose / Edit-tool agent for TASK-033 — STRUCTURES Section 4.6/4.7 amendment + CONVENTIONS pointer; NOT a Brain note (user-home root file).
+- brain:🧠-memory for TASK-034 — 6-category Brain note hygiene repair across 10 notes via Brain MCP edit_note (binary tool rule; never Edit/Write on docs/**).
+- bun-ts-engineer for TASK-037 — hooks.json manifest authoring against ADR-005 D-8 table verbatim.
+
+File-disjointness confirmed:
+- qa-025 reads code, writes nothing (it returns a verdict only).
+- impl-033 writes `~/KNOWLEDGE-GRAPH-*.md` only.
+- impl-034 writes via Brain MCP to docs/qa/, docs/analysis/, docs/sessions/ (specific 10 notes).
+- impl-037 writes `hooks/hooks.json` only.
+
+No file overlap; no shared barrels (this batch touches no schemas/parsers/validators/index.ts). On return (serialized): full propagation per the Event 55 locked protocol.
