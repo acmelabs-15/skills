@@ -413,3 +413,18 @@ Next /decisions steps:
 - Step 7: `brain:---adr-review` MANDATORY blocking gate
 - Step 8: flip ADR-004 PROPOSED → ACCEPTED
 - Step 9: set-part-done call back to /plan with ADR-004 wikilink as outcome
+
+
+## Event 18 — Numbering drift caught: ADR-004 → ADR-005
+
+User flagged that ADR-004 already exists (`ADR-004: Cross-Source Coordinator Architecture`, 2026-05-21). Counter-availability check (per `feedback_note_creation_protocol` item 10) was missed pre-architect-dispatch.
+
+`list_directory decisions` confirmed: ADR-001, ADR-002, ADR-003, ADR-004 all extant. Wave 2 composite ADR must be **ADR-005**.
+
+Actions taken:
+
+- SendMessage to architect agent (background, agent ID a8793786d4f81157e): URGENT REDIRECT to ADR-005 with full filename/title/permalink substitution; instructions to delete-and-recreate if Pattern 2 Phase 1 already fired with ADR-004 title
+- PLAN-001 decisions.4 part: 4 find_replace edits to substitute ADR-004 → ADR-005 across DoD + title + source_artifacts + ADR coverage gate
+- spec.SPEC-008 ADR coverage gate updated: clarifies ADR-004 is cross-source-coordinator (unrelated to Wave 2); ADR-005 is the Wave 2 architecture ADR
+
+Lesson: counter-availability check is part of the pre-flight, not post-flight. Should run `list_directory decisions` BEFORE drafting briefs that name a specific ADR number.

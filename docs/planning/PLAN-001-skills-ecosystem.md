@@ -2234,7 +2234,7 @@ graph TD
 ### decisions.4
 
 - **Phase**: decisions
-- **Title**: Wave 2 Architecture Decisions (ADR-004)
+- **Title**: Wave 2 Architecture Decisions (ADR-005)
 - **Substatus**: IN_PROGRESS
 - **Owning Session**: SESSION-2026-05-23_02
 - **Source Artifacts**: ANALYSIS-004 Protocol Hardening Wave 2 Audit Synthesis (omnibus over 5 audits captured in SESSION-2026-05-23_02 Events 02-08)
@@ -2249,7 +2249,7 @@ graph TD
 - [x] D-5 LOCKED — Full Audit A recommendation: include ALL 3 P1 schemas (ANALYSIS + EPIC + CRIT). Wave 2 ships 5 schemas + 5 parsers + 4 validators total (ADR + PLAN-done-claim + ANALYSIS + EPIC + CRIT). +2-3 days effort vs deferral; complete P1 coverage; some artifacts (EPIC, CRIT claim) have no immediate consumer but ready when needed.
 - [x] D-6 LOCKED — Amend SPEC-007 root checkbox notation: use `[~]` (or `[deferred: rationale]`) for items where the underlying REQ is `status: DEFERRED`. Keep SPEC-007 status DONE (deferred is a legitimate terminal status). Also extend `validateSpecDoneClaim` to recognize `[~]` as terminal alongside `[x]`.
 - [x] D-7 LOCKED — Delete `_shared/composition/src/core/dispatcher.ts` + `tests/dispatcher.test.ts`. Confirmed dead (only `dispatcher.test.ts` imports it); production code uses `registry.ts`; adapter functionality untouched (lives in separate files). 508 tests → 506 tests post-delete.
-- [ ] ADR-004 authored and frontmatter status ACCEPTED; date + updated populated
+- [ ] ADR-005 authored and frontmatter status ACCEPTED; date + updated populated
 - [ ] /brain:---adr-review PASS verdict (round-1 convergence ≥5 ACCEPT + 0 BLOCK)
 
 ### spec.SPEC-008
@@ -2257,7 +2257,7 @@ graph TD
 - **Phase**: spec
 - **Title**: SPEC-008 Protocol Hardening Wave 2 (4 REQ clusters: coverage gaps + skill invocation + tests + drift cleanup)
 - **Substatus**: PENDING
-- **Source Artifacts**: ADR-004 Wave 2 Architecture (pending decisions.4 close)
+- **Source Artifacts**: ADR-005 Wave 2 Architecture (pending decisions.4 close)
 - **Depends On**: decisions.4
 
 **DoD**:
@@ -2266,7 +2266,7 @@ graph TD
 - [ ] REQ notes authored — ~12 (one per Wave 2 cluster: coverage gaps × 5, skill invocation × 1-2, tests × 3, drift cleanup × 2)
 - [ ] DESIGN notes authored — ~3-4 (composition library extension, skill invocation pattern, test scaffold, dispatch-brief template)
 - [ ] TASK notes authored — ~15-20 (atomic with DoD checklists)
-- [ ] ADR coverage gate PASS (ADR-001 + ADR-002 + ADR-003 + ADR-004 referenced)
+- [ ] ADR coverage gate PASS (ADR-001 + ADR-002 + ADR-003 + ADR-005 referenced; ADR-004 is cross-source-coordinator, unrelated)
 - [ ] Gate A semantic gap analysis PASS
 - [ ] Gate B 4 binary drift checks PASS
 - [ ] SPEC-008 status ACCEPTED (born so at Stage 2 close)
