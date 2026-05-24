@@ -134,7 +134,7 @@ graph TD
 
 ## SPEC-008 Build Marathon — Task-Level Wave Graph
 
-Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part (the part-level graph above shows `build_SPEC_008` as the umbrella node; this graph expands it to show all 46 TASKs grouped by wave, with status from the PLAN workflow items below). Updated 2026-05-24 SESSION-2026-05-23_02 Event 96 (Wave 1b Batch C CLOSED — 018/019/020 DONE; REQ-005 ACCEPTED; 30/47 fully closed).
+Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part (the part-level graph above shows `build_SPEC_008` as the umbrella node; this graph expands it to show all 46 TASKs grouped by wave, with status from the PLAN workflow items below). Updated 2026-05-24 SESSION-2026-05-23_02 Event 98 (Batch 10 impls DONE — 022/032/038 ⚡ in QA; 027 🚧 BLOCKED spec gap; 30/47 fully closed).
 
 **Status legend**: ✅ DONE (impl + QA both PASS) · ⚡ IN_PROGRESS (impl or qa in flight) · ⏸ PENDING (workflow item seeded, awaiting batch).
 
@@ -195,15 +195,15 @@ graph TD
     T020["✅ TASK-020<br/><span style='font-size:9px'>dispatch-analyst + reviewer</span>"]
   end
 
-  subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (8 PENDING; TASK-047 follow-up DONE ✅)"]
+  subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (2 ⚡ 022/032 · 1 🚧 027 BLOCKED · 5 PENDING; TASK-047 follow-up DONE ✅)"]
     direction LR
     T047["✅ TASK-047<br/><span style='font-size:9px'>CRIT H1-drift (REQ-001 AC-5 gap)</span>"]
-    T022["⏸ TASK-022"]
+    T022["⚡ TASK-022"]
     T023["⏸ TASK-023"]
-    T027["⏸ TASK-027"]
+    T027["🚧 TASK-027<br/><span style='font-size:9px'>BLOCKED: spec gap</span>"]
     T028["⏸ TASK-028"]
     T031["⏸ TASK-031"]
-    T032["⏸ TASK-032"]
+    T032["⚡ TASK-032"]
     T035["⏸ TASK-035"]
     T036["⏸ TASK-036"]
   end
@@ -215,10 +215,10 @@ graph TD
     T009["✅ TASK-009<br/><span style='font-size:9px'>validateEpicDoneClaim (cross-note)</span>"]
   end
 
-  subgraph W4 ["Wave 4 — Hook Handlers + Final Fixtures (7 PENDING)"]
+  subgraph W4 ["Wave 4 — Hook Handlers + Final Fixtures (1 ⚡ 038 · 6 PENDING)"]
     direction LR
     T024["⏸ TASK-024<br/><span style='font-size:9px'>Final fixtures</span>"]
-    T038["⏸ TASK-038<br/><span style='font-size:9px'>HookInput types</span>"]
+    T038["⚡ TASK-038<br/><span style='font-size:9px'>dispatch-validator</span>"]
     T041["⏸ TASK-041<br/><span style='font-size:9px'>L1 PreToolUse Edit</span>"]
     T042["⏸ TASK-042<br/><span style='font-size:9px'>L2 PreToolUse MCP</span>"]
     T043["⏸ TASK-043<br/><span style='font-size:9px'>L3 pre-push</span>"]
@@ -255,7 +255,8 @@ graph TD
 
   class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
   class T007,T008,T009,T047,T011,T012,T013,T015,T016,T017,T018,T019,T020 done
-  class T014,T022,T023,T024,T027,T028,T031,T032,T035,T036,T038,T041,T042,T043,T044,T045,T046 pending
+  class T022,T032,T038 inprogress
+  class T014,T023,T024,T027,T028,T031,T035,T036,T041,T042,T043,T044,T045,T046 pending
 ```
 
 **Maintenance rule**: each TASK closure (impl + QA both PASS) flips its `class` declaration from `pending`/`inprogress` to `done`, alongside the SPEC-008 root rollup tick and full Event 55 propagation. Each Batch START flips IN_PROGRESS items from `pending` to `inprogress`. Keep this graph current per the same propagation cadence as the SPEC root rollup.
@@ -3135,9 +3136,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-022-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 97
+- **Transitioned At Event**: 98
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -3201,9 +3202,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-027-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: BLOCKED
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 97
+- **Transitioned At Event**: 98
+- **Blocker**: spec-vs-code gap — TASK-027 DoD#4 + REQ-007 AC-5 mandate asserting the duplicate-event rejection message contains "duplicate"/"already exists", but the implemented rejection is a continuity check (`Event n=5 at index 5: expected n=6`). Awaiting user adjudication (amend assertion wording vs add duplicate-guard to source).
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -3289,9 +3291,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-032-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 97
+- **Transitioned At Event**: 98
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —
@@ -3355,9 +3357,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-038-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 97
+- **Transitioned At Event**: 98
 - **Failed Iterations**: 0
 - **Test Report Ref**: —
 - **Fix Brief For Event**: —

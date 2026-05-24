@@ -2353,3 +2353,29 @@ Disjointness verified via Files Affected:
 ### State Changes
 
 - PLAN impl-TASK-022/027/032/038-SPEC-008: PENDING → IN_PROGRESS
+
+
+## Event 98 — Batch 10 impls returned: 022 + 032 + 038 DONE; 027 BLOCKED (spec gap, halt)
+
+4 parallel `bun-ts-engineer` implementers returned. Orchestrator re-ran gates INDEPENDENTLY: `tsc --noEmit` exit 0; full `bun test` **993 pass / 2 fail / 995** (+26 = TASK-032 +3 + TASK-038 +23; TASK-022 added 10 fixtures but no wired tests yet — that's TASK-023; 2 fails = SPEC-007 deferred baseline; zero new regressions).
+
+### 3 implementations DONE (impl-level; QA pending)
+
+- [[TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation]] — split terminal predicate (`isSpecRootTerminal` accepts `[x]`|`[~]`; TASK-DoD path unchanged, rejects `[~]`); `SpecRootCheckboxMarkerEnum` added; +3 tests; fixture `tests/fixtures/spec-root-with-deferred.md`. Fixture+test placed at the REAL existing convention path (`tests/`, not `src/tests/`) — implementer matched convention; acceptable.
+- [[TASK-022-SPEC-008: Author Initial Adversarial Fixture Set for Five Existing Validators]] — 10 fixtures (task×3, requirement×2, design×2, spec×2, test-report×1); each verified parse-OK + claim-validator-rejects via throwaway script (deleted; not wired — TASK-023). 6 required named fixtures present.
+- [[TASK-038-SPEC-008: Implement dispatch-validator Utility]] — `hooks/lib/dispatch-validator.ts` + tests (23 pass); 9-type routing table; three-way verdict; `UnparseableNoteError`.
+
+### TASK-027 BLOCKED — spec-vs-code gap (mid-implementation halt; NO file changed)
+
+[[TASK-027-SPEC-008: Session Mutation Duplicate Event Number Test]] implementer correctly STOPPED rather than guessing. Empirical findings: (1) `applySessionMutation` AUTO-ASSIGNS the event number (`nextN = events.length + 1`; caller-supplied `n` stripped) — cannot inject a duplicate via the append API; a duplicate is only realizable by feeding a pre-duplicated note, where rejection fires at the internal `parseSessionNote` step. (2) Duplicates are rejected by the `SessionNoteSchema.superRefine` CONTINUITY check with message `Event n=5 at index 5: expected n=6` — `grep "duplicate|already exists"` across session parser/schema/mutations returns ZERO. TASK-027 DoD#4 + REQ-007 AC-5 mandate asserting the message contains "duplicate"/"already exists" → UNSATISFIABLE as written. The continuity check DOES catch the Event 36/37/38 drift (same behavior, different wording). Awaiting user adjudication — surfaced via AskUserQuestion (Option A: amend assertion wording to match the continuity message + adjust DoD#3 to the pre-duplicated-note framing — recommended, only touches the test file; Option B: add a literal "duplicate" guard to session source — larger blast radius, out of TASK-027 ownership).
+
+### Derived-view sync (impl-done partial; per mandatory rule)
+
+- PLAN Wave Graph: 022/032/038 ⏸ → ⚡ (class inprogress); 027 ⏸ → 🚧 (BLOCKED label, stays pending class); W1c + W4 subgraph labels + provenance (Event 98) synced. SPEC-008 root Tasks unchanged (none fully DONE until QA). Part-level dashboard unchanged.
+
+### State Changes
+
+- TASK-022/032/038-SPEC-008: DoD (+ ADR-Compliance where checkboxed) → [x]
+- PLAN impl-TASK-022/032/038-SPEC-008: IN_PROGRESS → DONE
+- PLAN impl-TASK-027-SPEC-008: IN_PROGRESS → BLOCKED (spec gap; blocker recorded)
+- PLAN Wave Graph: 022/032/038 → ⚡; 027 → 🚧 BLOCKED

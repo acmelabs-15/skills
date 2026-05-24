@@ -15,10 +15,28 @@ import type { ClaimResult, UnsatisfiedItem } from "./types.js";
  * present, every item in that section must be satisfied. Unsatisfied items
  * carry a `section` discriminator so callers can cite which list the failure
  * came from.
+ *
+ * X.E (ADR-005 D-6, LOCKED 2026-05-23): SPEC-root artifact-status rows accept a
+ * THIRD terminal marker `[~]` (deferred) alongside `[x]` (done). This is the
+ * SPEC-ROOT terminal predicate ONLY — see `isSpecRootTerminal`. TASK DoD items
+ * are gated by a DISTINCT predicate in `task-claim-validator.ts` that has never
+ * shared code with this module and continues to reject any non-`done`,
+ * non-deferred-with-rationale item (the TASK-note schema carries no `marker`
+ * field, so `[~]` is structurally unrepresentable as terminal on a TASK DoD
+ * line). The scope split mandated by REQ-008-SPEC-008 AC-4 is therefore
+ * satisfied structurally: two named predicates in two modules, never one.
  */
 
-function isSatisfied(item: SpecRootCheckboxItem): boolean {
+/**
+ * SPEC-root terminal predicate. An artifact-status / success-criteria row is
+ * terminal when it is done (`[x]`), carries the deferred marker (`[~]`), or is
+ * deferred-with-rationale. The `[~]` branch is SPEC-root-scoped — do NOT reuse
+ * this predicate for TASK DoD evaluation (use validateTaskDoneClaim, which
+ * accepts `[x]` only).
+ */
+function isSpecRootTerminal(item: SpecRootCheckboxItem): boolean {
   if (item.done) return true;
+  if (item.marker === "~") return true;
   return typeof item.deferred_rationale === "string" && item.deferred_rationale.length > 0;
 }
 
@@ -32,7 +50,7 @@ function collect(
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     if (!item) continue;
-    if (!isSatisfied(item)) {
+    if (!isSpecRootTerminal(item)) {
       out.push({ index: offset + i, text: item.text, section });
     }
   }

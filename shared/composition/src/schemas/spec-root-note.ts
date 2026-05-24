@@ -48,16 +48,36 @@ const SpecRootFrontmatterSchema = z
   .strict();
 
 /**
+ * SPEC-root artifact-status / success-criteria checkbox markers.
+ *
+ * ADR-005 D-6 (LOCKED 2026-05-23): SPEC root `## Artifact Status` rows accept
+ * a THIRD terminal marker `~` (deferred) alongside `x` (done) and ` ` (todo).
+ * A `~` row reads "status terminal but artifact intentionally not completed"
+ * — e.g. a child note carrying `status: DEFERRED`. This marker is
+ * SPEC-root-scoped ONLY; TASK DoD checkboxes remain binary (` ` / `x`) per
+ * Phase X invariants and REQ-008-SPEC-008 AC-4. The TASK-note schema therefore
+ * does NOT carry this field — the scope boundary is enforced structurally by
+ * the marker only existing on the SPEC-root checkbox shape.
+ */
+export const SpecRootCheckboxMarkerEnum = z.enum([" ", "x", "~"]);
+
+/**
  * Shared checkbox shape — mirrors TaskNote DodCheckboxItem +
  * RequirementNote EarsAcceptanceItem + DesignNote ComplianceCheckboxItem.
  * Kept as a local declaration (rather than importing one of the other note
  * types' types) to keep schema modules independent.
+ *
+ * `marker` is OPTIONAL and carries the raw checkbox glyph when the parser
+ * recognizes the canonical `[~]` deferred notation (ADR-005 D-6). When absent,
+ * terminal-ness derives from `done` + `deferred_rationale` exactly as before
+ * (backward compatible: existing `[ ]` / `[x]` rows leave `marker` undefined).
  */
 const DodCheckboxItemSchema = z
   .object({
     text: z.string().min(1),
     done: z.boolean(),
     deferred_rationale: z.string().min(1).optional(),
+    marker: SpecRootCheckboxMarkerEnum.optional(),
   })
   .strict();
 
@@ -123,16 +143,25 @@ export const SpecRootNoteSchema = z
     if (data.frontmatter.status === "DONE") {
       const unsatisfied: Array<{ section: "success_criteria" | "artifact_status"; text: string }> =
         [];
+      // SPEC-root terminal: done (`[x]`) OR deferred marker (`[~]`) OR
+      // deferred-with-rationale. Mirrors isSpecRootTerminal in the
+      // spec-claim-validator — the single source of the SPEC-root terminal
+      // predicate (ADR-005 D-6).
+      const isTerminal = (item: {
+        done: boolean;
+        deferred_rationale?: string | undefined;
+        marker?: string | undefined;
+      }): boolean => item.done || item.marker === "~" || Boolean(item.deferred_rationale);
       if (data.success_criteria !== undefined) {
         for (const item of data.success_criteria) {
-          if (!item.done && !item.deferred_rationale) {
+          if (!isTerminal(item)) {
             unsatisfied.push({ section: "success_criteria", text: item.text });
           }
         }
       }
       if (data.artifact_status !== undefined) {
         for (const item of data.artifact_status) {
-          if (!item.done && !item.deferred_rationale) {
+          if (!isTerminal(item)) {
             unsatisfied.push({ section: "artifact_status", text: item.text });
           }
         }
@@ -151,5 +180,6 @@ export const SpecRootNoteSchema = z
 export type SpecRootNote = z.infer<typeof SpecRootNoteSchema>;
 export type SpecRootFrontmatter = z.infer<typeof SpecRootFrontmatterSchema>;
 export type SpecRootCheckboxItem = z.infer<typeof DodCheckboxItemSchema>;
+export type SpecRootCheckboxMarker = z.infer<typeof SpecRootCheckboxMarkerEnum>;
 export type SpecPhase = z.infer<typeof SpecPhaseSchema>;
 export type SpecRootNoteStatus = z.infer<typeof SpecRootNoteStatusEnum>;

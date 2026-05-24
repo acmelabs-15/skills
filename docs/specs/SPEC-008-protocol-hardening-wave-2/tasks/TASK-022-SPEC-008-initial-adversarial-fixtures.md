@@ -20,21 +20,19 @@ tags:
 Author the initial set of adversarial fixture markdown files at `shared/composition/tests/fixtures/adversarial/<type>/drift-NN-<slug>.md` covering Audit E's top-10 prioritized scenarios across the five existing claim validators (task, spec, requirement, design, test-report). Each fixture encodes one realistic lying-claim scenario as a canonical Brain note (frontmatter + H1 + sections + Observations + Relations) with the lying behavior identifiable from the markdown content alone. Fixture filenames double as drift regression markers per DESIGN-003 and REQ-006 AC-4.
 
 ## Definition of Done
-
-- [ ] Subdirectories exist: `shared/composition/tests/fixtures/adversarial/task/`, `spec/`, `requirement/`, `design/`, `test-report/`
-- [ ] At least ten fixture markdown files exist across the five subdirectories covering Audit E's top-10 scenarios
-- [ ] Each fixture's filename matches `drift-NN-<slug>.md` (two-digit counter restarting per subdirectory; lowercase kebab-case slug)
-- [ ] Each fixture is a structurally valid Brain note (passes its type's schema parse) but contains a lying-claim payload that the corresponding claim validator must reject
-- [ ] At least the following named fixtures exist: `task/drift-01-all-deferred-bypass.md`, `task/drift-02-checkbox-flip-without-evidence.md`, `requirement/drift-01-ac-flip-without-evidence.md`, `design/drift-01-design-compliance-flip-without-evidence.md`, `spec/drift-01-spec-done-with-all-deferred-success-criteria.md`, `test-report/drift-01-test-report-all-deferred-verdict.md`
-- [ ] Each fixture's frontmatter `tags` array includes a Phase-X-drift-surface tag where applicable (per DESIGN-003 drift-surface mapping section)
-- [ ] No fixture filename contains spaces; CAPS prefixes preserved where applicable; slugs lowercase kebab
-- [ ] Manual review confirms each fixture is self-documenting (the lying behavior is identifiable from the markdown alone)
+- [x] Subdirectories exist: `shared/composition/tests/fixtures/adversarial/task/`, `spec/`, `requirement/`, `design/`, `test-report/`
+- [x] At least ten fixture markdown files exist across the five subdirectories covering Audit E's top-10 scenarios
+- [x] Each fixture's filename matches `drift-NN-<slug>.md` (two-digit counter restarting per subdirectory; lowercase kebab-case slug)
+- [x] Each fixture is a structurally valid Brain note (passes its type's schema parse) but contains a lying-claim payload that the corresponding claim validator must reject
+- [x] At least the following named fixtures exist: `task/drift-01-all-deferred-bypass.md`, `task/drift-02-checkbox-flip-without-evidence.md`, `requirement/drift-01-ac-flip-without-evidence.md`, `design/drift-01-design-compliance-flip-without-evidence.md`, `spec/drift-01-spec-done-with-all-deferred-success-criteria.md`, `test-report/drift-01-test-report-all-deferred-verdict.md`
+- [x] Each fixture's frontmatter `tags` array includes a Phase-X-drift-surface tag where applicable (per DESIGN-003 drift-surface mapping section)
+- [x] No fixture filename contains spaces; CAPS prefixes preserved where applicable; slugs lowercase kebab
+- [x] Manual review confirms each fixture is self-documenting (the lying behavior is identifiable from the markdown alone)
 
 ## ADR Compliance
-
-- [ ] Honors ADR-005 D-3 verbatim: fixture directory layout `tests/fixtures/adversarial/<type>/drift-NN-<slug>.md`
-- [ ] Honors ADR-005 D-3 Implementation Notes: initial fixture set covers Audit E's top-10 prioritized scenarios
-- [ ] Honors REQ-006 AC-4: at least the six named drift surfaces listed in the AC are present
+- [x] Honors ADR-005 D-3 verbatim: fixture directory layout `tests/fixtures/adversarial/<type>/drift-NN-<slug>.md`
+- [x] Honors ADR-005 D-3 Implementation Notes: initial fixture set covers Audit E's top-10 prioritized scenarios
+- [x] Honors REQ-006 AC-4: at least the six named drift surfaces listed in the AC are present
 
 ## Files Affected
 

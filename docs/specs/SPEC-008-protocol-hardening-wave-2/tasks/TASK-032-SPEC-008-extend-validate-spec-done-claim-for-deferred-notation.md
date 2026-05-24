@@ -28,15 +28,14 @@ Steps:
 6. Run `bun test`; verify pass
 
 ## Definition of Done
-
-- [ ] `shared/composition/src/validators/spec-claim-validator.ts` accepts `[~]` markers in SPEC root `## Artifact Status` rows as terminal
-- [ ] Code path for TASK DoD parsing (if shared) is scoped or split to continue rejecting `[~]` on TASK DoD checkboxes
-- [ ] `SpecRootNoteSchema` (if applicable) regex allows `[~]` in artifact-status entries
-- [ ] Unit test asserting `[~]` SPEC-root acceptance present and passing
-- [ ] Unit test asserting `[~]` TASK DoD rejection present and passing
-- [ ] Unit test asserting `validateSpecDoneClaim` returns `valid: true` for a SPEC-007-shaped fixture (post-TASK-031 layout) present and passing
-- [ ] `bun test` exits 0; net test count increase of at least 3 cases
-- [ ] No regression in existing spec-claim-validator tests
+- [x] `shared/composition/src/validators/spec-claim-validator.ts` accepts `[~]` markers in SPEC root `## Artifact Status` rows as terminal
+- [x] Code path for TASK DoD parsing (if shared) is scoped or split to continue rejecting `[~]` on TASK DoD checkboxes
+- [x] `SpecRootNoteSchema` (if applicable) regex allows `[~]` in artifact-status entries
+- [x] Unit test asserting `[~]` SPEC-root acceptance present and passing
+- [x] Unit test asserting `[~]` TASK DoD rejection present and passing
+- [x] Unit test asserting `validateSpecDoneClaim` returns `valid: true` for a SPEC-007-shaped fixture (post-TASK-031 layout) present and passing
+- [x] `bun test` exits 0; net test count increase of at least 3 cases
+- [x] No regression in existing spec-claim-validator tests
 
 ## ADR Compliance
 
