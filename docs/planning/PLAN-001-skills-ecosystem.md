@@ -51,8 +51,8 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | spec | 0 | 0 | 0 | 7 | 7 |
 | build | 0 | 1 | 0 | 7 | 8 |
 | review | 0 | 0 | 0 | 1 | 1 |
-| end | 1 | 0 | 0 | 0 | 1 |
-| **Total** | **1** | **1** | **0** | **20** | **22** |
+| end | 0 | 0 | 0 | 1 | 1 |
+| **Total** | **0** | **1** | **0** | **21** | **22** |
 
 ## Cross-Part Dependency Graph
 
@@ -85,7 +85,7 @@ graph TD
   build_SPEC_007("✅ <b>build.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Implementation Build</span>")
   protocol_hardening("⚡ <b>protocol-hardening</b><br/><span style='color:#6b7280;font-size:11px'>Phase X — Protocol Hardening (Drift Remediation)</span>")
   review("✅ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
-  end("○ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
+  end("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
 
   research --> decisions_1
   decisions_1 --> decisions_2
@@ -121,9 +121,8 @@ graph TD
   build_SPEC_007 --> review
   review --> end
 
-  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review done
+  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end done
   class protocol_hardening inprogress
-  class end pending
 ```
 
 ## Phase Progression
@@ -2216,7 +2215,10 @@ graph TD
 
 - **Phase**: end
 - **Title**: PR Creation and Session-End Checklist
-- **Substatus**: PENDING
+- **Substatus**: DONE
+- **Owning Session**: SESSION-2026-05-23_01
+- **Completing Session**: SESSION-2026-05-23_01
+- **Outcome**: Workflow complete. PRs #1-#14 shipped: full composition library + 4 user-facing skills + render pipeline + retro-validation + canonical PLAN-001. 508/508 tests pass; /review verdict PASS. Remaining: protocol-hardening (separate workstream, IN_PROGRESS at workflow close).
 - **Source Artifacts**: (none)
 - **Depends On**: review
 

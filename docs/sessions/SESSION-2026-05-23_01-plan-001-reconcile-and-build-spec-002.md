@@ -1,7 +1,7 @@
 ---
 title: 'SESSION-2026-05-23_01: PLAN-001 Reconcile and Build SPEC-002'
 type: session
-status: IN_PROGRESS
+status: DONE
 permalink: sessions/session-2026-05-23_01-plan-001-reconcile-and-build-spec-002
 binds_to:
   - planning/plan-001-skills-ecosystem
@@ -46,6 +46,31 @@ Continued on same branch after build.SPEC-002 commit. SPEC-003 (PLAN adapter) sh
 ## Event 07 — review READY → IN_PROGRESS; /review dispatched
 
 PR #13 merged (build.SPEC-002 + build.SPEC-003 retro-validation). Main synced. All 7 builds DONE. New branch `feat/plan-001-review` off main. review substatus PENDING → IN_PROGRESS; owning_session bound. PLAN-001 propagation: Progress Dashboard review row PENDING 1→0 + IP 0→1; Total row PENDING 2→1 + IP 0→1. Auto-routing to `/review` skill with target=feature (full feature surface, all 7 SPECs of composition library + 4 user-facing skills) for multi-axis adversarial review (BLOCKING gate before /end).
+
+## Event 08 — /end workflow close: end part DONE; session DONE
+
+PR #14 merged (/review PASS + build_workflow_items + canonical render). New branch `feat/plan-001-end` off main. PLAN-001 propagation: end part PENDING → DONE; outcome documents workflow close (14 PRs shipped, 508/508 tests, /review PASS). Session status IN_PROGRESS → DONE. PLAN-001 canonical-renderer-normalized to maintain SHA-256 round-trip identity. Total visible parts: 21/22 DONE (1 IN_PROGRESS = protocol-hardening, separate workstream). Workflow PLAN-001 effectively complete; protocol-hardening continues in future sessions.
+
+## Session deliverables (2026-05-23)
+
+This session shipped 3 merged PRs + 1 final PR:
+
+- PR #12 (merged): plan(plan-001) reconcile build statuses with per-TASK frontmatter
+- PR #13 (merged): build(plan-001) build.SPEC-002 + build.SPEC-003 DONE via retro-validation
+- PR #14 (merged): review(plan-001) /review verdict PASS + build_workflow_items schema fix
+- PR #15 (this PR): end(plan-001) workflow close
+
+PLAN-001 state at session close:
+
+- 21/22 visible parts DONE: research + decisions.1/2/3 + spec-decomposition + 7 specs + 7 builds + review + end
+- 1/22 IN_PROGRESS: protocol-hardening (separate workstream; not on critical path)
+
+Key learnings captured:
+
+- Retro-validation pattern needs build_workflow_items authoring (schema enforced); QA-042/QA-043 demonstrate the pattern
+- PLAN drift across multi-PR sessions requires explicit reconciliation
+- Canonical renderPlanNote produces deterministic markdown; render-normalize after manual edits maintains AC#3 round-trip identity
+- 132 build_workflow_items across 7 builds satisfy `PlanNoteSchema.superRefine` per-TASK impl+qa contract
 
 ## Observations
 
