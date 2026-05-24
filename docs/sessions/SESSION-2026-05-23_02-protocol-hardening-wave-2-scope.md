@@ -2436,3 +2436,21 @@ Per rigid cycle (j-m): PLAN qa-TASK-027 PENDING → IN_PROGRESS (Event 101). Dis
 ### State Changes
 
 - PLAN qa-TASK-027-SPEC-008: PENDING → IN_PROGRESS
+
+
+## Event 102 — TASK-027 CLOSED (QA PASS, amended spec); 34/47
+
+Independent QA (`brain:🧠-qa`) returned **PASS** — [[QA-077-SPEC-008: Validation Report for TASK-027 Session Duplicate Event Number Test]]. All 8 amended DoD checkboxes + REQ-007 AC-5 (amended) + AC-6 satisfied; manual probe confirmed continuity rejection `Event n=5 at index 5: expected n=6` matches `/expected n=\d+/` + `/n=5/`; 9/9 tests, biome+tsc clean. Regression-lock for the SESSION-2026-05-21_01 duplicate-event drift is mechanically enforced.
+
+### Derived-view sync (close)
+
+- SPEC-008 root `### Tasks`: TASK-027 → `[x]` (**34/47**). REQ-007 stays DRAFT (needs TASK-028 drift-markers + integration tests already DONE; 028 PENDING).
+- PLAN Wave Graph: T027 ⚡ → ✅ (class done); W1c label "3 ✅ 022/027/032 · 5 PENDING"; provenance Event 102.
+
+### State Changes
+
+- QA-077-SPEC-008: created (DONE) + bi-dir relates_to TASK-027
+- TASK-027-SPEC-008: status TODO → DONE; reciprocal QA relation
+- PLAN qa-TASK-027-SPEC-008: IN_PROGRESS → DONE (Test Report Ref QA-077)
+- SPEC-008 root Tasks: TASK-027 → [x] (34/47); Wave Graph synced
+- Marathon: 33/47 → **34/47** CLOSED

@@ -2,7 +2,7 @@
 title: 'TASK-027-SPEC-008: Session Mutation Duplicate Event Number Test'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-027-spec-008-session-duplicate-event
-status: TODO
+status: DONE
 effort: S
 estimate: 0.25d
 tags:
@@ -62,3 +62,4 @@ Add a test to `shared/composition/tests/mutation-invariants.test.ts` (the file a
 - part_of [[SPEC-008: Protocol Hardening Wave 2]]
 - implements [[REQ-007-SPEC-008: Integration Tests and Mutation Tests and Drift Regression Markers]]
 - depends_on [[TASK-026-SPEC-008: Mutation Backward Transition and Idempotency Tests]]
+- relates_to [[QA-077-SPEC-008: Validation Report for TASK-027 Session Duplicate Event Number Test]]
