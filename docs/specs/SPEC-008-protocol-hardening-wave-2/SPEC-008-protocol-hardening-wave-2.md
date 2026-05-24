@@ -76,7 +76,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 
 ### Tasks (46)
 
-- [ ] [[TASK-001-SPEC-008: Implement ADR Schema]]
+- [x] [[TASK-001-SPEC-008: Implement ADR Schema]]
 - [ ] [[TASK-002-SPEC-008: Implement ANALYSIS Schema]]
 - [ ] [[TASK-003-SPEC-008: Implement EPIC Schema]]
 - [ ] [[TASK-004-SPEC-008: Implement CRIT Schema]]
@@ -96,15 +96,15 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [ ] [[TASK-018-SPEC-008: Implement build-Skill Dispatch-Brief Generators]]
 - [ ] [[TASK-019-SPEC-008: Implement decisions-Skill Dispatch-Brief Generators]]
 - [ ] [[TASK-020-SPEC-008: Implement research-Skill and review-Skill Dispatch-Brief Generators]]
-- [ ] [[TASK-021-SPEC-008: Implement Adversarial-Claim Test Harness]]
+- [x] [[TASK-021-SPEC-008: Implement Adversarial-Claim Test Harness]]
 - [ ] [[TASK-022-SPEC-008: Author Initial Adversarial Fixture Set for Five Existing Validators]]
 - [ ] [[TASK-023-SPEC-008: Wire Adversarial-Claims Table-Driven Test Runner]]
 - [ ] [[TASK-024-SPEC-008: Author ADR ANALYSIS EPIC Adversarial Fixtures]]
 - [ ] [[TASK-025-SPEC-008: Integration Test Parse Mutate Validate Render]]
-- [ ] [[TASK-026-SPEC-008: Mutation Backward Transition and Idempotency Tests]]
+- [x] [[TASK-026-SPEC-008: Mutation Backward Transition and Idempotency Tests]]
 - [ ] [[TASK-027-SPEC-008: Session Mutation Duplicate Event Number Test]]
 - [ ] [[TASK-028-SPEC-008: Annotate Existing Tests with Phase X Drift Markers]]
-- [ ] [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
+- [x] [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
 - [ ] [[TASK-030-SPEC-008: Delete Core Dispatcher and Its Test]]
 - [ ] [[TASK-031-SPEC-008: Amend SPEC-007 Root with Deferred Notation and Legend]]
 - [ ] [[TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation]]
