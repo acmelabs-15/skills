@@ -502,3 +502,31 @@ User clarification turns added Q1 lock (D-7 tactical cleanup notation) + Q2 lock
 - Clarifications: Phase 3 adjustment narrative + 6 Disagree-and-Commit dissent entries (advisor+IT D-5 scope; architect MADR fields rejected; architect duplicate-note false positive; permalink `-1` cosmetic; relation-type specificity Track 4; IT alternative architectures rejected with rationale)
 
 **Open user decision**: Q3 — SPEC-008 granularity. With D-8 added (Track 5), Wave 2 now spans 5 tracks under one SPEC. Advisor's P1 about granularity has more weight; will resurface.
+
+
+## Event 22 — Q3 LOCKED: SPEC-008 single SPEC for all 5 tracks
+
+**Decision** (verbatim from AskUserQuestion answer):
+
+> **Keep as one SPEC-008 (Recommended for cohesion)**
+>
+> All 5 tracks ship as SPEC-008. One /build cycle; one QA sweep; one DONE gate. Within SPEC-008, REQ/DESIGN/TASK organized by track. PLAN-001 adds 2 new parts (spec.SPEC-008 + build.SPEC-008).
+
+Preview accepted:
+
+```text
+SPEC-008 Protocol Hardening Wave 2
+├─ REQ cluster 1: schemas/parsers/validators (Track 1)
+├─ REQ cluster 2: per-skill scripts + brief generators (Track 2)
+├─ REQ cluster 3: test harness + integration + regression (Track 3)
+├─ REQ cluster 4: drift cleanup (Track 4)
+└─ REQ cluster 5: hook architecture + handlers (Track 5)
+
+PLAN-001 new parts: 2 (spec.SPEC-008 + build.SPEC-008)
+```
+
+All 3 Phase 3 user-input decisions resolved: Q1 (D-7 tactical notation) ✓; Q2 (D-8 automated gates) ✓; Q3 (single SPEC) ✓.
+
+D-N inventory: D-1 ✓, D-2 ✓, D-3 ✓ (extended scope), D-4 ✓, D-5 ✓ (cross-note resolver), D-6 ✓, D-7 ✓ (tactical), D-8 ✓ NEW. Total 8 D-Ns; ADR ~900 lines post-Phase-3.
+
+**Next decision**: run strict adr-review round 2 (re-dispatch all 6 reviewers against revised ADR for convergence vote) OR pragmatically flip ADR-005 → ACCEPTED on the basis that all P0+P1 findings have been resolved/D&C-captured (skill protocol allows convergence by Phase 3 resolution if findings are addressed).
