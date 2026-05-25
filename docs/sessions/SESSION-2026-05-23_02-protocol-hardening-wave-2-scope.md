@@ -3258,3 +3258,15 @@ Orchestrator-verified against disk/git (not prose): 4 files changed as briefed; 
 - FU-6b FIXED (Phase 1 of 12 close-out). Files: `hooks/lib/parse-tool-input.ts` (+FileChanged parser, additive), `hooks/scripts.disabled/git-state-observer.ts` (uses readFileChangedHookInput), `hooks/scripts.disabled/__tests__/git-state-observer.test.ts` (+6 regression), `hooks/__tests__/smoke/layer-7-observer.smoke.test.ts` (real-shape payload).
 - Suite 1234 → 1240 pass / 0 fail. REQ-012 acceptance prereq cleared (formal flip in Phase 3).
 - No PLAN/SPEC-root change this event (FU-6b is a follow-up fix, not a TASK transition).
+
+
+## Event 143 — Phase 2 VERIFIED-SATISFIED: REQ-004 AC-9 prefix-collision test already exists (no change)
+
+Checked the REQ-004 AC-9 prereq (path-containment prefix-collision). FINDING: already fully satisfied — no new test needed.
+- Guard form is correct + uniform across all 11 per-skill scripts: `resolved === root || resolved.startsWith(root + path.sep)` (never the bare `.startsWith(root)` that false-negatives prefix-collision).
+- All THREE AC-9 adversarial cases are explicitly tested in gate-point scripts: `skills/end/scripts/run-pre-flight.test.ts:83/87/91` and `skills/end/scripts/validate-spec-done.test.ts:111/117/122` each verify (a) relative-traversal `../../../../etc/passwd`, (b) absolute-outside `/etc/passwd`, (c) prefix-collision sibling `<cwd>-sibling/x.md` → all exit 2.
+- Re-ran both files: 30 pass / 0 fail; the three rejections print as expected.
+
+### State Changes
+
+- Phase 2 (of 12) VERIFIED-SATISFIED — REQ-004 AC-9 path-containment + 3 adversarial cases already covered. No code/test change. REQ-004 acceptance prereq cleared (formal flip in Phase 3).
