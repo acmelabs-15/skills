@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - protocol-hardening
@@ -21,6 +21,7 @@ status_history:
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 118; resume, fresh context; rehydrated; complete SPEC-008)
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 140; 47/47 build complete, clean boundary; close-out → fresh context via /plan)
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 141; resume for 12-phase close-out; rehydrated; suite 1234/0 confirmed)
+- IN_PROGRESS → PAUSED 2026-05-25 (Event 159; context-budget pause; sweeps + REQ/DESIGN acceptance done; close-out resume protocol recorded)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -32,17 +33,13 @@ User reopened the `protocol-hardening` part of [[PLAN-001 Skills Ecosystem]] wit
 Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `main` at `eb0eb28`).
 
 ## State
-- Latest commit: `6838a87` (Event 116). Branch `feat/plan-001-protocol-hardening-wave-2-scope`; working tree clean.
-- PLAN-001 IN_PROGRESS; `protocol-hardening` part IN_PROGRESS; `build.SPEC-008` IN_PROGRESS (owning SESSION-2026-05-23_02).
-- **40/47 TASKs fully CLOSED.** Remaining **7**: 044 (impl + FU-6 done → needs QA + close), 024, 028, 031, 035, 036 (PENDING), 046 (terminal hook smoke — needs 041-045 ✓ + adversarial fixtures + 024).
-- REQs ACCEPTED: REQ-001/002/003/005; DESIGN-001. **REQ-011 HELD** (needs the layered-severity refactor QA'd first). Pending acceptances: REQ-004 (after AC-9 prefix-collision test added), REQ-006 (after 024), REQ-007 (after 028), REQ-008 (after 031), REQ-009 (after 036), REQ-010 (after 035), REQ-012 (after 044 QA + FU-6b); DESIGN-002/003/004 totality-gated.
-- **Layered-severity enforcement**: spec-amended (REQ-011 AC + DESIGN-004, Event 114) + IMPLEMENTED (Event 115, commit 7ce874e) — dispatchValidator classifies claim-lie→`deny` vs hygiene→`allow-with-warning` (independent claim extraction in `shared/composition/src/validators/lenient-claim-extract.ts`); per-layer mapping: L1/L2 warn→allow, L3/L4/L5/L6 warn→deny, L7 observe. Orchestrator-verified (tsc 0, 243 tests) but **NEEDS FORMAL QA** before REQ-011 acceptance.
-- **Hooks DISABLED**: `hooks/hooks.json.disabled` + `hooks/scripts.disabled/`. Re-enable ONLY at go-live (after layer complete + QA'd + FU-6b fixed + all notes conformant). They auto-activate when files land in `hooks/scripts/` + `hooks/hooks.json` — keep disabled until ready (per feedback_enforcement_layer_build_isolation).
-- **test-report → qa rename**: COMPLETE in code + field/label + PLAN-001 (no back-compat; QaNoteSchema/QaIdSchema qa-only; `qa_ref`/`QA Ref`/`--qa-ref`). **REMAINING (user wants done): ~37 docs/** notes** still reference `test-report`/`TestReportNoteSchema`/`validateTestReportPassClaim` in prose. NUANCE: the SPEC-008 REQ/DESIGN/TASK prose should update to current symbol names (accuracy); QA/session/ADR-005/ANALYSIS-003/004 are temporal records — rename references-to-the-entity but PRESERVE narrative where "test-report" is the OLD name in a rename/history discussion (esp. THIS session note's Events 114-116 + the rename discussion — do NOT make "rename test-report→qa" into "rename qa→qa"). Brain MCP edits (docs/** binary rule); a careful per-note pass, not a blanket sed.
-- Suite baseline: **1216 pass / 2 fail / 1218** (2 = SPEC-007 DEFERRED `plan-001-migration` AC#1+AC#3 per D-1; any other fail = regression).
-- Open follow-ups: **FU-4** (`hooks/**` not in tsconfig/biome include — CI doesn't gate hook layer); **FU-5** (TASK-039 `parse-tool-input.ts` MCP schemas diverge from real shapes); **FU-6b** (Layer-7 `git-state-observer` has the PreToolUse-input-shape bug, fails-open — fix before Layer-7 go-live); **REQ-004 AC-9** prefix-collision path-containment test (before REQ-004 ACCEPTED); **FU-3** (session Obs/Relations placement → tail); QaIdSchema-qa-only data note (PLAN-001 has `QA-000-SPEC-001` placeholder refs — format-valid but bogus note numbers).
-- User cadence/preferences (auto-memories written this session): run-to-completion (pause on budget); maximize parallelism (fill the safe-disjoint batch ceiling); QA = one `brain:🧠-qa` per TASK in parallel (`feedback_qa_one_agent_per_task_parallel`); enforcement-layer build isolation (`feedback_enforcement_layer_build_isolation`); no unfounded subagent model override (`feedback_no_unfounded_subagent_model_override`); complete rename, no back-compat (`feedback_complete_rename_no_backcompat`); keep SPEC-root + PLAN graph synced every batch close; derived-view sync mandatory.
-- 0 active blockers; 0 open user decisions (REQ-011 acceptance gated on the layered-severity QA, not a decision).
+
+- Latest commit `ac10de5` (Event 158); branch `feat/plan-001-protocol-hardening-wave-2-scope`; tree clean. Status **PAUSED** (Event 159, context-budget). Full current-state + resume protocol: **Event 159**.
+- **SPEC-008 build COMPLETE** (47/47 TASKs DONE + QA'd); suite **1252/0**; tsc clean. **All 12 REQs + 4 DESIGNs ACCEPTED** (QA-evidence basis — composition validators do NOT parse REQ/DESIGN; deferred parser problem).
+- Docs sweeps DONE: `_shared`→`shared` (179 notes), `test-report`→`qa` (30 + ADR-005 body), `feedback_` §5.3 (0 in non-temporal). `bm reset --reindex` run.
+- Reflections SKILL-006…014 captured; reflection-capture process locked. Hooks DISABLED (go-live deferred — depends on parser fix).
+- REMAINING close-out (Event 159 protocol): SPEC-root finalization + tidy + retrospective + /end+merge. DEFERRED to a further new session: parser-conformance (Problem A invocation + B consistency) + bulk-rewrite tool + hooks go-live + SPEC-008/PLAN → DONE.
+
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
 User invoked `/plan PLAN-001-skills-ecosystem`. Orchestrator surfaced PLAN-001 functionally complete (21/22 parts DONE; protocol-hardening stale IN_PROGRESS). User selected option (b) "Reopen protocol-hardening for fresh work" then directed "everything that needs to be done for it — figure out what that is, ultrathink".
@@ -3396,3 +3393,34 @@ Reflection captured (content in [[SKILL-013: adr-review-gate-scope]]). User ques
 ## Event 158 — [reflect-capture] complete-rename includes ADR bodies (no preserve-caveats) → [[SKILL-014: complete-rename-includes-adr-bodies]]
 
 Reflection captured (content in [[SKILL-014: complete-rename-includes-adr-bodies]]). User corrected my ADR-005 approach: I treated the ADR as preserve-only (body kept + a 'read test-report as qa' clarification); user wanted a direct test-report->qa conversion in the body, no backwards-compat, no caveats. ADR immutability governs decision changes, not mechanical renames. Also self-flag: SKILL-013 had cited an auto-memory filename (§5.3 slip), now inlined. Confidence HIGH.
+
+
+## Event 159 — PAUSE (context budget): close-out resume protocol
+
+Pausing at a clean, fully-committed boundary. Resume via `/skills:plan PLAN-001-skills-ecosystem` (continue mode) → RESUME this session (PAUSED→IN_PROGRESS; continue Event numbering from 160; NO new note — resume-paused-session rule) → execute the REMAINING steps below IN ORDER.
+
+### DONE this session (do NOT redo)
+- `_shared/`→`shared/` sweep: 179 notes (commit cfda965). Residual `_shared/` only in the intentional preserve-set (sessions / RETRO / ADR-005 / ANALYSIS-004 / spec-roots / TASK-029 / REQ-009).
+- `test-report`→`qa` drift-repair: 30 notes + ADR-005 body + 6 surgical fixes (commits 73fc111, a131733, a131733). 0 residual EXCEPT intentional preserve-set: ANALYSIS-003/004, QA-039/040/041, RETRO-003, SKILL-012, REQ-010/TASK-034 (rename-narrative / drift-findings / historical). **The test-report→qa work is COMPLETE — the remaining occurrences are deliberately preserved; do NOT "finish" them.**
+- `feedback_` §5.3 cleanup: 7 notes + ADR-003 + SKILL-013 (commits a131733, 4e6a26f). 0 in non-temporal docs; RETRO-001/002 preserved as temporal records (AC-10 temporal-ledger exemption extended to retros).
+- **ALL 12 REQs + 4 DESIGNs ACCEPTED** (commits 73fc111…ac10de5); SPEC-root Requirements + Designs lists fully `[x]`. CAVEAT: on the QA-evidence basis — the composition validators do NOT parse REQ/DESIGN notes (the deferred parser problem).
+- FU-6b (Layer-7 FileChanged input shape) + REQ-006 AC-7 harness comment-parsing (commits 1f3f018, 74b60a6). Suite **1252 pass / 0 fail**; `bun run typecheck` clean.
+- Reflections SKILL-006…014 captured; canonical reflection-capture process locked.
+- `bm reset --reindex` run (DB reconciled to filesystem) — see commit/Event below.
+
+### REMAINING close-out (execute IN ORDER on resume)
+1. **Rehydrate**: read this State block + Events 140-159 + git state; run `bun test` (expect ~1252/0); re-read cited auto-memories.
+2. **SPEC-root finalization** (the SPEC-008 root note `## Acceptance Criteria` + `## Success Criteria`): flip the genuinely-done AC items — #3 (47 TASKs DONE; TaskNoteSchema parses), #7 (composition tests 1252/0), #8 (hooks smoke-tested, TASK-046), #9 (Track-4 drift cleaned incl. the sweeps). **HOLD** AC #1/#2 ("verifiable via validateRequirementAcClaim / validateDesignComplianceClaim") — annotate deferred-pending parser-conformance reconciliation. Success Criteria: HOLD the hooks-dependent one (#1 voluntary-invocation-closed — hooks not live); assess the rest. **Do NOT flip SPEC-008 root status → DONE** (deferred — see below).
+3. **Tidy**: reconcile stale baseline test-count language ("1234/0", "705/2/707", "1216/2", etc.) in the SPEC-root + this State block → current **1252/0**. Fix FU-3: move THIS session note's `## Observations`/`## Relations` to the true tail (currently mid-note ~lines 62/70) before /end.
+4. **Retrospective (BEFORE /end)**: dispatch `brain:🧠-retrospective` (model opus). This note is THE BRIDGE for the post-merge parser-fix session. MUST synthesize SKILL-006…014 + Events 144-158 and capture: Problem A (invocation — built scripts/validators never wired: SKILL-006/007), Problem B (consistency — no single schema source: SKILL-008/009), bulk-migration tooling gap (SKILL-012), adr-review gate-scope (SKILL-013), complete-rename-incl-ADRs (SKILL-014), reflection-capture process (SKILL-010/011) + the FULL DEFERRED inventory below + a recommended approach.
+5. **`/end`** (`/skills:end`): DoD verify → `/review` BLOCKING gate → 5 pre-flight → final commit → markdownlint → push branch → `gh pr create` → flip session DONE → structured report. **Merge is HIGH-RISK** (autonomous-mode consensus gate; not on main). `build.SPEC-008` part DoD items depending on deferred work → mark deferred-with-rationale. **PLAN-001 frontmatter status STAYS IN_PROGRESS** (NOT DONE — parser-conformance + hooks-go-live remain).
+
+### DEFERRED to a FURTHER new session (post-merge; carried by the retrospective) — the parser-conformance problem
+- **Problem A (invocation/wiring)**: wire the 11 per-skill scripts into the 7 lifecycle SKILL.md files (build/spec/decisions/end/plan/research/review — currently 0 references; only defrag/ingest wire theirs); wire the REQ/DESIGN validators into the /spec + /build gates.
+- **Problem B (consistency / single-schema-source)**: make the schema the single source the parser/validator/template/renderer derive from. Reconcile so REQ/DESIGN notes PARSE: `parseRequirementNote` reads `## Requirement Statement` but SPEC-008 REQs use `## EARS`; `DesignNoteSchema` observation-category enum lacks `design` (20/24 design notes use `[design]`); `## Priority` >200-char cap; frontmatter tags >5. Affects ALL REQ/DESIGN notes project-wide incl. pre-accepted.
+- **Build the MCP-backed bulk-rewrite tool** (no sanctioned bulk Brain-note find-replace primitive — SKILL-012).
+- **Hooks go-live (Phase 8)**: `mv hooks/hooks.json.disabled hooks/hooks.json` + `mv hooks/scripts.disabled hooks/scripts` — ONLY after the parser fix (Stop backstop fail-closes on unparseable REQ/DESIGN → would block turn-ends). TASK-046 smoke = go-live proof.
+- **SPEC-008 root → DONE + PLAN-001 → DONE**: after all the above (validateSpecDoneClaim can then run).
+
+### State Changes
+- SESSION-2026-05-23_02: IN_PROGRESS → PAUSED (Event 159; context-budget pause at fully-committed boundary; close-out resume protocol recorded for /plan auto-resume).
