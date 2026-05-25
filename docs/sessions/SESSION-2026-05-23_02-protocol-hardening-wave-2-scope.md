@@ -2862,3 +2862,15 @@ User flagged (correctly) that the SPEC root + PLAN dependency graphs were stale.
 - SPEC-008 root: Acceptance Criteria task-count 46→47; Success Criteria TEST-REPORT→QA + deferred-count 4→5
 - PLAN wave graph: provenance + intro count + W1a wave-structure prose + W1b/W1c/W4 subgraph headers + T044 label/status/class all corrected to ground truth
 - Derived views (SPEC-root all-5-lists + PLAN cross-part + wave graph + dashboard) now current as of 40/47
+
+
+## Event 122 — DECISION LOCKED: AC10 latency measurement folded into TASK-046 (REQ-011 acceptance gated on 046)
+
+User-approved via AskUserQuestion: **"Fold into TASK-046"** — add an end-to-end latency assertion to [[TASK-046-SPEC-008: Author Hook Smoke Tests and Adversarial Fixture Reuse]] (the terminal hook smoke-test task), its natural home (already invokes handlers via stdin→stdout). REQ-011 gets ACCEPTED with a real measurement when TASK-046 closes; **NO spec amendment** to REQ-011 (AC10 text unchanged); REQ-011 stays DRAFT until 046. Recorded durably this turn: added a Latency-measurement DoD item to TASK-046 referencing REQ-011 AC10 + the ~80-250ms/edit + ~500ms-2s/commit budget.
+
+### State Changes
+
+- DECISION: REQ-011 AC10 latency measurement → folded into TASK-046 DoD (user-approved, Event 122)
+- TASK-046-SPEC-008 DoD: +1 item (end-to-end latency assertion satisfying REQ-011 AC10)
+- REQ-011-SPEC-008: remains DRAFT; acceptance now gated on TASK-046 closure (no AC amendment)
+- Step A CLOSED: layered-severity refactor validated (QA-084 PASS, AC1-9); REQ-011 acceptance rescheduled to post-TASK-046

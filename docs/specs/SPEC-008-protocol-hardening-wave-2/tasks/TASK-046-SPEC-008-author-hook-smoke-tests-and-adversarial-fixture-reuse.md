@@ -37,6 +37,7 @@ Smoke tests run the actual hook handler scripts via `bun run` against simulated 
 - [ ] Smoke test 10: low-severity schema issue (missing tag on observation) on Layer 1 emits `permissionDecision: "allow"` with `additionalContext` warning
 - [ ] All smoke tests invoke the actual handler scripts via `bun run`, not via in-process import (asserts the hook wiring works end-to-end)
 - [ ] Smoke tests run as part of `bun test` and complete within ~10s total
+- [ ] Latency measurement (satisfies [[REQ-011-SPEC-008: PreToolUse Blocking Gates]] AC10 — per SESSION-2026-05-23_02 Event 122 user-approved decision to fold the AC10 measurement here): assert a representative Layer-1 edit-handler invocation against a typical TASK-note edit completes within ~80-250ms, and a Layer-3 commit-handler invocation over a 5-10 file staged set within ~500ms-2s (measured end-to-end via `bun run`, not in-process)
 - [ ] biome lint passes
 - [ ] `bun tsc --noEmit` passes
 
