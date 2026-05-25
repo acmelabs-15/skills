@@ -1,7 +1,7 @@
 ---
 title: "PLAN-001: Skills Ecosystem"
 type: plan
-status: IN_PROGRESS
+status: DONE
 complexity_tier: TIER_4
 branches:
   - feat/plan-001-skills-ecosystem
@@ -49,10 +49,10 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 | decisions | 0 | 0 | 0 | 4 | 4 |
 | spec-decomposition | 0 | 0 | 0 | 1 | 1 |
 | spec | 0 | 0 | 0 | 8 | 8 |
-| build | 0 | 2 | 0 | 7 | 9 |
+| build | 0 | 0 | 0 | 9 | 9 |
 | review | 0 | 0 | 0 | 1 | 1 |
 | end | 0 | 0 | 0 | 1 | 1 |
-| **Total** | **0** | **2** | **0** | **23** | **25** |
+| **Total** | **0** | **0** | **0** | **25** | **25** |
 
 ## Cross-Part Dependency Graph
 
@@ -83,12 +83,12 @@ graph TD
   build_SPEC_005("✅ <b>build.SPEC-005</b><br/><span style='color:#6b7280;font-size:11px'>Decompose + Recompose Skills Build</span>")
   build_SPEC_006("✅ <b>build.SPEC-006</b><br/><span style='color:#6b7280;font-size:11px'>Defrag + Ingest Skills Build</span>")
   build_SPEC_007("✅ <b>build.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Implementation Build</span>")
-  protocol_hardening("⚡ <b>protocol-hardening</b><br/><span style='color:#6b7280;font-size:11px'>Phase X — Protocol Hardening (Drift Remediation)</span>")
+  protocol_hardening("✅ <b>protocol-hardening</b><br/><span style='color:#6b7280;font-size:11px'>Phase X — Protocol Hardening (Drift Remediation)</span>")
   review("✅ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
   end_part("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
   decisions_4("✅ <b>decisions.4</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Architecture Decisions (ADR-005)</span>")
   spec_SPEC_008("✅ <b>spec.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>SPEC-008 Protocol Hardening Wave 2 (5 REQ clusters: coverage gaps + skill invocation + tests + drift cleanup + automated enforcement hooks)</span>")
-  build_SPEC_008("⚡ <b>build.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Build SPEC-008 — Wave 2 Protocol Hardening implementation</span>")
+  build_SPEC_008("✅ <b>build.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Build SPEC-008 — Wave 2 Protocol Hardening implementation</span>")
 
   research --> decisions_1
   decisions_1 --> decisions_2
@@ -127,8 +127,7 @@ graph TD
   decisions_4 --> spec_SPEC_008
   spec_SPEC_008 --> build_SPEC_008
 
-  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end_part,decisions_4,spec_SPEC_008 done
-  class protocol_hardening,build_SPEC_008 inprogress
+  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,protocol_hardening,review,end_part,decisions_4,spec_SPEC_008,build_SPEC_008 done
 ```
 
 ## Phase Progression
@@ -2185,8 +2184,10 @@ graph TD
 
 - **Phase**: build
 - **Title**: Phase X — Protocol Hardening (Drift Remediation)
-- **Substatus**: IN_PROGRESS
+- **Substatus**: DONE
 - **Owning Session**: SESSION-2026-05-20_05
+- **Completing Session**: SESSION-2026-05-23_02
+- **Outcome**: [[SPEC-008: Protocol Hardening Wave 2]]
 - **Source Artifacts**: [[ANALYSIS-003: Phase X Protocol Hardening State]]
 - **Depends On**: build.SPEC-001
 
@@ -2285,8 +2286,10 @@ graph TD
 
 - **Phase**: build
 - **Title**: Build SPEC-008 — Wave 2 Protocol Hardening implementation
-- **Substatus**: IN_PROGRESS
+- **Substatus**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
+- **Completing Session**: SESSION-2026-05-23_02
+- **Outcome**: [[SPEC-008: Protocol Hardening Wave 2]]
 - **Source Artifacts**: SPEC-008 Protocol Hardening Wave 2 (ACCEPTED 2026-05-23; spec.SPEC-008 DONE)
 - **Depends On**: spec.SPEC-008
 

@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: IN_PROGRESS
+status: DONE
 tags:
 - session
 - protocol-hardening
@@ -23,6 +23,7 @@ status_history:
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 141; resume for 12-phase close-out; rehydrated; suite 1234/0 confirmed)
 - IN_PROGRESS → PAUSED 2026-05-25 (Event 159; context-budget pause; sweeps + REQ/DESIGN acceptance done; close-out resume protocol recorded)
 - PAUSED → IN_PROGRESS 2026-05-25 (Event 160; resume for Event-159 close-out; rehydrated; suite 1252/0 confirmed)
+- IN_PROGRESS → DONE 2026-05-25 (Event 165; Event-159 close-out complete; PLAN-001 + SPEC-008 DONE via follow-on-wave scoping; session closed)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -35,11 +36,11 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 
 ## State
 
-- Latest commit `aa544cf` (Event 163); branch `feat/plan-001-protocol-hardening-wave-2-scope`; tree clean. Status **IN_PROGRESS** (resumed Event 160 for the Event-159 close-out).
-- **SPEC-008 build COMPLETE** (47/47 TASKs DONE + QA'd); suite **1252/0**; tsc clean. All 12 REQs + 4 DESIGNs ACCEPTED (QA-evidence basis — composition validators do NOT parse REQ/DESIGN; deferred parser problem).
-- Close-out Steps 1-4 DONE: rehydrate (160); SPEC-008 root AC/SC finalized — AC #3/7/8/9 + SC #2/3 `[x]`, AC #1/2 + SC #1/4 held-deferred (161); tidy + FU-3 + robust Observations/Relations (162); **RETRO-004 plan-capstone retrospective** authored + 19 bidirectional inverses wired + PLAN-001 provenance gap closed (2/9 → 9/9 sessions) + SESSION-2026-05-20_04 frontmatter repaired (163).
-- Reflections SKILL-006…014 captured; reflection-capture process locked. Hooks DISABLED (go-live deferred — depends on parser fix; enabling now fail-closes the Stop backstop on unparseable REQ/DESIGN notes).
-- REMAINING: Step 5 `/end` (review gate → 5 pre-flight → PR; merge is autonomous-mode consensus-gated). **PLAN-001 stays IN_PROGRESS; SPEC-008 root stays ACCEPTED.** DEFERRED to a post-merge session (bridge = RETRO-004): parser-conformance (Problem B single-schema-source → Problem A script/validator wiring), MCP-backed bulk-rewrite tool, hooks go-live, then SPEC-008 + PLAN-001 → DONE.
+- Branch `feat/plan-001-protocol-hardening-wave-2-scope`; tree clean post-close-out. Status **DONE** (Event 165; Event-159 close-out complete).
+- **PLAN-001 DONE** (`validatePlanDoneClaim` ok; all parts terminal) + **SPEC-008 DONE** (`validateSpecDoneClaim` ok). 47/47 TASKs; suite **1252/0**; PLAN-001 SHA-256 round-trip identity holds.
+- Close-out arc (Events 160-165): rehydrate → SPEC-008 root AC/SC finalized → tidy + FU-3 + robust Observations/Relations → RETRO-004 plan-capstone + 19 bidirectional inverses + PLAN provenance fixes → /end (scoped review PASS + pre-flight PASS + the `[~]`-round-trip catch) → PLAN-001 + SPEC-008 flipped DONE via follow-on-wave scoping.
+- **FOLLOW-ON WAVE** (bridge = RETRO-004; explicitly NOT remaining PLAN-001 scope): parser-conformance (single-schema-source so REQ/DESIGN parse) → script/validator wiring into the 7 lifecycle skills → MCP bulk-rewrite tool → hooks go-live. The enforcement mechanism is BUILT but INERT (`hooks/hooks.json.disabled` stays dormant) until that wave lands; SPEC-008 AC #1/#2 + SC #1/#4 carry `[~]` deferred-to-follow-on.
+- Reflections SKILL-006…015 captured; reflection-capture process locked.
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
@@ -3476,6 +3477,23 @@ DROP-CATCH (stop-the-line during pre-flight): I first marked the 4 deferred DoD 
 - build.SPEC-008 DoD: all 8 items `[x]` (1-4 genuinely done; 5-8 `[x]` with deferral rationale per user ruling). SHA-256 round-trip identity restored; suite 1252/0.
 - Reflection SKILL-015 (plan-dod-checkbox-notation) captured in background (pointer here).
 - No entity status flip yet (PLAN-001 IN_PROGRESS; SPEC-008 ACCEPTED; protocol-hardening IN_PROGRESS; hooks disabled). Step 4 push + PR + session-DONE pending.
+
+## Event 165 — Step 4: PLAN-001 + SPEC-008 closed DONE (follow-on-wave scoping)
+
+Per user ruling ("move both plan and session out of in-progress — they're both done"): the parser-conformance + script-wiring + hooks-go-live work is RE-SCOPED from remaining PLAN-001 work to a FOLLOW-ON WAVE (bridge = RETRO-004), so PLAN-001's in-scope deliverables are complete. Flipped honestly via canonical `[~]` (no phantom `[x]`); both DONE claims mechanically validated:
+
+- SPEC-008 root: AC #1/#2 + SC #1/#4 → `[~]` deferred-to-follow-on (validator-verification + hooks-go-live); fixed 2 SPEC-root schema-conformance issues (tags 6→5; added `## Context` section) so the root parses; status ACCEPTED → DONE. **validateSpecDoneClaim → ok.**
+- PLAN-001: build.SPEC-008 + protocol-hardening parts → DONE via set-part-done (applyPlanMutation re-render); frontmatter status IN_PROGRESS → DONE. **validatePlanDoneClaim → {ok:true}** (all parts terminal); PLAN-001 SHA-256 round-trip identity holds (plan-001-migration.test.ts 5/5); suite 1252/0.
+- Hooks remain DISABLED (ship dormant; go-live is follow-on).
+
+Honesty caveat recorded: RETRO-004 documents the enforcement mechanism is currently INERT (scripts unwired, validators can't parse REQ/DESIGN, hooks disabled); "DONE" reflects Wave-2 BUILD completion with runtime-activation scoped to the follow-on wave.
+
+### State Changes
+
+- SPEC-008 root: status ACCEPTED → DONE (validateSpecDoneClaim ok); AC #1/#2 + SC #1/#4 `[~]`; +`## Context` section; tags 6→5.
+- PLAN-001: build.SPEC-008 → DONE, protocol-hardening → DONE; frontmatter IN_PROGRESS → DONE (validatePlanDoneClaim ok); round-trip holds; suite 1252/0.
+- SESSION-2026-05-23_02: IN_PROGRESS → DONE (this event).
+- Follow-on wave (parser-conformance + script-wiring + hooks go-live) tracked by RETRO-004; hooks stay disabled.
 
 
 ## Observations

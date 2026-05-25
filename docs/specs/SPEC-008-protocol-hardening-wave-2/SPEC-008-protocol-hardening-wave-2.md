@@ -2,17 +2,20 @@
 title: 'SPEC-008: Protocol Hardening Wave 2'
 type: spec
 permalink: specs/spec-008-protocol-hardening-wave-2/spec-008-protocol-hardening-wave-2-1
-status: ACCEPTED
+status: DONE
 tags:
 - spec
 - protocol-hardening
 - wave-2
 - composition-library
 - automated-enforcement
-- skills-ecosystem
 ---
 
 # SPEC-008: Protocol Hardening Wave 2
+
+## Context
+
+Wave 2 of the protocol-hardening initiative. Closes the convergent finding from the 5-audit synthesis ([[ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis]]): the rigid per-TASK build+QA protocol existed as PROSE, not RUNTIME ENFORCEMENT. Implements [[ADR-005: Protocol Hardening Wave 2 Architecture]] across 5 tracks — library coverage, per-skill gate scripts, adversarial test harness, drift cleanup, and the plugin-hook enforcement layer. The implementation shipped (47/47 TASKs, suite 1252/0); the validator-parse-conformance + script-wiring + hooks-go-live that make the mechanism live runtime-active are scoped to a follow-on wave (bridge: [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]).
 
 ## Scope
 
@@ -146,8 +149,8 @@ Render layer architecture; T2 dispatch-brief generators import cross-cutting con
 
 ## Acceptance Criteria
 
-- [ ] All 12 REQs status ACCEPTED with their `## Acceptance Criteria` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateRequirementAcClaim`) — **DEFERRED-PENDING-PARSER-CONFORMANCE**: all 12 REQs ARE ACCEPTED with every AC `[x]` on the QA-evidence basis (4-agent evidence matrices, Events 144-147); this box HELD `[ ]` because `validateRequirementAcClaim` cannot yet parse the REQ notes (`## EARS` heading vs the parser's `## Requirement Statement`). Tracked to the post-merge parser-conformance session (SESSION-2026-05-23_02 Event 159 deferred inventory).
-- [ ] All 4 DESIGN notes status ACCEPTED with `## Compliance` checkboxes `[x]` where present (Wave 2 acceptance verifiable via `validateDesignComplianceClaim`) — **DEFERRED-PENDING-PARSER-CONFORMANCE**: all 4 DESIGNs ARE ACCEPTED with every `## Compliance` item `[x]`; this box HELD `[ ]` because `validateDesignComplianceClaim` rejects the `[design]` observation category (absent from the schema's 10-category enum). Tracked to the post-merge parser-conformance session.
+- [~] All 12 REQs status ACCEPTED with their `## Acceptance Criteria` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateRequirementAcClaim`) — **DEFERRED-PENDING-PARSER-CONFORMANCE**: all 12 REQs ARE ACCEPTED with every AC `[x]` on the QA-evidence basis (4-agent evidence matrices, Events 144-147); this box HELD `[ ]` because `validateRequirementAcClaim` cannot yet parse the REQ notes (`## EARS` heading vs the parser's `## Requirement Statement`). Tracked to the post-merge parser-conformance session (SESSION-2026-05-23_02 Event 159 deferred inventory).
+- [~] All 4 DESIGN notes status ACCEPTED with `## Compliance` checkboxes `[x]` where present (Wave 2 acceptance verifiable via `validateDesignComplianceClaim`) — **DEFERRED-PENDING-PARSER-CONFORMANCE**: all 4 DESIGNs ARE ACCEPTED with every `## Compliance` item `[x]`; this box HELD `[ ]` because `validateDesignComplianceClaim` rejects the `[design]` observation category (absent from the schema's 10-category enum). Tracked to the post-merge parser-conformance session.
 - [x] All 47 TASKs status DONE with all `## Definition of Done` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateTaskDoneClaim`)
 - [x] ADR coverage gate PASS — ADR-001, ADR-002, ADR-003, ADR-005 all have `implemented_by [[SPEC-008: Protocol Hardening Wave 2]]` in their Relations sections
 - [x] Gate A semantic gap analysis PASS — no REQ flagged as vague or runtime-judgment-dependent by analyst review
@@ -159,10 +162,10 @@ Render layer architecture; T2 dispatch-brief generators import cross-cutting con
 
 ## Success Criteria
 
-- [ ] Voluntary-invocation gap closed: every gate point in the rigid per-TASK build+QA cycle is mechanically enforced by a hook (PreToolUse or Stop) that cannot be bypassed by orchestrator omission — **DEFERRED-PENDING-HOOKS-GO-LIVE**: the 7-layer hook architecture is built + smoke-tested (TASK-037..046) but DISABLED (`hooks/hooks.json.disabled`); go-live is gated on the parser-conformance fix (the Stop backstop would fail-closed on unparseable REQ/DESIGN notes). Tracked to the post-merge session.
+- [~] Voluntary-invocation gap closed: every gate point in the rigid per-TASK build+QA cycle is mechanically enforced by a hook (PreToolUse or Stop) that cannot be bypassed by orchestrator omission — **DEFERRED-PENDING-HOOKS-GO-LIVE**: the 7-layer hook architecture is built + smoke-tested (TASK-037..046) but DISABLED (`hooks/hooks.json.disabled`); go-live is gated on the parser-conformance fix (the Stop backstop would fail-closed on unparseable REQ/DESIGN notes). Tracked to the post-merge session.
 - [x] Schema coverage matrix complete: all 16 canonical Brain note types either have schemas (12 covered: SPEC root, TASK, REQ, DESIGN, SESSION, PLAN, QA, ADR, ANALYSIS, EPIC, CRIT, plan-yaml) or are explicitly deferred (5 deferred P2: PRD, FEATURE, SECURITY, RETROSPECTIVE, SKILL)
 - [x] Adversarial-fixture inventory operates as the drift-regression marker corpus: every Audit E top-10 scenario has a fixture file; every future drift surface gets a new fixture file as the regression test
-- [ ] Dispatch briefs auto-include schema-defined constraints (e.g., `validRelationTypes`) via direct import — no manual prose sync between schema and brief — **DEFERRED-PENDING-SCRIPT-WIRING**: the brief-generator scripts import the constants (REQ-005), but the per-skill scripts are not yet wired into the 7 lifecycle `SKILL.md` files (Problem A, Event 148), so production dispatch briefs remain hand-authored. Tracked to the post-merge invocation-wiring session.
+- [~] Dispatch briefs auto-include schema-defined constraints (e.g., `validRelationTypes`) via direct import — no manual prose sync between schema and brief — **DEFERRED-PENDING-SCRIPT-WIRING**: the brief-generator scripts import the constants (REQ-005), but the per-skill scripts are not yet wired into the 7 lifecycle `SKILL.md` files (Problem A, Event 148), so production dispatch briefs remain hand-authored. Tracked to the post-merge invocation-wiring session.
 
 ## Files Affected (post-build summary; targets, not authored content)
 

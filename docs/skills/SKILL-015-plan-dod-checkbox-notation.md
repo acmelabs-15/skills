@@ -1,5 +1,5 @@
 ---
-permalink: skills/skill-015-plan-dod-checkbox-notation-1
+permalink: skills/skill-015-plan-dod-checkbox-notation
 ---
 
 ---
