@@ -3345,3 +3345,30 @@ User chose investigate+fix-now and asked to understand what broke down (intuitio
 
 ### State Changes
 - Root-cause investigation complete (read-only greps on SKILL.md / parsers / schemas / NOTE-TEMPLATES / STRUCTURES). 3 compounding failures identified. Fix plan + decision points to be proposed to user; fix to execute (likely fresh context).
+
+## Event 149 — [reflect-capture] Failure 1: "exists + unit-tested" ≠ DONE for a script deliverable
+
+Reflection captured to skill-sidecar note **[[SKILL-006: script-wiring-integration]]** (canonical process: full content lives in the skill note; this Event is the pointer the end-of-session retrospective walks). Failure 1 — per-skill scripts built + tested but never wired into `SKILL.md` ("exists + unit-tested ≠ DONE"). Confidence HIGH. Investigation source [[Event 148]]; sibling reflections [[Event 150]], [[Event 151]].
+
+## Event 150 — [reflect-capture] Failure 2: "verifiable via X" in an AC where X never ran is a phantom gate
+
+Reflection captured to skill-sidecar note **[[SKILL-007: phantom-verifiable-gate]]** (full content in the skill note; this Event is the retrospective pointer). Failure 2 — an AC saying "verifiable via X" where X never executed during the build lifecycle is a phantom gate ("a validator that exists but is never invoked enforces nothing"). Confidence HIGH. Investigation source [[Event 148]]; sibling reflections [[Event 149]], [[Event 151]].
+
+## Event 151 — [reflect-capture] Failure 3: note-authoring without parse-at-creation → silent template drift
+
+Reflection captured to skill-sidecar note **[[SKILL-008: parse-at-creation]]** (full content in the skill note; this Event is the retrospective pointer). Failure 3 — note-authoring without running the type's parser at creation lets template/schema drift accumulate invisibly until a downstream gate catches it. Confidence HIGH. Investigation source [[Event 148]]; sibling reflections [[Event 149]], [[Event 150]].
+
+## Event 152 — Reflection-capture process locked + applied (canonical form)
+
+User HARD-LOCKED the canonical reflection-capture process (2026-05-25) after I captured the 3 failure reflections in the wrong form + at the wrong moment (mid-"stop and discuss", as unrequested skill notes). This fired a reflection on the directive itself (triggers: user-says-wrong + user-corrects-output). Applied:
+
+- Durable rule: updated `feedback_inline_reflect_capture` with the canonical 2-artifact process (skill-sidecar note in `skills/` per the confidence-bucket template + a session-event POINTER), the 6 proactive triggers ("do NOT wait to be asked"), the `skills/`-folder write mechanics (`directory:` not `folder:`; hyphen title then colon-edit), and the source incident; repaired the note's malformed frontmatter.
+- Created 3 skill-sidecar reflection notes (full content): SKILL-006 script-wiring-integration, SKILL-007 phantom-verifiable-gate, SKILL-008 parse-at-creation.
+- Slimmed Events 149/150/151 from fat content-duplicates to pointer events referencing their skill note.
+
+### State Changes
+
+- `~/.claude/memory/feedback_inline_reflect_capture.md` updated + frontmatter repaired; MEMORY.md index refreshed.
+- Brain `skills/`: SKILL-006 / SKILL-007 / SKILL-008 created (3 failure reflections, confidence-bucket template).
+- Session Events 149/150/151 converted to slim pointer form.
+- No PLAN / SPEC-root / code change this event. SPEC-008 parser-conformance FIX (user-chosen investigate+fix-now) remains pending — to scope next.
