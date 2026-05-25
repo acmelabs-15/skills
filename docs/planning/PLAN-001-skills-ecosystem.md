@@ -131,30 +131,6 @@ graph TD
   class protocol_hardening,build_SPEC_008 inprogress
 ```
 
-## Risks
-
-Build-phase pre-mortem (SESSION-2026-05-23_02 Event 35; brain:🧠-analyst prospective-hindsight against the SPEC-008 subtree). Top 3 critical build risks + mitigations baked into dispatch briefs / sequencing:
-
-- **R1 — `_shared`→`shared` rename cascade breaks mid-build (TASK-029)**: relative imports inside the composition library survive, but config files (root `tsconfig.json` include/exclude, `bunfig.toml`, `biome.json`, workspace entries) and ~549 doc references may be missed; failure then surfaces 5-10 TASKs later when new code imports `shared/composition` under stale config. *Mitigation*: TASK-029 brief includes an explicit config-file checklist; mandatory post-rename `bun tsc --noEmit` (root) + `biome check` (full repo) gate; QA creates + verifies + deletes a canary import; any config miss is a FAIL, not a warning.
-- **R2 — hook handlers untestable without live Claude Code runtime (Track 5, TASK-037..046)**: unit tests pass on mocked stdin but matchers (esp. Layer 2 MCP-tool matcher) may silently fail to fire in production → ships unenforced "enforcement" (the exact Wave 1 failure SPEC-008 exists to close). *Mitigation*: TASK-046 requires a per-layer manual integration proof (`echo '<HookInput>' | bun <handler>`); document + cite the exact MCP matcher string; prefer BLOCKED over untested-DONE if the matcher format is unverifiable; TASK-046 runs LAST against Track 3 adversarial fixtures.
-- **R3 — cross-track barrel-index / `common.ts` collisions**: parallel Track 1 TASKs writing the same `schemas|parsers|validators/index.ts` barrel or `common.ts` → merge conflict or silent last-writer-wins drop. *Mitigation*: the rigid per-TASK cycle (one TASK at a time, sequential) already prevents this; additionally do NOT parallelize same-barrel TASKs; `common.ts` single-owner (first schema TASK) with explicit `depends_on` edges from consumers.
-
-### Known Deferred Test Baseline (D-1 LOCKED 2026-05-24 SESSION-2026-05-23_02 Event 65)
-
-The canonical test-suite state across the SPEC-008 build marathon is **705 pass / 2 fail / 707 total** (the suite has since grown to 1216/2 as Wave-2 code landed; the 2 fails are unchanged). The 2 failures live in `tests/skills/plan/plan-001-migration.test.ts` and are pre-existing DEFERRED SPEC-007 work — they pre-date SPEC-008 and belong to the SPEC-007 plan/session render implementation work that was deferred at session-end of SESSION-2026-05-20_06.
-
-**Operational implication for QA briefs**: QA dispatch briefs MUST instruct agents to treat these 2 `plan-001-migration.test.ts` failures as DEFERRED SPEC-007 known-baseline. Any NEW failure outside this specific test file is a true regression and FAILS the TASK.
-
-**No SPEC-008 scope added**: the 2 fails remain SPEC-007 scope. SPEC-008 root Acceptance + Success Criteria language already accommodates this baseline (no totality AC tied to "0 failing tests").
-
-### Post-Marathon Follow-Up Backlog (D-2 LOCKED 2026-05-24 SESSION-2026-05-23_02 Event 65)
-
-Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon cleanup.
-
-- **FU-1: Frontmatter `validates:` key in QA-032/033/034-SPEC-003** — 3 notes carry `validates:` as a YAML frontmatter key. Outside SPEC-008 DoD. **Disposition**: /defrag sweep post-marathon (or a small targeted Brain MCP edit_note pass).
-- **FU-4: `hooks/**` scope gap in root tsconfig + biome.json** — `hooks/**` not in root `tsconfig.json` `include` or `biome.json` `files.include`. Surfaces LSP false-positives but doesn't block builds/tests. **Disposition**: small targeted config PR post-marathon; CI does not currently gate the hook layer.
-- **FU-3: Session note `## Observations`/`## Relations` placement drift** — both sections sit mid-note instead of at the tail; violates CONVENTIONS Section 4.0. **Disposition**: session-end cleanup before session DONE flip.
-
 ## Phase Progression
 
 ### research
@@ -3090,9 +3066,9 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 
 - **Type**: qa
 - **Task Ref**: TASK-035-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 129
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -3112,9 +3088,9 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 
 - **Type**: qa
 - **Task Ref**: TASK-036-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 129
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -3440,119 +3416,3 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - implements [[ADR-003: Plan/Session Render Architecture]]
 - relates_to [[ANALYSIS-002: Plan/Session Note Render Architecture]]
 - pairs_with [[brain:---adr-review]]
-
-
-## SPEC-008 Build Marathon — Task-Level Wave Graph
-
-Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part. Updated 2026-05-24 SESSION-2026-05-23_02 Event 125 (graph reformat — concise subgraph titles + canonical `themeCSS`; status as of 41/47, TASK-044 CLOSED, 035/036 impl-DONE/QA-pending, 024/031 held for decisions, REQ-011 HELD).
-
-**Status legend**: ✅ DONE (impl + QA both PASS) · ⚡ IN_PROGRESS (impl or qa in flight) · ⏸ PENDING. Detailed per-task status lives in the PLAN build-workflow items + the SPEC-008 root rollup; this graph shows shape + status colour only.
-
-```mermaid
-%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':10,'rankSpacing':45,'padding':10,'diagramPadding':14,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'11px','clusterBkg':'#f9fafb','clusterBorder':'#e5e7eb'},'themeCSS':'.edgePath path, .flowchart-link { stroke-linejoin: round !important; stroke-linecap: round !important; } .cluster-label .nodeLabel { font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important; font-size: 11px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; color: #6b7280 !important; }'}}%%
-graph TD
-
-  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:10,ry:10
-  classDef inprogress fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12,rx:10,ry:10
-  classDef pending fill:#fafafa,stroke:#d1d5db,stroke-width:1px,color:#6b7280,stroke-dasharray:3 3,rx:10,ry:10
-
-  subgraph W0 ["Wave 0 · Foundation — 9/9"]
-    direction LR
-    T021["✅ <b>TASK-021</b><br/><span style='color:#6b7280;font-size:9px'>Adversarial harness</span>"]
-    T025["✅ <b>TASK-025</b><br/><span style='color:#6b7280;font-size:9px'>Integration tests</span>"]
-    T026["✅ <b>TASK-026</b><br/><span style='color:#6b7280;font-size:9px'>Mutation invariants</span>"]
-    T029["✅ <b>TASK-029</b><br/><span style='color:#6b7280;font-size:9px'>shared rename</span>"]
-    T033["✅ <b>TASK-033</b><br/><span style='color:#6b7280;font-size:9px'>Deferred notation</span>"]
-    T034["✅ <b>TASK-034</b><br/><span style='color:#6b7280;font-size:9px'>Brain note hygiene</span>"]
-    T037["✅ <b>TASK-037</b><br/><span style='color:#6b7280;font-size:9px'>hooks.json manifest</span>"]
-    T039["✅ <b>TASK-039</b><br/><span style='color:#6b7280;font-size:9px'>Hook lib utilities</span>"]
-    T040["✅ <b>TASK-040</b><br/><span style='color:#6b7280;font-size:9px'>Git helpers</span>"]
-  end
-
-  subgraph W1a ["Wave 1a · Schemas + Parsers — 8/8"]
-    direction LR
-    T001["✅ <b>TASK-001</b><br/><span style='color:#6b7280;font-size:9px'>ADR schema</span>"]
-    T002["✅ <b>TASK-002</b><br/><span style='color:#6b7280;font-size:9px'>ANALYSIS schema</span>"]
-    T005["✅ <b>TASK-005</b><br/><span style='color:#6b7280;font-size:9px'>ADR parser</span>"]
-    T003["✅ <b>TASK-003</b><br/><span style='color:#6b7280;font-size:9px'>EPIC schema</span>"]
-    T010["✅ <b>TASK-010</b><br/><span style='color:#6b7280;font-size:9px'>PLAN done-claim ext</span>"]
-    T030["✅ <b>TASK-030</b><br/><span style='color:#6b7280;font-size:9px'>Delete dispatcher</span>"]
-    T004["✅ <b>TASK-004</b><br/><span style='color:#6b7280;font-size:9px'>CRIT schema</span>"]
-    T006["✅ <b>TASK-006</b><br/><span style='color:#6b7280;font-size:9px'>ANALYSIS EPIC CRIT parsers</span>"]
-  end
-
-  subgraph W1b ["Wave 1b · Per-Skill Scripts — 10/10"]
-    direction LR
-    T011["✅ <b>TASK-011</b><br/><span style='color:#6b7280;font-size:9px'>validate-task-done</span>"]
-    T012["✅ <b>TASK-012</b><br/><span style='color:#6b7280;font-size:9px'>transition-impl-item</span>"]
-    T013["✅ <b>TASK-013</b><br/><span style='color:#6b7280;font-size:9px'>transition-qa-item</span>"]
-    T014["✅ <b>TASK-014</b><br/><span style='color:#6b7280;font-size:9px'>validate-spec-done</span>"]
-    T015["✅ <b>TASK-015</b><br/><span style='color:#6b7280;font-size:9px'>spec schema validators</span>"]
-    T016["✅ <b>TASK-016</b><br/><span style='color:#6b7280;font-size:9px'>lock-decision-mutation</span>"]
-    T017["✅ <b>TASK-017</b><br/><span style='color:#6b7280;font-size:9px'>render-plan-note</span>"]
-    T018["✅ <b>TASK-018</b><br/><span style='color:#6b7280;font-size:9px'>dispatch implementer + qa</span>"]
-    T019["✅ <b>TASK-019</b><br/><span style='color:#6b7280;font-size:9px'>dispatch architect + critic</span>"]
-    T020["✅ <b>TASK-020</b><br/><span style='color:#6b7280;font-size:9px'>dispatch analyst + reviewer</span>"]
-  end
-
-  subgraph W1c ["Wave 1c · Cleanup + Harness — 5 done · 2 in-flight · 2 pending"]
-    direction LR
-    T047["✅ <b>TASK-047</b><br/><span style='color:#6b7280;font-size:9px'>CRIT H1-drift</span>"]
-    T022["✅ <b>TASK-022</b>"]
-    T023["✅ <b>TASK-023</b>"]
-    T027["✅ <b>TASK-027</b><br/><span style='color:#6b7280;font-size:9px'>dup-event test</span>"]
-    T028["⏸ <b>TASK-028</b>"]
-    T031["⚡ <b>TASK-031</b><br/><span style='color:#6b7280;font-size:9px'>SPEC-007 deferred-notation</span>"]
-    T032["✅ <b>TASK-032</b>"]
-    T035["⚡ <b>TASK-035</b><br/><span style='color:#6b7280;font-size:9px'>SPEC-002 003 rollups</span>"]
-    T036["⚡ <b>TASK-036</b><br/><span style='color:#6b7280;font-size:9px'>REQ-009 count fix</span>"]
-  end
-
-  subgraph W23 ["Wave 2/3 · Validators — 3/3"]
-    direction LR
-    T007["✅ <b>TASK-007</b><br/><span style='color:#6b7280;font-size:9px'>validateAdrAcceptedClaim</span>"]
-    T008["✅ <b>TASK-008</b><br/><span style='color:#6b7280;font-size:9px'>validateAnalysisAcceptedClaim</span>"]
-    T009["✅ <b>TASK-009</b><br/><span style='color:#6b7280;font-size:9px'>validateEpicDoneClaim</span>"]
-  end
-
-  subgraph W4 ["Wave 4 · Hook Handlers — 6 done · 1 in-flight"]
-    direction LR
-    T024["⚡ <b>TASK-024</b><br/><span style='color:#6b7280;font-size:9px'>AAE fixtures — blocked</span>"]
-    T038["✅ <b>TASK-038</b><br/><span style='color:#6b7280;font-size:9px'>dispatch-validator</span>"]
-    T041["✅ <b>TASK-041</b><br/><span style='color:#6b7280;font-size:9px'>L1 PreToolUse Edit</span>"]
-    T042["✅ <b>TASK-042</b><br/><span style='color:#6b7280;font-size:9px'>L2 PreToolUse MCP</span>"]
-    T043["✅ <b>TASK-043</b><br/><span style='color:#6b7280;font-size:9px'>L3-5 commit push PR</span>"]
-    T044["✅ <b>TASK-044</b><br/><span style='color:#6b7280;font-size:9px'>L6 stop-backstop</span>"]
-    T045["✅ <b>TASK-045</b><br/><span style='color:#6b7280;font-size:9px'>L7 git-state-observer</span>"]
-  end
-
-  subgraph W5 ["Wave 5 · Smoke Tests — 1 pending"]
-    direction LR
-    T046["⏸ <b>TASK-046</b><br/><span style='color:#6b7280;font-size:9px'>Per-layer smoke + AC10 latency</span>"]
-  end
-
-  T029 --> T001
-  T029 --> T030
-  T021 --> T022
-  T021 --> T023
-  T021 --> T024
-  T001 --> T007
-  T002 --> T008
-  T003 --> T009
-  T037 --> T038
-  T037 --> T041
-  T037 --> T042
-  T037 --> T043
-  T037 --> T044
-  T037 --> T045
-  T024 --> T046
-  T009 --> T046
-  T045 --> T046
-
-  class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
-  class T007,T008,T009,T047,T011,T012,T013,T015,T016,T017,T018,T019,T020,T022,T032,T038,T027,T014,T023,T041,T042,T043,T044,T045 done
-  class T024,T031,T035,T036 inprogress
-  class T028,T046 pending
-```
-
-**Maintenance rule**: each TASK closure (impl + QA both PASS) flips its `class` from `pending`/`inprogress` to `done`, alongside the SPEC-008 root rollup tick. Each Batch START flips items from `pending` to `inprogress`. Keep this graph current per the same cadence as the SPEC root rollup.

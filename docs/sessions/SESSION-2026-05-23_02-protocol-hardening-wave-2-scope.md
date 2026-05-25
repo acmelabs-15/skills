@@ -2964,3 +2964,37 @@ Investigating whether firing the next wave keeps the deps graphs correct (user g
 - RECOVERED `## Risks` section to PLAN-001 (data-loss undo; was stripped at Event 123)
 - DISCOVERED renderPlanNote drops custom sections → wave HELD (not graph-safe with scripts); decision pending
 - Wave graph currently mis-placed after Relations (consequence of strip+reappend) — to fix with the chosen approach
+
+
+## Event 128 — DECISION LOCKED: PLAN render = unified state-driven graph (part-level + build parts expanded into task waves); data-gap finding
+
+User-approved design (AskUserQuestion): the PLAN note becomes a **consistent, fully state-derived render** — NO hand-maintained custom sections. Specifically:
+
+- **Drop `## Risks`** from the PLAN (static pre-mortem, not state — doesn't belong; R1-R3 historical, D-1 baseline + FU backlog already in session Events). Recovered at Event 127 only to undo silent loss; the redesign removes it cleanly.
+- **One renderer-generated deps graph**: part-level lifecycle flow (research→…→build→end) where any part carrying `build_workflow_items` **expands inline into its task-level wave subgraph** (tasks grouped by derived wave, colored by status). Replaces BOTH the cross-part graph and the hand-maintained `## SPEC-008 Build Marathon` wave graph.
+- **Degrade gracefully** (explicit requirement): no build tasks → just the part node; no parallel waves → linear task chain; empty plan → valid empty graph.
+
+**FEASIBILITY FINDING (blocks naive impl)**: `BuildWorkflowItemSchema` (plan-note.ts:41) carries `id`/`type`/`task_ref`/`status`/`owning_session`/`transitioned_at_event` — **no task-level `depends_on`, no `wave` field**. `PartSchema` has part-level `depends_on` only. So the renderer CANNOT derive task waves from the current model. The unified design therefore requires: (1) enrich `BuildWorkflowItemSchema` with `wave` and/or task-level `depends_on`; (2) populate that data for SPEC-008's 47 tasks (currently only in hand-authored wave prose + the analyst wave plan); (3) redesign `renderMermaid`/`renderDepsGraph` to emit the nested part→wave→task graph + degenerate cases; (4) tests; (5) re-render PLAN-001.
+
+**Scope**: focused SPEC-007/ADR-003 render-layer enhancement — delegate to `bun-ts-engineer` (model: opus) with a design brief. **Build wave HELD** until the render layer is solid (so transition mutations are graph-safe by construction). Cross-part graph already durably valid (end_part, Event 126). Hooks re-enable remains tracked for go-live (step H), not now.
+
+### State Changes
+
+- DECISION: PLAN render = unified state-driven part+task-wave graph; drop Risks + hand-maintained wave graph; degrade gracefully (user-approved)
+- FINDING: BuildWorkflowItem/Part schema lacks task-level wave/dep data → unified design needs schema enrichment + data population + renderer redesign + tests
+- Build wave HELD pending the render-layer redesign; next task = renderer redesign (bun-ts-engineer, opus)
+
+
+## Event 129 — Course-correct: renderPlanNote is deterministic source of truth; stop hand-maintaining custom sections; PLAN re-rendered clean; QA wave firing
+
+User course-correction: do NOT change renderPlanNote (it's deterministic + renders state consistently); the error was ME hand-maintaining sections it will never emit (`## Risks` + the custom task-level wave graph aren't in the `PlanNote` model → every re-render drops them). Resolution: let the renderer own the PLAN. The cross-part graph it generates IS the deps graph (now valid via the Event-126 `end`→`end_part` reserved-word fix — a correctness fix, the only renderer change, kept).
+
+Transitioned qa-035 + qa-036 → IN_PROGRESS via the canonical scripts (which re-render). Verified the re-render produced the clean canonical PLAN: `## Risks` + custom wave graph DROPPED (as intended), Cross-Part graph present + valid (0 bare-`end` breakers), all 11 modeled sections intact. No surgical-transition workaround needed; the scripts are safe now that no custom sections exist to lose.
+
+Firing the next wave (opus agents): QA-086 (TASK-035 SPEC-002/003 rollups), QA-087 (TASK-036 REQ-009 count), bun-ts-engineer (TASK-024 EPIC-only per D-B). On QA PASS → 43/47.
+
+### State Changes
+
+- DECISION (course-correct): PLAN = deterministic renderPlanNote output; no hand-maintained custom sections (Risks + wave graph permanently dropped, by design)
+- qa-TASK-035-SPEC-008 + qa-TASK-036-SPEC-008: PENDING → IN_PROGRESS (Event 129)
+- PLAN re-rendered to clean canonical form (cross-part graph valid; cruft dropped); scripts confirmed safe
