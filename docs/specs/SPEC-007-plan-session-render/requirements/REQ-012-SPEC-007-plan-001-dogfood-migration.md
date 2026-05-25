@@ -36,19 +36,19 @@ ADR-003 Implementation Notes Migration plan specifies: parse current PLAN-001, d
 
 ## Acceptance Criteria
 
-- [ ] GIVEN the current PLAN-001-skills-ecosystem.md
+- [x] GIVEN the current PLAN-001-skills-ecosystem.md
       WHEN the migration script or manual process applies the template transformation
       THEN the output matches the trimmed PLAN template structure from ANALYSIS-002 Appendix A
 
-- [ ] GIVEN the migrated PLAN-001
+- [x] GIVEN the migrated PLAN-001
       WHEN parsePlanNote is called
       THEN PlanNoteSchema validation passes with no errors
 
-- [ ] GIVEN the migrated PLAN-001
+- [x] GIVEN the migrated PLAN-001
       WHEN render(parse(migrated)) is applied
       THEN SHA-256 char-identity holds (round-trip passes)
 
-- [ ] GIVEN the migrated PLAN-001
+- [x] GIVEN the migrated PLAN-001
       WHEN compared to the original via git diff
       THEN dropped sections (Workflow Plan, Decision Log, Progress Log, per-part duplicates) are absent
       AND consolidated sections (Tasks, Editor Mirror IDs, Pending User Decisions) are at top level
@@ -76,4 +76,4 @@ The migration can be done via a one-time script or a manual parse-transform-rend
 - implements [[ADR-003: Plan/Session Render Architecture]]
 - depends_on [[REQ-011-SPEC-007: Round-Trip Property Test]]
 - depends_on [[REQ-009-SPEC-007: Plan Mutation API]]
-- [outcome] AC validation deferred: TASK-013 FAIL (QA-022); gap-TASK TASK-014 filed and ready for build #blocked #deferred
+- [outcome] Migration executed via TASK-014-SPEC-007 (DONE); ACs validated by passing plan-001-migration tests (5/0) #migration #done

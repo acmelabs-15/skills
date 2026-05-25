@@ -3087,3 +3087,20 @@ impl-TASK-046 PENDING → IN_PROGRESS. Firing 2 opus agents in parallel (file-di
 
 - TASK-046 smoke tests authored (7 layers, 14/0) + AC10 latency measured (L1 145ms, L3 336ms); layout corrected from nested `__tests__` to flat `smoke/`; suite 1234/0; impl-046 IN_PROGRESS (QA pending)
 - D-A CONCLUDED: SPEC-007 plan-001-migration DONE (not deferred); TASK-031 should mark rows `[x]` not `[~]` + flip 8 Success Criteria + fix `validated_by` verb; one decision pending (TASK-013 row notation)
+
+
+## Event 136 — TASK-046 CLOSED (45/47); TASK-031 SPEC-007 reconciliation done (D-A) → impl-031 DONE, QA-090 dispatched
+
+- **TASK-046 CLOSED**: QA-089 PASS verified (14/14 DoD, 14/0 smoke, AC10 latency L1 152ms / L3 354ms, suite 1234/0; tsc/biome FU-4-caveated). ADR Compliance 4 items flipped `[x]` (satisfied by the smoke tests). impl-046 + qa-046 → DONE; TASK-046 status → DONE; SPEC-root `[x]`. **45/47.**
+- **TASK-031 reconciliation done** (memory agent, opus, per D-A): SPEC-007 root rows `[x]` (REQ-012/TASK-013/TASK-014, labels sharpened), 8 Success Criteria `[x]`, `validated_by`→`relates_to` fixed (root + TASK-013/014), REQ-012 4 ACs `[x]` + outcome rewritten. **`validateSpecDoneClaim(SPEC-007)` → ok.** TASK-031 DoD AMENDED ([~]→[x] reconciliation per D-A; obsolete deferral premise dropped). impl-031 → DONE; qa-031 → IN_PROGRESS; QA-090 dispatched.
+- Both agents verified in-lane (SPEC-007 notes + QA-089 only; no PLAN/SPEC-008-root/git writes).
+- TASK-013 row notation ruling: `[x]` (resolved-via-supersession) applied per D-A recommendation (flag-for-override given to user).
+
+Remaining: **qa-031** (QA-090 in flight) + **TASK-028** (drift-markers, solo) → then SPEC-008 close-out (REQ/DESIGN acceptances, FU-6b, test-report→qa docs sweep, hooks re-enable, ADR-005 D-B clarification + adr-review, SPEC-008 DONE).
+
+### State Changes
+
+- qa-TASK-046 → DONE (qa_ref QA-089); TASK-046 status → DONE; SPEC-root `[x]` → 45/47
+- SPEC-007 reconciled (rows/SC `[x]`, validated_by→relates_to, REQ-012 ACs); validateSpecDoneClaim(SPEC-007) ok
+- TASK-031 DoD amended (D-A); impl-031 → DONE; qa-031 → IN_PROGRESS; QA-090 dispatched
+- FU: stale "2 SPEC-007 deferred fails" baseline language in SPEC-008 root/PLAN-001 (now 0-fail) → reconcile at close

@@ -121,7 +121,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [x] [[TASK-043-SPEC-008: Implement pre-commit pre-push and pre-pr-create Handlers Layers 3-5]]
 - [x] [[TASK-044-SPEC-008: Implement stop-backstop Handler Layer 6]]
 - [x] [[TASK-045-SPEC-008: Implement git-state-observer Handler Layer 7]]
-- [ ] [[TASK-046-SPEC-008: Author Hook Smoke Tests and Adversarial Fixture Reuse]]
+- [x] [[TASK-046-SPEC-008: Author Hook Smoke Tests and Adversarial Fixture Reuse]]
 - [x] [[TASK-047-SPEC-008: Add H1-Drift Detection to CRIT Parser]]
 
 ## ADR Cross-cutting Constraints

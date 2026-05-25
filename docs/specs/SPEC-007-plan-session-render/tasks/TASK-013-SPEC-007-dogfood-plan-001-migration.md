@@ -93,5 +93,5 @@ Migrate PLAN-001-skills-ecosystem.md from the original template to the trimmed t
 - depends_on [[TASK-010-SPEC-007: Implement Plan Mutation API]]
 - [outcome] QA-022 FAIL verdict: all 6 DoD checks failed; migration never executed on live PLAN-001 #blocked #qa-fail
 - [decision] Superseded by TASK-014 which carries the same migration objective with gap-TASK context #superseded
-- validated_by [[QA-022-SPEC-007: Dogfood PLAN-001 Migration]]
+- relates_to [[QA-022-SPEC-007: Dogfood PLAN-001 Migration]]
 - superseded_by [[TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template]]

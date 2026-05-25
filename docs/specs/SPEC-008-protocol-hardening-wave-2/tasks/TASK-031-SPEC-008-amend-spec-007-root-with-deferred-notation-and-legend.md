@@ -28,13 +28,15 @@ Steps:
 
 ## Definition of Done
 
-- [ ] SPEC-007 root `### Requirements` section shows `- [~] REQ-012-SPEC-007: PLAN-001 Dogfood Migration`
-- [ ] SPEC-007 root `### Tasks` section shows `- [~] TASK-013-SPEC-007: Dogfood PLAN-001 Migration ...` and `- [~] TASK-014-SPEC-007: Execute PLAN-001 Migration ...`
-- [ ] SPEC-007 root `## Artifact Status` section opens with a one-line legend defining `[ ]`, `[x]`, `[~]`
-- [ ] SPEC-007 frontmatter `status: DONE` unchanged
-- [ ] All other SPEC-007 artifact rows ([x] DONE markers) unchanged
-- [ ] Brain MCP `read_note SPEC-007: Plan/Session Render Implementation` returns the amended content
-- [ ] No raw `Edit` / `Write` tool was used on `docs/**` (binary tool rule honored)
+> Amended 2026-05-24 (SESSION-2026-05-23_02 Event 136, decision D-A): the original "`[~]` deferred notation + legend" premise is OBSOLETE. The D-A investigation (analyst, Event 135) established that SPEC-007 plan-001-migration is genuinely DONE — the formerly-deferred `plan-001-migration` tests now PASS (5/0) and the live PLAN-001 conforms to the trimmed template. So the correct reconciliation marks SPEC-007 truly complete (`[x]`), NOT deferred (`[~]`); no `[~]` legend is needed (no deferred items). DoD reframed to the actual reconciliation performed.
+
+- [x] SPEC-007 root `## Artifact Status`: REQ-012 / TASK-013 / TASK-014 rows flipped `[ ]` → `[x]` (migration done; TASK-013 resolved-via-supersession by TASK-014; row labels sharpened to match)
+- [x] SPEC-007 root `## Success Criteria`: all 8 rows `[ ]` → `[x]` (satisfied — all REQs/DESIGNs/TASKs terminal; plan/session round-trip property tests pass)
+- [x] SPEC-007 root + TASK-013 + TASK-014 Relations: invalid `validated_by` verb (not in the 11-verb allowlist) replaced with `relates_to` — was blocking `validateSpecDoneClaim` parse
+- [x] REQ-012-SPEC-007: 4 `## Acceptance Criteria` rows `[x]` + stale "deferred" outcome observation rewritten to reflect the executed migration (validated by passing tests)
+- [x] `validateSpecDoneClaim(SPEC-007)` returns `ok` (exit 0) — verified post-reconciliation
+- [x] SPEC-007 frontmatter `status: DONE` unchanged
+- [x] All edits via Brain MCP `edit_note` (no raw Edit/Write on `docs/**`)
 
 ## ADR Compliance
 
