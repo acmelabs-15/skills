@@ -3270,3 +3270,24 @@ Checked the REQ-004 AC-9 prereq (path-containment prefix-collision). FINDING: al
 ### State Changes
 
 - Phase 2 (of 12) VERIFIED-SATISFIED — REQ-004 AC-9 path-containment + 3 adversarial cases already covered. No code/test change. REQ-004 acceptance prereq cleared (formal flip in Phase 3).
+
+
+## Event 144 — Phase 3 evidence-gathering (4 parallel read-only QA agents); 6 clean, 2 deferred, 3 decisions surfaced
+
+Dispatched 4 read-only `brain:🧠-qa` agents (opus) for per-AC acceptance evidence across the 8 unaccepted REQs + 3 unaccepted DESIGNs. All read-only (no note/git/PLAN/SPEC-root mutations); evidence is checkable (test@file:line, QA-note id, suite count). Also handled an out-of-band user request: deleted `docs/skills/SKILL-006-dependency-reorder-unblock.md` via Brain MCP (commit a679989; no dangling inbound refs).
+
+**Results:**
+- **CLEAN FLIP-ACCEPTED (6)** — every AC/compliance item earned: REQ-004 (9/9), REQ-007 (9/9), REQ-011 (10/10, incl. amended layered-severity AC + AC10 latency L1 140-147ms/L3 314-341ms), REQ-012 (8/8, FU-6b L7 fix verified end-to-end), DESIGN-003 (7/7), DESIGN-004 (8/8).
+- **DEFER to post-Phase-4 (2)** — all code ACs met; blocked only on Phase-4 docs work: REQ-009 (AC-8 = `_shared`→`shared` prose rewrite across `docs/**`), REQ-010 (AC-10 = residual `feedback_` grep hits in ANALYSIS-002/003 + TASK-031).
+- **RECONCILIATION DECISIONS (3) — surfaced to user before any SPEC-root mutation (stop-the-line-on-drift):**
+  1. REQ-006 AC-7 — adversarial harness hardcodes `expectedReject` regex in the runner table; AC-7 demands the harness PARSE it from each fixture's drift-marker comment + assert the comment exists ("parseable artifact, not human judgment"). Functionally correct as-built (14/14 reject tests pass); AC over-specifies a mechanism not followed. Implement vs amend.
+  2. REQ-008 AC-1/AC-2 — describe closing SPEC-007 drift via `[~]` deferred-notation; reality closed it by COMPLETING the migration (all `[x]`, REQ-012-SPEC-007 ACCEPTED, TASK-014 DONE). `[~]` now contradicts DONE children. Amend AC text (only sensible path).
+  3. DESIGN-002 item 7 — <60-line "target" / 80-line ceiling for 2 mutation scripts; 7+ scripts exceed (transition-impl 170, transition-qa 190; doc-headers + multi-flag parsers). Amend-to-advisory vs refactor.
+
+NO flips executed this event — halted on drift pending user adjudication of the 3 decisions. Clean-6 flips + post-decision flips will execute together next.
+
+### State Changes
+
+- Phase 3 evidence-gathering DONE (read-only). 6 notes clean-ready, 2 deferred to post-Phase-4, 3 reconciliation decisions surfaced.
+- SKILL-006 note deleted (user request; commit a679989).
+- No REQ/DESIGN/SPEC-root status change yet (awaiting decisions).
