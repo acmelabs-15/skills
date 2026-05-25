@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - protocol-hardening
@@ -22,6 +22,7 @@ status_history:
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 140; 47/47 build complete, clean boundary; close-out → fresh context via /plan)
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 141; resume for 12-phase close-out; rehydrated; suite 1234/0 confirmed)
 - IN_PROGRESS → PAUSED 2026-05-25 (Event 159; context-budget pause; sweeps + REQ/DESIGN acceptance done; close-out resume protocol recorded)
+- PAUSED → IN_PROGRESS 2026-05-25 (Event 160; resume for Event-159 close-out; rehydrated; suite 1252/0 confirmed)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -3424,3 +3425,15 @@ Pausing at a clean, fully-committed boundary. Resume via `/skills:plan PLAN-001-
 
 ### State Changes
 - SESSION-2026-05-23_02: IN_PROGRESS → PAUSED (Event 159; context-budget pause at fully-committed boundary; close-out resume protocol recorded for /plan auto-resume).
+
+
+## Event 160 — RESUME (PAUSED → IN_PROGRESS): rehydrated; Event-159 close-out resumes
+
+Resumed via `/skills:plan PLAN-001-skills-ecosystem` (continue mode). Per resume-paused-session rule: SAME note, Event numbering continued from 160 (no new note). TIER-1 rehydration done: active project `skills` + `bootstrap_context`; read this session `## State` block + Events 140-159 + Event-159 close-out protocol; git verified (branch `feat/plan-001-protocol-hardening-wave-2-scope`, HEAD `ec2763a` = Event-159 pause commit, tree clean); re-read cited auto-memories (resume-paused-session, per-task-build-qa-cycle, agents-no-autonomous-git-or-plan-writes, spec-root-and-plan-graph-sync, reflection-capture process). **Full suite re-run = 1252 pass / 0 fail** (122 files: composition 735 + defrag/ingest/detect 84 + lifecycle skills 180 + hooks 253). A transient `bun test` run from the wrong cwd (an earlier `cd ~` leaked into the shell) produced a spurious segfault — confirmed false; suite is fully green from the repo root.
+
+Executing the Event-159 REMAINING close-out in order: (2) SPEC-root finalization, (3) tidy + FU-3, (4) retrospective (the bridge note for the post-merge parser-fix session), (5) /end. PLAN-001 frontmatter STAYS IN_PROGRESS; parser-conformance (Problem A invocation + B consistency) + bulk-rewrite tool + hooks go-live + SPEC-008/PLAN → DONE remain DEFERRED to a further post-merge session.
+
+### State Changes
+
+- SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 160; resume for Event-159 close-out)
+- No PLAN change (build.SPEC-008 already IN_PROGRESS, owning SESSION-2026-05-23_02; 47/47 unchanged)
