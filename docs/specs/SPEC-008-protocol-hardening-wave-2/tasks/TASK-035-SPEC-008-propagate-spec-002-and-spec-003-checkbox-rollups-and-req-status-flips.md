@@ -2,7 +2,7 @@
 title: 'TASK-035-SPEC-008: Propagate SPEC-002 and SPEC-003 Checkbox Rollups and REQ Status Flips'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-035-spec-008-propagate-spec-002-and-spec-003-checkbox-rollups-and-req-status-flips-1
-status: TODO
+status: DONE
 tags:
 - spec-008
 - track-4
@@ -38,10 +38,10 @@ Steps:
 - [x] REQ-004-SPEC-002 frontmatter `status: ACCEPTED`
 - [x] REQ-005-SPEC-002 frontmatter `status: ACCEPTED`
 - [x] Each of the 4 REQ note flips includes a body or Observations entry citing the implementation evidence (file path + commit SHA) for archaeological provenance
-- [ ] `validateSpecDoneClaim(SPEC-002)` returns `valid: true` (using extended validator from TASK-032)
-- [ ] `validateSpecDoneClaim(SPEC-003)` returns `valid: true`
+- [x] `validateSpecDoneClaim(SPEC-002)` returns `valid: true` (using extended validator from TASK-032)
+- [x] `validateSpecDoneClaim(SPEC-003)` returns `valid: true`
 - [x] All edits used Brain MCP `edit_note` (NEVER raw Edit/Write on `docs/**`)
-- [ ] Audit D grep verification: `grep -A0 "status: DONE" docs/specs/SPEC-002*/SPEC-002*.md && grep "\\- \\[ \\]" docs/specs/SPEC-002*/SPEC-002*.md` returns zero `[ ]` rows under DONE spec root
+- [x] Audit D grep verification: `grep -A0 "status: DONE" docs/specs/SPEC-002*/SPEC-002*.md && grep "\\- \\[ \\]" docs/specs/SPEC-002*/SPEC-002*.md` returns zero `[ ]` rows under DONE spec root
 
 ## ADR Compliance
 

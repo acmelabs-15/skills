@@ -25,19 +25,20 @@ This task depends on Track 1 (REQ-001-SPEC-008 schemas + REQ-002-SPEC-008 parser
 
 ## Definition of Done
 
-- [ ] Subdirectories exist: `shared/composition/tests/fixtures/adversarial/adr/`, `analysis/`, `epic/`
-- [ ] At least one fixture per new subdirectory exists, named `drift-NN-<slug>.md`
-- [ ] Suggested high-value fixtures: `adr/drift-01-accepted-with-unchecked-clarification.md` (ADR validator rejects ACCEPTED with `[ ]` Clarifications item per REQ-001 AC-2); `analysis/drift-01-accepted-with-open-questions.md` (ANALYSIS validator rejects ACCEPTED with `## Open Questions` section per REQ-001 AC-3); `epic/drift-01-done-with-unfinished-contained-spec.md` (EPIC validator rejects DONE when a contained SPEC is not DONE per REQ-003-SPEC-008)
-- [ ] Each fixture is structurally valid against its type's schema but encodes a lying-claim payload the new validator must reject
-- [ ] Three new rows added to `cases` table in `tests/adversarial-claims.test.ts` with the new `validator` tags (`adr`, `analysis`, `epic`)
-- [ ] `parseByValidatorType` and `invokeValidator` in `_helpers/adversarial.ts` updated to dispatch to the new parsers and validators
-- [ ] `bun test` passes; new cases reject as expected; existing cases unaffected
+> Amended 2026-05-24 (SESSION-2026-05-23_02 Event 131, decision D-B): SCOPED TO EPIC-ONLY. The ADR + ANALYSIS adversarial fixtures are **structurally impossible** in the parse→validate harness — their claim-validator condition (`validateAdrAcceptedClaim`/`validateAnalysisAcceptedClaim`) is IDENTICAL to the schema `superRefine`, so a lying fixture fails `parseAdrNote()`/`parseAnalysisNote()` (`.parse()`) BEFORE the validator runs (treated as fixture-malformed, not a validator rejection). The schema-level rejection IS the coverage for those types. Only EPIC's lie is cross-note (DONE with an unfinished contained SPEC, which the EPIC schema does not check) and therefore exercisable by the harness. ADR/ANALYSIS adversarial-fixture requirements are dropped per D-B.
+
+- [x] `epic/` subdirectory exists under `shared/composition/tests/fixtures/adversarial/` (adr/ + analysis/ intentionally OMITTED per the D-B note above)
+- [x] EPIC fixture exists: `epic/drift-01-done-with-unfinished-contained-spec.md`, named `drift-NN-<slug>.md`
+- [x] The EPIC fixture is structurally valid against `EpicNoteSchema` but encodes a cross-note lying-claim payload (status DONE + a `contains` SPEC that is not DONE) that `validateEpicDoneClaim` must reject
+- [x] One new row added to the `cases` table in `tests/adversarial-claims.test.ts` with `validator: "epic"`
+- [x] `parseByValidatorType` and `invokeValidator` in `_helpers/adversarial.ts` updated to dispatch the EPIC parser + validator (with a `SpecResolver` supplying the contained-SPEC resolution for the cross-note check)
+- [x] `bun test` passes; the EPIC case rejects as expected; existing cases unaffected
 
 ## ADR Compliance
 
 - [ ] Honors ADR-005 D-3 verbatim post-Wave-2 extension: `adr/`, `analysis/`, `epic/` subdirectories present
 - [ ] Honors ADR-005 D-5 Implementation Notes: ANALYSIS, EPIC validators receive adversarial coverage; CRIT does not (no claim validator)
-- [ ] Honors REQ-006: harness signature unchanged; only `validator` tag union expands
+- [x] Honors REQ-006: harness signature unchanged; only `validator` tag union expands
 
 ## Files Affected
 

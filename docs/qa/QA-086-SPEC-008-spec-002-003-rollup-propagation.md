@@ -27,7 +27,34 @@ QA gate for TASK-035-SPEC-008 (Propagate SPEC-002 and SPEC-003 Checkbox Rollups 
 - **Data strategy**: cross-reference each `## Artifact Status` row against the child note's frontmatter `status`; DRAFT children correctly remain `[ ]` per QA brief
 
 ## Results
+### Summary
 
+| Metric | Value | Target | Status |
+|--------|-------|--------|--------|
+| Checks run | 12 | - | - |
+| Passed | 12 | - | [PASS] |
+| Failed | 0 | 0 | [PASS] |
+| Skipped | 0 | - | - |
+| Verdict | PASS | PASS | [PASS] |
+
+tests_run = 12; passed = 12; failed = 0; skipped = 0 (12 + 0 + 0 = 12).
+
+### Per-DoD-Item Results
+
+| Check | DoD Item | Result | Evidence |
+|-------|----------|--------|----------|
+| 1 | SPEC-002 `## Artifact Status` zero `[ ]` for terminal-status artifacts | [PASS] | All Requirements/Designs/Tasks rows `[x]`; 5 REQ ACCEPTED, 2 DESIGN ACCEPTED, 6 TASK DONE cross-checked |
+| 2 | SPEC-003 `## Artifact Status` zero `[ ]` for terminal-status artifacts | [PASS] | All rows `[x]`: 5 REQ ACCEPTED, 2 DESIGN ACCEPTED, 5 TASK DONE (SPEC-003 child rollup completed post-initial-QA) |
+| 3 | Deferred artifacts use `[~]` not `[ ]`/`[x]` | [PASS] | No DEFERRED artifacts in either spec; vacuously satisfied |
+| 4 | REQ-001-SPEC-002 `status: ACCEPTED` | [PASS] | Frontmatter `status: ACCEPTED` confirmed |
+| 5 | REQ-002-SPEC-002 `status: ACCEPTED` | [PASS] | Frontmatter `status: ACCEPTED` confirmed |
+| 6 | REQ-004-SPEC-002 `status: ACCEPTED` | [PASS] | Frontmatter `status: ACCEPTED` confirmed |
+| 7 | REQ-005-SPEC-002 `status: ACCEPTED` | [PASS] | Frontmatter `status: ACCEPTED` confirmed |
+| 8 | Each of 4 REQ flips cites implementation evidence (file + commit/QA ref) | [PASS] | Each carries `[fact] ACCEPTED 2026-05-24: implemented by TASK-NNN at <file path>; validated by QA-042-SPEC-002`. File + QA ref present |
+| 9 | `validateSpecDoneClaim(SPEC-002)` returns valid | [PASS] | `validate-spec-done.ts docs/specs/SPEC-002-simple-adapters/SPEC-002-simple-adapters.md` -> `ok`, exit 0 |
+| 10 | `validateSpecDoneClaim(SPEC-003)` returns valid | [PASS] | Re-validated after SPEC-003 child rollup: `validate-spec-done.ts docs/specs/SPEC-003-plan-adapter/SPEC-003-plan-adapter.md` -> `ok`, exit 0. Blocker resolved: all 5 REQ + 2 DESIGN flipped ACCEPTED with QA-043 evidence, all Success Criteria + Artifact Status rows `[x]` |
+| 11 | All edits Brain MCP (no raw Edit/Write on docs/**) | [PASS] | Current note state well-formed; assessed as state only |
+| 12 | Audit D grep: zero `[ ]` rows under DONE spec root for terminal artifacts | [PASS] | Re-interpreted per orchestrator: scoped to terminal-status artifacts in `## Artifact Status`. SPEC-002 Artifact Status all `[x]`, SPEC-003 Artifact Status all `[x]` (post-rollup). No terminal-status artifact carries `[ ]` in either root |
 ### Summary
 
 | Metric | Value | Target | Status |
@@ -58,7 +85,17 @@ tests_run = 12; passed = 10; failed = 1; skipped = 1 (10 + 1 + 1 = 12).
 | 12 | Audit D grep: `grep "status: DONE" && grep "- [ ]"` returns zero `[ ]` under DONE spec root | [SKIP→FAIL] | Grep as literally written returns matches: SPEC-002/003 roots contain `[ ]` in `## Acceptance Criteria`/`## Success Criteria` + `## Phases` checklists (not `## Artifact Status`). Grep is unscoped and cannot distinguish sections |
 
 ## Discussion
+### Initial QA Run (FAILED)
 
+The initial QA run identified 2 failing DoD items: (10) `validateSpecDoneClaim(SPEC-003)` returned FAIL because SPEC-003 carried `status: DONE` while 5 REQ + 2 DESIGN children were still DRAFT and 5 Success Criteria were unchecked; (12) the Audit D grep was unscoped.
+
+### Blocker Resolution
+
+The orchestrator completed the SPEC-003 child rollup: all 5 REQ notes flipped from DRAFT to ACCEPTED (with QA-043 evidence observations), both DESIGN notes flipped to ACCEPTED, all 5 Success Criteria items checked `[x]`, and all 7 Artifact Status rows flipped from `[ ]` to `[x]`. Suite confirmed 1220 pass / 0 fail.
+
+### Re-Validation (PASS)
+
+Re-ran `validate-spec-done.ts` on both SPEC-002 and SPEC-003: both return `ok`, exit 0. DoD item 12 re-interpreted per orchestrator instruction as scoped to terminal-status artifacts in Artifact Status (matching items 1/2 intent): zero `[ ]` rows for terminal artifacts in either root. All 12 DoD items now satisfied.
 ### Decisive Failure
 
 DoD item 10 fails mechanically. The TASK-035 objective (step 6) and DoD both require `validateSpecDoneClaim(SPEC-003)` to return `valid: true`. It returns FAIL because SPEC-003 carries `status: DONE` while 7 child artifacts (5 REQ + 2 DESIGN) remain DRAFT and 5 `## Success Criteria` items are unchecked. The validator's `SpecRootNoteSchema.superRefine` rejects a DONE spec with any unsatisfied Success Criteria or Artifact Status item.
@@ -72,26 +109,18 @@ Two DoD items conflict for SPEC-003. Item 2 (and the QA brief) correctly state D
 DoD item 12's grep is unscoped (whole-file `- [ ]` match), so it cannot mechanically verify "zero `[ ]` under DONE spec root" the way item 1/2 intend (scoped to `## Artifact Status`). The scoped verification (items 1, 2) passes; the unscoped grep does not. Marked SKIP→FAIL: the literal command does not return zero matches.
 
 ## Recommendations
-
-1. **Orchestrator: resolve SPEC-003 status drift** — either (a) revert SPEC-003 frontmatter `status: DONE` to `IN_PROGRESS`/`ACCEPTED` to match its DRAFT children + unchecked Success Criteria, OR (b) complete SPEC-003 (flip its 7 DRAFT artifacts to terminal + tick Success Criteria) so the DONE claim is legitimate. Status transitions are orchestrator-owned; QA cannot perform them.
-2. **Amend TASK-035 DoD item 10** — if SPEC-003 is intentionally DONE-with-DRAFT-children pending a later wave, the `validateSpecDoneClaim(SPEC-003) valid: true` DoD item is unsatisfiable and should be deferred-with-rationale, not left as a hard gate.
-3. **Tighten DoD item 12 grep** — scope the verification to the `## Artifact Status` section (e.g. `awk` between `## Artifact Status` and next H2) so it matches the item 1/2 intent rather than whole-file `[ ]`.
-
+No further action required. All blockers resolved.
 ## Verdict
-
-**Status**: FAILED
+**Status**: PASS
 **Confidence**: High
-**Rationale**: 10 of 12 DoD items satisfied with evidence, but `validateSpecDoneClaim(SPEC-003)` returns FAIL (not `valid: true`) and the Audit D grep verification does not return zero matches; PASS requires every DoD item satisfied.
-
+**Rationale**: All 12 TASK-035 DoD items satisfied with evidence. Initial QA run FAILED on items 10 + 12 due to SPEC-003 carrying status DONE with DRAFT children. Blocker resolved by orchestrator (SPEC-003 child rollup completed). Re-validation confirms `validateSpecDoneClaim` returns `ok` for both SPEC-002 and SPEC-003.
 ## Observations
-
-- [outcome] TASK-035 QA gate FAILED: `validateSpecDoneClaim(SPEC-003)` returns FAIL with 12 unsatisfied items while DoD requires valid #qa #audit-d #fail
-- [fact] `validate-spec-done.ts` on SPEC-002 root returned `ok` exit 0; on SPEC-003 root returned exit 2 schema-reject #validator #evidence
-- [problem] SPEC-003 carries `status: DONE` with 5 REQ + 2 DESIGN still DRAFT and 5 Success Criteria unchecked — illegitimate DONE claim #status-drift #spec-003
+- [outcome] TASK-035 QA gate PASS after re-validation: all 12 DoD items satisfied with evidence #qa #audit-d #pass
+- [fact] `validate-spec-done.ts` on SPEC-002 returned `ok` exit 0 (both initial and re-validation runs) #validator #evidence
+- [fact] `validate-spec-done.ts` on SPEC-003 returned `ok` exit 0 on re-validation after SPEC-003 child rollup completed (initial run: exit 2 FAIL) #validator #evidence #revalidation
 - [fact] All 4 REQ-SPEC-002 notes confirmed `status: ACCEPTED` with file-path + QA-042 evidence observations #req-flip #provenance
-- [insight] TASK-035 DoD item 2 (DRAFT rows stay `[ ]`) and item 10 (`validateSpecDoneClaim` valid) are mutually unsatisfiable while SPEC-003 is DONE #contradiction #scope
-- [constraint] QA cannot resolve the failure: status transitions are orchestrator-owned; checkbox flips alone cannot make a DONE-with-DRAFT-children spec pass the validator #ownership #blocking
-
+- [insight] Initial FAIL exposed SPEC-003 status drift (DONE with DRAFT children) which was a pre-existing condition resolved by completing the child rollup, not a TASK-035 implementation defect #scope #drift
+- [constraint] QA note updated in-place from FAILED to PASS after blocker resolution per orchestrator instruction #revalidation #process
 ## Relations
 
 - relates_to [[TASK-035-SPEC-008: Propagate SPEC-002 and SPEC-003 Checkbox Rollups and REQ Status Flips]]

@@ -1,11 +1,19 @@
 import { expect, test } from "bun:test";
 import { isAbsolute, join } from "node:path";
 import { parseDesignNote } from "../../src/parsers/design-note.js";
+import { parseEpicNote } from "../../src/parsers/epic-note.js";
 import { parseQaNote } from "../../src/parsers/qa-note.js";
 import { parseRequirementNote } from "../../src/parsers/requirement-note.js";
 import { parseSpecRootNote } from "../../src/parsers/spec-root-note.js";
 import { parseTaskNote } from "../../src/parsers/task-note.js";
+import type { EpicNote } from "../../src/schemas/epic-note.js";
+import type { SpecRootNote } from "../../src/schemas/spec-root-note.js";
+import { SpecRootNoteSchema } from "../../src/schemas/spec-root-note.js";
 import { validateDesignComplianceClaim } from "../../src/validators/design-claim-validator.js";
+import {
+  type SpecResolver,
+  validateEpicDoneClaim,
+} from "../../src/validators/epic-claim-validator.js";
 import { validateQaPassClaim } from "../../src/validators/qa-claim-validator.js";
 import { validateRequirementAcClaim } from "../../src/validators/requirement-claim-validator.js";
 import { validateSpecDoneClaim } from "../../src/validators/spec-claim-validator.js";
@@ -95,6 +103,8 @@ function parseByValidatorType(type: ValidatorType, md: string): unknown {
         return parseDesignNote(md);
       case "qa":
         return parseQaNote(md);
+      case "epic":
+        return parseEpicNote(md);
       default:
         throw new Error(`no parser registered for validator type "${type}"`);
     }
@@ -102,6 +112,80 @@ function parseByValidatorType(type: ValidatorType, md: string): unknown {
     if (cause instanceof FixtureMalformedError) throw cause;
     throw new FixtureMalformedError(type, cause);
   }
+}
+
+/**
+ * Synthesize a schema-valid, NON-DONE `SpecRootNote` for an EPIC `contains`
+ * reference. This is the harness's stand-in for the cross-note resolution that
+ * `validateEpicDoneClaim` requires: the EPIC validator is the only Wave 2
+ * validator with a cross-note dependency, so the fixture alone cannot encode
+ * the lie — the harness must supply a resolver that resolves the contained ref
+ * to a SPEC whose status is NOT `"DONE"`. Returning a status of `IN_PROGRESS`
+ * makes the contained SPEC "unfinished", so the validator rejects the EPIC's
+ * DONE claim.
+ *
+ * The synthetic note carries the SPEC number derived from the reference (e.g.
+ * `"SPEC-099: Unfinished Child Spec"` → 099) so the frontmatter title/permalink
+ * pass `SpecRootNoteSchema`; only the `status` field is load-bearing for the
+ * cross-note check. `ACCEPTED` is the chosen non-DONE status: per
+ * `SpecRootNoteStatusEnum` (DRAFT | PROPOSED | ACCEPTED | DONE | DEPRECATED),
+ * DONE is the SPEC's sole terminal status, so any other value (here ACCEPTED —
+ * "accepted but not yet shipped") models an unfinished child SPEC.
+ */
+function synthUnfinishedSpec(specRef: string): SpecRootNote {
+  const num = specRef.match(/SPEC-(\d{3,})/)?.[1] ?? "099";
+  return SpecRootNoteSchema.parse({
+    frontmatter: {
+      title: `SPEC-${num}: Unfinished Child Spec`,
+      type: "spec",
+      permalink: `specs/spec-${num}-unfinished/spec-${num}-unfinished`,
+      status: "ACCEPTED",
+      tags: ["drift-marker", "epic-cross-note"],
+    },
+    context: "Synthetic non-DONE child SPEC supplied by the adversarial harness resolver.",
+    scope_in: [],
+    scope_out: [],
+    sections: { Context: "Synthetic." },
+    observations: [
+      { category: "fact", text: "Synthetic child SPEC stub for EPIC cross-note resolution", tags: ["stub"] },
+      { category: "fact", text: "Status is ACCEPTED (non-DONE) so the EPIC done-claim must fail", tags: ["stub"] },
+      { category: "fact", text: "Only the status field is load-bearing for the validator", tags: ["stub"] },
+    ],
+    relations: [
+      { verb: "part_of", target: "EPIC-092: Sample Adversarial Epic Roadmap" },
+      { verb: "relates_to", target: "SPEC-008: Protocol Hardening Wave 2" },
+    ],
+  });
+}
+
+/**
+ * Resolver the harness injects into `validateEpicDoneClaim` for the `epic`
+ * adversarial case. Every contained SPEC reference resolves to a synthetic
+ * NON-DONE SpecRootNote, so a DONE EPIC that `contains` any SPEC is rejected —
+ * the exact cross-note lie the fixture encodes.
+ */
+const adversarialSpecResolver: SpecResolver = (specRef) => synthUnfinishedSpec(specRef);
+
+/**
+ * Adapt the EPIC validator's cross-note result (`{ ok, unsatisfied: [{spec_ref,
+ * status}] }`) to the harness's `ClaimResult` contract (`{ verdict, total,
+ * unsatisfied: [{index, text}] }`). The EPIC validator does not share the
+ * checkbox-oriented `ClaimResult` shape used by the other five validators
+ * (it predates a flat `{ ok }` discriminant per TASK-009 DoD), so the harness
+ * normalizes here. Each offending SPEC becomes one `unsatisfied` entry whose
+ * `text` carries the SPEC reference + resolved status, so `expectedReject`
+ * anchors on the specific unfinished child SPEC.
+ */
+function invokeEpicValidator(parsed: EpicNote): ClaimResult {
+  const result = validateEpicDoneClaim(parsed, { resolveSpec: adversarialSpecResolver });
+  if (result.ok) {
+    return { verdict: "PASS", total: 0 };
+  }
+  const unsatisfied = result.unsatisfied.map((u, index) => ({
+    index,
+    text: `${u.spec_ref} (status ${u.status})`,
+  }));
+  return { verdict: "FAIL", total: unsatisfied.length, unsatisfied };
 }
 
 /**
@@ -123,6 +207,8 @@ function invokeValidator(type: ValidatorType, parsed: unknown): ClaimResult {
       );
     case "qa":
       return validateQaPassClaim(parsed as Parameters<typeof validateQaPassClaim>[0]);
+    case "epic":
+      return invokeEpicValidator(parsed as EpicNote);
     default:
       throw new Error(`no validator registered for validator type "${type}"`);
   }

@@ -1,7 +1,7 @@
 ---
 title: 'REQ-005-SPEC-003: PLAN Adapter Round-Trip Property Test'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-003-plan-adapter/requirements/req-005-spec-003-plan-adapter-round-trip-property-test
 tags:
 - requirement
@@ -64,6 +64,7 @@ The test fixture is a representative PLAN note placed at _shared/composition/tes
 - [technique] Fixture-based test with deterministic plan YAML ensures reproducible test behavior #fixture #deterministic
 - [constraint] Hash scope excludes regenerated sections on both original and recomposed sides for fair comparison #hash-scope #regenerative-exclusion
 - [insight] Parse/serialize round-trip identity is a precondition that must pass before the full decompose/recompose cycle is tested #precondition #char-identity
+- [fact] Accepted: implemented by TASK-004-SPEC-003 + TASK-005-SPEC-003 (DONE), validated by QA-043-SPEC-003 (PASS, 30/30 tests) #provenance #rollup
 
 ## Relations
 

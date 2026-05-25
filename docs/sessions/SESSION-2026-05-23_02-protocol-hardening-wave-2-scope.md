@@ -2999,7 +2999,6 @@ Firing the next wave (opus agents): QA-086 (TASK-035 SPEC-002/003 rollups), QA-0
 - qa-TASK-035-SPEC-008 + qa-TASK-036-SPEC-008: PENDING → IN_PROGRESS (Event 129)
 - PLAN re-rendered to clean canonical form (cross-part graph valid; cruft dropped); scripts confirmed safe
 
-
 ## Event 130 — QA wave: TASK-036 CLOSED (42/47) via QA-087 PASS; TASK-035 HELD on SPEC-003 pre-existing drift (QA-086 FAILED)
 
 Both QA agents (opus) stayed in lane (verified: only QA-086 + QA-087 untracked; no agent PLAN/SPEC-root/git writes).
@@ -3018,3 +3017,21 @@ Both QA agents (opus) stayed in lane (verified: only QA-086 + QA-087 untracked; 
 - qa-TASK-036-SPEC-008 → DONE (qa_ref QA-087); TASK-036 status → DONE; SPEC-root Tasks TASK-036 `[x]` → 42/47
 - QA-086 (FAILED) + QA-087 (PASS) authored; both agents verified in-lane
 - TASK-035 HELD (qa-035 IN_PROGRESS) pending SPEC-003 child-status reconciliation; TASK-031 HELD pending D-A (SPEC-007)
+
+
+## Event 131 — TASK-035 CLOSED (43/47) via SPEC-003 rollup completion + re-QA PASS; TASK-024 EPIC-only built + DoD amended (D-B)
+
+Resolved the SPEC-003 pre-existing drift that blocked TASK-035 (rollup completion, orchestrator-owned per the derived-views rule):
+
+- SPEC-003 children: 5 REQ + 2 DESIGN flipped DRAFT → ACCEPTED (memory agent, opus) with evidence (each implemented by DONE TASK-001..005-SPEC-003, validated by QA-043-SPEC-003 PASS 30/30). SPEC-003 root Artifact Status rows all `[x]`; the 5 Success Criteria rows flipped `[x]` (conditions met: REQs ACCEPTED, TASKs DONE, QA sweep + exit gates + round-trip all satisfied). `validateSpecDoneClaim(SPEC-003)` now returns **ok**.
+- Re-QA (resumed QA-086 agent): all 12 TASK-035 DoD items now `[x]`; QA-086 verdict FAILED → PASS. qa-035 → DONE (qa_ref QA-086), TASK-035 status → DONE, SPEC-root Tasks `[x]`. **43/47.**
+- Full suite **1220 pass / 0 fail** — fully green; the 2 previously-deferred SPEC-007 `plan-001-migration` fails RESOLVED (the Event-126 mermaid `end`→`end_part` fix made the plan-render test pass). No regressions.
+
+TASK-024 (EPIC-only per D-B): `bun-ts-engineer` (opus) built `epic/drift-01-done-with-unfinished-contained-spec.md` + `SpecResolver`-backed harness dispatch + 1 `epic` table row; tsc 0; test dir clean (`tests/`, no stray `__tests__`). TASK-024 DoD amended to EPIC-only (ADR/ANALYSIS adversarial fixtures dropped — schema-redundant in a parse→validate harness; the schema rejection IS their coverage). All amended DoD items `[x]`. **Pending: TASK-024 QA + close (→ 44/47); verify REQ-006 AC doesn't require the dropped ADR/ANALYSIS fixtures (amend if it does).**
+
+### State Changes
+
+- SPEC-003: REQ-001..005 + DESIGN-001/002 → ACCEPTED; root Artifact Status + Success Criteria `[x]`; validateSpecDoneClaim → ok
+- qa-TASK-035-SPEC-008 → DONE (qa_ref QA-086, verdict FAILED→PASS); TASK-035 status → DONE; SPEC-root Tasks `[x]` → 43/47
+- TASK-024-SPEC-008: EPIC fixture + harness dispatch built; DoD amended EPIC-only (D-B); impl-024 DONE-equivalent, qa-024 pending
+- Suite 1220/0 (SPEC-007 deferred fails resolved); no regressions

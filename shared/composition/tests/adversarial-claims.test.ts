@@ -103,6 +103,18 @@ const cases: AdversarialCase[] = [
     // Declared PASS, but skipped>0 → derived PARTIAL → verdict-mismatch message.
     expectedReject: /verdict mismatch: declared PASS vs derived PARTIAL/,
   },
+
+  // --- epic validator (validateEpicDoneClaim) — CROSS-NOTE (Track 1, TASK-024) ---
+  {
+    fixture: join(ADVERSARIAL_DIR, "epic", "drift-01-done-with-unfinished-contained-spec.md"),
+    validator: "epic",
+    // EPIC DONE but a `contains` SPEC resolves (via the harness SpecResolver) to
+    // a non-DONE status; the cross-note check names the unfinished child SPEC.
+    // This lie passes EpicNoteSchema.parse() (the schema only gates the
+    // structural Contained-Specs-section invariant, not child-SPEC status), so
+    // only the resolver-driven validator rejects it.
+    expectedReject: /SPEC-099: Unfinished Child Spec/,
+  },
 ];
 
 /** Strip directory + `.md` extension to a greppable label (the fixture stem). */
