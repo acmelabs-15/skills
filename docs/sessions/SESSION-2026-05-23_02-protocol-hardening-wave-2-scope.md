@@ -3132,3 +3132,23 @@ On QA-091 PASS → **47/47 — all SPEC-008 TASKs closed**. Then close-out: REQ/
 - qa-TASK-031 → DONE (qa_ref QA-090); TASK-031 status → DONE; SPEC-root `[x]` → 46/47
 - impl-TASK-028 → DONE (5 drift surfaces, 6 grep matches, behavior-preserving); qa-028 → IN_PROGRESS; QA-091 dispatched
 - validateSpecDoneClaim(SPEC-007) ok; suite 1234/0
+
+
+## Event 139 — 🎉 47/47 — ALL SPEC-008 build TASKs CLOSED (TASK-028 via QA-091)
+
+QA-091 PASS → TASK-028 (drift markers) closed. qa-028 → DONE (qa_ref QA-091), TASK-028 status → DONE, SPEC-root Tasks `[x]`. **All 94 build-workflow items (47 impl + 47 qa) DONE. The SPEC-008 per-TASK build marathon is COMPLETE.** Suite 1234/0.
+
+### Remaining close-out (NOT tasks — spec finalization)
+
+1. **REQ/DESIGN acceptances + SPEC-root 5-list final sync**: all TASKs done → flip the remaining REQs (004 [needs AC-9 prefix-collision check], 006, 007, 008, 009, 010, 011 [AC10 now met via TASK-046 latency], 012 [needs FU-6b for Layer-7]) + DESIGNs (002/003/004) to ACCEPTED where AC/compliance met; sync SPEC-root Requirements/Designs/Acceptance/Success lists.
+2. **FU-6b**: fix Layer-7 `git-state-observer.ts` per-event input-shape bug (before Layer-7 go-live / REQ-012 full acceptance).
+3. **test-report→qa docs sweep** (~37 docs/** notes still referencing the old name) — careful per-note pass, preserve rename-narrative.
+4. **Hooks re-enable** (go-live): `mv hooks/hooks.json.disabled hooks/hooks.json` + `mv hooks/scripts.disabled hooks/scripts` — ONLY after FU-6b + all-conformant; the TASK-046 smoke is the go-live proof. Sequence carefully (build-isolation: hooks activate the moment files land).
+5. **ADR-005 D-B clarification + adr-review** (the EPIC-only adversarial-fixture deviation).
+6. **Final**: SPEC-008 IN_PROGRESS→DONE → protocol-hardening part DONE → PLAN-001 DONE; /end (FU-3 session Obs/Relations→tail, refresh State block, markdownlint, retrospective, PR).
+
+### State Changes
+
+- qa-TASK-028 → DONE (qa_ref QA-091); TASK-028 status → DONE; SPEC-root Tasks `[x]` → **47/47**
+- ALL SPEC-008 build-workflow items DONE; build marathon complete; suite 1234/0
+- Close-out phase begins (REQ/DESIGN acceptances, FU-6b, docs sweep, hooks go-live, adr-review, final DONE)

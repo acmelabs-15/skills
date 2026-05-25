@@ -2,7 +2,7 @@
 title: 'TASK-028-SPEC-008: Annotate Existing Tests with Phase X Drift Markers'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-028-spec-008-drift-markers
-status: TODO
+status: DONE
 effort: S
 estimate: 0.25d
 tags:

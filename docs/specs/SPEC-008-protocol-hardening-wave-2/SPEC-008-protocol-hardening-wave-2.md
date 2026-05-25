@@ -103,7 +103,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [x] [[TASK-025-SPEC-008: Integration Test Parse Mutate Validate Render]]
 - [x] [[TASK-026-SPEC-008: Mutation Backward Transition and Idempotency Tests]]
 - [x] [[TASK-027-SPEC-008: Session Mutation Duplicate Event Number Test]]
-- [ ] [[TASK-028-SPEC-008: Annotate Existing Tests with Phase X Drift Markers]]
+- [x] [[TASK-028-SPEC-008: Annotate Existing Tests with Phase X Drift Markers]]
 - [x] [[TASK-029-SPEC-008: Rename Shared Composition Directory]]
 - [x] [[TASK-030-SPEC-008: Delete Core Dispatcher and Its Test]]
 - [x] [[TASK-031-SPEC-008: Amend SPEC-007 Root with Deferred Notation and Legend]]
