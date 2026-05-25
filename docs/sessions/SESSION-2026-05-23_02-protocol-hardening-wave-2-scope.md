@@ -3035,3 +3035,13 @@ TASK-024 (EPIC-only per D-B): `bun-ts-engineer` (opus) built `epic/drift-01-done
 - qa-TASK-035-SPEC-008 → DONE (qa_ref QA-086, verdict FAILED→PASS); TASK-035 status → DONE; SPEC-root Tasks `[x]` → 43/47
 - TASK-024-SPEC-008: EPIC fixture + harness dispatch built; DoD amended EPIC-only (D-B); impl-024 DONE-equivalent, qa-024 pending
 - Suite 1220/0 (SPEC-007 deferred fails resolved); no regressions
+
+
+## Event 132 — TASK-024 impl → DONE (EPIC-only); qa-024 → IN_PROGRESS; QA-088 dispatched
+
+impl-TASK-024 IN_PROGRESS → DONE (EPIC fixture + harness dispatch built + amended EPIC-only DoD all `[x]`); qa-TASK-024 PENDING → IN_PROGRESS. PLAN re-rendered clean (no Risks/wave-graph; cross-part valid). Dispatching QA-088 (brain:🧠-qa, opus) to validate the amended EPIC-only DoD + REQ-006 AC + DESIGN-003 compliance — and to flag whether REQ-006 AC explicitly requires the dropped ADR/ANALYSIS adversarial fixtures (if so, REQ-006 gets amended per D-B).
+
+### State Changes
+
+- impl-TASK-024-SPEC-008 → DONE; qa-TASK-024-SPEC-008 → IN_PROGRESS (Event 132)
+- QA-088 dispatched for TASK-024 EPIC-only validation

@@ -2813,9 +2813,9 @@ graph TD
 
 - **Type**: impl
 - **Task Ref**: TASK-024-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 123
+- **Transitioned At Event**: 132
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -2824,9 +2824,9 @@ graph TD
 
 - **Type**: qa
 - **Task Ref**: TASK-024-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 132
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
