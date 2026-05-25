@@ -2,7 +2,7 @@
 title: 'DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape'
 type: design
 permalink: specs/spec-008-protocol-hardening-wave-2/design/design-003-spec-008-adversarial-test-fixture-layout-and-harness-shape-1
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-008
@@ -164,13 +164,13 @@ Internal helper inside `adversarial.ts`. Input: `(ValidatorType, ParsedNote)`. O
 
 ## Compliance
 
-- [ ] Harness lives at `shared/composition/tests/_helpers/adversarial.ts` per ADR-005 D-3 verbatim
-- [ ] Fixture directory layout matches `tests/fixtures/adversarial/<type>/drift-NN-<slug>.md` per ADR-005 D-3 verbatim
-- [ ] `testAdversarial` signature matches `{fixture, validator, expectedReject}` per ADR-005 D-3 verbatim
-- [ ] Parse-error path surfaces distinctly from validator-rejection path
-- [ ] Harness regex contract documented in JSDoc to discourage loose matchers
-- [ ] Table runner verifies every fixture file is referenced and every reference resolves to an on-disk file (no orphans, no broken pointers)
-- [ ] Extension path for Track 1 validators (ADR / ANALYSIS / EPIC) is captured without harness signature changes
+- [x] Harness lives at `shared/composition/tests/_helpers/adversarial.ts` per ADR-005 D-3 verbatim
+- [x] Fixture directory layout matches `tests/fixtures/adversarial/<type>/drift-NN-<slug>.md` per ADR-005 D-3 verbatim
+- [x] `testAdversarial` signature matches `{fixture, validator, expectedReject}` per ADR-005 D-3 verbatim
+- [x] Parse-error path surfaces distinctly from validator-rejection path
+- [x] Harness regex contract documented in JSDoc to discourage loose matchers
+- [x] Table runner verifies every fixture file is referenced and every reference resolves to an on-disk file (no orphans, no broken pointers)
+- [x] Extension path for Track 1 validators (ADR / ANALYSIS / EPIC) is captured without harness signature changes
 
 ## Observations
 

@@ -2,7 +2,7 @@
 title: 'REQ-008-SPEC-008: Deferred Checkbox Notation and Validator Extension'
 type: requirement
 permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-008-spec-008-deferred-checkbox-notation-and-validator-extension-1
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-008
@@ -23,13 +23,13 @@ WHEN the `KNOWLEDGE-GRAPH-CONVENTIONS.md` Section 4.6 (PLAN structure) and Secti
 
 ## Acceptance Criteria
 
-- [ ] GIVEN SPEC-007 root with REQ-012, TASK-013, TASK-014 marked `status: DEFERRED` WHEN orchestrator runs Track 4 cleanup THEN the three rows in `## Artifact Status` flip from `[ ]` to `[~]`
-- [ ] GIVEN SPEC-007 root after notation amendment WHEN reader inspects `## Artifact Status` section THEN a legend line at the top defines `[ ]` (TODO), `[x]` (DONE), `[~]` (DEFERRED)
-- [ ] GIVEN `validateSpecDoneClaim` source at `shared/composition/src/validators/spec-claim-validator.ts` WHEN the validator parses a SPEC root with `status: DONE` and any artifact-status row using `[~]` THEN the validator accepts the claim as valid and does not emit an `unsatisfied` entry for that row
-- [ ] GIVEN `validateSpecDoneClaim` WHEN parsing a TASK DoD checklist (not a SPEC root artifact list) THEN the validator continues to reject `[~]` as a non-terminal marker for TASK DoD items (`[~]` is SPEC-root scoped only, per D-6)
-- [ ] GIVEN extended `validateSpecDoneClaim` WHEN run against SPEC-007 root after the Track 4 amendment THEN the validator returns `valid: true` (closing the SPEC-007 PARTIAL drift surfaced in Audit D)
+- [x] GIVEN SPEC-007's REQ-012/TASK-013/TASK-014 drift (Audit D) WHEN Track 4 cleanup ran THEN it was resolved by COMPLETING the migration (REQ-012-SPEC-007 ACCEPTED, TASK-014 DONE, TASK-013 superseded by TASK-014) so all SPEC-007 `## Artifact Status` rows are terminal `[x]` — the `[~]` deferred-notation path was unnecessary because the work was finished, not deferred (amended 2026-05-24, Event 145, user-approved)
+- [x] GIVEN SPEC-007 was resolved by completion (no `[~]` rows present) THEN no in-note `[~]` legend is required on SPEC-007; the canonical `[~]` legend convention is instead documented centrally in CONVENTIONS/STRUCTURES Section 4.7 for any future SPEC that genuinely defers an artifact (amended 2026-05-24, Event 145, user-approved)
+- [x] GIVEN `validateSpecDoneClaim` source at `shared/composition/src/validators/spec-claim-validator.ts` WHEN the validator parses a SPEC root with `status: DONE` and any artifact-status row using `[~]` THEN the validator accepts the claim as valid and does not emit an `unsatisfied` entry for that row
+- [x] GIVEN `validateSpecDoneClaim` WHEN parsing a TASK DoD checklist (not a SPEC root artifact list) THEN the validator continues to reject `[~]` as a non-terminal marker for TASK DoD items (`[~]` is SPEC-root scoped only, per D-6)
+- [x] GIVEN `validateSpecDoneClaim` WHEN run against SPEC-007 root after Track 4 cleanup (completion-based — all rows `[x]`) THEN the validator returns `valid: true`, closing the SPEC-007 PARTIAL drift surfaced in Audit D
 - [x] GIVEN updated CONVENTIONS Section 4.6 + 4.7 WHEN a future spec author reads either section THEN both sections document `[~]` as the canonical deferred-notation marker and reference REQ-008-SPEC-008 as the source decision
-- [ ] GIVEN composition library unit test suite WHEN `bun test` runs after validator extension THEN at least one test case asserts `[~]` acceptance on SPEC-root rows and at least one asserts `[~]` rejection on TASK DoD rows
+- [x] GIVEN composition library unit test suite WHEN `bun test` runs after validator extension THEN at least one test case asserts `[~]` acceptance on SPEC-root rows and at least one asserts `[~]` rejection on TASK DoD rows
 
 ## Observations
 

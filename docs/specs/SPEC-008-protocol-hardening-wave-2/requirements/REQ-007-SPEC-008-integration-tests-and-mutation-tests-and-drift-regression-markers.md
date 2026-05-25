@@ -2,7 +2,7 @@
 title: 'REQ-007-SPEC-008: Integration Tests and Mutation Tests and Drift Regression Markers'
 type: requirement
 permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-007-spec-008-integration-tests-and-mutation-tests-and-drift-regression-markers-1
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-008
@@ -50,18 +50,18 @@ Non-Functional (Test Coverage).
 - [x] GIVEN the integration-test file `shared/composition/tests/integration/cross-note-spec-task-consistency.test.ts` WHEN it runs THEN it asserts the rule: for every TASK note with `status: DONE`, the parent SPEC's `## Artifact Status` row for that TASK MUST be `[x]` or `[~]` (terminal markers per REQ-008); the test fails when given a fixture with a DONE TASK and an unchecked SPEC-root row
 - [x] GIVEN the integration-test file `shared/composition/tests/integration/test-report-vs-task-dod.test.ts` WHEN it runs THEN it asserts the rule: every TEST-REPORT row marked PASS MUST correspond to a TASK DoD line marked `[x]`; the test fails when given a fixture pair where a TEST-REPORT claims PASS but the linked TASK DoD line is still `[ ]`
 - [x] GIVEN the mutation-invariant test file `shared/composition/tests/mutation-invariants.test.ts` WHEN it runs THEN it asserts (a) `applyPlanMutation({type: "transition-impl-item", from: "DONE", to: "IN_PROGRESS"})` is rejected with a backward-transition error AND (b) applying the same mutation twice in sequence on a fresh fixture yields a final state byte-identical to a single-apply result (idempotency)
-- [ ] GIVEN the mutation-invariant test file WHEN a session note already containing a duplicate `Event NN` is parsed/mutated THEN it is rejected with a continuity-violation error (`Event n=N at index I: expected n=M`) that identifies the conflicting number — the session API auto-assigns event numbers, so a duplicate manifests as a continuity violation rather than a literal "duplicate"/"already exists" string (amended 2026-05-24 SESSION-2026-05-23_02 Event 99, user-approved, to match as-built behavior; regression-lock intent preserved)
-- [ ] GIVEN the existing test files in `shared/composition/tests/` WHEN a contributor greps for `// drift-marker:` THEN at least five existing tests carry a comment of the form `// drift-marker: <drift-surface-id> — <one-line-description>` mapping the test to its Phase X drift surface
-- [ ] GIVEN the five marked tests WHEN each marker comment is inspected THEN the drift-surface-id matches a documented Phase X drift surface (from the 37 captured at Phase X close in [[RETRO-003: Phase X Execution and Composition Library Completion]]) and the description identifies the lying behavior the test prevents
+- [x] GIVEN the mutation-invariant test file WHEN a session note already containing a duplicate `Event NN` is parsed/mutated THEN it is rejected with a continuity-violation error (`Event n=N at index I: expected n=M`) that identifies the conflicting number — the session API auto-assigns event numbers, so a duplicate manifests as a continuity violation rather than a literal "duplicate"/"already exists" string (amended 2026-05-24 SESSION-2026-05-23_02 Event 99, user-approved, to match as-built behavior; regression-lock intent preserved)
+- [x] GIVEN the existing test files in `shared/composition/tests/` WHEN a contributor greps for `// drift-marker:` THEN at least five existing tests carry a comment of the form `// drift-marker: <drift-surface-id> — <one-line-description>` mapping the test to its Phase X drift surface
+- [x] GIVEN the five marked tests WHEN each marker comment is inspected THEN the drift-surface-id matches a documented Phase X drift surface (from the 37 captured at Phase X close in [[RETRO-003: Phase X Execution and Composition Library Completion]]) and the description identifies the lying behavior the test prevents
 
-- [ ] GIVEN the five Phase X drift surfaces enumerated in this REQ's Context WHEN each marker is placed THEN the marker lands on a test whose subject matches that surface (NOT an arbitrary unrelated test), per the binding surface-to-test mapping:
+- [x] GIVEN the five Phase X drift surfaces enumerated in this REQ's Context WHEN each marker is placed THEN the marker lands on a test whose subject matches that surface (NOT an arbitrary unrelated test), per the binding surface-to-test mapping:
   - SESSION duplicate-event drift → marker on the session-note duplicate-event-number mutation test in `mutation-invariants.test.ts`
   - SPEC-002/003 SPEC-vs-TASK rollup drift → marker on the cross-note consistency test in `integration/cross-note-spec-task-consistency.test.ts`
   - QA-027/030 duplicate-frontmatter-block drift → marker on the existing schema-parser test that rejects duplicate frontmatter blocks
   - QA-027 forbidden `validates` relation drift → marker on the existing relation-verb validator test asserting the 11-type allowlist
   - PLAN-001 trimmed-template canonical-form drift → marker on the existing PLAN round-trip render test
   - If a natural matching test does not exist for any of the five surfaces, that gap MUST be surfaced before /build (raised as a clarification) rather than satisfied by placing the marker on an arbitrary unrelated test
-- [ ] GIVEN the new integration plus mutation tests WHEN `bun test` runs THEN total test count increases by at least eight tests over the pre-Track-3 baseline AND all new tests pass on first run
+- [x] GIVEN the new integration plus mutation tests WHEN `bun test` runs THEN total test count increases by at least eight tests over the pre-Track-3 baseline AND all new tests pass on first run
 
 ## Implementation Notes
 

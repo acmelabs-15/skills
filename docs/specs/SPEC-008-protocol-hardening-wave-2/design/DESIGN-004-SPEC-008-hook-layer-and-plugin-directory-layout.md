@@ -2,7 +2,7 @@
 title: 'DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout'
 type: design
 permalink: specs/spec-008-protocol-hardening-wave-2/design/design-004-spec-008-hook-layer-and-plugin-directory-layout
-status: DRAFT
+status: ACCEPTED
 tags:
 - design
 - spec-008
@@ -217,15 +217,15 @@ The `hooks.json` shape follows the Claude Code hooks contract:
 
 ## Compliance
 
-- [ ] All seven layers declared in `hooks/hooks.json` with the exact matchers and `if` filters specified in [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 table
-- [ ] Handler scripts use `${CLAUDE_PLUGIN_ROOT}` placeholder (resolves to plugin install dir) per [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Implementation Notes
-- [ ] Handlers import validators from `shared/composition/src/validators/` per [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 directory layout
-- [ ] Layers 1-5 implement HYBRID failure semantics (deny on status-flip claim failures; allow with `additionalContext` warning on other schema issues) per [[REQ-011-SPEC-008: PreToolUse Blocking Gates]] AC
-- [ ] Layer 6 (`Stop`) blocks turn completion on any unvalidated `docs/**` modification per [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]] AC
-- [ ] Layer 7 (`FileChanged`) emits `additionalContext` only (no `permissionDecision`) per [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]] AC
-- [ ] Every handler validates `file_path` and `command` arguments fall within project root before reading content or shelling out, per Phase 3 security reviewer P1
-- [ ] Handler crash exits non-zero; `PreToolUse`/`FileChanged` fail-open (tool call proceeds); `Stop` fails-closed (turn blocked)
-- [ ] Per-edit hook latency stays within ~80-250ms budget; per-commit hook latency for typical 5-10 file commit stays within ~500ms-2s
+- [x] All seven layers declared in `hooks/hooks.json` with the exact matchers and `if` filters specified in [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 table
+- [x] Handler scripts use `${CLAUDE_PLUGIN_ROOT}` placeholder (resolves to plugin install dir) per [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Implementation Notes
+- [x] Handlers import validators from `shared/composition/src/validators/` per [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 directory layout
+- [x] Layers 1-5 implement HYBRID failure semantics (deny on status-flip claim failures; allow with `additionalContext` warning on other schema issues) per [[REQ-011-SPEC-008: PreToolUse Blocking Gates]] AC
+- [x] Layer 6 (`Stop`) blocks turn completion on any unvalidated `docs/**` modification per [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]] AC
+- [x] Layer 7 (`FileChanged`) emits `additionalContext` only (no `permissionDecision`) per [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]] AC
+- [x] Every handler validates `file_path` and `command` arguments fall within project root before reading content or shelling out, per Phase 3 security reviewer P1
+- [x] Handler crash exits non-zero; `PreToolUse`/`FileChanged` fail-open (tool call proceeds); `Stop` fails-closed (turn blocked)
+- [x] Per-edit hook latency stays within ~80-250ms budget; per-commit hook latency for typical 5-10 file commit stays within ~500ms-2s
 
 ## Observations
 

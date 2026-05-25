@@ -3303,3 +3303,26 @@ User adjudicated the 3 surfaced reconciliation decisions:
 ### State Changes
 
 - 3 Phase-3 reconciliation decisions LOCKED (D-PH3-1 implement, D-PH3-2 amend, D-PH3-3 amend). Execution: REQ-006 AC-7 impl dispatch + 2 AC-text amendments + 8 ACCEPTED flips + partial SPEC-root sync next.
+
+
+## Event 147 — Phase 3 flips applied (9 ACCEPTED) + SPEC-root rollup; PARSER-CONFORMANCE DRIFT discovered (stop-the-line)
+
+Applied the Phase-3 acceptance batch + the 2 locked amendments:
+- **9 REQ/DESIGN flipped DRAFT→ACCEPTED, all AC/Compliance `[x]`**: REQ-004 (9 AC), REQ-006 (7 AC; AC-7 comment-parsing now implemented per D-PH3-1), REQ-007 (9 AC), REQ-008 (7 AC; AC-1/2/5 reworded to completion-resolution per D-PH3-2), REQ-011 (10 AC), REQ-012 (8 AC), DESIGN-002 (8 compliance; item-5 js-yaml + item-7 line-budget reworded per D-PH3-3), DESIGN-003 (7), DESIGN-004 (9).
+- **SPEC-root rollup synced**: Requirements rows 004/006/007/008/011/012 → `[x]` (009/010 left `[ ]`, deferred to post-Phase-4); Designs 002/003/004 → `[x]` (all 4 designs now ACCEPTED).
+- REQ-009 (AC-8 `_shared`→`shared` docs prose sweep) + REQ-010 (AC-10 residual `feedback_` grep) remain DRAFT — deferred to AFTER Phase 4.
+
+### DRIFT DISCOVERY (stop-the-line) — composition REQ/DESIGN parsers reject ALL SPEC-008 REQ/DESIGN notes
+Ran `parseRequirementNote`/`parseDesignNote` + `validateRequirementAcClaim`/`validateDesignComplianceClaim` on the 9 flipped notes to verify the claims (the protocol's mechanical gate). ALL 9 fail to PARSE — and so do the already-ACCEPTED REQ-001/005 + DESIGN-001 (identical failures), proving systematic + pre-existing (the gate NEVER ran on REQ/DESIGN notes during the build). Root causes:
+- `parseRequirementNote` extracts `requirement_statement` from a `## Requirement Statement` H2, but every REQ note uses `## EARS` → empty → schema rejects (min 1 char). [affects all REQ notes]
+- `parseDesignNote` rejects observation category `[design]` — not in the 10-category enum (fact/decision/requirement/technique/insight/problem/solution/constraint/risk/outcome). Every DESIGN note uses `[design]`. [affects all DESIGN notes]
+- `## Priority` prose > 200-char schema cap (several REQs); frontmatter `tags` > 5 (REQ-007/011/012, DESIGN-003/004 have 6).
+
+Implication: SPEC-root AC items "All 12 REQs ACCEPTED ... verifiable via validateRequirementAcClaim" / "All 4 DESIGN ... verifiable via validateDesignComplianceClaim" are NOT literally true — the validators can't parse the notes. The ACCEPTED flips themselves are SOUND (every checkbox genuinely MET per the 4 QA-agent evidence matrices; identical basis to how REQ-001/DESIGN-001 were accepted earlier). The parser-vs-note conformance gap is orthogonal, systematic, and pre-existing.
+
+**HELD pending user fix-or-defer decision** (stop-the-line): SPEC-root Acceptance-Criteria "verifiable via …Claim" items (1, 2) + Success Criteria + the parser-conformance remediation. Did NOT flip those SPEC-root items.
+
+### State Changes
+- 9 REQ/DESIGN notes DRAFT→ACCEPTED (all checkboxes `[x]`); REQ-008 + DESIGN-002 amended per D-PH3-2/D-PH3-3.
+- SPEC-root: Requirements 004/006/007/008/011/012 + Designs 002/003/004 → `[x]` (rollup mirror). 009/010 deferred; AC/Success items HELD.
+- DRIFT logged: composition REQ/DESIGN parsers systematically reject all SPEC-008 REQ/DESIGN notes (`## EARS` vs `## Requirement Statement`; `[design]` category; priority>200; tags>5). Pre-existing, affects pre-accepted notes too. Fix-or-defer decision surfaced to user. Phase 3 acceptance flips done; Phase 3 NOT fully closed (SPEC-root AC items pending decision + REQ-009/010 pending Phase 4).

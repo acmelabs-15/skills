@@ -57,22 +57,22 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [x] [[REQ-001-SPEC-008: New Schema Suite]]
 - [x] [[REQ-002-SPEC-008: New Parser Suite]]
 - [x] [[REQ-003-SPEC-008: New Claim Validator Suite]]
-- [ ] [[REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts]]
+- [x] [[REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts]]
 - [x] [[REQ-005-SPEC-008: Per-Skill Dispatch-Brief Generator Scripts]]
-- [ ] [[REQ-006-SPEC-008: Adversarial-Claim Test Harness and Initial Fixture Set]]
-- [ ] [[REQ-007-SPEC-008: Integration Tests and Mutation Tests and Drift Regression Markers]]
-- [ ] [[REQ-008-SPEC-008: Deferred Checkbox Notation and Validator Extension]]
+- [x] [[REQ-006-SPEC-008: Adversarial-Claim Test Harness and Initial Fixture Set]]
+- [x] [[REQ-007-SPEC-008: Integration Tests and Mutation Tests and Drift Regression Markers]]
+- [x] [[REQ-008-SPEC-008: Deferred Checkbox Notation and Validator Extension]]
 - [ ] [[REQ-009-SPEC-008: Structural Cleanup Dispatcher Deletion and Shared Rename]]
 - [ ] [[REQ-010-SPEC-008: Brain Note Hygiene and Code-vs-Spec Drift Cleanup]]
-- [ ] [[REQ-011-SPEC-008: PreToolUse Blocking Gates]]
-- [ ] [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]]
+- [x] [[REQ-011-SPEC-008: PreToolUse Blocking Gates]]
+- [x] [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]]
 
 ### Designs (4)
 
 - [x] [[DESIGN-001-SPEC-008: Coverage Module Layout]]
-- [ ] [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]
-- [ ] [[DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape]]
-- [ ] [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
+- [x] [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]]
+- [x] [[DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape]]
+- [x] [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]
 
 ### Tasks (47)
 

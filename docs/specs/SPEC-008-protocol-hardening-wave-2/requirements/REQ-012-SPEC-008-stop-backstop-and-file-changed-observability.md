@@ -2,7 +2,7 @@
 title: 'REQ-012-SPEC-008: Stop Backstop and File Changed Observability'
 type: requirement
 permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-012-spec-008-stop-backstop-and-file-changed-observability
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-008
@@ -31,15 +31,15 @@ SO THAT no Brain note state change escapes validation between turns and the post
       WHEN no docs/** files were modified during the turn OR every modified file passes its validator
       THEN the handler exits 0 with no decision payload, allowing the turn to complete normally
 
-- [ ] GIVEN a Layer 7 `FileChanged` hook declared with matcher watching `.git/HEAD|.git/index|.git/logs/HEAD`
+- [x] GIVEN a Layer 7 `FileChanged` hook declared with matcher watching `.git/HEAD|.git/index|.git/logs/HEAD`
       WHEN the watched files change (a commit lands)
       THEN the handler script `hooks/scripts/git-state-observer.ts` runs validation across all notes touched by the new commit, computes the resulting graph state (note counts by type, status distribution, validator pass/fail tallies), and emits `{ hookSpecificOutput: { hookEventName: "FileChanged", additionalContext: "Post-commit state: commit <sha> landed; full graph validation: <PASS|FAIL summary>" } }`
 
-- [ ] GIVEN the Layer 7 `FileChanged` matcher
+- [x] GIVEN the Layer 7 `FileChanged` matcher
       WHEN external editor edits (e.g., `vim` outside Claude Code) modify a file under `docs/**` without touching `.git/HEAD`/`.git/index`/`.git/logs/HEAD`
       THEN the handler does NOT fire, confirming that external editor edits are explicitly out of scope per ADR-005 D-8 (tool-mediated edits are the threat model)
 
-- [ ] GIVEN the plugin directory layout under `${CLAUDE_PLUGIN_ROOT}/hooks/`
+- [x] GIVEN the plugin directory layout under `${CLAUDE_PLUGIN_ROOT}/hooks/`
       WHEN the plugin is installed
       THEN the filesystem contains `hooks/hooks.json` declaring all seven layer hooks, `hooks/lib/` with shared utilities (`dispatch-validator.ts`, `apply-edit-operation.ts`, `git-staged-files.ts`, `git-diff-commits.ts`, `parse-tool-input.ts`, `format-hook-response.ts`), and `hooks/scripts/` with one handler per layer (`pre-write-brain-note.ts`, `pre-write-brain-note-mcp.ts`, `pre-commit-validate.ts`, `pre-push-validate.ts`, `pre-pr-create-validate.ts`, `stop-backstop.ts`, `git-state-observer.ts`)
 
@@ -51,7 +51,7 @@ SO THAT no Brain note state change escapes validation between turns and the post
       WHEN the runtime detects non-zero exit
       THEN PreToolUse and FileChanged treat the failure as non-blocking (fail-open on infrastructure error); Stop fails closed (fail-closed on turn-end backstop infrastructure error) so the protocol is preserved as the more conservative default at the turn boundary
 
-- [ ] GIVEN the rollback path described in ADR-005 D-8
+- [x] GIVEN the rollback path described in ADR-005 D-8
       WHEN the `hooks/` directory and `hooks.json` declarations are removed
       THEN composition library validators and per-skill scripts (D-1, D-4) remain functional; Wave 2 falls back to voluntary invocation (Wave 1 enforcement level); no production data migration is required
 

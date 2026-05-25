@@ -2,7 +2,7 @@
 title: 'REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts'
 type: requirement
 permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-004-spec-008-per-skill-gate-point-invocation-scripts
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-008
@@ -45,15 +45,15 @@ Wave 2 coverage:
 
 ## Acceptance Criteria
 
-- [ ] GIVEN a TASK with status DONE and one unchecked DoD checkbox WHEN running `validate-task-done.ts` THEN script exits non-zero and stderr names the unsatisfied DoD item
-- [ ] GIVEN a TASK with all DoD items checked or deferred WHEN running `validate-task-done.ts` THEN script exits zero with no error output
-- [ ] GIVEN a PLAN with an impl-item in PENDING WHEN running `transition-impl-item.ts` with target IN_PROGRESS THEN PLAN markdown is updated via applyPlanMutation and script exits zero
-- [ ] GIVEN a PLAN qa-item transitioning to DONE without test_report_ref WHEN running `transition-qa-item.ts` THEN script exits non-zero and stderr names the missing invariant
-- [ ] GIVEN a SPEC root with status DONE and any Success Criteria checkbox unchecked WHEN running `validate-spec-done.ts` THEN script exits non-zero and stderr names the unsatisfied row
-- [ ] GIVEN a TASK note WHEN running `validate-task-schema.ts` THEN script parses via TaskNoteSchema exits zero on valid input non-zero with Zod issues on invalid input
-- [ ] GIVEN every per-skill script under `skills/<name>/scripts/` WHEN inspected THEN it includes the import.meta.main CLI guard and exits non-zero on validation failure
-- [ ] GIVEN every per-skill script WHEN tested via its colocated test file THEN the test asserts both the success path and the failure path
-- [ ] GIVEN any per-skill script accepting a file path argument WHEN the resolved absolute path is not equal to projectRoot AND does not start with `projectRoot + path.sep` THEN script exits non-zero with a stderr message naming the rejected path. Three adversarial cases MUST be verified:
+- [x] GIVEN a TASK with status DONE and one unchecked DoD checkbox WHEN running `validate-task-done.ts` THEN script exits non-zero and stderr names the unsatisfied DoD item
+- [x] GIVEN a TASK with all DoD items checked or deferred WHEN running `validate-task-done.ts` THEN script exits zero with no error output
+- [x] GIVEN a PLAN with an impl-item in PENDING WHEN running `transition-impl-item.ts` with target IN_PROGRESS THEN PLAN markdown is updated via applyPlanMutation and script exits zero
+- [x] GIVEN a PLAN qa-item transitioning to DONE without test_report_ref WHEN running `transition-qa-item.ts` THEN script exits non-zero and stderr names the missing invariant
+- [x] GIVEN a SPEC root with status DONE and any Success Criteria checkbox unchecked WHEN running `validate-spec-done.ts` THEN script exits non-zero and stderr names the unsatisfied row
+- [x] GIVEN a TASK note WHEN running `validate-task-schema.ts` THEN script parses via TaskNoteSchema exits zero on valid input non-zero with Zod issues on invalid input
+- [x] GIVEN every per-skill script under `skills/<name>/scripts/` WHEN inspected THEN it includes the import.meta.main CLI guard and exits non-zero on validation failure
+- [x] GIVEN every per-skill script WHEN tested via its colocated test file THEN the test asserts both the success path and the failure path
+- [x] GIVEN any per-skill script accepting a file path argument WHEN the resolved absolute path is not equal to projectRoot AND does not start with `projectRoot + path.sep` THEN script exits non-zero with a stderr message naming the rejected path. Three adversarial cases MUST be verified:
   - `../outside.md` (relative traversal) is rejected
   - an absolute path outside projectRoot is rejected
   - a prefix-collision sibling `<projectroot>-sibling/x.md` is rejected (the bare `.startsWith(projectRoot)` form would false-negative this)
