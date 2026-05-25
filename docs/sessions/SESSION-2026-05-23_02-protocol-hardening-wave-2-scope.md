@@ -3326,3 +3326,22 @@ Implication: SPEC-root AC items "All 12 REQs ACCEPTED ... verifiable via validat
 - 9 REQ/DESIGN notes DRAFT→ACCEPTED (all checkboxes `[x]`); REQ-008 + DESIGN-002 amended per D-PH3-2/D-PH3-3.
 - SPEC-root: Requirements 004/006/007/008/011/012 + Designs 002/003/004 → `[x]` (rollup mirror). 009/010 deferred; AC/Success items HELD.
 - DRIFT logged: composition REQ/DESIGN parsers systematically reject all SPEC-008 REQ/DESIGN notes (`## EARS` vs `## Requirement Statement`; `[design]` category; priority>200; tags>5). Pre-existing, affects pre-accepted notes too. Fix-or-defer decision surfaced to user. Phase 3 acceptance flips done; Phase 3 NOT fully closed (SPEC-root AC items pending decision + REQ-009/010 pending Phase 4).
+
+
+## Event 148 — Root-cause investigation: "what broke down" (3 compounding failures)
+
+User chose investigate+fix-now and asked to understand what broke down (intuition: per-skill scripts not actually referenced by their SKILL.md). Investigation confirms + expands:
+
+**Failure 1 — per-skill scripts built but NEVER wired into the lifecycle skills (user's intuition CONFIRMED).** SKILL.md script-path references vs scripts-on-disk: build 0/5, spec 0/3, end 0/2, decisions 0/3, plan 0/2, research 0/1, review 0/1 — i.e. ZERO of the 7 lifecycle skills reference their own scripts. Only defrag (5) + ingest (6) wire theirs (authored together with scripts in SPEC-005/006). REQ-004/005 ACs verified scripts EXIST + have `import.meta.main` + path-containment + colocated success/fail tests — but NO AC required the SKILL.md prose to INVOKE the script at its gate point. So the 11 Track-2 scripts are runtime-orphaned; the "voluntary-invocation gap" REQ-004 was meant to close is still open at the skill-prose layer (the Track-5 hooks are the other enforcement path, but they're disabled + would fail to parse REQ/DESIGN; see Failure 2).
+
+**Failure 2 — REQ/DESIGN notes were never run through their own parsers/validators.** /spec used Gate A (analyst semantic) + Gate B (critic drift), NOT parseRequirementNote/validateRequirementAcClaim. /build validated TASK notes only (TaskNoteSchema). So the REQ/DESIGN parsers first executed THIS close-out and failed on every note. SPEC-root AC "verifiable via validate…Claim" was an intended gate that never ran.
+
+**Failure 3 — SPEC-008 REQ/DESIGN notes drifted from canonical NOTE-TEMPLATES (undetected, because of Failure 2).**
+- REQ heading: canonical NOTE-TEMPLATES uses `## Requirement Statement` (+ `## EARS Pattern`). Per-spec: SPEC-001/003/004/006/007 use `## Requirement Statement`; 002/005 have BOTH; **SPEC-008 ALONE uses `## EARS` and omits `## Requirement Statement`** → parser extracts empty requirement_statement → reject. PARSER IS RIGHT; SPEC-008's 12 REQ notes are the deviation. (Corrects the earlier "parser should read EARS" hypothesis.)
+- DESIGN `[design]` observation category: not in CONVENTIONS Section 4.2's 10-category enum, not in any template — yet 20/24 design notes use it (crept in as de-facto, schema never blessed it).
+- frontmatter tags >5 (CONVENTIONS Section 6 = 2-5); `## Priority` prose >200-char schema cap.
+
+**Through-line:** SPEC-008 built the enforcement MECHANISM (validators + per-skill scripts + hooks) but (a) never wired scripts into the 7 lifecycle skills, (b) never ran the validators on REQ/DESIGN notes, (c) the notes drifted from canon with no parse-gate to catch it. Mechanism is largely INERT: scripts uninvoked, validators can't parse the notes, hooks disabled.
+
+### State Changes
+- Root-cause investigation complete (read-only greps on SKILL.md / parsers / schemas / NOTE-TEMPLATES / STRUCTURES). 3 compounding failures identified. Fix plan + decision points to be proposed to user; fix to execute (likely fresh context).
