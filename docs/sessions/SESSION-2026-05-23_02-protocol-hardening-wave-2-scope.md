@@ -2998,3 +2998,23 @@ Firing the next wave (opus agents): QA-086 (TASK-035 SPEC-002/003 rollups), QA-0
 - DECISION (course-correct): PLAN = deterministic renderPlanNote output; no hand-maintained custom sections (Risks + wave graph permanently dropped, by design)
 - qa-TASK-035-SPEC-008 + qa-TASK-036-SPEC-008: PENDING → IN_PROGRESS (Event 129)
 - PLAN re-rendered to clean canonical form (cross-part graph valid; cruft dropped); scripts confirmed safe
+
+
+## Event 130 — QA wave: TASK-036 CLOSED (42/47) via QA-087 PASS; TASK-035 HELD on SPEC-003 pre-existing drift (QA-086 FAILED)
+
+Both QA agents (opus) stayed in lane (verified: only QA-086 + QA-087 untracked; no agent PLAN/SPEC-root/git writes).
+
+- **TASK-036 CLOSED** — QA-087-SPEC-008 verdict PASS (REQ-009-SPEC-007 now: 0 "9 mutation types", ≥1 "11", PR #14 provenance fact). qa-036 → DONE (qa_ref QA-087), TASK-036 status → DONE, SPEC-root Tasks `[x]`. **42/47.**
+- **TASK-035 HELD** — QA-086-SPEC-008 verdict FAILED: 10/12 DoD pass (SPEC-002 fully propagated + its 4 REQs ACCEPTED with evidence; SPEC-003 artifact-status rows correct). The 2 failing DoD items (10: `validateSpecDoneClaim(SPEC-003)` valid; 12: grep) are UNSATISFIABLE within TASK-035's scope: SPEC-003 root is `status: DONE` but its 5 REQs + 2 DESIGNs are DRAFT — pre-existing rollup drift from the SPEC-003 build wave. TASK-035's DoD only scoped SPEC-002's REQ flips, not SPEC-003's children. This is a spec/DoD-scope problem (NOT an impl failure) — qa-035 left IN_PROGRESS (not mechanically reopened, per mid-implementation-halt). Same drift class as SPEC-007 / TASK-031 (DONE root + non-terminal children).
+- QA-087's first launch hit a transient "claude-sonnet[1m]" model-resolution glitch; the retry on opus succeeded — confirms opus dispatch works.
+
+### Pending decisions (old-wave spec rollup drift surfaced by SPEC-008 cleanup tasks)
+
+- **SPEC-003 (blocks TASK-035)**: build.SPEC-003 is DONE + QA notes exist → its 5 REQ + 2 DESIGN children should be ACCEPTED (rollup completion). Recommend: verify each child's completion evidence, flip to ACCEPTED, re-run validateSpecDoneClaim → TASK-035 closes.
+- **SPEC-007 (blocks TASK-031)**: more nuanced — plan-001-migration is genuinely DEFERRED (D-1); needs the earlier investigate-and-reconcile decision (D-A).
+
+### State Changes
+
+- qa-TASK-036-SPEC-008 → DONE (qa_ref QA-087); TASK-036 status → DONE; SPEC-root Tasks TASK-036 `[x]` → 42/47
+- QA-086 (FAILED) + QA-087 (PASS) authored; both agents verified in-lane
+- TASK-035 HELD (qa-035 IN_PROGRESS) pending SPEC-003 child-status reconciliation; TASK-031 HELD pending D-A (SPEC-007)

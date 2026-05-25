@@ -3088,11 +3088,11 @@ graph TD
 
 - **Type**: qa
 - **Task Ref**: TASK-036-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 129
+- **Transitioned At Event**: 130
 - **Failed Iterations**: 0
-- **QA Ref**: —
+- **QA Ref**: QA-087-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-037-SPEC-008
