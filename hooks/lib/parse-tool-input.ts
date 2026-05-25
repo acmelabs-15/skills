@@ -82,6 +82,57 @@ const StopHookInputSchema = z
   .passthrough();
 
 /**
+ * Parsed shape of a Claude Code `FileChanged` (post-commit observability) hook
+ * event. Like {@link StopHookInput}, a FileChanged event has NO `tool_name` /
+ * `tool_input` — it carries session metadata, the working directory, and the
+ * single changed file plus its change kind. The Layer 7 observer (observe-only)
+ * functionally needs ONLY `cwd` (the repo-root seed for `git rev-parse` +
+ * diff-tree enumeration); the remaining fields are surfaced for completeness.
+ */
+export interface FileChangedHookInput {
+  /** Working directory of the session — the repo-root seed. */
+  cwd: string;
+  /** Always `"FileChanged"` for a file-change event. */
+  hook_event_name: "FileChanged";
+  /** Session identifier, when the runtime supplies one. */
+  session_id?: string;
+  /** Path to the session transcript, when the runtime supplies one. */
+  transcript_path?: string;
+  /** Absolute path of the changed file, when the runtime supplies one. */
+  file_path?: string;
+  /** Kind of change the runtime observed. */
+  event?: "change" | "add" | "unlink";
+}
+
+/**
+ * Strict-shape `FileChanged` event schema. Like {@link StopHookInputSchema}, it
+ * requires NO tool fields — a real FileChanged event provides only session
+ * metadata, `cwd`, and the changed-file descriptor.
+ *
+ * DESIGN DECISION — deliberately PERMISSIVE: the ONLY required fields are `cwd`
+ * (the functional necessity — it seeds repo-root + HEAD resolution) and
+ * `hook_event_name: "FileChanged"` (the event-type guard, mirroring the Stop
+ * precedent). `session_id`, `transcript_path`, `file_path`, and `event` are all
+ * `.optional()`, and `passthrough()` tolerates additional runtime-supplied keys.
+ *
+ * RATIONALE: Layer 7 is observe-only and fails OPEN. An over-strict schema would
+ * silently re-disable the layer the moment the runtime adds a future payload
+ * field — exactly the input-shape bug this fix exists to remove. Tolerating
+ * unknown/optional fields keeps the observer live; only the two load-bearing
+ * fields are enforced.
+ */
+const FileChangedHookInputSchema = z
+  .object({
+    cwd: z.string().min(1),
+    hook_event_name: z.literal("FileChanged"),
+    session_id: z.string().optional(),
+    transcript_path: z.string().optional(),
+    file_path: z.string().optional(),
+    event: z.enum(["change", "add", "unlink"]).optional(),
+  })
+  .passthrough();
+
+/**
  * Per-tool tool_input schemas. Handlers parse `tool_input` with the schema
  * matching `tool_name` to extract a typed slice; failures here are routed
  * back as either deny (when claim-bearing) or fail-open (when shape only).
@@ -239,5 +290,54 @@ export function parseStopHookInput(raw: string): StopHookInput {
   if (session_id !== undefined) out.session_id = session_id;
   if (transcript_path !== undefined) out.transcript_path = transcript_path;
   if (stop_hook_active !== undefined) out.stop_hook_active = stop_hook_active;
+  return out;
+}
+
+/**
+ * Read stdin to EOF, parse JSON, validate against
+ * {@link FileChangedHookInputSchema}, return the typed FileChangedHookInput.
+ * Throws HookInputError on malformed JSON or shape violation. A NORMAL
+ * FileChanged event (cwd + `hook_event_name: "FileChanged"`, no tool fields)
+ * validates cleanly — the Layer 7 observer is observe-only and fails OPEN, so
+ * the prior PreToolUse-shape requirement silently disabled it on every real
+ * event. This per-event parser is the fix.
+ */
+export async function readFileChangedHookInput(): Promise<FileChangedHookInput> {
+  const raw = await readStdinToEnd();
+  return parseFileChangedHookInput(raw);
+}
+
+/**
+ * Pure `FileChanged`-event parser exposed for unit testing — avoids the stdin
+ * coupling so tests can drive a string directly. Validates the real
+ * FileChanged-event shape (`cwd` + `hook_event_name: "FileChanged"`, optional
+ * session/file metadata), NOT the PreToolUse shape, so a FileChanged event with
+ * no `tool_name` / `tool_input` parses successfully instead of failing shape
+ * validation.
+ */
+export function parseFileChangedHookInput(raw: string): FileChangedHookInput {
+  if (raw.trim() === "") {
+    throw new HookInputError("Hook input is empty");
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (cause) {
+    throw new HookInputError(
+      `Hook input is not valid JSON: ${cause instanceof Error ? cause.message : String(cause)}`,
+    );
+  }
+  const result = FileChangedHookInputSchema.safeParse(parsed);
+  if (!result.success) {
+    throw new HookInputError(
+      `FileChanged hook input failed shape validation: ${result.error.message}`,
+    );
+  }
+  const { cwd, hook_event_name, session_id, transcript_path, file_path, event } = result.data;
+  const out: FileChangedHookInput = { cwd, hook_event_name };
+  if (session_id !== undefined) out.session_id = session_id;
+  if (transcript_path !== undefined) out.transcript_path = transcript_path;
+  if (file_path !== undefined) out.file_path = file_path;
+  if (event !== undefined) out.event = event;
   return out;
 }

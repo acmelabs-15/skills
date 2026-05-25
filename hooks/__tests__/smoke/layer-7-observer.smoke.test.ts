@@ -19,12 +19,20 @@ import { type FileChangedResponse, parseResponse, runHandler } from "./_helpers/
 
 const HANDLER = "git-state-observer";
 
-/** A FileChanged HookInput payload (carries tool fields like a PreToolUse event). */
+/**
+ * A real FileChanged hook payload (session metadata + `cwd` + changed-file
+ * descriptor — NO `tool_name` / `tool_input`). This is the shape the Claude Code
+ * runtime actually emits on a `FileChanged` event, so the smoke exercises the
+ * genuine `parseFileChangedHookInput` path end-to-end (the go-live proof).
+ */
 function fileChangedPayload(cwd: string) {
   return {
-    tool_name: "FileChanged",
-    tool_input: { file_path: ".git/HEAD" },
+    session_id: "smoke-layer-7",
+    transcript_path: "/tmp/transcript-layer-7.jsonl",
     cwd,
+    hook_event_name: "FileChanged",
+    file_path: ".git/HEAD",
+    event: "change",
   };
 }
 

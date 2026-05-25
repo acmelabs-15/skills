@@ -3243,3 +3243,18 @@ Executing Event-140's locked 12-phase close-out in exact order. Phase 1 next: FU
 
 - SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 141; resume for close-out)
 - No PLAN change (build.SPEC-008 already IN_PROGRESS, owning SESSION-2026-05-23_02; 47/47 unchanged)
+
+
+## Event 142 — Phase 1 DONE: FU-6b Layer-7 FileChanged input-shape fix (gates REQ-012)
+
+`bun-ts-engineer` (opus) fixed the Layer-7 silent-fail-open bug. Root cause (same class as FU-6/Stop): `git-state-observer.ts` parsed via PreToolUse-shaped `readHookInput()` (requires `tool_name`+`tool_input`); a real `FileChanged` event has no tool fields → threw → fail-OPEN → degraded to INFRA_ERROR_CONTEXT → Layer 7 never actually validated. The old smoke test masked it by feeding a fake tool-shaped payload.
+
+Authoritative real FileChanged payload confirmed via Claude Code docs (claude-code-guide, opus): `{ session_id, transcript_path, cwd, hook_event_name:"FileChanged", file_path, event:"change"|"add"|"unlink" }` — NO `tool_name`/`tool_input`. Fix mirrors FU-6 additively: added `FileChangedHookInput` + `FileChangedHookInputSchema` (permissive: requires only `cwd` + `hook_event_name` literal; rest optional + passthrough — observe-only fail-open means over-strict = silent re-disable) + `parseFileChangedHookInput` + `readFileChangedHookInput` to `parse-tool-input.ts`; observer switched to `readFileChangedHookInput`; regression tests prove real-shape parse (full + minimal) + reject cwd-less/empty/malformed; smoke `fileChangedPayload` reshaped to real shape (now the real parse path is the go-live proof).
+
+Orchestrator-verified against disk/git (not prose): 4 files changed as briefed; new parser funcs present; observer import switched (no `readHookInput` left); **`bun test` = 1240 pass / 0 fail (+6 from 1234 baseline)**; `bun run typecheck` (tsc --noEmit) exit 0. IDE `Cannot find name 'Bun'` diagnostics = pre-existing FU-4 (hooks/** outside tsconfig include), not a defect.
+
+### State Changes
+
+- FU-6b FIXED (Phase 1 of 12 close-out). Files: `hooks/lib/parse-tool-input.ts` (+FileChanged parser, additive), `hooks/scripts.disabled/git-state-observer.ts` (uses readFileChangedHookInput), `hooks/scripts.disabled/__tests__/git-state-observer.test.ts` (+6 regression), `hooks/__tests__/smoke/layer-7-observer.smoke.test.ts` (real-shape payload).
+- Suite 1234 → 1240 pass / 0 fail. REQ-012 acceptance prereq cleared (formal flip in Phase 3).
+- No PLAN/SPEC-root change this event (FU-6b is a follow-up fix, not a TASK transition).

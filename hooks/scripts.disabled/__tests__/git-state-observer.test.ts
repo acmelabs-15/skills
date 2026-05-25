@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
+import { HookInputError, parseFileChangedHookInput } from "../../lib/parse-tool-input.ts";
 import {
   type ValidationSummary,
   buildAdditionalContext,
@@ -156,6 +157,73 @@ async function initRepo(): Promise<{ repoRoot: string; parentDir: string }> {
   await runGit(repoRoot, ["commit", "-m", "seed", "--quiet"]);
   return { repoRoot, parentDir };
 }
+
+// REGRESSION (FU-6b): the Layer-7 FileChanged observer previously validated its
+// hook input against the PreToolUse schema (requiring `tool_name` +
+// `tool_input`). A real `FileChanged` event carries NEITHER — only session
+// metadata, `cwd`, and the changed-file descriptor. That made `readHookInput()`
+// throw, which the handler converted into the INFRA_ERROR_CONTEXT fail-open
+// degrade on EVERY real event — so the observer never actually validated
+// anything (a SILENT failure, masked by the smoke test feeding a fake
+// tool-shaped payload). The fix routes the handler through the per-event
+// `parseFileChangedHookInput`, which validates the actual FileChanged shape.
+describe("parseFileChangedHookInput — real FileChanged input shape (FU-6b regression)", () => {
+  test("accepts the full real FileChanged event (no tool_name/tool_input)", () => {
+    const raw = JSON.stringify({
+      session_id: "abc123",
+      transcript_path: "/Users/me/.../transcript.jsonl",
+      cwd: "/Users/my-project",
+      hook_event_name: "FileChanged",
+      file_path: "/Users/my-project/.envrc",
+      event: "change",
+    });
+    const input = parseFileChangedHookInput(raw);
+    expect(input.cwd).toBe("/Users/my-project");
+    expect(input.hook_event_name).toBe("FileChanged");
+    expect(input.session_id).toBe("abc123");
+    expect(input.transcript_path).toBe("/Users/me/.../transcript.jsonl");
+    expect(input.file_path).toBe("/Users/my-project/.envrc");
+    expect(input.event).toBe("change");
+  });
+
+  test("accepts a minimal FileChanged event (cwd + hook_event_name only)", () => {
+    const input = parseFileChangedHookInput(
+      JSON.stringify({ cwd: "/repo", hook_event_name: "FileChanged" }),
+    );
+    expect(input.cwd).toBe("/repo");
+    expect(input.session_id).toBeUndefined();
+    expect(input.transcript_path).toBeUndefined();
+    expect(input.file_path).toBeUndefined();
+    expect(input.event).toBeUndefined();
+  });
+
+  test("does NOT require tool_name/tool_input (the old PreToolUse-shape bug)", () => {
+    // A FileChanged event with no tool fields must NOT be rejected as a shape error.
+    expect(() =>
+      parseFileChangedHookInput(JSON.stringify({ cwd: "/repo", hook_event_name: "FileChanged" })),
+    ).not.toThrow();
+  });
+
+  test("throws HookInputError on a PreToolUse-shaped payload missing cwd", () => {
+    // The old fake payload shape (tool fields, no cwd) is a genuine infra error —
+    // `cwd` is the repo-root seed Layer 7 functionally needs.
+    expect(() =>
+      parseFileChangedHookInput(
+        JSON.stringify({ tool_name: "FileChanged", tool_input: { file_path: ".git/HEAD" } }),
+      ),
+    ).toThrow(HookInputError);
+  });
+
+  test("throws HookInputError on empty input", () => {
+    expect(() => parseFileChangedHookInput("")).toThrow(HookInputError);
+    expect(() => parseFileChangedHookInput("   \n")).toThrow(HookInputError);
+  });
+
+  test("throws HookInputError on malformed JSON", () => {
+    expect(() => parseFileChangedHookInput("{ not json")).toThrow(HookInputError);
+    expect(() => parseFileChangedHookInput("{ not json")).toThrow(/not valid JSON/);
+  });
+});
 
 describe("containedAbsolutePath", () => {
   const root = "/repo";
@@ -370,9 +438,8 @@ describe("buildResponse", () => {
     await runGit(repoRoot, ["commit", "-m", "task", "--quiet"]);
 
     const response = await buildResponse({
-      tool_name: "FileChanged",
-      tool_input: {},
       cwd: repoRoot,
+      hook_event_name: "FileChanged",
     });
     expect(response.hookSpecificOutput.hookEventName).toBe("FileChanged");
     expect(response.hookSpecificOutput.additionalContext).toContain("Post-commit state:");
@@ -389,9 +456,8 @@ describe("buildResponse", () => {
     const nonRepo = await mkdtemp(join(tmpdir(), "git-state-obs-norepo-"));
     try {
       const response = await buildResponse({
-        tool_name: "FileChanged",
-        tool_input: {},
         cwd: nonRepo,
+        hook_event_name: "FileChanged",
       });
       expect(response.hookSpecificOutput.additionalContext).toBe(
         "Post-commit state: validation infrastructure error; manual inspection required",

@@ -35,7 +35,7 @@ import { isAbsolute, relative, resolve } from "node:path";
 
 import { dispatchValidator } from "../lib/dispatch-validator.ts";
 import { type FileChangedObserve, emitResponse } from "../lib/format-hook-response.ts";
-import { type HookInput, readHookInput } from "../lib/parse-tool-input.ts";
+import { type FileChangedHookInput, readFileChangedHookInput } from "../lib/parse-tool-input.ts";
 
 /** Degraded-state context emitted when validation infrastructure throws. */
 const INFRA_ERROR_CONTEXT =
@@ -226,7 +226,7 @@ export async function observePostCommitState(seedCwd: string): Promise<string> {
  * `FileChangedObserve` — never blocks. On any infrastructure error the
  * response degrades to `INFRA_ERROR_CONTEXT` (fail-open observe-only).
  */
-export async function buildResponse(input: HookInput): Promise<FileChangedObserve> {
+export async function buildResponse(input: FileChangedHookInput): Promise<FileChangedObserve> {
   let additionalContext: string;
   try {
     additionalContext = await observePostCommitState(input.cwd);
@@ -248,7 +248,7 @@ async function main(): Promise<void> {
   // error context.
   let response: FileChangedObserve;
   try {
-    const input = await readHookInput();
+    const input = await readFileChangedHookInput();
     response = await buildResponse(input);
   } catch {
     response = {
