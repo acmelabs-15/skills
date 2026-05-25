@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - protocol-hardening
@@ -20,6 +20,7 @@ status_history:
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 117; 40/47, budget pause at 97% ctx; resume to complete SPEC-008 + docs test-report→qa rename)
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 118; resume, fresh context; rehydrated; complete SPEC-008)
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 140; 47/47 build complete, clean boundary; close-out → fresh context via /plan)
+- PAUSED → IN_PROGRESS 2026-05-24 (Event 141; resume for 12-phase close-out; rehydrated; suite 1234/0 confirmed)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -3230,3 +3231,15 @@ Pausing one last time at the 47/47 milestone (all build TASKs closed, tree clean
 ### State Changes
 - SESSION-2026-05-23_02: IN_PROGRESS → PAUSED (Event 140; 47/47 clean boundary; close-out deferred to fresh context)
 - Exhaustive 12-phase close-out resume protocol recorded (retrospective → skillbook → /end order resolved; both BEFORE /end)
+
+
+## Event 141 — RESUME (PAUSED → IN_PROGRESS): rehydrated; 12-phase close-out begins
+
+Resumed via `/skills:plan PLAN-001-skills-ecosystem` (continue mode). Per resume-paused-session rule: SAME note, Event numbering continued from 141 (no new note). TIER-1 rehydration done: active project `skills` + bootstrap; read PLAN-001 parts/dashboard + this session State + Events 134-140; git verified (branch `feat/plan-001-protocol-hardening-wave-2-scope`, HEAD `e65731b` = Event-140 pause commit, tree clean); re-read 8 cited auto-memories; **full suite re-run = 1234 pass / 0 fail** (composition 723 + hooks/skills the remainder); hooks confirmed DISABLED.
+
+Executing Event-140's locked 12-phase close-out in exact order. Phase 1 next: FU-6b Layer-7 `git-state-observer.ts` input-shape fix (gates REQ-012).
+
+### State Changes
+
+- SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 141; resume for close-out)
+- No PLAN change (build.SPEC-008 already IN_PROGRESS, owning SESSION-2026-05-23_02; 47/47 unchanged)
