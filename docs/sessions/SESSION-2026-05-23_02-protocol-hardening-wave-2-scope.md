@@ -3061,3 +3061,17 @@ Remaining 3 TASKs: **028** (drift-markers, cross-cutting/solo), **031** (HELD on
 - qa-TASK-024-SPEC-008 → DONE (qa_ref QA-088); TASK-024 status → DONE; SPEC-root Tasks `[x]` → 44/47
 - TASK-024 ADR Compliance amended (EPIC-only per D-B); REQ-006/DESIGN-003 confirmed no-amendment-needed
 - FU: ADR-005 Clarifications entry for D-B (+ adr-review) deferred to session-end
+
+
+## Event 134 — Wave: D-A SPEC-007 investigation + TASK-046 impl (terminal hook smoke + AC10 latency)
+
+impl-TASK-046 PENDING → IN_PROGRESS. Firing 2 opus agents in parallel (file-disjoint):
+
+- **brain:🧠-analyst (D-A)**: investigate SPEC-007 plan-001-migration's true state. NOTE: the 2 plan-001-migration tests that were the DEFERRED baseline now PASS (suite 1220/0 since the mermaid `end`→`end_part` fix) — so the deferral premise may no longer hold. Determine the correct status for REQ-012/TASK-013/TASK-014-SPEC-007 + SPEC-007's checkbox notation (deferred `[~]` vs done `[x]`), so TASK-031 can be applied correctly (read-only; no writes).
+- **bun-ts-engineer (TASK-046)**: build the per-layer hook smoke tests (10 tests, invoking the handlers at `hooks/scripts.disabled/` via `bun run` with simulated stdin) + the AC10 latency measurement (Layer-1 edit ~80-250ms, Layer-3 commit ~500ms-2s). Handlers are intentionally at `scripts.disabled/` (build isolation) — smoke tests invoke the files directly, no hook activation needed.
+
+### State Changes
+
+- impl-TASK-046-SPEC-008 → IN_PROGRESS (Event 134)
+- Dispatched: D-A SPEC-007 investigation (analyst) + TASK-046 impl (bun-ts-engineer), opus
+- Note: SPEC-007 plan-001-migration tests now PASS (1220/0) — deferral premise under investigation (affects TASK-031/D-A)
