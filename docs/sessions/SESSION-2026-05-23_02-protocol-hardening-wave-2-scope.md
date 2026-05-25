@@ -3104,3 +3104,16 @@ Remaining: **qa-031** (QA-090 in flight) + **TASK-028** (drift-markers, solo) �
 - SPEC-007 reconciled (rows/SC `[x]`, validated_by→relates_to, REQ-012 ACs); validateSpecDoneClaim(SPEC-007) ok
 - TASK-031 DoD amended (D-A); impl-031 → DONE; qa-031 → IN_PROGRESS; QA-090 dispatched
 - FU: stale "2 SPEC-007 deferred fails" baseline language in SPEC-008 root/PLAN-001 (now 0-fail) → reconcile at close
+
+
+## Event 137 — Final build wave: QA-090 (TASK-031 validation) + TASK-028 impl (drift markers)
+
+impl-TASK-028 PENDING → IN_PROGRESS. Firing the last 2 build items (opus, parallel, disjoint):
+
+- **QA-090 (brain:🧠-qa)**: validate TASK-031's amended DoD against the SPEC-007 reconciliation (rows/SC `[x]`, validated_by→relates_to, REQ-012 ACs, validateSpecDoneClaim ok). → closes TASK-031 (46/47).
+- **TASK-028 impl (bun-ts-engineer)**: add 5 `// drift-marker:` comments to existing composition tests (plan-001-migration, spec-claim-validator, schemas, validators + TASK-027's block) per RETRO-003 drift surfaces; behavior-preserving. → then QA → 47/47.
+
+### State Changes
+
+- impl-TASK-028-SPEC-008 → IN_PROGRESS (Event 137)
+- Dispatched: QA-090 (TASK-031) + TASK-028 impl (drift markers), opus
