@@ -3372,3 +3372,11 @@ User HARD-LOCKED the canonical reflection-capture process (2026-05-25) after I c
 - Brain `skills/`: SKILL-006 / SKILL-007 / SKILL-008 created (3 failure reflections, confidence-bucket template).
 - Session Events 149/150/151 converted to slim pointer form.
 - No PLAN / SPEC-root / code change this event. SPEC-008 parser-conformance FIX (user-chosen investigate+fix-now) remains pending — to scope next.
+
+## Event 153 — [reflect-capture] schema-as-single-source-of-truth → [[SKILL-009: schema-single-source-of-truth]]
+
+Reflection captured (canonical process; content in [[SKILL-009: schema-single-source-of-truth]]). Problem B's true root, per user reframe: schema-driven only works if the schema is the single source the parser/validator/template/renderer are *derived* from; structure is currently triplicated (schema = data shape, parser = heading↔field map, template = heading layout) so it drifts multi-directionally. "Notes deviated" is the symptom; "no single schema source" is the root. Confidence HIGH. Source [[Event 148]].
+
+## Event 154 — [reflect-capture] reflection-capture: never ask, capture in background → [[SKILL-010: reflection-capture-never-ask]]
+
+Reflection captured (content in [[SKILL-010: reflection-capture-never-ask]]). User directive (emphatic): NEVER ask whether to capture a reflection — the impulse to ask IS the trigger; capture in the background + continue seamlessly, like nothing happened. `feedback_inline_reflect_capture` updated with the rule. Confidence HIGH.
