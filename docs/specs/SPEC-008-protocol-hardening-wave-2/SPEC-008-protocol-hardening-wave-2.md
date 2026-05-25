@@ -99,7 +99,7 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [x] [[TASK-021-SPEC-008: Implement Adversarial-Claim Test Harness]]
 - [x] [[TASK-022-SPEC-008: Author Initial Adversarial Fixture Set for Five Existing Validators]]
 - [x] [[TASK-023-SPEC-008: Wire Adversarial-Claims Table-Driven Test Runner]]
-- [ ] [[TASK-024-SPEC-008: Author ADR ANALYSIS EPIC Adversarial Fixtures]]
+- [x] [[TASK-024-SPEC-008: Author ADR ANALYSIS EPIC Adversarial Fixtures]]
 - [x] [[TASK-025-SPEC-008: Integration Test Parse Mutate Validate Render]]
 - [x] [[TASK-026-SPEC-008: Mutation Backward Transition and Idempotency Tests]]
 - [x] [[TASK-027-SPEC-008: Session Mutation Duplicate Event Number Test]]

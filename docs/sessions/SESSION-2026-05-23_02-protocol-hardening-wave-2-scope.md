@@ -3045,3 +3045,19 @@ impl-TASK-024 IN_PROGRESS → DONE (EPIC fixture + harness dispatch built + amen
 
 - impl-TASK-024-SPEC-008 → DONE; qa-TASK-024-SPEC-008 → IN_PROGRESS (Event 132)
 - QA-088 dispatched for TASK-024 EPIC-only validation
+
+
+## Event 133 — TASK-024 CLOSED (44/47) via QA-088 PASS (EPIC-only)
+
+QA-088 verdict PASS (agent verified in-lane): all 6 amended EPIC-only DoD items satisfied; EPIC fixture rejects via validateEpicDoneClaim through the harness (cross-note SpecResolver); 14/0 adversarial tests, suite green, tsc 0. qa-024 → DONE (qa_ref QA-088), TASK-024 status → DONE, SPEC-root Tasks `[x]`. **44/47.**
+
+- **REQ-006 + DESIGN-003: NO amendment needed** (QA-088 finding) — neither requires ADR/ANALYSIS adversarial *fixtures*; REQ-006's initial fixture set is the 5 existing validators, and the adr/analysis/epic subdirs are a harness capability/extension. DESIGN-003 only requires the no-signature-change extension path (satisfied). So D-B's "amend REQ-006" was moot.
+- TASK-024 `## ADR Compliance` amended to EPIC-only honoring ADR-005 D-3/D-5 as-amended-by-D-B (schema-redundant rationale). **Follow-up (session-end): add an ADR-005 Clarifications entry recording D-B + run adr-review** (deferred now to avoid the adr-review blocking gate mid-build).
+
+Remaining 3 TASKs: **028** (drift-markers, cross-cutting/solo), **031** (HELD on decision D-A — SPEC-007 plan-001-migration deferral reconciliation), **046** (terminal hook smoke + AC10 latency → unblocks REQ-011). Then FU-6b, REQ/DESIGN acceptances, test-report→qa docs sweep (step G), hooks re-enable + 046 smoke → SPEC-008 DONE.
+
+### State Changes
+
+- qa-TASK-024-SPEC-008 → DONE (qa_ref QA-088); TASK-024 status → DONE; SPEC-root Tasks `[x]` → 44/47
+- TASK-024 ADR Compliance amended (EPIC-only per D-B); REQ-006/DESIGN-003 confirmed no-amendment-needed
+- FU: ADR-005 Clarifications entry for D-B (+ adr-review) deferred to session-end

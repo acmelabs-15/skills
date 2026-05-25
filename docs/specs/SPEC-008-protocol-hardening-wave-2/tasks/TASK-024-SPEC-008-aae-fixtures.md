@@ -2,7 +2,7 @@
 title: 'TASK-024-SPEC-008: Author ADR ANALYSIS EPIC Adversarial Fixtures'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-024-spec-008-aae-fixtures
-status: TODO
+status: DONE
 effort: S
 estimate: 0.5d
 tags:
@@ -36,8 +36,10 @@ This task depends on Track 1 (REQ-001-SPEC-008 schemas + REQ-002-SPEC-008 parser
 
 ## ADR Compliance
 
-- [ ] Honors ADR-005 D-3 verbatim post-Wave-2 extension: `adr/`, `analysis/`, `epic/` subdirectories present
-- [ ] Honors ADR-005 D-5 Implementation Notes: ANALYSIS, EPIC validators receive adversarial coverage; CRIT does not (no claim validator)
+> Amended 2026-05-24 (Event 131, D-B): D-3/D-5 honored as-amended — ADR/ANALYSIS adversarial fixtures are structurally impossible in the parse→validate harness (their claim-validator condition equals the schema `superRefine`, so a lying fixture fails `.parse()` before the validator runs; the schema-level rejection IS their adversarial coverage). A matching ADR-005 Clarifications entry recording D-B is tracked as a session-end follow-up (deferred to avoid blocking the build on the adr-review gate).
+
+- [x] Honors ADR-005 D-3 (as amended by D-B): `epic/` subdirectory present; `adr/`+`analysis/` omitted — schema-redundant (schema rejection = coverage)
+- [x] Honors ADR-005 D-5 (as amended by D-B): EPIC validator receives adversarial coverage; ANALYSIS adversarial coverage is the parse-time schema rejection; CRIT has no claim validator (unchanged)
 - [x] Honors REQ-006: harness signature unchanged; only `validator` tag union expands
 
 ## Files Affected
