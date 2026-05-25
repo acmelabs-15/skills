@@ -3453,6 +3453,18 @@ Event-159 close-out Step 3. (a) Stale test-count language reconciled: SPEC-root 
 - SPEC-008, ADR-005, ANALYSIS-004 each gained the bidirectional inverse relates_to edge back to this session note.
 - No PLAN change.
 
+## Event 163 — Step 4 DONE: RETRO-004 plan-capstone retrospective + bidirectional wiring + provenance gap fixes
+
+Event-159 close-out Step 4 (retrospective), re-scoped per user direction from a SPEC-008-only retro to a PLAN-001-WIDE plan-capstone. Deleted the prior narrow RETRO-004 draft; dispatched `brain:🧠-retrospective` (opus) which did its OWN discovery (read PLAN-001 + all 9 PLAN-001 sessions + their reflections — no pre-gathered material injected, per user direction), ran per-session + cross-plan analysis (Phase 0-4 debrief + execution trace, Patterns/Shifts, two Five Whys, Traceability Health, Action Classification + SMART, atomicity-scored learnings), and authored RETRO-004: PLAN-001 Skills Ecosystem Retrospective (commit a6635a3). It surfaced gaps no per-session retro caught: PLAN-001 named only 2/9 sessions and _21_01 (the richest build session, 48 events) owned 0 parts; SESSION-2026-05-20_04 frontmatter malformed.
+
+Then (per user "wire inverses + fix gaps, then /end"): wired RETRO-004's 19 bidirectional inverses across 18 notes (9 sessions + RETRO-001/002/003 + ADR-005 + SPEC-008 + SKILL-006/007/008/009 as relates_to; ANALYSIS-003 as inspires) plus PLAN-001 contains. Closed the provenance gap — PLAN-001 contains-list completed 2/9 → all 9 sessions + RETRO-004. Repaired SESSION-2026-05-20_04 frontmatter (type note→session; added status DONE + tags). Hooks confirmed STAY disabled (user asked) — enabling now would fail-close the Stop backstop on the currently-unparseable REQ/DESIGN notes; go-live stays deferred to the post-merge parser-conformance session. Commit 6c42e42.
+
+### State Changes
+
+- Created RETRO-004: PLAN-001 Skills Ecosystem Retrospective (commit a6635a3) — relation captured in this note's Relations.
+- 18 notes + PLAN-001 gained the RETRO-004 inverse relation; PLAN-001 contains-list completed 2/9 → 9/9 + RETRO-004; SESSION-2026-05-20_04 frontmatter repaired (commit 6c42e42).
+- No SPEC/PLAN status change (PLAN-001 stays IN_PROGRESS; SPEC-008 root stays ACCEPTED; hooks stay disabled).
+
 
 ## Observations
 
