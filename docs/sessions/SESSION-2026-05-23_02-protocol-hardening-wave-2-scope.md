@@ -2945,3 +2945,22 @@ User re-flagged "badly formatted deps graphs" after the wave-graph reformat — 
 - FIX `shared/composition/src/renderers/mermaid.ts`: `nodeId` sanitizes Mermaid reserved-word part ids (+ regression test in `mermaid-renderer.test.ts`) — 6/6 pass, tsc 0
 - PLAN cross-part graph: `end` → `end_part` node id / edge / class line (now `valid: true`)
 - Root-caused a render-layer bug (ADR-003 D-7 renderer) surfaced by dogfooding the PLAN graph
+
+
+## Event 127 — STOP-THE-LINE: PLAN mutation scripts strip custom sections (Risks LOST + wave graph displaced); recovered Risks; wave NOT fired
+
+Investigating whether firing the next wave keeps the deps graphs correct (user gate), discovered a serious bug in the dogfooded SPEC-008/SPEC-007 render layer:
+
+- `applyPlanMutation` (`shared/composition/src/mutations/plan-mutations.ts:143`) does `return renderPlanNote(mutated)` — EVERY transition mutation re-renders the WHOLE PLAN from the parsed `PlanNote` model. `renderPlanNote` emits only MODELED sections (Scope, Objectives, Dashboard, Cross-Part graph, Phase Progression, Tasks, Pending Decisions, Editor Mirror IDs, Blockers, Observations, Relations) and **silently drops custom/unmodeled sections**.
+- Casualties: `## Risks` (was line 263 at session start; **silently lost** at the Event-123 transitions) + the custom `## SPEC-008 Build Marathon` task-level wave graph (stripped each transition; my `replace_section` re-appended it each time → it now sits AFTER `## Relations`, violating the final-two-sections invariant).
+- Confirmed via non-destructive re-render of a PLAN copy: output had 0 wave-graph, 0 Risks, but cross-part graph correctly `end_part` (renderer nodeId fix holds).
+
+**Recovered** `## Risks` from the session-start snapshot (re-inserted before `## Phase Progression`). It survives only while no script-mutation runs.
+
+**Implication**: firing the planned wave with the transition SCRIPTS would re-strip the wave graph (+ re-strip Risks) → NOT graph-safe. Wave HELD pending a decision: (A) fix `renderPlanNote` to preserve custom/unknown sections (durable; fixes the dogfooded tool), or (B) use surgical `edit_note` transitions (no re-render) for the remaining build. Cross-part graph is already durably fixed (renderer reserved-word fix, Event 126).
+
+### State Changes
+
+- RECOVERED `## Risks` section to PLAN-001 (data-loss undo; was stripped at Event 123)
+- DISCOVERED renderPlanNote drops custom sections → wave HELD (not graph-safe with scripts); decision pending
+- Wave graph currently mis-placed after Relations (consequence of strip+reappend) — to fix with the chosen approach

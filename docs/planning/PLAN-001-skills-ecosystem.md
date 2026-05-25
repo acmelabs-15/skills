@@ -131,6 +131,30 @@ graph TD
   class protocol_hardening,build_SPEC_008 inprogress
 ```
 
+## Risks
+
+Build-phase pre-mortem (SESSION-2026-05-23_02 Event 35; brain:🧠-analyst prospective-hindsight against the SPEC-008 subtree). Top 3 critical build risks + mitigations baked into dispatch briefs / sequencing:
+
+- **R1 — `_shared`→`shared` rename cascade breaks mid-build (TASK-029)**: relative imports inside the composition library survive, but config files (root `tsconfig.json` include/exclude, `bunfig.toml`, `biome.json`, workspace entries) and ~549 doc references may be missed; failure then surfaces 5-10 TASKs later when new code imports `shared/composition` under stale config. *Mitigation*: TASK-029 brief includes an explicit config-file checklist; mandatory post-rename `bun tsc --noEmit` (root) + `biome check` (full repo) gate; QA creates + verifies + deletes a canary import; any config miss is a FAIL, not a warning.
+- **R2 — hook handlers untestable without live Claude Code runtime (Track 5, TASK-037..046)**: unit tests pass on mocked stdin but matchers (esp. Layer 2 MCP-tool matcher) may silently fail to fire in production → ships unenforced "enforcement" (the exact Wave 1 failure SPEC-008 exists to close). *Mitigation*: TASK-046 requires a per-layer manual integration proof (`echo '<HookInput>' | bun <handler>`); document + cite the exact MCP matcher string; prefer BLOCKED over untested-DONE if the matcher format is unverifiable; TASK-046 runs LAST against Track 3 adversarial fixtures.
+- **R3 — cross-track barrel-index / `common.ts` collisions**: parallel Track 1 TASKs writing the same `schemas|parsers|validators/index.ts` barrel or `common.ts` → merge conflict or silent last-writer-wins drop. *Mitigation*: the rigid per-TASK cycle (one TASK at a time, sequential) already prevents this; additionally do NOT parallelize same-barrel TASKs; `common.ts` single-owner (first schema TASK) with explicit `depends_on` edges from consumers.
+
+### Known Deferred Test Baseline (D-1 LOCKED 2026-05-24 SESSION-2026-05-23_02 Event 65)
+
+The canonical test-suite state across the SPEC-008 build marathon is **705 pass / 2 fail / 707 total** (the suite has since grown to 1216/2 as Wave-2 code landed; the 2 fails are unchanged). The 2 failures live in `tests/skills/plan/plan-001-migration.test.ts` and are pre-existing DEFERRED SPEC-007 work — they pre-date SPEC-008 and belong to the SPEC-007 plan/session render implementation work that was deferred at session-end of SESSION-2026-05-20_06.
+
+**Operational implication for QA briefs**: QA dispatch briefs MUST instruct agents to treat these 2 `plan-001-migration.test.ts` failures as DEFERRED SPEC-007 known-baseline. Any NEW failure outside this specific test file is a true regression and FAILS the TASK.
+
+**No SPEC-008 scope added**: the 2 fails remain SPEC-007 scope. SPEC-008 root Acceptance + Success Criteria language already accommodates this baseline (no totality AC tied to "0 failing tests").
+
+### Post-Marathon Follow-Up Backlog (D-2 LOCKED 2026-05-24 SESSION-2026-05-23_02 Event 65)
+
+Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon cleanup.
+
+- **FU-1: Frontmatter `validates:` key in QA-032/033/034-SPEC-003** — 3 notes carry `validates:` as a YAML frontmatter key. Outside SPEC-008 DoD. **Disposition**: /defrag sweep post-marathon (or a small targeted Brain MCP edit_note pass).
+- **FU-4: `hooks/**` scope gap in root tsconfig + biome.json** — `hooks/**` not in root `tsconfig.json` `include` or `biome.json` `files.include`. Surfaces LSP false-positives but doesn't block builds/tests. **Disposition**: small targeted config PR post-marathon; CI does not currently gate the hook layer.
+- **FU-3: Session note `## Observations`/`## Relations` placement drift** — both sections sit mid-note instead of at the tail; violates CONVENTIONS Section 4.0. **Disposition**: session-end cleanup before session DONE flip.
+
 ## Phase Progression
 
 ### research
