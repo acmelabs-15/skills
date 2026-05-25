@@ -2292,14 +2292,14 @@ graph TD
 
 **DoD**:
 
-- [ ] All TASKs from SPEC-008 implemented per rigid per-TASK build+QA cycle (steps a-u, no exceptions)
-- [ ] Adversarial + integration + regression tests pass (per SPEC-008 REQ scope)
-- [ ] Per-task QA gate PASS via composition library claim validators
-- [ ] Final spec-level coverage matrix PASS
-- [ ] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint
-- [ ] SPEC-008 status flipped IN_PROGRESS → DONE post-build
-- [ ] protocol-hardening part flips IN_PROGRESS → DONE (Wave 2 closes the umbrella)
-- [ ] PLAN-001 frontmatter status flips IN_PROGRESS → DONE (Wave 2 closes the PLAN)
+- [x] All TASKs from SPEC-008 implemented per rigid per-TASK build+QA cycle (steps a-u, no exceptions) — 47/47 TASKs DONE + QA'd
+- [x] Adversarial + integration + regression tests pass (per SPEC-008 REQ scope) — suite 1252/0
+- [x] Per-task QA gate PASS via composition library claim validators — 47 QA notes; validateTaskDoneClaim
+- [x] Final spec-level coverage matrix PASS
+- [ ] 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint — flipped on /end Step 2 /review PASS (this session's multi-axis gate)
+- [~] SPEC-008 status flipped IN_PROGRESS → DONE post-build — DEFERRED: stays ACCEPTED pending post-merge parser-conformance fix (validateSpecDoneClaim can't pass while AC #1/#2 held); bridge note RETRO-004
+- [~] protocol-hardening part flips IN_PROGRESS → DONE — DEFERRED: umbrella stays IN_PROGRESS until parser-conformance + script-wiring + hooks-go-live land post-merge
+- [~] PLAN-001 frontmatter status flips IN_PROGRESS → DONE — DEFERRED: PLAN stays IN_PROGRESS until protocol-hardening closes post-merge
 
 **Build Workflow Items**:
 
