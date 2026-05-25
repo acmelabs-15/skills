@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: PAUSED
+status: IN_PROGRESS
 tags:
 - session
 - protocol-hardening
@@ -18,6 +18,7 @@ status_history:
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 91; Wave 1b Batches A+B closed, 27/47 — budget pause)
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 92; resume + rehydration; Wave 1b Batch C next)
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 117; 40/47, budget pause at 97% ctx; resume to complete SPEC-008 + docs test-report→qa rename)
+- PAUSED → IN_PROGRESS 2026-05-24 (Event 118; resume, fresh context; rehydrated; complete SPEC-008)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -2805,3 +2806,15 @@ J. Address the open FUs: FU-4 (add `hooks/**` to tsconfig+biome include so CI ga
 
 - SESSION-2026-05-23_02: IN_PROGRESS → PAUSED (Event 117; budget, 40/47, clean boundary)
 - Resume protocol recorded; State block fully refreshed for fresh-context rehydration
+
+
+## Event 118 — RESUME (fresh context): rehydrated; session PAUSED → IN_PROGRESS
+
+`/skills:plan PLAN-001-skills-ecosystem` continue mode, fresh window. Resumed [[SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope]] per the resume-paused-session-not-new rule (NO new note). Rehydration complete per the Event-117 protocol: active project `skills` set + bootstrap_context; read `## State` block + Events 103-117; enumerated PLAN-001 build.SPEC-008 workflow items (94 items: 80 DONE, 1 IN_PROGRESS [impl-TASK-044], 13 PENDING → **40/47 TASKs CLOSED**); git verified on `feat/plan-001-protocol-hardening-wave-2-scope` @ `20131c9` (the Event-117 commit; State block cited `6838a87` = Event 116, expected since 117 committed after), working tree CLEAN; hooks confirmed DISABLED (`hooks/hooks.json.disabled` + `hooks/scripts.disabled` — enforcement layer will not self-block per enforcement-layer-build-isolation); re-read TIER-1 memories (per-task-build-qa-cycle, qa-one-agent-per-task-parallel, agents-no-autonomous-git-or-plan-writes, spec-root-and-plan-graph-sync, complete-rename-no-backcompat, enforcement-layer-build-isolation).
+
+Standing directive (Event 117): finish EVERYTHING to complete SPEC-008 + complete the test-report→qa rename across the ~37 docs/** notes. Remaining 7 TASKs: 044 (impl+FU-6 done → QA+close), 024, 028, 031, 035, 036, 046 (terminal). Next action: **step A — QA the layered-severity refactor** (dispatch-validator + lenient-claim-extract + L1-L6 verdict mapping) vs the amended REQ-011 AC.
+
+### State Changes
+
+- SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 118; resume, fresh context)
+- No PLAN state change this Event (rehydration only); build.SPEC-008 remains IN_PROGRESS at 40/47
