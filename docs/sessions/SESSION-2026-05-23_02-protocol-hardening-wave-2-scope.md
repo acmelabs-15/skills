@@ -2921,3 +2921,12 @@ Processed the 5-wide wave; verified every return against git/disk (NOT agent pro
 - TASK-031 work reverted; impl-031 held IN_PROGRESS (decision D-A)
 - TASK-024 blocked; impl-024 held IN_PROGRESS (decision D-B)
 - PLAN wave graph synced (T044✅, 024/031/035/036⚡); SPEC-008 root Tasks rollup updated
+
+
+## Event 125 — Wave-graph reformat (user-flagged "badly formatted")
+
+Mermaid validator confirmed the graph was syntactically VALID (`valid: true`) — the "bad formatting" was visual/canonical drift I introduced: subgraph titles bloated with status-count detail + node labels cluttered with parens/brackets + missing the canonical `themeCSS`. Reformatted per `~/KNOWLEDGE-GRAPH-STRUCTURES.md` Section 4.12 palette: concise subgraph titles (`Wave N · Name — counts`), canonical `themeCSS` (monospace-uppercase cluster labels + rounded edges), `<b>`-bold node names + canonical grey annotation spans, tidied the 4 node labels I had cluttered. Node/edge/class structure + statuses unchanged (41/47). No content/state change — pure presentation.
+
+### State Changes
+
+- PLAN SPEC-008 wave graph: presentation reformatted to canonical Mermaid palette (Section 4.12); statuses unchanged

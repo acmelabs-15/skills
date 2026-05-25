@@ -3420,121 +3420,107 @@ graph TD
 
 ## SPEC-008 Build Marathon — Task-Level Wave Graph
 
-Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part. Updated 2026-05-24 SESSION-2026-05-23_02 Event 124 (batch close — TASK-044 CLOSED via QA-085 PASS → **41/47** fully closed; impl-035/036 DONE [QA pending]; TASK-031 reverted + TASK-024 blocked → 2 pending user decisions; REQ-011 HELD DRAFT pending AC10).
+Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part. Updated 2026-05-24 SESSION-2026-05-23_02 Event 125 (graph reformat — concise subgraph titles + canonical `themeCSS`; status as of 41/47, TASK-044 CLOSED, 035/036 impl-DONE/QA-pending, 024/031 held for decisions, REQ-011 HELD).
 
-**Status legend**: ✅ DONE (impl + QA both PASS) · ⚡ IN_PROGRESS (impl or qa in flight) · ⏸ PENDING (workflow item seeded, awaiting batch).
-
-**Wave structure** (per Event 64 resume protocol):
-
-- **Wave 0**: Zero-dependency foundation (9 TASKs; all DONE)
-- **Wave 1a**: Schemas + parsers (8 TASKs; all DONE)
-- **Wave 1b**: Per-skill scripts (10 TASKs; all DONE)
-- **Wave 1c**: Cleanup + harness extensions (8 TASKs; 5 DONE, 035/036 impl-DONE/QA-pending, 028/031 pending)
-- **Wave 2/3**: Validators (3 TASKs; all DONE)
-- **Wave 4**: Hook handlers + integration fixtures (7 TASKs; 6 DONE, 024 blocked on spec-gap decision)
-- **Wave 5**: Terminal smoke tests (1 TASK; PENDING)
+**Status legend**: ✅ DONE (impl + QA both PASS) · ⚡ IN_PROGRESS (impl or qa in flight) · ⏸ PENDING. Detailed per-task status lives in the PLAN build-workflow items + the SPEC-008 root rollup; this graph shows shape + status colour only.
 
 ```mermaid
-%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':10,'rankSpacing':45,'padding':10,'diagramPadding':14,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'11px','clusterBkg':'#f9fafb','clusterBorder':'#e5e7eb'}}}%%
+%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':10,'rankSpacing':45,'padding':10,'diagramPadding':14,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'11px','clusterBkg':'#f9fafb','clusterBorder':'#e5e7eb'},'themeCSS':'.edgePath path, .flowchart-link { stroke-linejoin: round !important; stroke-linecap: round !important; } .cluster-label .nodeLabel { font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important; font-size: 11px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; color: #6b7280 !important; }'}}%%
 graph TD
 
   classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:10,ry:10
   classDef inprogress fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12,rx:10,ry:10
   classDef pending fill:#fafafa,stroke:#d1d5db,stroke-width:1px,color:#6b7280,stroke-dasharray:3 3,rx:10,ry:10
 
-  subgraph W0 ["Wave 0 — Zero-Dependency Foundation (9/9 DONE)"]
+  subgraph W0 ["Wave 0 · Foundation — 9/9"]
     direction LR
-    T021["✅ TASK-021<br/><span style='font-size:9px'>Adversarial harness</span>"]
-    T025["✅ TASK-025<br/><span style='font-size:9px'>Integration tests</span>"]
-    T026["✅ TASK-026<br/><span style='font-size:9px'>Mutation invariants</span>"]
-    T029["✅ TASK-029<br/><span style='font-size:9px'>_shared→shared rename</span>"]
-    T033["✅ TASK-033<br/><span style='font-size:9px'>STRUCTURES [~] notation</span>"]
-    T034["✅ TASK-034<br/><span style='font-size:9px'>Brain note hygiene</span>"]
-    T037["✅ TASK-037<br/><span style='font-size:9px'>hooks.json manifest</span>"]
-    T039["✅ TASK-039<br/><span style='font-size:9px'>Hook lib utilities</span>"]
-    T040["✅ TASK-040<br/><span style='font-size:9px'>Git helpers</span>"]
+    T021["✅ <b>TASK-021</b><br/><span style='color:#6b7280;font-size:9px'>Adversarial harness</span>"]
+    T025["✅ <b>TASK-025</b><br/><span style='color:#6b7280;font-size:9px'>Integration tests</span>"]
+    T026["✅ <b>TASK-026</b><br/><span style='color:#6b7280;font-size:9px'>Mutation invariants</span>"]
+    T029["✅ <b>TASK-029</b><br/><span style='color:#6b7280;font-size:9px'>shared rename</span>"]
+    T033["✅ <b>TASK-033</b><br/><span style='color:#6b7280;font-size:9px'>Deferred notation</span>"]
+    T034["✅ <b>TASK-034</b><br/><span style='color:#6b7280;font-size:9px'>Brain note hygiene</span>"]
+    T037["✅ <b>TASK-037</b><br/><span style='color:#6b7280;font-size:9px'>hooks.json manifest</span>"]
+    T039["✅ <b>TASK-039</b><br/><span style='color:#6b7280;font-size:9px'>Hook lib utilities</span>"]
+    T040["✅ <b>TASK-040</b><br/><span style='color:#6b7280;font-size:9px'>Git helpers</span>"]
   end
 
-  subgraph W1a ["Wave 1a — Schemas + Parsers (8/8 DONE ✅ — REQ-002 ACCEPTED)"]
+  subgraph W1a ["Wave 1a · Schemas + Parsers — 8/8"]
     direction LR
-    T001["✅ TASK-001<br/><span style='font-size:9px'>ADR schema</span>"]
-    T002["✅ TASK-002<br/><span style='font-size:9px'>ANALYSIS schema</span>"]
-    T005["✅ TASK-005<br/><span style='font-size:9px'>ADR parser</span>"]
-    T003["✅ TASK-003<br/><span style='font-size:9px'>EPIC schema</span>"]
-    T010["✅ TASK-010<br/><span style='font-size:9px'>PLAN done-claim ext</span>"]
-    T030["✅ TASK-030<br/><span style='font-size:9px'>Delete dispatcher.ts</span>"]
-    T004["✅ TASK-004<br/><span style='font-size:9px'>CRIT schema</span>"]
-    T006["✅ TASK-006<br/><span style='font-size:9px'>ANALYSIS+EPIC+CRIT parsers</span>"]
+    T001["✅ <b>TASK-001</b><br/><span style='color:#6b7280;font-size:9px'>ADR schema</span>"]
+    T002["✅ <b>TASK-002</b><br/><span style='color:#6b7280;font-size:9px'>ANALYSIS schema</span>"]
+    T005["✅ <b>TASK-005</b><br/><span style='color:#6b7280;font-size:9px'>ADR parser</span>"]
+    T003["✅ <b>TASK-003</b><br/><span style='color:#6b7280;font-size:9px'>EPIC schema</span>"]
+    T010["✅ <b>TASK-010</b><br/><span style='color:#6b7280;font-size:9px'>PLAN done-claim ext</span>"]
+    T030["✅ <b>TASK-030</b><br/><span style='color:#6b7280;font-size:9px'>Delete dispatcher</span>"]
+    T004["✅ <b>TASK-004</b><br/><span style='color:#6b7280;font-size:9px'>CRIT schema</span>"]
+    T006["✅ <b>TASK-006</b><br/><span style='color:#6b7280;font-size:9px'>ANALYSIS EPIC CRIT parsers</span>"]
   end
 
-  subgraph W1b ["Wave 1b — Per-Skill Scripts (10/10 DONE ✅ — REQ-005 ACCEPTED; REQ-004 needs AC-9 prefix-collision test)"]
+  subgraph W1b ["Wave 1b · Per-Skill Scripts — 10/10"]
     direction LR
-    T011["✅ TASK-011<br/><span style='font-size:9px'>validate-task-done</span>"]
-    T012["✅ TASK-012<br/><span style='font-size:9px'>transition-impl-item</span>"]
-    T013["✅ TASK-013<br/><span style='font-size:9px'>transition-qa-item</span>"]
-    T014["✅ TASK-014<br/><span style='font-size:9px'>validate-spec-done + pre-flight</span>"]
-    T015["✅ TASK-015<br/><span style='font-size:9px'>spec schema validators</span>"]
-    T016["✅ TASK-016<br/><span style='font-size:9px'>lock-decision-mutation</span>"]
-    T017["✅ TASK-017<br/><span style='font-size:9px'>render-plan-note + set-part-done</span>"]
-    T018["✅ TASK-018<br/><span style='font-size:9px'>dispatch-implementer + qa</span>"]
-    T019["✅ TASK-019<br/><span style='font-size:9px'>dispatch-architect + critic</span>"]
-    T020["✅ TASK-020<br/><span style='font-size:9px'>dispatch-analyst + reviewer</span>"]
+    T011["✅ <b>TASK-011</b><br/><span style='color:#6b7280;font-size:9px'>validate-task-done</span>"]
+    T012["✅ <b>TASK-012</b><br/><span style='color:#6b7280;font-size:9px'>transition-impl-item</span>"]
+    T013["✅ <b>TASK-013</b><br/><span style='color:#6b7280;font-size:9px'>transition-qa-item</span>"]
+    T014["✅ <b>TASK-014</b><br/><span style='color:#6b7280;font-size:9px'>validate-spec-done</span>"]
+    T015["✅ <b>TASK-015</b><br/><span style='color:#6b7280;font-size:9px'>spec schema validators</span>"]
+    T016["✅ <b>TASK-016</b><br/><span style='color:#6b7280;font-size:9px'>lock-decision-mutation</span>"]
+    T017["✅ <b>TASK-017</b><br/><span style='color:#6b7280;font-size:9px'>render-plan-note</span>"]
+    T018["✅ <b>TASK-018</b><br/><span style='color:#6b7280;font-size:9px'>dispatch implementer + qa</span>"]
+    T019["✅ <b>TASK-019</b><br/><span style='color:#6b7280;font-size:9px'>dispatch architect + critic</span>"]
+    T020["✅ <b>TASK-020</b><br/><span style='color:#6b7280;font-size:9px'>dispatch analyst + reviewer</span>"]
   end
 
-  subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (5 ✅ 022/023/027/032/047 · 2 ⚡ 035/036 impl-DONE/QA-pending · 2 ⏸ 028/031)"]
+  subgraph W1c ["Wave 1c · Cleanup + Harness — 5 done · 2 in-flight · 2 pending"]
     direction LR
-    T047["✅ TASK-047<br/><span style='font-size:9px'>CRIT H1-drift (REQ-001 AC-5 gap)</span>"]
-    T022["✅ TASK-022"]
-    T023["✅ TASK-023"]
-    T027["✅ TASK-027<br/><span style='font-size:9px'>dup-event test</span>"]
-    T028["⏸ TASK-028"]
-    T031["⚡ TASK-031<br/><span style='font-size:9px'>SPEC-007 [~] (reverted; stale-spec decision)</span>"]
-    T032["✅ TASK-032"]
-    T035["⚡ TASK-035<br/><span style='font-size:9px'>SPEC-002/003 rollups (impl DONE)</span>"]
-    T036["⚡ TASK-036<br/><span style='font-size:9px'>REQ-009 9→11 (impl DONE)</span>"]
+    T047["✅ <b>TASK-047</b><br/><span style='color:#6b7280;font-size:9px'>CRIT H1-drift</span>"]
+    T022["✅ <b>TASK-022</b>"]
+    T023["✅ <b>TASK-023</b>"]
+    T027["✅ <b>TASK-027</b><br/><span style='color:#6b7280;font-size:9px'>dup-event test</span>"]
+    T028["⏸ <b>TASK-028</b>"]
+    T031["⚡ <b>TASK-031</b><br/><span style='color:#6b7280;font-size:9px'>SPEC-007 deferred-notation</span>"]
+    T032["✅ <b>TASK-032</b>"]
+    T035["⚡ <b>TASK-035</b><br/><span style='color:#6b7280;font-size:9px'>SPEC-002 003 rollups</span>"]
+    T036["⚡ <b>TASK-036</b><br/><span style='color:#6b7280;font-size:9px'>REQ-009 count fix</span>"]
   end
 
-  subgraph W23 ["Wave 2/3 — Validators (3/3 DONE ✅; REQ-003 + DESIGN-001 ACCEPTED)"]
+  subgraph W23 ["Wave 2/3 · Validators — 3/3"]
     direction LR
-    T007["✅ TASK-007<br/><span style='font-size:9px'>validateAdrAcceptedClaim</span>"]
-    T008["✅ TASK-008<br/><span style='font-size:9px'>validateAnalysisAcceptedClaim</span>"]
-    T009["✅ TASK-009<br/><span style='font-size:9px'>validateEpicDoneClaim (cross-note)</span>"]
+    T007["✅ <b>TASK-007</b><br/><span style='color:#6b7280;font-size:9px'>validateAdrAcceptedClaim</span>"]
+    T008["✅ <b>TASK-008</b><br/><span style='color:#6b7280;font-size:9px'>validateAnalysisAcceptedClaim</span>"]
+    T009["✅ <b>TASK-009</b><br/><span style='color:#6b7280;font-size:9px'>validateEpicDoneClaim</span>"]
   end
 
-  subgraph W4 ["Wave 4 — Hook Handlers + Final Fixtures (6 ✅ 038/041/042/043/044/045 · 1 ⚡ 024 blocked-spec-gap)"]
+  subgraph W4 ["Wave 4 · Hook Handlers — 6 done · 1 in-flight"]
     direction LR
-    T024["⚡ TASK-024<br/><span style='font-size:9px'>AAE fixtures (BLOCKED: parse-vs-validate gap)</span>"]
-    T038["✅ TASK-038<br/><span style='font-size:9px'>dispatch-validator</span>"]
-    T041["✅ TASK-041<br/><span style='font-size:9px'>L1 PreToolUse Edit</span>"]
-    T042["✅ TASK-042<br/><span style='font-size:9px'>L2 PreToolUse MCP</span>"]
-    T043["✅ TASK-043<br/><span style='font-size:9px'>L3-5 commit/push/PR</span>"]
-    T044["✅ TASK-044<br/><span style='font-size:9px'>L6 stop-backstop</span>"]
-    T045["✅ TASK-045<br/><span style='font-size:9px'>L7 git-state-observer</span>"]
+    T024["⚡ <b>TASK-024</b><br/><span style='color:#6b7280;font-size:9px'>AAE fixtures — blocked</span>"]
+    T038["✅ <b>TASK-038</b><br/><span style='color:#6b7280;font-size:9px'>dispatch-validator</span>"]
+    T041["✅ <b>TASK-041</b><br/><span style='color:#6b7280;font-size:9px'>L1 PreToolUse Edit</span>"]
+    T042["✅ <b>TASK-042</b><br/><span style='color:#6b7280;font-size:9px'>L2 PreToolUse MCP</span>"]
+    T043["✅ <b>TASK-043</b><br/><span style='color:#6b7280;font-size:9px'>L3-5 commit push PR</span>"]
+    T044["✅ <b>TASK-044</b><br/><span style='color:#6b7280;font-size:9px'>L6 stop-backstop</span>"]
+    T045["✅ <b>TASK-045</b><br/><span style='color:#6b7280;font-size:9px'>L7 git-state-observer</span>"]
   end
 
-  subgraph W5 ["Wave 5 — Terminal Smoke Tests (1 PENDING)"]
+  subgraph W5 ["Wave 5 · Smoke Tests — 1 pending"]
     direction LR
-    T046["⏸ TASK-046<br/><span style='font-size:9px'>Per-layer integration smoke + AC10 latency</span>"]
+    T046["⏸ <b>TASK-046</b><br/><span style='color:#6b7280;font-size:9px'>Per-layer smoke + AC10 latency</span>"]
   end
 
-  %% Cross-wave gating (critical-path edges only)
   T029 --> T001
   T029 --> T030
   T021 --> T022
   T021 --> T023
   T021 --> T024
-
   T001 --> T007
   T002 --> T008
   T003 --> T009
-
   T037 --> T038
   T037 --> T041
   T037 --> T042
   T037 --> T043
   T037 --> T044
   T037 --> T045
-
   T024 --> T046
   T009 --> T046
   T045 --> T046
