@@ -37,7 +37,7 @@ shared/composition/src/
     requirement-note.ts           # EXISTING
     design-note.ts                # EXISTING
     task-note.ts                  # EXISTING
-    test-report-note.ts           # EXISTING
+    qa-note.ts                    # EXISTING
     adr-note.ts                   # NEW (REQ-001) — AdrNoteSchema
     analysis-note.ts              # NEW (REQ-001) — AnalysisNoteSchema (rejects ACCEPTED + Open Questions)
     epic-note.ts                  # NEW (REQ-001) — EpicNoteSchema
@@ -57,7 +57,7 @@ shared/composition/src/
     spec-claim-validator.ts       # EXISTING
     requirement-claim-validator.ts # EXISTING
     design-claim-validator.ts     # EXISTING
-    test-report-claim-validator.ts # EXISTING
+    qa-claim-validator.ts         # EXISTING
     adr-claim-validator.ts        # NEW (REQ-003) — validateAdrAcceptedClaim
     analysis-claim-validator.ts   # NEW (REQ-003) — validateAnalysisAcceptedClaim
     epic-claim-validator.ts       # NEW (REQ-003) — validateEpicDoneClaim (resolveSpec)
@@ -153,6 +153,7 @@ No circular dependencies are possible because each layer depends only on lower l
 Names use ASCII letters and hyphens; no underscores in filenames, no abbreviations beyond the canonical entity prefixes (ADR, CRIT). This matches the Wave 1 convention.
 
 ## Compliance
+
 - [x] Every NEW file lives at the path documented in the Module Structure section (no deviations to wave-specific subdirectories)
 - [x] Every NEW schema constant is named `<Type>NoteSchema`; every type alias is `<Type>Note`
 - [x] Every NEW parser function is named `parse<Type>Note` and is exported from `parsers/index.ts`

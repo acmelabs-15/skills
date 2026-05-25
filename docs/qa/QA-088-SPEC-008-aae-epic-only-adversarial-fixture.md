@@ -74,7 +74,7 @@ All 6 amended EPIC-only DoD items satisfied with evidence.
 
 Neither REQ-006 Acceptance Criteria nor DESIGN-003 Compliance REQUIRES adversarial fixtures for ADR or ANALYSIS types. No amendment to REQ-006 or DESIGN-003 is needed per D-B.
 
-- **REQ-006 EARS + AC**: the initial fixture set is explicitly "one markdown fixture per Audit E top-10 prioritized scenario across the FIVE EXISTING claim validators (task, requirement, design, spec, test-report)". The `adr/`/`analysis/`/`epic/` subdirectories are described as a capability of the harness (union tag reserved) and a future Track-1 EXTENSION, not as required fixture content. AC-6 only requires the two-file-op EXTENSION PATH to exist, not authored ADR/ANALYSIS fixtures.
+- **REQ-006 EARS + AC**: the initial fixture set is explicitly "one markdown fixture per Audit E top-10 prioritized scenario across the FIVE EXISTING claim validators (task, requirement, design, spec, qa)". The `adr/`/`analysis/`/`epic/` subdirectories are described as a capability of the harness (union tag reserved) and a future Track-1 EXTENSION, not as required fixture content. AC-6 only requires the two-file-op EXTENSION PATH to exist, not authored ADR/ANALYSIS fixtures.
 - **DESIGN-003 Compliance (7 items)**: the only ADR/ANALYSIS/EPIC-related item is "Extension path for Track 1 validators (ADR / ANALYSIS / EPIC) is captured without harness signature changes" — it requires the PATH, satisfied by the reserved union tag (adversarial.ts:38-46) and the additive dispatch, NOT authored ADR/ANALYSIS fixtures.
 
 Conclusion: dropping ADR/ANALYSIS adversarial fixtures per D-B does not violate REQ-006 AC or DESIGN-003 Compliance.

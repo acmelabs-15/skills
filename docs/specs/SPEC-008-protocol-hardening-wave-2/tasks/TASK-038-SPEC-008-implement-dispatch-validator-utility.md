@@ -17,9 +17,10 @@ tags:
 
 ## Objective
 
-Implement `hooks/lib/dispatch-validator.ts` per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]. The module reads parsed Brain note content, identifies the frontmatter `type:` value, routes to the matching claim validator from `shared/composition/src/validators/`, and returns a `DispatchOutcome` of `{ verdict: "deny" | "allow-with-warning" | "allow", reason?, warning? }`. The dispatch routing table covers the Wave 1 validators (`validateTaskDoneClaim`, `validateRequirementAcClaim`, `validateDesignComplianceClaim`, `validateSpecDoneClaim`, `validateTestReportPassClaim`) plus the Wave 2 validators authored under [[REQ-003-SPEC-008: New Claim Validator Suite]]. Schema parse failures map to deny if they touch status-flip claim contracts; non-blocking schema issues (missing tags, observation count below threshold) map to allow-with-warning. Unparseable input throws and surfaces to the caller, which converts to a structured stderr error.
+Implement `hooks/lib/dispatch-validator.ts` per [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]]. The module reads parsed Brain note content, identifies the frontmatter `type:` value, routes to the matching claim validator from `shared/composition/src/validators/`, and returns a `DispatchOutcome` of `{ verdict: "deny" | "allow-with-warning" | "allow", reason?, warning? }`. The dispatch routing table covers the Wave 1 validators (`validateTaskDoneClaim`, `validateRequirementAcClaim`, `validateDesignComplianceClaim`, `validateSpecDoneClaim`, `validateQaPassClaim`) plus the Wave 2 validators authored under [[REQ-003-SPEC-008: New Claim Validator Suite]]. Schema parse failures map to deny if they touch status-flip claim contracts; non-blocking schema issues (missing tags, observation count below threshold) map to allow-with-warning. Unparseable input throws and surfaces to the caller, which converts to a structured stderr error.
 
 ## Definition of Done
+
 - [x] `hooks/lib/dispatch-validator.ts` exists
 - [x] Exports `dispatchValidator(noteContent: string, filePath: string): DispatchOutcome`
 - [x] Routing table maps frontmatter `type:` values (`task`, `requirement`, `design`, `spec`, `qa`, `decision`, `plan`, `analysis`, `epic`) to the matching schema and claim validator
@@ -33,6 +34,7 @@ Implement `hooks/lib/dispatch-validator.ts` per [[DESIGN-004-SPEC-008: Hook Laye
 - [x] `bun tsc --noEmit` passes
 
 ## ADR Compliance
+
 - [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 directory layout (imports validators from `shared/composition/src/validators/`)
 - [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 hybrid failure semantics (three-way verdict)
 

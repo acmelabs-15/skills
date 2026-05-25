@@ -45,7 +45,7 @@ Validate TASK-023-SPEC-008 (Wire Adversarial-Claims Table-Driven Test Runner) ag
 |---|----------|--------|----------|
 | 1 | File `shared/composition/tests/adversarial-claims.test.ts` exists | PASS | File exists, 163 lines |
 | 2 | Imports `testAdversarial` from `./_helpers/adversarial.ts` | PASS | Line 4: `import { type AdversarialCase, testAdversarial } from "./_helpers/adversarial.js"` |
-| 3 | Declares a `cases: AdversarialCase[]` array with at least ten entries covering Audit E top-10 | PASS | Lines 32-106: `cases` array with 10 entries across 5 validator types (task:3, requirement:2, design:2, spec:2, test-report:1) |
+| 3 | Declares a `cases: AdversarialCase[]` array with at least ten entries covering Audit E top-10 | PASS | Lines 32-106: `cases` array with 10 entries across 5 validator types (task:3, requirement:2, design:2, spec:2, qa:1) |
 | 4 | Loop invokes `testAdversarial(label, c)` per entry with label derived from fixture filename stem | PASS | Lines 109-116: `labelFor(c.fixture)` strips directory and `.md`, then `testAdversarial(labelFor(c.fixture), c)` |
 | 5 | Coverage block: every file under `tests/fixtures/adversarial/<type>/` appears as a `cases` entry (no orphans) | PASS | Lines 144-149: `listOnDiskFixtures()` walks subdirs, asserts orphans === []. Test passes at runtime |
 | 6 | Coverage block: every `cases[i].fixture` path exists on disk (no broken table rows) | PASS | Lines 151-159: iterates cases, checks `Bun.file(resolveFixture(c.fixture)).exists()`, asserts broken === []. Test passes |
@@ -74,7 +74,7 @@ Validate TASK-023-SPEC-008 (Wire Adversarial-Claims Table-Driven Test Runner) ag
 
 ### Regex Specificity
 
-Each `expectedReject` regex anchors on text that uniquely identifies the specific validator rejection for that fixture's lying scenario. For example, the task drift-01 regex `/TaskNoteSchema exported with strict objects/` anchors on the validator's actual error message when all DoD items are deferred-bypass. The test-report drift-01 regex `/verdict mismatch: declared PASS vs derived PARTIAL/` anchors on the structured verdict-mismatch message format. No loose `/error/` patterns found.
+Each `expectedReject` regex anchors on text that uniquely identifies the specific validator rejection for that fixture's lying scenario. For example, the task drift-01 regex `/TaskNoteSchema exported with strict objects/` anchors on the validator's actual error message when all DoD items are deferred-bypass. The qa drift-01 regex `/verdict mismatch: declared PASS vs derived PARTIAL/` anchors on the structured verdict-mismatch message format. No loose `/error/` patterns found.
 
 ### Import Path
 

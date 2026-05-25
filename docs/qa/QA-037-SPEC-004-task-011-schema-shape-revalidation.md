@@ -5,7 +5,7 @@ permalink: qa/qa-037-spec-004-task-011-schema-shape-revalidation
 status: ACCEPTED
 verdict: PASS
 tags:
-- test-report
+- qa
 - spec-004
 - task-011
 - schema

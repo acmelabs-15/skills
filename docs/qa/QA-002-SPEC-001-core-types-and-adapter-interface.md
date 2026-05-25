@@ -1,6 +1,6 @@
 ---
 title: 'QA-002-SPEC-001: Core Types and Adapter Interface'
-type: test_report
+type: qa
 permalink: qa/qa-002-spec-001-core-types-and-adapter-interface
 status: DONE
 tags:

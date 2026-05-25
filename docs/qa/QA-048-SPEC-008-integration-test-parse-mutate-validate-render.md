@@ -14,7 +14,7 @@ tags:
 
 ## Summary
 
-Per-TASK QA gate for [[TASK-025-SPEC-008: Integration Test Parse Mutate Validate Render]] (Track 3: parse→mutate→validate→render integration suite + cross-note SPEC-TASK + TEST-REPORT-vs-TASK-DoD). Independent re-validation by brain:🧠-qa (`ace36d4179c3784c3`) against committed state (impl commit `30a3c98`). Verdict: **PASS** — 11 DoD + REQ-007 AC-1/2/3 + DESIGN-003 Track-3 compliance + 3 API-gap adaptations verified principled.
+Per-TASK QA gate for [[TASK-025-SPEC-008: Integration Test Parse Mutate Validate Render]] (Track 3: parse→mutate→validate→render integration suite + cross-note SPEC-TASK + QA-vs-TASK-DoD). Independent re-validation by brain:🧠-qa (`ace36d4179c3784c3`) against committed state (impl commit `30a3c98`). Verdict: **PASS** — 11 DoD + REQ-007 AC-1/2/3 + DESIGN-003 Track-3 compliance + 3 API-gap adaptations verified principled.
 
 ## Verdict
 
@@ -30,7 +30,7 @@ Per-TASK QA gate for [[TASK-025-SPEC-008: Integration Test Parse Mutate Validate
 | 4 — `tests/integration/cross-note-spec-task-consistency.test.ts` exists | PASS | 125 lines, 2 cases |
 | 5 — drifted pair (DONE TASK + unchecked SPEC row) fails | PASS | `:108-123` SPEC-201 + TASK-001-SPEC-201 → verdict FAIL; reason names task ID + "unchecked" |
 | 6 — aligned pair (DONE TASK + `[x]` SPEC row) passes | PASS | `:95-106` SPEC-200 + TASK-001-SPEC-200 → verdict PASS |
-| 7 — `tests/integration/test-report-vs-task-dod.test.ts` exists | PASS | 105 lines, 2 cases |
+| 7 — `tests/integration/qa-vs-task-dod.test.ts` exists | PASS | 105 lines, 2 cases |
 | 8 — drifted pair (PASS verdict + `[ ]` DoD) fails | PASS | `:85-103` QA-001-SPEC-203 + TASK-001-SPEC-203 → verdict FAIL; `unsatisfied.length >= 1` |
 | 9 — `tests/fixtures/integration/` exists with cross-note pairs | PASS | 8 files: 2 SPEC-TASK pairs (clean+drifted) + 2 QA-TASK pairs (clean+drifted) |
 | 10 — `bun test tests/integration/` all pass | PASS | 8 pass / 0 fail / 37 expect() / 316ms / 3 files |
@@ -50,7 +50,7 @@ Per-TASK QA gate for [[TASK-025-SPEC-008: Integration Test Parse Mutate Validate
 |---|---|
 | AC-1 integration PMVR for PLAN/SPEC/TASK | PASS |
 | AC-2 cross-note SPEC-TASK consistency (PASS clean / FAIL drifted) | PASS |
-| AC-3 TEST-REPORT-vs-TASK-DoD (FAIL on PASS+unchecked-DoD) | PASS |
+| AC-3 QA-vs-TASK-DoD (FAIL on PASS+unchecked-DoD) | PASS |
 
 (AC-4 covered by TASK-026 [CLOSED]. AC-5/6/7/8/9 out of TASK-025 scope.)
 

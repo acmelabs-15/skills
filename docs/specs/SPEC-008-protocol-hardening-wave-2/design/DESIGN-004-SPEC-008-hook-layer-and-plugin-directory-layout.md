@@ -64,7 +64,7 @@ ${CLAUDE_PLUGIN_ROOT}/hooks/
     └── git-state-observer.ts                 ← Layer 7: FileChanged on .git/*
 ```
 
-All handlers import composition library validators from `shared/composition/src/validators/` (per [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 layout) — `validateTaskDoneClaim`, `validateRequirementAcClaim`, `validateDesignComplianceClaim`, `validateSpecDoneClaim`, `validateTestReportPassClaim`, plus the new validators from Track 1 ([[REQ-003-SPEC-008: New Claim Validator Suite]]). The `dispatch-validator.ts` utility owns the type-to-validator routing table.
+All handlers import composition library validators from `shared/composition/src/validators/` (per [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 layout) — `validateTaskDoneClaim`, `validateRequirementAcClaim`, `validateDesignComplianceClaim`, `validateSpecDoneClaim`, `validateQaPassClaim`, plus the new validators from Track 1 ([[REQ-003-SPEC-008: New Claim Validator Suite]]). The `dispatch-validator.ts` utility owns the type-to-validator routing table.
 
 ## Interfaces
 

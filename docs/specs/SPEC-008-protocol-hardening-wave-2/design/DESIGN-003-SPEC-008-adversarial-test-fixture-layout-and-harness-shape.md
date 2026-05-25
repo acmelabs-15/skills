@@ -30,12 +30,12 @@ The fixture root is `shared/composition/tests/fixtures/adversarial/`. Each valid
 | `validateSpecDoneClaim` | `spec/` | Populated by TASK-022 |
 | `validateRequirementAcClaim` | `requirement/` | Populated by TASK-022 |
 | `validateDesignComplianceClaim` | `design/` | Populated by TASK-022 |
-| `validateTestReportPassClaim` | `test-report/` | Populated by TASK-022 |
+| `validateQaPassClaim` | `qa/` | Populated by TASK-022 |
 | `validateAdrAcceptedClaim` | `adr/` | Populated by TASK-024 (depends on Track 1) |
 | `validateAnalysisAcceptedClaim` | `analysis/` | Populated by TASK-024 (depends on Track 1) |
 | `validateEpicDoneClaim` | `epic/` | Populated by TASK-024 (depends on Track 1) |
 
-CRIT has no claim validator (per ADR-005 D-5 Implementation Notes) and so no adversarial harness coverage. The `task/spec/requirement/design/test-report/` quintet is the Track 3 floor; the `adr/analysis/epic/` extension lands once Track 1 ships the matching validators.
+CRIT has no claim validator (per ADR-005 D-5 Implementation Notes) and so no adversarial harness coverage. The `task/spec/requirement/design/qa/` quintet is the Track 3 floor; the `adr/analysis/epic/` extension lands once Track 1 ships the matching validators.
 
 ### Fixture file naming convention
 
@@ -63,7 +63,7 @@ import { expect, test } from "bun:test";
 
 export type AdversarialCase = {
   fixture: string; // absolute or composition-root-relative path to the fixture .md file
-  validator: "task" | "spec" | "requirement" | "design" | "test-report" | "adr" | "analysis" | "epic";
+  validator: "task" | "spec" | "requirement" | "design" | "qa" | "adr" | "analysis" | "epic";
   expectedReject: RegExp; // anchor on the validator's actual error message, not loose match
 };
 
@@ -134,7 +134,7 @@ shared/composition/tests/
 │   │   ├── spec/
 │   │   ├── requirement/
 │   │   ├── design/
-│   │   ├── test-report/
+│   │   ├── qa/
 │   │   ├── adr/                          (added by TASK-024 after Track 1)
 │   │   ├── analysis/                     (added by TASK-024 after Track 1)
 │   │   └── epic/                         (added by TASK-024 after Track 1)
@@ -144,7 +144,7 @@ shared/composition/tests/
 ├── integration/                          NEW (TASK-025)
 │   ├── parse-mutate-validate-render.test.ts
 │   ├── cross-note-spec-task-consistency.test.ts
-│   └── test-report-vs-task-dod.test.ts
+│   └── qa-vs-task-dod.test.ts
 └── mutation-invariants.test.ts           NEW (TASK-026 + TASK-027)
 ```
 

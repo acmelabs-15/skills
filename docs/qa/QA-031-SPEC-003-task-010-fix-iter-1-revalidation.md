@@ -4,7 +4,6 @@ type: qa
 status: DONE
 permalink: qa/qa-031-spec-003-task-010-fix-iter-1-revalidation
 tags:
-- test-report
 - spec-003
 - qa
 - task-010

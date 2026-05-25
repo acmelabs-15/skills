@@ -58,7 +58,7 @@ Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspe
 | DoD checkbox | Verdict | Evidence |
 |---|---|---|
 | 8 status/enum schemas exported + validation tests | PASS | `common.ts:30-50` exports `PartSubstatusEnum`, `TaskStatusEnum`, `PlanStatusEnum`, `SessionStatusEnum`, `EffortEnum`, `ComplexityTierEnum`, `DecisionStatusEnum`, `PhaseEnum`; tests pass |
-| 6 ID regex schemas exported + pattern tests | PASS | `common.ts:10-27` exports `EntityIdSchema`, `PartIdSchema`, `TaskIdSchema`, `SessionIdSchema`, `EventNumberSchema`, plus `SpecIdSchema`/`SpecTaskIdSchema`/`ReqIdSchema`/`DesignIdSchema`/`TestReportIdSchema` (additions for Phase X.D); tests pass |
+| 6 ID regex schemas exported + pattern tests | PASS | `common.ts:10-27` exports `EntityIdSchema`, `PartIdSchema`, `TaskIdSchema`, `SessionIdSchema`, `EventNumberSchema`, plus `SpecIdSchema`/`SpecTaskIdSchema`/`ReqIdSchema`/`DesignIdSchema`/`QaIdSchema` (additions for Phase X.D); tests pass |
 | `WikilinkSchema`, `OutcomeSchema`, `ObservationSchema`, `RelationSchema` exported | PASS | grep confirms all four exported from common.ts |
 | `.strict()` applied to all object schemas | PASS | applied throughout |
 | TypeScript types exported via `z.infer` | PASS | type exports present |

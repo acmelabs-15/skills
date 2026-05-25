@@ -155,7 +155,7 @@ All 10 test-file items PASS. 84 SPEC-006 tests pass, 0 fail. biome lint PARTIAL 
 - TypeScript: clean
 - Biome: 1 error (biome.json self-format)
 
-## Test Report Schema
+## QA Schema
 
 | Suite | Tests Run | Passed | Failed | Skipped |
 |:--|:--|:--|:--|:--|

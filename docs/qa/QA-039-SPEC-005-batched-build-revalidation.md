@@ -9,7 +9,6 @@ passed: 585
 failed: 0
 skipped: 0
 tags:
-- test-report
 - spec-005
 - qa
 - batched-build
@@ -298,7 +297,7 @@ Verdict: **AC LITERAL PASS, SUBSTANTIVE CAPABILITY GAP.** The AC text does not f
 
 ## Test Results Table
 
-The summary above (`tests_run`/`passed`/`failed`/`skipped` in frontmatter, with `verdict: PASS`) is the canonical pass-claim envelope per TestReportNoteSchema. The per-test-suite breakdown:
+The summary above (`tests_run`/`passed`/`failed`/`skipped` in frontmatter, with `verdict: PASS`) is the canonical pass-claim envelope per QaNoteSchema. The per-test-suite breakdown:
 
 | test | category | status | notes |
 |:--|:--|:--|:--|

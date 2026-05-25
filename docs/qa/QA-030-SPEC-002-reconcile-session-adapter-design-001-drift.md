@@ -5,7 +5,6 @@ permalink: qa/qa-030-spec-002-reconcile-session-adapter-design-001-drift
 status: DONE
 verdict: PASS
 tags:
-- test-report
 - spec-002
 - qa
 - session-adapter
@@ -100,7 +99,7 @@ Structural compliance totals: 5 PASS, 0 FAIL.
 - REQ AC (in scope): 4 PASS, 1 N/A (dispatcher out of scope)
 - DESIGN structural compliance: 5 PASS
 - Tests: 458 pass / 0 fail / 0 skipped
-- Schema self-validation: TestReportNoteSchema invariants satisfied — `tests_run (11) === passed (11) + failed (0) + skipped (0)`; verdict PASS matches per-row results
+- Schema self-validation: QaNoteSchema invariants satisfied — `tests_run (11) === passed (11) + failed (0) + skipped (0)`; verdict PASS matches per-row results
 
 The code change is small, surgical, internally consistent with DESIGN-001's amended Component 2, and adds explicit unit-test coverage for both new property declarations. No regressions in the 458-test composition suite.
 

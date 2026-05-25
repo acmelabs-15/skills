@@ -41,7 +41,7 @@ Validate TASK-006-SPEC-003 (Gap-TASK from QA-010-SPEC-003 retro-validation): Pla
 | Assertions | 10 | - | - |
 | Execution Time | 51ms | <5s | [PASS] |
 
-Self-validation against TestReportNoteSchema invariants: tests_run (6) === passed (6) + failed (0) + skipped (0); verdict PASS with failed=0 and no FAIL rows; tests_run > 0. All cross-field invariants satisfied.
+Self-validation against QaNoteSchema invariants: tests_run (6) === passed (6) + failed (0) + skipped (0); verdict PASS with failed=0 and no FAIL rows; tests_run > 0. All cross-field invariants satisfied.
 
 ### Per-DoD evidence
 
@@ -85,7 +85,7 @@ No findings. Implementation matches the DESIGN-001 Component 1 Responsibility ex
 - [outcome] All 6 DoD + ADR-compliance checkboxes PASS with file:line evidence; bun test green 6/6 #verdict-pass #spec-003
 - [fact] dispatcher.ts:10 registers ["plan", new PlanAdapter()] in alphabetical order between "analysis" and "session" #dispatcher #registration
 - [fact] dispatcher.test.ts:27-31 + line 37-40 add explicit "plan" coverage; existing adr/analysis/session/unknown cases retained #test-coverage #regression-safe
-- [insight] Self-validation against TestReportNoteSchema cross-field invariants holds (tests_run === passed+failed+skipped; PASS with failed=0 and no FAIL rows) #schema-self-validation
+- [insight] Self-validation against QaNoteSchema cross-field invariants holds (tests_run === passed+failed+skipped; PASS with failed=0 and no FAIL rows) #schema-self-validation
 - [insight] Impl commit 3d74348 also touched base-markdown-adapter.ts, which is out-of-scope for TASK-006-SPEC-003 -- flagged for orchestrator awareness as sibling-stream delta #out-of-scope-observation
 
 ## Relations

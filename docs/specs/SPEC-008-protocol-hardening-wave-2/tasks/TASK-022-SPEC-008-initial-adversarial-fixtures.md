@@ -17,19 +17,21 @@ tags:
 
 ## Objective
 
-Author the initial set of adversarial fixture markdown files at `shared/composition/tests/fixtures/adversarial/<type>/drift-NN-<slug>.md` covering Audit E's top-10 prioritized scenarios across the five existing claim validators (task, spec, requirement, design, test-report). Each fixture encodes one realistic lying-claim scenario as a canonical Brain note (frontmatter + H1 + sections + Observations + Relations) with the lying behavior identifiable from the markdown content alone. Fixture filenames double as drift regression markers per DESIGN-003 and REQ-006 AC-4.
+Author the initial set of adversarial fixture markdown files at `shared/composition/tests/fixtures/adversarial/<type>/drift-NN-<slug>.md` covering Audit E's top-10 prioritized scenarios across the five existing claim validators (task, spec, requirement, design, qa). Each fixture encodes one realistic lying-claim scenario as a canonical Brain note (frontmatter + H1 + sections + Observations + Relations) with the lying behavior identifiable from the markdown content alone. Fixture filenames double as drift regression markers per DESIGN-003 and REQ-006 AC-4.
 
 ## Definition of Done
-- [x] Subdirectories exist: `shared/composition/tests/fixtures/adversarial/task/`, `spec/`, `requirement/`, `design/`, `test-report/`
+
+- [x] Subdirectories exist: `shared/composition/tests/fixtures/adversarial/task/`, `spec/`, `requirement/`, `design/`, `qa/`
 - [x] At least ten fixture markdown files exist across the five subdirectories covering Audit E's top-10 scenarios
 - [x] Each fixture's filename matches `drift-NN-<slug>.md` (two-digit counter restarting per subdirectory; lowercase kebab-case slug)
 - [x] Each fixture is a structurally valid Brain note (passes its type's schema parse) but contains a lying-claim payload that the corresponding claim validator must reject
-- [x] At least the following named fixtures exist: `task/drift-01-all-deferred-bypass.md`, `task/drift-02-checkbox-flip-without-evidence.md`, `requirement/drift-01-ac-flip-without-evidence.md`, `design/drift-01-design-compliance-flip-without-evidence.md`, `spec/drift-01-spec-done-with-all-deferred-success-criteria.md`, `test-report/drift-01-test-report-all-deferred-verdict.md`
+- [x] At least the following named fixtures exist: `task/drift-01-all-deferred-bypass.md`, `task/drift-02-checkbox-flip-without-evidence.md`, `requirement/drift-01-ac-flip-without-evidence.md`, `design/drift-01-design-compliance-flip-without-evidence.md`, `spec/drift-01-spec-done-with-all-deferred-success-criteria.md`, `qa/drift-01-qa-all-deferred-verdict.md`
 - [x] Each fixture's frontmatter `tags` array includes a Phase-X-drift-surface tag where applicable (per DESIGN-003 drift-surface mapping section)
 - [x] No fixture filename contains spaces; CAPS prefixes preserved where applicable; slugs lowercase kebab
 - [x] Manual review confirms each fixture is self-documenting (the lying behavior is identifiable from the markdown alone)
 
 ## ADR Compliance
+
 - [x] Honors ADR-005 D-3 verbatim: fixture directory layout `tests/fixtures/adversarial/<type>/drift-NN-<slug>.md`
 - [x] Honors ADR-005 D-3 Implementation Notes: initial fixture set covers Audit E's top-10 prioritized scenarios
 - [x] Honors REQ-006 AC-4: at least the six named drift surfaces listed in the AC are present
@@ -43,7 +45,7 @@ Author the initial set of adversarial fixture markdown files at `shared/composit
 | `shared/composition/tests/fixtures/adversarial/requirement/drift-01-ac-flip-without-evidence.md` | NEW | Requirement validator: AC `[x]` without `**Evidence**:` line |
 | `shared/composition/tests/fixtures/adversarial/design/drift-01-design-compliance-flip-without-evidence.md` | NEW | Design validator: compliance `[x]` without evidence section |
 | `shared/composition/tests/fixtures/adversarial/spec/drift-01-spec-done-with-all-deferred-success-criteria.md` | NEW | Spec validator: SPEC DONE with all success_criteria deferred |
-| `shared/composition/tests/fixtures/adversarial/test-report/drift-01-test-report-all-deferred-verdict.md` | NEW | Test-report validator: PASS verdict with all rows DEFERRED |
+| `shared/composition/tests/fixtures/adversarial/qa/drift-01-qa-all-deferred-verdict.md` | NEW | QA validator: PASS verdict with all rows DEFERRED |
 | `shared/composition/tests/fixtures/adversarial/task/drift-03-...md` through additional 4 fixtures across types | NEW | Cover remaining Audit E top-10 scenarios |
 
 ## Effort Summary

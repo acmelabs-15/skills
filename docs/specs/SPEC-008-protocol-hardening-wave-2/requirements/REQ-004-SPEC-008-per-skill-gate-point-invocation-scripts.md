@@ -48,7 +48,7 @@ Wave 2 coverage:
 - [x] GIVEN a TASK with status DONE and one unchecked DoD checkbox WHEN running `validate-task-done.ts` THEN script exits non-zero and stderr names the unsatisfied DoD item
 - [x] GIVEN a TASK with all DoD items checked or deferred WHEN running `validate-task-done.ts` THEN script exits zero with no error output
 - [x] GIVEN a PLAN with an impl-item in PENDING WHEN running `transition-impl-item.ts` with target IN_PROGRESS THEN PLAN markdown is updated via applyPlanMutation and script exits zero
-- [x] GIVEN a PLAN qa-item transitioning to DONE without test_report_ref WHEN running `transition-qa-item.ts` THEN script exits non-zero and stderr names the missing invariant
+- [x] GIVEN a PLAN qa-item transitioning to DONE without qa_ref WHEN running `transition-qa-item.ts` THEN script exits non-zero and stderr names the missing invariant
 - [x] GIVEN a SPEC root with status DONE and any Success Criteria checkbox unchecked WHEN running `validate-spec-done.ts` THEN script exits non-zero and stderr names the unsatisfied row
 - [x] GIVEN a TASK note WHEN running `validate-task-schema.ts` THEN script parses via TaskNoteSchema exits zero on valid input non-zero with Zod issues on invalid input
 - [x] GIVEN every per-skill script under `skills/<name>/scripts/` WHEN inspected THEN it includes the import.meta.main CLI guard and exits non-zero on validation failure

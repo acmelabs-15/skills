@@ -1,6 +1,6 @@
 ---
 title: 'QA-006-SPEC-001: Injectivity and Path Containment Validators'
-type: test_report
+type: qa
 permalink: qa/qa-006-spec-001-injectivity-and-path-containment-validators
 tags:
 - validators

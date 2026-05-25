@@ -21,7 +21,7 @@ Implements the `skills/build/scripts/transition-qa-item.ts` row of [[DESIGN-002-
 
 ## Objective
 
-Create the mutation-script wrapper that invokes `applyPlanMutation` with the `transition-qa-item` mutation, enforcing the cross-field invariants (paired impl item DONE, test_report_ref required when DONE or FAILED).
+Create the mutation-script wrapper that invokes `applyPlanMutation` with the `transition-qa-item` mutation, enforcing the cross-field invariants (paired impl item DONE, qa_ref required when DONE or FAILED).
 
 ## Scope
 
@@ -44,9 +44,9 @@ Out of Scope:
 
 ## Definition of Done
 
-- [x] Script accepts plan-path, item-id, target-status, owning-session, at-event, optional test-report-ref, optional failed-iterations flags
+- [x] Script accepts plan-path, item-id, target-status, owning-session, at-event, optional qa-ref, optional failed-iterations flags
 - [x] Script reads PLAN, validates path-containment, invokes applyPlanMutation, writes the result back, exits 0/1/2 per the contract
-- [x] Colocated test asserts exit 1 when transitioning to DONE without test_report_ref
+- [x] Colocated test asserts exit 1 when transitioning to DONE without qa_ref
 - [x] Colocated test asserts exit 1 when the paired impl-item is not yet DONE
 - [x] Colocated test asserts exit 0 on a successful IN_PROGRESS-to-DONE transition with all invariants met
 - [x] Script imports only from `shared/composition/src/` plus Node and Bun standard runtime
@@ -68,7 +68,7 @@ Out of Scope:
 ## Observations
 
 - [fact] Wraps applyPlanMutation transition-qa-item enforcing cross-field invariants centrally #thin-wrapper
-- [constraint] test_report_ref MUST be supplied when target status is DONE or FAILED per Wave 1 PlanNoteSchema superRefine #required-args
+- [constraint] qa_ref MUST be supplied when target status is DONE or FAILED per Wave 1 PlanNoteSchema superRefine #required-args
 - [decision] Cross-field invariants enforced by composition library; script only assembles args and surfaces error #single-source-of-truth
 
 ## Relations

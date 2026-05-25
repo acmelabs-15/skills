@@ -15,7 +15,7 @@ tags:
 
 ## Scope
 
-Validates [[TASK-013-SPEC-008: Implement transition-qa-item Script]] — the build-skill mutation wrapper invoking `applyPlanMutation` with `transition-qa-item`, enforcing cross-field invariants (paired impl DONE; test_report_ref when DONE/FAILED). Authority: ADR-005 D-1/D-8 → [[REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts]] → [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]] → TASK-013. Independent QA (tests re-run).
+Validates [[TASK-013-SPEC-008: Implement transition-qa-item Script]] — the build-skill mutation wrapper invoking `applyPlanMutation` with `transition-qa-item`, enforcing cross-field invariants (paired impl DONE; qa_ref when DONE/FAILED). Authority: ADR-005 D-1/D-8 → [[REQ-004-SPEC-008: Per-Skill Gate-Point Invocation Scripts]] → [[DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract]] → TASK-013. Independent QA (tests re-run).
 
 ## Verdict
 
@@ -25,9 +25,9 @@ Validates [[TASK-013-SPEC-008: Implement transition-qa-item Script]] — the bui
 
 | DoD Item | Status | Evidence |
 | --- | --- | --- |
-| 1. Accepts plan-path, item-id, target-status, owning-session, at-event, optional test-report-ref + fix_brief_for_event | [PASS] | `transition-qa-item.ts:44-60` (used real schema field `fix_brief_for_event`, not the non-existent `failed_iterations`) |
+| 1. Accepts plan-path, item-id, target-status, owning-session, at-event, optional qa-ref + fix_brief_for_event | [PASS] | `transition-qa-item.ts:44-60` (used real schema field `fix_brief_for_event`, not the non-existent `failed_iterations`) |
 | 2. Path-containment, applyPlanMutation, write back, exits 0/1/2 | [PASS] | `:136` containment, mutation, Bun.write |
-| 3. Test exit 1 DONE without test_report_ref | [PASS] | test passes |
+| 3. Test exit 1 DONE without qa_ref | [PASS] | test passes |
 | 4. Test exit 1 paired impl not DONE | [PASS] | test passes |
 | 5. Test exit 0 IN_PROGRESS→DONE invariants met | [PASS] | test passes |
 | 6. Imports only shared/composition + node/bun | [PASS] | `:24-26` |
@@ -35,7 +35,7 @@ Validates [[TASK-013-SPEC-008: Implement transition-qa-item Script]] — the bui
 
 ## REQ-004 AC + DESIGN-002 Compliance
 
-- Mutation: `type:"transition-qa-item"` + partId/taskRef/from/to/owning_session/at_event/test_report_ref/fix_brief_for_event — all match `TransitionQaItem` (plan-mutations.ts:114-124). [PASS]
+- Mutation: `type:"transition-qa-item"` + partId/taskRef/from/to/owning_session/at_event/qa_ref/fix_brief_for_event — all match `TransitionQaItem` (plan-mutations.ts:114-124). [PASS]
 - Path-containment exact rule (`:136`). `../` + absolute-outside tested; prefix-collision code-correct, explicit test not present (REQ-004 AC-9 open item). [PARTIAL-test-coverage]
 - Line count 192 (over soft ceiling; non-blocking). #design-002
 
@@ -43,7 +43,7 @@ Validates [[TASK-013-SPEC-008: Implement transition-qa-item Script]] — the bui
 
 - [outcome] transition-qa-item.ts enforces qa cross-field invariants centrally via applyPlanMutation; 10/10 tests green #build-skill #wave-2
 - [decision] qa items carry `fix_brief_for_event` (impl items carry `failed_iterations`); DoD#1's "failed-iterations" wording reconciled to the real qa-item schema field #mutation-api #spec-reconciliation
-- [constraint] test_report_ref mandatory when target DONE/FAILED; paired impl must be DONE before qa advances — both enforced + tested #cross-field-invariant
+- [constraint] qa_ref mandatory when target DONE/FAILED; paired impl must be DONE before qa advances — both enforced + tested #cross-field-invariant
 
 ## Relations
 

@@ -1,9 +1,8 @@
 ---
 title: 'QA-029-SPEC-003: Composition Plan YAML and Frontmatter Map in Fixtures'
-type: test_report
+type: qa
 permalink: qa/qa-029-spec-003-composition-plan-yaml-and-frontmatter-map-in-fixtures
 tags:
-- test-report
 - spec-003
 - qa
 - task-010
@@ -93,7 +92,7 @@ A scratch verification script `shared/composition/tests/_qa-verify-fixtures.ts` 
 - [problem] `plan-integrity-floor.test.ts` was not updated to load and assert on the new fixtures DoD-6 unsatisfied and file-affected entry uncovered #missing-test #dod-gap
 - [fact] Composition YAML inverse semantic vs distribution YAML is mathematically correct sorted distribution values equal sorted composition keys #round-trip-correctness
 - [fact] frontmatter_map blocks present in both fixtures with required keys title plus permalink plus branches schema accepts the shape modulo the hash bug #frontmatter-coverage
-- [decision] FAIL verdict required by validateTestReportPassClaim — 3 of 6 DoD items unsatisfied plus ADR compliance FAIL #qa-verdict
+- [decision] FAIL verdict required by validateQaPassClaim — 3 of 6 DoD items unsatisfied plus ADR compliance FAIL #qa-verdict
 - [insight] Sibling distribution fixtures `abc123` style mixed-character hashes avoid the YAML number coercion trap entirely all-digit hashes must always be quoted #yaml-gotcha
 - [outcome] Re-engagement brief returned to orchestrator with two-item remediation plus scratch-file cleanup #re-engagement
 

@@ -14,7 +14,6 @@ tags:
 - spec-007
 - aggregate
 - retro-validation
-- test-report
 ---
 
 # QA-033-SPEC-007: Spec Aggregate Retro Validation

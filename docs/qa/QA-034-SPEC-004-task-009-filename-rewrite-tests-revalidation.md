@@ -14,7 +14,6 @@ tags:
 - spec-004
 - task-009
 - filename-rewrite
-- test-report
 ---
 
 # QA-034-SPEC-004: Task 009 Filename Rewrite Tests Revalidation
