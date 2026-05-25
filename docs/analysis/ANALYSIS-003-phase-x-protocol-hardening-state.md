@@ -368,3 +368,5 @@ For user to decide pace + scope of next action:
 3. **Pick a specific next subset** — e.g., "do X.D.2-4 to unblock the 16 failing tests + close out the composition library round-trip, then pause"; or "do all X.C skill updates first then composition library"; or any other ordered slice.
 
 Default recommendation: option 2 (checkpoint) given orchestrator context depth + the multi-session realistic scope. The post-compaction rehydration protocol (run the full rehydration checklist before any work after compaction/resume) makes resumption reliable.
+
+- inspires [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

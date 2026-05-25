@@ -380,3 +380,5 @@ SESSION-2026-05-20_03 resumed PLAN-001 to author ADR-003 (Plan/Session Render Ar
 - relates_to [[CRIT-003-ADR-003: Plan/Session Render Architecture Debate Log]]
 - relates_to [[ADR-003: Plan/Session Render Architecture]]
 - relates_to [[SPEC-007: Plan/Session Render Implementation]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

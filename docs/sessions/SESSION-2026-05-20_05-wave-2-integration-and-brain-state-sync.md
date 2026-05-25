@@ -456,3 +456,5 @@ Proceeding to /end Step 4 (commits + lint-fix + PR + session DONE).
 - Fix already partially applied: post-compaction rehydration protocol, rigid per-TASK atomic cycle with schema-validated claims, meta-rule mandating every workflow phase embed protocol at 7 layers simultaneously
 - 5 ADD-tier skill candidates surfaced for skillbook persistence: rehydration-post-compaction (95%), status-flip-requires-evidence (92%), assumption-substitution-detection (88%), single-layer-enforcement-fails (90%), session-note-existence-gate (94%)
 - Recommended next: brain:🧠-skillbook to persist the 5 ADD candidates to ~/.claude/memory/ — but this can land in the next session; not a blocker for closing today
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

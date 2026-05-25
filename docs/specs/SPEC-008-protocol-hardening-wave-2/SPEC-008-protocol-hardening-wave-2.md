@@ -279,3 +279,5 @@ Build parallelism opportunity: ~30-40% reduction possible per cross-track depend
 - contains [[TASK-046-SPEC-008: Author Hook Smoke Tests and Adversarial Fixture Reuse]]
 - contains [[TASK-047-SPEC-008: Add H1-Drift Detection to CRIT Parser]]
 - relates_to [[SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

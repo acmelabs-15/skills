@@ -137,3 +137,5 @@ Structural:
 - part_of [[PLAN-001: Skills Ecosystem]]
 - relates_to [[ANALYSIS-003: Phase X Protocol Hardening State]]
 - relates_to [[SPEC-007: Plan/Session Render Implementation]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

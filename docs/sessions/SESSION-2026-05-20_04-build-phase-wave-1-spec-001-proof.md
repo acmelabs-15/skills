@@ -1,7 +1,13 @@
 ---
 title: 'SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF'
-type: note
+type: session
+status: DONE
 permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof
+tags:
+- session
+- build
+- spec-001
+- plan-001
 ---
 
 # SESSION-2026-05-20_04: Build Phase Wave 1 SPEC-001 PROOF
@@ -103,3 +109,5 @@ permalink: sessions/session-2026-05-20-04-build-phase-wave-1-spec-001-proof
 
 - part_of [[PLAN-001: Skills Ecosystem]]
 - implements [[SPEC-001: Composition Core and ADR Adapter]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

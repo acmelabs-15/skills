@@ -163,3 +163,5 @@ Operational consequences:
 - pairs_with [[brain:---adr-review]]
 - inspired_by [[ANALYSIS-001: SPEC Clustering]]
 - relates_to [[ADR-001: Composition Library Architecture]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

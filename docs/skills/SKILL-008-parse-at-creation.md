@@ -41,3 +41,5 @@ tags:
 - relates_to [[SKILL-007: phantom-verifiable-gate]]
 - relates_to [[SKILL-004: advisory-needs-mechanical]]
 - relates_to [[SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

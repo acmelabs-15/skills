@@ -380,3 +380,5 @@ Fix iter-1 dispatched (agent a9...). On PASS: SPEC-006 state propagation can pro
 - part_of [[PLAN-001: Skills Ecosystem]]
 - caused_by [[Retrospective: RETRO-003 Phase X Execution and Composition Library Completion]]
 - relates_to [[SESSION-2026-05-20_06: Close]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

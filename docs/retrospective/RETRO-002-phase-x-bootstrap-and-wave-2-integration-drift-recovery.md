@@ -214,3 +214,5 @@ feat/plan-001-wave-2-integration merged 4 Wave 2 branches, added Phase X schema 
 - relates_to [[RETRO-001: SESSION-2026-05-20_03 Render Architecture Retrospective]]
 - relates_to [[ADR-003: Plan/Session Render Architecture]]
 - relates_to [[SPEC-007: Plan/Session Render Implementation]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

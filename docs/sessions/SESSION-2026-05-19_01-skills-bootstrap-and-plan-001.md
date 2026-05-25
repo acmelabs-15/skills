@@ -338,3 +338,5 @@ tags:
 
 - part_of [[PLAN-001: Skills Ecosystem]]
 - pairs_with [[brain:---adr-review]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

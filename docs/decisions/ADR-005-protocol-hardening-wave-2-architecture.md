@@ -587,3 +587,5 @@ Each D-N has corresponding validation in SPEC-008's REQ AC + TASK DoD + test sca
 - extends [[ADR-003 Plan/Session Render Architecture]]
 - leads_to [[SPEC-008 Protocol Hardening Wave 2]]
 - relates_to [[SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

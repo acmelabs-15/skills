@@ -343,3 +343,5 @@ Fresh `/plan PLAN-001-skills-ecosystem` will:
 - relates_to [[SPEC-002: Simple Adapters]]
 - relates_to [[SPEC-003: PLAN Adapter]]
 - relates_to [[SPEC-004: SPEC Subtree Adapter]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

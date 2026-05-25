@@ -109,3 +109,5 @@ PLAN-001 state: 13/21 visible parts DONE (research + decisions.1/2/3 + spec-deco
 - relates_to [[ANALYSIS-002: Plan/Session Note Render Architecture]]
 - pairs_with [[brain:---adr-review]]
 - relates_to [[RETRO-001: SESSION-2026-05-20_03 Render Architecture Retrospective]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

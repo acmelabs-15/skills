@@ -3516,6 +3516,7 @@ Event-159 close-out Step 3. (a) Stale test-count language reconciled: SPEC-root 
 - relates_to [[SKILL-012: bulk-brain-note-migration-tooling-gap]]
 - relates_to [[SKILL-013: adr-review-gate-scope]]
 - relates_to [[SKILL-014: complete-rename-includes-adr-bodies]]
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]
 
 ### inspired_by
 
