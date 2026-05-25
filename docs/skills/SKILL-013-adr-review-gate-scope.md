@@ -27,7 +27,7 @@ tags:
 
 ## Notes for Review (LOW confidence)
 
-- [LOW] ~ note: "This refines feedback_adr_review_blocking_gate (which reads 'ALL ADR creates/updates MUST trigger adr-review'); consider folding the substance+timing scoping into that memory during skillbook synthesis." — Source: this analysis (Session 2026-05-23_02, 2026-05-25)
+- [LOW] ~ note: "This refines the standing adr-review blocking-gate auto-memory (which reads 'ALL ADR creates/updates MUST trigger adr-review'); consider folding the substance+timing scoping into that memory during skillbook synthesis." — Source: this analysis (Session 2026-05-23_02, 2026-05-25)
 
 ## Observations
 
