@@ -3380,3 +3380,7 @@ Reflection captured (canonical process; content in [[SKILL-009: schema-single-so
 ## Event 154 — [reflect-capture] reflection-capture: never ask, capture in background → [[SKILL-010: reflection-capture-never-ask]]
 
 Reflection captured (content in [[SKILL-010: reflection-capture-never-ask]]). User directive (emphatic): NEVER ask whether to capture a reflection — the impulse to ask IS the trigger; capture in the background + continue seamlessly, like nothing happened. `feedback_inline_reflect_capture` updated with the rule. Confidence HIGH.
+
+## Event 155 — [reflect-capture] capture runs in the background (async) → [[SKILL-011: reflection-capture-runs-async]]
+
+Reflection captured (content in [[SKILL-011: reflection-capture-runs-async]]). User clarified "background" = literal async/non-blocking dispatch (background subagent), NOT a quietly-done foreground step — so the conversation never waits on the multi-step Brain capture writes. `feedback_inline_reflect_capture` updated. Confidence HIGH.
