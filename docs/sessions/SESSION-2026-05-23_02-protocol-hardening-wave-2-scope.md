@@ -2,7 +2,7 @@
 title: 'SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope'
 type: session
 permalink: sessions/session-2026-05-23-02-protocol-hardening-wave-2-scope-1
-status: IN_PROGRESS
+status: PAUSED
 tags:
 - session
 - protocol-hardening
@@ -19,6 +19,7 @@ status_history:
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 92; resume + rehydration; Wave 1b Batch C next)
 - IN_PROGRESS → PAUSED 2026-05-24 (Event 117; 40/47, budget pause at 97% ctx; resume to complete SPEC-008 + docs test-report→qa rename)
 - PAUSED → IN_PROGRESS 2026-05-24 (Event 118; resume, fresh context; rehydrated; complete SPEC-008)
+- IN_PROGRESS → PAUSED 2026-05-24 (Event 140; 47/47 build complete, clean boundary; close-out → fresh context via /plan)
 ---
 
 # SESSION-2026-05-23_02: Protocol Hardening Wave 2 Scope
@@ -3152,3 +3153,80 @@ QA-091 PASS → TASK-028 (drift markers) closed. qa-028 → DONE (qa_ref QA-091)
 - qa-TASK-028 → DONE (qa_ref QA-091); TASK-028 status → DONE; SPEC-root Tasks `[x]` → **47/47**
 - ALL SPEC-008 build-workflow items DONE; build marathon complete; suite 1234/0
 - Close-out phase begins (REQ/DESIGN acceptances, FU-6b, docs sweep, hooks go-live, adr-review, final DONE)
+
+
+## Event 140 — PAUSE at 47/47 (clean boundary); EXHAUSTIVE close-out resume protocol
+
+Pausing one last time at the 47/47 milestone (all build TASKs closed, tree clean, suite 1234/0) so the close-out runs in a FRESH context. Resume via `/skills:plan PLAN-001-skills-ecosystem` (continue mode) → RESUME this session (PAUSED → IN_PROGRESS; continue Event numbering from 141; NO new note — resume-paused-session-not-new rule).
+
+### CURRENT STATE (as of pause)
+- Branch `feat/plan-001-protocol-hardening-wave-2-scope`; HEAD = the Event-140 pause commit; tree CLEAN.
+- **build.SPEC-008: 47/47 TASKs DONE** (all 94 impl+qa workflow items DONE). Suite **1234 pass / 0 fail** (the old "2 SPEC-007 deferred fails" baseline is GONE — fully green).
+- PLAN renderer (`renderPlanNote`) OWNS the PLAN deterministically: NO hand-maintained sections (Risks + the custom wave graph were dropped by design). The cross-part deps graph is renderer-generated + valid (`end`→`end_part` reserved-word fix landed in `shared/composition/src/renderers/mermaid.ts`). Transition mutation scripts re-render the whole PLAN — this is SAFE now (no custom sections to strip). DO NOT hand-maintain PLAN sections.
+- Already ACCEPTED: REQ-001/002/003/005, DESIGN-001. SPEC-002 + SPEC-003 + SPEC-007 fully reconciled (validateSpecDoneClaim ok for each).
+- Hooks DISABLED: `hooks/hooks.json.disabled` + `hooks/scripts.disabled/` (enforcement layer NOT live — go-live is Phase 5 below).
+- ALL subagent dispatches use `model: "opus"` (feedback_subagents_use_opus). VERIFY every agent claim against git/disk (agents have produced false flips this session). Agents are FORBIDDEN git/PLAN/SPEC-root writes — return `## State Changes` only.
+
+### MANDATORY rehydration first (TIER-1, before any close-out work)
+1. Set active project `skills` + `bootstrap_context`.
+2. Read this session's `## State` block + Events 134-140.
+3. `git` verify: branch + HEAD = pause commit + tree CLEAN.
+4. Re-read auto-memories: per-task-build-qa-cycle, agents-no-autonomous-git-or-plan-writes, spec-root-and-plan-graph-sync, qa-one-agent-per-task-parallel, subagents-use-opus, complete-rename-no-backcompat, enforcement-layer-build-isolation, brain-list-directory-case-sensitive.
+5. Confirm 47/47 + suite 1234/0 before proceeding.
+
+### CLOSE-OUT STEPS — EXACT ORDER (do not reorder)
+
+**Phase 1 — FU-6b (Layer-7 fix) [gates REQ-012 acceptance]**
+- Fix `hooks/scripts.disabled/git-state-observer.ts` per-event input-shape bug (same class as FU-6; it fails-open so silent). Add/extend a test proving Layer-7 parses the real FileChanged input shape. Verify via the 046 smoke + a targeted test. (bun-ts-engineer, opus.)
+
+**Phase 2 — REQ-004 AC-9 prereq**
+- Check whether the REQ-004 AC-9 prefix-collision path-containment test exists in a gate-point script. If NOT, add it (small test). Required before REQ-004 acceptance.
+
+**Phase 3 — REQ/DESIGN acceptances + SPEC-root 5-list final sync**
+- Now all TASKs DONE: for each remaining REQ (004 [after Phase 2], 006, 007, 008, 009, 010, 011 [AC10 met via TASK-046 latency L1 152ms/L3 354ms], 012 [after Phase 1 FU-6b]) + DESIGN (002, 003, 004): verify AC/`## Compliance` met with evidence, flip frontmatter DRAFT→ACCEPTED. Validate each with `validateRequirementAcClaim`/`validateDesignComplianceClaim` (schema must accept).
+- Sync SPEC-008 ROOT all 5 lists: Requirements (all 12 `[x]`), Designs (all 4 `[x]`), Tasks (already 47 `[x]`), Acceptance Criteria (flip totality-gated items now met: all-REQs-ACCEPTED, all-DESIGNs-ACCEPTED, all-47-TASKs-DONE, composition tests, hooks smoke-tested, 11 Track-4 drift items), Success Criteria (the 4 items).
+
+**Phase 4 — test-report→qa docs sweep (~37 notes)**
+- Careful per-note Brain-MCP pass over docs/** notes still referencing `test-report`/`TestReportNoteSchema`/`validateTestReportPassClaim`. UPDATE entity/symbol refs to current names (`qa`/`QaNoteSchema`/`validateQaPassClaim`) for forward-accuracy in SPEC-008 REQ/DESIGN/TASK + QA/ADR/ANALYSIS prose, BUT PRESERVE rename-narrative semantics where "test-report" is the OLD name in a history/rename discussion (esp. THIS session note's Events 114-116 — do NOT corrupt "rename test-report→qa"). Audit grep: `grep -rln 'test-report\|TestReportNoteSchema\|validateTestReportPassClaim' docs/` → reconcile each. Hooks STAY disabled during this.
+
+**Phase 5 — Stale baseline-language reconciliation**
+- Fix any "2 pre-existing SPEC-007 fails" / "705/2/707" / "1216/2" baseline language in SPEC-008 root + PLAN-001 (now 1234/0) → reflect the fully-green suite.
+
+**Phase 6 — ADR-005 D-B clarification + adr-review [BLOCKING GATE]**
+- Add a `## Clarifications` entry to ADR-005 recording decision D-B (EPIC-only adversarial fixtures; ADR/ANALYSIS adversarial fixtures structurally impossible in the parse→validate harness — schema rejection IS their coverage; deviation from D-3/D-5 scope).
+- Run `brain:---adr-review` on ADR-005 — MANDATORY blocking gate after the ADR edit. Must reach convergence PASS before any downstream close.
+
+**Phase 7 — Final SPEC-008 QA sweep + 4 exit gates → SPEC-008 DONE**
+- Final spec-level QA sweep + coverage matrix (if not fully covered by per-TASK QA).
+- 4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref coverage-note + lint. + conditional prompt-engineer gate for any prompt-like diff.
+- `validateSpecDoneClaim(SPEC-008)` → ok.
+- Flip SPEC-008 root status IN_PROGRESS → DONE.
+
+**Phase 8 — Hooks re-enable (GO-LIVE)**
+- ONLY after Phases 1-7 complete + all notes conformant + 046 smoke passing.
+- `mv hooks/hooks.json.disabled hooks/hooks.json` + `mv hooks/scripts.disabled hooks/scripts`.
+- CAUTION (enforcement-layer-build-isolation): hooks activate the instant files land. After re-enable the gates are LIVE — verify a sample Brain-note write is NOT wrongly blocked + a turn-end (Stop) doesn't fail-closed. If they block, the layer has a bug → fix before continuing.
+
+**Phase 9 — PLAN close**
+- protocol-hardening part → DONE (Wave 2 closes the umbrella); build.SPEC-008 part → DONE (if not already terminal).
+- PLAN-001 frontmatter status IN_PROGRESS → DONE (`validatePlanDoneClaim`: every part terminal). Progress Dashboard + cross-part graph reflect all-DONE.
+
+**Phase 10 — RETROSPECTIVE** (BEFORE /end)
+- `brain:🧠-retrospective` (or `/brain:---reflect`-driven retro) over the session + PLAN. Rich material: the deps-graph saga + mermaid `end` bug, renderPlanNote custom-section data-loss, SPEC-003/SPEC-007 drift reconciliation, the EPIC-only parse-vs-validate harness finding, 3 agent-discipline catches, the AC10-into-046 decision, the renderer-owns-PLAN course-correction. Capture learnings (Five Whys, timeline, agent-performance).
+
+**Phase 11 — SKILLBOOK** (AFTER retro, BEFORE /end)
+- `brain:🧠-skillbook` — curate the retrospective's reflections into atomic reusable strategies (atomicity scoring, dedup, domain-index mapping).
+
+**Phase 12 — /end** (TERMINAL)
+- BEFORE /end: fix FU-3 (move session `## Observations`/`## Relations` to the true tail — currently mid-note ~lines 60/68, violating final-two-sections) + refresh the session `## State` block to final state.
+- `/skills:end` (or auto via /plan): DoD verify → `/review` BLOCKING gate → 5 pre-flight checks → final commit → markdownlint → set-part-done → push branch + `gh pr create` → flip session status DONE → structured report.
+
+### Open FUs (post-PLAN or tracked; NOT blocking the close above)
+- FU-4: add `hooks/**` to root `tsconfig.json` + `biome.json` include (so CI gates the hook layer; currently ungated).
+- FU-5: reconcile TASK-039 `parse-tool-input.ts` MCP schemas to real shapes.
+- FU-1: frontmatter `validates:` key in QA-032/033/034-SPEC-003 (/defrag sweep).
+- PLAN-001 had `QA-000-SPEC-001` placeholder qa_ref values (format-valid but bogus numbers) — verify/clean.
+
+### State Changes
+- SESSION-2026-05-23_02: IN_PROGRESS → PAUSED (Event 140; 47/47 clean boundary; close-out deferred to fresh context)
+- Exhaustive 12-phase close-out resume protocol recorded (retrospective → skillbook → /end order resolved; both BEFORE /end)
