@@ -1,6 +1,6 @@
 ---
 title: 'QA-036-SPEC-004: TASK-008 Barrel and sourceType Alignment Revalidation'
-type: test-report
+type: qa
 permalink: qa/qa-036-spec-004-task-008-barrel-and-sourcetype-alignment-revalidation
 status: DONE
 verdict: PASS
@@ -21,11 +21,11 @@ tags:
 
 ## Scope
 
-Revalidation of [[TASK-008-SPEC-004: Add Adapters Barrel and Align sourceType to spec]] after impl agent reported all 5 DoD items complete. Validates: (1) barrel file at `_shared/composition/src/adapters/index.ts` exports the 5 adapter classes; (2) `sourceType` literal aligned to `"spec"` across impl + 2 schema files + 3 test files + 2 fixture YAMLs per locked adjudication; (3) full composition suite passes; (4) tsc + biome clean.
+Revalidation of [[TASK-008-SPEC-004: Add Adapters Barrel and Align sourceType to spec]] after impl agent reported all 5 DoD items complete. Validates: (1) barrel file at `shared/composition/src/adapters/index.ts` exports the 5 adapter classes; (2) `sourceType` literal aligned to `"spec"` across impl + 2 schema files + 3 test files + 2 fixture YAMLs per locked adjudication; (3) full composition suite passes; (4) tsc + biome clean.
 
 ## Test Execution
 
-Working dir: `_shared/composition`
+Working dir: `shared/composition`
 
 Commands run:
 
@@ -41,7 +41,7 @@ Note on tests_run delta: impl agent claimed 468/468; actual is 475/475 (impl cla
 
 | # | DoD Item | Verdict | Evidence |
 |---|----------|---------|----------|
-| 1 | `src/adapters/index.ts` exists exporting `SpecSubtreeAdapter`, `AdrAdapter`, `AnalysisAdapter`, `PlanAdapter`, `SessionAdapter` | PASS | `_shared/composition/src/adapters/index.ts:9-20` — all 5 adapters re-exported plus `FilenameRewriteSpec`, `SubtreeChild`, `SubtreeManifest`, `SubtreeMutationResult`, `SubtreeHashValidationError` type/class exports for SpecSubtreeAdapter consumers |
+| 1 | `src/adapters/index.ts` exists exporting `SpecSubtreeAdapter`, `AdrAdapter`, `AnalysisAdapter`, `PlanAdapter`, `SessionAdapter` | PASS | `shared/composition/src/adapters/index.ts:9-20` — all 5 adapters re-exported plus `FilenameRewriteSpec`, `SubtreeChild`, `SubtreeManifest`, `SubtreeMutationResult`, `SubtreeHashValidationError` type/class exports for SpecSubtreeAdapter consumers |
 | 2 | User has adjudicated sourceType choice — locked: "spec" | PASS | Adjudication captured in TASK-008 body: "locked: \"spec\" (canonical authority)"; matches REQ-001-SPEC-004 AC1 + DESIGN-001 Component 1 |
 | 3 | Implementation + schema + tests aligned to "spec" | PASS | `src/adapters/spec-subtree.ts:65` `readonly sourceType = "spec"`; `schemas/distribution/spec-subtree.plan.schema.ts:119` `source_type: z.literal("spec")`; `schemas/composition/spec-subtree.plan.schema.ts` literal `"spec"`; fixture YAMLs `spec-subtree-distribution.plan.yaml:6` and `spec-subtree-composition.plan.yaml:5` both `source_type: spec`; test files (`spec-subtree-round-trip.test.ts`, `spec-subtree-schema.test.ts`, `dispatcher.test.ts`) use `"spec" as const` discriminant |
 | 4 | All existing SPEC-004 tests pass (full suite) | PASS | 475/475 pass (impl claim 468/468 stale; 7 tests added between dispatch and verification, all green). Per-file: `spec-subtree-round-trip.test.ts` 12/12, `spec-subtree-schema.test.ts` 24/24, `spec-subtree-adapter.test.ts` all pass, `dispatcher.test.ts` all pass |

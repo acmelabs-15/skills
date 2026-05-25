@@ -58,7 +58,7 @@ Functional
 
 ## Implementation Notes
 
-The crossSourceUpdateSchema is defined in `_shared/composition/schemas/distribution/session.plan.schema.ts`. Each entry specifies: target_source_type (literal "plan"), target_path (path to target PLAN note), and optional frontmatter_map and wikilink_map records for structural mapping transforms. The SessionAdapter surfaces these via `getCrossSourceUpdates(content, plan)` as a pass-through. The orchestrator dispatches application when a PLAN adapter is registered. If no PLAN adapter is registered (SPEC-003 not yet built), the orchestrator skips cross-source dispatch and proceeds with the SESSION operation.
+The crossSourceUpdateSchema is defined in `shared/composition/schemas/distribution/session.plan.schema.ts`. Each entry specifies: target_source_type (literal "plan"), target_path (path to target PLAN note), and optional frontmatter_map and wikilink_map records for structural mapping transforms. The SessionAdapter surfaces these via `getCrossSourceUpdates(content, plan)` as a pass-through. The orchestrator dispatches application when a PLAN adapter is registered. If no PLAN adapter is registered (SPEC-003 not yet built), the orchestrator skips cross-source dispatch and proceeds with the SESSION operation.
 
 ## Observations
 

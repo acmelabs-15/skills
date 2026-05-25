@@ -18,7 +18,7 @@ tags:
 Retro-validate TASK-012-SPEC-007 (round-trip property test) via `tests/plan-session-round-trip.test.ts` + companion fixtures `tests/fixtures/plan-note-sample.md` + `tests/fixtures/session-note-sample.md`.
 
 - **Feature**: Round-Trip Property Test (TASK-012-SPEC-007)
-- **Scope**: `_shared/composition/tests/plan-session-round-trip.test.ts` plus fixtures
+- **Scope**: `shared/composition/tests/plan-session-round-trip.test.ts` plus fixtures
 - **Acceptance Criteria**: REQ-011-SPEC-007, ADR-003 D-8, ADR-001 F-8, F-6
 
 ## Approach
@@ -26,7 +26,7 @@ Retro-validate TASK-012-SPEC-007 (round-trip property test) via `tests/plan-sess
 - **Test Types**: Property test (SHA-256 char-identity)
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: Canonical fixtures in tests/fixtures/
-- **Test File**: `_shared/composition/tests/plan-session-round-trip.test.ts`
+- **Test File**: `shared/composition/tests/plan-session-round-trip.test.ts`
 
 ## Results
 

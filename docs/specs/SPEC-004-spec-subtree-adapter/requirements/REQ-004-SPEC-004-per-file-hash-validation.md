@@ -52,7 +52,7 @@ The frontmatter_map inverse is critical: without reversing frontmatter mutations
 
 ## Implementation Notes
 
-The per-file hash validation reuses the shared sha256() utility from _shared/composition/src/core/hash.ts (established in SPEC-001 REQ-003-SPEC-001). The validation orchestration iterates the subtree_manifest entries (root first, then children), computing and comparing hashes. If any comparison fails, the iteration short-circuits and triggers cleanup of all .tmp files. Error reporting includes the file path, expected hash, actual hash, and a diff hint (first N characters where content diverges).
+The per-file hash validation reuses the shared sha256() utility from shared/composition/src/core/hash.ts (established in SPEC-001 REQ-003-SPEC-001). The validation orchestration iterates the subtree_manifest entries (root first, then children), computing and comparing hashes. If any comparison fails, the iteration short-circuits and triggers cleanup of all .tmp files. Error reporting includes the file path, expected hash, actual hash, and a diff hint (first N characters where content diverges).
 
 ## Observations
 

@@ -64,7 +64,7 @@ ADR-002 D-4 specifies the ADR hash extraction strategy: extract S by H3 line ran
 
 ## Implementation Notes
 
-The ADR adapter lives at _shared/composition/src/adapters/adr.ts. It extends BaseMarkdownAdapter and overrides only the configuration properties. The H3 extraction logic scans for lines starting with "### " under the "## Decision" section and computes line ranges. The renumber_map keys are validated at Zod schema level to match the D-N pattern. The adapter handles both distribution (1 ADR to N sub-ADRs) and composition (N sub-ADRs to 1 merged ADR).
+The ADR adapter lives at shared/composition/src/adapters/adr.ts. It extends BaseMarkdownAdapter and overrides only the configuration properties. The H3 extraction logic scans for lines starting with "### " under the "## Decision" section and computes line ranges. The renumber_map keys are validated at Zod schema level to match the D-N pattern. The adapter handles both distribution (1 ADR to N sub-ADRs) and composition (N sub-ADRs to 1 merged ADR).
 
 ## Observations
 

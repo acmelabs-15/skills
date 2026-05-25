@@ -20,7 +20,7 @@ This TASK realizes REQ-011-SPEC-007, DESIGN-002-SPEC-007 round-trip strategy, an
 
 ## Objective
 
-Create `_shared/composition/src/tests/round-trip.test.ts` with two SHA-256 char-identity tests: one for plan notes (using PLAN-001 trimmed fixture) and one for session notes (using SESSION-2026-05-19_01 fixture). Also create the test fixtures in `_shared/composition/src/tests/fixtures/`.
+Create `shared/composition/src/tests/round-trip.test.ts` with two SHA-256 char-identity tests: one for plan notes (using PLAN-001 trimmed fixture) and one for session notes (using SESSION-2026-05-19_01 fixture). Also create the test fixtures in `shared/composition/src/tests/fixtures/`.
 
 ## Scope
 
@@ -41,9 +41,9 @@ Create `_shared/composition/src/tests/round-trip.test.ts` with two SHA-256 char-
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/tests/round-trip.test.ts` | NEW | Round-trip property tests |
-| `_shared/composition/src/tests/fixtures/plan-001-trimmed.md` | NEW | PLAN-001 trimmed fixture |
-| `_shared/composition/src/tests/fixtures/session-fixture.md` | NEW | SESSION round-trip fixture |
+| `shared/composition/src/tests/round-trip.test.ts` | NEW | Round-trip property tests |
+| `shared/composition/src/tests/fixtures/plan-001-trimmed.md` | NEW | PLAN-001 trimmed fixture |
+| `shared/composition/src/tests/fixtures/session-fixture.md` | NEW | SESSION round-trip fixture |
 
 ## Testing Requirements
 

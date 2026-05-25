@@ -14,12 +14,12 @@ tags:
 
 ## Context
 
-This design defines the module layout for the composition library at _shared/composition/. It realizes the project structure from KICKOFF-BRIEF.md and the technology stack from ADR-001 (F-6 Bun+TS, D-1 Zod, D-2 unified+remark). The module structure must support incremental adapter addition (SPEC-002 and SPEC-003 add adapters without modifying core modules) and the modular Zod schema layout from ADR-002 D-5.
+This design defines the module layout for the composition library at shared/composition/. It realizes the project structure from KICKOFF-BRIEF.md and the technology stack from ADR-001 (F-6 Bun+TS, D-1 Zod, D-2 unified+remark). The module structure must support incremental adapter addition (SPEC-002 and SPEC-003 add adapters without modifying core modules) and the modular Zod schema layout from ADR-002 D-5.
 
 ## Module Structure
 
 ```text
-_shared/composition/
+shared/composition/
   package.json                 # Bun workspace; deps: zod, unified, remark-parse, remark-stringify, remark-frontmatter, js-yaml
   tsconfig.json                # strict mode; target ES2022; moduleResolution bundler
   biome.json                   # lint + format config
@@ -54,7 +54,7 @@ _shared/composition/
 ## Interfaces
 
 ```typescript
-// Core exports from _shared/composition/src/core/
+// Core exports from shared/composition/src/core/
 export type { CompositionAdapter } from "./core/adapter";
 export type { LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec } from "./core/types";
 export { sha256 } from "./core/hash";
@@ -105,7 +105,7 @@ Path containment validator (containedPathSchema) mitigates CWE-22. YAML hardenin
 ## Observations
 
 - [design] Layered module structure with core/adapters/schemas/tests supports incremental adapter addition without modifying core #module-structure #layered
-- [decision] Single package.json at _shared/composition/ root per project layout from KICKOFF-BRIEF.md #project-structure #bun
+- [decision] Single package.json at shared/composition/ root per project layout from KICKOFF-BRIEF.md #project-structure #bun
 - [technique] Schema files mirror adapter files enabling per-type extension at both validation and implementation layers #schema-mirroring #extensibility
 - [constraint] All dependencies are dev/runtime split: zod + unified + remark + js-yaml are runtime; biome + bun test are dev #dependencies #bun
 

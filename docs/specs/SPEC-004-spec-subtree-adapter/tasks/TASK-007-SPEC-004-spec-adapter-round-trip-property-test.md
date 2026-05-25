@@ -27,7 +27,7 @@ Implement the round-trip property test for the SPEC subtree adapter that proves 
 
 **In Scope**:
 
-- Round-trip property test at _shared/composition/tests/spec-subtree-adapter.test.ts
+- Round-trip property test at shared/composition/tests/spec-subtree-adapter.test.ts
 - Per-file SHA-256 comparison (root + all children)
 - Programmatic inverse plan generation (swap source/dest, invert all maps)
 - Error diagnostics: on failure, report which file drifted and first divergence point
@@ -46,7 +46,7 @@ The test uses bun:test. It reads fixture files from tests/fixtures/spec-subtree/
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/tests/spec-subtree-adapter.test.ts | NEW | Round-trip property test |
+| shared/composition/tests/spec-subtree-adapter.test.ts | NEW | Round-trip property test |
 
 ## Definition of Done
 

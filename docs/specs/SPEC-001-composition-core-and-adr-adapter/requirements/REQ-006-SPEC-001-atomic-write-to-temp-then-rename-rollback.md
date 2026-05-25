@@ -48,7 +48,7 @@ ADR-001 F-8 specifies the rollback mechanism formally. For each destination file
       WHEN the plan is rerun
       THEN the .tmp files from the previous run are cleaned up and execution proceeds normally
 
-- [x] GIVEN the atomic write utility at _shared/composition/src/core/atomic-write.ts
+- [x] GIVEN the atomic write utility at shared/composition/src/core/atomic-write.ts
       WHEN called with content and a destination path
       THEN it writes to dest-path.tmp using Bun.write and returns a handle for later rename or cleanup
 

@@ -30,11 +30,11 @@ SPEC-001 REQ-008 established this pattern for the ADR adapter. This requirement 
 
 ## Acceptance Criteria
 
-- [ ] GIVEN an ANALYSIS fixture note at _shared/composition/tests/fixtures/analysis/
+- [ ] GIVEN an ANALYSIS fixture note at shared/composition/tests/fixtures/analysis/
       WHEN the round-trip property test runs (parse, decompose with fixture plan, recompose with inverse plan)
       THEN SHA-256(original) === SHA-256(recomposed)
 
-- [ ] GIVEN a SESSION fixture note at _shared/composition/tests/fixtures/session/
+- [ ] GIVEN a SESSION fixture note at shared/composition/tests/fixtures/session/
       WHEN the round-trip property test runs (parse, decompose with fixture plan, recompose with inverse plan)
       THEN SHA-256(original) === SHA-256(recomposed)
 

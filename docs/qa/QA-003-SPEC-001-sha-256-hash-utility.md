@@ -22,7 +22,7 @@ tags:
 
 ## Scope
 
-Validates `sha256(content: string): string` in `_shared/composition/src/core/hash.ts`. Single exported function using `Bun.CryptoHasher("sha256")` returning lowercase hex digest.
+Validates `sha256(content: string): string` in `shared/composition/src/core/hash.ts`. Single exported function using `Bun.CryptoHasher("sha256")` returning lowercase hex digest.
 
 ## Approach
 

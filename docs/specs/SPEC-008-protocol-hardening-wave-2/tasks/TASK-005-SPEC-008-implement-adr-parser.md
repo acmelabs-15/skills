@@ -19,7 +19,7 @@ tags:
 
 Implement `parseAdrNote(markdown: string): AdrNote` at `shared/composition/src/parsers/adr-note.ts` per [[REQ-002-SPEC-008: New Parser Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. The parser uses unified plus remark-parse plus remark-frontmatter to produce an AST, extracts frontmatter via js-yaml, dispatches body sections via the `bulletFieldMap` pattern from SPEC-007 DESIGN-002, parses Observations and Relations via the existing AST helpers, then validates the assembled model via `AdrNoteSchema.parse()` from TASK-001. Parsing failures throw Zod errors with structured paths. Mismatched `type` literals (e.g., feeding a non-ADR file) fail at the frontmatter layer.
 
-This TASK depends on TASK-001 (schema is the parser's contract) and Track 4 renaming `_shared/` to `shared/`.
+This TASK depends on TASK-001 (schema is the parser's contract) and Track 4 renaming `shared/` to `shared/`.
 
 ## Definition of Done
 - [x] File `shared/composition/src/parsers/adr-note.ts` exists and exports `parseAdrNote`

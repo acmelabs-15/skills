@@ -32,9 +32,9 @@ User adjudication required FIRST: keep current simplified shape and amend ADR-00
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/schemas/distribution/spec-subtree.plan.schema.ts | MODIFY | Reshape per adjudication |
-| _shared/composition/schemas/composition/spec-subtree.plan.schema.ts | MODIFY | Reshape per adjudication |
-| _shared/composition/tests/spec-subtree-schema.test.ts | MODIFY | Add empty-children PASS test + missing-field FAIL test + destination path-traversal FAIL test |
+| shared/composition/schemas/distribution/spec-subtree.plan.schema.ts | MODIFY | Reshape per adjudication |
+| shared/composition/schemas/composition/spec-subtree.plan.schema.ts | MODIFY | Reshape per adjudication |
+| shared/composition/tests/spec-subtree-schema.test.ts | MODIFY | Add empty-children PASS test + missing-field FAIL test + destination path-traversal FAIL test |
 | docs/decisions/ADR-002-*.md | MODIFY (option B) | Amend D-5 |
 | docs/specs/SPEC-004-spec-subtree-adapter/requirements/REQ-005-*.md | MODIFY | Amend AC if option B chosen |
 

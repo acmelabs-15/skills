@@ -20,7 +20,7 @@ This TASK realizes REQ-001-SPEC-007 and the common.ts schema from ANALYSIS-002 A
 
 ## Objective
 
-Create `_shared/composition/src/schemas/common.ts` with all shared Zod schemas: 8 enum schemas (PartSubstatusEnum, TaskStatusEnum, PlanStatusEnum, SessionStatusEnum, DecisionStatusEnum, EffortEnum, ComplexityTierEnum, PhaseEnum), ObservationCategoryEnum, RelationVerbEnum, 6 ID regex schemas (EntityIdSchema, PartIdSchema, TaskIdSchema, DecisionIdSchema, EventNumberSchema, SessionIdSchema), and 4 structural schemas (WikilinkSchema, OutcomeSchema, ObservationSchema, RelationSchema).
+Create `shared/composition/src/schemas/common.ts` with all shared Zod schemas: 8 enum schemas (PartSubstatusEnum, TaskStatusEnum, PlanStatusEnum, SessionStatusEnum, DecisionStatusEnum, EffortEnum, ComplexityTierEnum, PhaseEnum), ObservationCategoryEnum, RelationVerbEnum, 6 ID regex schemas (EntityIdSchema, PartIdSchema, TaskIdSchema, DecisionIdSchema, EventNumberSchema, SessionIdSchema), and 4 structural schemas (WikilinkSchema, OutcomeSchema, ObservationSchema, RelationSchema).
 
 ## Scope
 
@@ -45,7 +45,7 @@ Full Zod schema draft in ANALYSIS-002 Appendix C common.ts section. ObservationC
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/schemas/common.ts` | NEW | Shared Zod schemas |
+| `shared/composition/src/schemas/common.ts` | NEW | Shared Zod schemas |
 
 ## Testing Requirements
 

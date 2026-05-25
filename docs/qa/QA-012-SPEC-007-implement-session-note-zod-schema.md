@@ -18,7 +18,7 @@ tags:
 Retro-validate TASK-003-SPEC-007 against DoD via inspection of `src/schemas/session-note.ts` and `tests/session-note-schema.test.ts`.
 
 - **Feature**: SessionNote Zod Schema (TASK-003-SPEC-007)
-- **Scope**: `_shared/composition/src/schemas/session-note.ts` (204 LOC)
+- **Scope**: `shared/composition/src/schemas/session-note.ts` (204 LOC)
 - **Acceptance Criteria**: REQ-003-SPEC-007, ADR-003 D-2, D-4
 
 ## Approach
@@ -26,7 +26,7 @@ Retro-validate TASK-003-SPEC-007 against DoD via inspection of `src/schemas/sess
 - **Test Types**: Unit (discriminated union + cross-field invariants)
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: Existing test suite
-- **Test File**: `_shared/composition/tests/session-note-schema.test.ts`
+- **Test File**: `shared/composition/tests/session-note-schema.test.ts`
 
 ## Results
 

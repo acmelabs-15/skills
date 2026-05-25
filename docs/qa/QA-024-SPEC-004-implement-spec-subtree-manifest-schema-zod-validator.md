@@ -28,7 +28,7 @@ Verify TASK-005-SPEC-004 implements `specSubtreeManifestSchema` and distribution
 - **Test Types**: Unit
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: Hand-crafted valid + invalid manifests
-- **Test File**: `_shared/composition/tests/spec-subtree-schema.test.ts`
+- **Test File**: `shared/composition/tests/spec-subtree-schema.test.ts`
 
 ## Results
 

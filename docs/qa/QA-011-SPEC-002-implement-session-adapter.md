@@ -14,7 +14,7 @@ tags:
 
 ## Objective
 
-Retro-validate the SESSION adapter (`_shared/composition/src/adapters/session.ts`) against TASK-002-SPEC-002 DoD, REQ-002-SPEC-002 acceptance criteria, and DESIGN-001-SPEC-002 (Component 2) compliance.
+Retro-validate the SESSION adapter (`shared/composition/src/adapters/session.ts`) against TASK-002-SPEC-002 DoD, REQ-002-SPEC-002 acceptance criteria, and DESIGN-001-SPEC-002 (Component 2) compliance.
 
 - **Feature**: SESSION adapter, config-only subclass of BaseMarkdownAdapter plus cross-source emission
 - **Scope**: TASK-002-SPEC-002
@@ -24,7 +24,7 @@ Retro-validate the SESSION adapter (`_shared/composition/src/adapters/session.ts
 - **Test Types**: unit, structural-conformance
 - **Environment**: bun test v1.3.13; commit 2f049fd
 - **Data Strategy**: inline fixture in session-adapter.test.ts plus shared fixture tests/fixtures/session-sample.md
-- **Test File**: `_shared/composition/tests/session-adapter.test.ts`
+- **Test File**: `shared/composition/tests/session-adapter.test.ts`
 
 ## Results
 

@@ -73,7 +73,7 @@ All 12 DoD items verified with file:line evidence. All 3 ADR Compliance items sa
 | 1 | File at documented path (no wave-specific subdirs) | [PASS] | `shared/composition/src/schemas/epic-note.ts` matches Module Structure diagram |
 | 2 | Schema constant named `EpicNoteSchema`; type alias `EpicNote` | [PASS] | epic-note.ts:76 and :131 |
 | 7 | Imports cross-cutting constants from common.ts | [PASS] | epic-note.ts:2 imports EntityIdSchema, ObservationSchema, RelationSchema from common.js |
-| 8 | Paths use `shared/` (post-rename) | [PASS] | File lives at `shared/composition/...`; no `_shared/` references anywhere |
+| 8 | Paths use `shared/` (post-rename) | [PASS] | File lives at `shared/composition/...`; no `shared/` references anywhere |
 
 Items 3-6 are parser/validator-specific and do not apply to TASK-003 (schema only).
 

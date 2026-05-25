@@ -32,7 +32,7 @@ ADR-001 F-8 SHA-256 hash protocol applies: the round-trip property test must pas
 
 ## Acceptance Criteria
 
-- [ ] GIVEN a SESSION adapter class at _shared/composition/src/adapters/session.ts
+- [ ] GIVEN a SESSION adapter class at shared/composition/src/adapters/session.ts
       WHEN imported
       THEN it extends BaseMarkdownAdapter and is a valid CompositionAdapter implementation
 
@@ -70,7 +70,7 @@ The SESSION adapter overrides section_delimiter and identifier_pattern on BaseMa
 - [fact] Estimated 100 LOC delta over BaseMarkdownAdapter; more complex than ANALYSIS due to Event-NN renumbering #estimation #loc
 - [constraint] Event-NN identifiers restart per destination note during decomposition per ADR-002 D-3 #renumbering #session
 - [decision] Cross-source updates separated into REQ-003-SPEC-002 for clean concern separation #separation #design
-- [fact] ACCEPTED 2026-05-24: implemented by TASK-002-SPEC-002 at _shared/composition/src/adapters/session.ts; DONE per DoD all [x]; validated by QA-042-SPEC-002 #provenance #audit-d
+- [fact] ACCEPTED 2026-05-24: implemented by TASK-002-SPEC-002 at shared/composition/src/adapters/session.ts; DONE per DoD all [x]; validated by QA-042-SPEC-002 #provenance #audit-d
 
 ## Relations
 

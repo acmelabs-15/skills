@@ -38,7 +38,7 @@ The SPEC subtree adapter is the HARDEST adapter in the composition library (~500
 
 ## Acceptance Criteria
 
-- [ ] Given a TypeScript file at _shared/composition/src/adapters/spec-subtree.ts, when compiled with tsc strict mode, then the SpecSubtreeAdapter class implements CompositionAdapter with all 5 methods plus readonly sourceType property set to "spec"
+- [ ] Given a TypeScript file at shared/composition/src/adapters/spec-subtree.ts, when compiled with tsc strict mode, then the SpecSubtreeAdapter class implements CompositionAdapter with all 5 methods plus readonly sourceType property set to "spec"
 
 - [ ] Given a plan YAML with source_type "spec" and a subtree_manifest containing root and children entries, when the adapter processes the manifest, then it iterates over each file (root + all children) applying per-file mutations independently
 
@@ -50,7 +50,7 @@ The SPEC subtree adapter is the HARDEST adapter in the composition library (~500
 
 ## Implementation Notes
 
-The SpecSubtreeAdapter lives at _shared/composition/src/adapters/spec-subtree.ts. It does NOT extend BaseMarkdownAdapter because the multi-file orchestration pattern is fundamentally different from single-file adapters. The adapter consumes the subtree_manifest field from the plan YAML (validated by specSubtreeManifestSchema per ADR-002 D-5). Each file in the manifest is processed independently through the 5-method interface, but the orchestration layer coordinates hash validation and atomic write across all files as a single transaction.
+The SpecSubtreeAdapter lives at shared/composition/src/adapters/spec-subtree.ts. It does NOT extend BaseMarkdownAdapter because the multi-file orchestration pattern is fundamentally different from single-file adapters. The adapter consumes the subtree_manifest field from the plan YAML (validated by specSubtreeManifestSchema per ADR-002 D-5). Each file in the manifest is processed independently through the 5-method interface, but the orchestration layer coordinates hash validation and atomic write across all files as a single transaction.
 
 ## Observations
 

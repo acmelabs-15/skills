@@ -18,7 +18,7 @@ tags:
 
 Reconcile two pieces of DESIGN-001-SPEC-002 vs code drift for the ANALYSIS adapter discovered in Wave 2 retro-validation (QA-010-SPEC-002):
 
-1. `identifierPrefix` property declared in DESIGN-001 Component 1 + Component 3 AdapterConfig is absent in `_shared/composition/src/adapters/analysis.ts`. The base class `BaseMarkdownAdapter` also lacks the abstract slot.
+1. `identifierPrefix` property declared in DESIGN-001 Component 1 + Component 3 AdapterConfig is absent in `shared/composition/src/adapters/analysis.ts`. The base class `BaseMarkdownAdapter` also lacks the abstract slot.
 2. `identifierPattern` in code is `/item-(\\d+)/i` (case-insensitive flag); DESIGN-001 specifies `/item-(\\d+)/` (no flag).
 
 Reconciliation paths (decide via decisions phase):
@@ -38,8 +38,8 @@ Reconciliation paths (decide via decisions phase):
 
 In Scope:
 
-- `_shared/composition/src/adapters/analysis.ts` (modify)
-- `_shared/composition/src/core/base-markdown-adapter.ts` (modify if abstract slot is added)
+- `shared/composition/src/adapters/analysis.ts` (modify)
+- `shared/composition/src/core/base-markdown-adapter.ts` (modify if abstract slot is added)
 - `docs/specs/SPEC-002-simple-adapters/design/DESIGN-001-SPEC-002-basemarkdownadapter-configuration-pattern.md` (amend if spec-amendment path chosen)
 
 Out of Scope:

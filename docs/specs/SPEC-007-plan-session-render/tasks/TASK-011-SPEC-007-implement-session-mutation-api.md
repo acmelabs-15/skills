@@ -20,7 +20,7 @@ This TASK realizes REQ-010-SPEC-007 and DESIGN-003-SPEC-007.
 
 ## Objective
 
-Create `_shared/composition/src/session-mutations.ts` implementing applySessionMutation with the append-event mutation following the same read-parse-mutate-validate-render-write pipeline as plan mutations. Event-number continuity is enforced both by the mutation function (new n must equal max existing + 1) and by SessionNoteSchema superRefine.
+Create `shared/composition/src/session-mutations.ts` implementing applySessionMutation with the append-event mutation following the same read-parse-mutate-validate-render-write pipeline as plan mutations. Event-number continuity is enforced both by the mutation function (new n must equal max existing + 1) and by SessionNoteSchema superRefine.
 
 ## Scope
 
@@ -40,7 +40,7 @@ Create `_shared/composition/src/session-mutations.ts` implementing applySessionM
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/session-mutations.ts` | NEW | Session mutation API |
+| `shared/composition/src/session-mutations.ts` | NEW | Session mutation API |
 
 ## Testing Requirements
 

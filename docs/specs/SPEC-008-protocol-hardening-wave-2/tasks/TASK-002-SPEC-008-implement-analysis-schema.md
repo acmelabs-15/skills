@@ -19,7 +19,7 @@ tags:
 
 Implement `AnalysisNoteSchema` at `shared/composition/src/schemas/analysis-note.ts` per [[REQ-001-SPEC-008: New Schema Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. The schema validates frontmatter (title regex `^ANALYSIS-\d{3}.*`, type literal `analysis`, status enum including ACCEPTED, permalink regex `^analysis/`, tags 2-5), body sections, Observations, and Relations. The most important rule is a superRefine pass that REJECTS the combination of `status: ACCEPTED` AND the presence of a `## Open Questions` section in the body. This rule encodes the no-open-questions-in-planning-artifacts inline principle that 41 Brain v2 Wave 7 analyses violated.
 
-This TASK depends on Track 4 renaming `_shared/` to `shared/`; orchestrator rewires once that TASK exists.
+This TASK depends on Track 4 renaming `shared/` to `shared/`; orchestrator rewires once that TASK exists.
 
 ## Definition of Done
 - [x] File `shared/composition/src/schemas/analysis-note.ts` exists and exports `AnalysisNoteSchema` plus `type AnalysisNote`

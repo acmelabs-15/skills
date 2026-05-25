@@ -17,7 +17,7 @@ tags:
 Aggregate retro-validation verdict for SPEC-004 SPEC Subtree Adapter against its 7 TASKs, 6 REQs, 3 DESIGNs after Wave 2 integration. Roll up per-TASK QA-020 through QA-026 verdicts. Determine whether implementation as-built honors the spec subtree.
 
 - **Feature**: SPEC-004 SPEC Subtree Adapter
-- **Scope**: `_shared/composition/src/adapters/spec-subtree.ts`, `schemas/distribution/spec-subtree.plan.schema.ts`, `schemas/composition/spec-subtree.plan.schema.ts`, `tests/spec-subtree-adapter.test.ts`, `tests/spec-subtree-round-trip.test.ts`, `tests/spec-subtree-schema.test.ts`, fixtures
+- **Scope**: `shared/composition/src/adapters/spec-subtree.ts`, `schemas/distribution/spec-subtree.plan.schema.ts`, `schemas/composition/spec-subtree.plan.schema.ts`, `tests/spec-subtree-adapter.test.ts`, `tests/spec-subtree-round-trip.test.ts`, `tests/spec-subtree-schema.test.ts`, fixtures
 - **Acceptance Criteria**: SPEC-004 root Acceptance Criteria + per-REQ AC + per-DESIGN compliance + per-TASK DoD
 
 ## Approach
@@ -25,7 +25,7 @@ Aggregate retro-validation verdict for SPEC-004 SPEC Subtree Adapter against its
 - **Test Types**: Aggregate of unit + integration + property + manual fixture review
 - **Environment**: Local (Bun 1.3.13, biome, tsc strict via project tsconfig)
 - **Data Strategy**: Existing test suite + manual code inspection of spec-subtree.ts + schema files + fixtures
-- **Test File**: Aggregate across `_shared/composition/tests/spec-subtree-*.test.ts`
+- **Test File**: Aggregate across `shared/composition/tests/spec-subtree-*.test.ts`
 
 ## Results
 

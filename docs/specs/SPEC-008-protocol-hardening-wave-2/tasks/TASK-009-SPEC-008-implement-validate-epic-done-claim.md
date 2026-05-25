@@ -19,7 +19,7 @@ tags:
 
 Implement `validateEpicDoneClaim(epicNote: EpicNote, deps: { resolveSpec: SpecResolver }): EpicClaimResult` at `shared/composition/src/validators/epic-claim-validator.ts` per [[REQ-003-SPEC-008: New Claim Validator Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. This is the only Wave 2 validator with a cross-note dependency. The validator fires only when `epicNote.frontmatter.status === 'DONE'`. When firing, it iterates the EPIC's `contains` relations and invokes `deps.resolveSpec(specRef)` for each entry; if any resolved SPEC has status other than DONE (or DEFERRED/ABANDONED if those are project-canonical terminal substatuses for SPECs), the validator records an unsatisfied entry. If the EPIC has at least one contains relation but `deps.resolveSpec` is missing or the resolver returns undefined for a referenced SPEC, the validator throws explicitly per ADR-005 D-5 Phase 3 critic P1.1 resolution (no silent pass).
 
-This TASK depends on TASK-003 (EPIC schema), TASK-006 (EPIC parser), and Track 4 renaming `_shared/` to `shared/`.
+This TASK depends on TASK-003 (EPIC schema), TASK-006 (EPIC parser), and Track 4 renaming `shared/` to `shared/`.
 
 ## Definition of Done
 

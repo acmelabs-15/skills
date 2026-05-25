@@ -30,15 +30,15 @@ DESIGN-001 Component 1+2 and DESIGN-003 Component 1+2.
 
 In-scope artifacts:
 
-- NEW `_shared/composition/src/core/cluster-rollback.ts` (DESIGN-003 Components 1+2)
-- NEW `_shared/composition/src/core/subtree-orchestrator.ts` (DESIGN-001 Component 2 + injectable `SubtreeFileIO`)
-- NEW `_shared/composition/tests/spec-subtree-orchestration.test.ts` (9 tests)
-- MODIFIED `_shared/composition/src/adapters/spec-subtree.ts` -- added `processSubtree()` instance method + barrel re-exports (DESIGN-001 Component 1 surface)
-- MODIFIED `_shared/composition/src/adapters/index.ts` -- barrel updated
+- NEW `shared/composition/src/core/cluster-rollback.ts` (DESIGN-003 Components 1+2)
+- NEW `shared/composition/src/core/subtree-orchestrator.ts` (DESIGN-001 Component 2 + injectable `SubtreeFileIO`)
+- NEW `shared/composition/tests/spec-subtree-orchestration.test.ts` (9 tests)
+- MODIFIED `shared/composition/src/adapters/spec-subtree.ts` -- added `processSubtree()` instance method + barrel re-exports (DESIGN-001 Component 1 surface)
+- MODIFIED `shared/composition/src/adapters/index.ts` -- barrel updated
 
 ## Test Execution
 
-Working dir `_shared/composition`
+Working dir `shared/composition`
 
 | Command | Result |
 |---|---|
@@ -55,7 +55,7 @@ Working dir `_shared/composition`
 | 2 | Either design amended OR implementation extended to match design | PASS | Option B realized: `cluster-rollback.ts` + `subtree-orchestrator.ts` + `SpecSubtreeAdapter.processSubtree()` extend the implementation to honor DESIGN-001 Components 1+2 and DESIGN-003 Components 1+2 verbatim. |
 | 3 | If option B: filesystem stage-all + validate-all + cluster `.tmp` rollback verified by test | PASS | `tests/spec-subtree-orchestration.test.ts:172-235` -- the `validation-failure` test stages with a non-injective renumber_map (`"REQ-001" -> "X"` and `"REQ" -> "X"`), confirms `success=false`, asserts every dest hash and `.tmp` is absent, and asserts no destination files exist (failure aborts before rename). The `all-pass` test (`:173-203`) confirms the inverse: dests written, no `.tmp` remains. |
 | 4 | All existing SPEC-004 tests still pass | PASS | Full suite 484/484 pass. Filtered to SPEC-004: round-trip 12/12, schema 24/24, adapter base, orchestration 9/9 -- no regressions. |
-| 5 | No silent assumptions or TODOs | PASS | `grep -rn "TODO\|FIXME\|XXX" _shared/composition/src/core/cluster-rollback.ts _shared/composition/src/core/subtree-orchestrator.ts _shared/composition/src/adapters/spec-subtree.ts` returns zero matches. Adapter `processSubtree` delegates explicitly; orchestrator handles every error branch (stage throw -> rollback+rethrow; validation fail -> rollback+structured `ProcessResult`; rename throw -> rollback both staged+renamed then rethrow). |
+| 5 | No silent assumptions or TODOs | PASS | `grep -rn "TODO\|FIXME\|XXX" shared/composition/src/core/cluster-rollback.ts shared/composition/src/core/subtree-orchestrator.ts shared/composition/src/adapters/spec-subtree.ts` returns zero matches. Adapter `processSubtree` delegates explicitly; orchestrator handles every error branch (stage throw -> rollback+rethrow; validation fail -> rollback+structured `ProcessResult`; rename throw -> rollback both staged+renamed then rethrow). |
 
 **DoD verdict counts**: 5 PASS / 0 FAIL / 0 PARTIAL / 0 N/A.
 
@@ -63,16 +63,16 @@ Working dir `_shared/composition`
 
 | Component | Verdict | Evidence |
 |---|---|---|
-| Component 1 -- `SpecSubtreeAdapter` exposes `processSubtree(input): ProcessResult` | PASS | `_shared/composition/src/adapters/spec-subtree.ts:154-159` declares `async processSubtree(input, fileIO = defaultSubtreeFileIO): Promise<ProcessResult>` delegating to free-function `orchestrateSubtree`. Re-export of `ProcessResult` type at `:18, :25-32` makes the adapter contract surface match the design verbatim. |
-| Component 2 -- Internal orchestration: iterate manifest (root first then children), stage-all to `.tmp`, validate-all, rename-all, cluster rollback on failure | PASS | `_shared/composition/src/core/subtree-orchestrator.ts:122-217`. Root-first iteration `:134-141`; children-in-order `:143-153`; Phase A stage-all loop with mid-stage rollback `:157-167`; Phase B `validateSubtreeHashes` call `:170-176`; failure branch returns structured `ProcessResult` plus rollback `:178-192`; Phase C rename-all with mid-rename rollback of `remainingTmps` plus already-`renamed` `:196-209`. |
-| Component 3 -- Frontmatter mutator with apply + reverse | PASS (pre-existing, unchanged) | `_shared/composition/src/adapters/spec-subtree.ts:117-138, 345-360` (forward + reverse via `invertMap`). Untouched by TASK-012 but still consumed by orchestrator's mutation calls. |
+| Component 1 -- `SpecSubtreeAdapter` exposes `processSubtree(input): ProcessResult` | PASS | `shared/composition/src/adapters/spec-subtree.ts:154-159` declares `async processSubtree(input, fileIO = defaultSubtreeFileIO): Promise<ProcessResult>` delegating to free-function `orchestrateSubtree`. Re-export of `ProcessResult` type at `:18, :25-32` makes the adapter contract surface match the design verbatim. |
+| Component 2 -- Internal orchestration: iterate manifest (root first then children), stage-all to `.tmp`, validate-all, rename-all, cluster rollback on failure | PASS | `shared/composition/src/core/subtree-orchestrator.ts:122-217`. Root-first iteration `:134-141`; children-in-order `:143-153`; Phase A stage-all loop with mid-stage rollback `:157-167`; Phase B `validateSubtreeHashes` call `:170-176`; failure branch returns structured `ProcessResult` plus rollback `:178-192`; Phase C rename-all with mid-rename rollback of `remainingTmps` plus already-`renamed` `:196-209`. |
+| Component 3 -- Frontmatter mutator with apply + reverse | PASS (pre-existing, unchanged) | `shared/composition/src/adapters/spec-subtree.ts:117-138, 345-360` (forward + reverse via `invertMap`). Untouched by TASK-012 but still consumed by orchestrator's mutation calls. |
 | Two-phase orchestration claim (stage-all then validate-all) | PASS | Phase A loop `subtree-orchestrator.ts:157-167` writes all staged content before Phase B `validateSubtreeHashes` runs `:170-176`. No interleaving. |
 
 ## DESIGN-003-SPEC-004 Compliance
 
 | Component | Verdict | Evidence |
 |---|---|---|
-| Component 1 -- `validateSubtreeHashes(adapter, files): HashValidationResult` returning `{ allPass, entries, firstFailure }` | PASS | `_shared/composition/src/core/cluster-rollback.ts:67-96`. Iterates EVERY file (no `break`/`return` inside the loop -- only `firstFailure` is captured on first miss `:86-88`); aggregates per-file entries `:79-85`; returns `{ allPass: firstFailure === null, entries, firstFailure }` `:91-95`. Matches DESIGN-003 "iterate every file even after first mismatch so full diagnostics are available" verbatim. Test `:117-141` proves both entries returned even when row 2 fails. |
+| Component 1 -- `validateSubtreeHashes(adapter, files): HashValidationResult` returning `{ allPass, entries, firstFailure }` | PASS | `shared/composition/src/core/cluster-rollback.ts:67-96`. Iterates EVERY file (no `break`/`return` inside the loop -- only `firstFailure` is captured on first miss `:86-88`); aggregates per-file entries `:79-85`; returns `{ allPass: firstFailure === null, entries, firstFailure }` `:91-95`. Matches DESIGN-003 "iterate every file even after first mismatch so full diagnostics are available" verbatim. Test `:117-141` proves both entries returned even when row 2 fails. |
 | Component 2 -- `rollbackCluster(stagedPaths, renamedPaths)` removes `.tmp` files + already-renamed dests; never throws | PASS | `cluster-rollback.ts:104-123`. Two best-effort loops with `try/catch` around `unlinkSync`; the `catch` blocks explicitly swallow errors (comments `// Swallow -- cleanup is best-effort.`). Test `tests/spec-subtree-orchestration.test.ts:144-170` asserts `.tmp` removal, dest removal on already-renamed paths, AND `.not.toThrow()` for missing paths. |
 | 4-step hash protocol per file (S, D, D' via reverseMutations, compare sha256) | PASS | `cluster-rollback.ts:74-89` -- Step 1 `file.sourceContent`, Step 2 `file.stagedContent`, Step 3 `adapter.reverseMutations(file.stagedContent, file.mutations)`, Step 4 `sha256(S) === sha256(D')`. |
 | Collect-then-validate pattern (stage all then validate all) | PASS | Orchestrator Phase A populates every entry in `entries[]` array before Phase B iterates that array for hash validation (`subtree-orchestrator.ts:127-167` then `:170-176`). |

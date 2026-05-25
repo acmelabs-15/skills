@@ -28,7 +28,7 @@ Per-TASK QA gate for [[TASK-034-SPEC-008: Repair Brain Note Hygiene Violations f
 | 2 — 4 Audit C named notes zero `validates` + broader `grep -rn "^- validates \[\[" docs/qa/` returns ZERO | PASS | broader grep empty after Phase 2 sweep (31 swaps across 30 notes); QA-001 / QA-020-SPEC-004 / QA-010-SPEC-007 sampled clean |
 | 3 — ANALYSIS-002 + 2 SESSION notes colon-bearing titles + matching H1 | PASS | `grep -n "^title:"` colon form for all 3; `grep -n "^# "` H1 matches verbatim |
 | 4 — QA-030 + QA-038 frontmatter `type: qa` | PASS | both verified via `read_note` |
-| 5 — `/Users/` PII paths gone in QA-036 + QA-038 + SESSION-2026-05-20_03 | PASS | grep empty; semantic file references preserved (e.g. `_shared/composition/...`, `<repo root>`) |
+| 5 — `/Users/` PII paths gone in QA-036 + QA-038 + SESSION-2026-05-20_03 | PASS | grep empty; semantic file references preserved (e.g. `shared/composition/...`, `<repo root>`) |
 | 6 — SESSION-2026-05-21_01 monotonic Event sequence | PASS | duplicate 36/37/38 renumbered to 36b/37b/38b; `grep "^## Event " \| sort \| uniq -d` returns empty |
 | 7 — all edits via Brain MCP (binary tool rule) | PASS | no raw Edit/Write evidence on `docs/**`; process attestation holds |
 | 8 — post-fix notes parse against type schemas | PASS | 6 spot-checks return well-formed content; structural integrity (frontmatter + Observations + Relations) intact across both phases |

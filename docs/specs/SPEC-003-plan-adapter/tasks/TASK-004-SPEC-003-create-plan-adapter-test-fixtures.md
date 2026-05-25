@@ -48,9 +48,9 @@ The distribution plan YAML splits the fixture into 2 destination plans, each rec
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/tests/fixtures/plan-sample.md | NEW | Representative PLAN note fixture |
-| _shared/composition/tests/fixtures/plan-distribution-plan.yaml | NEW | Distribution plan YAML for decompose test |
-| _shared/composition/tests/fixtures/plan-composition-plan.yaml | NEW | Composition plan YAML for recompose test |
+| shared/composition/tests/fixtures/plan-sample.md | NEW | Representative PLAN note fixture |
+| shared/composition/tests/fixtures/plan-distribution-plan.yaml | NEW | Distribution plan YAML for decompose test |
+| shared/composition/tests/fixtures/plan-composition-plan.yaml | NEW | Composition plan YAML for recompose test |
 
 ## Testing Requirements
 

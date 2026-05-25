@@ -18,7 +18,7 @@ tags:
 
 ## Approach
 
-Retro-validation pattern matching [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]] precedent. Wave 2 batched dispatch built SPEC-003 (PLAN adapter) code in `_shared/composition/src/adapters/plan.ts` (15K + 51-line class definition, implements CompositionAdapter directly per ADR-002 D-3); `src/mutations/{plan-mutations,checkbox-mutations}.ts`; `schemas/{distribution,composition}/plan.plan.schema.ts`; `tests/fixtures/{plan-sample.md, plan-{distribution,composition}.plan.yaml}`; 30 tests across 4 plan-* test files. PLAN-001 TASK-001..005 frontmatter never propagated TODO → DONE.
+Retro-validation pattern matching [[QA-042-SPEC-002: Spec Aggregate Retro-Validation]] precedent. Wave 2 batched dispatch built SPEC-003 (PLAN adapter) code in `shared/composition/src/adapters/plan.ts` (15K + 51-line class definition, implements CompositionAdapter directly per ADR-002 D-3); `src/mutations/{plan-mutations,checkbox-mutations}.ts`; `schemas/{distribution,composition}/plan.plan.schema.ts`; `tests/fixtures/{plan-sample.md, plan-{distribution,composition}.plan.yaml}`; 30 tests across 4 plan-* test files. PLAN-001 TASK-001..005 frontmatter never propagated TODO → DONE.
 
 ## Per-TASK Verification
 
@@ -32,7 +32,7 @@ Retro-validation pattern matching [[QA-042-SPEC-002: Spec Aggregate Retro-Valida
 
 ### TASK-001 evidence
 
-- `_shared/composition/src/adapters/plan.ts:51` — `export class PlanAdapter implements CompositionAdapter` ✓ (directly implements per ADR-002 D-3, NOT extends BaseMarkdownAdapter)
+- `shared/composition/src/adapters/plan.ts:51` — `export class PlanAdapter implements CompositionAdapter` ✓ (directly implements per ADR-002 D-3, NOT extends BaseMarkdownAdapter)
 - `sourceType === "plan"` ✓ (class body)
 - Phase section extraction under Workflow Plan with `###` delimiter ✓ (parser logic in plan.ts)
 - `renumber_map` mutations for `{phase}.{part-id}` identifiers via single-pass replacement ✓

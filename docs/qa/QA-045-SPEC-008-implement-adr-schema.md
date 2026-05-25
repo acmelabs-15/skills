@@ -64,7 +64,7 @@ Per-TASK QA gate for [[TASK-001-SPEC-008: Implement ADR Schema]] (Track 1: `AdrN
 | constant `AdrNoteSchema`; type `AdrNote` | PASS |
 | imports cross-cutting constants from `common.ts`, no duplication | PASS |
 | barrel `schemas/index.ts` adds the export | PASS |
-| all paths `shared/` (post-rename), never `_shared/` | PASS (`grep -c _shared` = 0 across 3 files) |
+| all paths `shared/` (post-rename), never `shared/` | PASS (`grep -c _shared` = 0 across 3 files) |
 
 ## Test execution
 

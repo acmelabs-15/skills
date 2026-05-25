@@ -20,11 +20,11 @@ tags:
 
 ## Objective
 
-Implement the ANALYSIS adapter as a concrete subclass of BaseMarkdownAdapter at _shared/composition/src/adapters/analysis.ts. The adapter overrides section_delimiter ("### "), identifier_pattern (/item-(\d+)/), and identifier_prefix ("item-") to specialize the base class for ANALYSIS-type Brain notes. This is the simplest adapter in SPEC-002 at approximately 50 LOC delta.
+Implement the ANALYSIS adapter as a concrete subclass of BaseMarkdownAdapter at shared/composition/src/adapters/analysis.ts. The adapter overrides section_delimiter ("### "), identifier_pattern (/item-(\d+)/), and identifier_prefix ("item-") to specialize the base class for ANALYSIS-type Brain notes. This is the simplest adapter in SPEC-002 at approximately 50 LOC delta.
 
 ## Definition of Done
 
-- [x] _shared/composition/src/adapters/analysis.ts exists and exports AnalysisAdapter class
+- [x] shared/composition/src/adapters/analysis.ts exists and exports AnalysisAdapter class
 - [x] AnalysisAdapter extends BaseMarkdownAdapter
 - [x] sourceType property returns "analysis"
 - [x] sectionDelimiter property returns "### "
@@ -37,7 +37,7 @@ Implement the ANALYSIS adapter as a concrete subclass of BaseMarkdownAdapter at 
 
 **In Scope**:
 
-- _shared/composition/src/adapters/analysis.ts (Create)
+- shared/composition/src/adapters/analysis.ts (Create)
 
 **Out of Scope**:
 
@@ -49,7 +49,7 @@ Implement the ANALYSIS adapter as a concrete subclass of BaseMarkdownAdapter at 
 
 | File | Action | Description |
 |------|--------|-------------|
-| _shared/composition/src/adapters/analysis.ts | Create | ANALYSIS adapter class extending BaseMarkdownAdapter |
+| shared/composition/src/adapters/analysis.ts | Create | ANALYSIS adapter class extending BaseMarkdownAdapter |
 
 ## Effort
 

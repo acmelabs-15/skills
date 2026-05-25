@@ -36,7 +36,7 @@ Multi-agent brain:---adr-review of ADR-003 (Plan/Session Render Architecture). 6
 
 ADR-003 D-4 schemas (plan-note.ts, session-note.ts) share enums (EntityIdSchema, status enums, ObservationSchema, RelationSchema) with ADR-002's composition plan schemas. ADR-003 does not explicitly state whether common.ts is shared or duplicated.
 
-**Disposition**: DEFERRED to SPEC-007 authoring. Architect's own recommendation. The SPEC will resolve via shared common.ts in `_shared/composition/src/schemas/common.ts` (architectural intent is shared; specifics belong in SPEC).
+**Disposition**: DEFERRED to SPEC-007 authoring. Architect's own recommendation. The SPEC will resolve via shared common.ts in `shared/composition/src/schemas/common.ts` (architectural intent is shared; specifics belong in SPEC).
 
 **Resolution applied**: ADR-003 Implementation Notes section clarification added — common.ts is shared with ADR-002's composition schemas (DRY principle).
 

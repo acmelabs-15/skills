@@ -20,7 +20,7 @@ This TASK realizes REQ-009-SPEC-007 and DESIGN-003-SPEC-007 mutation API design.
 
 ## Objective
 
-Create `_shared/composition/src/plan-mutations.ts` implementing applyPlanMutation with 9 typed mutation handlers following the read-parse-mutate-validate-render-write pipeline. Each mutation reads markdown via Bun.file().text(), parses via parsePlanNote, applies the typed mutation to the in-memory model, validates via PlanNoteSchema.parse(), re-renders via renderPlanNote, and writes via Bun.write().
+Create `shared/composition/src/plan-mutations.ts` implementing applyPlanMutation with 9 typed mutation handlers following the read-parse-mutate-validate-render-write pipeline. Each mutation reads markdown via Bun.file().text(), parses via parsePlanNote, applies the typed mutation to the in-memory model, validates via PlanNoteSchema.parse(), re-renders via renderPlanNote, and writes via Bun.write().
 
 ## Scope
 
@@ -41,7 +41,7 @@ Create `_shared/composition/src/plan-mutations.ts` implementing applyPlanMutatio
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/plan-mutations.ts` | NEW | Plan mutation API with 9 typed mutations |
+| `shared/composition/src/plan-mutations.ts` | NEW | Plan mutation API with 9 typed mutations |
 
 ## Testing Requirements
 

@@ -72,7 +72,7 @@ All 14 DoD items satisfied. All 4 ADR Compliance items satisfied. 15/15 new test
 | 1 | NEW file at documented path (no wave-specific subdirs) | [PASS] | plan-claim-validator.ts at shared/composition/src/validators/ per Module Structure |
 | 4 | Validator named validate + Type + TerminalStatus + Claim; exported from validators/index.ts | [PASS] | validatePlanDoneClaim at plan-claim-validator.ts:39; validators/index.ts:12 re-exports |
 | 7 | Imports from schemas/common.ts or per-type schema, never duplicates | [PASS] | plan-claim-validator.ts:1 imports from schemas/plan-note.js; TERMINAL_PART_SUBSTATUSES defined once in plan-note.ts:247 |
-| 8 | All paths use shared/ (post-rename) | [PASS] | All file paths use shared/composition/, no _shared/ references |
+| 8 | All paths use shared/ (post-rename) | [PASS] | All file paths use shared/composition/, no shared/ references |
 
 ## Per-ADR Compliance Evidence Table
 

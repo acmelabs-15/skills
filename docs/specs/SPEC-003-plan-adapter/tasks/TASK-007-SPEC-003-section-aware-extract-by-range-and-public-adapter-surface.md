@@ -31,8 +31,8 @@ Out of Scope: dispatcher registration (TASK-006); integrity-floor semantics (TAS
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/adapters/plan.ts | MODIFY | Expose section_delimiter and identifier_pattern; section-aware extractByRange |
-| _shared/composition/tests/plan-adapter.test.ts | MODIFY | Add tests for AC-1 AC-2 AC-6 |
+| shared/composition/src/adapters/plan.ts | MODIFY | Expose section_delimiter and identifier_pattern; section-aware extractByRange |
+| shared/composition/tests/plan-adapter.test.ts | MODIFY | Add tests for AC-1 AC-2 AC-6 |
 
 ## Definition of Done
 

@@ -18,7 +18,7 @@ tags:
 Retro-validate TASK-006-SPEC-007 via `src/parsers/session-note.ts` (305 LOC) and `tests/session-parser.test.ts` + round-trip integration.
 
 - **Feature**: SessionNote Parser (TASK-006-SPEC-007)
-- **Scope**: `_shared/composition/src/parsers/session-note.ts`
+- **Scope**: `shared/composition/src/parsers/session-note.ts`
 - **Acceptance Criteria**: REQ-005-SPEC-007, ADR-001 D-2
 
 ## Approach

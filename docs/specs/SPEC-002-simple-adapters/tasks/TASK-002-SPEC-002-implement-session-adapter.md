@@ -20,11 +20,11 @@ tags:
 
 ## Objective
 
-Implement the SESSION adapter as a concrete subclass of BaseMarkdownAdapter at _shared/composition/src/adapters/session.ts. The adapter overrides section_delimiter ("## Event "), identifier_pattern (/Event (\d+)/), identifier_prefix ("Event "), and sets supportsCrossSourceUpdates to true. This adapter is approximately 100 LOC delta including the cross_source_updates field handling from TASK-003-SPEC-002.
+Implement the SESSION adapter as a concrete subclass of BaseMarkdownAdapter at shared/composition/src/adapters/session.ts. The adapter overrides section_delimiter ("## Event "), identifier_pattern (/Event (\d+)/), identifier_prefix ("Event "), and sets supportsCrossSourceUpdates to true. This adapter is approximately 100 LOC delta including the cross_source_updates field handling from TASK-003-SPEC-002.
 
 ## Definition of Done
 
-- [x] _shared/composition/src/adapters/session.ts exists and exports SessionAdapter class
+- [x] shared/composition/src/adapters/session.ts exists and exports SessionAdapter class
 - [x] SessionAdapter extends BaseMarkdownAdapter
 - [x] sourceType property returns "session"
 - [x] sectionDelimiter property returns "## Event "
@@ -38,7 +38,7 @@ Implement the SESSION adapter as a concrete subclass of BaseMarkdownAdapter at _
 
 **In Scope**:
 
-- _shared/composition/src/adapters/session.ts (Create)
+- shared/composition/src/adapters/session.ts (Create)
 
 **Out of Scope**:
 
@@ -50,7 +50,7 @@ Implement the SESSION adapter as a concrete subclass of BaseMarkdownAdapter at _
 
 | File | Action | Description |
 |------|--------|-------------|
-| _shared/composition/src/adapters/session.ts | Create | SESSION adapter class extending BaseMarkdownAdapter |
+| shared/composition/src/adapters/session.ts | Create | SESSION adapter class extending BaseMarkdownAdapter |
 
 ## Effort
 

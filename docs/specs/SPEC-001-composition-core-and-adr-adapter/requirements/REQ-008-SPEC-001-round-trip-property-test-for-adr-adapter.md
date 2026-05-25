@@ -38,7 +38,7 @@ The test framework uses bun test (ADR-001 F-6). Test fixtures include a real-wor
 
 ## Acceptance Criteria
 
-- [x] GIVEN a test file at _shared/composition/tests/round-trip.test.ts
+- [x] GIVEN a test file at shared/composition/tests/round-trip.test.ts
       WHEN bun test is run
       THEN the round-trip property test executes for the ADR adapter
 

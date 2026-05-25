@@ -20,7 +20,7 @@ This TASK realizes REQ-004-SPEC-007 and the parsers/plan-note.ts from ANALYSIS-0
 
 ## Objective
 
-Create `_shared/composition/src/parsers/plan-note.ts` implementing parsePlanNote with all section parsers: parseScope, parseObjectives, parsePartsSection (with parsePart, derivePhaseFromId, parseDodFromPart, parseDecisionsTable), parseTasksSection (with Active/Backlog/Archive sub-tables), parsePendingDecisions, parseEditorMirror, parseBlockers, parseObservations, parseRelations. Skip derived sections (Progress Dashboard, Cross-Part Dependency Graph).
+Create `shared/composition/src/parsers/plan-note.ts` implementing parsePlanNote with all section parsers: parseScope, parseObjectives, parsePartsSection (with parsePart, derivePhaseFromId, parseDodFromPart, parseDecisionsTable), parseTasksSection (with Active/Backlog/Archive sub-tables), parsePendingDecisions, parseEditorMirror, parseBlockers, parseObservations, parseRelations. Skip derived sections (Progress Dashboard, Cross-Part Dependency Graph).
 
 ## Scope
 
@@ -42,7 +42,7 @@ Create `_shared/composition/src/parsers/plan-note.ts` implementing parsePlanNote
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/parsers/plan-note.ts` | NEW | PlanNote markdown parser |
+| `shared/composition/src/parsers/plan-note.ts` | NEW | PlanNote markdown parser |
 
 ## Testing Requirements
 

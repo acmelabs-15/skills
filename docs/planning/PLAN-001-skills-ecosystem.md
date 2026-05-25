@@ -32,7 +32,7 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 
 ## Objectives
 
-- [x] Composition library at _shared/composition/ produces SHA-256 char-identity verified decompose/recompose for the ADR adapter (PROOF)
+- [x] Composition library at shared/composition/ produces SHA-256 char-identity verified decompose/recompose for the ADR adapter (PROOF)
 - [x] Round-trip property test (decompose ∘ recompose = identity on SHA-256) passes for ADR adapter
 - [x] /decompose and /recompose skills operational against ADR notes
 - [x] All 5 adapters (ADR, ANALYSIS, SESSION, PLAN, SPEC subtree) ship with passing round-trip tests
@@ -2249,13 +2249,13 @@ graph TD
 
 **DoD**:
 
-- [x] D-1 LOCKED — Per-skill scripts: each lifecycle skill ships gate-point scripts at skills/<name>/scripts/<verb>.ts as thin wrappers importing from _shared/composition/. Matches existing defrag/ingest pattern; skills become self-contained; new validators colocate with the skill that needs them.
+- [x] D-1 LOCKED — Per-skill scripts: each lifecycle skill ships gate-point scripts at skills/<name>/scripts/<verb>.ts as thin wrappers importing from shared/composition/. Matches existing defrag/ingest pattern; skills become self-contained; new validators colocate with the skill that needs them.
 - [x] D-2 LOCKED — Extend existing flat dirs at shared/composition/src/{schemas,parsers,validators}/ (consistent with 9 existing schemas; one pattern across waves). NOTE: _shared → shared directory rename captured as Track 4 cleanup item (see Wave 2 cleanup list)
 - [x] D-3 LOCKED — Shared fixture-driven harness: each lying-claim scenario lives as a named markdown file at tests/fixtures/adversarial/<type>/drift-NN-<slug>.md; shared testAdversarial({fixture, validator, expectedReject}) helper runs parse→validate→assert. Natural mapping to Audit E item 10 (drift regression markers).
 - [x] D-4 LOCKED — Programmatic per-skill brief-generator scripts at skills/<name>/scripts/dispatch-<agent>.ts. Scripts import cross-cutting constants (e.g., validRelationTypes from shared/composition/src/schemas/common.ts) and print full brief text. Single source of truth via direct schema import; auto-updates when schema changes. Extends D-1 pattern.
 - [x] D-5 LOCKED — Full Audit A recommendation: include ALL 3 P1 schemas (ANALYSIS + EPIC + CRIT). Wave 2 ships 5 schemas + 5 parsers + 4 validators total (ADR + PLAN-done-claim + ANALYSIS + EPIC + CRIT). +2-3 days effort vs deferral; complete P1 coverage; some artifacts (EPIC, CRIT claim) have no immediate consumer but ready when needed.
 - [x] D-6 LOCKED — Amend SPEC-007 root checkbox notation: use [] (or [deferred: rationale]) for items where the underlying REQ is status: DEFERRED. Keep SPEC-007 status DONE (deferred is a legitimate terminal status). Also extend validateSpecDoneClaim to recognize [] as terminal alongside [x].
-- [x] D-7 LOCKED — Delete _shared/composition/src/core/dispatcher.ts + tests/dispatcher.test.ts. Confirmed dead (only dispatcher.test.ts imports it); production code uses registry.ts; adapter functionality untouched (lives in separate files). 508 tests → 506 tests post-delete.
+- [x] D-7 LOCKED — Delete shared/composition/src/core/dispatcher.ts + tests/dispatcher.test.ts. Confirmed dead (only dispatcher.test.ts imports it); production code uses registry.ts; adapter functionality untouched (lives in separate files). 508 tests → 506 tests post-delete.
 - [x] ADR-005 authored and frontmatter status ACCEPTED; date + updated populated
 - [x] /brain:---adr-review PASS verdict — round 1: 3 ACCEPT + 3 CONCERNS + 0 BLOCK + 1 P0; Phase 3 resolutions applied + Disagree-and-Commit captured; user-adjudicated pragmatic flip per /decisions Step 7 convergence-by-resolution semantics
 

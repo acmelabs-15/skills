@@ -31,7 +31,7 @@ This design realizes ADR-002 D-2 (MutationSpec regenerated_sections field), ADR-
 
 **Definition**:
 
-Already defined in _shared/composition/src/core/types.ts (SPEC-001):
+Already defined in shared/composition/src/core/types.ts (SPEC-001):
 
 ```typescript
 interface MutationSpec {
@@ -60,7 +60,7 @@ interface MutationSpec {
 **Definition**:
 
 ```typescript
-// At _shared/composition/schemas/distribution/plan.plan.schema.ts
+// At shared/composition/schemas/distribution/plan.plan.schema.ts
 
 import { z } from "zod";
 import { basePlanSchema, mutationSpecSchema } from "../base";

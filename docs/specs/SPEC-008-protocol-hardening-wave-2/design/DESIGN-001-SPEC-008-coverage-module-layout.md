@@ -15,7 +15,7 @@ tags:
 
 ## Context
 
-This design fixes the module layout, naming conventions, and barrel-export shape for the five new schemas, four new parsers (plus one verify-only PLAN parser touch), and four new claim validators delivered by Track 1 of SPEC-008. The decisions are constrained by [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (extend existing flat dirs, do not introduce wave-specific subdirectories) and D-5 (close all P0 and P1 coverage gaps from ANALYSIS-004 Audit A). The composition library currently lives at `_shared/composition/`; Track 4 of SPEC-008 renames `_shared` to `shared` as its first task. All file paths in this design and in every Track 1 TASK use the post-rename `shared/` form, and Track 1 TASKs that author files declare a depends_on edge against the Track 4 rename TASK.
+This design fixes the module layout, naming conventions, and barrel-export shape for the five new schemas, four new parsers (plus one verify-only PLAN parser touch), and four new claim validators delivered by Track 1 of SPEC-008. The decisions are constrained by [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-2 (extend existing flat dirs, do not introduce wave-specific subdirectories) and D-5 (close all P0 and P1 coverage gaps from ANALYSIS-004 Audit A). The composition library currently lives at `shared/composition/`; Track 4 of SPEC-008 renames `_shared` to `shared` as its first task. All file paths in this design and in every Track 1 TASK use the post-rename `shared/` form, and Track 1 TASKs that author files declare a depends_on edge against the Track 4 rename TASK.
 
 ## Design
 
@@ -160,7 +160,7 @@ Names use ASCII letters and hyphens; no underscores in filenames, no abbreviatio
 - [x] `validateEpicDoneClaim` accepts a `resolveSpec: SpecResolver` parameter and throws if missing when the EPIC has contains relations
 - [x] CRIT has NO claim validator file in `validators/`
 - [x] Every NEW file imports cross-cutting constants from `schemas/common.ts`, never duplicates them
-- [x] All paths in NEW files and in TASK references use `shared/` (post-rename), never `_shared/`
+- [x] All paths in NEW files and in TASK references use `shared/` (post-rename), never `shared/`
 
 _DESIGN-001 compliance fully satisfied at TASK-001..010 set closure (Event 82, 2026-05-24): all 5 schemas + 4 parsers + 4 claim validators landed; CRIT correctly has no validator; common.ts imports verified across QA notes; all paths post-rename._
 

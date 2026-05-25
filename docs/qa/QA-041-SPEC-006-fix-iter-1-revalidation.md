@@ -63,13 +63,13 @@ Out-of-scope: the 4 non-blocking observations from QA-040 (DESIGN-001 design-vs-
 
 **PASS at SPEC-006 scope.** Repo-root `bunx biome check` reports `Checked 17 files in 32ms. No fixes applied.` — zero errors. The auto-format wrapped the `files.include` + `files.ignore` arrays into per-entry lines (biome.json:33-48), satisfying biome's own formatter.
 
-**Composition-lib scope (orthogonal)**: `cd _shared/composition && bunx biome check` reports 1 formatter error in `tests/plan-001-migration.test.ts:17` (the SPEC-007 PLAN-001 migration test file, last touched at commit `9da19d5` — pre-existing, untouched by SPEC-006 fix-iter-1). Per `git log --oneline --all -- _shared/composition/tests/plan-001-migration.test.ts` this file has a single commit at SPEC-007 territory; the SPEC-006 fix did not change it. Flagged here as a sibling-scope finding for the SPEC-007 owner; **not a SPEC-006 blocking regression**.
+**Composition-lib scope (orthogonal)**: `cd shared/composition && bunx biome check` reports 1 formatter error in `tests/plan-001-migration.test.ts:17` (the SPEC-007 PLAN-001 migration test file, last touched at commit `9da19d5` — pre-existing, untouched by SPEC-006 fix-iter-1). Per `git log --oneline --all -- shared/composition/tests/plan-001-migration.test.ts` this file has a single commit at SPEC-007 territory; the SPEC-006 fix did not change it. Flagged here as a sibling-scope finding for the SPEC-007 owner; **not a SPEC-006 blocking regression**.
 
 | Evidence | Location |
 |:--|:--|
 | biome.json formatter compliance | biome.json:33-48 (line-wrapped arrays) |
 | Repo-root biome verdict | `Checked 17 files… No fixes applied.` |
-| Composition-lib pre-existing finding | `_shared/composition/tests/plan-001-migration.test.ts:17` (SPEC-007 territory, commit 9da19d5) |
+| Composition-lib pre-existing finding | `shared/composition/tests/plan-001-migration.test.ts:17` (SPEC-007 territory, commit 9da19d5) |
 
 ### Finding 3 — Staleness default mismatch (180 vs 90)
 
@@ -153,8 +153,8 @@ Zero blocking findings. The 4 QA-040 non-blocking observations are explicitly ou
 
 Two **meta-findings** worth flagging for the orchestrator (also non-blocking):
 
-- **Sibling-scope biome failure in `_shared/composition/tests/plan-001-migration.test.ts:17`** — pre-existing from SPEC-007 territory (commit `9da19d5`), unchanged by SPEC-006 fix-iter-1. Should be tracked separately under SPEC-007 follow-up; mentioning here so it is not lost.
-- **TestReportNoteSchema is stale vs the 2026-05-21 `test-report` → `qa` rename** — the schema enforces `^TEST-REPORT-\d{3,}-SPEC-\d{3,}:` title regex and `type: test-report` literal, conflicting with current CONVENTIONS Section 3 (canonical type `qa`, file prefix `QA-NNN`). This QA-041 note follows project convention (matching QA-040 precedent) over the stale schema; `validateTestReportPassClaim` rejects this note on schema fields, but cross-field invariants (tests_run = passed + failed + skipped; PASS implies failed=0 and tests_run>0; no row-level FAIL) hold. Composition-library schema needs an update to track the rename — sibling SPEC-007 / Phase X follow-up.
+- **Sibling-scope biome failure in `shared/composition/tests/plan-001-migration.test.ts:17`** — pre-existing from SPEC-007 territory (commit `9da19d5`), unchanged by SPEC-006 fix-iter-1. Should be tracked separately under SPEC-007 follow-up; mentioning here so it is not lost.
+- **TestReportNoteSchema is stale vs the 2026-05-21 `test-report` → `qa` rename** — the schema enforces `^TEST-REPORT-\d{3,}-SPEC-\d{3,}:` title regex and `type: qa` literal, conflicting with current CONVENTIONS Section 3 (canonical type `qa`, file prefix `QA-NNN`). This QA-041 note follows project convention (matching QA-040 precedent) over the stale schema; `validateTestReportPassClaim` rejects this note on schema fields, but cross-field invariants (tests_run = passed + failed + skipped; PASS implies failed=0 and tests_run>0; no row-level FAIL) hold. Composition-library schema needs an update to track the rename — sibling SPEC-007 / Phase X follow-up.
 
 ## Observations
 
@@ -166,8 +166,8 @@ Two **meta-findings** worth flagging for the orchestrator (also non-blocking):
 - [fact] audit.ts:48 jsdoc cites REQ-002-SPEC-006 AC-5 inline alongside the 90-day default constant #conventions #citation
 - [fact] bun test full suite holds at 585 pass / 0 fail / 1225 expects across 66 files in 1337ms — no regression vs QA-040 baseline #tests #stable
 - [fact] bunx tsc --noEmit clean post-fix — no TypeScript diagnostics introduced #typescript #clean
-- [insight] Sibling-scope biome failure in _shared/composition/tests/plan-001-migration.test.ts:17 is pre-existing SPEC-007 territory (commit 9da19d5) and not a SPEC-006 fix-iter-1 regression #sibling-scope #spec-007
-- [insight] TestReportNoteSchema enforces TEST-REPORT prefix and type: test-report — stale vs 2026-05-21 canonical rename to qa / QA prefix; this note follows project-convention precedent set by QA-040 over the stale schema #schema-drift #convention-rename
+- [insight] Sibling-scope biome failure in shared/composition/tests/plan-001-migration.test.ts:17 is pre-existing SPEC-007 territory (commit 9da19d5) and not a SPEC-006 fix-iter-1 regression #sibling-scope #spec-007
+- [insight] TestReportNoteSchema enforces TEST-REPORT prefix and type: qa — stale vs 2026-05-21 canonical rename to qa / QA prefix; this note follows project-convention precedent set by QA-040 over the stale schema #schema-drift #convention-rename
 - [decision] SPEC-006 cleared for ACCEPTED → DONE transition pending orchestrator state-sync; QA-040 blocking items resolved, 4 non-blocking items deferred as follow-ups #spec-006-done #ready
 
 ## Relations

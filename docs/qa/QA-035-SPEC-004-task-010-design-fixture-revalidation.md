@@ -1,6 +1,6 @@
 ---
 title: 'QA-035-SPEC-004: Task 010 Design Fixture Revalidation'
-type: test-report
+type: qa
 permalink: qa/qa-035-spec-004-task-010-design-fixture-revalidation
 status: ACCEPTED
 verdict: PASS
@@ -20,11 +20,11 @@ QA gate for [[TASK-010-SPEC-004: Add DESIGN Fixture and Composition Plan YAML]]:
 
 Files validated:
 
-- `_shared/composition/tests/fixtures/spec-subtree/design/DESIGN-001-SPEC-001-adapter-architecture.md` (new)
-- `_shared/composition/tests/fixtures/spec-subtree-composition.plan.yaml` (new)
-- `_shared/composition/tests/fixtures/spec-subtree/SPEC-001-composition-core.md` (modified: DESIGN-001 added to Phases + Relations)
-- `_shared/composition/tests/fixtures/spec-subtree-distribution.plan.yaml` (modified: DESIGN-001 added to children)
-- `_shared/composition/tests/spec-subtree-round-trip.test.ts` (modified: DESIGN-001 added to manifest; 2 new YAML schema/inverse tests; schema-shape tests aligned to ADR-002 D-5)
+- `shared/composition/tests/fixtures/spec-subtree/design/DESIGN-001-SPEC-001-adapter-architecture.md` (new)
+- `shared/composition/tests/fixtures/spec-subtree-composition.plan.yaml` (new)
+- `shared/composition/tests/fixtures/spec-subtree/SPEC-001-composition-core.md` (modified: DESIGN-001 added to Phases + Relations)
+- `shared/composition/tests/fixtures/spec-subtree-distribution.plan.yaml` (modified: DESIGN-001 added to children)
+- `shared/composition/tests/spec-subtree-round-trip.test.ts` (modified: DESIGN-001 added to manifest; 2 new YAML schema/inverse tests; schema-shape tests aligned to ADR-002 D-5)
 
 ## Verdict
 
@@ -40,22 +40,22 @@ PASS.
 
 | Test File | Tests Run | Passed | Failed | Skipped |
 |---|---|---|---|---|
-| _shared/composition/tests/spec-subtree-round-trip.test.ts | 12 | 12 | 0 | 0 |
-| _shared/composition full suite | 484 | 484 | 0 | 0 |
+| shared/composition/tests/spec-subtree-round-trip.test.ts | 12 | 12 | 0 | 0 |
+| shared/composition full suite | 484 | 484 | 0 | 0 |
 
-Full-suite run: `bun test _shared/composition/` → 484 pass / 0 fail / 1035 expect() calls across 53 files in 1.05s. Targeted run: `bun test _shared/composition/tests/spec-subtree-round-trip.test.ts` → 12 pass / 0 fail in 69ms.
+Full-suite run: `bun test shared/composition/` → 484 pass / 0 fail / 1035 expect() calls across 53 files in 1.05s. Targeted run: `bun test shared/composition/tests/spec-subtree-round-trip.test.ts` → 12 pass / 0 fail in 69ms.
 
 Impl agent claimed 468/468; current observed total is 484/484 — claim is conservative and consistent with sibling additions on the same branch. No regressions.
 
 ## TASK-010 DoD per-checkbox findings
 
-- [x] DESIGN fixture present with Component Architecture, interfaces, Observations, Relations — PASS. `_shared/composition/tests/fixtures/spec-subtree/design/DESIGN-001-SPEC-001-adapter-architecture.md` contains Module Structure (lines 24-33), Interfaces typescript block (lines 35-56), Observations (lines 75-79), Relations (lines 81-85). Final-two-sections invariant satisfied.
+- [x] DESIGN fixture present with Component Architecture, interfaces, Observations, Relations — PASS. `shared/composition/tests/fixtures/spec-subtree/design/DESIGN-001-SPEC-001-adapter-architecture.md` contains Module Structure (lines 24-33), Interfaces typescript block (lines 35-56), Observations (lines 75-79), Relations (lines 81-85). Final-two-sections invariant satisfied.
 
-- [x] Composition plan YAML inversion of distribution plan validated by `specSubtreeCompositionPlanSchema` — PASS. Round-trip test "composition plan YAML fixture validates against specSubtreeCompositionPlanSchema" exercises `_shared/composition/tests/fixtures/spec-subtree-composition.plan.yaml` line 1 through 67 via the schema; passes. Inversion verified by per-child-mutations inverse test which asserts every `dist.renumber_map[k]=v` has matching `comp.renumber_map[v]=k` across root and all four children.
+- [x] Composition plan YAML inversion of distribution plan validated by `specSubtreeCompositionPlanSchema` — PASS. Round-trip test "composition plan YAML fixture validates against specSubtreeCompositionPlanSchema" exercises `shared/composition/tests/fixtures/spec-subtree-composition.plan.yaml` line 1 through 67 via the schema; passes. Inversion verified by per-child-mutations inverse test which asserts every `dist.renumber_map[k]=v` has matching `comp.renumber_map[v]=k` across root and all four children.
 
 - [x] Round-trip test includes DESIGN child; per-file SHA-256 PROOF passes for all 5 files (root + 2 REQ + 1 DESIGN + 1 TASK) — PASS. Test file at line 26-28 loads `design001Content`; manifest at line 47-51 includes the DESIGN child with identifier `DESIGN-001`. "THE PROOF: per-file SHA-256 identity across full subtree decompose → recompose" iterates the full manifest (5 files) via `validateSubtreeRoundTrip`; passes. Explicit per-file assertion variant at line 128-139 also passes.
 
-- [x] biome check clean on fixtures — N/A (effectively PASS). The project's `bunx biome check` exits with a pre-existing global config error (`ignoreUnknown / includes / experimentalScannerIgnores`) affecting every file in the repo, not the landed fixtures. Not a regression introduced by TASK-010; same error reproduces on unrelated files such as `_shared/composition/src/adapters/spec-subtree.ts`. Treated as PASS for this DoD because the failure is upstream of the landed change.
+- [x] biome check clean on fixtures — N/A (effectively PASS). The project's `bunx biome check` exits with a pre-existing global config error (`ignoreUnknown / includes / experimentalScannerIgnores`) affecting every file in the repo, not the landed fixtures. Not a regression introduced by TASK-010; same error reproduces on unrelated files such as `shared/composition/src/adapters/spec-subtree.ts`. Treated as PASS for this DoD because the failure is upstream of the landed change.
 
 - [x] All SPEC-004 tests pass — PASS. Full composition suite (484/484) green; targeted round-trip suite (12/12) green.
 

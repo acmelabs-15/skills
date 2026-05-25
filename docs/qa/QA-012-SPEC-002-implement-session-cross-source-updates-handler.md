@@ -24,7 +24,7 @@ Retro-validate the SESSION cross-source updates handler against TASK-003-SPEC-00
 - **Test Types**: unit, schema-conformance, structural
 - **Environment**: bun test v1.3.13; commit 2f049fd
 - **Data Strategy**: inline fixtures in session-cross-source.test.ts (no fixture file dedicated to cross-source)
-- **Test File**: `_shared/composition/tests/session-cross-source.test.ts`
+- **Test File**: `shared/composition/tests/session-cross-source.test.ts`
 
 ## Results
 
@@ -42,7 +42,7 @@ Retro-validate the SESSION cross-source updates handler against TASK-003-SPEC-00
 
 | Test | Category | Status | Notes |
 |------|----------|--------|-------|
-| DoD 1 — CrossSourceUpdate Zod schema in src/core/cross-source.ts | DoD | [FAIL] | File _shared/composition/src/core/cross-source.ts does NOT exist; schema lives in schemas/distribution/session.plan.schema.ts instead |
+| DoD 1 — CrossSourceUpdate Zod schema in src/core/cross-source.ts | DoD | [FAIL] | File shared/composition/src/core/cross-source.ts does NOT exist; schema lives in schemas/distribution/session.plan.schema.ts instead |
 | DoD 2 — CrossSourceCoordinator interface with applyUpdates and reverseUpdates | DoD | [FAIL] | Interface NOT defined anywhere in codebase (grep CrossSourceCoordinator returns 0 hits); SessionAdapter has getCrossSourceUpdates method only |
 | DoD 3 — GracefulDegradationHandler class implements CrossSourceCoordinator with warning log | DoD | [FAIL] | Class NOT defined anywhere in codebase (grep GracefulDegradationHandler returns 0 hits) |
 | DoD 4 — Coordinator resolves to GracefulDegradationHandler when PLAN adapter is not registered | DoD | [FAIL] | No coordinator resolution logic; PLAN adapter IS registered separately in the dispatcher (SPEC-003); fallback logic is absent |

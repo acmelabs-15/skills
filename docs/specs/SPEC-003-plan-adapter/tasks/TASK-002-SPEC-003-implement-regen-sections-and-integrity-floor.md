@@ -37,12 +37,12 @@ The Zod schema adds regenerated_sections to the PLAN variant's MutationSpec. The
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/adapters/plan.ts | MODIFY | Add regenerative section handler functions |
-| _shared/composition/schemas/distribution/plan.plan.schema.ts | NEW | PLAN distribution Zod schema |
-| _shared/composition/schemas/composition/plan.plan.schema.ts | NEW | PLAN composition Zod schema |
-| _shared/composition/schemas/index.ts | MODIFY | Add PLAN variants to discriminated union |
-| _shared/composition/src/core/validate.ts | MODIFY | Add validateIntegrityFloor function |
-| _shared/composition/tests/plan-regen-sections.test.ts | NEW | Regen sections and integrity floor tests |
+| shared/composition/src/adapters/plan.ts | MODIFY | Add regenerative section handler functions |
+| shared/composition/schemas/distribution/plan.plan.schema.ts | NEW | PLAN distribution Zod schema |
+| shared/composition/schemas/composition/plan.plan.schema.ts | NEW | PLAN composition Zod schema |
+| shared/composition/schemas/index.ts | MODIFY | Add PLAN variants to discriminated union |
+| shared/composition/src/core/validate.ts | MODIFY | Add validateIntegrityFloor function |
+| shared/composition/tests/plan-regen-sections.test.ts | NEW | Regen sections and integrity floor tests |
 
 ## Testing Requirements
 

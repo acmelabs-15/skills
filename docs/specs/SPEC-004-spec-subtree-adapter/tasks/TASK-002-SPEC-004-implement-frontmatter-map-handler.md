@@ -47,7 +47,7 @@ The inverse frontmatter_map is computed by swapping keys and values. For the fro
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/src/adapters/spec-subtree.ts | MODIFY | Add frontmatter mutation functions |
+| shared/composition/src/adapters/spec-subtree.ts | MODIFY | Add frontmatter mutation functions |
 
 ## Definition of Done
 

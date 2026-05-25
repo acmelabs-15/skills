@@ -20,7 +20,7 @@ This TASK realizes REQ-005-SPEC-007 and the parsers/session-note.ts from ANALYSI
 
 ## Objective
 
-Create `_shared/composition/src/parsers/session-note.ts` implementing parseSessionNote with section parsers: parseBoundPlans (wikilink ref + worked_parts), parseEvents (H3 "Event NN -- title" with bulletFieldMap for typed fields and discriminated union narrowing at Zod validation), parseObservations, parseRelations.
+Create `shared/composition/src/parsers/session-note.ts` implementing parseSessionNote with section parsers: parseBoundPlans (wikilink ref + worked_parts), parseEvents (H3 "Event NN -- title" with bulletFieldMap for typed fields and discriminated union narrowing at Zod validation), parseObservations, parseRelations.
 
 ## Scope
 
@@ -41,7 +41,7 @@ Create `_shared/composition/src/parsers/session-note.ts` implementing parseSessi
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/parsers/session-note.ts` | NEW | SessionNote markdown parser |
+| `shared/composition/src/parsers/session-note.ts` | NEW | SessionNote markdown parser |
 
 ## Testing Requirements
 

@@ -40,12 +40,12 @@ The clustering was derived through three analysis passes.
 
 **Scope (in)**:
 
-- Core library at `_shared/composition/src/core/` (types.ts, adapter.ts, hash.ts, parse.ts, validate.ts, write.ts)
-- Zod base schema at `_shared/composition/schemas/base.ts` (common envelope, shared types, injectivity validators, path containment validator)
-- ADR-specific Zod schemas (distribution + composition variants) at `_shared/composition/schemas/distribution/adr.plan.schema.ts` and `_shared/composition/schemas/composition/adr.plan.schema.ts`
+- Core library at `shared/composition/src/core/` (types.ts, adapter.ts, hash.ts, parse.ts, validate.ts, write.ts)
+- Zod base schema at `shared/composition/schemas/base.ts` (common envelope, shared types, injectivity validators, path containment validator)
+- ADR-specific Zod schemas (distribution + composition variants) at `shared/composition/schemas/distribution/adr.plan.schema.ts` and `shared/composition/schemas/composition/adr.plan.schema.ts`
 - Schema index.ts (nested discriminated union assembly -- initial scaffold with ADR variant only; extended by SPEC-002 and SPEC-003)
-- ADR adapter at `_shared/composition/src/adapters/adr.ts` implementing CompositionAdapter (parse, extractByRange, applyMutations, reverseMutations, serialize)
-- BaseMarkdownAdapter base class at `_shared/composition/src/adapters/base.ts` (config-only overrides pattern for section_delimiter, identifier_pattern)
+- ADR adapter at `shared/composition/src/adapters/adr.ts` implementing CompositionAdapter (parse, extractByRange, applyMutations, reverseMutations, serialize)
+- BaseMarkdownAdapter base class at `shared/composition/src/adapters/base.ts` (config-only overrides pattern for section_delimiter, identifier_pattern)
 - Round-trip property test for ADR adapter (the key architectural validation from KICKOFF-BRIEF.md)
 - Write-to-temp-then-rename atomicity implementation
 - Project scaffolding: package.json, tsconfig.json, biome.json, install.sh
@@ -69,8 +69,8 @@ The clustering was derived through three analysis passes.
 
 **Scope (in)**:
 
-- ANALYSIS adapter at `_shared/composition/src/adapters/analysis.ts` extending BaseMarkdownAdapter
-- SESSION adapter at `_shared/composition/src/adapters/session.ts` extending BaseMarkdownAdapter
+- ANALYSIS adapter at `shared/composition/src/adapters/analysis.ts` extending BaseMarkdownAdapter
+- SESSION adapter at `shared/composition/src/adapters/session.ts` extending BaseMarkdownAdapter
 - ANALYSIS-specific Zod schemas (distribution + composition)
 - SESSION-specific Zod schemas (distribution + composition) including cross_source_updates shape
 - Schema index.ts extension (add ANALYSIS + SESSION variants to discriminated union)
@@ -96,8 +96,8 @@ The clustering was derived through three analysis passes.
 
 **Scope (in)**:
 
-- PLAN adapter at `_shared/composition/src/adapters/plan.ts` (distinct implementation; regenerative content handling)
-- SPEC subtree adapter at `_shared/composition/src/adapters/spec.ts` (distinct implementation; recursive subtree mutations, per-file hash validation, frontmatter_map reversal)
+- PLAN adapter at `shared/composition/src/adapters/plan.ts` (distinct implementation; regenerative content handling)
+- SPEC subtree adapter at `shared/composition/src/adapters/spec.ts` (distinct implementation; recursive subtree mutations, per-file hash validation, frontmatter_map reversal)
 - PLAN-specific Zod schemas (distribution + composition) including regenerated_sections with 50% integrity floor
 - SPEC-specific Zod schemas (distribution + composition) including subtree_manifest with root/children distinction
 - Schema index.ts extension (add PLAN + SPEC variants to complete the 5x2 = 10-variant nested discriminated union)
@@ -126,7 +126,7 @@ The clustering was derived through three analysis passes.
 
 - /decompose skill: `decompose/SKILL.md` (Claude Code skill definition)
 - /recompose skill: `recompose/SKILL.md` (Claude Code skill definition)
-- CLI entry points: `_shared/composition/src/decompose.ts` and `_shared/composition/src/recompose.ts` (script runner that loads plan YAML, validates via Zod, dispatches to adapter, executes hash-validated write)
+- CLI entry points: `shared/composition/src/decompose.ts` and `shared/composition/src/recompose.ts` (script runner that loads plan YAML, validates via Zod, dispatches to adapter, executes hash-validated write)
 - Plan YAML orchestration: LLM authors plan, user adjudicates via AskUserQuestion, script consumes
 - Audit log emission per output file
 - Error reporting: structured PlanValidationError array (ADR-002 D-5)

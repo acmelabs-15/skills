@@ -78,7 +78,7 @@ The DoD says "sets `body.hasOpenQuestions`/`body.containedSpecs` on the parsed m
 | 2 | Parser function named parse<Type>Note | [PASS] | parseAnalysisNote, parseEpicNote, parseCritNote |
 | 3 | Exported from parsers/index.ts | [PASS] | index.ts lines 20, 26, 28 |
 | 4 | Imports from schemas/common.ts not duplicated | [PASS] | All three import `Observation`, `Relation` from `../schemas/common.js` |
-| 5 | All paths use shared/ not _shared/ | [PASS] | All import paths use relative `../schemas/` within the shared/composition tree |
+| 5 | All paths use shared/ not shared/ | [PASS] | All import paths use relative `../schemas/` within the shared/composition tree |
 | 6 | CRIT has NO claim validator | [N/A] | Not relevant to parser TASK; CRIT parser exists without validator |
 | 7 | Uses ast-helpers.ts shared helpers | [PASS] | All three import extractFrontmatter, sectionizeH2, proseFromChildren from `./ast-helpers.js`; epic and crit additionally import findTable, tableRows, stripWikilink |
 

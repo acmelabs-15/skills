@@ -60,7 +60,7 @@ export class PlanAdapter implements CompositionAdapter {
 **Interfaces**:
 
 - Consumed by: adapter dispatcher (source_type resolution), decompose.ts, recompose.ts
-- Implements: CompositionAdapter from _shared/composition/src/core/adapter.ts
+- Implements: CompositionAdapter from shared/composition/src/core/adapter.ts
 
 ### Component 2: Regenerative Section Handler
 

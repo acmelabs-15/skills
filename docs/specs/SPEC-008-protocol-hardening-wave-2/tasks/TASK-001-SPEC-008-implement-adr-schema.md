@@ -19,7 +19,7 @@ tags:
 
 Implement `AdrNoteSchema` at `shared/composition/src/schemas/adr-note.ts` per the structural contract documented in [[REQ-001-SPEC-008: New Schema Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. The schema validates frontmatter (title regex, type literal `decision`, status enum including PROPOSED and ACCEPTED, permalink regex, tags 2-5, ADR-specific date and updated fields per CONVENTIONS Section 3.1), body sections (Context, Decision, Considered Options with non-empty rationale per option, Consequences, Clarifications), Observations (3+ with `[category]` plus inline tags), Relations (2+ using only the 11 verb allowlist), and the final-two-sections invariant. A superRefine pass rejects ACCEPTED status when any Clarifications item has an unchecked `[ ]` checkbox or any Considered Option lacks a rationale field. The file ships with full Zod type inference and a `type AdrNote = z.infer<typeof AdrNoteSchema>` export.
 
-This TASK depends on Track 4 of SPEC-008 renaming `_shared/` to `shared/` at the repo root; the orchestrator will rewire this dependency as `depends_on` once the Track 4 TASK exists.
+This TASK depends on Track 4 of SPEC-008 renaming `shared/` to `shared/` at the repo root; the orchestrator will rewire this dependency as `depends_on` once the Track 4 TASK exists.
 
 ## Definition of Done
 

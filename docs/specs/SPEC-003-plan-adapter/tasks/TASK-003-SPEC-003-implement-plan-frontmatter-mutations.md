@@ -37,8 +37,8 @@ The reverse operation swaps keys and values in the frontmatter_map and applies t
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/adapters/plan.ts | MODIFY | Add frontmatter handler functions, integrate with applyMutations/reverseMutations |
-| _shared/composition/tests/plan-frontmatter.test.ts | NEW | Frontmatter mutation and reversal tests |
+| shared/composition/src/adapters/plan.ts | MODIFY | Add frontmatter handler functions, integrate with applyMutations/reverseMutations |
+| shared/composition/tests/plan-frontmatter.test.ts | NEW | Frontmatter mutation and reversal tests |
 
 ## Testing Requirements
 

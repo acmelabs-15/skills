@@ -21,7 +21,7 @@ Implement `parseAnalysisNote`, `parseEpicNote`, and `parseCritNote` at `shared/c
 
 These three parsers are batched into one TASK because they share the same template (TASK-005 establishes the pattern) and differ only in per-type section handling (ANALYSIS detects `## Open Questions` presence; EPIC parses Contained Specs section; CRIT parses Findings table with severity enum). The CRIT parser must handle the parent-reference frontmatter shape (CRIT-NNN-PARENT-NNN-...).
 
-This TASK depends on TASK-002 (ANALYSIS schema), TASK-003 (EPIC schema), TASK-004 (CRIT schema), TASK-005 (parser pattern established), and Track 4 renaming `_shared/` to `shared/`.
+This TASK depends on TASK-002 (ANALYSIS schema), TASK-003 (EPIC schema), TASK-004 (CRIT schema), TASK-005 (parser pattern established), and Track 4 renaming `shared/` to `shared/`.
 
 ## Definition of Done
 

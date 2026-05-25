@@ -23,7 +23,7 @@ Two paired changes delivered as one TASK because they form a single logical unit
 
 2. Implement `validatePlanDoneClaim(planNote: PlanNote): PlanClaimResult` at `shared/composition/src/validators/plan-claim-validator.ts` per REQ-003. The validator is the mechanical-check equivalent that operates on an already-parsed PlanNote; the superRefine is the parse-time guard and the claim validator is the runtime-callable equivalent for the hook layer.
 
-This TASK depends on Track 4 renaming `_shared/` to `shared/`. The existing PLAN parser exposes the `parts` array sufficiently for the validator per REQ-002 verify-only acceptance.
+This TASK depends on Track 4 renaming `shared/` to `shared/`. The existing PLAN parser exposes the `parts` array sufficiently for the validator per REQ-002 verify-only acceptance.
 
 ## Definition of Done
 

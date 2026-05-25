@@ -25,7 +25,7 @@ The /decompose skill is triggered by explicit user invocation. The skill orchest
 
 ## Context
 
-The /decompose skill is one of two primitive skills (alongside /recompose) that expose the composition library to users. Per the KICKOFF-BRIEF.md LLM-script division of labor, the LLM performs cognitive work (reading the source, classifying its type, identifying cluster seams, authoring a distribution plan YAML) while the deterministic script performs mechanical work (parsing by line ranges, applying mutations, hash-validating, writing via temp-then-rename). The skill SKILL.md file defines the Claude Code skill interface; the CLI entry point at _shared/composition/src/decompose.ts bridges from plan YAML to adapter dispatch.
+The /decompose skill is one of two primitive skills (alongside /recompose) that expose the composition library to users. Per the KICKOFF-BRIEF.md LLM-script division of labor, the LLM performs cognitive work (reading the source, classifying its type, identifying cluster seams, authoring a distribution plan YAML) while the deterministic script performs mechanical work (parsing by line ranges, applying mutations, hash-validating, writing via temp-then-rename). The skill SKILL.md file defines the Claude Code skill interface; the CLI entry point at shared/composition/src/decompose.ts bridges from plan YAML to adapter dispatch.
 
 At SPEC-005 ship time, /decompose works for the ADR adapter only (per SPEC-001 PROOF). Broader source_type coverage is incremental as SPEC-002, SPEC-003, and SPEC-004 complete their respective adapter implementations. The adapter registry dispatcher (REQ-004-SPEC-005) routes by source_type to whichever adapters are registered.
 
@@ -48,7 +48,7 @@ Functional
 
 - [requirement] /decompose orchestrates LLM plan authoring then deterministic script execution with hash validation #decompose #pipeline
 - [fact] At SPEC-005 ship, only ADR adapter registered; broader coverage incremental per P1 amendment from ANALYSIS-001 #incremental #adapter-coverage
-- [decision] CLI entry point at _shared/composition/src/decompose.ts bridges plan YAML to adapter dispatch #entry-point #architecture
+- [decision] CLI entry point at shared/composition/src/decompose.ts bridges plan YAML to adapter dispatch #entry-point #architecture
 - [constraint] LLM never touches content bytes; only authors plan YAML per KICKOFF-BRIEF.md division of labor #llm-script-separation
 
 ## Relations

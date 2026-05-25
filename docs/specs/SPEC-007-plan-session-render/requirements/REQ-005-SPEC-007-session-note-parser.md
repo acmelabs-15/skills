@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN a session note markdown file is provided as a string
-THE SYSTEM SHALL parse it via `parseSessionNote(markdown: string): SessionNote` at `_shared/composition/src/parsers/session-note.ts` using unified + remark-parse + remark-frontmatter into an AST, extract frontmatter, sectionize by H2 (Scope, Bound PLAN, Events, Observations, Relations), parse Bound PLAN as wikilink ref + worked_parts list, parse Events via H3 sectionization ("Event NN -- title") with bulletFieldMap for typed fields and discriminated union narrowing at Zod validation, and validate the complete model via SessionNoteSchema.parse()
+THE SYSTEM SHALL parse it via `parseSessionNote(markdown: string): SessionNote` at `shared/composition/src/parsers/session-note.ts` using unified + remark-parse + remark-frontmatter into an AST, extract frontmatter, sectionize by H2 (Scope, Bound PLAN, Events, Observations, Relations), parse Bound PLAN as wikilink ref + worked_parts list, parse Events via H3 sectionization ("Event NN -- title") with bulletFieldMap for typed fields and discriminated union narrowing at Zod validation, and validate the complete model via SessionNoteSchema.parse()
 SO THAT session note markdown is transformed into a typed in-memory model suitable for mutation and rendering.
 
 ## Pattern
@@ -68,7 +68,7 @@ Full parser draft in ANALYSIS-002 Appendix D parsers/session-note.ts section. Re
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/parsers/session-note.ts` | NEW | SessionNote markdown parser |
+| `shared/composition/src/parsers/session-note.ts` | NEW | SessionNote markdown parser |
 
 ## Observations
 

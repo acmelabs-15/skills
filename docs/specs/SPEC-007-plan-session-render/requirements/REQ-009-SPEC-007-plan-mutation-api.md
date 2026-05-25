@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN an LLM or script needs to modify plan note state
-THE SYSTEM SHALL provide a typed mutation API at `_shared/composition/src/plan-mutations.ts` supporting 11 mutation types (set-part-substatus, lock-decision, flip-dod-item, add-task, transition-task, surface-pending-decision, resolve-pending-decision, add-blocker, clear-blockers, transition-impl-item, transition-qa-item) where each mutation reads existing markdown, parses to typed model via parsePlanNote, applies the typed mutation in-memory, validates via PlanNoteSchema, re-renders the entire document via renderPlanNote, and writes atomically
+THE SYSTEM SHALL provide a typed mutation API at `shared/composition/src/plan-mutations.ts` supporting 11 mutation types (set-part-substatus, lock-decision, flip-dod-item, add-task, transition-task, surface-pending-decision, resolve-pending-decision, add-blocker, clear-blockers, transition-impl-item, transition-qa-item) where each mutation reads existing markdown, parses to typed model via parsePlanNote, applies the typed mutation in-memory, validates via PlanNoteSchema, re-renders the entire document via renderPlanNote, and writes atomically
 SO THAT plan note mutations go through a narrow typed interface with automatic side-channel propagation (Progress Dashboard rollup, Cross-Part Deps Graph regeneration, status consistency checks) on every mutation.
 
 ## Pattern
@@ -80,7 +80,7 @@ Full mutation API sketch in ANALYSIS-002 Appendix F. Each mutation type is a Zod
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/plan-mutations.ts` | NEW | Plan mutation API with 11 typed mutations |
+| `shared/composition/src/plan-mutations.ts` | NEW | Plan mutation API with 11 typed mutations |
 
 ## Observations
 

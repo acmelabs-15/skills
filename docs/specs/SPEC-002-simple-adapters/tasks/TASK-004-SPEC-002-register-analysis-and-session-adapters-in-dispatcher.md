@@ -38,12 +38,12 @@ Extend the adapter dispatcher established in SPEC-001 to register AnalysisAdapte
 
 **In Scope**:
 
-- _shared/composition/src/core/dispatcher.ts (Modify -- add registrations)
-- _shared/composition/schemas/distribution/analysis.plan.schema.ts (Create)
-- _shared/composition/schemas/distribution/session.plan.schema.ts (Create)
-- _shared/composition/schemas/composition/analysis.plan.schema.ts (Create)
-- _shared/composition/schemas/composition/session.plan.schema.ts (Create)
-- _shared/composition/schemas/index.ts (Modify -- extend discriminated union)
+- shared/composition/src/core/dispatcher.ts (Modify -- add registrations)
+- shared/composition/schemas/distribution/analysis.plan.schema.ts (Create)
+- shared/composition/schemas/distribution/session.plan.schema.ts (Create)
+- shared/composition/schemas/composition/analysis.plan.schema.ts (Create)
+- shared/composition/schemas/composition/session.plan.schema.ts (Create)
+- shared/composition/schemas/index.ts (Modify -- extend discriminated union)
 
 **Out of Scope**:
 
@@ -54,12 +54,12 @@ Extend the adapter dispatcher established in SPEC-001 to register AnalysisAdapte
 
 | File | Action | Description |
 |------|--------|-------------|
-| _shared/composition/src/core/dispatcher.ts | Modify | Add ANALYSIS + SESSION adapter registrations |
-| _shared/composition/schemas/distribution/analysis.plan.schema.ts | Create | ANALYSIS distribution plan Zod schema |
-| _shared/composition/schemas/distribution/session.plan.schema.ts | Create | SESSION distribution plan Zod schema |
-| _shared/composition/schemas/composition/analysis.plan.schema.ts | Create | ANALYSIS composition plan Zod schema |
-| _shared/composition/schemas/composition/session.plan.schema.ts | Create | SESSION composition plan Zod schema |
-| _shared/composition/schemas/index.ts | Modify | Extend discriminated union with ANALYSIS + SESSION variants |
+| shared/composition/src/core/dispatcher.ts | Modify | Add ANALYSIS + SESSION adapter registrations |
+| shared/composition/schemas/distribution/analysis.plan.schema.ts | Create | ANALYSIS distribution plan Zod schema |
+| shared/composition/schemas/distribution/session.plan.schema.ts | Create | SESSION distribution plan Zod schema |
+| shared/composition/schemas/composition/analysis.plan.schema.ts | Create | ANALYSIS composition plan Zod schema |
+| shared/composition/schemas/composition/session.plan.schema.ts | Create | SESSION composition plan Zod schema |
+| shared/composition/schemas/index.ts | Modify | Extend discriminated union with ANALYSIS + SESSION variants |
 
 ## Effort
 

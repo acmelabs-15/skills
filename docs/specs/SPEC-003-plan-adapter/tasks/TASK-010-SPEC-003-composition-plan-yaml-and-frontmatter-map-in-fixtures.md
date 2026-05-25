@@ -31,9 +31,9 @@ Out of Scope: changing the round-trip test to load YAML (still inline MutationSp
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/tests/fixtures/plan-composition.plan.yaml | NEW | Composition-side plan YAML |
-| _shared/composition/tests/fixtures/plan-distribution.plan.yaml | MODIFY | Add frontmatter_map with title plus permalink plus branches |
-| _shared/composition/tests/plan-integrity-floor.test.ts | MODIFY | Add tests asserting both fixture YAMLs parse |
+| shared/composition/tests/fixtures/plan-composition.plan.yaml | NEW | Composition-side plan YAML |
+| shared/composition/tests/fixtures/plan-distribution.plan.yaml | MODIFY | Add frontmatter_map with title plus permalink plus branches |
+| shared/composition/tests/plan-integrity-floor.test.ts | MODIFY | Add tests asserting both fixture YAMLs parse |
 
 ## Definition of Done
 

@@ -19,7 +19,7 @@ tags:
 
 Implement `CritNoteSchema` at `shared/composition/src/schemas/crit-note.ts` per [[REQ-001-SPEC-008: New Schema Suite]] and [[DESIGN-001-SPEC-008: Coverage Module Layout]]. The schema validates frontmatter (title regex `^CRIT-\d{3}-(ADR|ANALYSIS|SPEC|REQ|DESIGN|TASK)-\d{3}.*` for parent-referenced form, type literal `critique`, status enum, permalink regex `^critique/`, tags 2-5), body sections (Findings table with per-finding fields, Recommendations), Observations, Relations. Per [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-5, CRIT receives a schema and parser but NO claim validator. The schema provides read-time structural validation in support of adr-review convergence.
 
-This TASK depends on Track 4 renaming `_shared/` to `shared/`.
+This TASK depends on Track 4 renaming `shared/` to `shared/`.
 
 ## Definition of Done
 

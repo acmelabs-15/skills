@@ -1,6 +1,6 @@
 ---
 title: 'QA-030-SPEC-002: Reconcile SESSION Adapter DESIGN-001 Drift'
-type: test-report
+type: qa
 permalink: qa/qa-030-spec-002-reconcile-session-adapter-design-001-drift
 status: DONE
 verdict: PASS
@@ -20,10 +20,10 @@ Validates impl-agent claim that [[TASK-008-SPEC-002: Reconcile SESSION Adapter D
 
 ## Evidence Hierarchy
 
-1. Code under test: `_shared/composition/src/adapters/session.ts` (lines 12-35)
-2. Base class abstract slot contract: `_shared/composition/src/core/base-markdown-adapter.ts` lines 13-15
-3. Test under test: `_shared/composition/tests/session-adapter.test.ts` (5 tests, lines 42-90)
-4. Round-trip test: `_shared/composition/tests/session-round-trip.test.ts` (6 tests)
+1. Code under test: `shared/composition/src/adapters/session.ts` (lines 12-35)
+2. Base class abstract slot contract: `shared/composition/src/core/base-markdown-adapter.ts` lines 13-15
+3. Test under test: `shared/composition/tests/session-adapter.test.ts` (5 tests, lines 42-90)
+4. Round-trip test: `shared/composition/tests/session-round-trip.test.ts` (6 tests)
 5. DESIGN-001 amended Component 2 + Convention Note (post-impl read)
 6. REQ-002 AC-3 ("Event-NN format") as canonical authority
 
@@ -33,10 +33,10 @@ Validates impl-agent claim that [[TASK-008-SPEC-002: Reconcile SESSION Adapter D
 |---|---|---|---|
 | SessionAdapter unit | `tests/session-adapter.test.ts` | 5 | 5 pass / 0 fail |
 | SessionAdapter round-trip | `tests/session-round-trip.test.ts` | 6 | 6 pass / 0 fail |
-| Composition full suite | `_shared/composition` | 458 | 458 pass / 0 fail |
+| Composition full suite | `shared/composition` | 458 | 458 pass / 0 fail |
 
-Command: `cd _shared/composition && bun test tests/session-adapter.test.ts tests/session-round-trip.test.ts` → 11 pass / 0 fail / 24 expects in 87ms.
-Command: `cd _shared/composition && bun test` → 458 pass / 0 fail / 938 expects in 895ms.
+Command: `cd shared/composition && bun test tests/session-adapter.test.ts tests/session-round-trip.test.ts` → 11 pass / 0 fail / 24 expects in 87ms.
+Command: `cd shared/composition && bun test` → 458 pass / 0 fail / 938 expects in 895ms.
 
 Tests run: 11. Passed: 11. Failed: 0. Skipped: 0.
 

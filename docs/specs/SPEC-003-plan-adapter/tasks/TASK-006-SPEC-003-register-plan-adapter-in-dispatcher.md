@@ -31,8 +31,8 @@ Out of Scope: PlanAdapter implementation changes; SPEC-002/004/007 dispatcher en
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/core/dispatcher.ts | MODIFY | Register PlanAdapter under source_type "plan" |
-| _shared/composition/tests/dispatcher.test.ts | MODIFY | Add coverage that getAdapter("plan") returns a PlanAdapter |
+| shared/composition/src/core/dispatcher.ts | MODIFY | Register PlanAdapter under source_type "plan" |
+| shared/composition/tests/dispatcher.test.ts | MODIFY | Add coverage that getAdapter("plan") returns a PlanAdapter |
 
 ## Definition of Done
 

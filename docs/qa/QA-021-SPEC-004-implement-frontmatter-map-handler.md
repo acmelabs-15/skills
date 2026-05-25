@@ -26,7 +26,7 @@ Verify TASK-002-SPEC-004 implements `applyFrontmatterMap` / `reverseFrontmatterM
 - **Test Types**: Unit, Integration (round-trip)
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: Inline + on-disk fixtures with frontmatter blocks
-- **Test File**: `_shared/composition/tests/spec-subtree-adapter.test.ts`, `tests/spec-subtree-round-trip.test.ts`
+- **Test File**: `shared/composition/tests/spec-subtree-adapter.test.ts`, `tests/spec-subtree-round-trip.test.ts`
 
 ## Results
 

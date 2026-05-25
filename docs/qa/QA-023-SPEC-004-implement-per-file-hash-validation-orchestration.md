@@ -25,7 +25,7 @@ Verify TASK-004-SPEC-004 implements per-file SHA-256 validation with cluster rol
 - **Test Types**: Unit, Integration (round-trip PROOF)
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: Inline + on-disk fixtures with non-trivial renumber + wikilink maps; non-injective map for failure case
-- **Test File**: `_shared/composition/tests/spec-subtree-round-trip.test.ts`
+- **Test File**: `shared/composition/tests/spec-subtree-round-trip.test.ts`
 
 ## Results
 

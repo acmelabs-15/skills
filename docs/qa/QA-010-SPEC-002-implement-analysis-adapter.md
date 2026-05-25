@@ -14,7 +14,7 @@ tags:
 
 ## Objective
 
-Retro-validate the ANALYSIS adapter (`_shared/composition/src/adapters/analysis.ts`) against TASK-001-SPEC-002 DoD, REQ-001-SPEC-002 acceptance criteria, and DESIGN-001-SPEC-002 compliance. Code shipped on main (commits 5299aea, 2f049fd); this is QA-only retro-validation per the Wave 2 retro-validation swarm.
+Retro-validate the ANALYSIS adapter (`shared/composition/src/adapters/analysis.ts`) against TASK-001-SPEC-002 DoD, REQ-001-SPEC-002 acceptance criteria, and DESIGN-001-SPEC-002 compliance. Code shipped on main (commits 5299aea, 2f049fd); this is QA-only retro-validation per the Wave 2 retro-validation swarm.
 
 - **Feature**: ANALYSIS adapter, config-only subclass of BaseMarkdownAdapter
 - **Scope**: TASK-001-SPEC-002
@@ -24,7 +24,7 @@ Retro-validate the ANALYSIS adapter (`_shared/composition/src/adapters/analysis.
 - **Test Types**: unit, structural-conformance
 - **Environment**: bun test v1.3.13; commit 2f049fd
 - **Data Strategy**: inline fixture in analysis-adapter.test.ts plus shared fixture tests/fixtures/analysis-sample.md
-- **Test File**: `_shared/composition/tests/analysis-adapter.test.ts`
+- **Test File**: `shared/composition/tests/analysis-adapter.test.ts`
 
 ## Results
 

@@ -31,10 +31,10 @@ Out of Scope: changes to preservation-ratio enforceIntegrityFloor (orthogonal sa
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/core/validate.ts | NEW | validateIntegrityFloor function |
-| _shared/composition/schemas/base.ts | MODIFY | Add regeneratedSectionsFloor refinement on mutationSpecSchema |
-| _shared/composition/src/adapters/plan.ts | MODIFY | findRegeneratedSpans matches H2 and H3 |
-| _shared/composition/tests/plan-integrity-floor.test.ts | MODIFY | Add coverage tests for 51% reject 50% accept |
+| shared/composition/src/core/validate.ts | NEW | validateIntegrityFloor function |
+| shared/composition/schemas/base.ts | MODIFY | Add regeneratedSectionsFloor refinement on mutationSpecSchema |
+| shared/composition/src/adapters/plan.ts | MODIFY | findRegeneratedSpans matches H2 and H3 |
+| shared/composition/tests/plan-integrity-floor.test.ts | MODIFY | Add coverage tests for 51% reject 50% accept |
 
 ## Definition of Done
 

@@ -18,7 +18,7 @@ tags:
 
 ## Approach
 
-Retro-validation pattern (matching QA-033-SPEC-007 + QA-039-SPEC-005 + QA-040-SPEC-006). Wave 2 batched dispatch built SPEC-002 code across `_shared/composition/src/adapters/{analysis,session}.ts` + `schemas/distribution/session.plan.schema.ts` + tests at `_shared/composition/tests/{analysis,session}-*.test.ts`, but PLAN-001 TASK-001..006 frontmatter never propagated TODO → DONE. This aggregate QA verifies each TASK's DoD against the existing built artifacts.
+Retro-validation pattern (matching QA-033-SPEC-007 + QA-039-SPEC-005 + QA-040-SPEC-006). Wave 2 batched dispatch built SPEC-002 code across `shared/composition/src/adapters/{analysis,session}.ts` + `schemas/distribution/session.plan.schema.ts` + tests at `shared/composition/tests/{analysis,session}-*.test.ts`, but PLAN-001 TASK-001..006 frontmatter never propagated TODO → DONE. This aggregate QA verifies each TASK's DoD against the existing built artifacts.
 
 ## Per-TASK Verification
 
@@ -33,7 +33,7 @@ Retro-validation pattern (matching QA-033-SPEC-007 + QA-039-SPEC-005 + QA-040-SP
 
 ### TASK-001 evidence
 
-- `_shared/composition/src/adapters/analysis.ts:7` — `export class AnalysisAdapter extends BaseMarkdownAdapter` ✓
+- `shared/composition/src/adapters/analysis.ts:7` — `export class AnalysisAdapter extends BaseMarkdownAdapter` ✓
 - `analysis.ts:8` — `readonly sourceType = "analysis"` ✓
 - `analysis.ts:9` — `protected readonly sectionDelimiter = "### "` ✓
 - `analysis.ts:10` — `protected readonly identifierPattern = /item-(\d+)/i` ✓
@@ -44,7 +44,7 @@ Retro-validation pattern (matching QA-033-SPEC-007 + QA-039-SPEC-005 + QA-040-SP
 
 ### TASK-002 evidence
 
-- `_shared/composition/src/adapters/session.ts:9` — `export class SessionAdapter extends BaseMarkdownAdapter` ✓
+- `shared/composition/src/adapters/session.ts:9` — `export class SessionAdapter extends BaseMarkdownAdapter` ✓
 - `session.ts:10` — `readonly sourceType = "session"` ✓
 - `session.ts:11` — `protected readonly sectionDelimiter = "## Event "` ✓
 - `session.ts:12` — `protected readonly identifierPattern = /Event-(\d+)/i` ✓
@@ -54,7 +54,7 @@ Retro-validation pattern (matching QA-033-SPEC-007 + QA-039-SPEC-005 + QA-040-SP
 
 ### TASK-003 evidence
 
-- `_shared/composition/schemas/distribution/session.plan.schema.ts` exports `crossSourceUpdateSchema` + `CrossSourceUpdate` type ✓
+- `shared/composition/schemas/distribution/session.plan.schema.ts` exports `crossSourceUpdateSchema` + `CrossSourceUpdate` type ✓
 - Schema shape: `target_source_type: z.literal("plan")`, `target_path: z.string().min(1)`, optional `frontmatter_map`, optional `wikilink_map` ✓
 - `SessionAdapter.getCrossSourceUpdates` method implemented as pass-through ✓
 - `supportsCrossSourceUpdates = true` ✓
@@ -71,7 +71,7 @@ Retro-validation pattern (matching QA-033-SPEC-007 + QA-039-SPEC-005 + QA-040-SP
 
 ### TASK-005 evidence
 
-- Fixture: `_shared/composition/tests/fixtures/analysis-sample.md` (flat layout per TASK-010 reconciliation) ✓
+- Fixture: `shared/composition/tests/fixtures/analysis-sample.md` (flat layout per TASK-010 reconciliation) ✓
 - Fixture plans: `analysis-{distribution,composition}.plan.yaml` ✓
 - Test: `tests/analysis-round-trip.test.ts` parses fixture, decomposes + recomposes, asserts SHA-256 identity ✓
 - Test passes via `bun test tests/analysis-round-trip.test.ts` ✓

@@ -119,7 +119,7 @@ Single file containing all Zod schemas (base + all 5 per-type extensions + discr
 
 - File grows to 500+ lines as adapters are added
 - All adapters coupled in a single module; changing one type's schema requires navigating all types
-- Does not align with the per-type adapter file layout in _shared/composition/src/adapters/
+- Does not align with the per-type adapter file layout in shared/composition/src/adapters/
 
 #### Option B: Modular Per-Type Schema Files (SELECTED)
 
@@ -355,7 +355,7 @@ For `source_type: "spec"`, the extension adds a `subtree` manifest field contain
 
 ### D-2: Adapter Interface Contract
 
-Every per-type adapter implements the following TypeScript interface. The interface is synchronous per the Considered Options Axis 1 decision. The `hash()` utility is NOT part of the adapter interface; it is a shared utility at `_shared/composition/src/core/hash.ts` exporting `function sha256(content: string): string { return Bun.hash("sha256", content) }`. Adapters compose with this utility via import, not via polymorphism (see P1-I resolution in Clarifications).
+Every per-type adapter implements the following TypeScript interface. The interface is synchronous per the Considered Options Axis 1 decision. The `hash()` utility is NOT part of the adapter interface; it is a shared utility at `shared/composition/src/core/hash.ts` exporting `function sha256(content: string): string { return Bun.hash("sha256", content) }`. Adapters compose with this utility via import, not via polymorphism (see P1-I resolution in Clarifications).
 
 ```typescript
 import type { Root } from "mdast";
@@ -415,7 +415,7 @@ interface MutationSpec {
  * then extract destination -> reverse-mutate -> hash-compare against source extraction.
  *
  * hash() is NOT on this interface. Use the shared sha256() utility from
- * _shared/composition/src/core/hash.ts (wraps Bun.hash("sha256", content)).
+ * shared/composition/src/core/hash.ts (wraps Bun.hash("sha256", content)).
  */
 interface CompositionAdapter {
   /** The source_type this adapter handles. */
@@ -477,7 +477,7 @@ interface CompositionAdapter {
 }
 ```
 
-Shared types (`LineRange`, `RenumberMap`, `WikilinkMap`, `FrontmatterMap`, `MutationSpec`) live at `_shared/composition/src/core/types.ts`. The `CompositionAdapter` interface lives at `_shared/composition/src/core/adapter.ts`. The shared `sha256()` utility lives at `_shared/composition/src/core/hash.ts`. The `Root` type is the remark/mdast `Root` node type from the `@types/mdast` package.
+Shared types (`LineRange`, `RenumberMap`, `WikilinkMap`, `FrontmatterMap`, `MutationSpec`) live at `shared/composition/src/core/types.ts`. The `CompositionAdapter` interface lives at `shared/composition/src/core/adapter.ts`. The shared `sha256()` utility lives at `shared/composition/src/core/hash.ts`. The `Root` type is the remark/mdast `Root` node type from the `@types/mdast` package.
 
 The parse/serialize round-trip contract requires that for every adapter, `serialize(parse(content)) === content` holds. This is a precondition for the F-8 hash validation chain. If remark-stringify introduces whitespace normalization (a known risk noted in ADR-001 Confirmation), the adapter must configure remark-stringify to preserve the original formatting. This contract is enforced by the round-trip property test from KICKOFF-BRIEF.md.
 
@@ -564,7 +564,7 @@ The Zod validator is modular, mirroring the per-type adapter layout per Consider
 **File layout:**
 
 ```
-_shared/composition/schemas/
+shared/composition/schemas/
   base.ts                            # Common envelope + shared types + composed union
   distribution/
     adr.plan.schema.ts               # ADR distribution-specific fields
@@ -875,7 +875,7 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - [decision] Per-file hash validation selected over per-subtree for SPEC adapter; pinpoints drifting file and aligns with per-file write-to-temp-then-rename rollback #hash-validation #spec-subtree
 - [decision] Modular per-type Zod schema files selected over monolithic; mirrors adapter file layout and provides single-file extension point per new source type #zod-schema #modularity
 - [design] Plan YAML uses discriminated union on source_type with common envelope plus per-type extensions; two plan_type variants (distribution and composition) cover both /decompose and /recompose directions #plan-schema #yaml
-- [design] Adapter interface defines 5 methods (parse, extractByRange, applyMutations, reverseMutations, serialize) with explicit round-trip and inverse contracts; hash extracted to shared sha256() utility at _shared/composition/src/core/hash.ts #adapter-contract #interface
+- [design] Adapter interface defines 5 methods (parse, extractByRange, applyMutations, reverseMutations, serialize) with explicit round-trip and inverse contracts; hash extracted to shared sha256() utility at shared/composition/src/core/hash.ts #adapter-contract #interface
 - [design] PLAN adapter excludes regenerated sections (Progress Dashboard, Mermaid graph) from hash validation; these are Information Model Category 2 derived views regenerated from structural content #plan-adapter #regenerative-content
 - [design] SESSION adapter emits cross-source PLAN update instructions but does not mutate PLAN content; each adapter validates only its own content scope #session-adapter #cross-source
 - [constraint] Injectivity plus disjointness validators on renumber_map and wikilink_map are BLOCKING Zod .refine() rules at plan load time per ADR-001 F-8; disjointness ensures single-pass replacement is order-independent and reversible #injectivity #blocking-gate

@@ -1,6 +1,6 @@
 ---
 title: 'QA-031-SPEC-003: TASK-010 Fix Iter 1 Revalidation'
-type: test-report
+type: qa
 status: DONE
 permalink: qa/qa-031-spec-003-task-010-fix-iter-1-revalidation
 tags:
@@ -18,7 +18,7 @@ tags:
 Re-verify the 3 previously-FAIL items from QA-029-SPEC-003 after fix iteration 1 (hash quoting + fixture-load tests added).
 
 - **Feature**: TASK-010-SPEC-003 (Composition Plan YAML and Frontmatter Map in Fixtures)
-- **Scope**: `_shared/composition/tests/fixtures/plan-composition.plan.yaml`, `_shared/composition/tests/fixtures/plan-distribution.plan.yaml`, `_shared/composition/tests/plan-integrity-floor.test.ts`
+- **Scope**: `shared/composition/tests/fixtures/plan-composition.plan.yaml`, `shared/composition/tests/fixtures/plan-distribution.plan.yaml`, `shared/composition/tests/plan-integrity-floor.test.ts`
 - **Acceptance Criteria**: DoD-2 (composition YAML parses), DoD-4 (distribution YAML parses), DoD-6 (test loads both fixtures and asserts safeParse success)
 
 ## Approach
@@ -26,7 +26,7 @@ Re-verify the 3 previously-FAIL items from QA-029-SPEC-003 after fix iteration 1
 - **Test Types**: Unit (Zod schema validation via fixture load)
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: YAML fixture files loaded via `readFileSync` + `js-yaml.load`, parsed against Zod schemas
-- **Test File**: `_shared/composition/tests/plan-integrity-floor.test.ts`
+- **Test File**: `shared/composition/tests/plan-integrity-floor.test.ts`
 
 ## Results
 

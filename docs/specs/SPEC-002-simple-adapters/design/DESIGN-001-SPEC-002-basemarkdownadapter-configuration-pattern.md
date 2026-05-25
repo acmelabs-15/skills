@@ -131,7 +131,7 @@ None. All design decisions are locked by ADR-002 D-3 and SPEC-001 BaseMarkdownAd
 
 ### 2026-05-21 — ANALYSIS adapter drift (TASK-007-SPEC-002, SESSION-2026-05-21_01)
 
-Two drifts between DESIGN-001 and `_shared/composition/src/adapters/analysis.ts` discovered during Wave 2 retro-validation (QA-010-SPEC-002):
+Two drifts between DESIGN-001 and `shared/composition/src/adapters/analysis.ts` discovered during Wave 2 retro-validation (QA-010-SPEC-002):
 
 1. **`identifierPrefix`** — declared in DESIGN-001 Component 1 + Component 3 AdapterConfig but absent from code. **Resolution**: code amended — `identifierPrefix = "item-"` added to `AnalysisAdapter`. The base class abstract slot is satisfied; DESIGN-001 unchanged on this point.
 2. **`identifierPattern` `/i` flag** — DESIGN-001 specified `/item-(\d+)/`; code is `/item-(\d+)/i`. **Resolution**: DESIGN-001 amended — `/i` flag added to documented pattern + observation. Rationale: the case-insensitive flag is intentional per code comments ("case-insensitive at the prefix") and matches the broader Brain note convention of accepting `Item-1`, `ITEM-1`, `item-1`.

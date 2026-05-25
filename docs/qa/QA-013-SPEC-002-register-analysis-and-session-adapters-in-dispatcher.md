@@ -24,7 +24,7 @@ Retro-validate the dispatcher and Zod discriminated-union extensions against TAS
 - **Test Types**: unit, structural
 - **Environment**: bun test v1.3.13; commit 2f049fd
 - **Data Strategy**: inline plan literals in dispatcher.test.ts and session-cross-source.test.ts
-- **Test File**: `_shared/composition/tests/dispatcher.test.ts`
+- **Test File**: `shared/composition/tests/dispatcher.test.ts`
 
 ## Results
 

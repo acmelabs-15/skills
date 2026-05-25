@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN an LLM or script needs to append an event to a session note
-THE SYSTEM SHALL provide a typed mutation API at `_shared/composition/src/session-mutations.ts` supporting an append-event mutation that reads existing session markdown, parses to typed model via parseSessionNote, appends the new event to the events array with continuity validation (new event number must equal max existing + 1), validates via SessionNoteSchema, re-renders the entire document via renderSessionNote, and writes atomically
+THE SYSTEM SHALL provide a typed mutation API at `shared/composition/src/session-mutations.ts` supporting an append-event mutation that reads existing session markdown, parses to typed model via parseSessionNote, appends the new event to the events array with continuity validation (new event number must equal max existing + 1), validates via SessionNoteSchema, re-renders the entire document via renderSessionNote, and writes atomically
 SO THAT session note events are appended through a typed interface with event-number continuity enforced.
 
 ## Pattern
@@ -60,7 +60,7 @@ Expected size 50-80 LOC. Follows the same read-parse-mutate-validate-render-writ
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/session-mutations.ts` | NEW | Session mutation API with append-event |
+| `shared/composition/src/session-mutations.ts` | NEW | Session mutation API with append-event |
 
 ## Observations
 

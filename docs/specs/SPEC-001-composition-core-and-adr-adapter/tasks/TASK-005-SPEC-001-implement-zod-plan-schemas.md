@@ -35,11 +35,11 @@ The nested discriminated union assembles plan_type (outer) x source_type (inner)
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/schemas/base.ts | NEW | Common envelope, shared Zod types |
-| _shared/composition/schemas/distribution/adr.plan.schema.ts | NEW | ADR distribution schema |
-| _shared/composition/schemas/composition/adr.plan.schema.ts | NEW | ADR composition schema |
-| _shared/composition/schemas/index.ts | NEW | Union assembly + exports |
-| _shared/composition/tests/schemas.test.ts | NEW | Schema validation tests |
+| shared/composition/schemas/base.ts | NEW | Common envelope, shared Zod types |
+| shared/composition/schemas/distribution/adr.plan.schema.ts | NEW | ADR distribution schema |
+| shared/composition/schemas/composition/adr.plan.schema.ts | NEW | ADR composition schema |
+| shared/composition/schemas/index.ts | NEW | Union assembly + exports |
+| shared/composition/tests/schemas.test.ts | NEW | Schema validation tests |
 
 ## Testing Requirements
 

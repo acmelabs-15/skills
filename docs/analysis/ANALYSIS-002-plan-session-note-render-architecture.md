@@ -129,7 +129,7 @@ Status: LOCKED.
 
 ### D-4: Zod schema as validation contract
 
-Decision: Plan and session note structures are validated by Zod schemas living in _shared/composition/src/schemas/ (plan-note.ts, session-note.ts, common.ts). Schema runs on every parse and pre-write. Validation includes cross-field invariants (DONE part must have outcome; task.part must reference a valid part; event numbers must be continuous starting at 1).
+Decision: Plan and session note structures are validated by Zod schemas living in shared/composition/src/schemas/ (plan-note.ts, session-note.ts, common.ts). Schema runs on every parse and pre-write. Validation includes cross-field invariants (DONE part must have outcome; task.part must reference a valid part; event numbers must be continuous starting at 1).
 
 Rationale: Type safety + runtime validation + cross-field invariants caught at a known boundary. Mirrors ADR-001 D-1 (Zod for plan validation). The schema is the contract between LLM authoring layer and the deterministic render script.
 

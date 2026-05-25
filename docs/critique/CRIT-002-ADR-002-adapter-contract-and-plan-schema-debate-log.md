@@ -89,7 +89,7 @@ None.
 
 - **Source**: independent-thinker P1-1
 - **Finding**: hash() method on CompositionAdapter is identical Bun.hash wrapper across all 5 adapters. Zero adapter-specific logic. Polymorphism is ceremony.
-- **Resolution**: PENDING. Move hash to shared utility `_shared/composition/src/core/hash.ts`. Remove from CompositionAdapter interface. Reduce interface to 5 methods (parse / extractByRange / applyMutations / reverseMutations / serialize).
+- **Resolution**: PENDING. Move hash to shared utility `shared/composition/src/core/hash.ts`. Remove from CompositionAdapter interface. Reduce interface to 5 methods (parse / extractByRange / applyMutations / reverseMutations / serialize).
 
 ### P1-J: BaseMarkdownAdapter pattern (PENDING)
 

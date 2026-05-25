@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN a plan note markdown file is parsed into a typed in-memory model
-THE SYSTEM SHALL validate the parsed model against PlanNoteSchema at `_shared/composition/src/schemas/plan-note.ts`, enforcing frontmatter shape (title regex, type literal 'plan', status, complexity_tier, branches[1+], permalink regex, tags[2-5]), objectives[1+], parts[1+] with per-part refine (DONE part must have outcome), tasks with per-task refine (DONE task must reference resolving event), pending_decisions, editor_mirror, blockers, observations[3+], relations[2+], and superRefine cross-field invariants (task.part references valid part; part.depends_on references valid part; all-terminal parts implies plan status not IN_PROGRESS)
+THE SYSTEM SHALL validate the parsed model against PlanNoteSchema at `shared/composition/src/schemas/plan-note.ts`, enforcing frontmatter shape (title regex, type literal 'plan', status, complexity_tier, branches[1+], permalink regex, tags[2-5]), objectives[1+], parts[1+] with per-part refine (DONE part must have outcome), tasks with per-task refine (DONE task must reference resolving event), pending_decisions, editor_mirror, blockers, observations[3+], relations[2+], and superRefine cross-field invariants (task.part references valid part; part.depends_on references valid part; all-terminal parts implies plan status not IN_PROGRESS)
 SO THAT structural integrity of plan notes is enforced at a known boundary before rendering.
 
 ## Pattern
@@ -72,7 +72,7 @@ Full schema draft in ANALYSIS-002 Appendix C plan-note.ts section. All sub-schem
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/schemas/plan-note.ts` | NEW | PlanNote Zod schema with cross-field invariants |
+| `shared/composition/src/schemas/plan-note.ts` | NEW | PlanNote Zod schema with cross-field invariants |
 
 ## Observations
 

@@ -21,7 +21,7 @@ Gap from QA-020-SPEC-004 retro-validation: TASK-001 DoD requires barrel export +
 
 ## Objective
 
-Create `_shared/composition/src/adapters/index.ts` barrel that re-exports `SpecSubtreeAdapter` + sibling adapters, AND adjudicate the `sourceType` value. Two options:
+Create `shared/composition/src/adapters/index.ts` barrel that re-exports `SpecSubtreeAdapter` + sibling adapters, AND adjudicate the `sourceType` value. Two options:
 
 1. Align implementation to REQ-001 AC1 + DESIGN-001 by changing `sourceType` to `"spec"` (and `source_type: z.literal("spec")` in distribution + composition schemas). Update planSchema discriminated union.
 2. Amend REQ-001 + DESIGN-001 + ADR-002 D-3 to declare `"spec-subtree"` as canonical. Update referenced ADR.
@@ -32,11 +32,11 @@ User adjudication required before code changes.
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/src/adapters/index.ts | NEW | Barrel re-exporting all adapters |
-| _shared/composition/src/adapters/spec-subtree.ts | MODIFY (option 1) | Change sourceType literal |
-| _shared/composition/schemas/distribution/spec-subtree.plan.schema.ts | MODIFY (option 1) | source_type literal |
-| _shared/composition/schemas/composition/spec-subtree.plan.schema.ts | MODIFY (option 1) | source_type literal |
-| _shared/composition/schemas/index.ts | MODIFY (option 1) | Discriminator value in union |
+| shared/composition/src/adapters/index.ts | NEW | Barrel re-exporting all adapters |
+| shared/composition/src/adapters/spec-subtree.ts | MODIFY (option 1) | Change sourceType literal |
+| shared/composition/schemas/distribution/spec-subtree.plan.schema.ts | MODIFY (option 1) | source_type literal |
+| shared/composition/schemas/composition/spec-subtree.plan.schema.ts | MODIFY (option 1) | source_type literal |
+| shared/composition/schemas/index.ts | MODIFY (option 1) | Discriminator value in union |
 
 ## Definition of Done
 

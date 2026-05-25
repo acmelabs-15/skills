@@ -35,10 +35,10 @@ The ADR fixture should be 200-500 lines with multiple D-N sections, wikilinks, Y
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/tests/round-trip.test.ts | NEW | Round-trip property test framework |
-| _shared/composition/tests/fixtures/adr-sample.md | NEW | Realistic ADR fixture |
-| _shared/composition/tests/fixtures/adr-distribution.plan.yaml | NEW | ADR decompose fixture plan |
-| _shared/composition/tests/fixtures/adr-composition.plan.yaml | NEW | ADR recompose fixture plan |
+| shared/composition/tests/round-trip.test.ts | NEW | Round-trip property test framework |
+| shared/composition/tests/fixtures/adr-sample.md | NEW | Realistic ADR fixture |
+| shared/composition/tests/fixtures/adr-distribution.plan.yaml | NEW | ADR decompose fixture plan |
+| shared/composition/tests/fixtures/adr-composition.plan.yaml | NEW | ADR recompose fixture plan |
 
 ## Testing Requirements
 

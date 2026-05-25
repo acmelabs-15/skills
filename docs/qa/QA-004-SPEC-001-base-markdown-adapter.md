@@ -13,10 +13,10 @@ tags:
 
 ## Objective
 
-Verify that TASK-004-SPEC-001 (BaseMarkdownAdapter) meets all acceptance criteria. The task implemented `_shared/composition/src/core/base-markdown-adapter.ts` -- an abstract class providing unified/remark-based markdown parsing, serialization, line-range extraction, and single-pass mutation with reversibility.
+Verify that TASK-004-SPEC-001 (BaseMarkdownAdapter) meets all acceptance criteria. The task implemented `shared/composition/src/core/base-markdown-adapter.ts` -- an abstract class providing unified/remark-based markdown parsing, serialization, line-range extraction, and single-pass mutation with reversibility.
 
 - **Feature**: BaseMarkdownAdapter (TASK-004-SPEC-001)
-- **Scope**: `_shared/composition/src/core/base-markdown-adapter.ts` + `_shared/composition/tests/base-adapter.test.ts`
+- **Scope**: `shared/composition/src/core/base-markdown-adapter.ts` + `shared/composition/tests/base-adapter.test.ts`
 - **Acceptance Criteria**: TASK-004-SPEC-001 DoD
 
 ## Approach

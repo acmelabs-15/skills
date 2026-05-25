@@ -18,7 +18,7 @@ tags:
 Retro-validate TASK-009-SPEC-007 via `src/renderers/mermaid.ts` (105 LOC) and `tests/mermaid-renderer.test.ts`.
 
 - **Feature**: Mermaid Flowchart Renderer (TASK-009-SPEC-007)
-- **Scope**: `_shared/composition/src/renderers/mermaid.ts`
+- **Scope**: `shared/composition/src/renderers/mermaid.ts`
 - **Acceptance Criteria**: REQ-008-SPEC-007, ADR-003 D-7, CONVENTIONS Section 4.12
 
 ## Approach

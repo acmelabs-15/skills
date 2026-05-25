@@ -1,6 +1,6 @@
 ---
 title: 'QA-037-SPEC-004: TASK-011 Schema Shape Revalidation'
-type: test-report
+type: qa
 permalink: qa/qa-037-spec-004-task-011-schema-shape-revalidation
 status: ACCEPTED
 verdict: PASS
@@ -20,13 +20,13 @@ QA revalidation of TASK-011-SPEC-004 (Align Schema Shape to ADR-002 D-5 and REQ-
 
 Schema reshape per ADR-002 D-5 canonical authority (Option A — user adjudication recorded in TASK-011 DoD-1):
 
-- `_shared/composition/schemas/distribution/spec-subtree.plan.schema.ts` (reshaped per ADR-002 D-5)
-- `_shared/composition/schemas/composition/spec-subtree.plan.schema.ts` (reshaped; reuses distribution manifest schema)
-- `_shared/composition/schemas/index.ts` (exports SubtreeManifestRoot + SubtreeManifestChild)
-- `_shared/composition/tests/spec-subtree-schema.test.ts` (rewritten for new shape; per-AC coverage)
-- `_shared/composition/tests/spec-subtree-round-trip.test.ts` (schema tests migrated to new shape; YAML fixture validation)
-- `_shared/composition/tests/fixtures/spec-subtree-distribution.plan.yaml` (rewritten to ADR-002 D-5 shape)
-- `_shared/composition/tests/fixtures/spec-subtree-composition.plan.yaml` (rewritten to ADR-002 D-5 inverse shape)
+- `shared/composition/schemas/distribution/spec-subtree.plan.schema.ts` (reshaped per ADR-002 D-5)
+- `shared/composition/schemas/composition/spec-subtree.plan.schema.ts` (reshaped; reuses distribution manifest schema)
+- `shared/composition/schemas/index.ts` (exports SubtreeManifestRoot + SubtreeManifestChild)
+- `shared/composition/tests/spec-subtree-schema.test.ts` (rewritten for new shape; per-AC coverage)
+- `shared/composition/tests/spec-subtree-round-trip.test.ts` (schema tests migrated to new shape; YAML fixture validation)
+- `shared/composition/tests/fixtures/spec-subtree-distribution.plan.yaml` (rewritten to ADR-002 D-5 shape)
+- `shared/composition/tests/fixtures/spec-subtree-composition.plan.yaml` (rewritten to ADR-002 D-5 inverse shape)
 
 ## TASK-011 DoD checklist
 
@@ -37,7 +37,7 @@ Schema reshape per ADR-002 D-5 canonical authority (Option A — user adjudicati
 | 3 | Destinations (root.source_path + children.source_path + children.dest_path) validated by sync path-traversal guard | PASS | `schemas/distribution/spec-subtree.plan.schema.ts:14-29` rejectPathTraversal; superRefine `:89-109` applies to all 3 surfaces; tests `tests/spec-subtree-schema.test.ts:77-132` cover all 3 path-traversal cases plus absolute-path rejection |
 | 4 | Missing required field rejection covered by explicit unit tests (missing root, missing children, missing dest_path, missing subtree_manifest) | PASS | Tests at `tests/spec-subtree-schema.test.ts:50-74` (missing root, missing children, missing dest_path) + `:202-209` (missing subtree_manifest on plan) |
 | 5 | Field name renamed `manifest` → `subtree_manifest` per ADR-002 D-5; per-entry mutations migrated to root + each child; per-child optional `filename_rewrite_map` added; top-level plan `mutations` + `destinations` removed | PASS | `schemas/distribution/spec-subtree.plan.schema.ts:111-115` distribution plan shape; `:113-115` composition variant; root has mutations `:36-39`; children carry mutations + optional filename_rewrite_map `:49-54`; no top-level `mutations` or `destinations`; fixtures and ADR-002 D-5 sample (lines 266-298) match verbatim |
-| 6 | Round-trip + schema tests pass (`bun test`) | PASS | `bun test` in `_shared/composition` reports **484 pass / 0 fail / 1035 expect() calls** across 53 files (count grew from impl-reported 475 → 484 due to added per-AC + path-traversal tests); subset run on `tests/spec-subtree-schema.test.ts` + `tests/spec-subtree-round-trip.test.ts` = 28 pass / 0 fail / 59 expect() calls |
+| 6 | Round-trip + schema tests pass (`bun test`) | PASS | `bun test` in `shared/composition` reports **484 pass / 0 fail / 1035 expect() calls** across 53 files (count grew from impl-reported 475 → 484 due to added per-AC + path-traversal tests); subset run on `tests/spec-subtree-schema.test.ts` + `tests/spec-subtree-round-trip.test.ts` = 28 pass / 0 fail / 59 expect() calls |
 
 All 6 DoD items **PASS**.
 
@@ -108,7 +108,7 @@ Shape verification: **VERBATIM MATCH**.
 
 ## Recommendations
 
-- File a follow-up TASK (or `Wave 3` remediation item) to fix the 10 pre-existing biome violations in `_shared/composition/schemas/base.ts`, `src/core/cluster-rollback.ts`, `src/core/subtree-orchestrator.ts`, `src/adapters/spec-subtree.ts`, and 4 test files. None of these were introduced by TASK-011 but they fail the library-wide biome gate.
+- File a follow-up TASK (or `Wave 3` remediation item) to fix the 10 pre-existing biome violations in `shared/composition/schemas/base.ts`, `src/core/cluster-rollback.ts`, `src/core/subtree-orchestrator.ts`, `src/adapters/spec-subtree.ts`, and 4 test files. None of these were introduced by TASK-011 but they fail the library-wide biome gate.
 
 ## Observations
 

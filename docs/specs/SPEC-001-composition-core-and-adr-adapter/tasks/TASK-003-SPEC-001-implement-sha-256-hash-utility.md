@@ -35,8 +35,8 @@ Use Bun.hash("sha256", content) which returns a Uint8Array. Convert to hex strin
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/core/hash.ts | NEW | sha256 utility function |
-| _shared/composition/tests/hash.test.ts | NEW | Unit tests for sha256 |
+| shared/composition/src/core/hash.ts | NEW | sha256 utility function |
+| shared/composition/tests/hash.test.ts | NEW | Unit tests for sha256 |
 
 ## Testing Requirements
 

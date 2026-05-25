@@ -34,9 +34,9 @@ Non-blocking:
 |:--|:--|:--|
 | TASK-003 delegation seam (DelegationAdapter injection) | PASS | `defrag/scripts/defrag.ts:39-70` defines `DelegationAdapter` interface with decompose/recompose/deleteNote/structuralFix methods; default `printingDelegation` logs the Skill invocation; tests inject mock at `defrag.test.ts:130-198` (4 delegation-error scenarios). DoD item 1-7 satisfied at the injection seam. |
 | TASK-005 NoteWriter seam (Pattern 2 three-phase plan) | PASS | `ingest/scripts/ingest.ts:47-93` defines `NoteWriter` interface; `makePrintingWriter` logs the 3 phases (`Phase 1: write_note title=...`, `Phase 2: edit_note find_replace`, `Phase 3: move_note`) at lines 73-75. Tests inject `recordingWriter()` at `ingest.test.ts:17-47` and assert title contains no colon (line 81). DoD item 7 satisfied. |
-| TASK-006 test coverage (84 tests) | PASS | `bun test defrag ingest _shared/detect-context.test.ts` → 84 pass / 0 fail / 151 expects across 8 files. Per-file: audit.test (10), defrag.test (8), report.test (3), parse.test (3), detect.test (10), assemble.test (5), ingest.test (8), detect-context.test (6). Each REQ AC has at least one matching test. |
+| TASK-006 test coverage (84 tests) | PASS | `bun test defrag ingest shared/detect-context.test.ts` → 84 pass / 0 fail / 151 expects across 8 files. Per-file: audit.test (10), defrag.test (8), report.test (3), parse.test (3), detect.test (10), assemble.test (5), ingest.test (8), detect-context.test (6). Each REQ AC has at least one matching test. |
 | TASK-007 README documentation | PARTIAL | README documents `/defrag` + `/ingest` UX + coexistence with memory-defrag / memory-ingest (lines 29-160). Claims 4-skill install (line 25) but install.sh only includes 2. |
-| Bun-native API usage | PARTIAL | `audit.ts` good (Bun.Glob, Bun.file, Bun.$); `parse.ts` good (Bun.file); `ingest.ts:persist` good (Bun.write); BUT `defrag.ts:23` uses `node:fs/promises.{mkdir,writeFile}` for report write — should use Bun.write (auto-creates parent dirs). `_shared/detect-context.ts:16` uses `node:fs.{existsSync,statSync}` — Bun has no direct statSync.isDirectory equivalent, so acceptable. `ingest.ts:20` uses `node:fs/promises.readdir` for listing — Bun.Glob is the idiomatic replacement but functionally equivalent. Net: minor stylistic drift, not a blocker. |
+| Bun-native API usage | PARTIAL | `audit.ts` good (Bun.Glob, Bun.file, Bun.$); `parse.ts` good (Bun.file); `ingest.ts:persist` good (Bun.write); BUT `defrag.ts:23` uses `node:fs/promises.{mkdir,writeFile}` for report write — should use Bun.write (auto-creates parent dirs). `shared/detect-context.ts:16` uses `node:fs.{existsSync,statSync}` — Bun has no direct statSync.isDirectory equivalent, so acceptable. `ingest.ts:20` uses `node:fs/promises.readdir` for listing — Bun.Glob is the idiomatic replacement but functionally equivalent. Net: minor stylistic drift, not a blocker. |
 | CONVENTIONS Section 6 thresholds | PASS | `audit.ts:82-87` declares `OBS_MAX=15`, `REL_MAX=12`, `OBS_MIN=3`, `REL_MIN=2`, `LINE_MAX=500`, `DEFAULT_STALENESS_DAYS=180`. Classification at `audit.ts:133-206` produces split / merge / structural-fix / stale per Section 6 rules (over-15 obs, under-3 obs, over-12 rels, under-2 rels, over-500 lines, status-not-terminal staleness). Test `audit.test.ts:86-167` covers every boundary. |
 
 ## Per-TASK DoD Verification
@@ -99,7 +99,7 @@ Non-blocking:
 
 | Item | Verdict | Evidence |
 |:--|:--|:--|
-| detect-context.ts exports detectProjectContext | PASS | `_shared/detect-context.ts:75-142` |
+| detect-context.ts exports detectProjectContext | PASS | `shared/detect-context.ts:75-142` |
 | Brain context detection: docs/ + canonical types | PASS | `detect-context.ts:91-124` checks docs dir + samples up to 10 files for canonical type match |
 | Basic Memory detection: absence OR flag override | PASS | `detect-context.ts:82-89` flag override; `:92-99` docs absent → basic-memory; `:126-133` canonicalCount==0 → basic-memory |
 | Frontmatter ENTITY-ID: Descriptor format | PASS | `assemble.ts:162-175` buildTitle emits `PREFIX-NNN: Descriptor` (or spec-nested form) |
@@ -108,7 +108,7 @@ Non-blocking:
 | Pattern 2 three-phase write executes correctly | PASS (at seam) | `ingest.ts:71-83` `writeBrainNote` adapter logs the 3 phases; actual MCP calls happen in live wrapper. Per the dispatch brief this is the intended seam. |
 | Post-write verification (6 items from Section 8.2) | PASS | `ingest.ts:202-254` verifyAssembledNote checks (1) no-spaces filename, (2) frontmatter title match, (3) H1 match, (5) obs ≥3 + rel ≥2, (6) final-two-sections invariant + no trailing sections. Item 4 (valid relation types) declared best-effort by-construction at line 232. |
 | Final-two-sections invariant enforced | PASS | `ingest.ts:244-251` rejects when section follows Relations; `assemble.ts:121-141` always emits Observations then Relations as final two |
-| Unit tests for detect-context | PASS | `_shared/detect-context.test.ts` — 6 tests covering Brain detection, basic-memory detection, flag override |
+| Unit tests for detect-context | PASS | `shared/detect-context.test.ts` — 6 tests covering Brain detection, basic-memory detection, flag override |
 | biome lint passes | PARTIAL | biome.json drift |
 
 ### TASK-006 DoD (11 items)
@@ -161,8 +161,8 @@ All 10 test-file items PASS. 84 SPEC-006 tests pass, 0 fail. biome lint PARTIAL 
 |:--|:--|:--|:--|:--|
 | defrag (audit + defrag + report) | 21 | 21 | 0 | 0 |
 | ingest (parse + detect + assemble + ingest) | 26 | 26 | 0 | 0 |
-| _shared/detect-context | 6 | 6 | 0 | 0 |
-| _shared/composition (sibling) | 32 | 32 | 0 | 0 |
+| shared/detect-context | 6 | 6 | 0 | 0 |
+| shared/composition (sibling) | 32 | 32 | 0 | 0 |
 | SPEC-006 subtotal | 53 | 53 | 0 | 0 |
 | Aggregate (all 66 files) | 585 | 585 | 0 | 0 |
 

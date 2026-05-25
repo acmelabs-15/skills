@@ -29,7 +29,7 @@ Implement the PlanAdapter class at src/adapters/plan.ts that directly implements
 
 ## Implementation Notes
 
-The PlanAdapter lives at _shared/composition/src/adapters/plan.ts. It implements CompositionAdapter directly rather than extending BaseMarkdownAdapter because regenerative content handling (added in TASK-002) requires custom extraction and reverse-mutation logic. The initial implementation in this task handles the base case (no regenerated_sections, no frontmatter_map) with the core section extraction and mutation logic. TASK-002 and TASK-003 layer on the regenerative and frontmatter capabilities.
+The PlanAdapter lives at shared/composition/src/adapters/plan.ts. It implements CompositionAdapter directly rather than extending BaseMarkdownAdapter because regenerative content handling (added in TASK-002) requires custom extraction and reverse-mutation logic. The initial implementation in this task handles the base case (no regenerated_sections, no frontmatter_map) with the core section extraction and mutation logic. TASK-002 and TASK-003 layer on the regenerative and frontmatter capabilities.
 
 Phase section boundaries use "### " as the delimiter. The identifier_pattern matches the {phase}.{part-id} format (e.g., research.1, decisions.2, spec.SPEC-001). The renumber_map keys and values follow this format. Extraction scans from one "### {phase}.{part-id}" heading to the next (exclusive).
 
@@ -37,8 +37,8 @@ Phase section boundaries use "### " as the delimiter. The identifier_pattern mat
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/adapters/plan.ts | NEW | PLAN adapter implementation |
-| _shared/composition/tests/plan-adapter.test.ts | NEW | PLAN adapter unit tests |
+| shared/composition/src/adapters/plan.ts | NEW | PLAN adapter implementation |
+| shared/composition/tests/plan-adapter.test.ts | NEW | PLAN adapter unit tests |
 
 ## Testing Requirements
 

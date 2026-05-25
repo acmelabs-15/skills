@@ -23,9 +23,9 @@ tags:
 
 ## Objective
 
-Validate Stream B' impl claim that TASK-007-SPEC-002 (Reconcile ANALYSIS Adapter DESIGN-001 Drift) is DONE. Impl agent landed: (1) `_shared/composition/src/adapters/analysis.ts` — added `identifierPrefix = "item-"`; (2) Brain note DESIGN-001-SPEC-002 — `/i` flag added to documented `identifierPattern` regex + new `## Reconciliation Log` section; (3) TASK-007-SPEC-002 — 4 of 5 DoD boxes flipped, status DRAFT → DONE.
+Validate Stream B' impl claim that TASK-007-SPEC-002 (Reconcile ANALYSIS Adapter DESIGN-001 Drift) is DONE. Impl agent landed: (1) `shared/composition/src/adapters/analysis.ts` — added `identifierPrefix = "item-"`; (2) Brain note DESIGN-001-SPEC-002 — `/i` flag added to documented `identifierPattern` regex + new `## Reconciliation Log` section; (3) TASK-007-SPEC-002 — 4 of 5 DoD boxes flipped, status DRAFT → DONE.
 
-Critical out-of-band change not enumerated in impl agent's claim: `_shared/composition/src/core/base-markdown-adapter.ts:15` had `protected abstract readonly identifierPrefix: string` added — this propagates an abstract requirement to ALL subclasses of BaseMarkdownAdapter, not just AnalysisAdapter.
+Critical out-of-band change not enumerated in impl agent's claim: `shared/composition/src/core/base-markdown-adapter.ts:15` had `protected abstract readonly identifierPrefix: string` added — this propagates an abstract requirement to ALL subclasses of BaseMarkdownAdapter, not just AnalysisAdapter.
 
 - Feature: ANALYSIS adapter reconciliation with DESIGN-001-SPEC-002
 - Scope: TASK-007-SPEC-002 DoD; downstream type-check impact
@@ -35,7 +35,7 @@ Critical out-of-band change not enumerated in impl agent's claim: `_shared/compo
 - Test Types: structural-conformance + targeted unit + type-check + full-suite regression
 - Environment: bun test v1.3.13 + bunx tsc --noEmit; commit on branch feat/plan-001-wave-2-retro-validation
 - Data Strategy: existing analysis-adapter.test.ts + analysis-round-trip.test.ts; full composition suite for regression
-- Test Files: `_shared/composition/tests/analysis-adapter.test.ts` + `_shared/composition/tests/analysis-round-trip.test.ts`
+- Test Files: `shared/composition/tests/analysis-adapter.test.ts` + `shared/composition/tests/analysis-round-trip.test.ts`
 
 ## Results
 

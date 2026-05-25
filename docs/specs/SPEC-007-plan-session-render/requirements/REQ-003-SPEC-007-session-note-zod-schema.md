@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN a session note markdown file is parsed into a typed in-memory model
-THE SYSTEM SHALL validate the parsed model against SessionNoteSchema at `_shared/composition/src/schemas/session-note.ts`, enforcing frontmatter shape (title regex, type literal 'session', status, binds_to[1+], permalink regex, tags[2-5]), scope, bound_plans[1+] with ref and worked_parts[1+], events[1+] as a discriminated union on type field supporting 10 event types (session-start, bootstrap, part-transition, decision-lock, task-transition, agent-dispatch, debate-result, pending-decision-surfaced, pending-decision-resolved, state-change), observations[3+], relations[2+], and superRefine cross-field invariants (event numbers continuous from 1; first event must be session-start)
+THE SYSTEM SHALL validate the parsed model against SessionNoteSchema at `shared/composition/src/schemas/session-note.ts`, enforcing frontmatter shape (title regex, type literal 'session', status, binds_to[1+], permalink regex, tags[2-5]), scope, bound_plans[1+] with ref and worked_parts[1+], events[1+] as a discriminated union on type field supporting 10 event types (session-start, bootstrap, part-transition, decision-lock, task-transition, agent-dispatch, debate-result, pending-decision-surfaced, pending-decision-resolved, state-change), observations[3+], relations[2+], and superRefine cross-field invariants (event numbers continuous from 1; first event must be session-start)
 SO THAT structural integrity of session notes is enforced at a known boundary before rendering.
 
 ## Pattern
@@ -68,7 +68,7 @@ Full schema draft in ANALYSIS-002 Appendix C session-note.ts section. Event disc
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/schemas/session-note.ts` | NEW | SessionNote Zod schema with discriminated event union |
+| `shared/composition/src/schemas/session-note.ts` | NEW | SessionNote Zod schema with discriminated event union |
 
 ## Observations
 

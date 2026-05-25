@@ -14,11 +14,11 @@ tags:
 
 ## Description
 
-Implement the Brain-awareness layer in the /ingest pipeline. This task covers CONVENTIONS compliance for ingested notes: frontmatter generation with all required fields, observation generation with valid category prefixes and inline tags, relation generation with valid relation types, Pattern 2 three-phase write execution, post-write verification against CONVENTIONS Section 8.1 and 8.2 checklists, and the shared Brain vs Basic Memory detection module at _shared/detect-context.ts.
+Implement the Brain-awareness layer in the /ingest pipeline. This task covers CONVENTIONS compliance for ingested notes: frontmatter generation with all required fields, observation generation with valid category prefixes and inline tags, relation generation with valid relation types, Pattern 2 three-phase write execution, post-write verification against CONVENTIONS Section 8.1 and 8.2 checklists, and the shared Brain vs Basic Memory detection module at shared/detect-context.ts.
 
 ## Definition of Done
 
-- [x] _shared/detect-context.ts exports detectProjectContext function returning contextType, evidence, and confidence
+- [x] shared/detect-context.ts exports detectProjectContext function returning contextType, evidence, and confidence
 - [x] Brain context detection: checks for docs/ directory AND canonical entity types in frontmatter
 - [x] Basic Memory context detection: absence of canonical types OR --basic-memory flag
 - [x] Frontmatter generation produces title in ENTITY-ID colon Descriptor format, type from 16 canonical types, status DRAFT, permalink in folder/kebab form, 2-5 tags
@@ -32,8 +32,8 @@ Implement the Brain-awareness layer in the /ingest pipeline. This task covers CO
 
 ## Files Affected
 
-- _shared/detect-context.ts (new)
-- _shared/detect-context.test.ts (new)
+- shared/detect-context.ts (new)
+- shared/detect-context.test.ts (new)
 - ingest/scripts/assemble.ts (modify: add Brain-aware frontmatter/observation/relation generation)
 - ingest/scripts/ingest.ts (modify: integrate detect-context routing)
 

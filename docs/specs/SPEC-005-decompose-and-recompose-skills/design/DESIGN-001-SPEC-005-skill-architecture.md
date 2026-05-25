@@ -38,7 +38,7 @@ recompose/
 The CLI entry points live in the shared composition library, not in the skill directories:
 
 ```
-_shared/composition/src/
+shared/composition/src/
   decompose.ts          # CLI entry: load plan YAML -> validate -> dispatch -> execute
   recompose.ts          # CLI entry: load plan YAML -> validate -> dispatch -> execute
 ```
@@ -56,7 +56,7 @@ This separation ensures the SKILL.md files contain only skill interface definiti
 - Define trigger phrases ("decompose this note", "split this ADR", etc.)
 - Instruct LLM to: read source note, classify source_type, identify cluster seams, author distribution plan YAML at docs/_restructure/decompose-{id}-plan.yaml
 - Instruct LLM to present plan via AskUserQuestion (REQ-003)
-- On approval, instruct LLM to execute: bun run _shared/composition/src/decompose.ts --plan docs/_restructure/decompose-{id}-plan.yaml
+- On approval, instruct LLM to execute: bun run shared/composition/src/decompose.ts --plan docs/_restructure/decompose-{id}-plan.yaml
 - Define error handling: surface PlanValidationError to user, offer refinement loop on rejection
 
 ### Component 2: /recompose SKILL.md
@@ -68,7 +68,7 @@ This separation ensures the SKILL.md files contain only skill interface definiti
 - Define trigger phrases ("recompose these notes", "merge these ADRs", etc.)
 - Instruct LLM to: read N source notes, classify source_type, determine merge order, author composition plan YAML at docs/_restructure/recompose-{id}-plan.yaml
 - Instruct LLM to present plan via AskUserQuestion (REQ-003)
-- On approval, instruct LLM to execute: bun run _shared/composition/src/recompose.ts --plan docs/_restructure/recompose-{id}-plan.yaml
+- On approval, instruct LLM to execute: bun run shared/composition/src/recompose.ts --plan docs/_restructure/recompose-{id}-plan.yaml
 - Define error handling: same pattern as /decompose
 
 ### Component 3: decompose.ts CLI Entry Point
@@ -135,7 +135,7 @@ None. All design choices derive from locked ADR decisions.
 ## Observations
 
 - [design] /decompose and /recompose follow identical architectural pattern: SKILL.md for LLM interface plus CLI entry point for deterministic execution #skill-architecture #symmetry
-- [decision] CLI entry points live in _shared/composition/src/ not in skill directories; enforces separation of LLM interface from script logic #separation #layout
+- [decision] CLI entry points live in shared/composition/src/ not in skill directories; enforces separation of LLM interface from script logic #separation #layout
 - [technique] SKILL.md instructs LLM to invoke CLI via Bun.$ shell execution; no direct TypeScript import from SKILL.md #execution-model #bun
 - [fact] install.sh extends SPEC-001 scaffold with two additional symlink targets for /decompose and /recompose #install #incremental
 

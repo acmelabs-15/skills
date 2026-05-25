@@ -1,6 +1,6 @@
 ---
 title: 'QA-033-SPEC-007: Spec Aggregate Retro Validation'
-type: test-report
+type: qa
 permalink: qa/qa-033-spec-007-spec-aggregate-retro-validation
 status: DONE
 validates: '[[SPEC-007: Plan/Session Render Implementation]]'

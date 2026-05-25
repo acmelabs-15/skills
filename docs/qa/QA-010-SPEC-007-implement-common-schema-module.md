@@ -15,10 +15,10 @@ tags:
 
 ## Objective
 
-Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspecting `_shared/composition/src/schemas/common.ts` and running `tests/common-schema.test.ts`.
+Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspecting `shared/composition/src/schemas/common.ts` and running `tests/common-schema.test.ts`.
 
 - **Feature**: Common Schema Module (TASK-001-SPEC-007)
-- **Scope**: `_shared/composition/src/schemas/common.ts` (112 LOC)
+- **Scope**: `shared/composition/src/schemas/common.ts` (112 LOC)
 - **Acceptance Criteria**: REQ-001-SPEC-007, ADR-003 D-4, ADR-001 D-1, CRIT-003 F-1
 
 ## Approach
@@ -26,7 +26,7 @@ Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspe
 - **Test Types**: Unit (schema validation)
 - **Environment**: Local (Bun 1.3.13, biome 2.x, tsc strict)
 - **Data Strategy**: Read code; run existing `common-schema.test.ts`; run repo-wide `bunx tsc --noEmit` and `bunx biome lint`
-- **Test File**: `_shared/composition/tests/common-schema.test.ts`
+- **Test File**: `shared/composition/tests/common-schema.test.ts`
 
 ## Results
 

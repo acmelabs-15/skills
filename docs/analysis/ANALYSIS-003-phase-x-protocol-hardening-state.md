@@ -270,7 +270,7 @@ Plus follow-up:
 
 ### What this means architecturally
 
-The composition library at `_shared/composition/` is the LOAD-BEARING enforcement layer, not just documentation. /plan kicks off the workflow and uses deterministic Bun+TS scripts from the composition library for:
+The composition library at `shared/composition/` is the LOAD-BEARING enforcement layer, not just documentation. /plan kicks off the workflow and uses deterministic Bun+TS scripts from the composition library for:
 
 - Reading the PLAN reference the user provides
 - Authoring/updating the PLAN note via the deterministic renderer (NOT having an agent author it directly)

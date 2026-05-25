@@ -66,7 +66,7 @@ The PLAN adapter implements all 5 methods of the CompositionAdapter interface fr
 
 ## Implementation Notes
 
-The PLAN adapter lives at _shared/composition/src/adapters/plan.ts. It is a distinct implementation of CompositionAdapter (does NOT extend BaseMarkdownAdapter) because regenerative content handling requires custom extraction and reverse-mutation logic that the base class does not accommodate. The adapter uses unified + remark per ADR-001 D-2 for parse/serialize. The section_delimiter "### " applies to phase section boundaries within the Workflow Plan. The identifier_pattern matches {phase}.{part-id} format used in PLAN notes per CONVENTIONS Section 4.6.
+The PLAN adapter lives at shared/composition/src/adapters/plan.ts. It is a distinct implementation of CompositionAdapter (does NOT extend BaseMarkdownAdapter) because regenerative content handling requires custom extraction and reverse-mutation logic that the base class does not accommodate. The adapter uses unified + remark per ADR-001 D-2 for parse/serialize. The section_delimiter "### " applies to phase section boundaries within the Workflow Plan. The identifier_pattern matches {phase}.{part-id} format used in PLAN notes per CONVENTIONS Section 4.6.
 
 ## Observations
 

@@ -28,10 +28,10 @@ User adjudication required FIRST: is in-memory adapter + caller-provided filesys
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/src/adapters/spec-subtree.ts | MODIFY (option B) | Add processSubtree + collect-then-validate + cluster rollback |
+| shared/composition/src/adapters/spec-subtree.ts | MODIFY (option B) | Add processSubtree + collect-then-validate + cluster rollback |
 | docs/specs/SPEC-004-spec-subtree-adapter/design/DESIGN-001-*.md | MODIFY (option A) | Amend Component 1/2 boundary |
 | docs/specs/SPEC-004-spec-subtree-adapter/design/DESIGN-003-*.md | MODIFY (option A) | Amend Component 1/2 boundary |
-| _shared/composition/tests/spec-subtree-orchestration.test.ts | NEW (option B) | Tests for staged-file rollback + HashValidationResult aggregation |
+| shared/composition/tests/spec-subtree-orchestration.test.ts | NEW (option B) | Tests for staged-file rollback + HashValidationResult aggregation |
 
 ## Definition of Done
 
