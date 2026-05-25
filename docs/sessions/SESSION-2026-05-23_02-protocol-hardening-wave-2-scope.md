@@ -3388,3 +3388,7 @@ Reflection captured (content in [[SKILL-011: reflection-capture-runs-async]]). U
 ## Event 156 — [reflect-capture] no bulk-Brain-note-migration primitive → [[SKILL-012: bulk-brain-note-migration-tooling-gap]]
 
 Reflection captured (content in [[SKILL-012: bulk-brain-note-migration-tooling-gap]]). Scoping the docs sweep surfaced a tooling gap: the binary rule forbids raw sed on Brain notes but no MCP-backed bulk find-replace primitive exists; a ~200-note migration is mostly rule-based + a small semantic remainder, and building the robust tool belongs with the consistency-reconciliation work. Confidence HIGH.
+
+## Event 157 — [reflect-capture] adr-review gate scope: substance + timing, not "any ADR byte" → [[SKILL-013: adr-review-gate-scope]]
+
+Reflection captured (content in [[SKILL-013: adr-review-gate-scope]]). User questioned whether the ADR-005 D-B clarification needs an adr-review; reasoned waiver: the gate is for new/changed decisions pre-lock + pre-downstream-work, and D-B is post-hoc documentation of an already-implemented + QA-088-validated build finding → full 6-agent adr-review disproportionate; orchestrator review substitutes. Confidence HIGH/MED.
