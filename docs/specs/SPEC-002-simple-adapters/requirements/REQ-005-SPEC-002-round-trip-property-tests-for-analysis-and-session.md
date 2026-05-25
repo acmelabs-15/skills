@@ -1,7 +1,7 @@
 ---
 title: 'REQ-005-SPEC-002: Round-Trip Property Tests for ANALYSIS and SESSION'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-002-simple-adapters/requirements/req-005-spec-002-round-trip-property-tests-for-analysis-and-session
 tags:
 - requirement
@@ -64,6 +64,7 @@ Fixtures should represent realistic Brain ANALYSIS and SESSION notes following C
 - [constraint] SHA-256(original) === SHA-256(recomposed) must hold for both adapter types per ADR-001 F-8 #hash-validation #zero-drift
 - [fact] Fixture notes follow CONVENTIONS for realistic test coverage; plan YAMLs are hand-crafted for deterministic testing #fixtures #testing
 - [decision] SESSION round-trip test includes cross_source_updates emission and reversal verification #cross-source #testing
+- [fact] ACCEPTED 2026-05-24: implemented by TASK-005-SPEC-002 (analysis-round-trip.test.ts) and TASK-006-SPEC-002 (session-round-trip.test.ts); DONE per DoD all [x]; validated by QA-042-SPEC-002 #provenance #audit-d
 
 ## Relations
 

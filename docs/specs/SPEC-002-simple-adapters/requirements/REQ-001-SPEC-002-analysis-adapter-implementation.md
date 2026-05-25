@@ -1,7 +1,7 @@
 ---
 title: 'REQ-001-SPEC-002: ANALYSIS Adapter Implementation'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-002-simple-adapters/requirements/req-001-spec-002-analysis-adapter-implementation
 tags:
 - requirement
@@ -63,6 +63,7 @@ The ANALYSIS adapter should require approximately 50 lines of code delta over Ba
 - [requirement] ANALYSIS adapter extends BaseMarkdownAdapter with config-only overrides per ADR-002 D-3 capability matrix #adapter #config-override
 - [fact] Estimated 50 LOC delta over BaseMarkdownAdapter; simplest adapter in SPEC-002 #estimation #loc
 - [constraint] SHA-256 char-identity hash validation applies per ADR-001 F-8; round-trip property test must pass #hash-validation #zero-drift
+- [fact] ACCEPTED 2026-05-24: implemented by TASK-001-SPEC-002 at _shared/composition/src/adapters/analysis.ts; DONE per DoD all [x]; validated by QA-042-SPEC-002 #provenance #audit-d
 - [decision] section_delimiter is H3 ("### ") for ANALYSIS Findings sub-sections; identifier_pattern matches item-N format #structure #analysis
 
 ## Relations

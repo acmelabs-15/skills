@@ -30,17 +30,17 @@ Steps:
 
 ## Definition of Done
 
-- [ ] SPEC-002 root `## Artifact Status` section has zero `[ ]` rows for artifacts whose notes carry terminal status
-- [ ] SPEC-003 root `## Artifact Status` section has zero `[ ]` rows for artifacts whose notes carry terminal status
-- [ ] Each deferred artifact in SPEC-002/003 uses `[~]` (not `[ ]` and not `[x]`)
-- [ ] REQ-001-SPEC-002 frontmatter `status: ACCEPTED`
-- [ ] REQ-002-SPEC-002 frontmatter `status: ACCEPTED`
-- [ ] REQ-004-SPEC-002 frontmatter `status: ACCEPTED`
-- [ ] REQ-005-SPEC-002 frontmatter `status: ACCEPTED`
-- [ ] Each of the 4 REQ note flips includes a body or Observations entry citing the implementation evidence (file path + commit SHA) for archaeological provenance
+- [x] SPEC-002 root `## Artifact Status` section has zero `[ ]` rows for artifacts whose notes carry terminal status
+- [x] SPEC-003 root `## Artifact Status` section has zero `[ ]` rows for artifacts whose notes carry terminal status
+- [x] Each deferred artifact in SPEC-002/003 uses `[~]` (not `[ ]` and not `[x]`)
+- [x] REQ-001-SPEC-002 frontmatter `status: ACCEPTED`
+- [x] REQ-002-SPEC-002 frontmatter `status: ACCEPTED`
+- [x] REQ-004-SPEC-002 frontmatter `status: ACCEPTED`
+- [x] REQ-005-SPEC-002 frontmatter `status: ACCEPTED`
+- [x] Each of the 4 REQ note flips includes a body or Observations entry citing the implementation evidence (file path + commit SHA) for archaeological provenance
 - [ ] `validateSpecDoneClaim(SPEC-002)` returns `valid: true` (using extended validator from TASK-032)
 - [ ] `validateSpecDoneClaim(SPEC-003)` returns `valid: true`
-- [ ] All edits used Brain MCP `edit_note` (NEVER raw Edit/Write on `docs/**`)
+- [x] All edits used Brain MCP `edit_note` (NEVER raw Edit/Write on `docs/**`)
 - [ ] Audit D grep verification: `grep -A0 "status: DONE" docs/specs/SPEC-002*/SPEC-002*.md && grep "\\- \\[ \\]" docs/specs/SPEC-002*/SPEC-002*.md` returns zero `[ ]` rows under DONE spec root
 
 ## ADR Compliance

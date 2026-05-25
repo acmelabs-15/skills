@@ -2,7 +2,7 @@
 title: 'TASK-044-SPEC-008: Implement stop-backstop Handler (Layer 6)'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-044-spec-008-implement-stop-backstop-handler-layer-6
-status: TODO
+status: DONE
 effort: M
 estimate: 1d
 tags:
@@ -31,24 +31,24 @@ Unlike Layers 1-5 (fail-open on infrastructure error), Layer 6 fails closed: if 
 ## Definition of Done
 > Amended 2026-05-24 (Event 105, user-approved Option A): transcript-walk → `git status --porcelain` enumeration per REQ-012 AC1. DoD#2/#3/#4 + smoke test reframed to the git-status mechanism; regression intent (catch any unvalidated docs/** modification at turn end, incl. MCP edits) preserved.
 
-- [ ] `hooks/scripts/stop-backstop.ts` exists
-- [ ] Handler resolves the repo root from hook input (cwd)
-- [ ] Handler enumerates `docs/**` files modified this turn via `git status --porcelain` (covers Edit/Write/MultiEdit local writes AND `mcp__plugin_brain_brain__edit_note`/`write_note` MCP writes — both leave on-disk modifications)
-- [ ] Handler deduplicates the file set (git status yields one entry per path)
-- [ ] Handler validates path containment for the enumerated set; rejects with structured block reason if traversal detected
-- [ ] Handler reads current on-disk content for each file and dispatches through `dispatchValidator`
-- [ ] Handler emits `{ decision: "block", reason: "..." }` listing every failing file when ANY fail
-- [ ] Handler emits no payload and exits 0 when no docs/** files were modified OR every modified file passes
-- [ ] Handler fails closed on infrastructure error: emits `{ decision: "block", reason: "Turn-end backstop: infrastructure error ..." }`
-- [ ] Unit tests cover: empty-modification turn (no block), all-passing turn (no block), one-failing turn (block with file listed), traversal rejection, infrastructure-error fail-closed
-- [ ] Smoke test asserts that a `docs/**` note modified on disk WITHOUT passing a PreToolUse gate (simulating an MCP edit_note that bypassed Layer 2) is still caught by Layer 6 via the `git status --porcelain` enumeration
-- [ ] biome lint passes
-- [ ] `bun tsc --noEmit` passes
+- [x] `hooks/scripts/stop-backstop.ts` exists
+- [x] Handler resolves the repo root from hook input (cwd)
+- [x] Handler enumerates `docs/**` files modified this turn via `git status --porcelain` (covers Edit/Write/MultiEdit local writes AND `mcp__plugin_brain_brain__edit_note`/`write_note` MCP writes — both leave on-disk modifications)
+- [x] Handler deduplicates the file set (git status yields one entry per path)
+- [x] Handler validates path containment for the enumerated set; rejects with structured block reason if traversal detected
+- [x] Handler reads current on-disk content for each file and dispatches through `dispatchValidator`
+- [x] Handler emits `{ decision: "block", reason: "..." }` listing every failing file when ANY fail
+- [x] Handler emits no payload and exits 0 when no docs/** files were modified OR every modified file passes
+- [x] Handler fails closed on infrastructure error: emits `{ decision: "block", reason: "Turn-end backstop: infrastructure error ..." }`
+- [x] Unit tests cover: empty-modification turn (no block), all-passing turn (no block), one-failing turn (block with file listed), traversal rejection, infrastructure-error fail-closed
+- [x] Smoke test asserts that a `docs/**` note modified on disk WITHOUT passing a PreToolUse gate (simulating an MCP edit_note that bypassed Layer 2) is still caught by Layer 6 via the `git status --porcelain` enumeration
+- [x] biome lint passes
+- [x] `bun tsc --noEmit` passes
 ## ADR Compliance
 
-- [ ] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Stop layer (no matcher; fail-closed semantics)
-- [ ] Honors [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]] AC — block turn completion on any unvalidated `docs/**` modification
-- [ ] Honors Phase 3 security P1 — path containment validated before reading any disk content
+- [x] Honors [[ADR-005: Protocol Hardening Wave 2 Architecture]] D-8 Stop layer (no matcher; fail-closed semantics)
+- [x] Honors [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]] AC — block turn completion on any unvalidated `docs/**` modification
+- [x] Honors Phase 3 security P1 — path containment validated before reading any disk content
 
 ## Files Affected
 

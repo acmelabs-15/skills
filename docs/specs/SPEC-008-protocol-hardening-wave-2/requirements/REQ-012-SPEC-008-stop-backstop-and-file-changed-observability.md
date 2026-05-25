@@ -23,11 +23,11 @@ SO THAT no Brain note state change escapes validation between turns and the post
 
 ## Acceptance Criteria
 
-- [ ] GIVEN a Layer 6 `Stop` hook declared with no matcher (fires on every turn end)
+- [x] GIVEN a Layer 6 `Stop` hook declared with no matcher (fires on every turn end)
       WHEN an agent turn modifies `docs/specs/SPEC-NNN/tasks/TASK-NNN-*.md` (or any other Brain note) via tool calls during the turn and any of those modifications would have failed its claim validator
       THEN the handler script `hooks/scripts/stop-backstop.ts` enumerates candidate docs/** files via `git status --porcelain` (capturing both staged and unstaged Brain-note writes in the working tree at turn end), parses each via its type-matching schema, dispatches to the claim validator, and emits `{ decision: "block", reason: "Turn-end backstop: <N> docs/** notes modified this turn fail validation: <list>" }` to block turn completion. The `git status --porcelain` approach is chosen over transcript-parsing (which misses MCP edits) and over mtime-scanning (which misses reverts), and catches tool-mediated edits regardless of whether they went through Edit/Write or Brain MCP and regardless of commit state
 
-- [ ] GIVEN a Layer 6 handler that has run validation
+- [x] GIVEN a Layer 6 handler that has run validation
       WHEN no docs/** files were modified during the turn OR every modified file passes its validator
       THEN the handler exits 0 with no decision payload, allowing the turn to complete normally
 
@@ -43,11 +43,11 @@ SO THAT no Brain note state change escapes validation between turns and the post
       WHEN the plugin is installed
       THEN the filesystem contains `hooks/hooks.json` declaring all seven layer hooks, `hooks/lib/` with shared utilities (`dispatch-validator.ts`, `apply-edit-operation.ts`, `git-staged-files.ts`, `git-diff-commits.ts`, `parse-tool-input.ts`, `format-hook-response.ts`), and `hooks/scripts/` with one handler per layer (`pre-write-brain-note.ts`, `pre-write-brain-note-mcp.ts`, `pre-commit-validate.ts`, `pre-push-validate.ts`, `pre-pr-create-validate.ts`, `stop-backstop.ts`, `git-state-observer.ts`)
 
-- [ ] GIVEN any hook handler script (Layers 1-7)
+- [x] GIVEN any hook handler script (Layers 1-7)
       WHEN the handler receives a `file_path` or `command` argument from the Claude Code hook dispatcher
       THEN the handler resolves the path to an absolute form and verifies it falls within the project root (rejecting paths containing `..` traversal or pointing outside the repo) before reading staged file content or shelling out to `git`/`gh`, per Phase 3 security reviewer P1
 
-- [ ] GIVEN a hook handler crash (uncaught exception or Bun startup failure)
+- [x] GIVEN a hook handler crash (uncaught exception or Bun startup failure)
       WHEN the runtime detects non-zero exit
       THEN PreToolUse and FileChanged treat the failure as non-blocking (fail-open on infrastructure error); Stop fails closed (fail-closed on turn-end backstop infrastructure error) so the protocol is preserved as the more conservative default at the turn boundary
 

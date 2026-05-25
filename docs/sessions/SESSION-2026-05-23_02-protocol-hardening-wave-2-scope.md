@@ -2894,3 +2894,30 @@ Dispatching concurrently: `brain:🧠-qa`→TASK-044 (QA-085); `bun-ts-engineer`
 - impl-TASK-031-SPEC-008: PENDING → IN_PROGRESS (Event 123)
 - impl-TASK-035-SPEC-008: PENDING → IN_PROGRESS (Event 123)
 - impl-TASK-036-SPEC-008: PENDING → IN_PROGRESS (Event 123)
+
+
+## Event 124 — Batch close: TASK-044 CLOSED (41/47); impl-035/036 DONE (QA pending); TASK-031 reverted + TASK-024 blocked (2 decisions pending)
+
+Processed the 5-wide wave; verified every return against git/disk (NOT agent prose).
+
+- **TASK-044 CLOSED**: QA-085 PASS verified independently (33/33 targeted tests, tsc clean; DoD 16/16 `[x]`, REQ-012 AC#1/2/6/7 `[x]` — Layer-7 ACs correctly left `[ ]`). qa-044→DONE (qa_ref QA-085), TASK-044 status→DONE, SPEC-root Tasks `[x]`, wave-graph T044→✅. **41/47 fully closed.** (REQ-012 NOT accepted — Layer-7/FU-6b pending.)
+- **TASK-035 impl DONE** (QA pending): verified 4 REQ-SPEC-002 → ACCEPTED with evidence; SPEC-002 rollup `[x]`; SPEC-003 task rows `[x]`; SPEC-003 DRAFT REQs/DESIGNs correctly left `[ ]`. Clean.
+- **TASK-036 impl DONE** (QA pending): verified — 0 "9 mutation types", 4 "11", provenance observation added. Clean.
+- **TASK-031 REVERTED**: agent flipped SPEC-007 rows to `[~]` (DEFERRED) but the underlying notes are REQ-012 ACCEPTED / TASK-013 BLOCKED / TASK-014 **DONE** — `[~]` on a DONE/ACCEPTED artifact is wrong. TASK-031's spec is STALE (authored when those were TODO). `git checkout` reverted SPEC-007 root + TASK-031 note. impl-031 held IN_PROGRESS pending decision D-A.
+- **TASK-024 BLOCKED**: `bun-ts-engineer` found a real gap — the adversarial harness is parse→validate, but for ADR/ANALYSIS the claim-validator condition equals the schema `superRefine`, so a lying fixture fails `.parse()` before the validator runs (only EPIC's cross-note lie works). No file changes; stray `adr/` fixture removed. impl-024 held IN_PROGRESS pending decision D-B.
+
+**Verify-against-disk caught 1 issue** (TASK-031 stale-spec → reverted); the QA agent this round did NOT lie (QA-085 flips matched disk).
+
+### Pending user decisions
+
+- **D-A (TASK-031)**: SPEC-007 plan-001-migration notation — its children are ACCEPTED/BLOCKED/DONE, not DEFERRED. Resolve the SPEC-007 internal status drift before re-applying TASK-031.
+- **D-B (TASK-024)**: parse-vs-validate harness gap — EPIC-only + amend TASK-024/REQ-006 (recommended) vs extend harness vs bypass parser.
+
+### State Changes
+
+- qa-TASK-044-SPEC-008: IN_PROGRESS → DONE (qa_ref QA-085-SPEC-008); TASK-044 status → DONE; SPEC-root Tasks TASK-044 `[x]`
+- impl-TASK-035-SPEC-008: IN_PROGRESS → DONE (qa-035 PENDING)
+- impl-TASK-036-SPEC-008: IN_PROGRESS → DONE (qa-036 PENDING)
+- TASK-031 work reverted; impl-031 held IN_PROGRESS (decision D-A)
+- TASK-024 blocked; impl-024 held IN_PROGRESS (decision D-B)
+- PLAN wave graph synced (T044✅, 024/031/035/036⚡); SPEC-008 root Tasks rollup updated

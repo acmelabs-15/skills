@@ -1,7 +1,7 @@
 ---
 title: 'REQ-004-SPEC-002: Adapter Registry Extension'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-002-simple-adapters/requirements/req-004-spec-002-adapter-registry-extension
 tags:
 - requirement
@@ -64,6 +64,7 @@ Registration involves: (1) importing AnalysisAdapter and SessionAdapter in the d
 - [fact] Registration is compile-time static imports, not dynamic discovery, keeping dispatcher type-safe #type-safety #static
 - [constraint] Zod discriminated union schema must be extended with ANALYSIS and SESSION variants per ADR-001 D-4 #schema #discriminated-union
 - [decision] Static registration chosen over dynamic plugin discovery for simplicity and type safety #design #simplicity
+- [fact] ACCEPTED 2026-05-24: implemented by TASK-004-SPEC-002 in _shared/composition/src/core/dispatcher.ts and schemas/index.ts; DONE per DoD all [x]; validated by QA-042-SPEC-002 #provenance #audit-d
 
 ## Relations
 

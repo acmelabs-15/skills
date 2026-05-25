@@ -27,11 +27,11 @@ Steps:
 
 ## Definition of Done
 
-- [ ] REQ-009-SPEC-007 body contains zero occurrences of "9 mutation types"
-- [ ] REQ-009-SPEC-007 body contains at least one occurrence of "11 mutation types"
-- [ ] REQ-009-SPEC-007 `## Observations` section contains a `[fact]` entry citing PR #14 as the expansion provenance
-- [ ] Brain MCP `read_note REQ-009-SPEC-007: Plan Mutation API` returns the amended content
-- [ ] No raw Edit/Write was used on `docs/**` (binary tool rule honored)
+- [x] REQ-009-SPEC-007 body contains zero occurrences of "9 mutation types"
+- [x] REQ-009-SPEC-007 body contains at least one occurrence of "11 mutation types"
+- [x] REQ-009-SPEC-007 `## Observations` section contains a `[fact]` entry citing PR #14 as the expansion provenance
+- [x] Brain MCP `read_note REQ-009-SPEC-007: Plan Mutation API` returns the amended content
+- [x] No raw Edit/Write was used on `docs/**` (binary tool rule honored)
 
 ## ADR Compliance
 

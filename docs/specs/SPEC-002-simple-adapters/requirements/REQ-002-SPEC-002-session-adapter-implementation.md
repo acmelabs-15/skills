@@ -1,7 +1,7 @@
 ---
 title: 'REQ-002-SPEC-002: SESSION Adapter Implementation'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-002-simple-adapters/requirements/req-002-spec-002-session-adapter-implementation
 tags:
 - requirement
@@ -70,6 +70,7 @@ The SESSION adapter overrides section_delimiter and identifier_pattern on BaseMa
 - [fact] Estimated 100 LOC delta over BaseMarkdownAdapter; more complex than ANALYSIS due to Event-NN renumbering #estimation #loc
 - [constraint] Event-NN identifiers restart per destination note during decomposition per ADR-002 D-3 #renumbering #session
 - [decision] Cross-source updates separated into REQ-003-SPEC-002 for clean concern separation #separation #design
+- [fact] ACCEPTED 2026-05-24: implemented by TASK-002-SPEC-002 at _shared/composition/src/adapters/session.ts; DONE per DoD all [x]; validated by QA-042-SPEC-002 #provenance #audit-d
 
 ## Relations
 

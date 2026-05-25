@@ -92,11 +92,11 @@ The following requirements are addressed by this SPEC:
 
 ### Tasks
 
-- [ ] TASK-001-SPEC-003: Implement PLAN Adapter Base
-- [ ] TASK-002-SPEC-003: Implement Regenerated Sections Handler and Integrity Floor
-- [ ] TASK-003-SPEC-003: Implement PLAN Frontmatter Mutations
-- [ ] TASK-004-SPEC-003: Create PLAN Adapter Test Fixtures
-- [ ] TASK-005-SPEC-003: Implement PLAN Adapter Round-Trip Property Test
+- [x] TASK-001-SPEC-003: Implement PLAN Adapter Base
+- [x] TASK-002-SPEC-003: Implement Regenerated Sections Handler and Integrity Floor
+- [x] TASK-003-SPEC-003: Implement PLAN Frontmatter Mutations
+- [x] TASK-004-SPEC-003: Create PLAN Adapter Test Fixtures
+- [x] TASK-005-SPEC-003: Implement PLAN Adapter Round-Trip Property Test
 
 ## ADR Cross-cutting Constraints
 
