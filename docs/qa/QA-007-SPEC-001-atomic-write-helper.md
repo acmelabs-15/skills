@@ -17,7 +17,7 @@ tags:
 Verify TASK-007-SPEC-001 atomic write helper implementation against acceptance criteria. The module provides write-to-temp-then-rename atomicity for Brain note persistence, preventing partial writes from corrupting the knowledge graph.
 
 - **Feature**: Atomic Write Helper (TASK-007-SPEC-001)
-- **Scope**: `_shared/composition/src/core/atomic-write.ts` -- 4 exported functions
+- **Scope**: `shared/composition/src/core/atomic-write.ts` -- 4 exported functions
 - **Acceptance Criteria**: ADR-001 F-8 (write-to-temp-then-rename rollback), ADR-001 F-6 (Bun.write for file I/O)
 
 ## Approach
@@ -25,7 +25,7 @@ Verify TASK-007-SPEC-001 atomic write helper implementation against acceptance c
 - **Test Types**: Unit
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: Temp directory fixtures, injected invalid paths for failure simulation
-- **Test File**: `_shared/composition/tests/atomic-write.test.ts`
+- **Test File**: `shared/composition/tests/atomic-write.test.ts`
 
 ## Results
 
@@ -90,5 +90,5 @@ Verify TASK-007-SPEC-001 atomic write helper implementation against acceptance c
 
 ## Relations
 
-- validates [[TASK-007-SPEC-001: Implement Atomic Write Helper]]
+- depends_on [[TASK-007-SPEC-001: Implement Atomic Write Helper]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

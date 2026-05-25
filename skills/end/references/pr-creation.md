@@ -32,7 +32,7 @@ For each section in PR template:
   Match section header to a known fill-in:
     "## Summary" or "## Description" → Session Scope description
     "## Changes" or "## What's changed" → Per-part outcomes list
-    "## Testing" or "## Test plan" → Pre-flight Check 2 results + spec-level TEST-REPORT links
+    "## Testing" or "## Test plan" → Pre-flight Check 2 results + spec-level QA note links
     "## Review" or "## Quality checks" → /review verdict + per-axis
     "## Checklist" or "## Pre-flight" → Pre-flight checks 1-5 results
     "## Related issues" or "## Closes" → Linked Jira/GitHub issues from session

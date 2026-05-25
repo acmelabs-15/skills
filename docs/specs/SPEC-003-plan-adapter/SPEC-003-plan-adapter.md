@@ -69,34 +69,34 @@ The following requirements are addressed by this SPEC:
 
 ## Success Criteria
 
-- [ ] All 5 REQs reach ACCEPTED via Gate A + Gate B
-- [ ] All 5 TASKs reach DONE via /build per-TASK cycle
-- [ ] Spec-level QA sweep passes (per /build Stage B)
-- [ ] All 4 mandatory exit gates pass (per /build Step 7)
-- [ ] Round-trip property test passes: SHA-256(original stripped) === SHA-256(recomposed stripped) with regenerated_sections excluded
+- [x] All 5 REQs reach ACCEPTED via Gate A + Gate B
+- [x] All 5 TASKs reach DONE via /build per-TASK cycle
+- [x] Spec-level QA sweep passes (per /build Stage B)
+- [x] All 4 mandatory exit gates pass (per /build Step 7)
+- [x] Round-trip property test passes: SHA-256(original stripped) === SHA-256(recomposed stripped) with regenerated_sections excluded
 
 ## Artifact Status
 
 ### Requirements
 
-- [ ] REQ-001-SPEC-003: PLAN Adapter Implementation
-- [ ] REQ-002-SPEC-003: Regenerated Sections Field Handling
-- [ ] REQ-003-SPEC-003: Fifty Percent Integrity Floor on Regenerated Sections
-- [ ] REQ-004-SPEC-003: PLAN Frontmatter Mutations
-- [ ] REQ-005-SPEC-003: PLAN Adapter Round-Trip Property Test
+- [x] REQ-001-SPEC-003: PLAN Adapter Implementation
+- [x] REQ-002-SPEC-003: Regenerated Sections Field Handling
+- [x] REQ-003-SPEC-003: Fifty Percent Integrity Floor on Regenerated Sections
+- [x] REQ-004-SPEC-003: PLAN Frontmatter Mutations
+- [x] REQ-005-SPEC-003: PLAN Adapter Round-Trip Property Test
 
 ### Designs
 
-- [ ] DESIGN-001-SPEC-003: PLAN Adapter Architecture
-- [ ] DESIGN-002-SPEC-003: Regenerated Sections Mechanism
+- [x] DESIGN-001-SPEC-003: PLAN Adapter Architecture
+- [x] DESIGN-002-SPEC-003: Regenerated Sections Mechanism
 
 ### Tasks
 
-- [ ] TASK-001-SPEC-003: Implement PLAN Adapter Base
-- [ ] TASK-002-SPEC-003: Implement Regenerated Sections Handler and Integrity Floor
-- [ ] TASK-003-SPEC-003: Implement PLAN Frontmatter Mutations
-- [ ] TASK-004-SPEC-003: Create PLAN Adapter Test Fixtures
-- [ ] TASK-005-SPEC-003: Implement PLAN Adapter Round-Trip Property Test
+- [x] TASK-001-SPEC-003: Implement PLAN Adapter Base
+- [x] TASK-002-SPEC-003: Implement Regenerated Sections Handler and Integrity Floor
+- [x] TASK-003-SPEC-003: Implement PLAN Frontmatter Mutations
+- [x] TASK-004-SPEC-003: Create PLAN Adapter Test Fixtures
+- [x] TASK-005-SPEC-003: Implement PLAN Adapter Round-Trip Property Test
 
 ## ADR Cross-cutting Constraints
 

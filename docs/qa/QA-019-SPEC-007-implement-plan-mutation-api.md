@@ -18,7 +18,7 @@ tags:
 Retro-validate TASK-010-SPEC-007 via `src/mutations/plan-mutations.ts` (396 LOC) and `tests/plan-mutations*.test.ts`.
 
 - **Feature**: Plan Mutation API (TASK-010-SPEC-007)
-- **Scope**: `_shared/composition/src/mutations/plan-mutations.ts`
+- **Scope**: `shared/composition/src/mutations/plan-mutations.ts`
 - **Acceptance Criteria**: REQ-009-SPEC-007, ADR-003 D-3 / D-4 / D-7
 
 ## Approach
@@ -76,6 +76,6 @@ Retro-validate TASK-010-SPEC-007 via `src/mutations/plan-mutations.ts` (396 LOC)
 
 ## Relations
 
-- validates [[TASK-010-SPEC-007: Implement Plan Mutation API]]
+- depends_on [[TASK-010-SPEC-007: Implement Plan Mutation API]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-009-SPEC-007: Plan Mutation API]]

@@ -20,7 +20,7 @@ This TASK realizes REQ-003-SPEC-007 and the session-note.ts schema from ANALYSIS
 
 ## Objective
 
-Create `_shared/composition/src/schemas/session-note.ts` with SessionFrontmatterSchema, 10 event type schemas (SessionStartEvent, BootstrapEvent, PartTransitionEvent, DecisionLockEvent, TaskTransitionEvent, AgentDispatchEvent, DebateResultEvent, PendingDecisionSurfacedEvent, PendingDecisionResolvedEvent, StateChangeEvent), EventSchema discriminated union, BoundPlanRefSchema, and SessionNoteSchema with superRefine (event continuity, first event is session-start).
+Create `shared/composition/src/schemas/session-note.ts` with SessionFrontmatterSchema, 10 event type schemas (SessionStartEvent, BootstrapEvent, PartTransitionEvent, DecisionLockEvent, TaskTransitionEvent, AgentDispatchEvent, DebateResultEvent, PendingDecisionSurfacedEvent, PendingDecisionResolvedEvent, StateChangeEvent), EventSchema discriminated union, BoundPlanRefSchema, and SessionNoteSchema with superRefine (event continuity, first event is session-start).
 
 ## Scope
 
@@ -41,7 +41,7 @@ Create `_shared/composition/src/schemas/session-note.ts` with SessionFrontmatter
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/schemas/session-note.ts` | NEW | SessionNote Zod schema |
+| `shared/composition/src/schemas/session-note.ts` | NEW | SessionNote Zod schema |
 
 ## Testing Requirements
 

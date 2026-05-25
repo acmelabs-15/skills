@@ -17,7 +17,7 @@ tags:
 Verify TASK-006-SPEC-004 ships realistic SPEC subtree fixtures (SPEC root + REQ + DESIGN + TASK) plus distribution + composition plan YAMLs per REQ-006-SPEC-004.
 
 - **Feature**: SPEC subtree test fixtures (TASK-006-SPEC-004)
-- **Scope**: `_shared/composition/tests/fixtures/spec-subtree/**`, `tests/fixtures/spec-subtree-distribution.plan.yaml`, `tests/fixtures/spec-subtree-composition.plan.yaml`
+- **Scope**: `shared/composition/tests/fixtures/spec-subtree/**`, `tests/fixtures/spec-subtree-distribution.plan.yaml`, `tests/fixtures/spec-subtree-composition.plan.yaml`
 - **Acceptance Criteria**: TASK-006 DoD
 
 ## Approach
@@ -50,7 +50,7 @@ Verify TASK-006-SPEC-004 ships realistic SPEC subtree fixtures (SPEC root + REQ 
 
 ### Fixture inventory
 
-Files found under `_shared/composition/tests/fixtures/`:
+Files found under `shared/composition/tests/fixtures/`:
 
 | File | Present | Notes |
 |------|---------|-------|
@@ -96,5 +96,5 @@ Files found under `_shared/composition/tests/fixtures/`:
 
 ## Relations
 
-- validates [[TASK-006-SPEC-004: SPEC Subtree Test Fixtures]]
+- depends_on [[TASK-006-SPEC-004: SPEC Subtree Test Fixtures]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

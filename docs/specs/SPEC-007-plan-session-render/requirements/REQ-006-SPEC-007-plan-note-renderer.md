@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN a typed PlanNote model is provided
-THE SYSTEM SHALL render it to canonical markdown via `renderPlanNote(plan: PlanNote): string` at `_shared/composition/src/renderers/plan-note.ts` producing sections in canonical order (frontmatter, H1 title, Scope with optional Source, Objectives checkbox list, Progress Dashboard derived table, Cross-Part Dependency Graph derived Mermaid, Parts H3 sections with bullet attrs and DoD and optional decisions table, Tasks Active/Backlog/Archive sub-tables, Pending User Decisions, Editor Mirror IDs, Blockers, Observations, Relations) using unified + remark-stringify + remark-gfm
+THE SYSTEM SHALL render it to canonical markdown via `renderPlanNote(plan: PlanNote): string` at `shared/composition/src/renderers/plan-note.ts` producing sections in canonical order (frontmatter, H1 title, Scope with optional Source, Objectives checkbox list, Progress Dashboard derived table, Cross-Part Dependency Graph derived Mermaid, Parts H3 sections with bullet attrs and DoD and optional decisions table, Tasks Active/Backlog/Archive sub-tables, Pending User Decisions, Editor Mirror IDs, Blockers, Observations, Relations) using unified + remark-stringify + remark-gfm
 SO THAT the typed model is deterministically serialized to markdown with derived views (Progress Dashboard, Mermaid graph) regenerated from structural content.
 
 ## Pattern
@@ -68,7 +68,7 @@ Uses unified + remark-stringify + remark-gfm for emission. Expected size 150-200
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/renderers/plan-note.ts` | NEW | PlanNote markdown renderer |
+| `shared/composition/src/renderers/plan-note.ts` | NEW | PlanNote markdown renderer |
 
 ## Observations
 

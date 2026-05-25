@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-002-SPEC-003: Regenerated Sections Mechanism'
 type: design
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-003-plan-adapter/design/design-002-spec-003-regenerated-sections-mechanism
 tags:
 - design
@@ -31,7 +31,7 @@ This design realizes ADR-002 D-2 (MutationSpec regenerated_sections field), ADR-
 
 **Definition**:
 
-Already defined in _shared/composition/src/core/types.ts (SPEC-001):
+Already defined in shared/composition/src/core/types.ts (SPEC-001):
 
 ```typescript
 interface MutationSpec {
@@ -60,7 +60,7 @@ interface MutationSpec {
 **Definition**:
 
 ```typescript
-// At _shared/composition/schemas/distribution/plan.plan.schema.ts
+// At shared/composition/schemas/distribution/plan.plan.schema.ts
 
 import { z } from "zod";
 import { basePlanSchema, mutationSpecSchema } from "../base";
@@ -154,6 +154,7 @@ None. The integrity floor value (50%) and enforcement layers (schema + runtime) 
 - [technique] Schema-level guard operates without source file; runtime check measures actual line coverage against loaded source #validation #two-phase
 - [constraint] 50% is the boundary: exactly 50% passes, greater-than 50% triggers rejection per ADR-002 D-5 #threshold #boundary
 - [fact] Known PLAN regenerative sections (Progress Dashboard, Mermaid graph) typically cover 10-20% of lines; 50% floor provides 30+ percentage points of headroom #sizing #normal-usage
+- [fact] Accepted: implemented by TASK-002-SPEC-003 (DONE), validated by QA-043-SPEC-003 (PASS, 30/30 tests) #provenance #rollup
 
 ## Relations
 

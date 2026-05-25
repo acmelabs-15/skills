@@ -20,7 +20,7 @@ This TASK realizes the shared parser utilities from ANALYSIS-002 Appendix D ast-
 
 ## Objective
 
-Create `_shared/composition/src/parsers/ast-helpers.ts` with shared AST parsing utilities: extractFrontmatter, sectionizeH2, sectionizeH3, proseFromChildren, stripWikilink, findList, findTable, tableRows, tableHeader, bulletFieldMap, checkboxItems, and ParseError class.
+Create `shared/composition/src/parsers/ast-helpers.ts` with shared AST parsing utilities: extractFrontmatter, sectionizeH2, sectionizeH3, proseFromChildren, stripWikilink, findList, findTable, tableRows, tableHeader, bulletFieldMap, checkboxItems, and ParseError class.
 
 ## Scope
 
@@ -39,7 +39,7 @@ Create `_shared/composition/src/parsers/ast-helpers.ts` with shared AST parsing 
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/parsers/ast-helpers.ts` | NEW | Shared AST parsing utilities |
+| `shared/composition/src/parsers/ast-helpers.ts` | NEW | Shared AST parsing utilities |
 
 ## Testing Requirements
 

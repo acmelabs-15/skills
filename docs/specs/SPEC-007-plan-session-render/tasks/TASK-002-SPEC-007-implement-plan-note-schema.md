@@ -20,7 +20,7 @@ This TASK realizes REQ-002-SPEC-007 and the plan-note.ts schema from ANALYSIS-00
 
 ## Objective
 
-Create `_shared/composition/src/schemas/plan-note.ts` with PlanFrontmatterSchema, ObjectiveSchema, DodItemSchema, DecisionStateSchema, PartSchema (with DONE-must-have-outcome refine), TaskSchema (with DONE-must-have-resolved-event refine), PendingDecisionSchema, EditorMirrorEntrySchema, and PlanNoteSchema with superRefine cross-field invariants.
+Create `shared/composition/src/schemas/plan-note.ts` with PlanFrontmatterSchema, ObjectiveSchema, DodItemSchema, DecisionStateSchema, PartSchema (with DONE-must-have-outcome refine), TaskSchema (with DONE-must-have-resolved-event refine), PendingDecisionSchema, EditorMirrorEntrySchema, and PlanNoteSchema with superRefine cross-field invariants.
 
 ## Scope
 
@@ -41,7 +41,7 @@ Create `_shared/composition/src/schemas/plan-note.ts` with PlanFrontmatterSchema
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/schemas/plan-note.ts` | NEW | PlanNote Zod schema |
+| `shared/composition/src/schemas/plan-note.ts` | NEW | PlanNote Zod schema |
 
 ## Testing Requirements
 

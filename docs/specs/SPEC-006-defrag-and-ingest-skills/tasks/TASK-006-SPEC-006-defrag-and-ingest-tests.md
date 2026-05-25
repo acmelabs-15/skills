@@ -25,7 +25,7 @@ Implement tests for /defrag and /ingest skills. /defrag tests cover the audit en
 - [x] ingest/scripts/detect.test.ts covers entity type detection for all 16 canonical types plus fallback
 - [x] ingest/scripts/assemble.test.ts covers Brain-aware content assembly (frontmatter, observations, relations) and Basic Memory path
 - [x] ingest/scripts/ingest.test.ts covers end-to-end single-file ingest with Pattern 2 three-phase write verification
-- [x] _shared/detect-context.test.ts covers Brain, Basic Memory, and --basic-memory flag override scenarios
+- [x] shared/detect-context.test.ts covers Brain, Basic Memory, and --basic-memory flag override scenarios
 - [x] Test fixtures directory at test-fixtures/ contains sample source files for each scenario
 - [x] All tests pass via bun test
 - [x] biome lint passes on all test files
@@ -39,7 +39,7 @@ Implement tests for /defrag and /ingest skills. /defrag tests cover the audit en
 - ingest/scripts/detect.test.ts (new)
 - ingest/scripts/assemble.test.ts (new)
 - ingest/scripts/ingest.test.ts (new)
-- _shared/detect-context.test.ts (new)
+- shared/detect-context.test.ts (new)
 - test-fixtures/ (new directory with sample source files)
 
 ## Implementation Approach

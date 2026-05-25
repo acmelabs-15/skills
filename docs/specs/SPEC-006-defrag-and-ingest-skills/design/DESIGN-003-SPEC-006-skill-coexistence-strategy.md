@@ -24,7 +24,7 @@ The new skills use distinct names from the existing ones. /defrag (new) vs memor
 
 ### Auto-Detection Mechanism
 
-The auto-detection mechanism determines whether the active project uses Brain or Basic Memory. It is shared between /defrag and /ingest and lives at _shared/detect-context.ts.
+The auto-detection mechanism determines whether the active project uses Brain or Basic Memory. It is shared between /defrag and /ingest and lives at shared/detect-context.ts.
 
 Detection criteria for Brain context (all must be true): (1) a docs/ directory exists at the project root, (2) at least one markdown file under docs/ contains YAML frontmatter with a type field matching one of the 16 canonical entity types (decision, session, requirement, design, task, analysis, feature, epic, critique, qa, security, retrospective, skill, spec, plan, prd).
 
@@ -42,11 +42,11 @@ install.sh creates symlinks for /defrag, /ingest, /decompose, and /recompose at 
 
 ### Shared Detection Module
 
-_shared/detect-context.ts exports a single function: detectProjectContext(projectRoot: string) returning an object with contextType (brain or basic-memory), evidence (list of matched files and their frontmatter type values), and confidence (high if more than 5 matches, medium if 1-5, low if 0 with flag override).
+shared/detect-context.ts exports a single function: detectProjectContext(projectRoot: string) returning an object with contextType (brain or basic-memory), evidence (list of matched files and their frontmatter type values), and confidence (high if more than 5 matches, medium if 1-5, low if 0 with flag override).
 
 ## Module Structure
 
-_shared/detect-context.ts -- Shared Brain vs Basic Memory context detection
+shared/detect-context.ts -- Shared Brain vs Basic Memory context detection
 defrag/SKILL.md -- References detect-context for routing
 ingest/SKILL.md -- References detect-context for routing
 install.sh -- Creates symlinks for /defrag, /ingest, /decompose, /recompose only

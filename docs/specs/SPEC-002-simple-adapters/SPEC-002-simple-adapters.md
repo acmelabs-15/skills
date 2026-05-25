@@ -122,25 +122,25 @@ Dispatcher extension, Zod schema extension, and round-trip property tests.
 
 ### Requirements
 
-- [ ] REQ-001-SPEC-002: ANALYSIS Adapter Implementation
-- [ ] REQ-002-SPEC-002: SESSION Adapter Implementation
-- [ ] REQ-003-SPEC-002: SESSION Cross-Source Updates Handling
-- [ ] REQ-004-SPEC-002: Adapter Registry Extension
-- [ ] REQ-005-SPEC-002: Round-Trip Property Tests for ANALYSIS and SESSION
+- [x] REQ-001-SPEC-002: ANALYSIS Adapter Implementation
+- [x] REQ-002-SPEC-002: SESSION Adapter Implementation
+- [x] REQ-003-SPEC-002: SESSION Cross-Source Updates Handling
+- [x] REQ-004-SPEC-002: Adapter Registry Extension
+- [x] REQ-005-SPEC-002: Round-Trip Property Tests for ANALYSIS and SESSION
 
 ### Designs
 
-- [ ] DESIGN-001-SPEC-002: BaseMarkdownAdapter Configuration Pattern
-- [ ] DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol
+- [x] DESIGN-001-SPEC-002: BaseMarkdownAdapter Configuration Pattern
+- [x] DESIGN-002-SPEC-002: SESSION Cross-Source Coordination Protocol
 
 ### Tasks
 
-- [ ] TASK-001-SPEC-002: Implement ANALYSIS Adapter
-- [ ] TASK-002-SPEC-002: Implement SESSION Adapter
-- [ ] TASK-003-SPEC-002: Implement SESSION Cross-Source Updates Handler
-- [ ] TASK-004-SPEC-002: Register ANALYSIS and SESSION Adapters in Dispatcher
-- [ ] TASK-005-SPEC-002: Implement ANALYSIS Adapter Round-Trip Property Test
-- [ ] TASK-006-SPEC-002: Implement SESSION Adapter Round-Trip Property Test
+- [x] TASK-001-SPEC-002: Implement ANALYSIS Adapter
+- [x] TASK-002-SPEC-002: Implement SESSION Adapter
+- [x] TASK-003-SPEC-002: Implement SESSION Cross-Source Updates Handler
+- [x] TASK-004-SPEC-002: Register ANALYSIS and SESSION Adapters in Dispatcher
+- [x] TASK-005-SPEC-002: Implement ANALYSIS Adapter Round-Trip Property Test
+- [x] TASK-006-SPEC-002: Implement SESSION Adapter Round-Trip Property Test
 
 ## Progress Log
 

@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN a parts array with id, phase, substatus, depends_on, and title is provided
-THE SYSTEM SHALL render a Mermaid flowchart string via `renderMermaid(opts: MermaidOptions): string` at `_shared/composition/src/renderers/mermaid.ts` producing a canonical Mermaid graph with init block (theme, flowchart curve, font, padding), classDef done and pending palette, subgraphs grouped by phase, node labels with emoji-prefix and bold id and title span, edges from depends_on, class assignments from substatus, and linkStyle directives for intra-wave (gray) vs cross-wave (blue) edges
+THE SYSTEM SHALL render a Mermaid flowchart string via `renderMermaid(opts: MermaidOptions): string` at `shared/composition/src/renderers/mermaid.ts` producing a canonical Mermaid graph with init block (theme, flowchart curve, font, padding), classDef done and pending palette, subgraphs grouped by phase, node labels with emoji-prefix and bold id and title span, edges from depends_on, class assignments from substatus, and linkStyle directives for intra-wave (gray) vs cross-wave (blue) edges
 SO THAT Mermaid dependency graphs are generated from structural data not hand-authored, eliminating styling drift.
 
 ## Pattern
@@ -68,7 +68,7 @@ Expected size 60-100 LOC. The init block, classDef palette, node label format, a
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/renderers/mermaid.ts` | NEW | Mermaid flowchart renderer |
+| `shared/composition/src/renderers/mermaid.ts` | NEW | Mermaid flowchart renderer |
 
 ## Observations
 

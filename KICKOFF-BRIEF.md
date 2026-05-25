@@ -42,7 +42,7 @@ Layout:
 ├── skills/decompose/SKILL.md      # 1→N split with hash-validated zero drift
 ├── skills/recompose/SKILL.md      # N→1 merge with hash-validated zero drift
 ├── defrag/SKILL.md         # Periodic curator; delegates to /decompose + /recompose
-├── _shared/composition/    # The deterministic library
+├── shared/composition/     # The deterministic library
 │   ├── src/
 │   │   ├── core/           # parse, hash, validate, write, relation-rewire
 │   │   ├── adapters/       # adr.ts, analysis.ts, plan.ts, spec.ts, session.ts

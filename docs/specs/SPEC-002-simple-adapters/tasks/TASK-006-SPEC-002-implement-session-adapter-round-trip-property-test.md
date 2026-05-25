@@ -25,8 +25,8 @@ Create the round-trip property test and fixtures for the SESSION adapter. The te
 
 ## Definition of Done
 
-- [x] SESSION fixture note at _shared/composition/tests/fixtures/session-sample.md following CONVENTIONS with Event-NN entries (flat layout — sanctioned by TASK-010-SPEC-002)
-- [x] SESSION fixture plan YAMLs at _shared/composition/tests/fixtures/session-{distribution,composition}.plan.yaml (hand-crafted distribution plan with cross_source_updates + inverse composition plan; documentation fixtures — round-trip test reads renumber_map + cross_source_updates as inline TS literal, mirroring the ADR convention)
+- [x] SESSION fixture note at shared/composition/tests/fixtures/session-sample.md following CONVENTIONS with Event-NN entries (flat layout — sanctioned by TASK-010-SPEC-002)
+- [x] SESSION fixture plan YAMLs at shared/composition/tests/fixtures/session-{distribution,composition}.plan.yaml (hand-crafted distribution plan with cross_source_updates + inverse composition plan; documentation fixtures — round-trip test reads renumber_map + cross_source_updates as inline TS literal, mirroring the ADR convention)
 - [x] Round-trip property test: parse fixture, decompose with plan, recompose with inverse plan
 - [x] Assertion: SHA-256(original) === SHA-256(recomposed)
 - [x] Assertion: decompose output includes cross_source_updates array with correct target_note, part_id, field_name, new_value
@@ -39,9 +39,9 @@ Create the round-trip property test and fixtures for the SESSION adapter. The te
 
 **In Scope**:
 
-- _shared/composition/tests/fixtures/session/sample-session.md (Create)
-- _shared/composition/tests/fixtures/session/sample-session-plan.yaml (Create)
-- _shared/composition/tests/session-round-trip.test.ts (Create)
+- shared/composition/tests/fixtures/session/sample-session.md (Create)
+- shared/composition/tests/fixtures/session/sample-session-plan.yaml (Create)
+- shared/composition/tests/session-round-trip.test.ts (Create)
 
 **Out of Scope**:
 
@@ -52,9 +52,9 @@ Create the round-trip property test and fixtures for the SESSION adapter. The te
 
 | File | Action | Description |
 |------|--------|-------------|
-| _shared/composition/tests/fixtures/session/sample-session.md | Create | SESSION fixture note with Event-NN entries |
-| _shared/composition/tests/fixtures/session/sample-session-plan.yaml | Create | Hand-crafted distribution plan with cross_source_updates |
-| _shared/composition/tests/session-round-trip.test.ts | Create | Round-trip property test for SESSION adapter |
+| shared/composition/tests/fixtures/session/sample-session.md | Create | SESSION fixture note with Event-NN entries |
+| shared/composition/tests/fixtures/session/sample-session-plan.yaml | Create | Hand-crafted distribution plan with cross_source_updates |
+| shared/composition/tests/session-round-trip.test.ts | Create | Round-trip property test for SESSION adapter |
 
 ## Effort
 

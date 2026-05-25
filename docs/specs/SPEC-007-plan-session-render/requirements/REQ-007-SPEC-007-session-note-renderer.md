@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN a typed SessionNote model is provided
-THE SYSTEM SHALL render it to canonical markdown via `renderSessionNote(session: SessionNote): string` at `_shared/composition/src/renderers/session-note.ts` producing sections in canonical order (frontmatter, H1 title, Scope, Bound PLAN bullet list with wikilink ref and worked_parts, Events H3 sections with typed-field bullets first and prose body after, Observations, Relations) using unified + remark-stringify
+THE SYSTEM SHALL render it to canonical markdown via `renderSessionNote(session: SessionNote): string` at `shared/composition/src/renderers/session-note.ts` producing sections in canonical order (frontmatter, H1 title, Scope, Bound PLAN bullet list with wikilink ref and worked_parts, Events H3 sections with typed-field bullets first and prose body after, Observations, Relations) using unified + remark-stringify
 SO THAT the typed model is deterministically serialized to markdown with event ordering and field formatting enforced.
 
 ## Pattern
@@ -64,7 +64,7 @@ Expected size 100-150 LOC. Simpler than plan renderer because SESSION has no der
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/renderers/session-note.ts` | NEW | SessionNote markdown renderer |
+| `shared/composition/src/renderers/session-note.ts` | NEW | SessionNote markdown renderer |
 
 ## Observations
 

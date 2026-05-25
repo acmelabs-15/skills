@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-001-SPEC-003: PLAN Adapter Architecture'
 type: design
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-003-plan-adapter/design/design-001-spec-003-plan-adapter-architecture
 tags:
 - design
@@ -60,7 +60,7 @@ export class PlanAdapter implements CompositionAdapter {
 **Interfaces**:
 
 - Consumed by: adapter dispatcher (source_type resolution), decompose.ts, recompose.ts
-- Implements: CompositionAdapter from _shared/composition/src/core/adapter.ts
+- Implements: CompositionAdapter from shared/composition/src/core/adapter.ts
 
 ### Component 2: Regenerative Section Handler
 
@@ -158,6 +158,7 @@ None. All design decisions are locked by ADR-002 D-2 (interface), D-3 (PLAN dist
 - [technique] Regenerative section handler identifies sections by heading text match and computes line ranges for exclusion #regenerative #heading-match
 - [technique] Frontmatter handler operates at string level on YAML block; avoids remark-frontmatter re-parse overhead #frontmatter #string-level
 - [constraint] Internal helpers (regenerative section handler, frontmatter handler) are PLAN-specific and not exported #encapsulation #plan-specific
+- [fact] Accepted: implemented by TASK-001-SPEC-003 + TASK-003-SPEC-003 (DONE), validated by QA-043-SPEC-003 (PASS, 30/30 tests) #provenance #rollup
 
 ## Relations
 

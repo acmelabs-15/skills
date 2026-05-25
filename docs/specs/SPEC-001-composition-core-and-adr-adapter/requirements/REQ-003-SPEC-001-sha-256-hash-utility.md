@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN the composition library needs to compute a content hash for char-identity validation
-THE SYSTEM SHALL provide a shared sha256(content: string): string utility at _shared/composition/src/core/hash.ts that wraps Bun.hash("sha256", content)
+THE SYSTEM SHALL provide a shared sha256(content: string): string utility at shared/composition/src/core/hash.ts that wraps Bun.hash("sha256", content)
 SO THAT all adapters use a single hash implementation ensuring consistent validation across the entire library.
 
 ## Pattern
@@ -32,7 +32,7 @@ Functional
 
 ## Context
 
-ADR-002 D-2 P1-I resolution specifies that hash() is NOT part of the CompositionAdapter interface. It is a shared utility at _shared/composition/src/core/hash.ts. Adapters compose with this utility via import. The utility wraps Bun.hash("sha256", content) per ADR-001 F-6 (Bun-native APIs) and F-8 (SHA-256 char-identity invariant). SHA-256 is a NIST standard available in every runtime; the Bun wrapper is the only Bun-specific aspect.
+ADR-002 D-2 P1-I resolution specifies that hash() is NOT part of the CompositionAdapter interface. It is a shared utility at shared/composition/src/core/hash.ts. Adapters compose with this utility via import. The utility wraps Bun.hash("sha256", content) per ADR-001 F-6 (Bun-native APIs) and F-8 (SHA-256 char-identity invariant). SHA-256 is a NIST standard available in every runtime; the Bun wrapper is the only Bun-specific aspect.
 
 ## Acceptance Criteria
 
@@ -49,7 +49,7 @@ ADR-002 D-2 P1-I resolution specifies that hash() is NOT part of the Composition
       THEN the returned hashes differ
 
 - [x] GIVEN the sha256 utility
-      WHEN imported from _shared/composition/src/core/hash.ts
+      WHEN imported from shared/composition/src/core/hash.ts
       THEN it uses Bun.hash("sha256", ...) internally per ADR-001 F-6
 
 ## Implementation Notes

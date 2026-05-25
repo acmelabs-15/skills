@@ -20,7 +20,7 @@ This TASK realizes the project scaffolding portion of DESIGN-001-SPEC-001 sectio
 
 ## Objective
 
-Create the _shared/composition/ project directory with package.json, tsconfig.json, biome.json, bunfig.toml, directory structure (src/core/, src/adapters/, schemas/, schemas/distribution/, schemas/composition/, tests/, tests/fixtures/), and a README.md documenting the library API and adapter contract.
+Create the shared/composition/ project directory with package.json, tsconfig.json, biome.json, bunfig.toml, directory structure (src/core/, src/adapters/, schemas/, schemas/distribution/, schemas/composition/, tests/, tests/fixtures/), and a README.md documenting the library API and adapter contract.
 
 ## Scope
 
@@ -47,16 +47,16 @@ Use bun init or manual creation. Ensure all Bun-native APIs are available. The p
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/package.json | NEW | Runtime and dev dependencies |
-| _shared/composition/tsconfig.json | NEW | TypeScript strict mode config |
-| _shared/composition/biome.json | NEW | Lint and format rules |
-| _shared/composition/bunfig.toml | NEW | Bun runtime and test config |
-| _shared/composition/README.md | NEW | Library documentation |
-| _shared/composition/src/core/.gitkeep | NEW | Directory placeholder |
-| _shared/composition/src/adapters/.gitkeep | NEW | Directory placeholder |
-| _shared/composition/schemas/distribution/.gitkeep | NEW | Directory placeholder |
-| _shared/composition/schemas/composition/.gitkeep | NEW | Directory placeholder |
-| _shared/composition/tests/fixtures/.gitkeep | NEW | Directory placeholder |
+| shared/composition/package.json | NEW | Runtime and dev dependencies |
+| shared/composition/tsconfig.json | NEW | TypeScript strict mode config |
+| shared/composition/biome.json | NEW | Lint and format rules |
+| shared/composition/bunfig.toml | NEW | Bun runtime and test config |
+| shared/composition/README.md | NEW | Library documentation |
+| shared/composition/src/core/.gitkeep | NEW | Directory placeholder |
+| shared/composition/src/adapters/.gitkeep | NEW | Directory placeholder |
+| shared/composition/schemas/distribution/.gitkeep | NEW | Directory placeholder |
+| shared/composition/schemas/composition/.gitkeep | NEW | Directory placeholder |
+| shared/composition/tests/fixtures/.gitkeep | NEW | Directory placeholder |
 
 ## Testing Requirements
 

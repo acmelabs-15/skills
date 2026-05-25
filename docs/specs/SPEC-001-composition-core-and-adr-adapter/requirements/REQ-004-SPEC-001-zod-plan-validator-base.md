@@ -36,7 +36,7 @@ ADR-002 D-1 specifies the plan YAML schema shape with a nested discriminated uni
 
 ## Acceptance Criteria
 
-- [x] GIVEN a base Zod schema at _shared/composition/schemas/base.ts
+- [x] GIVEN a base Zod schema at shared/composition/schemas/base.ts
       WHEN compiled
       THEN it exports lineRangeSchema, renumberMapSchema, wikilinkMapSchema, frontmatterMapSchema, mutationSpecSchema, validationSchema, sourceEntrySchema, and destinationEntrySchema
 

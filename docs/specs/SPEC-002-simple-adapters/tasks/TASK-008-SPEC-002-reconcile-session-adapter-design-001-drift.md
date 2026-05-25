@@ -18,7 +18,7 @@ tags:
 
 Reconcile four pieces of DESIGN-001-SPEC-002 vs code drift for the SESSION adapter discovered in Wave 2 retro-validation (QA-011-SPEC-002):
 
-1. `identifierPrefix = "Event "` declared in DESIGN-001 Component 2 is absent in `_shared/composition/src/adapters/session.ts`.
+1. `identifierPrefix = "Event "` declared in DESIGN-001 Component 2 is absent in `shared/composition/src/adapters/session.ts`.
 2. `supportsCrossSourceUpdates = true` declared in DESIGN-001 Component 2 is absent. Cross-source emission is exposed via a `getCrossSourceUpdates(content, plan)` method instead. TASK-002 DoD item 7 explicitly demands the boolean property.
 3. `identifierPattern` is `/Event-(\\d+)/i` (hyphen separator, /i flag); DESIGN-001 specifies `/Event (\\d+)/` (space separator, no flag). REQ-002 AC-3 says "Event-NN format" so REQ-002 wins; DESIGN-001 needs amendment.
 4. Fixture `tests/fixtures/session-sample.md` uses mixed `## Event 01` section headings (space-separated, no hyphen) and `Event-01` body tokens (hyphenated). Renumbering targets only the hyphen form. Convention must be unified.
@@ -37,10 +37,10 @@ Reconcile four pieces of DESIGN-001-SPEC-002 vs code drift for the SESSION adapt
 
 In Scope:
 
-- `_shared/composition/src/adapters/session.ts` (modify)
-- `_shared/composition/src/core/base-markdown-adapter.ts` (modify if abstract slots added)
+- `shared/composition/src/adapters/session.ts` (modify)
+- `shared/composition/src/core/base-markdown-adapter.ts` (modify if abstract slots added)
 - `docs/specs/SPEC-002-simple-adapters/design/DESIGN-001-SPEC-002-basemarkdownadapter-configuration-pattern.md` (amend if spec-amendment path chosen)
-- `_shared/composition/tests/fixtures/session-sample.md` (revise convention)
+- `shared/composition/tests/fixtures/session-sample.md` (revise convention)
 
 Out of Scope:
 

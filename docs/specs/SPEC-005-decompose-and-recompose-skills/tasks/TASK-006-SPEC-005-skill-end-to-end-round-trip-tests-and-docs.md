@@ -27,9 +27,9 @@ Create end-to-end round-trip tests that exercise /decompose followed by /recompo
 
 ## Definition of Done
 
-- [x] Fixture ADR note created at _shared/composition/tests/fixtures/adr-round-trip.md
-- [x] Fixture distribution plan YAML created at _shared/composition/tests/fixtures/adr-decompose-plan.yaml
-- [x] Fixture composition plan YAML created (inverse of distribution plan) at _shared/composition/tests/fixtures/adr-recompose-plan.yaml
+- [x] Fixture ADR note created at shared/composition/tests/fixtures/adr-round-trip.md
+- [x] Fixture distribution plan YAML created at shared/composition/tests/fixtures/adr-decompose-plan.yaml
+- [x] Fixture composition plan YAML created (inverse of distribution plan) at shared/composition/tests/fixtures/adr-recompose-plan.yaml
 - [x] End-to-end test: decompose.ts with distribution plan produces N destination files
 - [x] End-to-end test: recompose.ts with composition plan on decomposed files produces file SHA-256 identical to original fixture
 - [x] End-to-end test: decompose.ts with invalid plan exits code 1 with PlanValidationError
@@ -53,10 +53,10 @@ Create end-to-end round-trip tests that exercise /decompose followed by /recompo
 
 | File | Action | Description |
 |---|---|---|
-| _shared/composition/tests/fixtures/adr-round-trip.md | Create | Fixture ADR note for round-trip test |
-| _shared/composition/tests/fixtures/adr-decompose-plan.yaml | Create | Distribution plan fixture |
-| _shared/composition/tests/fixtures/adr-recompose-plan.yaml | Create | Composition plan fixture (inverse) |
-| _shared/composition/tests/round-trip.test.ts | Create | End-to-end round-trip tests |
+| shared/composition/tests/fixtures/adr-round-trip.md | Create | Fixture ADR note for round-trip test |
+| shared/composition/tests/fixtures/adr-decompose-plan.yaml | Create | Distribution plan fixture |
+| shared/composition/tests/fixtures/adr-recompose-plan.yaml | Create | Composition plan fixture (inverse) |
+| shared/composition/tests/round-trip.test.ts | Create | End-to-end round-trip tests |
 | README.md | Modify | Add /decompose and /recompose usage docs |
 
 ## Effort

@@ -84,3 +84,5 @@ Key learnings captured:
 - part_of [[PLAN-001: Skills Ecosystem]]
 - relates_to [[SESSION-2026-05-21_01: PUD-D2 Lock and Wave 2 Retro-Validation Kickoff]]
 - pairs_with [[SPEC-002: Simple Adapters]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

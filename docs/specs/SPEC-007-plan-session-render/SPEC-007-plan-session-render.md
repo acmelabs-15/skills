@@ -84,14 +84,14 @@ PLAN-001-skills-ecosystem.md is the first dogfood target: migrated to the trimme
 
 ## Success Criteria
 
-- [ ] All 12 REQs reach ACCEPTED via Gate A + Gate B
-- [ ] All 4 DESIGNs reach ACCEPTED
-- [ ] All 13 TASKs reach DONE via /build per-TASK cycle
-- [ ] Spec-level QA sweep passes (per /build Stage B)
-- [ ] All mandatory exit gates pass (per /build Step 7)
-- [ ] Plan round-trip test passes: SHA-256(render(parse(PLAN-001-trimmed))) === SHA-256(PLAN-001-trimmed)
-- [ ] Session round-trip test passes: SHA-256(render(parse(SESSION-fixture))) === SHA-256(SESSION-fixture)
-- [ ] PLAN-001 successfully migrated to trimmed template with round-trip char-identity
+- [x] All 12 REQs reach ACCEPTED via Gate A + Gate B
+- [x] All 4 DESIGNs reach ACCEPTED
+- [x] All 13 TASKs reach DONE via /build per-TASK cycle
+- [x] Spec-level QA sweep passes (per /build Stage B)
+- [x] All mandatory exit gates pass (per /build Step 7)
+- [x] Plan round-trip test passes: SHA-256(render(parse(PLAN-001-trimmed))) === SHA-256(PLAN-001-trimmed)
+- [x] Session round-trip test passes: SHA-256(render(parse(SESSION-fixture))) === SHA-256(SESSION-fixture)
+- [x] PLAN-001 successfully migrated to trimmed template with round-trip char-identity
 
 ## Artifact Status
 
@@ -108,7 +108,7 @@ PLAN-001-skills-ecosystem.md is the first dogfood target: migrated to the trimme
 - [x] REQ-009-SPEC-007: Plan Mutation API
 - [x] REQ-010-SPEC-007: Session Mutation API
 - [x] REQ-011-SPEC-007: Round-Trip Property Test
-- [ ] REQ-012-SPEC-007: PLAN-001 Dogfood Migration
+- [x] REQ-012-SPEC-007: PLAN-001 Dogfood Migration
 
 ### Designs
 
@@ -131,8 +131,8 @@ PLAN-001-skills-ecosystem.md is the first dogfood target: migrated to the trimme
 - [x] TASK-010-SPEC-007: Implement Plan Mutation API
 - [x] TASK-011-SPEC-007: Implement Session Mutation API
 - [x] TASK-012-SPEC-007: Implement Round-Trip Property Test
-- [ ] TASK-013-SPEC-007: Dogfood PLAN-001 Migration (BLOCKED; superseded by TASK-014)
-- [ ] TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template (TODO; gap-TASK)
+- [x] TASK-013-SPEC-007: Dogfood PLAN-001 Migration (resolved via supersession by TASK-014)
+- [x] TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template (DONE; gap-TASK)
 
 ## ADR Cross-cutting Constraints
 
@@ -206,4 +206,4 @@ PLAN-001-skills-ecosystem.md is the first dogfood target: migrated to the trimme
 - contains [[TASK-013-SPEC-007: Dogfood PLAN-001 Migration]]
 - [outcome] Wave 2 retro state propagation applied 2026-05-21: 12/13 TASKs DONE, 11/12 REQs ACCEPTED, 4/4 DESIGNs ACCEPTED; SPEC-007 stays ACCEPTED pending TASK-014 completion #state-propagation #partial
 - contains [[TASK-014-SPEC-007: Execute PLAN-001 Migration to Trimmed Template]]
-- validated_by [[QA-033-SPEC-007: Spec Aggregate Retro Validation]]
+- relates_to [[QA-033-SPEC-007: Spec Aggregate Retro Validation]]

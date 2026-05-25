@@ -18,7 +18,7 @@ tags:
 Retro-validate TASK-002-SPEC-007 (PlanNote Zod Schema) against DoD via `src/schemas/plan-note.ts` and `tests/plan-note-schema.test.ts`.
 
 - **Feature**: PlanNote Zod Schema (TASK-002-SPEC-007)
-- **Scope**: `_shared/composition/src/schemas/plan-note.ts` (281 LOC)
+- **Scope**: `shared/composition/src/schemas/plan-note.ts` (281 LOC)
 - **Acceptance Criteria**: REQ-002-SPEC-007, ADR-003 D-2, D-4, D-6
 
 ## Approach
@@ -26,7 +26,7 @@ Retro-validate TASK-002-SPEC-007 (PlanNote Zod Schema) against DoD via `src/sche
 - **Test Types**: Unit (cross-field invariant validation)
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: Existing schema test suite + valid/invalid model fixtures
-- **Test File**: `_shared/composition/tests/plan-note-schema.test.ts`
+- **Test File**: `shared/composition/tests/plan-note-schema.test.ts`
 
 ## Results
 
@@ -85,6 +85,6 @@ Retro-validate TASK-002-SPEC-007 (PlanNote Zod Schema) against DoD via `src/sche
 
 ## Relations
 
-- validates [[TASK-002-SPEC-007: Implement PlanNote Zod Schema]]
+- depends_on [[TASK-002-SPEC-007: Implement PlanNote Zod Schema]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-002-SPEC-007: PlanNote Zod Schema]]

@@ -1,7 +1,7 @@
 ---
 title: 'REQ-002-SPEC-003: Regenerated Sections Field Handling'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-003-plan-adapter/requirements/req-002-spec-003-regenerated-sections-field-handling
 tags:
 - requirement
@@ -70,6 +70,7 @@ Section matching uses the heading text after the markdown heading prefix (## or 
 - [constraint] Only sections explicitly listed in regenerated_sections are excluded; all other content is fully hash-validated per ADR-001 F-8 #hash-validation #selective-exclusion
 - [technique] Section matching uses exact heading text equality after stripping markdown prefix; section spans to next heading of equal or higher level #heading-match #section-span
 - [fact] Progress Dashboard and Cross-Part Dependency Graph are the two known regenerative sections in PLAN notes per CONVENTIONS Information Model Category 2 #plan #derived-views
+- [fact] Accepted: implemented by TASK-002-SPEC-003 (DONE), validated by QA-043-SPEC-003 (PASS, 30/30 tests) #provenance #rollup
 
 ## Relations
 

@@ -35,8 +35,8 @@ Uses Bun.write for staging (ADR-001 F-6). Uses fs.renameSync for POSIX atomic re
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/core/atomic-write.ts | NEW | Atomic write helpers |
-| _shared/composition/tests/atomic-write.test.ts | NEW | Atomicity tests |
+| shared/composition/src/core/atomic-write.ts | NEW | Atomic write helpers |
+| shared/composition/tests/atomic-write.test.ts | NEW | Atomicity tests |
 
 ## Testing Requirements
 

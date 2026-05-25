@@ -18,14 +18,14 @@ tags:
 Retro-validate TASK-005-SPEC-007 via `src/parsers/plan-note.ts` (388 LOC) and `tests/plan-parser.test.ts` + integration via round-trip fixture.
 
 - **Feature**: PlanNote Parser (TASK-005-SPEC-007)
-- **Scope**: `_shared/composition/src/parsers/plan-note.ts`
+- **Scope**: `shared/composition/src/parsers/plan-note.ts`
 - **Acceptance Criteria**: REQ-004-SPEC-007, ADR-001 D-2, ADR-003 D-3
 
 ## Approach
 
 - **Test Types**: Unit + integration (parses fixture cleanly + downstream renderer round-trip)
 - **Environment**: Local (Bun 1.3.13)
-- **Test File**: `_shared/composition/tests/plan-parser.test.ts` + `tests/plan-session-round-trip.test.ts`
+- **Test File**: `shared/composition/tests/plan-parser.test.ts` + `tests/plan-session-round-trip.test.ts`
 
 ## Results
 
@@ -76,6 +76,6 @@ Retro-validate TASK-005-SPEC-007 via `src/parsers/plan-note.ts` (388 LOC) and `t
 
 ## Relations
 
-- validates [[TASK-005-SPEC-007: Implement PlanNote Parser]]
+- depends_on [[TASK-005-SPEC-007: Implement PlanNote Parser]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-004-SPEC-007: PlanNote Markdown Parser]]

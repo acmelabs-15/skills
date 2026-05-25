@@ -28,7 +28,7 @@ The protocol follows a pass-through model: (1) the SESSION adapter's `getCrossSo
 
 **Purpose**: Defines the structured shape of a single cross-source update entry, aligned with the distribution pipeline's map-based transform model.
 
-**Location**: `_shared/composition/schemas/distribution/session.plan.schema.ts`
+**Location**: `shared/composition/schemas/distribution/session.plan.schema.ts`
 
 **Definition**:
 
@@ -65,7 +65,7 @@ export type CrossSourceUpdate = z.infer<typeof crossSourceUpdateSchema>;
 
 **Purpose**: Pass-through method that surfaces cross-source updates from the distribution plan without applying them.
 
-**Location**: `_shared/composition/src/adapters/session.ts`
+**Location**: `shared/composition/src/adapters/session.ts`
 
 **Definition**:
 

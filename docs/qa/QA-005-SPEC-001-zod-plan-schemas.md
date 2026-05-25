@@ -18,9 +18,9 @@ Verification of TASK-005-SPEC-001 (Zod Plan Schemas) implementation. Validates r
 
 ### Files Under Test
 
-- `_shared/composition/schemas/base.ts` — base schema definitions with injectiveDisjointMap refinement
-- `_shared/composition/schemas/index.ts` — composite plan schemas with z.union discriminant
-- `_shared/composition/tests/schemas.test.ts` — 8 test cases
+- `shared/composition/schemas/base.ts` — base schema definitions with injectiveDisjointMap refinement
+- `shared/composition/schemas/index.ts` — composite plan schemas with z.union discriminant
+- `shared/composition/tests/schemas.test.ts` — 8 test cases
 
 ## Test Results
 

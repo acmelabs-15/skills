@@ -46,12 +46,12 @@ Fixtures must be realistic Brain knowledge-graph notes following CONVENTIONS (16
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/tests/fixtures/spec-subtree/SPEC-001-test-project.md | NEW | SPEC root fixture |
-| _shared/composition/tests/fixtures/spec-subtree/requirements/REQ-001-SPEC-001-test-requirement.md | NEW | REQ child fixture |
-| _shared/composition/tests/fixtures/spec-subtree/design/DESIGN-001-SPEC-001-test-design.md | NEW | DESIGN child fixture |
-| _shared/composition/tests/fixtures/spec-subtree/tasks/TASK-001-SPEC-001-test-task.md | NEW | TASK child fixture |
-| _shared/composition/tests/fixtures/spec-distribution.plan.yaml | NEW | Distribution plan fixture |
-| _shared/composition/tests/fixtures/spec-composition.plan.yaml | NEW | Composition plan fixture |
+| shared/composition/tests/fixtures/spec-subtree/SPEC-001-test-project.md | NEW | SPEC root fixture |
+| shared/composition/tests/fixtures/spec-subtree/requirements/REQ-001-SPEC-001-test-requirement.md | NEW | REQ child fixture |
+| shared/composition/tests/fixtures/spec-subtree/design/DESIGN-001-SPEC-001-test-design.md | NEW | DESIGN child fixture |
+| shared/composition/tests/fixtures/spec-subtree/tasks/TASK-001-SPEC-001-test-task.md | NEW | TASK child fixture |
+| shared/composition/tests/fixtures/spec-distribution.plan.yaml | NEW | Distribution plan fixture |
+| shared/composition/tests/fixtures/spec-composition.plan.yaml | NEW | Composition plan fixture |
 
 ## Definition of Done
 

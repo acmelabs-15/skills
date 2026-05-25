@@ -18,7 +18,7 @@ tags:
 Spec-level QA sweep for SPEC-001: Composition Core and ADR Adapter. Validates that all 9 TASKs are DONE, all 8 REQs have test coverage, and THE PROOF (SHA-256 round-trip identity) holds.
 
 - **Feature**: SPEC-001 Composition Core and ADR Adapter
-- **Scope**: All 9 TASKs, all 8 REQs, full test suite in `_shared/composition/`
+- **Scope**: All 9 TASKs, all 8 REQs, full test suite in `shared/composition/`
 - **Acceptance Criteria**: 100% REQ coverage, 0 test failures, round-trip proof confirmed
 
 ## Approach

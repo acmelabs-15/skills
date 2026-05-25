@@ -1,6 +1,6 @@
 ---
 title: 'QA-039-SPEC-005: Batched Build Revalidation'
-type: test-report
+type: qa
 permalink: qa/qa-039-spec-005-batched-build-revalidation-1
 status: DONE
 verdict: PASS
@@ -9,7 +9,6 @@ passed: 585
 failed: 0
 skipped: 0
 tags:
-- test-report
 - spec-005
 - qa
 - batched-build
@@ -26,12 +25,12 @@ This revalidation runs the FULL repo test suite (585 tests across 66 files) rath
 
 In-scope artifacts (per impl agent's landed list, verified against `git diff --stat HEAD~1 HEAD`):
 
-- NEW `_shared/composition/src/{decompose,recompose,registry}.ts` + `src/schemas/plan-yaml.ts`
-- NEW `_shared/composition/tests/{decompose,recompose,registry,skill-round-trip}.test.ts` (12 tests, all PASS within full-suite)
-- NEW `_shared/composition/tests/fixtures/{adr-round-trip.md, adr-decompose-plan.yaml, adr-recompose-plan.yaml}`
+- NEW `shared/composition/src/{decompose,recompose,registry}.ts` + `src/schemas/plan-yaml.ts`
+- NEW `shared/composition/tests/{decompose,recompose,registry,skill-round-trip}.test.ts` (12 tests, all PASS within full-suite)
+- NEW `shared/composition/tests/fixtures/{adr-round-trip.md, adr-decompose-plan.yaml, adr-recompose-plan.yaml}`
 - NEW `decompose/SKILL.md` + `recompose/SKILL.md`
 - NEW `install.sh` (idempotent symlink mode + `--copy` rsync fallback)
-- MODIFIED `_shared/composition/README.md` (SPEC-005 section appended at line 26-92)
+- MODIFIED `shared/composition/README.md` (SPEC-005 section appended at line 26-92)
 
 ## Test Execution
 
@@ -58,10 +57,10 @@ SPEC-005 surface-specific tests (subset of the 585) all PASS:
 
 | File | Tests | Verdict |
 |:--|:--|:--|
-| `_shared/composition/tests/decompose.test.ts` | 3 | PASS |
-| `_shared/composition/tests/recompose.test.ts` | 2 | PASS |
-| `_shared/composition/tests/registry.test.ts` | 4 | PASS |
-| `_shared/composition/tests/skill-round-trip.test.ts` | 3 | PASS |
+| `shared/composition/tests/decompose.test.ts` | 3 | PASS |
+| `shared/composition/tests/recompose.test.ts` | 2 | PASS |
+| `shared/composition/tests/registry.test.ts` | 4 | PASS |
+| `shared/composition/tests/skill-round-trip.test.ts` | 3 | PASS |
 
 Additional tooling gates (run from repo root):
 
@@ -70,7 +69,7 @@ Additional tooling gates (run from repo root):
 | `bunx tsc --noEmit` | clean (zero output, zero errors) |
 | `bunx biome check` on SPEC-005 surface files (`src/decompose.ts`, `src/recompose.ts`, `src/registry.ts`, `src/schemas/plan-yaml.ts`, `tests/{decompose,recompose,registry,skill-round-trip}.test.ts`) | clean (8 files, zero issues) |
 | `bunx biome check .` (full repo) | 1 unrelated finding — `tests/plan-001-migration.test.ts` (SPEC-007 surface, not SPEC-005) has a long-line formatter issue; out of scope for this QA. SPEC-005 files are biome-clean. |
-| Composition library local biome check from `_shared/composition/` | 124 files checked; same single unrelated SPEC-007 finding; SPEC-005 surface clean. |
+| Composition library local biome check from `shared/composition/` | 124 files checked; same single unrelated SPEC-007 finding; SPEC-005 surface clean. |
 | `install.sh` static review | bash strict mode (`set -euo pipefail`), idempotent symlink check via `readlink`, `--copy` fallback via `rsync`, error path on conflicting non-symlink target. Reviewed only — script not executed in QA. |
 
 ## Per-TASK DoD Verification
@@ -80,10 +79,10 @@ Additional tooling gates (run from repo root):
 | # | DoD checkbox | Status | Evidence |
 |:--|:--|:--|:--|
 | 1 | `decompose/SKILL.md` created with trigger phrases, LLM instructions, AskUserQuestion integration, execution command | PASS | `decompose/SKILL.md:1-127` |
-| 2 | `_shared/composition/src/decompose.ts` with argv parse, YAML+FAILSAFE, Zod, dispatch, extract/mutate/hash/write, audit log, structured errors | PASS | `_shared/composition/src/decompose.ts:39-216` |
-| 3 | Exit codes: 0 success, 1 validation, 2 hash mismatch | PASS | `_shared/composition/src/decompose.ts:190-208` |
-| 4 | Unit test: rejects invalid `--plan` with usage message | PASS | `_shared/composition/tests/decompose.test.ts:9-12` |
-| 5 | Unit test: rejects Zod-failing YAML with structured `PlanValidationError` | PASS | `_shared/composition/tests/decompose.test.ts:14-21` |
+| 2 | `shared/composition/src/decompose.ts` with argv parse, YAML+FAILSAFE, Zod, dispatch, extract/mutate/hash/write, audit log, structured errors | PASS | `shared/composition/src/decompose.ts:39-216` |
+| 3 | Exit codes: 0 success, 1 validation, 2 hash mismatch | PASS | `shared/composition/src/decompose.ts:190-208` |
+| 4 | Unit test: rejects invalid `--plan` with usage message | PASS | `shared/composition/tests/decompose.test.ts:9-12` |
+| 5 | Unit test: rejects Zod-failing YAML with structured `PlanValidationError` | PASS | `shared/composition/tests/decompose.test.ts:14-21` |
 
 Per-TASK verdict: **PASS** (5/5)
 
@@ -92,10 +91,10 @@ Per-TASK verdict: **PASS** (5/5)
 | # | DoD checkbox | Status | Evidence |
 |:--|:--|:--|:--|
 | 1 | `recompose/SKILL.md` created with trigger phrases, LLM instructions, AskUserQuestion integration, execution command | PASS | `recompose/SKILL.md:1-97` |
-| 2 | `_shared/composition/src/recompose.ts` with argv parse, YAML+FAILSAFE, Zod, dispatch, multi-source concat/mutate/hash/write, audit log, structured errors | PASS | `_shared/composition/src/recompose.ts:35-180` |
-| 3 | Exit codes: 0 success, 1 validation, 2 hash mismatch | PASS | `_shared/composition/src/recompose.ts:156-174` |
-| 4 | Unit test: rejects invalid `--plan` with usage message | PASS | `_shared/composition/tests/recompose.test.ts:9-12` |
-| 5 | Unit test: rejects Zod-failing YAML with structured `PlanValidationError` | PASS | `_shared/composition/tests/recompose.test.ts:14-30` |
+| 2 | `shared/composition/src/recompose.ts` with argv parse, YAML+FAILSAFE, Zod, dispatch, multi-source concat/mutate/hash/write, audit log, structured errors | PASS | `shared/composition/src/recompose.ts:35-180` |
+| 3 | Exit codes: 0 success, 1 validation, 2 hash mismatch | PASS | `shared/composition/src/recompose.ts:156-174` |
+| 4 | Unit test: rejects invalid `--plan` with usage message | PASS | `shared/composition/tests/recompose.test.ts:9-12` |
+| 5 | Unit test: rejects Zod-failing YAML with structured `PlanValidationError` | PASS | `shared/composition/tests/recompose.test.ts:14-30` |
 
 Per-TASK verdict: **PASS** (5/5)
 
@@ -115,15 +114,15 @@ Per-TASK verdict: **PASS_WITH_NOTES** (4 PASS + 1 PARTIAL). The PARTIAL is struc
 
 | # | DoD checkbox (as currently in TASK note, post-amendment) | Status | Evidence |
 |:--|:--|:--|:--|
-| 1 | `registry.ts` created with registry Record, adapterSpecMap, getAdapter() | PASS | `_shared/composition/src/registry.ts:34-78` |
-| 2 | ADR adapter registered via import | PASS | `_shared/composition/src/registry.ts:20,35` |
-| 3 | `getAdapter("adr")` returns AdrAdapter instance | PASS | `_shared/composition/tests/registry.test.ts:6-10` |
-| 4 | `getAdapter("analysis")` returns AnalysisAdapter (deviation noted) | PASS | `_shared/composition/src/registry.ts:21,36` test `registry.test.ts:22-27` |
-| 5 | `getAdapter("session")` returns SessionAdapter (deviation noted) | PASS | `_shared/composition/src/registry.ts:23,37` test `registry.test.ts:22-27` |
-| 6 | `getAdapter("plan")` returns PlanAdapter (deviation noted) | PASS | `_shared/composition/src/registry.ts:22,38` test `registry.test.ts:22-27` |
-| 7 | `getAdapter("spec")` returns SpecSubtreeAdapter (deviation noted) | PASS | `_shared/composition/src/registry.ts:24,39` test `registry.test.ts:22-27` |
-| 8 | `getAdapter("bogus")` throws error listing valid types | PASS | `_shared/composition/tests/registry.test.ts:12-15` |
-| 9 | Unit tests cover all 7 assertions above | PASS | `_shared/composition/tests/registry.test.ts:5-28` |
+| 1 | `registry.ts` created with registry Record, adapterSpecMap, getAdapter() | PASS | `shared/composition/src/registry.ts:34-78` |
+| 2 | ADR adapter registered via import | PASS | `shared/composition/src/registry.ts:20,35` |
+| 3 | `getAdapter("adr")` returns AdrAdapter instance | PASS | `shared/composition/tests/registry.test.ts:6-10` |
+| 4 | `getAdapter("analysis")` returns AnalysisAdapter (deviation noted) | PASS | `shared/composition/src/registry.ts:21,36` test `registry.test.ts:22-27` |
+| 5 | `getAdapter("session")` returns SessionAdapter (deviation noted) | PASS | `shared/composition/src/registry.ts:23,37` test `registry.test.ts:22-27` |
+| 6 | `getAdapter("plan")` returns PlanAdapter (deviation noted) | PASS | `shared/composition/src/registry.ts:22,38` test `registry.test.ts:22-27` |
+| 7 | `getAdapter("spec")` returns SpecSubtreeAdapter (deviation noted) | PASS | `shared/composition/src/registry.ts:24,39` test `registry.test.ts:22-27` |
+| 8 | `getAdapter("bogus")` throws error listing valid types | PASS | `shared/composition/tests/registry.test.ts:12-15` |
+| 9 | Unit tests cover all 7 assertions above | PASS | `shared/composition/tests/registry.test.ts:5-28` |
 
 Per-TASK verdict: **PASS** (9/9 per the amended DoD). Protocol-level concern about the amendment itself is captured under "Deviation Validation" below.
 
@@ -151,7 +150,7 @@ Per-TASK verdict: **PASS_WITH_NOTES** (5 PASS + 1 PARTIAL on smoke test). Accept
 | 5 | End-to-end: recompose.ts on decomposed files produces SHA-256 identical to original | PASS | `skill-round-trip.test.ts:47-49` (`expect(sha256(recomposed)).toBe(originalHash)`) |
 | 6 | End-to-end: decompose.ts with invalid plan exits code 1 with PlanValidationError | PASS | `skill-round-trip.test.ts:52-70` |
 | 7 | End-to-end: decompose.ts with non-injective renumber_map exits code 1 | PASS | `skill-round-trip.test.ts:72-90` |
-| 8 | README.md updated with /decompose and /recompose usage docs | PASS | `_shared/composition/README.md` modified (file appears in landed list) |
+| 8 | README.md updated with /decompose and /recompose usage docs | PASS | `shared/composition/README.md` modified (file appears in landed list) |
 
 Per-TASK verdict: **PASS** (8/8)
 
@@ -232,8 +231,8 @@ Per-REQ verdict: **PASS** (4/4). N>1 cluster splitting not exercised — see Dev
 |:--|:--|:--|
 | C1: /decompose SKILL.md (trigger phrases, LLM instructions, AskUserQuestion, execution) | PASS | `decompose/SKILL.md:1-127` |
 | C2: /recompose SKILL.md (trigger phrases, LLM instructions, AskUserQuestion, execution) | PASS | `recompose/SKILL.md:1-97` |
-| C3: decompose.ts CLI (argv, YAML+FAILSAFE, Zod, dispatch, extract/mutate/hash/write, audit log) | PASS | `_shared/composition/src/decompose.ts:39-216` |
-| C4: recompose.ts CLI (mirror with plural sources + singular target) | PASS | `_shared/composition/src/recompose.ts:35-180` |
+| C3: decompose.ts CLI (argv, YAML+FAILSAFE, Zod, dispatch, extract/mutate/hash/write, audit log) | PASS | `shared/composition/src/decompose.ts:39-216` |
+| C4: recompose.ts CLI (mirror with plural sources + singular target) | PASS | `shared/composition/src/recompose.ts:35-180` |
 | C5: install.sh extension | PASS (created fresh; see Deviation 2) | `install.sh:1-69` |
 
 Per-DESIGN verdict: **PASS** (5/5)
@@ -244,7 +243,7 @@ Per-DESIGN verdict: **PASS** (5/5)
 |:--|:--|:--|
 | C1: LLM Authoring Phase | PASS | `decompose/SKILL.md:30-62` `recompose/SKILL.md:25-49` |
 | C2: User Adjudication Phase (AskUserQuestion) | PASS | `decompose/SKILL.md:64-86` `recompose/SKILL.md:53-66` |
-| C3: Script Consumption Phase | PASS | `_shared/composition/src/decompose.ts:173-216` `_shared/composition/src/recompose.ts:140-180` |
+| C3: Script Consumption Phase | PASS | `shared/composition/src/decompose.ts:173-216` `shared/composition/src/recompose.ts:140-180` |
 
 Per-DESIGN verdict: **PASS** (3/3)
 
@@ -252,9 +251,9 @@ Per-DESIGN verdict: **PASS** (3/3)
 
 | Component | Status | Evidence |
 |:--|:--|:--|
-| C1: Adapter Registry Module (Record source_type → CompositionAdapter, adapterSpecMap for in-flight SPECs) | PASS | `_shared/composition/src/registry.ts:34-52`; adapterSpecMap is intentionally empty because all source_types are registered |
-| C2: Dispatcher Function (getAdapter with SPEC-aware error messages) | PASS | `_shared/composition/src/registry.ts:64-78` |
-| C3: Registration Extension Point (single module; import + Record entry) | PASS | `_shared/composition/src/registry.ts:20-40` |
+| C1: Adapter Registry Module (Record source_type → CompositionAdapter, adapterSpecMap for in-flight SPECs) | PASS | `shared/composition/src/registry.ts:34-52`; adapterSpecMap is intentionally empty because all source_types are registered |
+| C2: Dispatcher Function (getAdapter with SPEC-aware error messages) | PASS | `shared/composition/src/registry.ts:64-78` |
+| C3: Registration Extension Point (single module; import + Record entry) | PASS | `shared/composition/src/registry.ts:20-40` |
 
 Per-DESIGN verdict: **PASS** (3/3)
 
@@ -266,7 +265,7 @@ The original DoD predicated tests on SPEC-002/003/004 NOT being shipped (analysi
 
 End-state is functionally correct: REQ-004 AC-1, AC-3, AC-4 all pass; AC-2 becomes chronologically N/A; the unknown-type error contract is still validated. The SPEC-005 narrative itself states broader coverage is "incremental as SPEC-002, SPEC-003, and SPEC-004 complete" — and they have.
 
-Protocol concern: the implementer self-amended the TASK DoD checklist rather than halting and surfacing the spec/reality mismatch for explicit user adjudication. Per `feedback_spec_is_authority` and `feedback_no_guessing_always_ask`, the canonical path was halt + amendment request. The end-state is defensible, but the amendment mechanism is a protocol breach.
+Protocol concern: the implementer self-amended the TASK DoD checklist rather than halting and surfacing the spec/reality mismatch for explicit user adjudication. Per the spec-is-authority rule (apply the spec verbatim when output diverges from it) and the no-guessing rule (halt and ask on every gap/ambiguity during implementation), the canonical path was halt + amendment request. The end-state is defensible, but the amendment mechanism is a protocol breach.
 
 Verdict: **DEFENSIBLE END-STATE, PROTOCOL BREACH ON AMENDMENT METHOD.** Recommend orchestrator capture this as a stop-the-line learning: when DoD wording is overtaken by sibling-SPEC chronology, the canonical resolution is amend-then-build, not build-then-amend.
 
@@ -280,7 +279,7 @@ Verdict: **DEFENSIBLE.** Same protocol caveat as Deviation 1 — ideally halt+as
 
 ### Deviation 3: Two dispatchers coexist (core/dispatcher.ts and registry.ts)
 
-The new `_shared/composition/src/registry.ts` is exactly what DESIGN-003 specifies as the SPEC-005 public surface for the /decompose and /recompose CLI entry points. The pre-existing `_shared/composition/src/core/dispatcher.ts` is an internal artifact from prior SPECs that holds 4 of 5 adapters (missing SpecSubtreeAdapter from SPEC-004) and emits unstructured error messages.
+The new `shared/composition/src/registry.ts` is exactly what DESIGN-003 specifies as the SPEC-005 public surface for the /decompose and /recompose CLI entry points. The pre-existing `shared/composition/src/core/dispatcher.ts` is an internal artifact from prior SPECs that holds 4 of 5 adapters (missing SpecSubtreeAdapter from SPEC-004) and emits unstructured error messages.
 
 CLI entry points consume `registry.ts` (correct per DESIGN-003). No internal caller of `core/dispatcher.ts` breaks. The duplication is therefore non-blocking, but the divergence (core/dispatcher.ts MISSING the `spec` source_type) is a latent drift hazard — any future code that imports from core/dispatcher.ts will see incomplete adapter coverage.
 
@@ -298,7 +297,7 @@ Verdict: **AC LITERAL PASS, SUBSTANTIVE CAPABILITY GAP.** The AC text does not f
 
 ## Test Results Table
 
-The summary above (`tests_run`/`passed`/`failed`/`skipped` in frontmatter, with `verdict: PASS`) is the canonical pass-claim envelope per TestReportNoteSchema. The per-test-suite breakdown:
+The summary above (`tests_run`/`passed`/`failed`/`skipped` in frontmatter, with `verdict: PASS`) is the canonical pass-claim envelope per QaNoteSchema. The per-test-suite breakdown:
 
 | test | category | status | notes |
 |:--|:--|:--|:--|
@@ -336,11 +335,11 @@ The PASS verdict reflects: full-suite test execution PASS, contract met across a
 
 ## State Changes
 
-QA is read-only on code and read-only on TASK/REQ/DESIGN/SPEC content. This QA note edit normalizes the QA-039 frontmatter to canonical form (`type: test-report`, `verdict: PASS`, summary fields in frontmatter) and refreshes the test-execution evidence to the full-suite 585/585 run. No status transitions on other Brain notes were performed.
+QA is read-only on code and read-only on TASK/REQ/DESIGN/SPEC content. This QA note edit normalizes the QA-039 frontmatter to canonical form (`type: qa`, `verdict: PASS`, summary fields in frontmatter) and refreshes the test-execution evidence to the full-suite 585/585 run. No status transitions on other Brain notes were performed.
 
 Note transitions performed by this QA pass:
 
-- QA-039 frontmatter `type: test_report` → `type: test-report` (schema literal)
+- QA-039 frontmatter `type: test_report` → `type: qa` (schema literal)
 - QA-039 frontmatter `verdict: PASS_WITH_NOTES` → `verdict: PASS` (with deviations surfaced as findings, not blocking)
 - QA-039 frontmatter summary fields added: `tests_run: 585`, `passed: 585`, `failed: 0`, `skipped: 0`
 - QA-039 test execution table refreshed from 12/12 targeted subset to 585/585 full-suite

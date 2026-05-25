@@ -28,7 +28,7 @@ Verify TASK-005-SPEC-004 implements `specSubtreeManifestSchema` and distribution
 - **Test Types**: Unit
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: Hand-crafted valid + invalid manifests
-- **Test File**: `_shared/composition/tests/spec-subtree-schema.test.ts`
+- **Test File**: `shared/composition/tests/spec-subtree-schema.test.ts`
 
 ## Results
 
@@ -95,5 +95,5 @@ Verify TASK-005-SPEC-004 implements `specSubtreeManifestSchema` and distribution
 
 ## Relations
 
-- validates [[TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
+- depends_on [[TASK-005-SPEC-004: Implement specSubtreeManifestSchema Zod Validator]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

@@ -1,5 +1,5 @@
 ---
-title: ANALYSIS-002-plan-session-note-render-architecture
+title: 'ANALYSIS-002: Plan/Session Note Render Architecture'
 type: analysis
 permalink: analysis/analysis-002-plan-session-note-render-architecture
 status: ACCEPTED
@@ -129,7 +129,7 @@ Status: LOCKED.
 
 ### D-4: Zod schema as validation contract
 
-Decision: Plan and session note structures are validated by Zod schemas living in _shared/composition/src/schemas/ (plan-note.ts, session-note.ts, common.ts). Schema runs on every parse and pre-write. Validation includes cross-field invariants (DONE part must have outcome; task.part must reference a valid part; event numbers must be continuous starting at 1).
+Decision: Plan and session note structures are validated by Zod schemas living in shared/composition/src/schemas/ (plan-note.ts, session-note.ts, common.ts). Schema runs on every parse and pre-write. Validation includes cross-field invariants (DONE part must have outcome; task.part must reference a valid part; event numbers must be continuous starting at 1).
 
 Rationale: Type safety + runtime validation + cross-field invariants caught at a known boundary. Mirrors ADR-001 D-1 (Zod for plan validation). The schema is the contract between LLM authoring layer and the deterministic render script.
 
@@ -139,7 +139,7 @@ Status: LOCKED.
 
 ### D-5: T-NN tasks are plan-scoped (not session-scoped)
 
-Decision: Task IDs use the format T-NN where NN is a plan-global counter (2+ digits), continuous across sessions of the same workflow. Previously T-NN was session-scoped per the existing feedback_session_protocol guidance.
+Decision: Task IDs use the format T-NN where NN is a plan-global counter (2+ digits), continuous across sessions of the same workflow. Previously T-NN was session-scoped per the existing session protocol (session note mandatory, created at start, updated live as a pointer ledger, closed before session end) guidance.
 
 Rationale: Tasks are state living in PLAN; therefore their identifiers span the PLAN lifecycle, not the session lifecycle. Continuous numbering across sessions makes cross-session task references unambiguous.
 
@@ -151,7 +151,7 @@ Status: LOCKED. Migration: existing T-IDs in PLAN-001 are already plan-global co
 
 Decision: A single Tasks section at PLAN top level contains three sub-tables: Active (IN_PROGRESS tasks), Backlog (PENDING tasks), Archive (DONE tasks, optionally inside a details collapse). The tasks table schema has columns: T-ID, Subject, Part, Agent, Effort, Status, Created (event ref), Resolved (event ref). The per-part Tasks H4 sections are dropped entirely.
 
-Rationale: Per-part Tasks duplication was the primary bloat source. Consolidation matches the existing feedback_session_protocol three-table hybrid pattern, just relocated from SESSION to PLAN where state belongs. The Active/Backlog/Archive split keeps the visible PLAN size manageable even when the workflow has 100+ tasks.
+Rationale: Per-part Tasks duplication was the primary bloat source. Consolidation matches the existing session-protocol three-table hybrid pattern (session note mandatory, created at start, updated live as a pointer ledger, closed before session end), just relocated from SESSION to PLAN where state belongs. The Active/Backlog/Archive split keeps the visible PLAN size manageable even when the workflow has 100+ tasks.
 
 Status: LOCKED.
 

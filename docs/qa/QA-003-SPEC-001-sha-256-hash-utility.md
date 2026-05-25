@@ -22,7 +22,7 @@ tags:
 
 ## Scope
 
-Validates `sha256(content: string): string` in `_shared/composition/src/core/hash.ts`. Single exported function using `Bun.CryptoHasher("sha256")` returning lowercase hex digest.
+Validates `sha256(content: string): string` in `shared/composition/src/core/hash.ts`. Single exported function using `Bun.CryptoHasher("sha256")` returning lowercase hex digest.
 
 ## Approach
 
@@ -85,5 +85,5 @@ Validates `sha256(content: string): string` in `_shared/composition/src/core/has
 
 ## Relations
 
-- validates [[TASK-003-SPEC-001: Implement SHA-256 Hash Utility]]
+- depends_on [[TASK-003-SPEC-001: Implement SHA-256 Hash Utility]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

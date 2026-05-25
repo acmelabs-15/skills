@@ -20,13 +20,13 @@ tags:
 
 ## Objective
 
-Create the SpecSubtreeAdapter class at _shared/composition/src/adapters/spec-subtree.ts implementing the CompositionAdapter interface with sourceType "spec". The adapter provides the 5 synchronous methods (parse, extractByRange, applyMutations, reverseMutations, serialize) for per-file content operations, plus the processSubtree() method that orchestrates manifest-driven iteration across root and children. This task establishes the adapter skeleton that subsequent tasks (TASK-002 through TASK-004) extend with frontmatter handling, filename rewrite, and hash validation.
+Create the SpecSubtreeAdapter class at shared/composition/src/adapters/spec-subtree.ts implementing the CompositionAdapter interface with sourceType "spec". The adapter provides the 5 synchronous methods (parse, extractByRange, applyMutations, reverseMutations, serialize) for per-file content operations, plus the processSubtree() method that orchestrates manifest-driven iteration across root and children. This task establishes the adapter skeleton that subsequent tasks (TASK-002 through TASK-004) extend with frontmatter handling, filename rewrite, and hash validation.
 
 ## Scope
 
 **In Scope**:
 
-- SpecSubtreeAdapter class implementing CompositionAdapter at _shared/composition/src/adapters/spec-subtree.ts
+- SpecSubtreeAdapter class implementing CompositionAdapter at shared/composition/src/adapters/spec-subtree.ts
 - 5-method interface implementation (parse, extractByRange, applyMutations, reverseMutations, serialize) using unified + remark pipeline
 - processSubtree() method with manifest iteration skeleton
 - SubtreeOrchestrator internal function with two-phase pattern (stage-all, validate-all)
@@ -47,8 +47,8 @@ The adapter reuses the unified + remark pipeline pattern from BaseMarkdownAdapte
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/src/adapters/spec-subtree.ts | NEW | SpecSubtreeAdapter class |
-| _shared/composition/src/adapters/index.ts | MODIFY | Export SpecSubtreeAdapter |
+| shared/composition/src/adapters/spec-subtree.ts | NEW | SpecSubtreeAdapter class |
+| shared/composition/src/adapters/index.ts | MODIFY | Export SpecSubtreeAdapter |
 
 ## Testing Requirements
 
@@ -59,7 +59,7 @@ The adapter reuses the unified + remark pipeline pattern from BaseMarkdownAdapte
 
 ## Definition of Done
 
-- [ ] SpecSubtreeAdapter class at _shared/composition/src/adapters/spec-subtree.ts implements CompositionAdapter
+- [ ] SpecSubtreeAdapter class at shared/composition/src/adapters/spec-subtree.ts implements CompositionAdapter
 - [ ] All 5 methods compile with correct signatures under tsc strict mode
 - [ ] processSubtree() accepts SpecSubtreeManifest and returns ProcessResult
 - [ ] parse/serialize round-trip test passes on sample SPEC content

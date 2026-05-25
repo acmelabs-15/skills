@@ -18,14 +18,14 @@ tags:
 Retro-validate TASK-004-SPEC-007 against DoD via `src/parsers/ast-helpers.ts` (144 LOC) and `tests/ast-helpers.test.ts`.
 
 - **Feature**: AST Helpers (TASK-004-SPEC-007)
-- **Scope**: `_shared/composition/src/parsers/ast-helpers.ts`
+- **Scope**: `shared/composition/src/parsers/ast-helpers.ts`
 - **Acceptance Criteria**: REQ-004 + REQ-005 (shared), ADR-001 D-2
 
 ## Approach
 
 - **Test Types**: Unit (helper functions on mdast)
 - **Environment**: Local (Bun 1.3.13)
-- **Test File**: `_shared/composition/tests/ast-helpers.test.ts`
+- **Test File**: `shared/composition/tests/ast-helpers.test.ts`
 
 ## Results
 
@@ -75,7 +75,7 @@ Retro-validate TASK-004-SPEC-007 against DoD via `src/parsers/ast-helpers.ts` (1
 
 ## Relations
 
-- validates [[TASK-004-SPEC-007: Implement AST Helpers]]
+- depends_on [[TASK-004-SPEC-007: Implement AST Helpers]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-004-SPEC-007: PlanNote Markdown Parser]]
 - implements [[REQ-005-SPEC-007: SessionNote Markdown Parser]]

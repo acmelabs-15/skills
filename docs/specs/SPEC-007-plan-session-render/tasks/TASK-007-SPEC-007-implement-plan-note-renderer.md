@@ -20,7 +20,7 @@ This TASK realizes REQ-006-SPEC-007 and the renderers/plan-note.ts sketch from A
 
 ## Objective
 
-Create `_shared/composition/src/renderers/plan-note.ts` implementing renderPlanNote that takes a PlanNote typed model and produces canonical markdown. The renderer emits sections in fixed canonical order, regenerates Progress Dashboard (phase-by-substatus pivot table) and Cross-Part Dependency Graph (via renderMermaid), and formats all structural elements deterministically.
+Create `shared/composition/src/renderers/plan-note.ts` implementing renderPlanNote that takes a PlanNote typed model and produces canonical markdown. The renderer emits sections in fixed canonical order, regenerates Progress Dashboard (phase-by-substatus pivot table) and Cross-Part Dependency Graph (via renderMermaid), and formats all structural elements deterministically.
 
 ## Scope
 
@@ -45,7 +45,7 @@ Create `_shared/composition/src/renderers/plan-note.ts` implementing renderPlanN
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/renderers/plan-note.ts` | NEW | PlanNote markdown renderer |
+| `shared/composition/src/renderers/plan-note.ts` | NEW | PlanNote markdown renderer |
 
 ## Testing Requirements
 

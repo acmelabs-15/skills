@@ -15,10 +15,9 @@
     "allowImportingTsExtensions": true
   },
   "include": [
-    "defrag/**/*.ts",
-    "ingest/**/*.ts",
-    "_shared/detect-context.ts",
-    "_shared/detect-context.test.ts"
+    "skills/**/*.ts",
+    "shared/detect-context.ts",
+    "shared/detect-context.test.ts"
   ],
-  "exclude": ["node_modules", "dist", "_shared/composition"]
+  "exclude": ["node_modules", "dist", "shared/composition"]
 }

@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN a plan note markdown file is provided as a string
-THE SYSTEM SHALL parse it via `parsePlanNote(markdown: string): PlanNote` at `_shared/composition/src/parsers/plan-note.ts` using unified + remark-parse + remark-frontmatter into an AST, extract frontmatter via YAML, sectionize by H2/H3 headings, parse each section (Scope, Objectives, Parts with bullet field attrs and DoD and optional decisions table, Tasks with Active/Backlog/Archive sub-tables, Pending User Decisions, Editor Mirror IDs, Blockers, Observations, Relations), skip derived sections (Progress Dashboard, Cross-Part Dependency Graph), derive phase from part id, and validate the complete model via PlanNoteSchema.parse()
+THE SYSTEM SHALL parse it via `parsePlanNote(markdown: string): PlanNote` at `shared/composition/src/parsers/plan-note.ts` using unified + remark-parse + remark-frontmatter into an AST, extract frontmatter via YAML, sectionize by H2/H3 headings, parse each section (Scope, Objectives, Parts with bullet field attrs and DoD and optional decisions table, Tasks with Active/Backlog/Archive sub-tables, Pending User Decisions, Editor Mirror IDs, Blockers, Observations, Relations), skip derived sections (Progress Dashboard, Cross-Part Dependency Graph), derive phase from part id, and validate the complete model via PlanNoteSchema.parse()
 SO THAT plan note markdown is transformed into a typed in-memory model suitable for mutation and rendering.
 
 ## Pattern
@@ -72,8 +72,8 @@ Full parser draft in ANALYSIS-002 Appendix D parsers/plan-note.ts section. Uses 
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/parsers/plan-note.ts` | NEW | PlanNote markdown parser |
-| `_shared/composition/src/parsers/ast-helpers.ts` | NEW | Shared AST parsing utilities |
+| `shared/composition/src/parsers/plan-note.ts` | NEW | PlanNote markdown parser |
+| `shared/composition/src/parsers/ast-helpers.ts` | NEW | Shared AST parsing utilities |
 
 ## Observations
 

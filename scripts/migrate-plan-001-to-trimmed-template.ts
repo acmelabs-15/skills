@@ -23,9 +23,9 @@
  */
 
 import { createHash } from "node:crypto";
-import { renderPlanNote } from "../_shared/composition/src/renderers/plan-note.js";
-import { parsePlanNote } from "../_shared/composition/src/parsers/plan-note.js";
-import type { Part, PlanNote, Task } from "../_shared/composition/src/schemas/plan-note.js";
+import { renderPlanNote } from "../shared/composition/src/renderers/plan-note.js";
+import { parsePlanNote } from "../shared/composition/src/parsers/plan-note.js";
+import type { Part, PlanNote, Task } from "../shared/composition/src/schemas/plan-note.js";
 
 const PLAN_PATH = `${import.meta.dir}/../docs/planning/PLAN-001-skills-ecosystem.md`;
 
@@ -308,30 +308,28 @@ const parts: Part[] = [
       { text: "4 mandatory exit gates: code-qualities-assessment + incoherence + orphan-ref + lint", done: true },
       { text: "SPEC-001 status flipped IN_PROGRESS → DONE post-build", done: true },
     ],
-    // NOTE: TestReportIdSchema requires TEST-REPORT-NNN-SPEC-NNN form. The project's
-    // canonical QA notes use QA-NNN-SPEC-NNN naming (per 2026-05-21 Decision Log entry),
-    // so the test_report_ref values below use the schema-conforming TEST-REPORT-NNN-SPEC-001
-    // form which maps 1:1 to the QA-NNN-SPEC-001 notes (TASK-NNN-SPEC-001 → QA-NNN-SPEC-001).
-    // Schema/convention alignment is a separate cleanup item documented in Decision Log.
+    // NOTE: QaIdSchema requires the QA-NNN-SPEC-NNN form (qa-only as of the
+    // 2026-05-21 rename). The qa_ref values below use QA-NNN-SPEC-001,
+    // matching the canonical QA notes 1:1 (TASK-NNN-SPEC-001 → QA-NNN-SPEC-001).
     build_workflow_items: [
       { id: "impl-TASK-001-SPEC-001", type: "impl", task_ref: "TASK-001-SPEC-001", status: "DONE", failed_iterations: 0 },
-      { id: "qa-TASK-001-SPEC-001", type: "qa", task_ref: "TASK-001-SPEC-001", status: "DONE", failed_iterations: 0, test_report_ref: "TEST-REPORT-001-SPEC-001" },
+      { id: "qa-TASK-001-SPEC-001", type: "qa", task_ref: "TASK-001-SPEC-001", status: "DONE", failed_iterations: 0, qa_ref: "QA-001-SPEC-001" },
       { id: "impl-TASK-002-SPEC-001", type: "impl", task_ref: "TASK-002-SPEC-001", status: "DONE", failed_iterations: 0 },
-      { id: "qa-TASK-002-SPEC-001", type: "qa", task_ref: "TASK-002-SPEC-001", status: "DONE", failed_iterations: 0, test_report_ref: "TEST-REPORT-002-SPEC-001" },
+      { id: "qa-TASK-002-SPEC-001", type: "qa", task_ref: "TASK-002-SPEC-001", status: "DONE", failed_iterations: 0, qa_ref: "QA-002-SPEC-001" },
       { id: "impl-TASK-003-SPEC-001", type: "impl", task_ref: "TASK-003-SPEC-001", status: "DONE", failed_iterations: 0 },
-      { id: "qa-TASK-003-SPEC-001", type: "qa", task_ref: "TASK-003-SPEC-001", status: "DONE", failed_iterations: 0, test_report_ref: "TEST-REPORT-003-SPEC-001" },
+      { id: "qa-TASK-003-SPEC-001", type: "qa", task_ref: "TASK-003-SPEC-001", status: "DONE", failed_iterations: 0, qa_ref: "QA-003-SPEC-001" },
       { id: "impl-TASK-004-SPEC-001", type: "impl", task_ref: "TASK-004-SPEC-001", status: "DONE", failed_iterations: 0 },
-      { id: "qa-TASK-004-SPEC-001", type: "qa", task_ref: "TASK-004-SPEC-001", status: "DONE", failed_iterations: 0, test_report_ref: "TEST-REPORT-004-SPEC-001" },
+      { id: "qa-TASK-004-SPEC-001", type: "qa", task_ref: "TASK-004-SPEC-001", status: "DONE", failed_iterations: 0, qa_ref: "QA-004-SPEC-001" },
       { id: "impl-TASK-005-SPEC-001", type: "impl", task_ref: "TASK-005-SPEC-001", status: "DONE", failed_iterations: 0 },
-      { id: "qa-TASK-005-SPEC-001", type: "qa", task_ref: "TASK-005-SPEC-001", status: "DONE", failed_iterations: 0, test_report_ref: "TEST-REPORT-005-SPEC-001" },
+      { id: "qa-TASK-005-SPEC-001", type: "qa", task_ref: "TASK-005-SPEC-001", status: "DONE", failed_iterations: 0, qa_ref: "QA-005-SPEC-001" },
       { id: "impl-TASK-006-SPEC-001", type: "impl", task_ref: "TASK-006-SPEC-001", status: "DONE", failed_iterations: 0 },
-      { id: "qa-TASK-006-SPEC-001", type: "qa", task_ref: "TASK-006-SPEC-001", status: "DONE", failed_iterations: 0, test_report_ref: "TEST-REPORT-006-SPEC-001" },
+      { id: "qa-TASK-006-SPEC-001", type: "qa", task_ref: "TASK-006-SPEC-001", status: "DONE", failed_iterations: 0, qa_ref: "QA-006-SPEC-001" },
       { id: "impl-TASK-007-SPEC-001", type: "impl", task_ref: "TASK-007-SPEC-001", status: "DONE", failed_iterations: 0 },
-      { id: "qa-TASK-007-SPEC-001", type: "qa", task_ref: "TASK-007-SPEC-001", status: "DONE", failed_iterations: 0, test_report_ref: "TEST-REPORT-007-SPEC-001" },
+      { id: "qa-TASK-007-SPEC-001", type: "qa", task_ref: "TASK-007-SPEC-001", status: "DONE", failed_iterations: 0, qa_ref: "QA-007-SPEC-001" },
       { id: "impl-TASK-008-SPEC-001", type: "impl", task_ref: "TASK-008-SPEC-001", status: "DONE", failed_iterations: 0 },
-      { id: "qa-TASK-008-SPEC-001", type: "qa", task_ref: "TASK-008-SPEC-001", status: "DONE", failed_iterations: 0, test_report_ref: "TEST-REPORT-008-SPEC-001" },
+      { id: "qa-TASK-008-SPEC-001", type: "qa", task_ref: "TASK-008-SPEC-001", status: "DONE", failed_iterations: 0, qa_ref: "QA-008-SPEC-001" },
       { id: "impl-TASK-009-SPEC-001", type: "impl", task_ref: "TASK-009-SPEC-001", status: "DONE", failed_iterations: 0 },
-      { id: "qa-TASK-009-SPEC-001", type: "qa", task_ref: "TASK-009-SPEC-001", status: "DONE", failed_iterations: 0, test_report_ref: "TEST-REPORT-009-SPEC-001" },
+      { id: "qa-TASK-009-SPEC-001", type: "qa", task_ref: "TASK-009-SPEC-001", status: "DONE", failed_iterations: 0, qa_ref: "QA-009-SPEC-001" },
     ],
   },
   // Wave 2 SPECs — code on main, Brain notes reverted, retro-validation in progress per PUD-D2 = Hybrid.
@@ -545,7 +543,7 @@ const plan: PlanNote = {
     "Build a zero-content-drift restructuring capability for Brain knowledge-graph notes via a deterministic composition library (Bun + TS) plus four Claude Code skills (/ingest, /decompose, /recompose, /defrag). Workflow Type: Standard Development with Strategic Decision sub-flow for the architectural ADRs. Scope spans 5 per-type adapters (~1,200 LOC total) with SHA-256 char-identity hash validation as a BLOCKING invariant. Agent Sequence: orchestrator → architect (decisions.1 + decisions.2 + decisions.3) → analyst (spec-decomposition clustering) → bun-ts-engineer (build) → qa (per-spec coverage gate) → review → end. Complexity: TIER_4. Risk: HIGH — the bootstrapping incident (3,680-line ADR split with 35% content drift on 10/12 D-Ns) is the explicit reason this work exists; the entire architecture exists to make a recurrence mathematically impossible via round-trip property testing.",
   source_reference: "KICKOFF-BRIEF.md in the project root for full background, locked design decisions (8 items), build order, LLM-script division of labor, and the 5 open design questions adjudicated in decisions.1.",
   objectives: [
-    { id: "O-1", text: "Composition library at `_shared/composition/` produces SHA-256 char-identity verified decompose/recompose for the ADR adapter (PROOF)", done: true },
+    { id: "O-1", text: "Composition library at `shared/composition/` produces SHA-256 char-identity verified decompose/recompose for the ADR adapter (PROOF)", done: true },
     { id: "O-2", text: "Round-trip property test (decompose ∘ recompose = identity on SHA-256) passes for ADR adapter", done: true },
     { id: "O-3", text: "/decompose and /recompose skills operational against ADR notes", done: true },
     { id: "O-4", text: "All 5 adapters (ADR, ANALYSIS, SESSION, PLAN, SPEC subtree) ship with passing round-trip tests", done: true },

@@ -1,7 +1,7 @@
 ---
 title: 'REQ-004-SPEC-003: PLAN Frontmatter Mutations'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-003-plan-adapter/requirements/req-004-spec-003-plan-frontmatter-mutations
 tags:
 - requirement
@@ -70,6 +70,7 @@ Frontmatter mutations operate on the YAML frontmatter block (between the opening
 - [technique] frontmatter_map inverse contract: apply then inverse recovers original values; ensures hash validation passes despite frontmatter changes #inverse-contract #hash
 - [constraint] branches[] array requires JSON-serialized string in frontmatter_map value; adapter parses and inserts as YAML array #branches #serialization
 - [fact] PLAN-specific frontmatter fields include branches[], complexity_tier, and standard fields (title, permalink, tags, status) #plan-frontmatter #fields
+- [fact] Accepted: implemented by TASK-003-SPEC-003 (DONE), validated by QA-043-SPEC-003 (PASS, 30/30 tests) #provenance #rollup
 
 ## Relations
 

@@ -46,7 +46,7 @@ The validation iterates manifest entries in order (root first, then children). F
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/src/adapters/spec-subtree.ts | MODIFY | Add hash validation orchestration |
+| shared/composition/src/adapters/spec-subtree.ts | MODIFY | Add hash validation orchestration |
 
 ## Definition of Done
 

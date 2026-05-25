@@ -15,7 +15,7 @@ tags:
 ## Requirement Statement
 
 WHEN the plan-note or session-note schema imports shared type definitions
-THE SYSTEM SHALL provide a common.ts module at `_shared/composition/src/schemas/common.ts` exporting shared enums (PartSubstatusEnum, TaskStatusEnum, PlanStatusEnum, SessionStatusEnum, DecisionStatusEnum, EffortEnum, ComplexityTierEnum, PhaseEnum, ObservationCategoryEnum, RelationVerbEnum), shared ID schemas (EntityIdSchema, PartIdSchema, TaskIdSchema, DecisionIdSchema, EventNumberSchema, SessionIdSchema), and shared structural schemas (WikilinkSchema, OutcomeSchema, ObservationSchema, RelationSchema)
+THE SYSTEM SHALL provide a common.ts module at `shared/composition/src/schemas/common.ts` exporting shared enums (PartSubstatusEnum, TaskStatusEnum, PlanStatusEnum, SessionStatusEnum, DecisionStatusEnum, EffortEnum, ComplexityTierEnum, PhaseEnum, ObservationCategoryEnum, RelationVerbEnum), shared ID schemas (EntityIdSchema, PartIdSchema, TaskIdSchema, DecisionIdSchema, EventNumberSchema, SessionIdSchema), and shared structural schemas (WikilinkSchema, OutcomeSchema, ObservationSchema, RelationSchema)
 SO THAT plan-note.ts and session-note.ts import from a single source of truth with zero duplication, and ADR-002's composition schemas can share the same common types.
 
 ## Pattern
@@ -36,7 +36,7 @@ ADR-003 D-4 specifies three schema files: common.ts, plan-note.ts, session-note.
 
 ## Acceptance Criteria
 
-- [ ] GIVEN a TypeScript file at `_shared/composition/src/schemas/common.ts`
+- [ ] GIVEN a TypeScript file at `shared/composition/src/schemas/common.ts`
       WHEN compiled with tsc strict mode
       THEN all 8 enum schemas, 6 ID schemas, and 4 structural schemas export without errors
 
@@ -72,7 +72,7 @@ The full Zod schema draft is in ANALYSIS-002 Appendix C. Key decisions baked in:
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/schemas/common.ts` | NEW | Shared enums, IDs, structural schemas |
+| `shared/composition/src/schemas/common.ts` | NEW | Shared enums, IDs, structural schemas |
 
 ## Observations
 

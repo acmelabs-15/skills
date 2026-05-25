@@ -26,9 +26,9 @@ Implement the Zod schema for the SPEC subtree manifest (specSubtreeManifestSchem
 
 **In Scope**:
 
-- specSubtreeManifestSchema Zod type at _shared/composition/schemas/
-- _shared/composition/schemas/distribution/spec.plan.schema.ts
-- _shared/composition/schemas/composition/spec.plan.schema.ts
+- specSubtreeManifestSchema Zod type at shared/composition/schemas/
+- shared/composition/schemas/distribution/spec.plan.schema.ts
+- shared/composition/schemas/composition/spec.plan.schema.ts
 - Registration in schemas/index.ts discriminated union
 - Reuse of injectiveDisjointMap and containedPathSchema from base.ts
 
@@ -45,9 +45,9 @@ The specSubtreeManifestSchema follows the concrete Zod shape from ADR-002 D-5. R
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/schemas/distribution/spec.plan.schema.ts | NEW | SPEC distribution plan schema |
-| _shared/composition/schemas/composition/spec.plan.schema.ts | NEW | SPEC composition plan schema |
-| _shared/composition/schemas/index.ts | MODIFY | Add SPEC variants to discriminated union |
+| shared/composition/schemas/distribution/spec.plan.schema.ts | NEW | SPEC distribution plan schema |
+| shared/composition/schemas/composition/spec.plan.schema.ts | NEW | SPEC composition plan schema |
+| shared/composition/schemas/index.ts | MODIFY | Add SPEC variants to discriminated union |
 
 ## Definition of Done
 

@@ -17,7 +17,7 @@ tags:
 Retro-validate TASK-001-SPEC-003 (Implement PLAN Adapter Base) against its DoD, REQ-001-SPEC-003 acceptance criteria, and DESIGN-001-SPEC-003 component design. The code under retro-validation is on `main` (Wave 2 integration commit `5299aea` + PR #6 commit `2f049fd`); Brain note status pre-revert; checkboxes verified against current code with no prior-state trust.
 
 - **Feature**: PlanAdapter base class with CompositionAdapter interface (TASK-001-SPEC-003)
-- **Scope**: `_shared/composition/src/adapters/plan.ts` (lines 1-273) and `_shared/composition/tests/plan-adapter.test.ts` (6 tests, 14 expects)
+- **Scope**: `shared/composition/src/adapters/plan.ts` (lines 1-273) and `shared/composition/tests/plan-adapter.test.ts` (6 tests, 14 expects)
 - **Acceptance Criteria**: REQ-001-SPEC-003 AC-1 through AC-6; TASK-001 DoD 1-8; ADR Compliance ADR-002 D-2/D-3/D-4
 
 ## Approach

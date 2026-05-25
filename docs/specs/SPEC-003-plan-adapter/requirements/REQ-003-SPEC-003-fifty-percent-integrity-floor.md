@@ -1,7 +1,7 @@
 ---
 title: 'REQ-003-SPEC-003: Fifty Percent Integrity Floor on Regenerated Sections'
 type: requirement
-status: DRAFT
+status: ACCEPTED
 permalink: specs/spec-003-plan-adapter/requirements/req-003-spec-003-fifty-percent-integrity-floor
 tags:
 - requirement
@@ -64,6 +64,7 @@ The integrity floor has two enforcement layers. Layer 1 is the Zod schema-level 
 - [constraint] Two enforcement layers: Zod schema-level max 10 entries plus runtime 50% line-count check against source file #two-layer #validation
 - [technique] Schema-level guard catches obviously excessive declarations without requiring source file; runtime check measures actual line coverage #defense-in-depth #validation
 - [fact] Known regenerative sections (Progress Dashboard, Mermaid graph) typically occupy 10-20% of PLAN lines, well below the 50% floor #normal-operation #sizing
+- [fact] Accepted: implemented by TASK-002-SPEC-003 (DONE), validated by QA-043-SPEC-003 (PASS, 30/30 tests) #provenance #rollup
 
 ## Relations
 

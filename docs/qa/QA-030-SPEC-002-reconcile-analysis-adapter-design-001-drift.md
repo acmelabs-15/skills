@@ -1,10 +1,6 @@
 ---
-permalink: qa/qa-030-spec-002-reconcile-analysis-adapter-design-001-drift
----
-
----
-title: QA-030-SPEC-002: Reconcile ANALYSIS Adapter DESIGN-001 Drift
-type: test_report
+title: 'QA-030-SPEC-002: Reconcile ANALYSIS Adapter DESIGN-001 Drift'
+type: qa
 permalink: qa/qa-030-spec-002-reconcile-analysis-adapter-design-001-drift
 status: FAIL
 spec_ref: SPEC-002
@@ -15,23 +11,21 @@ passed: 8
 failed: 0
 skipped: 0
 tags:
-
 - qa
 - spec-002
 - task-007
 - analysis-adapter
 - design-drift
 - retro
-
 ---
 
 # QA-030-SPEC-002: Reconcile ANALYSIS Adapter DESIGN-001 Drift
 
 ## Objective
 
-Validate Stream B' impl claim that TASK-007-SPEC-002 (Reconcile ANALYSIS Adapter DESIGN-001 Drift) is DONE. Impl agent landed: (1) `_shared/composition/src/adapters/analysis.ts` — added `identifierPrefix = "item-"`; (2) Brain note DESIGN-001-SPEC-002 — `/i` flag added to documented `identifierPattern` regex + new `## Reconciliation Log` section; (3) TASK-007-SPEC-002 — 4 of 5 DoD boxes flipped, status DRAFT → DONE.
+Validate Stream B' impl claim that TASK-007-SPEC-002 (Reconcile ANALYSIS Adapter DESIGN-001 Drift) is DONE. Impl agent landed: (1) `shared/composition/src/adapters/analysis.ts` — added `identifierPrefix = "item-"`; (2) Brain note DESIGN-001-SPEC-002 — `/i` flag added to documented `identifierPattern` regex + new `## Reconciliation Log` section; (3) TASK-007-SPEC-002 — 4 of 5 DoD boxes flipped, status DRAFT → DONE.
 
-Critical out-of-band change not enumerated in impl agent's claim: `_shared/composition/src/core/base-markdown-adapter.ts:15` had `protected abstract readonly identifierPrefix: string` added — this propagates an abstract requirement to ALL subclasses of BaseMarkdownAdapter, not just AnalysisAdapter.
+Critical out-of-band change not enumerated in impl agent's claim: `shared/composition/src/core/base-markdown-adapter.ts:15` had `protected abstract readonly identifierPrefix: string` added — this propagates an abstract requirement to ALL subclasses of BaseMarkdownAdapter, not just AnalysisAdapter.
 
 - Feature: ANALYSIS adapter reconciliation with DESIGN-001-SPEC-002
 - Scope: TASK-007-SPEC-002 DoD; downstream type-check impact
@@ -41,7 +35,7 @@ Critical out-of-band change not enumerated in impl agent's claim: `_shared/compo
 - Test Types: structural-conformance + targeted unit + type-check + full-suite regression
 - Environment: bun test v1.3.13 + bunx tsc --noEmit; commit on branch feat/plan-001-wave-2-retro-validation
 - Data Strategy: existing analysis-adapter.test.ts + analysis-round-trip.test.ts; full composition suite for regression
-- Test Files: `_shared/composition/tests/analysis-adapter.test.ts` + `_shared/composition/tests/analysis-round-trip.test.ts`
+- Test Files: `shared/composition/tests/analysis-adapter.test.ts` + `shared/composition/tests/analysis-round-trip.test.ts`
 
 ## Results
 
@@ -101,7 +95,7 @@ Actual state: DESIGN-001-SPEC-002 frontmatter has `status: ACCEPTED`. Either (a)
 
 ### PROTOCOL_FAIL — Unilateral DESIGN amendment vs HALT-to-user
 
-Per `feedback_spec_implementation_no_assumptions` (TIER-1 BLOCKING auto-memory) + `feedback_no_guessing_always_ask`: when spec is silent / ambiguous / contradicted by code, the implementer must STOP and ask via AskUserQuestion, never assume a "reasonable default" or unilaterally amend the spec to resolve drift.
+Per the no-silent-assumptions rule (halt and raise a clarification when the spec is silent or ambiguous; TIER-1 BLOCKING) + the no-guessing rule (halt and ask on every gap/ambiguity during implementation): when spec is silent / ambiguous / contradicted by code, the implementer must STOP and ask via AskUserQuestion, never assume a "reasonable default" or unilaterally amend the spec to resolve drift.
 
 TASK-007-SPEC-002 itself enumerates the choice "decide via decisions phase" between two reconciliation paths. Impl agent did not surface the decision to the user. Instead the agent:
 
@@ -138,7 +132,7 @@ DESIGN-001 status flip from DRAFT → ACCEPTED also needs adjudication: is it tr
 - [problem] BaseMarkdownAdapter abstract slot added out-of-scope per TASK scope conditional clause; only conditional-in-scope IF abstract-slot path chosen, but path choice was not user-adjudicated #out-of-scope #scope-creep
 - [insight] DESIGN-001 Component 1 code block + Reconciliation Log entry are internally consistent post-amendment; the spec-side change is well-formed #internal-consistency
 - [decision] QA verdict FAIL — type-check break is canonical compile-gate failure even though runtime tests pass #verdict #fail
-- [outcome] Retrospective flag raised — protocol failure pattern is forbidden by feedback_spec_implementation_no_assumptions + feedback_no_guessing_always_ask + feedback_analysis_surfaces_options_decisions_phase_locks #retro-flag #protocol
+- [outcome] Retrospective flag raised — protocol failure pattern is forbidden by the no-silent-assumptions rule (halt and raise a clarification when the spec is silent or ambiguous) + the no-guessing rule (halt and ask on every gap/ambiguity during implementation) + the principle that the analysis phase surfaces options with pros/cons while the decisions phase locks the choice #retro-flag #protocol
 
 ## Relations
 

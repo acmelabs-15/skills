@@ -10,9 +10,11 @@
 *~
 
 # Bun + Node (future-proof for when SPEC-001 build kicks off)
+# NOTE: build/ is anchored to the repo root so it only ignores a root-level
+# build-output dir, NOT the skills/build/ lifecycle-skill source.
 node_modules/
 dist/
-build/
+/build/
 *.tsbuildinfo
 
 # Test output

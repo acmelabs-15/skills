@@ -24,8 +24,8 @@ Create the round-trip property test and fixtures for the ANALYSIS adapter. The t
 
 ## Definition of Done
 
-- [x] ANALYSIS fixture note at _shared/composition/tests/fixtures/analysis-sample.md following CONVENTIONS (flat layout — sanctioned by TASK-010-SPEC-002)
-- [x] ANALYSIS fixture plan YAMLs at _shared/composition/tests/fixtures/analysis-{distribution,composition}.plan.yaml (hand-crafted distribution + composition plans; documentation fixtures — round-trip test reads renumber_map as inline TS literal, mirroring the ADR convention)
+- [x] ANALYSIS fixture note at shared/composition/tests/fixtures/analysis-sample.md following CONVENTIONS (flat layout — sanctioned by TASK-010-SPEC-002)
+- [x] ANALYSIS fixture plan YAMLs at shared/composition/tests/fixtures/analysis-{distribution,composition}.plan.yaml (hand-crafted distribution + composition plans; documentation fixtures — round-trip test reads renumber_map as inline TS literal, mirroring the ADR convention)
 - [x] Round-trip property test: parse fixture, decompose with plan, recompose with inverse plan
 - [x] Assertion: SHA-256(original) === SHA-256(recomposed)
 - [x] Test passes via bun test
@@ -36,9 +36,9 @@ Create the round-trip property test and fixtures for the ANALYSIS adapter. The t
 
 **In Scope**:
 
-- _shared/composition/tests/fixtures/analysis/sample-analysis.md (Create)
-- _shared/composition/tests/fixtures/analysis/sample-analysis-plan.yaml (Create)
-- _shared/composition/tests/analysis-round-trip.test.ts (Create)
+- shared/composition/tests/fixtures/analysis/sample-analysis.md (Create)
+- shared/composition/tests/fixtures/analysis/sample-analysis-plan.yaml (Create)
+- shared/composition/tests/analysis-round-trip.test.ts (Create)
 
 **Out of Scope**:
 
@@ -49,9 +49,9 @@ Create the round-trip property test and fixtures for the ANALYSIS adapter. The t
 
 | File | Action | Description |
 |------|--------|-------------|
-| _shared/composition/tests/fixtures/analysis/sample-analysis.md | Create | ANALYSIS fixture note with H3 findings |
-| _shared/composition/tests/fixtures/analysis/sample-analysis-plan.yaml | Create | Hand-crafted distribution plan for ANALYSIS fixture |
-| _shared/composition/tests/analysis-round-trip.test.ts | Create | Round-trip property test for ANALYSIS adapter |
+| shared/composition/tests/fixtures/analysis/sample-analysis.md | Create | ANALYSIS fixture note with H3 findings |
+| shared/composition/tests/fixtures/analysis/sample-analysis-plan.yaml | Create | Hand-crafted distribution plan for ANALYSIS fixture |
+| shared/composition/tests/analysis-round-trip.test.ts | Create | Round-trip property test for ANALYSIS adapter |
 
 ## Effort
 

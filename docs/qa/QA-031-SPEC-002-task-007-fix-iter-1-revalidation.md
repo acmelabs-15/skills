@@ -1,6 +1,6 @@
 ---
 title: 'QA-031-SPEC-002: TASK-007 Fix Iter 1 Revalidation'
-type: test_report
+type: qa
 permalink: qa/qa-031-spec-002-task-007-fix-iter-1-revalidation
 tags:
 - qa
@@ -26,8 +26,8 @@ tags:
 | # | Check | Result | Evidence |
 |---|---|---|---|
 | 1 | `bunx tsc --noEmit` returns 0 errors | PASS | Exit code 0; zero diagnostics (previously 2 x TS2515) |
-| 2 | `AdrAdapter` has `identifierPrefix = "D-"` | PASS | `_shared/composition/src/adapters/adr.ts` line 6: `protected readonly identifierPrefix = "D-";` |
-| 3 | `TestAdapter` has `identifierPrefix = "test-"` | PASS | `_shared/composition/tests/base-adapter.test.ts` line 8: `protected readonly identifierPrefix = "test-";` |
+| 2 | `AdrAdapter` has `identifierPrefix = "D-"` | PASS | `shared/composition/src/adapters/adr.ts` line 6: `protected readonly identifierPrefix = "D-";` |
+| 3 | `TestAdapter` has `identifierPrefix = "test-"` | PASS | `shared/composition/tests/base-adapter.test.ts` line 8: `protected readonly identifierPrefix = "test-";` |
 | 4 | Full `bun test` suite passes | PASS | 460/460 tests PASS, 0 fail, 940 expect() calls |
 
 ## Aggregate Verdict

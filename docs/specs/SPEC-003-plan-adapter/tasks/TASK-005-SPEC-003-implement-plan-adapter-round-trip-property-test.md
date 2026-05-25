@@ -24,7 +24,7 @@ Implement the round-trip property test for the PLAN adapter that proves zero con
 
 ## Scope
 
-**In Scope**: Round-trip property test at _shared/composition/tests/plan-round-trip.test.ts, parse/serialize identity precondition test, decompose/recompose cycle with regenerated_sections exclusion, frontmatter_map mutation and reversal during the cycle, hash comparison with regenerative sections excluded
+**In Scope**: Round-trip property test at shared/composition/tests/plan-round-trip.test.ts, parse/serialize identity precondition test, decompose/recompose cycle with regenerated_sections exclusion, frontmatter_map mutation and reversal during the cycle, hash comparison with regenerative sections excluded
 **Out of Scope**: PLAN adapter implementation (TASK-001 through TASK-003), fixture creation (TASK-004)
 
 ## Implementation Notes
@@ -53,7 +53,7 @@ The test validates that frontmatter mutations (title, permalink, branches[]) are
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/tests/plan-round-trip.test.ts | NEW | PLAN adapter round-trip property test |
+| shared/composition/tests/plan-round-trip.test.ts | NEW | PLAN adapter round-trip property test |
 
 ## Testing Requirements
 

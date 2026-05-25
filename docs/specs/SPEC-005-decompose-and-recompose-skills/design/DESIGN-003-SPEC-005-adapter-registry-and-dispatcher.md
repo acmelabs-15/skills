@@ -100,7 +100,7 @@ export function getAdapter(sourceType: string): CompositionAdapter {
 **Responsibilities**:
 
 - No framework, no dynamic discovery, no plugin interface
-- The extension point is a single module file (_shared/composition/src/registry.ts)
+- The extension point is a single module file (shared/composition/src/registry.ts)
 - Registration is verified by TypeScript: the Record value type is CompositionAdapter, so only valid implementations can register
 
 ## Technology Decisions

@@ -26,7 +26,7 @@ Create the /decompose skill definition (SKILL.md) and the decompose.ts CLI entry
 ## Definition of Done
 
 - [x] decompose/SKILL.md created with trigger phrases, LLM instructions for plan authoring, AskUserQuestion integration, and execution command
-- [x] _shared/composition/src/decompose.ts created with: CLI arg parsing (--plan), YAML loading with FAILSAFE_SCHEMA, Zod validation via planSchema.parseAsync(), adapter dispatch via getAdapter(), per-destination extract/mutate/hash-validate/write pipeline, audit log emission, structured error reporting
+- [x] shared/composition/src/decompose.ts created with: CLI arg parsing (--plan), YAML loading with FAILSAFE_SCHEMA, Zod validation via planSchema.parseAsync(), adapter dispatch via getAdapter(), per-destination extract/mutate/hash-validate/write pipeline, audit log emission, structured error reporting
 - [x] decompose.ts exits with code 0 on success, code 1 on validation error, code 2 on hash mismatch
 - [x] Unit test: decompose.ts rejects invalid --plan argument with usage message
 - [x] Unit test: decompose.ts rejects plan YAML that fails Zod validation with structured PlanValidationError
@@ -36,7 +36,7 @@ Create the /decompose skill definition (SKILL.md) and the decompose.ts CLI entry
 **In Scope**:
 
 - decompose/SKILL.md
-- _shared/composition/src/decompose.ts
+- shared/composition/src/decompose.ts
 - Unit tests for decompose.ts
 
 **Out of Scope**:
@@ -50,8 +50,8 @@ Create the /decompose skill definition (SKILL.md) and the decompose.ts CLI entry
 | File | Action | Description |
 |---|---|---|
 | decompose/SKILL.md | Create | Claude Code skill definition for /decompose |
-| _shared/composition/src/decompose.ts | Create | CLI entry point for distribution plan execution |
-| _shared/composition/src/decompose.test.ts | Create | Unit tests for CLI entry point |
+| shared/composition/src/decompose.ts | Create | CLI entry point for distribution plan execution |
+| shared/composition/src/decompose.test.ts | Create | Unit tests for CLI entry point |
 
 ## Effort
 

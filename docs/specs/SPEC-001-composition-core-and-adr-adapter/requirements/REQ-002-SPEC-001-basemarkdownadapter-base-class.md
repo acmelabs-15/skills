@@ -38,7 +38,7 @@ The base class implements all 5 CompositionAdapter methods using unified/remark 
 
 ## Acceptance Criteria
 
-- [x] GIVEN a TypeScript abstract class BaseMarkdownAdapter at _shared/composition/src/core/base-markdown-adapter.ts
+- [x] GIVEN a TypeScript abstract class BaseMarkdownAdapter at shared/composition/src/core/base-markdown-adapter.ts
       WHEN compiled
       THEN it implements CompositionAdapter interface with concrete implementations of all 5 methods
 

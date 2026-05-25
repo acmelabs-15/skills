@@ -24,7 +24,7 @@ Retro-validate the SESSION round-trip property test against TASK-006-SPEC-002 Do
 - **Test Types**: property, unit, hash-identity, schema-conformance
 - **Environment**: bun test v1.3.13; commit 2f049fd
 - **Data Strategy**: shared fixture tests/fixtures/session-sample.md plus inline MutationSpec literal in the test file
-- **Test File**: `_shared/composition/tests/session-round-trip.test.ts`
+- **Test File**: `shared/composition/tests/session-round-trip.test.ts`
 
 ## Results
 

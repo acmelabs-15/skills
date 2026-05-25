@@ -21,11 +21,11 @@ tags:
 
 ## Objective
 
-Create the adapter registry module at _shared/composition/src/registry.ts that maps source_type strings to CompositionAdapter instances. Implement the getAdapter() dispatcher function with structured error messages for unregistered types. Register the ADR adapter (from SPEC-001) as the initial and only adapter at SPEC-005 ship time. Include commented-out imports for future adapters with SPEC references.
+Create the adapter registry module at shared/composition/src/registry.ts that maps source_type strings to CompositionAdapter instances. Implement the getAdapter() dispatcher function with structured error messages for unregistered types. Register the ADR adapter (from SPEC-001) as the initial and only adapter at SPEC-005 ship time. Include commented-out imports for future adapters with SPEC references.
 
 ## Definition of Done
 
-- [x] _shared/composition/src/registry.ts created with registry Record, adapterSpecMap, and getAdapter() function
+- [x] shared/composition/src/registry.ts created with registry Record, adapterSpecMap, and getAdapter() function
 - [x] ADR adapter registered via import from ./adapters/adr
 - [x] getAdapter("adr") returns AdrAdapter instance
 - [x] getAdapter("analysis") returns AnalysisAdapter (SPEC-002 shipped — registered; deviation from original SPEC-005 DoD wording noted in State Changes)
@@ -39,7 +39,7 @@ Create the adapter registry module at _shared/composition/src/registry.ts that m
 
 **In Scope**:
 
-- _shared/composition/src/registry.ts
+- shared/composition/src/registry.ts
 - Unit tests for getAdapter()
 
 **Out of Scope**:
@@ -51,8 +51,8 @@ Create the adapter registry module at _shared/composition/src/registry.ts that m
 
 | File | Action | Description |
 |---|---|---|
-| _shared/composition/src/registry.ts | Create | Adapter registry and dispatcher |
-| _shared/composition/src/registry.test.ts | Create | Unit tests for dispatcher |
+| shared/composition/src/registry.ts | Create | Adapter registry and dispatcher |
+| shared/composition/src/registry.test.ts | Create | Unit tests for dispatcher |
 
 ## Effort
 

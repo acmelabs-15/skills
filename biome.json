@@ -31,15 +31,14 @@
   },
   "files": {
     "include": [
-      "defrag/**",
-      "ingest/**",
-      "_shared/detect-context.ts",
-      "_shared/detect-context.test.ts"
+      "skills/**",
+      "shared/detect-context.ts",
+      "shared/detect-context.test.ts"
     ],
     "ignore": [
       "node_modules",
       "**/node_modules",
-      "_shared/composition",
+      "shared/composition",
       "**/*.md",
       "defrag/reports/**",
       "test-fixtures/**"

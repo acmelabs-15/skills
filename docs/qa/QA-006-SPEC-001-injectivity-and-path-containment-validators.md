@@ -1,6 +1,6 @@
 ---
 title: 'QA-006-SPEC-001: Injectivity and Path Containment Validators'
-type: test_report
+type: qa
 permalink: qa/qa-006-spec-001-injectivity-and-path-containment-validators
 tags:
 - validators
@@ -13,10 +13,10 @@ tags:
 
 ## Objective
 
-Validate TASK-006-SPEC-001 implementation of `injectiveDisjointMap` and `containedPathSchema` in `_shared/composition/src/core/validators.ts`. Verify all acceptance criteria pass, security properties hold, and ADR compliance is met.
+Validate TASK-006-SPEC-001 implementation of `injectiveDisjointMap` and `containedPathSchema` in `shared/composition/src/core/validators.ts`. Verify all acceptance criteria pass, security properties hold, and ADR compliance is met.
 
 - **Feature**: TASK-006-SPEC-001 Injectivity and Path Containment Validators
-- **Scope**: `_shared/composition/src/core/validators.ts` (2 exported functions), `_shared/composition/tests/validators.test.ts` (9 tests)
+- **Scope**: `shared/composition/src/core/validators.ts` (2 exported functions), `shared/composition/tests/validators.test.ts` (9 tests)
 - **Acceptance Criteria**: ADR-001 F-8 (injectivity as BLOCKING validator gate), ADR-002 D-5 (validator structure)
 
 ## Approach
@@ -89,5 +89,5 @@ Biome unsafe fix applied: `process.env["SKILLS_DOCS_ROOT"]` changed to `process.
 
 ## Relations
 
-- validates [[TASK-006-SPEC-001: Implement Injectivity and Path Containment Validators]]
+- depends_on [[TASK-006-SPEC-001: Implement Injectivity and Path Containment Validators]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

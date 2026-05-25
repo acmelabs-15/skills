@@ -42,8 +42,8 @@ Types must exactly match the signatures in ADR-002 D-2. The Root type import com
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/core/types.ts | NEW | Shared type definitions |
-| _shared/composition/src/core/adapter.ts | NEW | CompositionAdapter interface |
+| shared/composition/src/core/types.ts | NEW | Shared type definitions |
+| shared/composition/src/core/adapter.ts | NEW | CompositionAdapter interface |
 
 ## Testing Requirements
 

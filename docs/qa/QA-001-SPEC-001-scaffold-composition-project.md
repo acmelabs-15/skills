@@ -14,10 +14,10 @@ tags:
 
 ## Objective
 
-Validate that TASK-001-SPEC-001 (Scaffold Composition Project) meets all three Definition of Done criteria. The task scaffolded the `_shared/composition/` Bun+TypeScript project with config files and empty directory placeholders. No implementation code exists yet.
+Validate that TASK-001-SPEC-001 (Scaffold Composition Project) meets all three Definition of Done criteria. The task scaffolded the `shared/composition/` Bun+TypeScript project with config files and empty directory placeholders. No implementation code exists yet.
 
 - **Feature**: Composition Core scaffold
-- **Scope**: `_shared/composition/` project structure, dependencies, tooling config
+- **Scope**: `shared/composition/` project structure, dependencies, tooling config
 - **Acceptance Criteria**: 3 DoD gates from TASK-001-SPEC-001
 
 ## Approach
@@ -61,11 +61,11 @@ Three deviations from the original task brief were identified. All are resolved 
 
 | File | Purpose |
 |------|---------|
-| `_shared/composition/package.json` | Project manifest with zod, unified, remark-parse, remark-stringify, remark-frontmatter, js-yaml; devDeps: @biomejs/biome@2.3.13, @types/mdast, bun-types |
-| `_shared/composition/tsconfig.json` | Strict TS, ES2022, bundler moduleResolution, bun-types |
-| `_shared/composition/biome.json` | Biome v2.3.13 linter + formatter config |
-| `_shared/composition/bunfig.toml` | Test root set to ./tests |
-| `_shared/composition/README.md` | Project overview |
+| `shared/composition/package.json` | Project manifest with zod, unified, remark-parse, remark-stringify, remark-frontmatter, js-yaml; devDeps: @biomejs/biome@2.3.13, @types/mdast, bun-types |
+| `shared/composition/tsconfig.json` | Strict TS, ES2022, bundler moduleResolution, bun-types |
+| `shared/composition/biome.json` | Biome v2.3.13 linter + formatter config |
+| `shared/composition/bunfig.toml` | Test root set to ./tests |
+| `shared/composition/README.md` | Project overview |
 | `tests/scaffold.test.ts` | Sentinel test to satisfy bun test exit-0 requirement |
 | `.gitkeep` (5 files) | Directory placeholders: src/core/, src/adapters/, schemas/distribution/, schemas/composition/, tests/fixtures/ |
 
@@ -100,5 +100,5 @@ Three deviations from the original task brief were identified. All are resolved 
 
 ## Relations
 
-- validates [[TASK-001-SPEC-001: Scaffold Composition Project]]
+- depends_on [[TASK-001-SPEC-001: Scaffold Composition Project]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

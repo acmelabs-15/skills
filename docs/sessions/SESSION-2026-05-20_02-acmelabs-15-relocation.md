@@ -1,5 +1,5 @@
 ---
-title: SESSION-2026-05-20_02-acmelabs-15-relocation
+title: 'SESSION-2026-05-20_02: acmelabs-15 Relocation'
 type: session
 permalink: sessions/session-2026-05-20_02-acmelabs-15-relocation
 status: DONE

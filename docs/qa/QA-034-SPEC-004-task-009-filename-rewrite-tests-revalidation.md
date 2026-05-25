@@ -1,6 +1,6 @@
 ---
 title: 'QA-034-SPEC-004: Task 009 Filename Rewrite Tests Revalidation'
-type: test-report
+type: qa
 permalink: qa/qa-034-spec-004-task-009-filename-rewrite-tests-revalidation
 status: DONE
 validates: '[[TASK-009-SPEC-004: Implement Filename Rewrite Unit Tests and Path Containment]]'
@@ -14,7 +14,6 @@ tags:
 - spec-004
 - task-009
 - filename-rewrite
-- test-report
 ---
 
 # QA-034-SPEC-004: Task 009 Filename Rewrite Tests Revalidation
@@ -24,7 +23,7 @@ tags:
 Validate that TASK-009-SPEC-004 delivers the missing unit-test coverage for `applyFilenameRewrites` and adds the injectivity + path-containment pre-flight checks identified as gaps in QA-022-SPEC-004. Confirms TASK DoD checkboxes, REQ-003-SPEC-004 acceptance criteria where in scope for this gap-task, and DESIGN-002-SPEC-004 Testing Strategy + Security Considerations.
 
 - **Feature**: SPEC-004 SPEC Subtree Adapter — filename rewrite hardening
-- **Scope**: `_shared/composition/src/adapters/spec-subtree.ts` `applyFilenameRewrites` pre-flight; new `_shared/composition/tests/filename-rewrite.test.ts`
+- **Scope**: `shared/composition/src/adapters/spec-subtree.ts` `applyFilenameRewrites` pre-flight; new `shared/composition/tests/filename-rewrite.test.ts`
 - **Acceptance Criteria**: TASK-009 DoD (5 items); REQ-003-SPEC-004 AC #3 (rewrite failure → rollback) and AC #4 (no-op when no rewrites); DESIGN-002 Component 2 (injectivity + path-containment pre-flight); DESIGN-002 Testing Strategy bullets
 
 ## Approach
@@ -32,7 +31,7 @@ Validate that TASK-009-SPEC-004 delivers the missing unit-test coverage for `app
 - **Test Types**: Unit (filesystem-rename behavior against ephemeral tmpdir)
 - **Environment**: Local — Bun 1.3.13, tsc strict, biome 2.x
 - **Data Strategy**: `mkdtempSync` per test in `beforeEach`; `rmSync` recursive in `afterEach`; assert via `existsSync` + `Bun.file().text()` for content integrity
-- **Test File**: `_shared/composition/tests/filename-rewrite.test.ts`
+- **Test File**: `shared/composition/tests/filename-rewrite.test.ts`
 
 ## Results
 
@@ -51,11 +50,11 @@ Validate that TASK-009-SPEC-004 delivers the missing unit-test coverage for `app
 
 | # | DoD Item | Verdict | Evidence |
 |---|----------|---------|----------|
-| 1 | Test file with ≥5 unit tests covering: success, duplicate target, path traversal, LIFO rollback, no-op | PASS | `_shared/composition/tests/filename-rewrite.test.ts:10-149` — 6 tests present (success L23, injectivity L46, traversal L65, absolute-path L79, LIFO rollback L93, no-op L140); all pass under `bun test`. Exceeds the 5-test floor (added explicit absolute-path test alongside `..` traversal). |
+| 1 | Test file with ≥5 unit tests covering: success, duplicate target, path traversal, LIFO rollback, no-op | PASS | `shared/composition/tests/filename-rewrite.test.ts:10-149` — 6 tests present (success L23, injectivity L46, traversal L65, absolute-path L79, LIFO rollback L93, no-op L140); all pass under `bun test`. Exceeds the 5-test floor (added explicit absolute-path test alongside `..` traversal). |
 | 2 | Pre-flight rejects duplicate `newRelativePath` | PASS | `spec-subtree.ts:195-203` builds `targetSet` and throws `Filename rewrite injectivity violation` before any rename runs. Test L58 asserts rejection via `/injectivity/i`; L60-62 confirm no filesystem mutation. |
 | 3 | Pre-flight rejects `newRelativePath` with `..` or absolute path | PASS | `spec-subtree.ts:263-281` `assertContainedRelativePath`: empty-string reject (L264), `isAbsolute` reject (L267), `..` segment reject (L270-273), `startsWith(rootAbs/)` containment check (L274-279). Test L73 (`/path-containment/i` for `../escape.md`) and L87 (`/etc/evil.md`) both pass. |
-| 4 | All tests pass under `bun test` | PASS | `bun test _shared/composition/tests/filename-rewrite.test.ts` → `6 pass, 0 fail, 24 expect() calls` (117ms). |
-| 5 | tsc strict + biome clean | PASS | `tsc --noEmit` runs clean from `_shared/composition/`. Biome run blocked by pre-existing `biome.json` `files.include` unknown-key error (configuration-level, not introduced by this task); the two new/edited files were not flagged by the parser before the config error halted. |
+| 4 | All tests pass under `bun test` | PASS | `bun test shared/composition/tests/filename-rewrite.test.ts` → `6 pass, 0 fail, 24 expect() calls` (117ms). |
+| 5 | tsc strict + biome clean | PASS | `tsc --noEmit` runs clean from `shared/composition/`. Biome run blocked by pre-existing `biome.json` `files.include` unknown-key error (configuration-level, not introduced by this task); the two new/edited files were not flagged by the parser before the config error halted. |
 
 DoD: 5/5 PASS.
 
@@ -89,7 +88,7 @@ None.
 
 ## Verdict
 
-**PASS** — TASK-009-SPEC-004 satisfies all 5 DoD checkboxes. New test file provides 6 unit tests (exceeds 5-test floor) covering success, injectivity rejection, two path-containment rejections (`..` + absolute), LIFO rollback, and empty no-op. Implementation adds `assertContainedRelativePath` + injectivity set-check ahead of any filesystem mutation, closing the QA-022-SPEC-004 gap. Biome configuration error is pre-existing repo-level drift (unknown `files.include` key in `_shared/composition/biome.json`), unrelated to this task; tsc strict is clean.
+**PASS** — TASK-009-SPEC-004 satisfies all 5 DoD checkboxes. New test file provides 6 unit tests (exceeds 5-test floor) covering success, injectivity rejection, two path-containment rejections (`..` + absolute), LIFO rollback, and empty no-op. Implementation adds `assertContainedRelativePath` + injectivity set-check ahead of any filesystem mutation, closing the QA-022-SPEC-004 gap. Biome configuration error is pre-existing repo-level drift (unknown `files.include` key in `shared/composition/biome.json`), unrelated to this task; tsc strict is clean.
 
 Recommend flipping TASK-009-SPEC-004 status TODO → DONE (frontmatter already DONE per agent landing; this QA note ratifies the transition). No follow-up tasks required from this validation. Pre-existing biome.json drift should be tracked separately if not already covered by another TASK.
 
@@ -100,7 +99,7 @@ Recommend flipping TASK-009-SPEC-004 status TODO → DONE (frontmatter already D
 - [fact] Injectivity check uses `Set<string>` on `newRelativePath` and throws before src/dst existence checks #injectivity #pre-flight
 - [fact] LIFO rollback verified: third rewrite fails on `mkdir` of parent path that is an existing file; first two completed renames are reversed in reverse order with content integrity preserved #rollback #lifo
 - [fact] Empty rewrites array returns early on line 182 — no filesystem touch #no-op
-- [constraint] Biome 2.x rejects `files.include` key in pre-existing `_shared/composition/biome.json:30` — repo-level drift, not introduced by TASK-009; tsc strict passes clean #biome-drift #pre-existing
+- [constraint] Biome 2.x rejects `files.include` key in pre-existing `shared/composition/biome.json:30` — repo-level drift, not introduced by TASK-009; tsc strict passes clean #biome-drift #pre-existing
 - [insight] DESIGN-002 AC #4 (integration test with 3+ rewrites) is deferred to TASK-004 / TASK-007 scope; TASK-009 is unit-only by its own DoD #scope-boundary
 
 ## Relations

@@ -132,7 +132,7 @@ Plan and session note mutations go through Bun + TypeScript scripts that: parse 
 
 #### Option A: T-NN session-scoped + prefix with session id for plan-level references
 
-Keep T-NN session-scoped per existing feedback_session_protocol guidance. Cross-session references use a session-prefixed form.
+Keep T-NN session-scoped per existing session-protocol convention (session-scoped T-NN IDs; pointer-ledger session notes). Cross-session references use a session-prefixed form.
 
 **Pros:**
 
@@ -226,7 +226,7 @@ This ADR captures 11 locked architectural decisions (D-1 through D-11) establish
 
 ### D-4: Zod schema as validation contract
 
-**Decision**: Plan and session note structures are validated by Zod schemas living in _shared/composition/src/schemas/ (plan-note.ts, session-note.ts, common.ts). Schema runs on every parse and pre-write. Validation includes cross-field invariants: DONE part must have outcome; task.part must reference a valid part; event numbers must be continuous starting at 1; first event must be session-start; DONE task must reference a resolving event.
+**Decision**: Plan and session note structures are validated by Zod schemas living in shared/composition/src/schemas/ (plan-note.ts, session-note.ts, common.ts). Schema runs on every parse and pre-write. Validation includes cross-field invariants: DONE part must have outcome; task.part must reference a valid part; event numbers must be continuous starting at 1; first event must be session-start; DONE task must reference a resolving event.
 
 **Rationale**: Type safety + runtime validation + cross-field invariants caught at a known boundary. Mirrors ADR-001 D-1 (Zod for plan validation). The schema is the contract between LLM authoring layer and the deterministic render script.
 
@@ -249,7 +249,7 @@ This ADR captures 11 locked architectural decisions (D-1 through D-11) establish
 
 ### D-5: T-NN tasks are plan-scoped (not session-scoped)
 
-**Decision**: Task IDs use the format T-NN where NN is a plan-global counter (2+ digits), continuous across sessions of the same workflow. Previously T-NN was session-scoped per the existing feedback_session_protocol guidance.
+**Decision**: Task IDs use the format T-NN where NN is a plan-global counter (2+ digits), continuous across sessions of the same workflow. Previously T-NN was session-scoped per the existing session-protocol convention (session-scoped T-NN IDs; pointer-ledger session notes).
 
 **Rationale**: Tasks are state living in PLAN; therefore their identifiers span the PLAN lifecycle, not the session lifecycle. Continuous numbering across sessions makes cross-session task references unambiguous.
 
@@ -448,11 +448,11 @@ No new vendor lock-in beyond what ADR-001 already assessed. The plan/session ren
 
 ## Implementation Notes
 
-### Schema layer at _shared/composition/src/schemas/
+### Schema layer at shared/composition/src/schemas/
 
 Three files: common.ts (shared IDs, enums, observation/relation schemas), plan-note.ts (PlanNoteSchema with PlanFrontmatterSchema, PartSchema, TaskSchema, PendingDecisionSchema, EditorMirrorEntrySchema), session-note.ts (SessionNoteSchema with SessionFrontmatterSchema, EventSchema discriminated union with 10 event types).
 
-**common.ts is shared with ADR-002's composition schemas** (per CRIT-003 F-1 resolution). The shared enums (status enums, observation category enum, relation verb enum, EntityIdSchema regex, WikilinkSchema) live in `_shared/composition/src/schemas/common.ts` and are imported by both ADR-002's plan-schema.ts and ADR-003's plan-note.ts + session-note.ts. DRY single source of truth; no duplicate schema definitions for overlapping types. SPEC-007 authoring will detail the import structure.
+**common.ts is shared with ADR-002's composition schemas** (per CRIT-003 F-1 resolution). The shared enums (status enums, observation category enum, relation verb enum, EntityIdSchema regex, WikilinkSchema) live in `shared/composition/src/schemas/common.ts` and are imported by both ADR-002's plan-schema.ts and ADR-003's plan-note.ts + session-note.ts. DRY single source of truth; no duplicate schema definitions for overlapping types. SPEC-007 authoring will detail the import structure.
 
 Full Zod schema drafts are in ANALYSIS-002 Appendix C. Key design points:
 
@@ -462,7 +462,7 @@ Full Zod schema drafts are in ANALYSIS-002 Appendix C. Key design points:
 
 **session-note.ts** defines: SessionFrontmatterSchema (title regex, type literal 'session', status, binds_to[1+], permalink regex, tags[2-5]). 10 event types via discriminated union on type field: session-start (project?, branch?, starting_sha?), bootstrap (step?), part-transition (part, from, to, outcome?), decision-lock (part, decision_ids[1+]), task-transition (task, from, to), agent-dispatch (agent, task?, part?, token_usage?, duration_seconds?), debate-result (target, verdict PASS|FAIL|CONCERNS|BLOCK, tally {accept,concerns,block}, p0/p1/p2 counts, artifact?), pending-decision-surfaced (pud_id, part), pending-decision-resolved (pud_id, selected_option), state-change (scope plan|artifact|other, target). BoundPlanRefSchema (ref, worked_parts[1+]). SessionNoteSchema (frontmatter, scope, bound_plans[1+], events[1+], observations[3+], relations[2+]) with superRefine: event numbers continuous from 1; first event must be session-start.
 
-### Parser layer at _shared/composition/src/parsers/
+### Parser layer at shared/composition/src/parsers/
 
 Three files: ast-helpers.ts (shared utilities), plan-note.ts (parsePlanNote), session-note.ts (parseSessionNote).
 
@@ -495,7 +495,7 @@ Full parser drafts are in ANALYSIS-002 Appendix D. Key design points:
 4. Multi-line cell content in tables -- remark uses br for line breaks; parser may need br-to-newline mapping for cell content.
 5. Frontmatter title quoting -- YAML single-quotes around colon-containing titles handled via js-yaml.
 
-### Renderer layer at _shared/composition/src/renderers/
+### Renderer layer at shared/composition/src/renderers/
 
 Three files: plan-note.ts (renderPlanNote), session-note.ts (renderSessionNote), mermaid.ts (renderMermaid).
 
@@ -507,7 +507,7 @@ Renderer sketch from ANALYSIS-002 Appendix E. The renderer is the inverse of the
 
 **renderSessionNote** builds canonical AST: frontmatter, H1 title, Scope, Bound PLAN (bullet list with wikilink ref + worked_parts), Events (H3 per event with typed-field bullets first + prose body after), Observations, Relations.
 
-### Mutation API at _shared/composition/src/plan-mutations.ts + session-mutations.ts
+### Mutation API at shared/composition/src/plan-mutations.ts + session-mutations.ts
 
 Narrow set of typed mutations that read existing markdown, parse to typed model, mutate in-memory, validate via Zod, re-render entire document, write atomically. One disk write per mutation. Side-channel propagation (Progress Dashboard rollup, Cross-Part Deps Graph, status consistency checks) all happen automatically because they're derived during render.
 
@@ -595,6 +595,7 @@ _No clarifications yet._
 
 ## Relations
 
+- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
 - implements [[ANALYSIS-002: Plan/Session Note Render Architecture]]
 - extends [[ADR-001: Composition Library Architecture]]
 - pairs_with [[ADR-002: Adapter Contract and Plan Schema]]

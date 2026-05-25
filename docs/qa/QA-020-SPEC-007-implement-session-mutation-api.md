@@ -18,7 +18,7 @@ tags:
 Retro-validate TASK-011-SPEC-007 via `src/mutations/session-mutations.ts` (36 LOC) and `tests/session-mutations.test.ts`.
 
 - **Feature**: Session Mutation API (TASK-011-SPEC-007)
-- **Scope**: `_shared/composition/src/mutations/session-mutations.ts`
+- **Scope**: `shared/composition/src/mutations/session-mutations.ts`
 - **Acceptance Criteria**: REQ-010-SPEC-007, ADR-003 D-2 / D-3 / D-4
 
 ## Approach
@@ -74,6 +74,6 @@ Retro-validate TASK-011-SPEC-007 via `src/mutations/session-mutations.ts` (36 LO
 
 ## Relations
 
-- validates [[TASK-011-SPEC-007: Implement Session Mutation API]]
+- depends_on [[TASK-011-SPEC-007: Implement Session Mutation API]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-010-SPEC-007: Session Mutation API]]

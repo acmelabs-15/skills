@@ -15,9 +15,9 @@ tags:
 
 ## Scope
 
-Verification of TASK-008-SPEC-001 (AdrAdapter) implementation at `_shared/composition/src/adapters/adr.ts`. The adapter is a concrete class extending `BaseMarkdownAdapter` with three config-only overrides: `sourceType = "adr"`, `sectionDelimiter = "### "`, and `identifierPattern = /D-(\d+)/`. No method overrides. All 5 `CompositionAdapter` methods are inherited from `BaseMarkdownAdapter`.
+Verification of TASK-008-SPEC-001 (AdrAdapter) implementation at `shared/composition/src/adapters/adr.ts`. The adapter is a concrete class extending `BaseMarkdownAdapter` with three config-only overrides: `sourceType = "adr"`, `sectionDelimiter = "### "`, and `identifierPattern = /D-(\d+)/`. No method overrides. All 5 `CompositionAdapter` methods are inherited from `BaseMarkdownAdapter`.
 
-Test file: `_shared/composition/tests/adr-adapter.test.ts`
+Test file: `shared/composition/tests/adr-adapter.test.ts`
 
 ## Test Results
 

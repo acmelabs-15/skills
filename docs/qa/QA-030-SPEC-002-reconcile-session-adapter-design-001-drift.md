@@ -1,11 +1,10 @@
 ---
 title: 'QA-030-SPEC-002: Reconcile SESSION Adapter DESIGN-001 Drift'
-type: test-report
+type: qa
 permalink: qa/qa-030-spec-002-reconcile-session-adapter-design-001-drift
 status: DONE
 verdict: PASS
 tags:
-- test-report
 - spec-002
 - qa
 - session-adapter
@@ -20,10 +19,10 @@ Validates impl-agent claim that [[TASK-008-SPEC-002: Reconcile SESSION Adapter D
 
 ## Evidence Hierarchy
 
-1. Code under test: `_shared/composition/src/adapters/session.ts` (lines 12-35)
-2. Base class abstract slot contract: `_shared/composition/src/core/base-markdown-adapter.ts` lines 13-15
-3. Test under test: `_shared/composition/tests/session-adapter.test.ts` (5 tests, lines 42-90)
-4. Round-trip test: `_shared/composition/tests/session-round-trip.test.ts` (6 tests)
+1. Code under test: `shared/composition/src/adapters/session.ts` (lines 12-35)
+2. Base class abstract slot contract: `shared/composition/src/core/base-markdown-adapter.ts` lines 13-15
+3. Test under test: `shared/composition/tests/session-adapter.test.ts` (5 tests, lines 42-90)
+4. Round-trip test: `shared/composition/tests/session-round-trip.test.ts` (6 tests)
 5. DESIGN-001 amended Component 2 + Convention Note (post-impl read)
 6. REQ-002 AC-3 ("Event-NN format") as canonical authority
 
@@ -33,10 +32,10 @@ Validates impl-agent claim that [[TASK-008-SPEC-002: Reconcile SESSION Adapter D
 |---|---|---|---|
 | SessionAdapter unit | `tests/session-adapter.test.ts` | 5 | 5 pass / 0 fail |
 | SessionAdapter round-trip | `tests/session-round-trip.test.ts` | 6 | 6 pass / 0 fail |
-| Composition full suite | `_shared/composition` | 458 | 458 pass / 0 fail |
+| Composition full suite | `shared/composition` | 458 | 458 pass / 0 fail |
 
-Command: `cd _shared/composition && bun test tests/session-adapter.test.ts tests/session-round-trip.test.ts` → 11 pass / 0 fail / 24 expects in 87ms.
-Command: `cd _shared/composition && bun test` → 458 pass / 0 fail / 938 expects in 895ms.
+Command: `cd shared/composition && bun test tests/session-adapter.test.ts tests/session-round-trip.test.ts` → 11 pass / 0 fail / 24 expects in 87ms.
+Command: `cd shared/composition && bun test` → 458 pass / 0 fail / 938 expects in 895ms.
 
 Tests run: 11. Passed: 11. Failed: 0. Skipped: 0.
 
@@ -100,7 +99,7 @@ Structural compliance totals: 5 PASS, 0 FAIL.
 - REQ AC (in scope): 4 PASS, 1 N/A (dispatcher out of scope)
 - DESIGN structural compliance: 5 PASS
 - Tests: 458 pass / 0 fail / 0 skipped
-- Schema self-validation: TestReportNoteSchema invariants satisfied — `tests_run (11) === passed (11) + failed (0) + skipped (0)`; verdict PASS matches per-row results
+- Schema self-validation: QaNoteSchema invariants satisfied — `tests_run (11) === passed (11) + failed (0) + skipped (0)`; verdict PASS matches per-row results
 
 The code change is small, surgical, internally consistent with DESIGN-001's amended Component 2, and adds explicit unit-test coverage for both new property declarations. No regressions in the 458-test composition suite.
 
@@ -110,7 +109,7 @@ Two protocol violations are flagged, both with correct outcomes but irregular pr
 
 ### Concern 1: Unilateral Brain note amendment by implementer
 
-Per `feedback_memory_updates_via_memory_agent` (HARD-LOCKED 2026-05-20), all Brain knowledge-graph note updates must route through the memory agent path or direct Brain MCP orchestration — never via implementer/qa/etc. Implementer agents bypass graph processing (no embeddings refresh, no relation propagation, no rollup recompute on the canonical path).
+Per the rule that complex memory operations route through the memory agent (HARD-LOCKED 2026-05-20), all Brain knowledge-graph note updates must route through the memory agent path or direct Brain MCP orchestration — never via implementer/qa/etc. Implementer agents bypass graph processing (no embeddings refresh, no relation propagation, no rollup recompute on the canonical path).
 
 Observed: implementer agent amended DESIGN-001 Component 2 code block + added Convention Note + added Reconciliation Log entry. These amendments are individually correct and well-aligned with REQ-002 AC-3 + TASK-007 precedent, but the path is wrong.
 
@@ -118,7 +117,7 @@ Expected: implementer returns a structured proposal in `## State Changes` (e.g.,
 
 ### Concern 2: Unilateral status transition by implementer
 
-Per `feedback_per_task_build_qa_cycle` steps r-s + `feedback_state_sync_after_agents`, status transitions are orchestrator-applied after agent return + sync propagation. Implementer agent flipped DESIGN-001 from DRAFT → ACCEPTED.
+Per the rigid per-TASK build+QA cycle steps r-s + the state-sync-after-agents rule (propagate state and unblock downstream before the next wave), status transitions are orchestrator-applied after agent return + sync propagation. Implementer agent flipped DESIGN-001 from DRAFT → ACCEPTED.
 
 This concern is STRONGER than Concern 1 because status transitions feed rollups + dependency-graph unblocking. The implementer cannot know whether downstream impacts are ready for ACCEPTED state (e.g., whether other TASKs depending on DESIGN-001 ACCEPTED have prerequisites satisfied).
 
@@ -139,8 +138,8 @@ Reinforce dispatch-brief language for reconciliation TASKs: implementer's contra
 - [fact] Test suite 458/458 PASS in 895ms; SessionAdapter+round-trip subset 11/11 PASS in 87ms; no regressions detected #tests #pass
 - [fact] Implementer's claimed test count was 447; current count is 458 (delta from other tree changes, not TASK-008) #counts
 - [insight] DESIGN-001 Component 2 now mirrors AnalysisAdapter Component 1 pattern (TASK-007 precedent): explicit `identifierPrefix` declaration + `/i` flag sanctioned via Convention Note. Symmetric reconciliation across both simple adapters #symmetry #precedent
-- [risk] Implementer agent unilaterally amended DESIGN-001 Brain note body — violates `feedback_memory_updates_via_memory_agent` #protocol-violation #process-irregular
-- [risk] Implementer agent unilaterally flipped DESIGN-001 status DRAFT → ACCEPTED — violates `feedback_per_task_build_qa_cycle` steps r-s + `feedback_state_sync_after_agents` (orchestrator's job) #protocol-violation #status-transition
+- [risk] Implementer agent unilaterally amended DESIGN-001 Brain note body — violates the rule that complex memory operations route through the memory agent #protocol-violation #process-irregular
+- [risk] Implementer agent unilaterally flipped DESIGN-001 status DRAFT → ACCEPTED — violates the rigid per-TASK build+QA cycle steps r-s + the state-sync-after-agents rule (propagate state and unblock downstream before the next wave) (orchestrator's job) #protocol-violation #status-transition
 - [decision] Verdict PASS adopted despite protocol concerns: artifacts are well-formed, test evidence is conclusive, outcome state is correct. Concerns surfaced for retrospective, not as blockers #verdict #retrospective
 - [technique] Convention Note pattern (sanctioning `/i` flag + documenting two-form fixture convention inline in DESIGN component) is a reusable mechanism for absorbing minor drifts without forcing code or fixture rewrites #pattern #reconciliation
 

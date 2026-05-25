@@ -21,14 +21,14 @@ Gap from QA-022-SPEC-004: TASK-003 + DESIGN-002 require unit tests for filename 
 
 ## Objective
 
-Author `_shared/composition/tests/filename-rewrite.test.ts` exercising `applyFilenameRewrites` for: (a) successful subtree-wide rewrite, (b) duplicate-target injectivity rejection, (c) path-traversal target rejection, (d) mid-sequence failure LIFO rollback, (e) skip-when-no-rewrites case. Add injectivity + path-containment checks to pre-flight in `applyFilenameRewrites`.
+Author `shared/composition/tests/filename-rewrite.test.ts` exercising `applyFilenameRewrites` for: (a) successful subtree-wide rewrite, (b) duplicate-target injectivity rejection, (c) path-traversal target rejection, (d) mid-sequence failure LIFO rollback, (e) skip-when-no-rewrites case. Add injectivity + path-containment checks to pre-flight in `applyFilenameRewrites`.
 
 ## Files Affected
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/tests/filename-rewrite.test.ts | NEW | Unit tests per DoD |
-| _shared/composition/src/adapters/spec-subtree.ts | MODIFY | Add injectivity + containedPath pre-flight checks |
+| shared/composition/tests/filename-rewrite.test.ts | NEW | Unit tests per DoD |
+| shared/composition/src/adapters/spec-subtree.ts | MODIFY | Add injectivity + containedPath pre-flight checks |
 
 ## Definition of Done
 

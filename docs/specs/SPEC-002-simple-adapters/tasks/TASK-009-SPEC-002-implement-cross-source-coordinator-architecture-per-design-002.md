@@ -22,7 +22,7 @@ Evidence: QA-012-SPEC-002 (TASK-003 FAIL on 9 of 13 criteria).
 
 Concrete gaps:
 
-1. **File location**: code is in `schemas/distribution/session.plan.schema.ts`; DESIGN-002 mandates `_shared/composition/src/core/cross-source.ts`.
+1. **File location**: code is in `schemas/distribution/session.plan.schema.ts`; DESIGN-002 mandates `shared/composition/src/core/cross-source.ts`.
 2. **Schema shape**: actual `{target_source_type, target_path, frontmatter_map, wikilink_map}` vs DESIGN-002 `{target_note, part_id, field_name: enum, old_value, new_value}`. Entirely different abstraction.
 3. **`CrossSourceCoordinator` interface absent** (`applyUpdates`, `reverseUpdates` returning `Promise<boolean>`).
 4. **`GracefulDegradationHandler` class absent** (logs warning when PLAN adapter unavailable, returns true, non-blocking).
@@ -33,11 +33,11 @@ Concrete gaps:
 
 - [ ] Decision locked (decisions phase): implement DESIGN-002 as-spec vs amend DESIGN-002 + REQ-003 to match current `getCrossSourceUpdates`
 - [ ] If implement-as-spec path chosen:
-  - [ ] `_shared/composition/src/core/cross-source.ts` created with `CrossSourceUpdate` Zod schema matching DESIGN-002 C-1 shape
+  - [ ] `shared/composition/src/core/cross-source.ts` created with `CrossSourceUpdate` Zod schema matching DESIGN-002 C-1 shape
   - [ ] `CrossSourceCoordinator` interface defined with `applyUpdates` and `reverseUpdates`
   - [ ] `GracefulDegradationHandler` class implements `CrossSourceCoordinator` with warning-log and non-blocking proceed
   - [ ] Coordinator resolution wired: GracefulDegradationHandler when PLAN adapter is not registered
-  - [ ] Unit tests at `_shared/composition/tests/cross-source.test.ts`
+  - [ ] Unit tests at `shared/composition/tests/cross-source.test.ts`
   - [ ] All-or-nothing rollback on PLAN adapter rejection
   - [ ] Reversal path validates `old_value` restoration
 - [ ] If amend-spec path chosen:
@@ -51,9 +51,9 @@ Concrete gaps:
 
 In Scope:
 
-- `_shared/composition/src/core/cross-source.ts` (Create if as-spec path)
-- `_shared/composition/src/adapters/session.ts` (Modify to use coordinator)
-- `_shared/composition/tests/cross-source.test.ts` (Create if as-spec path)
+- `shared/composition/src/core/cross-source.ts` (Create if as-spec path)
+- `shared/composition/src/adapters/session.ts` (Modify to use coordinator)
+- `shared/composition/tests/cross-source.test.ts` (Create if as-spec path)
 - `docs/specs/SPEC-002-simple-adapters/design/DESIGN-002-SPEC-002-session-cross-source-coordination-protocol.md` (amend if amend-spec path)
 - `docs/specs/SPEC-002-simple-adapters/requirements/REQ-003-SPEC-002-session-cross-source-updates-handling.md` (amend if amend-spec path)
 

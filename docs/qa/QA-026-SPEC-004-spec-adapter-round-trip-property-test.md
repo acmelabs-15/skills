@@ -18,7 +18,7 @@ tags:
 Verify TASK-007-SPEC-004 ships the SPEC subtree round-trip property test that proves per-file SHA-256 identity across decompose -> recompose per REQ-006-SPEC-004.
 
 - **Feature**: SPEC subtree round-trip property test (TASK-007-SPEC-004)
-- **Scope**: `_shared/composition/tests/spec-subtree-round-trip.test.ts` (206 lines)
+- **Scope**: `shared/composition/tests/spec-subtree-round-trip.test.ts` (206 lines)
 - **Acceptance Criteria**: TASK-007 DoD + REQ-006-SPEC-004 AC
 
 ## Approach
@@ -26,7 +26,7 @@ Verify TASK-007-SPEC-004 ships the SPEC subtree round-trip property test that pr
 - **Test Types**: Integration (property test)
 - **Environment**: Local (Bun 1.3.13)
 - **Data Strategy**: On-disk fixtures (`tests/fixtures/spec-subtree/`) + in-memory non-trivial mutation maps
-- **Test File**: `_shared/composition/tests/spec-subtree-round-trip.test.ts`
+- **Test File**: `shared/composition/tests/spec-subtree-round-trip.test.ts`
 
 ## Results
 
@@ -98,5 +98,5 @@ Verify TASK-007-SPEC-004 ships the SPEC subtree round-trip property test that pr
 
 ## Relations
 
-- validates [[TASK-007-SPEC-004: SPEC Adapter Round-Trip Property Test]]
+- depends_on [[TASK-007-SPEC-004: SPEC Adapter Round-Trip Property Test]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

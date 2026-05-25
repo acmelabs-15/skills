@@ -35,8 +35,8 @@ Configure unified().use(remarkParse).use(remarkFrontmatter, ['yaml']).use(remark
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/core/base-markdown-adapter.ts | NEW | Abstract base class |
-| _shared/composition/tests/base-adapter.test.ts | NEW | Base class unit tests |
+| shared/composition/src/core/base-markdown-adapter.ts | NEW | Abstract base class |
+| shared/composition/tests/base-adapter.test.ts | NEW | Base class unit tests |
 
 ## Testing Requirements
 

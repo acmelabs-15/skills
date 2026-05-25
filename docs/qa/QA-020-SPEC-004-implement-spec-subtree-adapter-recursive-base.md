@@ -18,7 +18,7 @@ tags:
 Verify TASK-001-SPEC-004 establishes the `SpecSubtreeAdapter` class implementing the `CompositionAdapter` 5-method interface plus subtree orchestration entry points, per REQ-001-SPEC-004 and DESIGN-001-SPEC-004.
 
 - **Feature**: SPEC Subtree Adapter recursive base (TASK-001-SPEC-004)
-- **Scope**: `_shared/composition/src/adapters/spec-subtree.ts` (272 lines)
+- **Scope**: `shared/composition/src/adapters/spec-subtree.ts` (272 lines)
 - **Acceptance Criteria**: TASK-001 DoD + REQ-001-SPEC-004 AC + DESIGN-001-SPEC-004 Component 1 interface
 
 ## Approach
@@ -26,7 +26,7 @@ Verify TASK-001-SPEC-004 establishes the `SpecSubtreeAdapter` class implementing
 - **Test Types**: Unit, Integration (round-trip)
 - **Environment**: Local (Bun 1.3.13, biome, tsc strict via project tsconfig)
 - **Data Strategy**: Inline fixtures + on-disk SPEC subtree fixtures (`tests/fixtures/spec-subtree/`)
-- **Test File**: `_shared/composition/tests/spec-subtree-adapter.test.ts`
+- **Test File**: `shared/composition/tests/spec-subtree-adapter.test.ts`
 
 ## Results
 
@@ -101,5 +101,5 @@ Verify TASK-001-SPEC-004 establishes the `SpecSubtreeAdapter` class implementing
 
 ## Relations
 
-- validates [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
+- depends_on [[TASK-001-SPEC-004: Implement SPEC Subtree Adapter Recursive Base]]
 - part_of [[SPEC-004: SPEC Subtree Adapter]]

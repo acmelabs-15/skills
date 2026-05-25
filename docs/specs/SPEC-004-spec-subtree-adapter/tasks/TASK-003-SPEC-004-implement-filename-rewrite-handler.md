@@ -45,7 +45,7 @@ Use Bun filesystem APIs for rename operations. The pre-flight validation checks 
 
 | File | Action | Purpose |
 |---|---|---|
-| _shared/composition/src/adapters/spec-subtree.ts | MODIFY | Add filename rewrite functions |
+| shared/composition/src/adapters/spec-subtree.ts | MODIFY | Add filename rewrite functions |
 
 ## Definition of Done
 

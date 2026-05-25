@@ -20,7 +20,7 @@ This TASK realizes REQ-007-SPEC-007 and the renderers/session-note.ts sketch fro
 
 ## Objective
 
-Create `_shared/composition/src/renderers/session-note.ts` implementing renderSessionNote that takes a SessionNote typed model and produces canonical markdown with sections in fixed order: frontmatter, H1, Scope, Bound PLAN, Events (H3 per event with typed-field bullets first, prose body after), Observations, Relations.
+Create `shared/composition/src/renderers/session-note.ts` implementing renderSessionNote that takes a SessionNote typed model and produces canonical markdown with sections in fixed order: frontmatter, H1, Scope, Bound PLAN, Events (H3 per event with typed-field bullets first, prose body after), Observations, Relations.
 
 ## Scope
 
@@ -42,7 +42,7 @@ Create `_shared/composition/src/renderers/session-note.ts` implementing renderSe
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/renderers/session-note.ts` | NEW | SessionNote markdown renderer |
+| `shared/composition/src/renderers/session-note.ts` | NEW | SessionNote markdown renderer |
 
 ## Testing Requirements
 

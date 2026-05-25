@@ -18,7 +18,7 @@ tags:
 Retro-validate TASK-007-SPEC-007 via `src/renderers/plan-note.ts` (359 LOC), `tests/plan-note-renderer.test.ts`, and round-trip integration.
 
 - **Feature**: PlanNote Renderer (TASK-007-SPEC-007)
-- **Scope**: `_shared/composition/src/renderers/plan-note.ts`
+- **Scope**: `shared/composition/src/renderers/plan-note.ts`
 - **Acceptance Criteria**: REQ-006-SPEC-007, ADR-003 D-3 / D-7 / D-8, ADR-001 D-2
 
 ## Approach
@@ -78,6 +78,6 @@ Retro-validate TASK-007-SPEC-007 via `src/renderers/plan-note.ts` (359 LOC), `te
 
 ## Relations
 
-- validates [[TASK-007-SPEC-007: Implement PlanNote Renderer]]
+- depends_on [[TASK-007-SPEC-007: Implement PlanNote Renderer]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-006-SPEC-007: PlanNote Markdown Renderer]]

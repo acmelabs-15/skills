@@ -14,12 +14,12 @@ tags:
 
 ## Context
 
-This design defines the module layout for the plan/session render pipeline within the existing `_shared/composition/` project. It extends the composition library established by SPEC-001 with schema, parser, renderer, and mutation modules specific to plan and session notes. The module boundaries enforce the separation between schema validation (contract), parsing (markdown to model), rendering (model to markdown), and mutation (typed state changes).
+This design defines the module layout for the plan/session render pipeline within the existing `shared/composition/` project. It extends the composition library established by SPEC-001 with schema, parser, renderer, and mutation modules specific to plan and session notes. The module boundaries enforce the separation between schema validation (contract), parsing (markdown to model), rendering (model to markdown), and mutation (typed state changes).
 
 ## Module Structure
 
 ```text
-_shared/composition/src/
+shared/composition/src/
   schemas/
     common.ts              # Shared enums, IDs, structural schemas (REQ-001; shared with ADR-002)
     plan-note.ts           # PlanNoteSchema + sub-schemas (REQ-002)

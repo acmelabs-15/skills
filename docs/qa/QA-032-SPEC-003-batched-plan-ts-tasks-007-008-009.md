@@ -1,6 +1,6 @@
 ---
 title: 'QA-032-SPEC-003: Batched Plan.ts TASKs 007 008 009'
-type: test-report
+type: qa
 permalink: qa/qa-032-spec-003-batched-plan-ts-tasks-007-008-009
 status: ACCEPTED
 verdict: PASS
@@ -52,7 +52,7 @@ Implements [[REQ-001-SPEC-003: PLAN Adapter Implementation]] AC-1, AC-2, AC-6.
 
 | # | Item | Verdict | Evidence |
 | --- | --- | --- | --- |
-| 1 | PlanAdapter exposes readonly section_delimiter === "### " | PASS | `_shared/composition/src/adapters/plan.ts:58` declares `readonly section_delimiter = "### "`; test `_shared/composition/tests/plan-adapter.test.ts:122` asserts equality |
+| 1 | PlanAdapter exposes readonly section_delimiter === "### " | PASS | `shared/composition/src/adapters/plan.ts:58` declares `readonly section_delimiter = "### "`; test `shared/composition/tests/plan-adapter.test.ts:122` asserts equality |
 | 2 | PlanAdapter exposes readonly identifier_pattern matching {phase}.{part-id} | PASS | `plan.ts:66` declares regex `/^[a-z][a-z-]*\.(?:[A-Z][A-Z]+-\d+|\d+)$/`; tests at`plan-adapter.test.ts:125-134`cover positive (`research.1`,`decisions.2`,`spec.SPEC-001`,`build.SPEC-003`) and negative (`Research.1`,`spec.spec-001`,`noPhase`) cases |
 | 3 | extractByRange returns content including own heading and excluding next heading at same delimiter level | PASS | `plan.ts:126-143` (`extractBySectionName`) finds startIdx by H3 text match, scans for next `^#{1,3}` boundary; test `plan-adapter.test.ts:155-161` asserts `### build.SPEC-001` returns with body and excludes `### build.SPEC-002` |
 | 4 | extractByRange excludes regenerated_sections lines when mutation spec supplied | PASS | `plan.ts:113-115` strips spans when `regeneratedSections.length > 0`; empty-array short-circuits correctly per REQ-002 AC-3; test `plan-adapter.test.ts:170-192` asserts Progress Dashboard removed while body lines preserved |
@@ -77,11 +77,11 @@ Implements [[REQ-002-SPEC-003: Regenerated Sections Field Handling]] AC-1, [[REQ
 
 | # | Item | Verdict | Evidence |
 | --- | --- | --- | --- |
-| 1 | `src/core/validate.ts` exports `validateIntegrityFloor(sourceContent, sections) -> {valid, coveragePercent, message}` | PASS | `_shared/composition/src/core/validate.ts:32-66` declares the function with the documented signature; `IntegrityFloorResult` interface at lines 14-18 |
+| 1 | `src/core/validate.ts` exports `validateIntegrityFloor(sourceContent, sections) -> {valid, coveragePercent, message}` | PASS | `shared/composition/src/core/validate.ts:32-66` declares the function with the documented signature; `IntegrityFloorResult` interface at lines 14-18 |
 | 2 | Rejects plans where regen sections cover greater-than 50% of source lines | PASS | `validate.ts:57-63` checks `if (coverageRatio > 0.5)` and returns `valid: false` with descriptive message; test `plan-integrity-floor.test.ts:191-210` (12 lines total, 7-line dashboard → 58%) asserts rejection |
 | 3 | Accepts plans where regen sections cover exactly 50% of source lines | PASS | strict `>` comparison at `validate.ts:57` so equality passes; test `plan-integrity-floor.test.ts:231-246` (10 lines / 5-line dashboard) asserts `valid: true` |
 | 4 | Accepts plans where regen sections cover less than 50% of source lines | PASS | test `plan-integrity-floor.test.ts:212-229` asserts `valid: true` with coveragePercent < 50 |
-| 5 | Zod schema rejects regenerated_sections arrays with greater-than 10 entries | PASS | `_shared/composition/schemas/base.ts:19-25` exports `regeneratedSectionsFloor` refinement (`sections.length <= 10`), wired into `mutationSpecSchema` at line 36; test `plan-integrity-floor.test.ts:140-154` asserts 11-entry array rejected, line 156-170 asserts 10-entry array accepted |
+| 5 | Zod schema rejects regenerated_sections arrays with greater-than 10 entries | PASS | `shared/composition/schemas/base.ts:19-25` exports `regeneratedSectionsFloor` refinement (`sections.length <= 10`), wired into `mutationSpecSchema` at line 36; test `plan-integrity-floor.test.ts:140-154` asserts 11-entry array rejected, line 156-170 asserts 10-entry array accepted |
 | 6 | findRegeneratedSpans regex matches H2 and H3 headings | PASS | `plan.ts:170` regex `^[##|###]( \t)+[.+?]( \t)*$` matches both levels; level captured for equal-or-higher-level boundary detection at lines 186-201 |
 | 7 | Unit test: H3 regen section "### Progress Dashboard" correctly identified and stripped | PASS | `plan-integrity-floor.test.ts:276-303` asserts single span returned, slice contains `### Progress Dashboard` and table content, excludes following H2 `## After` (equal-or-higher closure) |
 | 8 | All existing tests in plan-integrity-floor.test.ts and plan-round-trip.test.ts still pass | PASS | scoped 44/44, full suite 460/460 |
@@ -144,9 +144,9 @@ Mechanical claim validation: schemas/validators trip if these notes claim DONE w
 
 ## Relations
 
-- validates [[TASK-007-SPEC-003: Section-Aware extractByRange and Public Adapter Surface]]
-- validates [[TASK-008-SPEC-003: Source-Coverage Integrity Floor and Max-10 Schema Guard]]
-- validates [[TASK-009-SPEC-003: Frontmatter Inverse Contract and Branches Array JSON Handling]]
+- depends_on [[TASK-007-SPEC-003: Section-Aware extractByRange and Public Adapter Surface]]
+- depends_on [[TASK-008-SPEC-003: Source-Coverage Integrity Floor and Max-10 Schema Guard]]
+- depends_on [[TASK-009-SPEC-003: Frontmatter Inverse Contract and Branches Array JSON Handling]]
 - part_of [[SPEC-003: PLAN Adapter]]
 - implements [[REQ-001-SPEC-003: PLAN Adapter Implementation]]
 - implements [[REQ-002-SPEC-003: Regenerated Sections Field Handling]]

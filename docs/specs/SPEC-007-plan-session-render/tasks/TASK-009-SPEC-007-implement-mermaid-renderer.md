@@ -20,7 +20,7 @@ This TASK realizes REQ-008-SPEC-007 and DESIGN-004-SPEC-007.
 
 ## Objective
 
-Create `_shared/composition/src/renderers/mermaid.ts` implementing renderMermaid as a pure function that takes a parts array with id, phase, substatus, depends_on, and title, and returns a canonical Mermaid flowchart string with init block, classDef palette, subgraphs by phase, emoji-prefix node labels, dependency edges, class assignments, and linkStyle directives.
+Create `shared/composition/src/renderers/mermaid.ts` implementing renderMermaid as a pure function that takes a parts array with id, phase, substatus, depends_on, and title, and returns a canonical Mermaid flowchart string with init block, classDef palette, subgraphs by phase, emoji-prefix node labels, dependency edges, class assignments, and linkStyle directives.
 
 ## Scope
 
@@ -44,7 +44,7 @@ Create `_shared/composition/src/renderers/mermaid.ts` implementing renderMermaid
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/renderers/mermaid.ts` | NEW | Mermaid flowchart renderer |
+| `shared/composition/src/renderers/mermaid.ts` | NEW | Mermaid flowchart renderer |
 
 ## Testing Requirements
 

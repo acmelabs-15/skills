@@ -1,5 +1,5 @@
 ---
-title: SESSION-2026-05-20_01-plan-001-drift-remediation-and-plan-session-render-architecture
+title: 'SESSION-2026-05-20_01: PLAN-001 Drift Remediation and Plan/Session Render Architecture'
 type: session
 permalink: sessions/session-2026-05-20_01-plan-001-drift-remediation-and-plan-session-render-architecture
 status: DONE
@@ -163,3 +163,5 @@ Operational consequences:
 - pairs_with [[brain:---adr-review]]
 - inspired_by [[ANALYSIS-001: SPEC Clustering]]
 - relates_to [[ADR-001: Composition Library Architecture]]
+
+- relates_to [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]

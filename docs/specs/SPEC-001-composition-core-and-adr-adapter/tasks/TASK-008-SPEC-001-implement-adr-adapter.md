@@ -35,8 +35,8 @@ The ADR adapter overrides only configuration properties per ADR-002 D-3. The H3 
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/adapters/adr.ts | NEW | ADR adapter implementation |
-| _shared/composition/tests/adr-adapter.test.ts | NEW | ADR adapter unit tests |
+| shared/composition/src/adapters/adr.ts | NEW | ADR adapter implementation |
+| shared/composition/tests/adr-adapter.test.ts | NEW | ADR adapter unit tests |
 
 ## Testing Requirements
 

@@ -91,4 +91,4 @@ Apply the SPEC-007 render pipeline to `docs/planning/PLAN-001-skills-ecosystem.m
 - [decision] Supersedes TASK-013 which was BLOCKED by QA-022 FAIL; gap-TASK ready for build dispatch #supersedes #gap-task
 - supersedes [[TASK-013-SPEC-007: Dogfood PLAN-001 Migration]]
 
-- validated_by [[QA-021-SPEC-007: Implement Round-Trip Property Test]]
+- relates_to [[QA-021-SPEC-007: Implement Round-Trip Property Test]]

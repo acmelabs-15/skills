@@ -25,7 +25,7 @@ Validate Stream E's implementation of TASK-010-SPEC-002: reconcile fixture-layou
 - **Test Types**: structural-conformance, file-existence, content-validation, regression-via-round-trip
 - **Environment**: bun test v1.3.13; commit 3d74348 on branch feat/plan-001-wave-2-retro-validation
 - **Data Strategy**: inspect 4 new YAML fixtures + inspect TASK-005/006 DoD amendments + re-run analysis-round-trip + session-round-trip test suites
-- **Test File**: `_shared/composition/tests/analysis-round-trip.test.ts`, `_shared/composition/tests/session-round-trip.test.ts`
+- **Test File**: `shared/composition/tests/analysis-round-trip.test.ts`, `shared/composition/tests/session-round-trip.test.ts`
 
 ## Results
 
@@ -44,9 +44,9 @@ Validate Stream E's implementation of TASK-010-SPEC-002: reconcile fixture-layou
 | Test | Category | Status | Notes |
 |------|----------|--------|-------|
 | DoD 1 — Decision locked: nested-folder vs flat layout | DoD | [PASS] | Flat layout sanctioned. TASK-005 line 27 + TASK-006 line 28 carry the explicit annotation "flat layout — sanctioned by TASK-010-SPEC-002" with `[x]` checked |
-| DoD 2a — Fixtures moved to nested OR DoDs amended for flat | DoD | [PASS] | Flat path chosen: TASK-005 DoD amended (line 27-28 ticked); TASK-006 DoD amended (line 28-29 ticked); 4 YAML plan fixtures created at flat paths `_shared/composition/tests/fixtures/{analysis,session}-{composition,distribution}.plan.yaml` |
+| DoD 2a — Fixtures moved to nested OR DoDs amended for flat | DoD | [PASS] | Flat path chosen: TASK-005 DoD amended (line 27-28 ticked); TASK-006 DoD amended (line 28-29 ticked); 4 YAML plan fixtures created at flat paths `shared/composition/tests/fixtures/{analysis,session}-{composition,distribution}.plan.yaml` |
 | DoD 2b — YAML plan fixtures created | DoD | [PASS] | analysis-composition.plan.yaml (528B), analysis-distribution.plan.yaml (865B), session-composition.plan.yaml (752B), session-distribution.plan.yaml (1266B) — all present and parseable YAML with correct `plan_type` + `source_type` + `renumber_map` + `wikilink_map` fields; session variants include `cross_source_updates` |
-| DoD 3 — All round-trip tests still pass | DoD | [PASS] | `bun test _shared/composition/tests/analysis-round-trip.test.ts _shared/composition/tests/session-round-trip.test.ts` returns 9 pass / 0 fail / 19 expect() calls |
+| DoD 3 — All round-trip tests still pass | DoD | [PASS] | `bun test shared/composition/tests/analysis-round-trip.test.ts shared/composition/tests/session-round-trip.test.ts` returns 9 pass / 0 fail / 19 expect() calls |
 | DoD 4 — SPEC-001 fixture layout convention reviewed for consistency | DoD | [PASS] | SPEC-001 ADR fixtures use flat layout (`adr-sample.md`, `adr-composition.plan.yaml`, `adr-distribution.plan.yaml`); no nested folder. New ANALYSIS + SESSION YAMLs match this convention. Drift is uniform — no inconsistency between SPEC-001 and SPEC-002 fixture conventions |
 
 ### Structural validation of new YAML fixtures
@@ -64,7 +64,7 @@ Stream E's implementation of TASK-010 cleanly resolves both gaps surfaced by QA-
 
 1. **Decision adjudication**: chosen the flat-layout path (Option B from the TASK DoD's binary choice). Rationale captured inline in TASK-005/006 DoD amendments ("flat layout — sanctioned by TASK-010-SPEC-002"). Consistent with SPEC-001 fixture convention.
 
-2. **YAML asset creation**: 4 hand-crafted YAML plan fixtures landed at `_shared/composition/tests/fixtures/{analysis,session}-{composition,distribution}.plan.yaml`. Each is a documentation fixture: the round-trip tests still use inline TS `MutationSpec` literals (matching the ADR convention), but the YAMLs are now durable reference artifacts mirroring the inline literals exactly. Round-trip tests confirm the renumber_maps stay in lockstep.
+2. **YAML asset creation**: 4 hand-crafted YAML plan fixtures landed at `shared/composition/tests/fixtures/{analysis,session}-{composition,distribution}.plan.yaml`. Each is a documentation fixture: the round-trip tests still use inline TS `MutationSpec` literals (matching the ADR convention), but the YAMLs are now durable reference artifacts mirroring the inline literals exactly. Round-trip tests confirm the renumber_maps stay in lockstep.
 
 3. **SESSION cross-source coverage**: session-distribution.plan.yaml includes the `cross_source_updates` block (targeting `docs/planning/PLAN-001.md` with `status: IN_PROGRESS`) that mirrors the schema-conformance test at session-round-trip.test.ts:55-78. Inverse plan correctly carries `status: ACCEPTED` for round-trip restoration. This is a notable documentation improvement beyond the strict DoD.
 
@@ -83,7 +83,7 @@ Stream E's implementation of TASK-010 cleanly resolves both gaps surfaced by QA-
 ## Observations
 
 - [outcome] TASK-010-SPEC-002 DoD fully satisfied: flat-layout decision locked + TASK-005/006 DoDs amended + 4 YAML plan fixtures present + 9/9 round-trip tests passing #verdict #pass
-- [fact] 4 new YAML files at _shared/composition/tests/fixtures/{analysis,session}-{composition,distribution}.plan.yaml total ~3.4KB; landed in commit 3d74348 #fixtures
+- [fact] 4 new YAML files at shared/composition/tests/fixtures/{analysis,session}-{composition,distribution}.plan.yaml total ~3.4KB; landed in commit 3d74348 #fixtures
 - [fact] YAML renumber_maps verified verbatim equivalent to inline TS MutationSpec literals in both round-trip tests #consistency
 - [insight] SESSION YAMLs document the cross_source_updates round-trip pattern (distribution: status→IN_PROGRESS, composition: status→ACCEPTED) — exceeds strict DoD with explicit reversibility documentation #cross-source-updates #documentation
 - [fact] SPEC-001 ADR fixtures use the same flat convention; no spec-vs-spec drift remains #consistency #spec-001

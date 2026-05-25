@@ -15,10 +15,10 @@ tags:
 
 ## Objective
 
-Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspecting `_shared/composition/src/schemas/common.ts` and running `tests/common-schema.test.ts`.
+Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspecting `shared/composition/src/schemas/common.ts` and running `tests/common-schema.test.ts`.
 
 - **Feature**: Common Schema Module (TASK-001-SPEC-007)
-- **Scope**: `_shared/composition/src/schemas/common.ts` (112 LOC)
+- **Scope**: `shared/composition/src/schemas/common.ts` (112 LOC)
 - **Acceptance Criteria**: REQ-001-SPEC-007, ADR-003 D-4, ADR-001 D-1, CRIT-003 F-1
 
 ## Approach
@@ -26,7 +26,7 @@ Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspe
 - **Test Types**: Unit (schema validation)
 - **Environment**: Local (Bun 1.3.13, biome 2.x, tsc strict)
 - **Data Strategy**: Read code; run existing `common-schema.test.ts`; run repo-wide `bunx tsc --noEmit` and `bunx biome lint`
-- **Test File**: `_shared/composition/tests/common-schema.test.ts`
+- **Test File**: `shared/composition/tests/common-schema.test.ts`
 
 ## Results
 
@@ -58,7 +58,7 @@ Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspe
 | DoD checkbox | Verdict | Evidence |
 |---|---|---|
 | 8 status/enum schemas exported + validation tests | PASS | `common.ts:30-50` exports `PartSubstatusEnum`, `TaskStatusEnum`, `PlanStatusEnum`, `SessionStatusEnum`, `EffortEnum`, `ComplexityTierEnum`, `DecisionStatusEnum`, `PhaseEnum`; tests pass |
-| 6 ID regex schemas exported + pattern tests | PASS | `common.ts:10-27` exports `EntityIdSchema`, `PartIdSchema`, `TaskIdSchema`, `SessionIdSchema`, `EventNumberSchema`, plus `SpecIdSchema`/`SpecTaskIdSchema`/`ReqIdSchema`/`DesignIdSchema`/`TestReportIdSchema` (additions for Phase X.D); tests pass |
+| 6 ID regex schemas exported + pattern tests | PASS | `common.ts:10-27` exports `EntityIdSchema`, `PartIdSchema`, `TaskIdSchema`, `SessionIdSchema`, `EventNumberSchema`, plus `SpecIdSchema`/`SpecTaskIdSchema`/`ReqIdSchema`/`DesignIdSchema`/`QaIdSchema` (additions for Phase X.D); tests pass |
 | `WikilinkSchema`, `OutcomeSchema`, `ObservationSchema`, `RelationSchema` exported | PASS | grep confirms all four exported from common.ts |
 | `.strict()` applied to all object schemas | PASS | applied throughout |
 | TypeScript types exported via `z.infer` | PASS | type exports present |
@@ -86,6 +86,6 @@ Retro-validate TASK-001-SPEC-007 (Common Schema Module) against its DoD by inspe
 
 ## Relations
 
-- validates [[TASK-001-SPEC-007: Implement Common Schema Module]]
+- depends_on [[TASK-001-SPEC-007: Implement Common Schema Module]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-001-SPEC-007: Schema Common Module]]

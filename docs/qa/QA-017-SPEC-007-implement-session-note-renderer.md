@@ -18,7 +18,7 @@ tags:
 Retro-validate TASK-008-SPEC-007 via `src/renderers/session-note.ts` (154 LOC), `tests/session-round-trip.test.ts`, and round-trip property test.
 
 - **Feature**: SessionNote Renderer (TASK-008-SPEC-007)
-- **Scope**: `_shared/composition/src/renderers/session-note.ts`
+- **Scope**: `shared/composition/src/renderers/session-note.ts`
 - **Acceptance Criteria**: REQ-007-SPEC-007, ADR-003 D-2 / D-3 / D-8
 
 ## Approach
@@ -76,6 +76,6 @@ Retro-validate TASK-008-SPEC-007 via `src/renderers/session-note.ts` (154 LOC), 
 
 ## Relations
 
-- validates [[TASK-008-SPEC-007: Implement SessionNote Renderer]]
+- depends_on [[TASK-008-SPEC-007: Implement SessionNote Renderer]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - implements [[REQ-007-SPEC-007: SessionNote Markdown Renderer]]

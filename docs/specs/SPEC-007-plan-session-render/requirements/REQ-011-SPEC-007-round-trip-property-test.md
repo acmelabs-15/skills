@@ -64,8 +64,8 @@ Test design from ANALYSIS-002 Appendix H. Uses Bun.file().text() for fixture loa
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `_shared/composition/src/tests/round-trip.test.ts` | NEW | Round-trip property test for plan and session |
-| `_shared/composition/src/tests/fixtures/` | NEW | PLAN-001 trimmed fixture + SESSION fixture |
+| `shared/composition/src/tests/round-trip.test.ts` | NEW | Round-trip property test for plan and session |
+| `shared/composition/src/tests/fixtures/` | NEW | PLAN-001 trimmed fixture + SESSION fixture |
 
 ## Observations
 

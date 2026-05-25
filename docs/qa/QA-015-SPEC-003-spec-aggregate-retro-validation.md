@@ -17,7 +17,7 @@ tags:
 Aggregate retro-validation across SPEC-003 (PLAN Adapter) covering all 5 TASKs, 5 REQs, and 2 DESIGNs. Validates the Wave 2 integration (commits 5299aea + 2f049fd) against the surgically-reverted Brain notes.
 
 - **Feature**: SPEC-003 PLAN Adapter — all TASKs, REQs, DESIGNs aggregate verdict
-- **Scope**: `_shared/composition/src/adapters/plan.ts` + `schemas/distribution/plan.plan.schema.ts` + `schemas/composition/plan.plan.schema.ts` + `schemas/index.ts` + `tests/plan-adapter.test.ts` + `tests/plan-round-trip.test.ts` + `tests/plan-frontmatter.test.ts` + `tests/plan-integrity-floor.test.ts` + `tests/fixtures/plan-sample.md` + `tests/fixtures/plan-distribution.plan.yaml`
+- **Scope**: `shared/composition/src/adapters/plan.ts` + `schemas/distribution/plan.plan.schema.ts` + `schemas/composition/plan.plan.schema.ts` + `schemas/index.ts` + `tests/plan-adapter.test.ts` + `tests/plan-round-trip.test.ts` + `tests/plan-frontmatter.test.ts` + `tests/plan-integrity-floor.test.ts` + `tests/fixtures/plan-sample.md` + `tests/fixtures/plan-distribution.plan.yaml`
 - **Acceptance Criteria**: 5 REQ ACs + 2 DESIGN compliance + 5 TASK DoDs + ADR-001 F-8 + ADR-002 D-2/D-3/D-4/D-5
 
 ## Approach
@@ -110,7 +110,7 @@ THE PROOF (the core REQ-005 deliverable) passes: SHA-256(original stripped) === 
 
 ## Relations
 
-- validates [[SPEC-003: PLAN Adapter]]
+- depends_on [[SPEC-003: PLAN Adapter]]
 - caused_by [[QA-010-SPEC-003: PLAN Adapter Base]]
 - caused_by [[QA-011-SPEC-003: Regen Sections and Integrity Floor]]
 - caused_by [[QA-012-SPEC-003: PLAN Frontmatter Mutations]]

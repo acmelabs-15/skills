@@ -48,7 +48,7 @@ Functional
 
 - [requirement] /recompose orchestrates N-to-1 merge via LLM composition plan then deterministic script execution #recompose #pipeline
 - [fact] Composition plans use plural sources and singular destination per ADR-002 D-1 schema shape #plan-schema #composition
-- [decision] CLI entry point at _shared/composition/src/recompose.ts mirrors decompose.ts structure #entry-point #symmetry
+- [decision] CLI entry point at shared/composition/src/recompose.ts mirrors decompose.ts structure #entry-point #symmetry
 - [constraint] Round-trip identity test requires both /decompose and /recompose to validate zero drift end-to-end #round-trip #proof
 
 ## Relations

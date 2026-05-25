@@ -31,9 +31,9 @@ Out of Scope: dispatcher; integrity floor; extractByRange; fixture YAML files (c
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/adapters/plan.ts | MODIFY | applyFrontmatterMutations swap-key-value semantics plus reverseFrontmatterMutations plus JSON branches parsing |
-| _shared/composition/tests/plan-frontmatter.test.ts | MODIFY | Update existing tests to new semantics plus add inverse-identity round-trip test |
-| _shared/composition/tests/plan-round-trip.test.ts | MODIFY | Add frontmatter_map to distributionSpec and assert AC-3 |
+| shared/composition/src/adapters/plan.ts | MODIFY | applyFrontmatterMutations swap-key-value semantics plus reverseFrontmatterMutations plus JSON branches parsing |
+| shared/composition/tests/plan-frontmatter.test.ts | MODIFY | Update existing tests to new semantics plus add inverse-identity round-trip test |
+| shared/composition/tests/plan-round-trip.test.ts | MODIFY | Add frontmatter_map to distributionSpec and assert AC-3 |
 
 ## Definition of Done
 

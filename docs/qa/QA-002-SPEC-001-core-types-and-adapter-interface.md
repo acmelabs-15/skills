@@ -1,6 +1,6 @@
 ---
 title: 'QA-002-SPEC-001: Core Types and Adapter Interface'
-type: test_report
+type: qa
 permalink: qa/qa-002-spec-001-core-types-and-adapter-interface
 status: DONE
 tags:
@@ -17,7 +17,7 @@ tags:
 Verify TASK-002-SPEC-001 deliverables: two type-only files defining the composition layer's core data types and adapter contract. No runtime logic exists; DoD is purely type-correctness and signature conformance against [[DESIGN-002-SPEC-001: DataSource Interface and Module Structure]].
 
 - **Feature**: Composition Core (SPEC-001)
-- **Scope**: `_shared/composition/src/core/types.ts`, `_shared/composition/src/core/adapter.ts`
+- **Scope**: `shared/composition/src/core/types.ts`, `shared/composition/src/core/adapter.ts`
 - **Acceptance Criteria**: tsc --noEmit exit 0, all 5 types present, CompositionAdapter interface with 5 methods + sourceType, all-sync per ADR-002
 
 ## Approach
@@ -106,5 +106,5 @@ None. Type-only deliverables have no branch/line coverage target. tsc --noEmit i
 
 ## Relations
 
-- validates [[TASK-002-SPEC-001: Define Core Types and Adapter Interface]]
+- depends_on [[TASK-002-SPEC-001: Define Core Types and Adapter Interface]]
 - part_of [[SPEC-001: Composition Core and ADR Adapter]]

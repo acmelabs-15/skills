@@ -24,7 +24,7 @@ Implement the cross_source_updates handler: the CrossSourceUpdate Zod schema and
 
 ## Definition of Done
 
-- [x] crossSourceUpdateSchema defined and exported from _shared/composition/schemas/distribution/session.plan.schema.ts with shape: target_source_type (literal "plan"), target_path (string min 1), optional frontmatter_map, optional wikilink_map
+- [x] crossSourceUpdateSchema defined and exported from shared/composition/schemas/distribution/session.plan.schema.ts with shape: target_source_type (literal "plan"), target_path (string min 1), optional frontmatter_map, optional wikilink_map
 - [x] CrossSourceUpdate type exported from the same file
 - [x] SessionAdapter.getCrossSourceUpdates method implemented as pass-through returning distributionPlan.cross_source_updates or empty array
 - [x] SessionAdapter.supportsCrossSourceUpdates flag set to true
@@ -39,9 +39,9 @@ Implement the cross_source_updates handler: the CrossSourceUpdate Zod schema and
 
 **In Scope**:
 
-- _shared/composition/schemas/distribution/session.plan.schema.ts (crossSourceUpdateSchema and type)
-- _shared/composition/src/adapters/session.ts (getCrossSourceUpdates method)
-- Unit tests at _shared/composition/tests/session-cross-source.test.ts
+- shared/composition/schemas/distribution/session.plan.schema.ts (crossSourceUpdateSchema and type)
+- shared/composition/src/adapters/session.ts (getCrossSourceUpdates method)
+- Unit tests at shared/composition/tests/session-cross-source.test.ts
 
 **Out of Scope**:
 
@@ -55,9 +55,9 @@ Implement the cross_source_updates handler: the CrossSourceUpdate Zod schema and
 
 | File | Action | Description |
 |------|--------|-------------|
-| _shared/composition/schemas/distribution/session.plan.schema.ts | Modify | crossSourceUpdateSchema and CrossSourceUpdate type |
-| _shared/composition/src/adapters/session.ts | Modify | getCrossSourceUpdates pass-through method |
-| _shared/composition/tests/session-cross-source.test.ts | Create/Modify | Unit tests for schema and pass-through method |
+| shared/composition/schemas/distribution/session.plan.schema.ts | Modify | crossSourceUpdateSchema and CrossSourceUpdate type |
+| shared/composition/src/adapters/session.ts | Modify | getCrossSourceUpdates pass-through method |
+| shared/composition/tests/session-cross-source.test.ts | Create/Modify | Unit tests for schema and pass-through method |
 
 ## Effort
 

@@ -35,8 +35,8 @@ injectiveDisjointMap uses Set operations per ADR-002 D-5 spec. containedPathSche
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| _shared/composition/src/core/validators.ts | NEW | Validator implementations |
-| _shared/composition/tests/validators.test.ts | NEW | Validator unit tests |
+| shared/composition/src/core/validators.ts | NEW | Validator implementations |
+| shared/composition/tests/validators.test.ts | NEW | Validator unit tests |
 
 ## Testing Requirements
 

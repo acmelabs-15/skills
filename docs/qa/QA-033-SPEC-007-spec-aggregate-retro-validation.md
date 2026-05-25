@@ -1,6 +1,6 @@
 ---
 title: 'QA-033-SPEC-007: Spec Aggregate Retro Validation'
-type: test-report
+type: qa
 permalink: qa/qa-033-spec-007-spec-aggregate-retro-validation
 status: DONE
 validates: '[[SPEC-007: Plan/Session Render Implementation]]'
@@ -14,7 +14,6 @@ tags:
 - spec-007
 - aggregate
 - retro-validation
-- test-report
 ---
 
 # QA-033-SPEC-007: Spec Aggregate Retro Validation
@@ -185,7 +184,7 @@ SPEC-007: stays ACCEPTED   (cannot flip to DONE — REQ-012 + TASK-013 blocked o
 
 ## Relations
 
-- validates [[SPEC-007: Plan/Session Render Implementation]]
+- depends_on [[SPEC-007: Plan/Session Render Implementation]]
 - part_of [[SPEC-007: Plan/Session Render Implementation]]
 - relates_to [[QA-010-SPEC-007: Implement Common Schema Module]]
 - relates_to [[QA-011-SPEC-007: Implement PlanNote Zod Schema]]

@@ -32,13 +32,13 @@ Functional
 
 ## Context
 
-ADR-002 D-2 specifies the CompositionAdapter interface as a 5-method synchronous TypeScript interface. The interface is the public contract that every per-type adapter must implement. The parse/serialize pair provides round-trip char-identity validation (remark AST). The extractByRange/applyMutations/reverseMutations trio provides the production hash-validation path (string-based). The sha256() hash utility is a shared import at _shared/composition/src/core/hash.ts, not part of the adapter interface (per ADR-002 D-2 P1-I resolution).
+ADR-002 D-2 specifies the CompositionAdapter interface as a 5-method synchronous TypeScript interface. The interface is the public contract that every per-type adapter must implement. The parse/serialize pair provides round-trip char-identity validation (remark AST). The extractByRange/applyMutations/reverseMutations trio provides the production hash-validation path (string-based). The sha256() hash utility is a shared import at shared/composition/src/core/hash.ts, not part of the adapter interface (per ADR-002 D-2 P1-I resolution).
 
 ADR-001 D-4 locks the discriminated union on source_type, meaning the script dispatches to the correct adapter based on plan YAML source_type field. The CompositionAdapter interface is the mechanism by which this dispatch produces uniform behavior across all 5 source types.
 
 ## Acceptance Criteria
 
-- [x] GIVEN a TypeScript file at _shared/composition/src/core/adapter.ts
+- [x] GIVEN a TypeScript file at shared/composition/src/core/adapter.ts
       WHEN compiled with tsc strict mode
       THEN the CompositionAdapter interface exports all 5 methods plus sourceType property with correct signatures matching ADR-002 D-2
 
@@ -68,7 +68,7 @@ ADR-001 D-4 locks the discriminated union on source_type, meaning the script dis
 
 ## Implementation Notes
 
-The interface lives at _shared/composition/src/core/adapter.ts. Supporting types (LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec) live at_shared/composition/src/core/types.ts per ADR-002 D-2. The Root type is imported from mdast. All methods are synchronous per ADR-002 Considered Options Axis 1 (markdown parsing is CPU-bound with no I/O).
+The interface lives at shared/composition/src/core/adapter.ts. Supporting types (LineRange, RenumberMap, WikilinkMap, FrontmatterMap, MutationSpec) live atshared/composition/src/core/types.ts per ADR-002 D-2. The Root type is imported from mdast. All methods are synchronous per ADR-002 Considered Options Axis 1 (markdown parsing is CPU-bound with no I/O).
 
 ## Consumer Implementation Pattern
 

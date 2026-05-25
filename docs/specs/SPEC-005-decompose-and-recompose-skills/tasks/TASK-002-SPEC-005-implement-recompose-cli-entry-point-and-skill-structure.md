@@ -26,7 +26,7 @@ Create the /recompose skill definition (SKILL.md) and the recompose.ts CLI entry
 ## Definition of Done
 
 - [x] recompose/SKILL.md created with trigger phrases, LLM instructions for composition plan authoring, AskUserQuestion integration, and execution command
-- [x] _shared/composition/src/recompose.ts created with: CLI arg parsing (--plan), YAML loading with FAILSAFE_SCHEMA, Zod validation via planSchema.parseAsync(), adapter dispatch via getAdapter(), multi-source extract/concatenate/mutate/hash-validate/write pipeline, audit log emission, structured error reporting
+- [x] shared/composition/src/recompose.ts created with: CLI arg parsing (--plan), YAML loading with FAILSAFE_SCHEMA, Zod validation via planSchema.parseAsync(), adapter dispatch via getAdapter(), multi-source extract/concatenate/mutate/hash-validate/write pipeline, audit log emission, structured error reporting
 - [x] recompose.ts exits with code 0 on success, code 1 on validation error, code 2 on hash mismatch
 - [x] Unit test: recompose.ts rejects invalid --plan argument with usage message
 - [x] Unit test: recompose.ts rejects plan YAML that fails Zod validation with structured PlanValidationError
@@ -36,7 +36,7 @@ Create the /recompose skill definition (SKILL.md) and the recompose.ts CLI entry
 **In Scope**:
 
 - recompose/SKILL.md
-- _shared/composition/src/recompose.ts
+- shared/composition/src/recompose.ts
 - Unit tests for recompose.ts
 
 **Out of Scope**:
@@ -49,8 +49,8 @@ Create the /recompose skill definition (SKILL.md) and the recompose.ts CLI entry
 | File | Action | Description |
 |---|---|---|
 | recompose/SKILL.md | Create | Claude Code skill definition for /recompose |
-| _shared/composition/src/recompose.ts | Create | CLI entry point for composition plan execution |
-| _shared/composition/src/recompose.test.ts | Create | Unit tests for CLI entry point |
+| shared/composition/src/recompose.ts | Create | CLI entry point for composition plan execution |
+| shared/composition/src/recompose.test.ts | Create | Unit tests for CLI entry point |
 
 ## Effort
 

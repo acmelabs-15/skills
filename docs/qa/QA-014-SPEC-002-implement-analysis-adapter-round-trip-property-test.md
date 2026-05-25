@@ -24,7 +24,7 @@ Retro-validate the ANALYSIS adapter round-trip property test against TASK-005-SP
 - **Test Types**: property, unit, hash-identity
 - **Environment**: bun test v1.3.13; commit 2f049fd
 - **Data Strategy**: shared fixture tests/fixtures/analysis-sample.md plus inline MutationSpec literal in the test file
-- **Test File**: `_shared/composition/tests/analysis-round-trip.test.ts`
+- **Test File**: `shared/composition/tests/analysis-round-trip.test.ts`
 
 ## Results
 
