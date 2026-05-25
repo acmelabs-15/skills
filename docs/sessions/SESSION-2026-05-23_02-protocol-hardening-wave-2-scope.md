@@ -3437,3 +3437,23 @@ Executing the Event-159 REMAINING close-out in order: (2) SPEC-root finalization
 
 - SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 160; resume for Event-159 close-out)
 - No PLAN change (build.SPEC-008 already IN_PROGRESS, owning SESSION-2026-05-23_02; 47/47 unchanged)
+
+
+## Event 161 — Step 2 DONE: SPEC-008 root Acceptance + Success Criteria finalized (held items annotated)
+
+Event-159 close-out Step 2. Verified each "genuinely-done" claim against disk/git before flipping (no phantom checkboxes):
+
+- AC #3 (47 TASKs DONE) → `[x]` — all 47 Tasks-list rows `[x]`; build closed 47/47; `TaskNoteSchema` parses TASK notes.
+- AC #7 (composition tests) → `[x]` + stale count reconciled `508/508` → **1252/0** (composition 735 + defrag/ingest/detect 84 + lifecycle skills 180 + hooks 253). Covers the SPEC-root half of Step 3.
+- AC #8 (hooks smoke-tested) → `[x]` — TASK-046; `hooks/` smoke suite green within the 253 hook tests.
+- AC #9 (11 Track-4 drift items) → `[x]` — sweeps + deletions + amendments all landed (Event 159 DONE inventory).
+- AC #1/#2 HELD `[ ]` + annotated **DEFERRED-PENDING-PARSER-CONFORMANCE** — the 12 REQs / 4 DESIGNs ARE ACCEPTED (QA-evidence basis, Events 144-147) but `validateRequirementAcClaim`/`validateDesignComplianceClaim` cannot parse the notes (`## EARS` vs `## Requirement Statement`; `[design]` category absent from the 10-category enum).
+
+Success Criteria: SC#2 (schema-coverage matrix — 12 schema files verified on disk: adr/analysis/crit/design/epic/plan/plan-yaml/qa/requirement/session/spec-root/task) → `[x]`; SC#3 (adversarial-fixture corpus — 7 type dirs / 20 fixtures verified; adr/analysis absence by-design per ADR-005 D-B) → `[x]`; SC#1 HELD (hooks DISABLED; go-live gated on parser fix); SC#4 HELD (brief-generator scripts unwired into the 7 lifecycle `SKILL.md` — Problem A).
+
+**SPEC-008 root status STAYS ACCEPTED (NOT DONE)** — `validateSpecDoneClaim` correctly sees 4 held `[ ]` items; the DONE flip is deferred to the post-merge parser-conformance/wiring session.
+
+### State Changes
+
+- SPEC-008 root: AC #3/#7/#8/#9 → `[x]`; AC #1/#2 held `[ ]` + annotated; SC #2/#3 → `[x]`; SC #1/#4 held `[ ]` + annotated. Status unchanged (ACCEPTED).
+- No PLAN change (SPEC-root AC/SC are SPEC-internal rollups; no PLAN-part transition).
