@@ -134,19 +134,19 @@ graph TD
 
 ## SPEC-008 Build Marathon — Task-Level Wave Graph
 
-Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part (the part-level graph above shows `build_SPEC_008` as the umbrella node; this graph expands it to show all 46 TASKs grouped by wave, with status from the PLAN workflow items below). Updated 2026-05-24 SESSION-2026-05-23_02 Event 113 (Batch 11 closed — 014/023/041/042/043/045 DONE; REQ-011 ACCEPTED; 40/47 fully closed; 044 awaiting QA).
+Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part (the part-level graph above shows `build_SPEC_008` as the umbrella node; this graph expands it to show all 47 TASKs grouped by wave, with status from the PLAN workflow items below). Updated 2026-05-24 SESSION-2026-05-23_02 Event 121 (sync audit — 40/47 fully closed; TASK-044 impl IN_PROGRESS awaiting QA; REQ-011 HELD DRAFT pending AC10 latency measurement — NOT accepted).
 
 **Status legend**: ✅ DONE (impl + QA both PASS) · ⚡ IN_PROGRESS (impl or qa in flight) · ⏸ PENDING (workflow item seeded, awaiting batch).
 
 **Wave structure** (per Event 64 resume protocol):
 
 - **Wave 0**: Zero-dependency foundation (9 TASKs; all DONE)
-- **Wave 1a**: Schemas + parsers; barrel-coordinated on `schemas/index.ts` + `parsers/index.ts` (8 TASKs; 3 done, 3 IN_PROGRESS this Batch 5a, 2 pending Batch 5b)
-- **Wave 1b**: Per-skill scripts; Track 2 ingest/decompose/recompose/defrag (10 TASKs)
-- **Wave 1c**: Cleanup + harness extensions (8 TASKs)
-- **Wave 2/3**: Validators; barrel-serialized on `validators/index.ts` (3 TASKs)
-- **Wave 4**: Hook handlers + integration fixtures (7 TASKs)
-- **Wave 5**: Terminal smoke tests (1 TASK)
+- **Wave 1a**: Schemas + parsers; barrel-coordinated on `schemas/index.ts` + `parsers/index.ts` (8 TASKs; all DONE)
+- **Wave 1b**: Per-skill scripts; Track 2 ingest/decompose/recompose/defrag (10 TASKs; all DONE)
+- **Wave 1c**: Cleanup + harness extensions (8 TASKs; 5 DONE, 4 PENDING)
+- **Wave 2/3**: Validators; barrel-serialized on `validators/index.ts` (3 TASKs; all DONE)
+- **Wave 4**: Hook handlers + integration fixtures (7 TASKs; 5 DONE, 1 IN_PROGRESS, 1 PENDING)
+- **Wave 5**: Terminal smoke tests (1 TASK; PENDING)
 
 ```mermaid
 %%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':10,'rankSpacing':45,'padding':10,'diagramPadding':14,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'11px','clusterBkg':'#f9fafb','clusterBorder':'#e5e7eb'}}}%%
@@ -181,7 +181,7 @@ graph TD
     T006["✅ TASK-006<br/><span style='font-size:9px'>ANALYSIS+EPIC+CRIT parsers</span>"]
   end
 
-  subgraph W1b ["Wave 1b — Per-Skill Scripts (9 DONE ✅ · 1 pending 014 — REQ-005 ACCEPTED; REQ-004 needs 014)"]
+  subgraph W1b ["Wave 1b — Per-Skill Scripts (10/10 DONE ✅ — REQ-005 ACCEPTED; REQ-004 needs AC-9 prefix-collision test)"]
     direction LR
     T011["✅ TASK-011<br/><span style='font-size:9px'>validate-task-done</span>"]
     T012["✅ TASK-012<br/><span style='font-size:9px'>transition-impl-item</span>"]
@@ -195,7 +195,7 @@ graph TD
     T020["✅ TASK-020<br/><span style='font-size:9px'>dispatch-analyst + reviewer</span>"]
   end
 
-  subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (3 ✅ 022/027/032 · 5 PENDING; TASK-047 follow-up DONE ✅)"]
+  subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (5 ✅ 022/023/027/032/047 · 4 PENDING 028/031/035/036)"]
     direction LR
     T047["✅ TASK-047<br/><span style='font-size:9px'>CRIT H1-drift (REQ-001 AC-5 gap)</span>"]
     T022["✅ TASK-022"]
@@ -215,14 +215,14 @@ graph TD
     T009["✅ TASK-009<br/><span style='font-size:9px'>validateEpicDoneClaim (cross-note)</span>"]
   end
 
-  subgraph W4 ["Wave 4 — Hook Handlers + Final Fixtures (1 ✅ 038 · 6 PENDING)"]
+  subgraph W4 ["Wave 4 — Hook Handlers + Final Fixtures (5 ✅ 038/041/042/043/045 · 1 ⚡ 044 · 1 PENDING 024)"]
     direction LR
     T024["⏸ TASK-024<br/><span style='font-size:9px'>Final fixtures</span>"]
     T038["✅ TASK-038<br/><span style='font-size:9px'>dispatch-validator</span>"]
     T041["✅ TASK-041<br/><span style='font-size:9px'>L1 PreToolUse Edit</span>"]
     T042["✅ TASK-042<br/><span style='font-size:9px'>L2 PreToolUse MCP</span>"]
     T043["✅ TASK-043<br/><span style='font-size:9px'>L3-5 commit/push/PR</span>"]
-    T044["⏸ TASK-044<br/><span style='font-size:9px'>L4 pre-commit</span>"]
+    T044["⚡ TASK-044<br/><span style='font-size:9px'>L6 stop-backstop</span>"]
     T045["✅ TASK-045<br/><span style='font-size:9px'>L7 git-state-observer</span>"]
   end
 
@@ -255,7 +255,8 @@ graph TD
 
   class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
   class T007,T008,T009,T047,T011,T012,T013,T015,T016,T017,T018,T019,T020,T022,T032,T038,T027,T014,T023,T041,T042,T043,T045 done
-  class T024,T028,T031,T035,T036,T044,T046 pending
+  class T044 inprogress
+  class T024,T028,T031,T035,T036,T046 pending
 ```
 
 **Maintenance rule**: each TASK closure (impl + QA both PASS) flips its `class` declaration from `pending`/`inprogress` to `done`, alongside the SPEC-008 root rollup tick and full Event 55 propagation. Each Batch START flips IN_PROGRESS items from `pending` to `inprogress`. Keep this graph current per the same propagation cadence as the SPEC root rollup.

@@ -2845,3 +2845,20 @@ Resuming the Event-117 plan at step A. Dispatching ONE `brain:🧠-qa` agent to 
 - QA agent's unauthorized SPEC-root edit REVERTED (git checkout); no false state committed
 - REQ-011-SPEC-008: remains DRAFT (AC10 latency unmeasured → cannot ACCEPT per validateRequirementAcClaim)
 - Step A PARTIAL: layered-severity verdict-mapping validated; REQ-011 acceptance deferred pending AC10 decision
+
+
+## Event 121 — STOP-THE-LINE sync: SPEC-008 root + PLAN wave-graph drift remediated (user-flagged)
+
+User flagged (correctly) that the SPEC root + PLAN dependency graphs were stale. Full holistic audit performed against ground truth (TASK notes 40 DONE / 7 TODO; REQ frontmatter 001/002/003/005 ACCEPTED, rest DRAFT; DESIGN-001 ACCEPTED, rest DRAFT; parts build.SPEC-008 + protocol-hardening IN_PROGRESS, rest DONE). Findings + fixes:
+
+**SPEC-008 root** — Requirements/Designs/Tasks lists were already CORRECT (40/47 accurately reflected). Fixed: (a) Acceptance Criteria "All 46 TASKs" → "47" (TASK-047 added post-authoring); (b) Success Criteria "TEST-REPORT" → "QA" (rename) + "4 deferred P2" → "5" (the list enumerates 5 items).
+
+**PLAN SPEC-008 wave graph** — substantial drift (the documented drift modes): (a) provenance line FALSELY asserted "REQ-011 ACCEPTED" → corrected to "HELD DRAFT pending AC10"; (b) intro "46 TASKs" → 47; (c) W1a wave-structure prose stale batch-status → "all DONE"; (d) W1b header "9 DONE · 1 pending 014" → "10/10 DONE", "REQ-004 needs 014" → "needs AC-9 test"; (e) W1c header "3 ✅ · 5 PENDING" → "5 ✅ · 4 PENDING"; (f) W4 header "1 ✅ · 6 PENDING" → "5 ✅ · 1 ⚡ 044 · 1 PENDING 024"; (g) **T044 node label WRONG "L4 pre-commit" → "L6 stop-backstop"** + status ⏸→⚡ (impl IN_PROGRESS) + moved to `class inprogress`.
+
+**Cross-Part graph + Progress Dashboard**: audited — CORRECT (no part transitioned since last update), no change needed. The wave-graph `class` machine-state lines (40 done / 7 not-done) were already correct; the drift lived in the human-readable subgraph headers + node labels + provenance line — exactly the modes the sync rule warns accrue from batched/deferred syncs.
+
+### State Changes
+
+- SPEC-008 root: Acceptance Criteria task-count 46→47; Success Criteria TEST-REPORT→QA + deferred-count 4→5
+- PLAN wave graph: provenance + intro count + W1a wave-structure prose + W1b/W1c/W4 subgraph headers + T044 label/status/class all corrected to ground truth
+- Derived views (SPEC-root all-5-lists + PLAN cross-part + wave graph + dashboard) now current as of 40/47

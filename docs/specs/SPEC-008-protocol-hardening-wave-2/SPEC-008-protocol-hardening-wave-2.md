@@ -148,7 +148,7 @@ Render layer architecture; T2 dispatch-brief generators import cross-cutting con
 
 - [ ] All 12 REQs status ACCEPTED with their `## Acceptance Criteria` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateRequirementAcClaim`)
 - [ ] All 4 DESIGN notes status ACCEPTED with `## Compliance` checkboxes `[x]` where present (Wave 2 acceptance verifiable via `validateDesignComplianceClaim`)
-- [ ] All 46 TASKs status DONE with all `## Definition of Done` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateTaskDoneClaim`)
+- [ ] All 47 TASKs status DONE with all `## Definition of Done` checkboxes `[x]` (Wave 2 acceptance verifiable via `validateTaskDoneClaim`)
 - [x] ADR coverage gate PASS — ADR-001, ADR-002, ADR-003, ADR-005 all have `implemented_by [[SPEC-008: Protocol Hardening Wave 2]]` in their Relations sections
 - [x] Gate A semantic gap analysis PASS — no REQ flagged as vague or runtime-judgment-dependent by analyst review
 - [x] Gate B 4 binary drift checks PASS — (a) REQ→ADR traceability, (b) scope conservation, (c) TASK→REQ traceability, (d) Scope-In match against ANALYSIS-004
@@ -160,7 +160,7 @@ Render layer architecture; T2 dispatch-brief generators import cross-cutting con
 ## Success Criteria
 
 - [ ] Voluntary-invocation gap closed: every gate point in the rigid per-TASK build+QA cycle is mechanically enforced by a hook (PreToolUse or Stop) that cannot be bypassed by orchestrator omission
-- [ ] Schema coverage matrix complete: all 16 canonical Brain note types either have schemas (12 covered: SPEC root, TASK, REQ, DESIGN, SESSION, PLAN, TEST-REPORT, ADR, ANALYSIS, EPIC, CRIT, plan-yaml) or are explicitly deferred (4 deferred P2: PRD, FEATURE, SECURITY, RETROSPECTIVE, SKILL)
+- [ ] Schema coverage matrix complete: all 16 canonical Brain note types either have schemas (12 covered: SPEC root, TASK, REQ, DESIGN, SESSION, PLAN, QA, ADR, ANALYSIS, EPIC, CRIT, plan-yaml) or are explicitly deferred (5 deferred P2: PRD, FEATURE, SECURITY, RETROSPECTIVE, SKILL)
 - [ ] Adversarial-fixture inventory operates as the drift-regression marker corpus: every Audit E top-10 scenario has a fixture file; every future drift surface gets a new fixture file as the regression test
 - [ ] Dispatch briefs auto-include schema-defined constraints (e.g., `validRelationTypes`) via direct import — no manual prose sync between schema and brief
 
