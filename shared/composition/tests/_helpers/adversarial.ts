@@ -60,16 +60,139 @@ export type AdversarialCase = {
 };
 
 /**
- * Thrown when a fixture cannot be parsed into its note model. Distinct type so
- * the harness surfaces fixture-malformation separately from validator
- * rejection: a malformed fixture is an authoring bug, not a validator verdict.
+ * Thrown when a fixture cannot be parsed into its note model OR when a fixture's
+ * mandatory `drift-marker` comment is absent / unparseable. Distinct type so the
+ * harness surfaces fixture-malformation separately from validator rejection: a
+ * malformed fixture is an authoring bug, not a validator verdict.
+ *
+ * Two construction forms:
+ * - `(validator, cause)` — a parser threw while loading the note model; the
+ *   cause's message is wrapped with the validator tag for context.
+ * - `(message)` — the drift-marker comment is missing or its `expected-reject:`
+ *   field cannot be parsed; the verbatim message names the offending fixture.
+ *
+ * Both forms keep the "fixture malformed" prefix so REQ-006 AC-3's distinct
+ * surfacing holds: a malformed fixture never masquerades as a validator verdict.
  */
 class FixtureMalformedError extends Error {
-  constructor(validator: ValidatorType, cause: unknown) {
-    const detail = cause instanceof Error ? cause.message : String(cause);
-    super(`fixture malformed (${validator}): ${detail}`);
+  constructor(validatorOrMessage: ValidatorType | string, cause?: unknown) {
+    if (cause === undefined) {
+      super(validatorOrMessage);
+    } else {
+      const detail = cause instanceof Error ? cause.message : String(cause);
+      super(`fixture malformed (${validatorOrMessage}): ${detail}`);
+    }
     this.name = "FixtureMalformedError";
   }
+}
+
+/**
+ * Thrown when a fixture's parsed `drift-marker` comment regex diverges from the
+ * runner-table `expectedReject` for the same fixture. The two values must be
+ * byte-identical (`.source` + `.flags`) so the in-file comment is a *validated*
+ * artifact rather than stale documentation: if a contributor edits one without
+ * the other, this fires and names the fixture. Distinct from
+ * `FixtureMalformedError` because the comment IS well-formed — the fault is a
+ * cross-source drift between the comment and the table, not a malformation.
+ */
+class DriftMarkerMismatchError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "DriftMarkerMismatchError";
+  }
+}
+
+/**
+ * The parsed contents of a fixture's mandatory `drift-marker` HTML comment.
+ * Only `expectedReject` is load-bearing for the rejection assertion; `id` is
+ * retained for error messages so a malformed/divergent comment names the
+ * fixture by its `drift-NN-<slug>` marker.
+ */
+type DriftMarker = {
+  /** The `drift-NN-<slug>` identifier from the `drift-marker:` field. */
+  id: string;
+  /** The `RegExp` parsed from the comment's `expected-reject:` field. */
+  expectedReject: RegExp;
+};
+
+/**
+ * Compile a regex-literal string of the form `/source/flags` (the form the
+ * fixture authors use in the `expected-reject:` field) into a `RegExp`.
+ * The final `/` separates the source from optional trailing flags, so we split
+ * on the LAST slash to tolerate sources that themselves contain `/`.
+ */
+function compileRegexLiteral(literal: string): RegExp {
+  const trimmed = literal.trim();
+  if (!trimmed.startsWith("/")) {
+    throw new Error(`expected a /regex/ literal, got: ${trimmed}`);
+  }
+  const lastSlash = trimmed.lastIndexOf("/");
+  if (lastSlash === 0) {
+    throw new Error(`unterminated /regex/ literal: ${trimmed}`);
+  }
+  const source = trimmed.slice(1, lastSlash);
+  const flags = trimmed.slice(lastSlash + 1);
+  return new RegExp(source, flags);
+}
+
+/**
+ * Assert the fixture's mandatory `drift-marker` comment is present, then parse
+ * its `expected-reject:` field into a `RegExp`. The comment format (REQ-006
+ * AC-7) is:
+ *
+ *   <!-- drift-marker: <id>; lying-behavior: <one-line>; expected-reject: <regex> -->
+ *
+ * The `expected-reject:` value runs from after its label to the comment's
+ * closing ` -->`. A missing comment, a missing `expected-reject:` field, or an
+ * unparseable regex literal all throw `FixtureMalformedError` naming the
+ * fixture — keeping a garbled comment a loud authoring failure (AC-3), never a
+ * silent pass.
+ */
+function parseDriftMarker(fixture: string, md: string): DriftMarker {
+  const comment = md.match(/<!--\s*drift-marker:\s*([\s\S]*?)\s*-->/);
+  if (comment === null) {
+    throw new FixtureMalformedError(
+      `fixture malformed (${fixture}): missing required <!-- drift-marker: ...; expected-reject: <regex> --> comment`,
+    );
+  }
+  const body = comment[1] ?? "";
+  const id = body.split(";", 1)[0]?.trim() ?? "";
+  const rejectField = body.match(/expected-reject:\s*([\s\S]*)$/);
+  if (rejectField === null) {
+    throw new FixtureMalformedError(
+      `fixture malformed (${fixture}): drift-marker comment is missing the "expected-reject:" field`,
+    );
+  }
+  try {
+    const expectedReject = compileRegexLiteral(rejectField[1] ?? "");
+    return { id, expectedReject };
+  } catch (cause) {
+    const detail = cause instanceof Error ? cause.message : String(cause);
+    throw new FixtureMalformedError(
+      `fixture malformed (${fixture}): unparseable expected-reject regex in drift-marker comment: ${detail}`,
+    );
+  }
+}
+
+/**
+ * Cross-check the regex parsed from the fixture's `drift-marker` comment
+ * against the runner-table `expectedReject`. They must be byte-identical in
+ * both `.source` and `.flags`; any divergence throws `DriftMarkerMismatchError`
+ * naming the fixture. This is the guard that turns the in-file comment from
+ * stale documentation into a mechanically-validated artifact (REQ-006 AC-7):
+ * once cross-checked, the comment value and the table value are proven
+ * identical, so either may serve as the rejection assertion.
+ */
+function assertDriftMarkerMatchesTable(
+  fixture: string,
+  comment: RegExp,
+  table: RegExp,
+): void {
+  if (comment.source === table.source && comment.flags === table.flags) return;
+  throw new DriftMarkerMismatchError(
+    `drift: fixture comment regex != table expectedReject for "${fixture}": ` +
+      `comment /${comment.source}/${comment.flags} vs table /${table.source}/${table.flags}`,
+  );
 }
 
 /**
@@ -229,6 +352,16 @@ function invokeValidator(type: ValidatorType, parsed: unknown): ClaimResult {
  * Anchor on the message the specific lying scenario should provoke, not on the
  * mere fact that some rejection occurred.
  *
+ * Drift-marker validation (REQ-006 AC-7) runs FIRST, before parsing: the
+ * harness asserts the fixture carries a `<!-- drift-marker: ...; expected-reject:
+ * <regex> -->` comment, parses the regex from it, and cross-checks that parsed
+ * regex against the table `expectedReject`. A missing/garbled comment throws a
+ * distinct "fixture malformed" error (AC-3); a comment whose regex diverges from
+ * the table throws a "drift: fixture comment regex != table expectedReject"
+ * error naming the fixture. Both fire loudly rather than passing silently. Once
+ * cross-checked, the comment value and the table value are proven identical, so
+ * the rejection assertion uses the validated (comment-parsed) regex.
+ *
  * Parse failures surface distinctly: a malformed fixture fails the test with a
  * "fixture malformed" message (a `FixtureMalformedError` thrown by the parser
  * dispatch), keeping fixture-authorship debugging separate from
@@ -238,6 +371,12 @@ function invokeValidator(type: ValidatorType, parsed: unknown): ClaimResult {
 export function testAdversarial(label: string, c: AdversarialCase): void {
   test(`adversarial: ${label}`, async () => {
     const md = await Bun.file(resolveFixturePath(c.fixture)).text();
+
+    // AC-7: assert + parse the drift-marker comment, then cross-check it against
+    // the table value so the comment is a validated artifact, not stale docs.
+    const marker = parseDriftMarker(c.fixture, md); // throws → "fixture malformed"
+    assertDriftMarkerMatchesTable(c.fixture, marker.expectedReject, c.expectedReject);
+
     const parsed = parseByValidatorType(c.validator, md); // throws → "fixture malformed"
     const result = invokeValidator(c.validator, parsed);
 
@@ -245,7 +384,24 @@ export function testAdversarial(label: string, c: AdversarialCase): void {
     if (result.verdict !== "FAIL") return; // narrows the union for the lines below
     expect(result.unsatisfied.length).toBeGreaterThan(0);
 
+    // Assert against the validated (comment-parsed) regex; proven identical to
+    // the table value by the cross-check above.
     const message = result.unsatisfied.map((u) => u.text).join(" | ");
-    expect(message).toMatch(c.expectedReject);
+    expect(message).toMatch(marker.expectedReject);
   });
 }
+
+/**
+ * Exported for direct unit testing of the AC-7 drift-marker machinery
+ * (presence + parse + cross-check). The `testAdversarial` registration path
+ * exercises these on every real fixture; these exports let the failure paths
+ * (missing/garbled comment, comment-vs-table divergence) be asserted directly
+ * without authoring a deliberately-broken fixture file on disk.
+ */
+export {
+  DriftMarkerMismatchError,
+  FixtureMalformedError,
+  assertDriftMarkerMatchesTable,
+  parseDriftMarker,
+};
+export type { DriftMarker };

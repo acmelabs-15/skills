@@ -6,7 +6,7 @@ status: PROPOSED
 tags: [drift-marker, phase-x-surface-ac-flip-no-evidence, requirement-validator]
 ---
 
-<!-- drift-marker: drift-01-ac-flip-without-evidence; lying-behavior: QA claims the REQ satisfied while an Acceptance Criteria bullet that demands an "**Evidence**:" line is left unchecked with no deferred rationale; the validator returns FAIL on the unsatisfied AC; expected-reject: /Evidence line/ -->
+<!-- drift-marker: drift-01-ac-flip-without-evidence; lying-behavior: QA claims the REQ satisfied while an Acceptance Criteria bullet that demands an "**Evidence**:" line is left unchecked with no deferred rationale; the validator returns FAIL on the unsatisfied AC; expected-reject: /Evidence/ -->
 
 # REQ-031-SPEC-008: Coverage Matrix Aggregation Contract
 
