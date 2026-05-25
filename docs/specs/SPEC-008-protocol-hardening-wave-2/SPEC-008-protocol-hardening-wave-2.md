@@ -62,8 +62,8 @@ All checkboxes `[ ]` at SPEC ACCEPTED time; `/build` flips them as each child no
 - [x] [[REQ-006-SPEC-008: Adversarial-Claim Test Harness and Initial Fixture Set]]
 - [x] [[REQ-007-SPEC-008: Integration Tests and Mutation Tests and Drift Regression Markers]]
 - [x] [[REQ-008-SPEC-008: Deferred Checkbox Notation and Validator Extension]]
-- [ ] [[REQ-009-SPEC-008: Structural Cleanup Dispatcher Deletion and Shared Rename]]
-- [ ] [[REQ-010-SPEC-008: Brain Note Hygiene and Code-vs-Spec Drift Cleanup]]
+- [x] [[REQ-009-SPEC-008: Structural Cleanup Dispatcher Deletion and Shared Rename]]
+- [x] [[REQ-010-SPEC-008: Brain Note Hygiene and Code-vs-Spec Drift Cleanup]]
 - [x] [[REQ-011-SPEC-008: PreToolUse Blocking Gates]]
 - [x] [[REQ-012-SPEC-008: Stop Backstop and File Changed Observability]]
 

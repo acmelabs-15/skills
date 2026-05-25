@@ -3392,3 +3392,7 @@ Reflection captured (content in [[SKILL-012: bulk-brain-note-migration-tooling-g
 ## Event 157 — [reflect-capture] adr-review gate scope: substance + timing, not "any ADR byte" → [[SKILL-013: adr-review-gate-scope]]
 
 Reflection captured (content in [[SKILL-013: adr-review-gate-scope]]). User questioned whether the ADR-005 D-B clarification needs an adr-review; reasoned waiver: the gate is for new/changed decisions pre-lock + pre-downstream-work, and D-B is post-hoc documentation of an already-implemented + QA-088-validated build finding → full 6-agent adr-review disproportionate; orchestrator review substitutes. Confidence HIGH/MED.
+
+## Event 158 — [reflect-capture] complete-rename includes ADR bodies (no preserve-caveats) → [[SKILL-014: complete-rename-includes-adr-bodies]]
+
+Reflection captured (content in [[SKILL-014: complete-rename-includes-adr-bodies]]). User corrected my ADR-005 approach: I treated the ADR as preserve-only (body kept + a 'read test-report as qa' clarification); user wanted a direct test-report->qa conversion in the body, no backwards-compat, no caveats. ADR immutability governs decision changes, not mechanical renames. Also self-flag: SKILL-013 had cited an auto-memory filename (§5.3 slip), now inlined. Confidence HIGH.

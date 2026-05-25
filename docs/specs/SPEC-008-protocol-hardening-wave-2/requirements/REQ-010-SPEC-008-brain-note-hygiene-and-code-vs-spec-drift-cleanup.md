@@ -2,7 +2,7 @@
 title: 'REQ-010-SPEC-008: Brain Note Hygiene and Code-vs-Spec Drift Cleanup'
 type: requirement
 permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-010-spec-008-brain-note-hygiene-and-code-vs-spec-drift-cleanup-1
-status: DRAFT
+status: ACCEPTED
 tags:
 - requirement
 - spec-008
@@ -30,10 +30,10 @@ WHEN REQ-009-SPEC-007 body text states "9 mutation types" (a stale fact captured
 - [x] GIVEN QA-030 with `type: test_report` and QA-038 with `type: qa` WHEN TASK-034 runs THEN both notes carry the canonical `type: qa` value (per CONVENTIONS Section 3 16-type enum; rename completed 2026-05-21)
 - [x] GIVEN QA-036, QA-038, SESSION-2026-05-20_03 with embedded `/Users/peter.kloss/...` PII paths WHEN TASK-034 runs THEN each path is replaced with a repo-relative or `<repo root>` form per the rule that Brain notes must not embed absolute local filesystem paths (PII + portability) (described inline; no auto-memory citation in the cleaned notes)
 - [x] GIVEN SESSION-2026-05-21_01 with duplicate Event 36/37/38 entries (killed-agent re-entry) WHEN TASK-034 runs THEN duplicates are de-duplicated by either renumbering subsequent events or collapsing to single canonical entries per content-equivalence audit (renumbered to 36b/37b/38b)
-- [ ] GIVEN SPEC-002 and SPEC-003 root notes with `## Artifact Status` checkboxes still `[ ]` despite DONE status WHEN TASK-035 runs THEN each completed artifact's row flips from `[ ]` to `[x]` and each verified-DEFERRED artifact row flips to `[~]` (per REQ-008-SPEC-008 notation)
-- [ ] GIVEN REQ-001-SPEC-002, REQ-002-SPEC-002, REQ-004-SPEC-002, REQ-005-SPEC-002 with `status: DRAFT` despite being implemented WHEN TASK-035 runs THEN each note's frontmatter status flips from DRAFT to ACCEPTED via Brain MCP `edit_note`
-- [ ] GIVEN REQ-009-SPEC-007 body text "9 mutation types" WHEN TASK-036 runs THEN body text reads "11 mutation types" with provenance note citing PR #14 expansion (transition-impl-item + transition-qa-item additions)
-- [ ] GIVEN repaired notes WHEN orchestrator re-runs Audit C grep commands (the auto-memory-filename pattern `[f]eedback_[a-z_]\+` over `docs/`; `grep -n "validates \\[\\[" docs/`; `grep -nE "^title: [A-Z]+-[0-9]+ [A-Z]" docs/`) THEN each returns zero matches (or only matches in historical session notes preserved for temporal-log invariant)
+- [x] GIVEN SPEC-002 and SPEC-003 root notes with `## Artifact Status` checkboxes still `[ ]` despite DONE status WHEN TASK-035 runs THEN each completed artifact's row flips from `[ ]` to `[x]` and each verified-DEFERRED artifact row flips to `[~]` (per REQ-008-SPEC-008 notation)
+- [x] GIVEN REQ-001-SPEC-002, REQ-002-SPEC-002, REQ-004-SPEC-002, REQ-005-SPEC-002 with `status: DRAFT` despite being implemented WHEN TASK-035 runs THEN each note's frontmatter status flips from DRAFT to ACCEPTED via Brain MCP `edit_note`
+- [x] GIVEN REQ-009-SPEC-007 body text "9 mutation types" WHEN TASK-036 runs THEN body text reads "11 mutation types" with provenance note citing PR #14 expansion (transition-impl-item + transition-qa-item additions)
+- [x] GIVEN repaired notes WHEN orchestrator re-runs Audit C grep commands (the auto-memory-filename pattern `[f]eedback_[a-z_]\+` over `docs/`; `grep -n "validates \\[\\[" docs/`; `grep -nE "^title: [A-Z]+-[0-9]+ [A-Z]" docs/`) THEN each returns zero matches (or only matches in historical session notes preserved for temporal-log invariant)
 
 ## Observations
 
