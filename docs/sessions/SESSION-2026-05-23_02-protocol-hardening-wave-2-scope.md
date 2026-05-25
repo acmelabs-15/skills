@@ -35,11 +35,11 @@ Starting branch: `feat/plan-001-protocol-hardening-wave-2-scope` (created off `m
 
 ## State
 
-- Latest commit `ac10de5` (Event 158); branch `feat/plan-001-protocol-hardening-wave-2-scope`; tree clean. Status **PAUSED** (Event 159, context-budget). Full current-state + resume protocol: **Event 159**.
-- **SPEC-008 build COMPLETE** (47/47 TASKs DONE + QA'd); suite **1252/0**; tsc clean. **All 12 REQs + 4 DESIGNs ACCEPTED** (QA-evidence basis — composition validators do NOT parse REQ/DESIGN; deferred parser problem).
-- Docs sweeps DONE: `_shared`→`shared` (179 notes), `test-report`→`qa` (30 + ADR-005 body), `feedback_` §5.3 (0 in non-temporal). `bm reset --reindex` run.
-- Reflections SKILL-006…014 captured; reflection-capture process locked. Hooks DISABLED (go-live deferred — depends on parser fix).
-- REMAINING close-out (Event 159 protocol): SPEC-root finalization + tidy + retrospective + /end+merge. DEFERRED to a further new session: parser-conformance (Problem A invocation + B consistency) + bulk-rewrite tool + hooks go-live + SPEC-008/PLAN → DONE.
+- Latest commit `aa544cf` (Event 163); branch `feat/plan-001-protocol-hardening-wave-2-scope`; tree clean. Status **IN_PROGRESS** (resumed Event 160 for the Event-159 close-out).
+- **SPEC-008 build COMPLETE** (47/47 TASKs DONE + QA'd); suite **1252/0**; tsc clean. All 12 REQs + 4 DESIGNs ACCEPTED (QA-evidence basis — composition validators do NOT parse REQ/DESIGN; deferred parser problem).
+- Close-out Steps 1-4 DONE: rehydrate (160); SPEC-008 root AC/SC finalized — AC #3/7/8/9 + SC #2/3 `[x]`, AC #1/2 + SC #1/4 held-deferred (161); tidy + FU-3 + robust Observations/Relations (162); **RETRO-004 plan-capstone retrospective** authored + 19 bidirectional inverses wired + PLAN-001 provenance gap closed (2/9 → 9/9 sessions) + SESSION-2026-05-20_04 frontmatter repaired (163).
+- Reflections SKILL-006…014 captured; reflection-capture process locked. Hooks DISABLED (go-live deferred — depends on parser fix; enabling now fail-closes the Stop backstop on unparseable REQ/DESIGN notes).
+- REMAINING: Step 5 `/end` (review gate → 5 pre-flight → PR; merge is autonomous-mode consensus-gated). **PLAN-001 stays IN_PROGRESS; SPEC-008 root stays ACCEPTED.** DEFERRED to a post-merge session (bridge = RETRO-004): parser-conformance (Problem B single-schema-source → Problem A script/validator wiring), MCP-backed bulk-rewrite tool, hooks go-live, then SPEC-008 + PLAN-001 → DONE.
 
 ## Event 01 — Session opened; /plan continue for PLAN-001 protocol-hardening reopen
 
