@@ -15,8 +15,28 @@ export interface MermaidOptions {
 const INIT_BLOCK =
   "%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px','clusterBkg':'#f9fafb','clusterBorder':'#e5e7eb'}}}%%";
 
+// Mermaid reserves a handful of bare keywords that cannot be used as node ids —
+// most notably `end`, which terminates a subgraph/scope and breaks the whole
+// graph when used as a node id. A part id colliding with one (e.g. the `end`
+// phase) must be suffixed. `_part` keeps the suffix meaningful (graph nodes are
+// PLAN parts) and matches the historical hand-authored convention.
+const MERMAID_RESERVED_IDS = new Set([
+  "end",
+  "graph",
+  "subgraph",
+  "class",
+  "classDef",
+  "style",
+  "linkStyle",
+  "click",
+  "direction",
+  "default",
+  "flowchart",
+]);
+
 function nodeId(partId: string): string {
-  return partId.replace(/[.-]/g, "_");
+  const id = partId.replace(/[.-]/g, "_");
+  return MERMAID_RESERVED_IDS.has(id) ? `${id}_part` : id;
 }
 
 function statusClass(substatus: Part["substatus"]): "done" | "inprogress" | "pending" {

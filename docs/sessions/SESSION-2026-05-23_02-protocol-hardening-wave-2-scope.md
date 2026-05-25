@@ -2930,3 +2930,18 @@ Mermaid validator confirmed the graph was syntactically VALID (`valid: true`) �
 ### State Changes
 
 - PLAN SPEC-008 wave graph: presentation reformatted to canonical Mermaid palette (Section 4.12); statuses unchanged
+
+
+## Event 126 — ROOT-CAUSE FIX: cross-part deps graph broke on Mermaid reserved word `end` (renderer bug)
+
+User re-flagged "badly formatted deps graphs" after the wave-graph reformat — because the WAVE graph wasn't the problem. The **Cross-Part Dependency Graph** was broken: its `end` phase rendered as a node id `end`, a Mermaid RESERVED WORD (terminates subgraph/scope) → `valid: false` (validator: `Parse error ... got 'end'`). It was `end_part` (valid) at session start and regressed during the session.
+
+**Root cause** (`shared/composition/src/renderers/mermaid.ts:18` `nodeId`): derived the graph node id from `part.id` via `.replace(/[.-]/g,"_")` only — no reserved-word handling. `applyPlanMutation` (`plan-mutations.ts:143`) does `return renderPlanNote(mutated)` — EVERY transition mutation re-renders the whole PLAN, regenerating the Cross-Part graph from `parts[]`; the `end` part → bare `end` node → broken. (Custom sections like the wave graph survive the round-trip; renderer-generated sections — Dashboard + Cross-Part graph — get regenerated, which is why only the cross-part graph regressed.)
+
+**Fix**: `nodeId` now suffixes Mermaid reserved ids (`end`/`graph`/`subgraph`/`class`/`classDef`/`style`/`linkStyle`/`click`/`direction`/`default`/`flowchart`) with `_part` → `end` → `end_part` (matches the historical hand-authored convention; zero churn). Regression test added (`mermaid-renderer.test.ts`: `end` part → `end_part`, no bare `end` node/edge/class). 6/6 mermaid tests pass; composition tsc 0. On-disk PLAN cross-part graph patched to `end_part` (3 sites) so it's valid NOW and stays valid on future re-renders.
+
+### State Changes
+
+- FIX `shared/composition/src/renderers/mermaid.ts`: `nodeId` sanitizes Mermaid reserved-word part ids (+ regression test in `mermaid-renderer.test.ts`) — 6/6 pass, tsc 0
+- PLAN cross-part graph: `end` → `end_part` node id / edge / class line (now `valid: true`)
+- Root-caused a render-layer bug (ADR-003 D-7 renderer) surfaced by dogfooding the PLAN graph

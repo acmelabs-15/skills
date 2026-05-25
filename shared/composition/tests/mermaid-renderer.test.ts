@@ -74,4 +74,37 @@ describe("renderMermaid", () => {
     expect(out).toContain("graph TD");
     expect(out).toContain("classDef done");
   });
+
+  test("suffixes Mermaid reserved-word part ids (end -> end_part) so the graph parses", () => {
+    const reservedParts: Part[] = [
+      {
+        id: "review",
+        phase: "review",
+        title: "Review",
+        substatus: "DONE",
+        source_artifacts: [],
+        depends_on: [],
+        dod: [],
+      },
+      {
+        id: "end",
+        phase: "end",
+        title: "Session End",
+        substatus: "PENDING",
+        source_artifacts: [],
+        depends_on: ["review"],
+        dod: [],
+      },
+    ];
+    const out = renderMermaid(reservedParts);
+    // `end` is a Mermaid reserved word (it terminates subgraph/scope); the node
+    // id must be suffixed or the entire graph fails to parse.
+    expect(out).toContain('end_part("');
+    expect(out).toContain("review --> end_part");
+    // the bare reserved word must not appear as a node definition or edge target
+    expect(out).not.toMatch(/^\s*end\(/m);
+    expect(out).not.toMatch(/--> end$/m);
+    // class line references the suffixed id, never the bare reserved word
+    expect(out).not.toMatch(/(^|,)end(,| )/m);
+  });
 });

@@ -85,7 +85,7 @@ graph TD
   build_SPEC_007("✅ <b>build.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Implementation Build</span>")
   protocol_hardening("⚡ <b>protocol-hardening</b><br/><span style='color:#6b7280;font-size:11px'>Phase X — Protocol Hardening (Drift Remediation)</span>")
   review("✅ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
-  end("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
+  end_part("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
   decisions_4("✅ <b>decisions.4</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Architecture Decisions (ADR-005)</span>")
   spec_SPEC_008("✅ <b>spec.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>SPEC-008 Protocol Hardening Wave 2 (5 REQ clusters: coverage gaps + skill invocation + tests + drift cleanup + automated enforcement hooks)</span>")
   build_SPEC_008("⚡ <b>build.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Build SPEC-008 — Wave 2 Protocol Hardening implementation</span>")
@@ -122,12 +122,12 @@ graph TD
   build_SPEC_005 --> review
   build_SPEC_006 --> review
   build_SPEC_007 --> review
-  review --> end
+  review --> end_part
   protocol_hardening --> decisions_4
   decisions_4 --> spec_SPEC_008
   spec_SPEC_008 --> build_SPEC_008
 
-  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end,decisions_4,spec_SPEC_008 done
+  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end_part,decisions_4,spec_SPEC_008 done
   class protocol_hardening,build_SPEC_008 inprogress
 ```
 
