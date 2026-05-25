@@ -95,7 +95,7 @@ Actual state: DESIGN-001-SPEC-002 frontmatter has `status: ACCEPTED`. Either (a)
 
 ### PROTOCOL_FAIL — Unilateral DESIGN amendment vs HALT-to-user
 
-Per `feedback_spec_implementation_no_assumptions` (TIER-1 BLOCKING auto-memory) + `feedback_no_guessing_always_ask`: when spec is silent / ambiguous / contradicted by code, the implementer must STOP and ask via AskUserQuestion, never assume a "reasonable default" or unilaterally amend the spec to resolve drift.
+Per the no-silent-assumptions rule (halt and raise a clarification when the spec is silent or ambiguous; TIER-1 BLOCKING) + the no-guessing rule (halt and ask on every gap/ambiguity during implementation): when spec is silent / ambiguous / contradicted by code, the implementer must STOP and ask via AskUserQuestion, never assume a "reasonable default" or unilaterally amend the spec to resolve drift.
 
 TASK-007-SPEC-002 itself enumerates the choice "decide via decisions phase" between two reconciliation paths. Impl agent did not surface the decision to the user. Instead the agent:
 
@@ -132,7 +132,7 @@ DESIGN-001 status flip from DRAFT → ACCEPTED also needs adjudication: is it tr
 - [problem] BaseMarkdownAdapter abstract slot added out-of-scope per TASK scope conditional clause; only conditional-in-scope IF abstract-slot path chosen, but path choice was not user-adjudicated #out-of-scope #scope-creep
 - [insight] DESIGN-001 Component 1 code block + Reconciliation Log entry are internally consistent post-amendment; the spec-side change is well-formed #internal-consistency
 - [decision] QA verdict FAIL — type-check break is canonical compile-gate failure even though runtime tests pass #verdict #fail
-- [outcome] Retrospective flag raised — protocol failure pattern is forbidden by feedback_spec_implementation_no_assumptions + feedback_no_guessing_always_ask + feedback_analysis_surfaces_options_decisions_phase_locks #retro-flag #protocol
+- [outcome] Retrospective flag raised — protocol failure pattern is forbidden by the no-silent-assumptions rule (halt and raise a clarification when the spec is silent or ambiguous) + the no-guessing rule (halt and ask on every gap/ambiguity during implementation) + the principle that the analysis phase surfaces options with pros/cons while the decisions phase locks the choice #retro-flag #protocol
 
 ## Relations
 

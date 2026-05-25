@@ -56,7 +56,7 @@ Steps:
 
 ## Observations
 
-- [decision] Brain MCP `edit_note` is mandatory tool per `feedback_memory_updates_via_memory_agent` HARD-LOCK; raw Edit on `docs/**` is forbidden #brain-mcp #binary-tool-rule
+- [decision] Brain MCP `edit_note` is the mandatory tool per the rule that complex memory operations route through the memory agent (HARD-LOCK); raw Edit on `docs/**` is forbidden #brain-mcp #binary-tool-rule
 - [constraint] Legend wording must reference REQ-008-SPEC-008 as the source decision so future readers can trace notation provenance #provenance
 - [insight] This TASK is the demonstration case for the notation — TASK-032 (validator extension) then makes the notation programmatically enforced #demonstration #pair-task
 - [outcome] Closes SPEC-007 PARTIAL drift from Audit D without status downgrade or forced TASK-014 completion #drift-cleanup #d-6

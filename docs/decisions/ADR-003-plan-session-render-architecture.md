@@ -132,7 +132,7 @@ Plan and session note mutations go through Bun + TypeScript scripts that: parse 
 
 #### Option A: T-NN session-scoped + prefix with session id for plan-level references
 
-Keep T-NN session-scoped per existing feedback_session_protocol guidance. Cross-session references use a session-prefixed form.
+Keep T-NN session-scoped per existing session-protocol convention (session-scoped T-NN IDs; pointer-ledger session notes). Cross-session references use a session-prefixed form.
 
 **Pros:**
 
@@ -249,7 +249,7 @@ This ADR captures 11 locked architectural decisions (D-1 through D-11) establish
 
 ### D-5: T-NN tasks are plan-scoped (not session-scoped)
 
-**Decision**: Task IDs use the format T-NN where NN is a plan-global counter (2+ digits), continuous across sessions of the same workflow. Previously T-NN was session-scoped per the existing feedback_session_protocol guidance.
+**Decision**: Task IDs use the format T-NN where NN is a plan-global counter (2+ digits), continuous across sessions of the same workflow. Previously T-NN was session-scoped per the existing session-protocol convention (session-scoped T-NN IDs; pointer-ledger session notes).
 
 **Rationale**: Tasks are state living in PLAN; therefore their identifiers span the PLAN lifecycle, not the session lifecycle. Continuous numbering across sessions makes cross-session task references unambiguous.
 

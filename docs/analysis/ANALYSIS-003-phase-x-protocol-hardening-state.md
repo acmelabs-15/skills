@@ -218,7 +218,7 @@ Until then it remains the canonical Brain knowledge-graph anchor for Phase X wor
 - [decision] D1 (composition library scope) RESOLVED include-with-renderer-per-note-type; D3 (CLAUDE.md updates) RESOLVED applied; D4 (PLAN-001 reconciliation timing) RESOLVED partial; D2 (Wave 2 disposition) STILL OPEN as PUD-D2 #decisions-status
 - [decision] Hybrid recommended for D2 — keep existing code as baseline; use new claim validators to find real gaps; file new TASKs only for genuine gaps; drive those through rigid cycle. Parallelizable 4-SPEC swarm. Estimated 6-10 hours #d2-recommendation
 - [insight] Parallel-wave-with-shared-protocol-block pattern worked well — pre-pass authors canonical inline block once + N agents inline verbatim. Avoids per-agent reinvention; produces consistent surface across files #parallelism #pattern
-- [problem] AGENTS.md required-reading was skipped in post-compaction rehydration step 1 (TIER-1 BLOCKING violation flagged by user 2026-05-21); session-note Observations + Relations were not refreshed across Events 02-15 (`feedback_session_note_full_hygiene_at_all_times` violation, same user flag) — corrective refresh applied to this note and SESSION-_06 in chore/analysis-003-post-pr-8-state branch #self-flagged-violation #remediation
+- [problem] AGENTS.md required-reading was skipped in post-compaction rehydration step 1 (TIER-1 BLOCKING violation flagged by user 2026-05-21); session-note Observations + Relations were not refreshed across Events 02-15 (violation of the rule that every session-note section stays current at all times, not just event entries, same user flag) — corrective refresh applied to this note and SESSION-_06 in chore/analysis-003-post-pr-8-state branch #self-flagged-violation #remediation
 
 ## Relations
 
@@ -367,4 +367,4 @@ For user to decide pace + scope of next action:
 
 3. **Pick a specific next subset** — e.g., "do X.D.2-4 to unblock the 16 failing tests + close out the composition library round-trip, then pause"; or "do all X.C skill updates first then composition library"; or any other ordered slice.
 
-Default recommendation: option 2 (checkpoint) given orchestrator context depth + the multi-session realistic scope. The post-compaction rehydration protocol (feedback_post_compaction_rehydration_protocol) makes resumption reliable.
+Default recommendation: option 2 (checkpoint) given orchestrator context depth + the multi-session realistic scope. The post-compaction rehydration protocol (run the full rehydration checklist before any work after compaction/resume) makes resumption reliable.

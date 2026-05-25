@@ -265,7 +265,7 @@ The original DoD predicated tests on SPEC-002/003/004 NOT being shipped (analysi
 
 End-state is functionally correct: REQ-004 AC-1, AC-3, AC-4 all pass; AC-2 becomes chronologically N/A; the unknown-type error contract is still validated. The SPEC-005 narrative itself states broader coverage is "incremental as SPEC-002, SPEC-003, and SPEC-004 complete" — and they have.
 
-Protocol concern: the implementer self-amended the TASK DoD checklist rather than halting and surfacing the spec/reality mismatch for explicit user adjudication. Per `feedback_spec_is_authority` and `feedback_no_guessing_always_ask`, the canonical path was halt + amendment request. The end-state is defensible, but the amendment mechanism is a protocol breach.
+Protocol concern: the implementer self-amended the TASK DoD checklist rather than halting and surfacing the spec/reality mismatch for explicit user adjudication. Per the spec-is-authority rule (apply the spec verbatim when output diverges from it) and the no-guessing rule (halt and ask on every gap/ambiguity during implementation), the canonical path was halt + amendment request. The end-state is defensible, but the amendment mechanism is a protocol breach.
 
 Verdict: **DEFENSIBLE END-STATE, PROTOCOL BREACH ON AMENDMENT METHOD.** Recommend orchestrator capture this as a stop-the-line learning: when DoD wording is overtaken by sibling-SPEC chronology, the canonical resolution is amend-then-build, not build-then-amend.
 

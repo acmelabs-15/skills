@@ -4,7 +4,7 @@ type: decision
 permalink: decisions/adr-005-protocol-hardening-wave-2-architecture-1
 status: ACCEPTED
 date: 2026-05-23
-updated: 2026-05-23
+updated: 2026-05-25
 tags:
 - adr
 - protocol-hardening
@@ -166,7 +166,7 @@ User clarification context (Event 10): original options conflated "scripts" with
 - *Negative*: Harness abstraction adds one layer of indirection between the test name and the assertion logic. Debugging a failing test requires reading both the fixture and the harness. Mitigated by descriptive fixture names + the harness being thin (~30 lines).
 - *Neutral*: Initial harness implementation is one TASK; subsequent fixture additions are smaller.
 
-**Implementation Notes**: SPEC-008 TASKs: (a) implement `testAdversarial({fixture, validator, expectedReject})` helper in `tests/_helpers/adversarial.ts`; (b) author the initial fixture set covering Audit E's top-10 prioritized scenarios (all-deferred DoD bypass for task; checkbox-flip without code change; AC flip without evidence; etc.); (c) wire the fixture inventory to a single test file `tests/adversarial-claims.test.ts` with table-driven cases. The fixture directory `tests/fixtures/adversarial/<type>/` MUST mirror the validator types: `task/`, `spec/`, `requirement/`, `design/`, `test-report/` (and post-Wave 2: `adr/`, `analysis/`, `epic/`).
+**Implementation Notes**: SPEC-008 TASKs: (a) implement `testAdversarial({fixture, validator, expectedReject})` helper in `tests/_helpers/adversarial.ts`; (b) author the initial fixture set covering Audit E's top-10 prioritized scenarios (all-deferred DoD bypass for task; checkbox-flip without code change; AC flip without evidence; etc.); (c) wire the fixture inventory to a single test file `tests/adversarial-claims.test.ts` with table-driven cases. The fixture directory `tests/fixtures/adversarial/<type>/` MUST mirror the validator types: `task/`, `spec/`, `requirement/`, `design/`, `qa/` (and post-Wave 2: `adr/`, `analysis/`, `epic/`).
 
 **Rollback Path**: If the harness becomes hard to extend or fixtures drift from validator API, migrate scenarios into per-validator test files (Option 2). Fixture files survive the migration — they're plain markdown.
 
@@ -416,7 +416,7 @@ User clarified concern about breaking adapter functionality (SESSION-2026-05-23_
 }
 ```
 
-**Failure semantics**: HYBRID per-write — pre-write gates (layers 1-2) deny on status-flip claim failures (TASK/SPEC/REQ/DESIGN/TEST-REPORT/ADR/PLAN/ANALYSIS/EPIC status transitioning to terminal-DONE/ACCEPTED with unsatisfied checkboxes/AC); allow with `additionalContext` warning on other schema issues (missing tags, malformed frontmatter that's still parseable). Commit/push/PR-create gates deny on ANY failing staged/pushed note. Stop hook blocks turn completion on any unvalidated docs/** modification.
+**Failure semantics**: HYBRID per-write — pre-write gates (layers 1-2) deny on status-flip claim failures (TASK/SPEC/REQ/DESIGN/QA/ADR/PLAN/ANALYSIS/EPIC status transitioning to terminal-DONE/ACCEPTED with unsatisfied checkboxes/AC); allow with `additionalContext` warning on other schema issues (missing tags, malformed frontmatter that's still parseable). Commit/push/PR-create gates deny on ANY failing staged/pushed note. Stop hook blocks turn completion on any unvalidated docs/** modification.
 
 **Implementation Notes** — directory layout in the skills plugin:
 
@@ -492,7 +492,6 @@ Dependency relationships (Track 5 added):
 
 The clusters are loosely coupled but D-8 is the linchpin that converts Wave 2's potential enforcement (D-1+D-4 validators exist) into actual enforcement (validators fire mechanically).
 
-
 ## Migration Plan
 
 SPEC-008 TASK ordering (proposed; subject to /spec phase elaboration). Updated Phase 3 to incorporate D-8 hooks layer + Track 5:
@@ -506,11 +505,10 @@ SPEC-008 TASK ordering (proposed; subject to /spec phase elaboration). Updated P
 7. **Author per-skill dispatch-brief generator scripts** (D-4). Each imports cross-cutting constants. Includes brief-generator trust-boundary documentation per Phase 3 security P1.
 8. **Author hook handlers + hooks.json declaration** (D-8 NEW). Implement 7 layers: 5 PreToolUse gates + Stop backstop + FileChanged observability. Smoke-test each gate against fixtures from step 5.
 9. **Update lifecycle SKILL.md files** to cite the new scripts at gate points (Audit B remediations).
-10. **Brain notes drift cleanup** (Track 4 items #1-#10): duplicate frontmatter, `validates` relations, title-without-colon, stale `type:test_report`, PII paths, duplicate Event numbers. *Also: retire/remove unused `scripts/` migration artifacts (migrate-plan-001-to-trimmed-template.ts, rename-test-report-to-qa.ts, strip-permalink-collision-suffixes.ts).*
+10. **Brain notes drift cleanup** (Track 4 items #1-#10): duplicate frontmatter, `validates` relations, title-without-colon, stale `type:qa`, PII paths, duplicate Event numbers. *Also: retire/remove unused `scripts/` migration artifacts (migrate-plan-001-to-trimmed-template.ts, rename-qa-to-qa.ts, strip-permalink-collision-suffixes.ts).*
 11. **Final coverage matrix + 4 exit gates** (code-qualities-assessment + incoherence + orphan-ref + lint) + D-8 smoke-test pass.
 
 Updated effort estimate: ~14-16 days (was 12-14; +2 days for D-8 hooks layer + buffer per Phase 3 analyst P1). Critical path: rename → schemas → validators → scripts → hooks. Track 4 cleanup work parallelizable.
-
 
 ## Validation
 
@@ -518,13 +516,12 @@ Each D-N has corresponding validation in SPEC-008's REQ AC + TASK DoD + test sca
 
 - **D-1**: smoke-test invocation per script (`bun skills/<name>/scripts/<verb>.ts --help`); skill SKILL.md cites the script with concrete command; CI ensures the script exits non-zero on validation failure. Path-containment checks asserted per Phase 3 security P1.
 - **D-2**: file layout matches Wave 1 pattern; biome lint green; existing Wave 1 tests still pass; `_shared` → `shared` rename complete with zero residual references.
-- **D-3**: adversarial harness exercises Audit E's top-10 prioritized scenarios; each fixture has descriptive `drift-NN-<slug>.md` name matching a Phase X drift surface. **Phase 3 additions**: integration tests cover parse-mutate-validate-render full path; cross-note SPEC-vs-TASK consistency; TEST-REPORT-vs-TASK-DoD cross-validation. Mutation tests cover DONE→IN_PROGRESS backward transition rejection, double-apply idempotency, session-mutation duplicate-event-number rejection.
+- **D-3**: adversarial harness exercises Audit E's top-10 prioritized scenarios; each fixture has descriptive `drift-NN-<slug>.md` name matching a Phase X drift surface. **Phase 3 additions**: integration tests cover parse-mutate-validate-render full path; cross-note SPEC-vs-TASK consistency; QA-vs-TASK-DoD cross-validation. Mutation tests cover DONE→IN_PROGRESS backward transition rejection, double-apply idempotency, session-mutation duplicate-event-number rejection.
 - **D-4**: brief generator output includes `validRelationTypes` import; schema constant change automatically reflected in generator output. Trust-boundary documentation present per Phase 3 security P1.
 - **D-5**: 5 new schemas have Zod superRefine + parser tests; 4 claim validators have happy-path + rejection + adversarial parse-then-validate coverage (per D-3). **Phase 3 addition**: `validateEpicDoneClaim` cross-note resolution mechanism spec: validator accepts `{epicNote, resolveContainedSpec: (wikilink) => SpecRootNote | null}` shape; caller (hook handler) injects the resolver; missing target SPEC fails validation with explicit "unresolvable contained reference" error.
 - **D-6**: `validateSpecDoneClaim` accepts `[~]` paired with DEFERRED child REQ status; rejects `[~]` paired with non-DEFERRED child; SPEC-007 root passes the validator post-amendment. `[~]` recognition restricted to SPEC root Artifact Status / Phases / Acceptance Criteria sections only (not TASK DoD).
 - **D-7**: `bun test` 506/506 pass post-delete; `grep -r "core/dispatcher" shared scripts skills` returns empty.
 - **D-8** (Phase 3 NEW): each of 7 hook layers smoke-tested against fixtures (PreToolUse layers 1-5 against status-flip-claim adversarial fixtures returning `deny`; Stop hook returns `decision: "block"` on unvalidated turn-end state; FileChanged emits expected `additionalContext`). Hook handler scripts exit cleanly on bad input (no crashes). `hooks/hooks.json` registered correctly; plugin install confirms hooks attached.
-
 
 ## Clarifications
 
@@ -560,6 +557,11 @@ Each D-N has corresponding validation in SPEC-008's REQ AC + TASK DoD + test sca
 
 - **IT P2 (alternative architectures not considered)**: property-based testing (fast-check) for D-3; `[x] (DEFERRED)` instead of `[~]` for D-6; voluntary invocation as intentional choice. Property-based testing rejected because fixture-driven harness gives named drift-regression markers (Audit E item 10 alignment) — random generators cannot be cited as specific Phase X drift surfaces. `[~]` rejected over `[x] (DEFERRED)` because the SPEC root scan would need to read parenthetical text (more complex parsing); `[~]` is a single-character signal recognized by a 4-char regex. Voluntary invocation rejected as the IT P2 elevation itself — D-8 resolves.
 
+### Clarification 2026-05-25 — D-B (EPIC-only adversarial fixtures) + qa→qa rename
+
+**D-B — adversarial-fixture scope reduced to EPIC-only for the Track-1 (new) validators.** During build (TASK-024, validated by QA-088 PASS), it emerged that ADR and ANALYSIS adversarial *claim* fixtures are structurally impossible in the parse→validate harness: a malformed ADR/ANALYSIS note fails at the PARSE step (`UnparseableNoteError`) before reaching the claim validator, so there is no post-parse "claim-lie" fixture to author — schema rejection at parse IS their adversarial coverage. Only EPIC has a post-parse claim contract (done-with-unfinished-contained-spec) that a fixture can exercise. The realized adversarial-fixture scope is therefore the five existing-validator subdirs plus `epic/` only, deviating from the D-3/D-5 wording that implied additional `adr/` + `analysis/` subdirs. No loss of adversarial coverage. This Clarification documents an already-implemented + QA-validated outcome; the full multi-agent adr-review gate was waived as disproportionate for post-hoc documentation of validated work (orchestrator review applied; user explicitly authorized the waiver 2026-05-25, acknowledging it bypasses the standing adr-review-on-every-ADR-edit rule).
+
+**qa → qa rename.** The `qa` note type / folder / schema / validator referenced throughout this ADR's decision body — D-3's `qa/` fixture subdir, the `QA` entry in the D-8 failure-semantics note-type list, the `QA-vs-TASK-DoD` cross-validation (D-3 Phase-3 additions), and `type:qa` in the Migration Plan Track-4 items — was renamed to `qa` during the build (`TestReportNoteSchema`→`QaNoteSchema`, `validateTestReportPassClaim`→`validateQaPassClaim`, `qa/`→`qa/`; gate notes are `QA-NNN-*.md`). The decision body is preserved as-authored for decision-record integrity; read every `qa` / `QA` in the body as `qa` / `QA`.
 
 ## Observations
 
