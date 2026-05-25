@@ -3465,6 +3465,18 @@ Then (per user "wire inverses + fix gaps, then /end"): wired RETRO-004's 19 bidi
 - 18 notes + PLAN-001 gained the RETRO-004 inverse relation; PLAN-001 contains-list completed 2/9 → 9/9 + RETRO-004; SESSION-2026-05-20_04 frontmatter repaired (commit 6c42e42).
 - No SPEC/PLAN status change (PLAN-001 stays IN_PROGRESS; SPEC-008 root stays ACCEPTED; hooks stay disabled).
 
+## Event 164 — Step 5 /end: scoped /review PASS + pre-flight PASS; PLAN-DoD round-trip catch
+
+/end (Event-159 Step 5) running. Step 1 DoD (build.SPEC-008, 8 items): 1-4 `[x]` (47/47 TASKs, suite 1252/0, 47 QA notes, coverage); items 5-8 (exit-gates + the 3 deferred terminal flips) → `[x]` with deferral rationale per user ruling. Step 2 /review: SCOPED to the close-out delta (22 docs files; the 636-file/39K build was already per-TASK QA'd — user-approved scoping) → PASS (relation integrity clean: 0 forbidden verbs / 0 non-colon wikilinks / 0 malformed bullets; coherence clean; lint clean modulo systemic MD013). Step 3.5 pre-flight: secret-scan PASS (clean — an earlier "match" was a shell-logic false alarm), tests PASS 1252/0, lint DISABLED (KG prose), PR-template + CI-workflow checks skipped (neither present).
+
+DROP-CATCH (stop-the-line during pre-flight): I first marked the 4 deferred DoD items `[~]`; the suite went 1251/1 — plan-001-migration.test.ts AC#3 (SHA-256 round-trip identity) failed because renderPlanNote DROPS `[~]` DoD lines (`[~]` is SPEC-root `## Artifact Status`-scoped, not valid in PLAN DoD). Reverted to `[ ]`, then per user ruling "[~] should be [x]" set them `[x]` with deferral rationale in trailing text → round-trip restored, suite 1252/0. Reflection captured async to SKILL-015 (plan-dod-checkbox-notation); validates RETRO-004's renderer-owns-PLAN finding in real time.
+
+### State Changes
+
+- build.SPEC-008 DoD: all 8 items `[x]` (1-4 genuinely done; 5-8 `[x]` with deferral rationale per user ruling). SHA-256 round-trip identity restored; suite 1252/0.
+- Reflection SKILL-015 (plan-dod-checkbox-notation) captured in background (pointer here).
+- No entity status flip yet (PLAN-001 IN_PROGRESS; SPEC-008 ACCEPTED; protocol-hardening IN_PROGRESS; hooks disabled). Step 4 push + PR + session-DONE pending.
+
 
 ## Observations
 
