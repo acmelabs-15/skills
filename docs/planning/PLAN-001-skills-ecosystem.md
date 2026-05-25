@@ -43,16 +43,16 @@ Build a zero-content-drift restructuring capability for Brain knowledge-graph no
 
 ## Progress Dashboard
 
-| Phase | PENDING | IN_PROGRESS | BLOCKED | READY | DONE | Total |
-|:--|--:|--:|--:|--:|--:|--:|
-| research | 0 | 0 | 0 | 0 | 1 | 1 |
-| decisions | 0 | 0 | 0 | 0 | 4 | 4 |
-| spec-decomposition | 0 | 0 | 0 | 0 | 1 | 1 |
-| spec | 0 | 0 | 0 | 0 | 8 | 8 |
-| build | 0 | 2 | 0 | 0 | 7 | 9 |
-| review | 0 | 0 | 0 | 0 | 1 | 1 |
-| end | 0 | 0 | 0 | 0 | 1 | 1 |
-| **Total** | **0** | **2** | **0** | **0** | **23** | **25** |
+| Phase | PENDING | IN_PROGRESS | BLOCKED | DONE | Total |
+|:--|--:|--:|--:|--:|--:|
+| research | 0 | 0 | 0 | 1 | 1 |
+| decisions | 0 | 0 | 0 | 4 | 4 |
+| spec-decomposition | 0 | 0 | 0 | 1 | 1 |
+| spec | 0 | 0 | 0 | 8 | 8 |
+| build | 0 | 2 | 0 | 7 | 9 |
+| review | 0 | 0 | 0 | 1 | 1 |
+| end | 0 | 0 | 0 | 1 | 1 |
+| **Total** | **0** | **2** | **0** | **23** | **25** |
 
 ## Cross-Part Dependency Graph
 
@@ -63,7 +63,6 @@ graph TD
   classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
   classDef inprogress fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12,rx:14,ry:14
   classDef pending fill:#fafafa,stroke:#d1d5db,stroke-width:1px,color:#6b7280,stroke-dasharray:3 3,rx:14,ry:14
-  classDef ready fill:#dbeafe,stroke:#3b82f6,stroke-width:1.5px,color:#1e3a8a,rx:14,ry:14
 
   research("✅ <b>research</b><br/><span style='color:#6b7280;font-size:11px'>Bootstrap Research</span>")
   decisions_1("✅ <b>decisions.1</b><br/><span style='color:#6b7280;font-size:11px'>Composition Library Architecture ADR</span>")
@@ -86,10 +85,10 @@ graph TD
   build_SPEC_007("✅ <b>build.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Plan/Session Render Implementation Build</span>")
   protocol_hardening("⚡ <b>protocol-hardening</b><br/><span style='color:#6b7280;font-size:11px'>Phase X — Protocol Hardening (Drift Remediation)</span>")
   review("✅ <b>review</b><br/><span style='color:#6b7280;font-size:11px'>Multi-axis Adversarial Review</span>")
-  end_part("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
+  end("✅ <b>end</b><br/><span style='color:#6b7280;font-size:11px'>PR Creation and Session-End Checklist</span>")
   decisions_4("✅ <b>decisions.4</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Architecture Decisions (ADR-005)</span>")
-  spec_SPEC_008("✅ <b>spec.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Protocol Hardening Wave 2</span>")
-  build_SPEC_008("⚡ <b>build.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Wave 2 Protocol Hardening Build</span>")
+  spec_SPEC_008("✅ <b>spec.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>SPEC-008 Protocol Hardening Wave 2 (5 REQ clusters: coverage gaps + skill invocation + tests + drift cleanup + automated enforcement hooks)</span>")
+  build_SPEC_008("⚡ <b>build.SPEC-008</b><br/><span style='color:#6b7280;font-size:11px'>Build SPEC-008 — Wave 2 Protocol Hardening implementation</span>")
 
   research --> decisions_1
   decisions_1 --> decisions_2
@@ -123,167 +122,14 @@ graph TD
   build_SPEC_005 --> review
   build_SPEC_006 --> review
   build_SPEC_007 --> review
-  review --> end_part
+  review --> end
   protocol_hardening --> decisions_4
   decisions_4 --> spec_SPEC_008
   spec_SPEC_008 --> build_SPEC_008
 
-  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end_part,decisions_4,spec_SPEC_008 done
+  class research,decisions_1,decisions_2,decisions_3,spec_decomposition,spec_SPEC_001,spec_SPEC_002,spec_SPEC_003,spec_SPEC_004,spec_SPEC_005,spec_SPEC_006,spec_SPEC_007,build_SPEC_001,build_SPEC_002,build_SPEC_003,build_SPEC_004,build_SPEC_005,build_SPEC_006,build_SPEC_007,review,end,decisions_4,spec_SPEC_008 done
   class protocol_hardening,build_SPEC_008 inprogress
 ```
-
-## SPEC-008 Build Marathon — Task-Level Wave Graph
-
-Task-level dependency + status snapshot for the in-flight `build.SPEC-008` part (the part-level graph above shows `build_SPEC_008` as the umbrella node; this graph expands it to show all 47 TASKs grouped by wave, with status from the PLAN workflow items below). Updated 2026-05-24 SESSION-2026-05-23_02 Event 121 (sync audit — 40/47 fully closed; TASK-044 impl IN_PROGRESS awaiting QA; REQ-011 HELD DRAFT pending AC10 latency measurement — NOT accepted).
-
-**Status legend**: ✅ DONE (impl + QA both PASS) · ⚡ IN_PROGRESS (impl or qa in flight) · ⏸ PENDING (workflow item seeded, awaiting batch).
-
-**Wave structure** (per Event 64 resume protocol):
-
-- **Wave 0**: Zero-dependency foundation (9 TASKs; all DONE)
-- **Wave 1a**: Schemas + parsers; barrel-coordinated on `schemas/index.ts` + `parsers/index.ts` (8 TASKs; all DONE)
-- **Wave 1b**: Per-skill scripts; Track 2 ingest/decompose/recompose/defrag (10 TASKs; all DONE)
-- **Wave 1c**: Cleanup + harness extensions (8 TASKs; 5 DONE, 4 PENDING)
-- **Wave 2/3**: Validators; barrel-serialized on `validators/index.ts` (3 TASKs; all DONE)
-- **Wave 4**: Hook handlers + integration fixtures (7 TASKs; 5 DONE, 1 IN_PROGRESS, 1 PENDING)
-- **Wave 5**: Terminal smoke tests (1 TASK; PENDING)
-
-```mermaid
-%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':10,'rankSpacing':45,'padding':10,'diagramPadding':14,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'11px','clusterBkg':'#f9fafb','clusterBorder':'#e5e7eb'}}}%%
-graph TD
-
-  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:10,ry:10
-  classDef inprogress fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12,rx:10,ry:10
-  classDef pending fill:#fafafa,stroke:#d1d5db,stroke-width:1px,color:#6b7280,stroke-dasharray:3 3,rx:10,ry:10
-
-  subgraph W0 ["Wave 0 — Zero-Dependency Foundation (9/9 DONE)"]
-    direction LR
-    T021["✅ TASK-021<br/><span style='font-size:9px'>Adversarial harness</span>"]
-    T025["✅ TASK-025<br/><span style='font-size:9px'>Integration tests</span>"]
-    T026["✅ TASK-026<br/><span style='font-size:9px'>Mutation invariants</span>"]
-    T029["✅ TASK-029<br/><span style='font-size:9px'>_shared→shared rename</span>"]
-    T033["✅ TASK-033<br/><span style='font-size:9px'>STRUCTURES [~] notation</span>"]
-    T034["✅ TASK-034<br/><span style='font-size:9px'>Brain note hygiene</span>"]
-    T037["✅ TASK-037<br/><span style='font-size:9px'>hooks.json manifest</span>"]
-    T039["✅ TASK-039<br/><span style='font-size:9px'>Hook lib utilities</span>"]
-    T040["✅ TASK-040<br/><span style='font-size:9px'>Git helpers</span>"]
-  end
-
-  subgraph W1a ["Wave 1a — Schemas + Parsers (8/8 DONE ✅ — Wave 1a CLOSED; REQ-002 ACCEPTED)"]
-    direction LR
-    T001["✅ TASK-001<br/><span style='font-size:9px'>ADR schema</span>"]
-    T002["✅ TASK-002<br/><span style='font-size:9px'>ANALYSIS schema</span>"]
-    T005["✅ TASK-005<br/><span style='font-size:9px'>ADR parser</span>"]
-    T003["✅ TASK-003<br/><span style='font-size:9px'>EPIC schema</span>"]
-    T010["✅ TASK-010<br/><span style='font-size:9px'>PLAN done-claim ext</span>"]
-    T030["✅ TASK-030<br/><span style='font-size:9px'>Delete dispatcher.ts</span>"]
-    T004["✅ TASK-004<br/><span style='font-size:9px'>CRIT schema (5b)</span>"]
-    T006["✅ TASK-006<br/><span style='font-size:9px'>ANALYSIS+EPIC+CRIT parsers</span>"]
-  end
-
-  subgraph W1b ["Wave 1b — Per-Skill Scripts (10/10 DONE ✅ — REQ-005 ACCEPTED; REQ-004 needs AC-9 prefix-collision test)"]
-    direction LR
-    T011["✅ TASK-011<br/><span style='font-size:9px'>validate-task-done</span>"]
-    T012["✅ TASK-012<br/><span style='font-size:9px'>transition-impl-item</span>"]
-    T013["✅ TASK-013<br/><span style='font-size:9px'>transition-qa-item</span>"]
-    T014["✅ TASK-014<br/><span style='font-size:9px'>validate-spec-done + pre-flight</span>"]
-    T015["✅ TASK-015<br/><span style='font-size:9px'>spec schema validators</span>"]
-    T016["✅ TASK-016<br/><span style='font-size:9px'>lock-decision-mutation</span>"]
-    T017["✅ TASK-017<br/><span style='font-size:9px'>render-plan-note + set-part-done</span>"]
-    T018["✅ TASK-018<br/><span style='font-size:9px'>dispatch-implementer + qa</span>"]
-    T019["✅ TASK-019<br/><span style='font-size:9px'>dispatch-architect + critic</span>"]
-    T020["✅ TASK-020<br/><span style='font-size:9px'>dispatch-analyst + reviewer</span>"]
-  end
-
-  subgraph W1c ["Wave 1c — Cleanup + Harness Extensions (5 ✅ 022/023/027/032/047 · 4 PENDING 028/031/035/036)"]
-    direction LR
-    T047["✅ TASK-047<br/><span style='font-size:9px'>CRIT H1-drift (REQ-001 AC-5 gap)</span>"]
-    T022["✅ TASK-022"]
-    T023["✅ TASK-023"]
-    T027["✅ TASK-027<br/><span style='font-size:9px'>dup-event test</span>"]
-    T028["⏸ TASK-028"]
-    T031["⏸ TASK-031"]
-    T032["✅ TASK-032"]
-    T035["⏸ TASK-035"]
-    T036["⏸ TASK-036"]
-  end
-
-  subgraph W23 ["Wave 2/3 — Validators (3/3 DONE ✅; REQ-003 + DESIGN-001 ACCEPTED)"]
-    direction LR
-    T007["✅ TASK-007<br/><span style='font-size:9px'>validateAdrAcceptedClaim</span>"]
-    T008["✅ TASK-008<br/><span style='font-size:9px'>validateAnalysisAcceptedClaim</span>"]
-    T009["✅ TASK-009<br/><span style='font-size:9px'>validateEpicDoneClaim (cross-note)</span>"]
-  end
-
-  subgraph W4 ["Wave 4 — Hook Handlers + Final Fixtures (5 ✅ 038/041/042/043/045 · 1 ⚡ 044 · 1 PENDING 024)"]
-    direction LR
-    T024["⏸ TASK-024<br/><span style='font-size:9px'>Final fixtures</span>"]
-    T038["✅ TASK-038<br/><span style='font-size:9px'>dispatch-validator</span>"]
-    T041["✅ TASK-041<br/><span style='font-size:9px'>L1 PreToolUse Edit</span>"]
-    T042["✅ TASK-042<br/><span style='font-size:9px'>L2 PreToolUse MCP</span>"]
-    T043["✅ TASK-043<br/><span style='font-size:9px'>L3-5 commit/push/PR</span>"]
-    T044["⚡ TASK-044<br/><span style='font-size:9px'>L6 stop-backstop</span>"]
-    T045["✅ TASK-045<br/><span style='font-size:9px'>L7 git-state-observer</span>"]
-  end
-
-  subgraph W5 ["Wave 5 — Terminal Smoke Tests (1 PENDING)"]
-    direction LR
-    T046["⏸ TASK-046<br/><span style='font-size:9px'>Per-layer integration smoke</span>"]
-  end
-
-  %% Cross-wave gating (critical-path edges only; intra-wave deps omitted for clarity)
-  T029 --> T001
-  T029 --> T030
-  T021 --> T022
-  T021 --> T023
-  T021 --> T024
-
-  T001 --> T007
-  T002 --> T008
-  T003 --> T009
-
-  T037 --> T038
-  T037 --> T041
-  T037 --> T042
-  T037 --> T043
-  T037 --> T044
-  T037 --> T045
-
-  T024 --> T046
-  T009 --> T046
-  T045 --> T046
-
-  class T001,T002,T003,T004,T005,T006,T010,T021,T025,T026,T029,T030,T033,T034,T037,T039,T040 done
-  class T007,T008,T009,T047,T011,T012,T013,T015,T016,T017,T018,T019,T020,T022,T032,T038,T027,T014,T023,T041,T042,T043,T045 done
-  class T044 inprogress
-  class T024,T028,T031,T035,T036,T046 pending
-```
-
-**Maintenance rule**: each TASK closure (impl + QA both PASS) flips its `class` declaration from `pending`/`inprogress` to `done`, alongside the SPEC-008 root rollup tick and full Event 55 propagation. Each Batch START flips IN_PROGRESS items from `pending` to `inprogress`. Keep this graph current per the same propagation cadence as the SPEC root rollup.
-
-## Risks
-
-Build-phase pre-mortem (SESSION-2026-05-23_02 Event 35; brain:🧠-analyst prospective-hindsight against the SPEC-008 subtree). Top 3 critical build risks + mitigations baked into dispatch briefs / sequencing:
-
-- **R1 — `_shared`→`shared` rename cascade breaks mid-build (TASK-029)**: relative imports inside the composition library survive, but config files (root `tsconfig.json` include/exclude, `bunfig.toml`, `biome.json`, workspace entries) and ~549 doc references may be missed; failure then surfaces 5-10 TASKs later when new code imports `shared/composition` under stale config. *Mitigation*: TASK-029 brief includes an explicit config-file checklist; mandatory post-rename `bun tsc --noEmit` (root) + `biome check` (full repo) gate; QA creates + verifies + deletes a canary import; any config miss is a FAIL, not a warning.
-- **R2 — hook handlers untestable without live Claude Code runtime (Track 5, TASK-037..046)**: unit tests pass on mocked stdin but matchers (esp. Layer 2 MCP-tool matcher) may silently fail to fire in production → ships unenforced "enforcement" (the exact Wave 1 failure SPEC-008 exists to close). *Mitigation*: TASK-046 requires a per-layer manual integration proof (`echo '<HookInput>' | bun <handler>`); document + cite the exact MCP matcher string; prefer BLOCKED over untested-DONE if the matcher format is unverifiable; TASK-046 runs LAST against Track 3 adversarial fixtures.
-- **R3 — cross-track barrel-index / `common.ts` collisions**: parallel Track 1 TASKs writing the same `schemas|parsers|validators/index.ts` barrel or `common.ts` → merge conflict or silent last-writer-wins drop. *Mitigation*: the rigid per-TASK cycle (one TASK at a time, sequential) already prevents this; additionally do NOT parallelize same-barrel TASKs; `common.ts` single-owner (first schema TASK) with explicit `depends_on` edges from consumers.
-
-### Known Deferred Test Baseline (D-1 LOCKED 2026-05-24 SESSION-2026-05-23_02 Event 65)
-
-The canonical test-suite state across the SPEC-008 build marathon is **705 pass / 2 fail / 707 total**. The 2 failures live in `tests/skills/plan/plan-001-migration.test.ts` and are pre-existing DEFERRED SPEC-007 work — they pre-date SPEC-008 and belong to the SPEC-007 plan/session render implementation work that was deferred at session-end of SESSION-2026-05-20_06.
-
-**Operational implication for QA briefs**: Batch 5+ QA dispatch briefs MUST instruct agents to treat these 2 `plan-001-migration.test.ts` failures as DEFERRED SPEC-007 known-baseline. Any NEW failure outside this specific test file is a true regression and FAILS the TASK.
-
-**No SPEC-008 scope added**: the 2 fails remain SPEC-007 scope. SPEC-008 root Acceptance + Success Criteria language already accommodates this baseline (no totality AC tied to "0 failing tests").
-
-### Post-Marathon Follow-Up Backlog (D-2 LOCKED 2026-05-24 SESSION-2026-05-23_02 Event 65)
-
-Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon cleanup. Neither gates Batch 5+ dispatch.
-
-- **FU-1: Frontmatter `validates:` key in QA-032/033/034-SPEC-003** — Event 60 finding. Distinct from the Relations-bullet `validates` drift that TASK-034 swept (those used `^- validates [[` pattern, scoped to Relations bullets only). 3 notes carry `validates:` as a YAML frontmatter key. Outside SPEC-008 DoD. **Disposition**: /defrag sweep post-marathon (or a small targeted Brain MCP edit_note pass).
-- **FU-2: `hooks/**` scope gap in root tsconfig + biome.json** — surfaced Events 37 + 62 by impl-039/040 agents. `hooks/**` not in root `tsconfig.json` `include` array; also not in root `biome.json` `files.include`. Surfaces LSP false-positives ("Cannot find module bun:test", "Cannot find name Bun") but doesn't block actual builds or test runs. Tests run cleanly (43/0/66 across hooks/lib). **Disposition**: small targeted config PR post-marathon (5-10 min change); not added as SPEC-008 TASK.
-- **FU-3: Session note `## Observations`/`## Relations` placement drift** — surfaced SESSION-2026-05-23_02 Event 65 rehydration. Both sections live at lines 69/77 (between Event 01 and Event 02) instead of file end; 64+ Events have appended past them. Violates CONVENTIONS Section 4.0 (final-two-sections invariant). **Disposition**: session-end cleanup; reorder Observations/Relations to true tail before session DONE flip.
 
 ## Phase Progression
 
@@ -2397,19 +2243,19 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - **Substatus**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
 - **Completing Session**: SESSION-2026-05-23_02
-- **Outcome**: ADR-005 ACCEPTED locking 8 architectural decisions for Wave 2 (D-1 per-skill scripts; D-2 flat dirs; D-3 fixture-driven adversarial harness + integration + mutation tests; D-4 programmatic brief-generator scripts; D-5 full P1 inclusion + EPIC cross-note resolver; D-6 SPEC root `[~]` notation; D-7 dispatcher.ts deletion; D-8 NEW: automated enforcement gates via plugin hooks). Round 1 adr-review: 3 ACCEPT + 3 CONCERNS + 1 P0 → all resolved/D&C-captured; pragmatic flip approved.
+- **Outcome**: ADR-005 ACCEPTED locking 8 architectural decisions for Wave 2 (D-1 per-skill scripts; D-2 flat dirs; D-3 fixture-driven adversarial harness + integration + mutation tests; D-4 programmatic brief-generator scripts; D-5 full P1 inclusion + EPIC cross-note resolver; D-6 SPEC root [~] notation; D-7 dispatcher.ts deletion; D-8 NEW: automated enforcement gates via plugin hooks). Round 1 adr-review: 3 ACCEPT + 3 CONCERNS + 1 P0 → all resolved/D&C-captured; pragmatic flip approved.
 - **Source Artifacts**: ANALYSIS-004 Protocol Hardening Wave 2 Audit Synthesis (omnibus over 5 audits captured in SESSION-2026-05-23_02 Events 02-08)
 - **Depends On**: protocol-hardening
 
 **DoD**:
 
-- [x] D-1 LOCKED — Per-skill scripts: each lifecycle skill ships gate-point scripts at `skills/<name>/scripts/<verb>.ts` as thin wrappers importing from `_shared/composition/`. Matches existing defrag/ingest pattern; skills become self-contained; new validators colocate with the skill that needs them.
-- [x] D-2 LOCKED — Extend existing flat dirs at `shared/composition/src/{schemas,parsers,validators}/` (consistent with 9 existing schemas; one pattern across waves). NOTE: `_shared` → `shared` directory rename captured as Track 4 cleanup item (see Wave 2 cleanup list)
-- [x] D-3 LOCKED — Shared fixture-driven harness: each lying-claim scenario lives as a named markdown file at `tests/fixtures/adversarial/<type>/drift-NN-<slug>.md`; shared `testAdversarial({fixture, validator, expectedReject})` helper runs parse→validate→assert. Natural mapping to Audit E item 10 (drift regression markers).
-- [x] D-4 LOCKED — Programmatic per-skill brief-generator scripts at `skills/<name>/scripts/dispatch-<agent>.ts`. Scripts import cross-cutting constants (e.g., `validRelationTypes` from `shared/composition/src/schemas/common.ts`) and print full brief text. Single source of truth via direct schema import; auto-updates when schema changes. Extends D-1 pattern.
+- [x] D-1 LOCKED — Per-skill scripts: each lifecycle skill ships gate-point scripts at skills/<name>/scripts/<verb>.ts as thin wrappers importing from _shared/composition/. Matches existing defrag/ingest pattern; skills become self-contained; new validators colocate with the skill that needs them.
+- [x] D-2 LOCKED — Extend existing flat dirs at shared/composition/src/{schemas,parsers,validators}/ (consistent with 9 existing schemas; one pattern across waves). NOTE: _shared → shared directory rename captured as Track 4 cleanup item (see Wave 2 cleanup list)
+- [x] D-3 LOCKED — Shared fixture-driven harness: each lying-claim scenario lives as a named markdown file at tests/fixtures/adversarial/<type>/drift-NN-<slug>.md; shared testAdversarial({fixture, validator, expectedReject}) helper runs parse→validate→assert. Natural mapping to Audit E item 10 (drift regression markers).
+- [x] D-4 LOCKED — Programmatic per-skill brief-generator scripts at skills/<name>/scripts/dispatch-<agent>.ts. Scripts import cross-cutting constants (e.g., validRelationTypes from shared/composition/src/schemas/common.ts) and print full brief text. Single source of truth via direct schema import; auto-updates when schema changes. Extends D-1 pattern.
 - [x] D-5 LOCKED — Full Audit A recommendation: include ALL 3 P1 schemas (ANALYSIS + EPIC + CRIT). Wave 2 ships 5 schemas + 5 parsers + 4 validators total (ADR + PLAN-done-claim + ANALYSIS + EPIC + CRIT). +2-3 days effort vs deferral; complete P1 coverage; some artifacts (EPIC, CRIT claim) have no immediate consumer but ready when needed.
-- [x] D-6 LOCKED — Amend SPEC-007 root checkbox notation: use `[~]` (or `[deferred: rationale]`) for items where the underlying REQ is `status: DEFERRED`. Keep SPEC-007 status DONE (deferred is a legitimate terminal status). Also extend `validateSpecDoneClaim` to recognize `[~]` as terminal alongside `[x]`.
-- [x] D-7 LOCKED — Delete `_shared/composition/src/core/dispatcher.ts` + `tests/dispatcher.test.ts`. Confirmed dead (only `dispatcher.test.ts` imports it); production code uses `registry.ts`; adapter functionality untouched (lives in separate files). 508 tests → 506 tests post-delete.
+- [x] D-6 LOCKED — Amend SPEC-007 root checkbox notation: use [] (or [deferred: rationale]) for items where the underlying REQ is status: DEFERRED. Keep SPEC-007 status DONE (deferred is a legitimate terminal status). Also extend validateSpecDoneClaim to recognize [] as terminal alongside [x].
+- [x] D-7 LOCKED — Delete _shared/composition/src/core/dispatcher.ts + tests/dispatcher.test.ts. Confirmed dead (only dispatcher.test.ts imports it); production code uses registry.ts; adapter functionality untouched (lives in separate files). 508 tests → 506 tests post-delete.
 - [x] ADR-005 authored and frontmatter status ACCEPTED; date + updated populated
 - [x] /brain:---adr-review PASS verdict — round 1: 3 ACCEPT + 3 CONCERNS + 0 BLOCK + 1 P0; Phase 3 resolutions applied + Disagree-and-Commit captured; user-adjudicated pragmatic flip per /decisions Step 7 convergence-by-resolution semantics
 
@@ -2455,46 +2301,7 @@ Tracked items surfaced during the SPEC-008 marathon, deferred to post-marathon c
 - [ ] protocol-hardening part flips IN_PROGRESS → DONE (Wave 2 closes the umbrella)
 - [ ] PLAN-001 frontmatter status flips IN_PROGRESS → DONE (Wave 2 closes the PLAN)
 
-**Build Sequencing (bounded-parallel; approach LOCKED SESSION-2026-05-23_02 Event 48)**:
-
-Approach: ≤4 concurrent file-disjoint implementer builds per batch; every TASK retains its OWN per-TASK QA gate + QA note before DONE (no integrate-later). Orchestrator serializes all PLAN/session/commit bookkeeping + QA processing. Barrel-index files (`schemas/index.ts`, `parsers/index.ts`, `validators/index.ts`) + any shared code/test file force same-batch exclusion. TASK-029 + TASK-001 DONE.
-
-Per-wave protocol: (1) pick batch ≤4 (deps satisfied + pairwise-disjoint Files Affected + no shared barrel) → (2) per-TASK PLAN impl→IN_PROGRESS + session Event → batch-start commit → (3) dispatch all batch implementers concurrently (code TASKs → bun-ts-engineer; Brain-note TASKs → brain:🧠-memory / direct MCP; user-doc TASK-033 → Edit) → (4) per TASK on return (serialized): session Event → orchestrator re-runs gates independently → flip DoD/compliance checkboxes → PLAN impl→DONE → commit → PLAN qa→IN_PROGRESS → commit → dispatch QA → author QA note + flip REQ/DESIGN checkboxes + relation → PLAN qa→DONE + TASK status DONE → commit.
-
-Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the serialization bottleneck:
-
-- **W0** (8 indep, disjoint): TASK-021, 025, 026, 033, 034, 037, 039, 040
-- **W1a**: 002, 005, 010, 030 · **W1b**: 003, 011, 012, 031 · **W1c**: 004, 013, 015, 032 · **W1d**: 016, 017, 018, 020 · **W1e**: 022, 027, 036 (schemas/index.ts serialized 002→003→004; validators/index.ts serialized 010→007→008→009 across waves)
-- **W2a**: 006, 007, 014, 023, 035 · **W2b**: 028 (after 032; shared spec-claim-validator.test.ts)
-- **W3a**: 008, 019 · **W3b**: 009 (validators/index.ts after 008)
-- **W4** (REQ-003 gate cleared): 024, 038, 041, 042, 043, 044, 045
-- **W5** (terminal): 046 (smoke-tests all handlers + reuses adversarial fixtures)
-
 **Build Workflow Items**:
-
-> Seeded just-in-time per batch. PoC items (TASK-029, TASK-001) DONE. Remaining items seeded as each wave/batch begins (each carries owning_session + at_event when its TASK starts).
-
-#### impl-TASK-029-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-029-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 37
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: —
-
-#### qa-TASK-029-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-029-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 39
-- **Failed Iterations**: 0
-- **QA Ref**: QA-044-SPEC-008
-- **Fix Brief For Event**: —
 
 #### impl-TASK-001-SPEC-008
 
@@ -2502,7 +2309,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-001-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 43
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -2513,126 +2320,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-001-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 45
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-045-SPEC-008
 - **Fix Brief For Event**: —
-
-<!-- Wave 0 batch 1 (seeded Event 49; bounded-parallel) -->
-
-#### impl-TASK-021-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-021-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 50
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: —
-
-#### qa-TASK-021-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-021-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 53
-- **Failed Iterations**: 0
-- **QA Ref**: QA-046-SPEC-008
-- **Fix Brief For Event**: —
-
-#### impl-TASK-025-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-025-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 53 (re-dispatch from Event 52; prior attempt errored at Event 50)
-- **Failed Iterations**: 1
-- **QA Ref**: —
-- **Fix Brief For Event**: —
-
-#### qa-TASK-025-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-025-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 57
-- **Failed Iterations**: 0
-- **QA Ref**: QA-048-SPEC-008
-- **Fix Brief For Event**: —
-
-<!-- Wave 0 batch 3 (seeded Event 56) -->
-
-#### impl-TASK-033-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-033-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 57
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: —
-
-#### qa-TASK-033-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-033-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 59
-- **Failed Iterations**: 0
-- **QA Ref**: QA-049-SPEC-008
-- **Fix Brief For Event**: —
-
-#### impl-TASK-034-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-034-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 59 (expanded sweep PASS; 31 additional `validates` → `depends_on` across 30 notes; broader-grep verification now clean)
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: —
-
-#### qa-TASK-034-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-034-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 60
-- **Failed Iterations**: 0
-- **QA Ref**: QA-051-SPEC-008
-- **Fix Brief For Event**: —
-
-#### impl-TASK-037-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-037-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 57
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: —
-
-#### qa-TASK-037-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-037-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 59
-- **Failed Iterations**: 0
-- **QA Ref**: QA-050-SPEC-008
-- **Fix Brief For Event**: —
-
-<!-- Wave 0 finish + Wave 1a start (seeded Event 61) -->
 
 #### impl-TASK-002-SPEC-008
 
@@ -2640,7 +2331,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-002-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 62
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -2651,9 +2342,53 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-002-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 63
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-052-SPEC-008
+- **Fix Brief For Event**: —
+
+#### impl-TASK-003-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-003-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-003-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-003-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-057-SPEC-008
+- **Fix Brief For Event**: —
+
+#### impl-TASK-004-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-004-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-004-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-004-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-059-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-005-SPEC-008
@@ -2662,7 +2397,7 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-005-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 62
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -2673,122 +2408,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-005-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 63
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-053-SPEC-008
 - **Fix Brief For Event**: —
-
-#### impl-TASK-039-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-039-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 62
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: —
-
-#### qa-TASK-039-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-039-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 63
-- **Failed Iterations**: 0
-- **QA Ref**: QA-054-SPEC-008
-- **Fix Brief For Event**: —
-
-#### impl-TASK-040-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-040-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 62
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: —
-
-#### qa-TASK-040-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-040-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 63
-- **Failed Iterations**: 0
-- **QA Ref**: QA-055-SPEC-008
-- **Fix Brief For Event**: —
-
-#### impl-TASK-026-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-026-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 51
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: —
-
-#### qa-TASK-026-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-026-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 53
-- **Failed Iterations**: 0
-- **QA Ref**: QA-047-SPEC-008
-- **Fix Brief For Event**: —
-
-<!-- BULK-SEED 2026-05-24 SESSION-2026-05-23_02 Event 67: 68 workflow items (impl+qa) for the 34 remaining SPEC-008 TASKs seeded as PENDING (except Batch 5a impl items 003/010/030 seeded as IN_PROGRESS at Event 67). Numerical task-ID order. -->
-
-#### impl-TASK-003-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-003-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 69
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: bun-ts-engineer agent aca83cfe30745acbe; 20/0/20 targeted tests; biome PASS; tsc PASS; suite 734/2/736 (delta +35 = TASK-003+010); 12 DoD + 3 ADR Compliance all [x]
-
-#### qa-TASK-003-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-003-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 70
-- **Failed Iterations**: 0
-- **QA Ref**: QA-057-SPEC-008
-- **Fix Brief For Event**: brain:🧠-qa agent ad9a7d20a7e67a7c1; 12 DoD + 3 ADR Compliance + REQ-001 AC-4/7/8 + DESIGN-001 compliance verified; 20/0/20 tests; biome PASS; tsc PASS; suite 734/2/736
-
-#### impl-TASK-004-SPEC-008
-
-- **Type**: impl
-- **Task Ref**: TASK-004-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 72
-- **Failed Iterations**: 0
-- **QA Ref**: —
-- **Fix Brief For Event**: bun-ts-engineer agent a7ab239f5d807ed9d; 29/0/29 targeted tests; biome PASS; tsc PASS; suite 763/2/765 (delta +29); 12 DoD + 3 ADR Compliance all [x]
-
-#### qa-TASK-004-SPEC-008
-
-- **Type**: qa
-- **Task Ref**: TASK-004-SPEC-008
-- **Status**: DONE
-- **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 73
-- **Failed Iterations**: 0
-- **QA Ref**: QA-059-SPEC-008
-- **Fix Brief For Event**: brain:🧠-qa agent ad835e781b99f26dc; 12 DoD + 3 ADR Compliance verified; REQ-001 AC-5 N/A at schema layer (parser-gated to TASK-006); ACs 7+8 cross-cutting now satisfied (all 5 schemas landed); 29/0/29 tests; biome PASS; tsc PASS; suite 763/2/765
 
 #### impl-TASK-006-SPEC-008
 
@@ -2796,10 +2419,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-006-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 75
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
-- **Fix Brief For Event**: bun-ts-engineer agent a147cc52d67dbb7ab (1st dispatch died on internal error w/ zero partial work; clean re-dispatch); 25/0/25 targeted; biome PASS; tsc PASS; suite 788/2/790 (+25); 15 DoD + 3 ADR Compliance all [x]; design-note: hasOpenQuestions/containedSpecs derived as attached props (not schema fields) per .strict() — QA to verify vs REQ-002
+- **Fix Brief For Event**: —
 
 #### qa-TASK-006-SPEC-008
 
@@ -2807,10 +2430,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-006-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 76
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-060-SPEC-008
-- **Fix Brief For Event**: brain:🧠-qa agent abfb71cfd53115301; 15 DoD + 3 ADR Compliance + REQ-002 all 7 ACs + wrapper-vs-schema-field judgment (SATISFIES REQ-002) verified; 25/0/25; biome PASS; tsc PASS; suite 788/2/790. REQ-001 AC-5 contradiction surfaced (see Event 76)
+- **Fix Brief For Event**: —
 
 #### impl-TASK-007-SPEC-008
 
@@ -2818,10 +2441,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-007-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 81
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
-- **Fix Brief For Event**: bun-ts-engineer agent aeab033f3684366a2; 8/0/8 targeted; pure-fn {ok,unsatisfied} w/ dotted-bracket path; biome+tsc PASS; barrel added by orchestrator Event 81; 11 DoD + 3 ADR all [x]
+- **Fix Brief For Event**: —
 
 #### qa-TASK-007-SPEC-008
 
@@ -2829,10 +2452,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-007-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 82
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-062-SPEC-008
-- **Fix Brief For Event**: brain:🧠-qa agent ab78e56d361d30228; 11 DoD + 3 ADR + REQ-003 ADR-validator ACs verified; 8/0/8; PASS
+- **Fix Brief For Event**: —
 
 #### impl-TASK-008-SPEC-008
 
@@ -2840,10 +2463,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-008-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 81
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
-- **Fix Brief For Event**: bun-ts-engineer agent a5159c3aa1fe22472; 6/0/6 targeted; reads body.hasOpenQuestions on ParsedAnalysisNote (input-contract note); biome+tsc PASS; barrel added by orchestrator Event 81; 10 DoD + 3 ADR all [x]
+- **Fix Brief For Event**: —
 
 #### qa-TASK-008-SPEC-008
 
@@ -2851,10 +2474,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-008-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 82
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-063-SPEC-008
-- **Fix Brief For Event**: brain:🧠-qa agent a984a9af14749d3b4; 10 DoD + 3 ADR verified; input-contract judgment ParsedAnalysisNote correct; 6/0/6; PASS
+- **Fix Brief For Event**: —
 
 #### impl-TASK-009-SPEC-008
 
@@ -2862,10 +2485,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-009-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 81
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
-- **Fix Brief For Event**: bun-ts-engineer agent a45183b66f19b747f; 10/0/10 targeted; cross-note resolver injection; THROWS on missing resolver + undefined resolution (no silent pass per critic P1.1); reads contains via relations array; biome+tsc PASS; barrel added by orchestrator Event 81; 12 DoD + 3 ADR all [x]
+- **Fix Brief For Event**: —
 
 #### qa-TASK-009-SPEC-008
 
@@ -2873,10 +2496,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-009-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 82
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-064-SPEC-008
-- **Fix Brief For Event**: brain:🧠-qa agent a6b707c2ea3787f5d; 12 DoD + 3 ADR verified; both no-silent-pass throw paths confirmed (critic P1.1); 10/0/10; PASS
+- **Fix Brief For Event**: —
 
 #### impl-TASK-010-SPEC-008
 
@@ -2884,10 +2507,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-010-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 69
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
-- **Fix Brief For Event**: bun-ts-engineer agent a325feb5733a31296; 15/0/15 targeted tests (7 schema + 8 validator); biome PASS; tsc PASS; 18 baseline tests preserved (Wave 1 zero-regression); 14 DoD + 4 ADR Compliance all [x]
+- **Fix Brief For Event**: —
 
 #### qa-TASK-010-SPEC-008
 
@@ -2895,10 +2518,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-010-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 70
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-058-SPEC-008
-- **Fix Brief For Event**: brain:🧠-qa agent a4a19aa101027ac7f; 14 DoD + 4 ADR Compliance + REQ-001 AC-6 + REQ-003 AC-5/AC-6 + DESIGN-001 compliance verified; 15/0/15 targeted + Wave 1 baseline 18/18 zero-regression; biome PASS; tsc PASS
+- **Fix Brief For Event**: —
 
 #### impl-TASK-011-SPEC-008
 
@@ -2906,11 +2529,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-011-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 86
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
-
 
 #### qa-TASK-011-SPEC-008
 
@@ -2918,11 +2540,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-011-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 87
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-065-SPEC-008
 - **Fix Brief For Event**: —
-
 
 #### impl-TASK-012-SPEC-008
 
@@ -2930,11 +2551,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-012-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 89
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
-
 
 #### qa-TASK-012-SPEC-008
 
@@ -2942,11 +2562,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-012-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 90
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-068-SPEC-008
 - **Fix Brief For Event**: —
-
 
 #### impl-TASK-013-SPEC-008
 
@@ -2954,11 +2573,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-013-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 89
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
-
 
 #### qa-TASK-013-SPEC-008
 
@@ -2966,11 +2584,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-013-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 90
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-069-SPEC-008
 - **Fix Brief For Event**: —
-
 
 #### impl-TASK-014-SPEC-008
 
@@ -3000,11 +2617,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-015-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 86
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
-
 
 #### qa-TASK-015-SPEC-008
 
@@ -3012,11 +2628,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-015-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 87
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-066-SPEC-008
 - **Fix Brief For Event**: —
-
 
 #### impl-TASK-016-SPEC-008
 
@@ -3024,11 +2639,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-016-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 86
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
-
 
 #### qa-TASK-016-SPEC-008
 
@@ -3036,11 +2650,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-016-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 87
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-067-SPEC-008
 - **Fix Brief For Event**: —
-
 
 #### impl-TASK-017-SPEC-008
 
@@ -3048,11 +2661,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-017-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 89
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
-
 
 #### qa-TASK-017-SPEC-008
 
@@ -3060,11 +2672,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-017-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 90
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-070-SPEC-008
 - **Fix Brief For Event**: —
-
 
 #### impl-TASK-018-SPEC-008
 
@@ -3132,6 +2743,28 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **QA Ref**: QA-073-SPEC-008
 - **Fix Brief For Event**: —
 
+#### impl-TASK-021-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-021-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-021-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-021-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-046-SPEC-008
+- **Fix Brief For Event**: —
+
 #### impl-TASK-022-SPEC-008
 
 - **Type**: impl
@@ -3180,9 +2813,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-024-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 123
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -3196,6 +2829,50 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-025-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-025-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 1
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-025-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-025-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-048-SPEC-008
+- **Fix Brief For Event**: —
+
+#### impl-TASK-026-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-026-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-026-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-026-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-047-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-027-SPEC-008
@@ -3242,16 +2919,38 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **QA Ref**: —
 - **Fix Brief For Event**: —
 
+#### impl-TASK-029-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-029-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-029-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-029-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-044-SPEC-008
+- **Fix Brief For Event**: —
+
 #### impl-TASK-030-SPEC-008
 
 - **Type**: impl
 - **Task Ref**: TASK-030-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 68
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
-- **Fix Brief For Event**: orchestrator-inline (commit 64dd1ca; per ADR-005 D-7 small-scope deletion permission)
+- **Fix Brief For Event**: —
 
 #### qa-TASK-030-SPEC-008
 
@@ -3259,18 +2958,18 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-030-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 68
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-056-SPEC-008
-- **Fix Brief For Event**: orchestrator-inline self-verification (no QA agent dispatched; per-DoD + per-AC mechanical evidence in QA-056)
+- **Fix Brief For Event**: —
 
 #### impl-TASK-031-SPEC-008
 
 - **Type**: impl
 - **Task Ref**: TASK-031-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 123
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -3308,13 +3007,57 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **QA Ref**: QA-074-SPEC-008
 - **Fix Brief For Event**: —
 
+#### impl-TASK-033-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-033-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-033-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-033-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-049-SPEC-008
+- **Fix Brief For Event**: —
+
+#### impl-TASK-034-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-034-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-034-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-034-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-051-SPEC-008
+- **Fix Brief For Event**: —
+
 #### impl-TASK-035-SPEC-008
 
 - **Type**: impl
 - **Task Ref**: TASK-035-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 123
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -3334,9 +3077,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-036-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 123
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -3350,6 +3093,28 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### impl-TASK-037-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-037-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-037-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-037-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-050-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-038-SPEC-008
@@ -3372,6 +3137,50 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Transitioned At Event**: 100
 - **Failed Iterations**: 0
 - **QA Ref**: QA-076-SPEC-008
+- **Fix Brief For Event**: —
+
+#### impl-TASK-039-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-039-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-039-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-039-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-054-SPEC-008
+- **Fix Brief For Event**: —
+
+#### impl-TASK-040-SPEC-008
+
+- **Type**: impl
+- **Task Ref**: TASK-040-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: —
+- **Fix Brief For Event**: —
+
+#### qa-TASK-040-SPEC-008
+
+- **Type**: qa
+- **Task Ref**: TASK-040-SPEC-008
+- **Status**: DONE
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: —
+- **Failed Iterations**: 0
+- **QA Ref**: QA-055-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-041-SPEC-008
@@ -3444,9 +3253,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: impl
 - **Task Ref**: TASK-044-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 106
+- **Transitioned At Event**: 123
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -3455,9 +3264,9 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 
 - **Type**: qa
 - **Task Ref**: TASK-044-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 123
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -3506,18 +3315,16 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **QA Ref**: —
 - **Fix Brief For Event**: —
 
-<!-- TASK-047 added 2026-05-24 Event 77 — follow-up TASK closing REQ-001 AC-5 coverage gap (CRIT H1-drift); marathon 46 → 47 TASKs -->
-
 #### impl-TASK-047-SPEC-008
 
 - **Type**: impl
 - **Task Ref**: TASK-047-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 78
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: —
-- **Fix Brief For Event**: bun-ts-engineer agent a0d2f0bc8a2d89bae; H1-drift check at crit-note.ts:194 (extractH1 vs frontmatter.title verbatim; plain Error not ZodError; runs before CritNoteSchema.parse); 13/0/13 parser tests (8 preserved + 5 new); 2 existing rejection tests fixed to .replaceAll() H1+title lockstep; biome PASS; tsc PASS; suite 793/2/795; 10 DoD + 2 ADR Compliance all [x]
+- **Fix Brief For Event**: —
 
 #### qa-TASK-047-SPEC-008
 
@@ -3525,10 +3332,10 @@ Wave plan (analyst `a72742cc285442ea9`, Event 47); 6 waves; barrel files are the
 - **Task Ref**: TASK-047-SPEC-008
 - **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: Event 79
+- **Transitioned At Event**: —
 - **Failed Iterations**: 0
 - **QA Ref**: QA-061-SPEC-008
-- **Fix Brief For Event**: brain:🧠-qa agent a0e6b42a1c862cb69; 10 DoD + 2 ADR Compliance + REQ-001 AC-5 closure verified; 13/0/13 parser tests; both agent HALT-resolutions verified correct; biome PASS; tsc PASS; suite 793/2/795. REQ-001 → ACCEPTED (all 8 ACs + all schema TASKs done)
+- **Fix Brief For Event**: —
 
 ## Tasks
 

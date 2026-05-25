@@ -2874,3 +2874,23 @@ User-approved via AskUserQuestion: **"Fold into TASK-046"** — add an end-to-en
 - TASK-046-SPEC-008 DoD: +1 item (end-to-end latency assertion satisfying REQ-011 AC10)
 - REQ-011-SPEC-008: remains DRAFT; acceptance now gated on TASK-046 closure (no AC amendment)
 - Step A CLOSED: layered-severity refactor validated (QA-084 PASS, AC1-9); REQ-011 acceptance rescheduled to post-TASK-046
+
+
+## Event 123 — BATCH START (max-parallel, user-directed): impl-044→DONE + 4-wide impl wave (024/031/035/036) + qa-044→IN_PROGRESS
+
+User directive (2nd time this session): "do as much work in parallel as possible." Launching a 5-wide file-disjoint concurrent wave. PLAN pre-transitions applied via the canonical `transition-impl-item`/`transition-qa-item` mutation scripts (part-id `build.SPEC-008` + task-ref):
+
+- impl-TASK-044 IN_PROGRESS → DONE — `hooks/scripts.disabled/stop-backstop.ts` verified complete on disk (git-status `--porcelain --untracked-files=all` enumeration + fail-closed infra handling + path-containment + dedup + full test matrix incl. the FU-6 Stop-input-shape regression).
+- qa-TASK-044 PENDING → IN_PROGRESS.
+- impl-TASK-024/031/035/036 PENDING → IN_PROGRESS.
+
+Dispatching concurrently: `brain:🧠-qa`→TASK-044 (QA-085); `bun-ts-engineer`→TASK-024 (AAE adversarial fixtures under `shared/composition/tests/`); `brain:🧠-memory`→TASK-031 (SPEC-007 root `[~]`); `brain:🧠-memory`→TASK-035 (SPEC-002/003 rollups + 4 REQ flips); `brain:🧠-memory`→TASK-036 (REQ-009-SPEC-007 9→11). All file-disjoint. Every brief forbids git/PLAN/SPEC-008-root writes (return State Changes only); orchestrator verifies every change against disk before accepting (per the Event-120 violation lesson). TASK-028 deferred (conflicts with 024 on `adversarial-claims.test.ts`); TASK-046 blocked on 024's fixtures.
+
+### State Changes
+
+- impl-TASK-044-SPEC-008: IN_PROGRESS → DONE (Event 123)
+- qa-TASK-044-SPEC-008: PENDING → IN_PROGRESS (Event 123)
+- impl-TASK-024-SPEC-008: PENDING → IN_PROGRESS (Event 123)
+- impl-TASK-031-SPEC-008: PENDING → IN_PROGRESS (Event 123)
+- impl-TASK-035-SPEC-008: PENDING → IN_PROGRESS (Event 123)
+- impl-TASK-036-SPEC-008: PENDING → IN_PROGRESS (Event 123)
