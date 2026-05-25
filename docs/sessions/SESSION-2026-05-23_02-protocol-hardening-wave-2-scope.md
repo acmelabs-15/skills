@@ -3075,3 +3075,15 @@ impl-TASK-046 PENDING → IN_PROGRESS. Firing 2 opus agents in parallel (file-di
 - impl-TASK-046-SPEC-008 → IN_PROGRESS (Event 134)
 - Dispatched: D-A SPEC-007 investigation (analyst) + TASK-046 impl (bun-ts-engineer), opus
 - Note: SPEC-007 plan-001-migration tests now PASS (1220/0) — deferral premise under investigation (affects TASK-031/D-A)
+
+
+## Event 135 — TASK-046 smoke tests built (layout corrected); D-A findings: SPEC-007 migration is DONE, not deferred
+
+**TASK-046 impl** (bun-ts-engineer interrupted by user for a layout error): the agent nested the smoke tests at `hooks/__tests__/smoke/__tests__/` (wrong). Orchestrator corrected the layout → flat `hooks/__tests__/smoke/*.smoke.test.ts` + `smoke/_helpers/` (fixed the `../_helpers/`→`./_helpers/` imports). Result: **14 pass / 0 fail**; all 7 layers smoke-tested via `bun run` against `hooks/scripts.disabled/`; **AC10 latency measured end-to-end** (Layer-1 edit 144.7ms within ~80-250ms; Layer-3 commit 336.5ms within ~500ms-2s). Full suite **1234 pass / 0 fail**. tsc/biome do NOT gate the smoke tests (hooks/** excluded from root tsconfig + biome include — FU-4); clean by inspection, consistent with the existing hook layer. impl-046 still IN_PROGRESS (pending QA).
+
+**D-A SPEC-007 investigation (analyst, read-only) — verdict: the deferral premise is OBSOLETE; plan-001-migration is genuinely DONE.** Evidence: the 2 D-1-deferred tests (`shared/composition/tests/plan-001-migration.test.ts` AC#1/AC#3) now PASS (5/0); the live PLAN-001 genuinely conforms to the trimmed template (forbidden sections absent, consolidated sections present) — completed via the Event-126 mermaid fix (AC#3 round-trip) + the Event-129 clean re-render (AC#1). TASK-014-SPEC-007 DoD fully `[x]` (legitimately DONE); TASK-013 genuinely BLOCKED/superseded by TASK-014. Recommended SPEC-007 reconciliation (mechanically determinable): REQ-012 row→`[x]` + flip its 4 ACs + rewrite stale outcome line; TASK-014 row→`[x]`; **all 8 Success Criteria→`[x]`** (satisfied — round-trip tests pass); **fix the invalid `validated_by` relation verb** in SPEC-007 root (+ TASK-013/014) → not in the 11-verb allowlist, blocks `validateSpecDoneClaim(SPEC-007)` parse. ONE genuine user decision: TASK-013 row notation `[x]` (resolved-via-supersession; recommended) vs `[~]` (deferred/abandoned-in-favor-of-gap-task). Also stale: any "2 pre-existing SPEC-007 fails" baseline language in SPEC-008 root / PLAN-001 (now 0-fail) → reconcile as FU.
+
+### State Changes
+
+- TASK-046 smoke tests authored (7 layers, 14/0) + AC10 latency measured (L1 145ms, L3 336ms); layout corrected from nested `__tests__` to flat `smoke/`; suite 1234/0; impl-046 IN_PROGRESS (QA pending)
+- D-A CONCLUDED: SPEC-007 plan-001-migration DONE (not deferred); TASK-031 should mark rows `[x]` not `[~]` + flip 8 Success Criteria + fix `validated_by` verb; one decision pending (TASK-013 row notation)
