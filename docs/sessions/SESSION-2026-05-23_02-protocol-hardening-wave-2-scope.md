@@ -3117,3 +3117,18 @@ impl-TASK-028 PENDING → IN_PROGRESS. Firing the last 2 build items (opus, para
 
 - impl-TASK-028-SPEC-008 → IN_PROGRESS (Event 137)
 - Dispatched: QA-090 (TASK-031) + TASK-028 impl (drift markers), opus
+
+
+## Event 138 — TASK-031 CLOSED (46/47); TASK-028 impl DONE → QA-091 (final task)
+
+- **TASK-031 CLOSED**: QA-090 PASS (all 7 amended DoD `[x]`; validateSpecDoneClaim(SPEC-007) ok; `validated_by` verb gone; REQ-012 ACs `[x]`). qa-031 → DONE (qa_ref QA-090), TASK-031 status → DONE, SPEC-root `[x]`. **46/47.** SPEC-007 plan-001-migration drift fully reconciled.
+- **TASK-028 impl DONE**: 5 Phase-X drift surfaces marked via `// drift-marker:` (plan-001-migration, spec-claim-validator, ast-helpers [subst. for schemas — frontmatter-integrity lock], common-schema [subst. for validators — RelationSchema allowlist], + pre-existing mutation-invariants TASK-027 marker); `git grep` = 6 matches (≥5). 2 substitutions documented (DoD-authorized). Behavior-preserving (suite 1234/0, tsc 0, biome clean). impl-028 → DONE, qa-028 → IN_PROGRESS, QA-091 dispatched.
+- Both agents verified in-lane (QA-090 + 4 test files only; no PLAN/SPEC-008-root/git writes).
+
+On QA-091 PASS → **47/47 — all SPEC-008 TASKs closed**. Then close-out: REQ/DESIGN acceptances + SPEC-root 5-list final sync, FU-6b, test-report→qa docs sweep (step G), hooks re-enable, ADR-005 D-B clarification + adr-review, SPEC-008 IND_PROGRESS→DONE, protocol-hardening part DONE, PLAN-001 DONE, /end.
+
+### State Changes
+
+- qa-TASK-031 → DONE (qa_ref QA-090); TASK-031 status → DONE; SPEC-root `[x]` → 46/47
+- impl-TASK-028 → DONE (5 drift surfaces, 6 grep matches, behavior-preserving); qa-028 → IN_PROGRESS; QA-091 dispatched
+- validateSpecDoneClaim(SPEC-007) ok; suite 1234/0

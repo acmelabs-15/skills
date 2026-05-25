@@ -2901,9 +2901,9 @@ graph TD
 
 - **Type**: impl
 - **Task Ref**: TASK-028-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 137
+- **Transitioned At Event**: 138
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -2912,9 +2912,9 @@ graph TD
 
 - **Type**: qa
 - **Task Ref**: TASK-028-SPEC-008
-- **Status**: PENDING
-- **Owning Session**: —
-- **Transitioned At Event**: —
+- **Status**: IN_PROGRESS
+- **Owning Session**: SESSION-2026-05-23_02
+- **Transitioned At Event**: 138
 - **Failed Iterations**: 0
 - **QA Ref**: —
 - **Fix Brief For Event**: —
@@ -2978,11 +2978,11 @@ graph TD
 
 - **Type**: qa
 - **Task Ref**: TASK-031-SPEC-008
-- **Status**: IN_PROGRESS
+- **Status**: DONE
 - **Owning Session**: SESSION-2026-05-23_02
-- **Transitioned At Event**: 136
+- **Transitioned At Event**: 138
 - **Failed Iterations**: 0
-- **QA Ref**: —
+- **QA Ref**: QA-090-SPEC-008
 - **Fix Brief For Event**: —
 
 #### impl-TASK-032-SPEC-008

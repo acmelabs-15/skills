@@ -77,6 +77,7 @@ describe("common schema — observation and relation primitives", () => {
     ).toBe(false);
   });
 
+  // drift-marker: qa-027-validates-relation-verb — QA-027 forbidden 'validates' relation-type drift
   test("RelationSchema accepts valid verbs and rejects unknown", () => {
     expect(RelationSchema.safeParse({ verb: "implements", target: "ADR-001" }).success).toBe(true);
     expect(RelationSchema.safeParse({ verb: "pairs_with", target: "PLAN-001" }).success).toBe(true);

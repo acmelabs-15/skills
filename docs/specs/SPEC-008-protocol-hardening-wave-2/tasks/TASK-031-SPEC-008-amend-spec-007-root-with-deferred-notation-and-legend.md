@@ -2,7 +2,7 @@
 title: 'TASK-031-SPEC-008: Amend SPEC-007 Root with Deferred Notation and Legend'
 type: task
 permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-031-spec-008-amend-spec-007-root-with-deferred-notation-and-legend-1
-status: TODO
+status: DONE
 tags:
 - spec-008
 - track-4

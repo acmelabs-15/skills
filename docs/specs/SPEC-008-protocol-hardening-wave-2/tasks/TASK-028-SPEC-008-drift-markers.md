@@ -21,17 +21,17 @@ Insert `// drift-marker: <PHASE-X-DRIFT-SURFACE-ID> — <one-line>` source-code 
 
 ## Definition of Done
 
-- [ ] Five existing test files (or five existing `describe`/`test` blocks within fewer files) carry one `// drift-marker:` comment each
-- [ ] Each marker matches the canonical format: `// drift-marker: <drift-surface-id> — <one-line-description>`
-- [ ] Suggested mappings (verify each against actual existing test content; substitute equivalents if exact match unavailable): (1) `plan-001-migration.test.ts` → `plan-001-trimmed-template-canonical-form` (PLAN-001 trimmed template canonical-form drift); (2) `spec-claim-validator.test.ts` → `spec-002-spec-003-rollup-drift` (SPEC-002/003 SPEC-vs-TASK rollup drift); (3) `schemas.test.ts` (duplicate-frontmatter handling) → `qa-027-qa-030-duplicate-frontmatter` (QA-027/QA-030 duplicate-frontmatter-block drift); (4) `validators.test.ts` (or relation-verb validator) → `qa-027-validates-relation-verb` (QA-027 forbidden `validates` relation type drift); (5) the new TASK-027 duplicate-event-number test → `session-2026-05-21-01-duplicate-events` (count this as one of the five even though the test is new; the drift surface it regression-locks is documented Phase X)
-- [ ] `git grep "// drift-marker:" shared/composition/tests/` returns at least five matches
-- [ ] No test behavior changes; `bun test` continues to pass with the same test count as before TASK-028 (modulo TASK-021 through TASK-027 additions)
-- [ ] `biome lint` and `tsc --noEmit` pass
+- [x] Five existing test files (or five existing `describe`/`test` blocks within fewer files) carry one `// drift-marker:` comment each
+- [x] Each marker matches the canonical format: `// drift-marker: <drift-surface-id> — <one-line-description>`
+- [x] Suggested mappings (verify each against actual existing test content; substitute equivalents if exact match unavailable): (1) `plan-001-migration.test.ts` → `plan-001-trimmed-template-canonical-form` (PLAN-001 trimmed template canonical-form drift); (2) `spec-claim-validator.test.ts` → `spec-002-spec-003-rollup-drift` (SPEC-002/003 SPEC-vs-TASK rollup drift); (3) `schemas.test.ts` (duplicate-frontmatter handling) → `qa-027-qa-030-duplicate-frontmatter` (QA-027/QA-030 duplicate-frontmatter-block drift); (4) `validators.test.ts` (or relation-verb validator) → `qa-027-validates-relation-verb` (QA-027 forbidden `validates` relation type drift); (5) the new TASK-027 duplicate-event-number test → `session-2026-05-21-01-duplicate-events` (count this as one of the five even though the test is new; the drift surface it regression-locks is documented Phase X)
+- [x] `git grep "// drift-marker:" shared/composition/tests/` returns at least five matches
+- [x] No test behavior changes; `bun test` continues to pass with the same test count as before TASK-028 (modulo TASK-021 through TASK-027 additions)
+- [x] `biome lint` and `tsc --noEmit` pass
 
 ## ADR Compliance
 
-- [ ] Honors REQ-007 AC-6: at least five existing tests carry `// drift-marker:` comments in canonical format
-- [ ] Honors REQ-007 AC-7: each marker maps to a documented Phase X drift surface from RETRO-003
+- [x] Honors REQ-007 AC-6: at least five existing tests carry `// drift-marker:` comments in canonical format
+- [x] Honors REQ-007 AC-7: each marker maps to a documented Phase X drift surface from RETRO-003
 
 ## Files Affected
 

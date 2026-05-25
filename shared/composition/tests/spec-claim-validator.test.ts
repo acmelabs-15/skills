@@ -44,6 +44,7 @@ function makeSpec(
   return base;
 }
 
+// drift-marker: spec-002-spec-003-rollup-drift — SPEC-002/003 SPEC-vs-TASK rollup drift
 describe("validateSpecDoneClaim", () => {
   test("PASS with total 0 when both gate sections absent", () => {
     const result = validateSpecDoneClaim(makeSpec());

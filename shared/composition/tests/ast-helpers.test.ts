@@ -21,6 +21,7 @@ function parse(md: string) {
   return unified().use(remarkParse).use(remarkFrontmatter, ["yaml"]).use(remarkGfm).parse(md);
 }
 
+// drift-marker: qa-027-qa-030-duplicate-frontmatter — QA-027/QA-030 duplicate-frontmatter-block drift
 describe("extractFrontmatter", () => {
   test("returns parsed YAML mapping", () => {
     const ast = parse("---\ntitle: foo\ntype: plan\n---\n\n# Body\n");

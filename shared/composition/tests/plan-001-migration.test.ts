@@ -24,6 +24,7 @@ const PLAN_PATH = join(
   "PLAN-001-skills-ecosystem.md",
 );
 
+// drift-marker: plan-001-trimmed-template-canonical-form — PLAN-001 trimmed-template canonical-form drift
 describe("TASK-014-SPEC-007: PLAN-001 trimmed-template migration", () => {
   test("AC#1 — PLAN-001 matches trimmed template structure (no forbidden sections)", async () => {
     const md = await Bun.file(PLAN_PATH).text();
