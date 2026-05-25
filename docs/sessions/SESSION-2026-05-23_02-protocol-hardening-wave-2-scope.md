@@ -3291,3 +3291,15 @@ NO flips executed this event — halted on drift pending user adjudication of th
 - Phase 3 evidence-gathering DONE (read-only). 6 notes clean-ready, 2 deferred to post-Phase-4, 3 reconciliation decisions surfaced.
 - SKILL-006 note deleted (user request; commit a679989).
 - No REQ/DESIGN/SPEC-root status change yet (awaiting decisions).
+
+
+## Event 145 — Phase 3 reconciliation decisions LOCKED (3 AskUserQuestion answers)
+
+User adjudicated the 3 surfaced reconciliation decisions:
+- **D-PH3-1 (REQ-006 AC-7): IMPLEMENT comment-parsing.** Make the adversarial harness parse the `expected-reject` regex from each fixture's drift-marker comment + assert the comment exists + use it as the assertion. CONSTRAINT (orchestrator-caught): DESIGN-003 Compliance item 3 mandates `testAdversarial` keep the `{fixture, validator, expectedReject}` signature — so implementation KEEPS the signature AND adds comment-presence assertion + parses the comment regex + cross-checks it matches the table `expectedReject` (drift guard) + uses it. Satisfies REQ-006 AC-7 AND DESIGN-003 item 3 without conflict. Then flip REQ-006 ACCEPTED.
+- **D-PH3-2 (REQ-008 AC-1/AC-2): AMEND to completion.** Reword AC-1/AC-2 to record SPEC-007 drift closed via completion of the migration (all `[x]`, children terminal) rather than `[~]` deferral; the validator extension (AC-3/4/6/7) is the durable deliverable. Then flip REQ-008 ACCEPTED.
+- **D-PH3-3 (DESIGN-002 item 7): AMEND to advisory.** Reword item 7: line target is advisory; doc-headers + multi-flag parsers legitimately push several scripts past 60-80 lines; thin-wrapper logic preserved. Then flip DESIGN-002 ACCEPTED.
+
+### State Changes
+
+- 3 Phase-3 reconciliation decisions LOCKED (D-PH3-1 implement, D-PH3-2 amend, D-PH3-3 amend). Execution: REQ-006 AC-7 impl dispatch + 2 AC-text amendments + 8 ACCEPTED flips + partial SPEC-root sync next.
