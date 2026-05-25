@@ -2818,3 +2818,14 @@ Standing directive (Event 117): finish EVERYTHING to complete SPEC-008 + complet
 
 - SESSION-2026-05-23_02: PAUSED → IN_PROGRESS (Event 118; resume, fresh context)
 - No PLAN state change this Event (rehydration only); build.SPEC-008 remains IN_PROGRESS at 40/47
+
+
+## Event 119 — Step A START: REQ-011 layered-severity acceptance QA dispatched (QA-084)
+
+Resuming the Event-117 plan at step A. Dispatching ONE `brain:🧠-qa` agent to formally validate the layered-severity refactor (Event 114 decision → Event 115 impl) against the AMENDED [[REQ-011-SPEC-008: PreToolUse Blocking Gates]] AC (9 items) + [[DESIGN-004-SPEC-008: Hook Layer and Plugin Directory Layout]] layered-severity compliance. This is a REQ-acceptance QA, NOT a per-TASK build-workflow gate — TASK-038/043 impl+qa already DONE; the amendment added cross-cutting verdict-mapping behavior their DoD didn't preclude (Event-114 scope note). Implementation under QA: `hooks/lib/dispatch-validator.ts` (3-way verdict) + `shared/composition/src/validators/lenient-claim-extract.ts` (independent claim extraction) + L1-L6 handler verdict-mapping in `hooks/scripts.disabled/` (L7 git-state-observer observe-only). QA authors `QA-084-SPEC-008` (Pattern 2 + post-move_note self-verify); orchestrator owns ALL PLAN/SPEC-root/git (agent forbidden git+PLAN writes). On PASS → REQ-011 → ACCEPTED + SPEC-root Requirements REQ-011 `[x]`.
+
+### State Changes
+
+- No PLAN build-workflow item transition (REQ-acceptance QA, not a per-TASK gate)
+- QA-084-SPEC-008 allocated for the layered-severity acceptance validation
+- REQ-011 remains DRAFT pending QA-084 verdict
