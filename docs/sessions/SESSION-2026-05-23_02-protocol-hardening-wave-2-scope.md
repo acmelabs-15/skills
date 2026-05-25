@@ -58,21 +58,6 @@ Actions:
 
 Next: await audit returns → synthesize → surface tiered scope via AskUserQuestion → on approval, append new DoD items to protocol-hardening part + dispatch execution.
 
-## Observations
-
-- [decision] Wave 2 framed as scope-discovery first (audit) then execution, not direct implementation — user said "figure out what that is" #scope #process
-- [decision] 5 parallel audits over single sequential sweep — orthogonal investigation surfaces (coverage / skills / notes / code / tests) #parallelism #investigation
-- [constraint] Audits READ ONLY; no Brain note writes, no code modifications during this phase #safety #separation-of-concerns
-- [insight] Phase X retired memory documented 37 drift surfaces — Wave 2 should verify cleanup held + catch new drift since 2026-05-21 #drift #regression
-- [risk] Scope discovery may surface spec-decomposition-sized work (new SPECs for ADR/ANALYSIS schemas) rather than fitting under one part — shape decision required after synthesis #scope-shape
-
-## Relations
-
-- part_of [[PLAN-001 Skills Ecosystem]]
-- relates_to [[RETRO-003 Phase X Execution and Composition Library Completion]]
-- inspired_by [[ANALYSIS-003 Phase X Protocol Hardening State]]
-- pairs_with [[SESSION-2026-05-23_01 Plan-001 Reconcile and Build SPEC-002]]
-
 ## Event 02 — Audits A and B returned; convergent finding on enforcement gap
 
 **Audit A (Composition Coverage)** — recommended Wave 2 scope:
@@ -3457,3 +3442,85 @@ Success Criteria: SC#2 (schema-coverage matrix — 12 schema files verified on d
 
 - SPEC-008 root: AC #3/#7/#8/#9 → `[x]`; AC #1/#2 held `[ ]` + annotated; SC #2/#3 → `[x]`; SC #1/#4 held `[ ]` + annotated. Status unchanged (ACCEPTED).
 - No PLAN change (SPEC-root AC/SC are SPEC-internal rollups; no PLAN-part transition).
+
+## Event 162 — Step 3 DONE: tidy (test-count) + FU-3 (Observations/Relations to true tail, made robust)
+
+Event-159 close-out Step 3. (a) Stale test-count language reconciled: SPEC-root AC #7 `508/508` → `1252/0` (Event 161); session `## State` block already current at 1252/0; historical event-body counts (`1234/0`, `705/2/707`, `1216/2`) PRESERVED as temporal records. (b) FU-3: the Observations + Relations sections were wedged between Event 01 and Event 02 (final-two-sections invariant violation) — excised from mid-note and re-authored at the true tail (verified single occurrence of each; nothing follows Relations). (c) Per user direction (the sections were "wildly stale" + "should be much more robust"), both rewritten to reflect the full 161-event arc: Observations = 23 entries across 5 H3 groups; Relations = 16 entries across 4 H3 type-groups (part_of PLAN-001; relates_to SPEC-008 + ADR-005 + ANALYSIS-004 + RETRO-003 + the 9 reflection notes SKILL-006 through SKILL-014; inspired_by ANALYSIS-003; pairs_with SESSION-2026-05-23_01). Wikilink colons fixed. Bidirectional inverses added to SPEC-008 / ADR-005 / ANALYSIS-004; the 9 SKILL reflection notes already carry a relates_to edge back to this session from the canonical reflection-capture template (verified on SKILL-006).
+
+### State Changes
+
+- Session note: Observations + Relations moved to the true tail and rewritten robust (H3-grouped). Stale test-count language reconciled. FU-3 closed.
+- SPEC-008, ADR-005, ANALYSIS-004 each gained the bidirectional inverse relates_to edge back to this session note.
+- No PLAN change.
+
+
+## Observations
+
+
+### Scope and decomposition
+
+- [decision] Wave 2 framed scope-discovery-first: 5 parallel read-only audits (A coverage / B skills / C notes / D code / E tests) over a single sequential sweep #scope #parallelism
+- [decision] Convergent audit finding — the rigid per-TASK build+QA protocol existed as PROSE, not RUNTIME ENFORCEMENT; ADR-005's 8 D-Ns + SPEC-008's 5 tracks target exactly that gap #root-finding #enforcement
+- [decision] One cohesive SPEC-008 chosen over a 3-spec split (Event 22) — cohesion preserved: one /build cycle, one QA sweep, one DONE gate #scope-shape #cohesion
+- [outcome] ADR-005 authored (8 D-Ns) + passed `brain:---adr-review`; SPEC-008 authored as 62 child notes (12 REQ + 4 DESIGN + 47 TASK) across 5 parallel architect dispatches with zero counter collisions #decisions #spec-authoring
+
+### Build outcomes
+
+- [outcome] 47/47 TASKs DONE via the rigid per-TASK build+QA cycle (94 impl+qa workflow items); full suite 1252/0; `tsc` clean #build-complete #green
+- [outcome] Track 1 — 5 schemas + 5 parsers + 4 claim validators added (ADR / ANALYSIS / EPIC / CRIT + PLAN-done-claim) #track-1 #coverage
+- [outcome] Track 3 — adversarial-claim test harness + fixture corpus (7 type dirs / 20 fixtures) + integration (parse→mutate→validate→render) + mutation-invariant tests #track-3 #regression
+- [outcome] Track 5 — 7-layer hook architecture built (5 PreToolUse + Stop backstop + FileChanged observer) but DISABLED pending go-live #track-5 #hooks
+- [insight] `renderPlanNote` OWNS the PLAN deterministically — hand-maintained sections (Risks, custom wave graph) were dropped by design; the mermaid `end`→`end_part` reserved-word bug was the load-bearing render fix #renderer #plan-ownership
+
+### Drift and root-cause findings
+
+- [problem] Parser-conformance drift (stop-the-line, Event 147): composition REQ/DESIGN parsers reject ALL SPEC-008 REQ/DESIGN notes — `## EARS` vs the parser's `## Requirement Statement`; `[design]` category absent from the 10-category enum; `## Priority` >200 chars; tags >5 — systematic + pre-existing #drift #parser
+- [problem] Root-cause investigation (Event 148) — 3 compounding failures: (1) per-skill scripts built but never wired into `SKILL.md`; (2) REQ/DESIGN notes never run through their own parsers/validators; (3) notes drifted from canonical templates undetected #root-cause #three-failures
+- [insight] Through-line — SPEC-008 built the enforcement MECHANISM (validators + scripts + hooks) but left it INERT: scripts uninvoked, validators can't parse the notes, hooks disabled #mechanism-inert #central
+- [insight] The durable fix is schema-as-single-source-of-truth: structure is triplicated (schema = data shape, parser = heading↔field map, template = heading layout) → multi-directional drift; "no single schema source" is the root, "notes deviated" the symptom (SKILL-009) #single-source #architecture
+
+### Process and protocol learnings
+
+- [decision] Canonical reflection-capture process hard-locked (2026-05-25): two artifacts per learning (skill-sidecar note + session-Event POINTER); never ask; capture async in the background (SKILL-010/011) #reflection #process
+- [decision] Agent-discipline hardened: subagents FORBIDDEN autonomous git / PLAN / SPEC-root writes (return `## State Changes` only); orchestrator verifies every claim against git/disk after false flips surfaced #agent-discipline #verification
+- [insight] "Exists + unit-tested" ≠ DONE for a script deliverable (SKILL-006); an AC "verifiable via X" where X never ran is a phantom gate (SKILL-007); note-authoring without parse-at-creation lets template drift accumulate silently (SKILL-008) #done-definition #phantom-gate #parse-at-creation
+- [insight] `adr-review` gate scope = substance + timing (new/changed decisions pre-lock), not "any ADR byte"; mechanical renames (test-report→qa) are not decision changes (SKILL-013 / SKILL-014) #adr-review-scope #rename
+- [problem] No sanctioned MCP-backed bulk Brain-note find-replace primitive exists — a ~200-note migration is mostly rule-based + a small semantic remainder; the binary rule forbids raw `sed` on Brain notes (SKILL-012) #tooling-gap #bulk-migration
+
+### Drift cleanup and close-out state
+
+- [outcome] Docs hygiene sweeps: `_shared`→`shared` (179 notes), `test-report`→`qa` (30 notes + ADR-005 body), `feedback_` §5.3 cleanup (0 in non-temporal docs) — preserve-sets respected #hygiene #sweeps
+- [outcome] Track 4 — dead `core/dispatcher.ts` deleted; SPEC-007 `[~]` deferred notation + legend; 10 Audit-C hygiene fixes; SPEC-002/003 rollups; REQ-009-SPEC-007 9→11 amendment #track-4 #cleanup
+- [constraint] SPEC-008 root stays ACCEPTED (not DONE) and PLAN-001 stays IN_PROGRESS — terminal flips + hooks go-live gated on the deferred post-merge parser-conformance + script-wiring session #deferred #close-out
+- [constraint] DEFERRED post-merge inventory (this note is the bridge): wire 11 scripts into 7 `SKILL.md`; make the schema the single source so REQ/DESIGN parse; build the bulk-rewrite tool; hooks go-live (Phase 8); then SPEC-008 + PLAN-001 → DONE #deferred-inventory #bridge
+
+## Relations
+
+
+### part_of
+
+- part_of [[PLAN-001: Skills Ecosystem]]
+
+### relates_to
+
+- relates_to [[SPEC-008: Protocol Hardening Wave 2]]
+- relates_to [[ADR-005: Protocol Hardening Wave 2 Architecture]]
+- relates_to [[ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis]]
+- relates_to [[RETRO-003: Phase X Execution and Composition Library Completion]]
+- relates_to [[SKILL-006: script-wiring-integration]]
+- relates_to [[SKILL-007: phantom-verifiable-gate]]
+- relates_to [[SKILL-008: parse-at-creation]]
+- relates_to [[SKILL-009: schema-single-source-of-truth]]
+- relates_to [[SKILL-010: reflection-capture-never-ask]]
+- relates_to [[SKILL-011: reflection-capture-runs-async]]
+- relates_to [[SKILL-012: bulk-brain-note-migration-tooling-gap]]
+- relates_to [[SKILL-013: adr-review-gate-scope]]
+- relates_to [[SKILL-014: complete-rename-includes-adr-bodies]]
+
+### inspired_by
+
+- inspired_by [[ANALYSIS-003: Phase X Protocol Hardening State]]
+
+### pairs_with
+
+- pairs_with [[SESSION-2026-05-23_01: Plan-001 Reconcile and Build SPEC-002]]
