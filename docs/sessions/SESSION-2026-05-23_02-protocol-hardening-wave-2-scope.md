@@ -3384,3 +3384,7 @@ Reflection captured (content in [[SKILL-010: reflection-capture-never-ask]]). Us
 ## Event 155 — [reflect-capture] capture runs in the background (async) → [[SKILL-011: reflection-capture-runs-async]]
 
 Reflection captured (content in [[SKILL-011: reflection-capture-runs-async]]). User clarified "background" = literal async/non-blocking dispatch (background subagent), NOT a quietly-done foreground step — so the conversation never waits on the multi-step Brain capture writes. `feedback_inline_reflect_capture` updated. Confidence HIGH.
+
+## Event 156 — [reflect-capture] no bulk-Brain-note-migration primitive → [[SKILL-012: bulk-brain-note-migration-tooling-gap]]
+
+Reflection captured (content in [[SKILL-012: bulk-brain-note-migration-tooling-gap]]). Scoping the docs sweep surfaced a tooling gap: the binary rule forbids raw sed on Brain notes but no MCP-backed bulk find-replace primitive exists; a ~200-note migration is mostly rule-based + a small semantic remainder, and building the robust tool belongs with the consistency-reconciliation work. Confidence HIGH.
