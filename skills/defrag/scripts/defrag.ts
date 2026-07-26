@@ -70,6 +70,31 @@ export const printingDelegation: DelegationAdapter = {
   },
 };
 
+/** Invalid CLI input. Caught in `main()` and rendered with the usage text. */
+export class UsageError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "UsageError";
+  }
+}
+
+/**
+ * Parse a flag value that must be a positive integer.
+ *
+ * Uses `Number` rather than `Number.parseInt` on purpose: `parseInt("800xyz")`
+ * returns 800, silently accepting garbage, and `parseInt("abc")` returns NaN,
+ * which compares false against every threshold and disables the check it was
+ * meant to tune. Both fail loudly here instead.
+ */
+function parsePositiveInt(flag: string, raw: string | undefined): number {
+  if (raw === undefined) throw new UsageError(`${flag} requires a value`);
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n <= 0) {
+    throw new UsageError(`${flag} requires a positive integer (got "${raw}")`);
+  }
+  return n;
+}
+
 export function parseArgs(argv: string[]): DefragOptions {
   const opts: DefragOptions = {
     reportOnly: false,
@@ -86,11 +111,9 @@ export function parseArgs(argv: string[]): DefragOptions {
       const v = argv[++i];
       if (v !== undefined) opts.projectRoot = v;
     } else if (a === "--staleness") {
-      const v = argv[++i];
-      if (v !== undefined) opts.stalenessDays = Number.parseInt(v, 10);
+      opts.stalenessDays = parsePositiveInt(a, argv[++i]);
     } else if (a === "--line-max") {
-      const v = argv[++i];
-      if (v !== undefined) opts.lineMax = Number.parseInt(v, 10);
+      opts.lineMax = parsePositiveInt(a, argv[++i]);
     } else if (a === "--help" || a === "-h") {
       console.log(usage());
       process.exit(0);
@@ -117,7 +140,7 @@ export function usage(): string {
     "Exit codes:",
     "  0  Candidates handled (or empty graph in report-only mode after handling)",
     "  2  Report-only mode found candidates",
-    "  1  Internal error",
+    "  1  Invalid usage or internal error",
   ].join("\n");
 }
 
@@ -223,7 +246,16 @@ async function safeCall(fn: () => Promise<DelegationOutcome>): Promise<Delegatio
 }
 
 export async function main(argv: string[]): Promise<number> {
-  const options = parseArgs(argv);
+  let options: DefragOptions;
+  try {
+    options = parseArgs(argv);
+  } catch (err) {
+    if (!(err instanceof UsageError)) throw err;
+    console.error(`error: ${err.message}\n`);
+    console.error(usage());
+    return 1;
+  }
+
   const result = await audit({
     projectRoot: options.projectRoot,
     stalenessDays: options.stalenessDays,

@@ -42,14 +42,19 @@ bun skills/defrag/scripts/defrag.ts --project-root /path/to/project
 bun skills/defrag/scripts/defrag.ts --basic-memory   # treat as basic-memory context
 ```
 
+Both numeric flags (`--staleness`, `--line-max`) require a positive integer. An
+invalid or missing value prints the reason and exits 1 rather than falling back
+to the default, so a mistyped threshold fails loudly instead of silently
+disabling the check it was meant to tune.
+
 ## Operation modes
 
 - **Interactive (default).** Runs the audit, prints the candidates report,
   then walks each candidate one at a time. The user confirms or skips. Confirmed
   candidates are delegated.
 - **Report-only (`--report-only`).** Runs the audit and writes the report to
-  `defrag/reports/defrag-YYYY-MM-DD.md`. Exits with code 0 if candidates were
-  found, code 2 if the graph is clean. No delegation; safe for cron.
+  `defrag/reports/defrag-YYYY-MM-DD.md`. Exits with code 2 if candidates were
+  found, code 0 if the graph is clean. No delegation; safe for cron.
 
 ## Audit cycle
 
