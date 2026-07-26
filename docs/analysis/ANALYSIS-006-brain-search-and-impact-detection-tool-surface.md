@@ -208,3 +208,4 @@ Two capabilities exist inside the wrapper itself but never reach the schema. A f
 
 - relates_to [[PLAN-002: Composition Tooling Follow-Up Register]]
 - relates_to [[ADR-002: Adapter Contract and Plan Schema]]
+- relates_to [[ANALYSIS-007: Baseline Evaluation of the Composition Integration Commit]]
