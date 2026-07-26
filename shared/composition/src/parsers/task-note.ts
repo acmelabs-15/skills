@@ -13,6 +13,7 @@ import type {
   TaskNote,
 } from "../schemas/task-note.js";
 import { TaskNoteSchema } from "../schemas/task-note.js";
+import { parseRelations } from "../core/relations.js";
 import {
   ParseError,
   extractFrontmatter,
@@ -220,20 +221,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   return out;
 }
 
-function parseRelations(children: RootContent[]): Relation[] {
-  const list = children.find((n): n is List => n.type === "list");
-  if (!list) return [];
-  const out: Relation[] = [];
-  for (const item of list.children as ListItem[]) {
-    const text = listItemText(item);
-    const m = text.match(/^(\w+)\s+\[\[(.+?)\]\]\s*$/);
-    if (!m) continue;
-    const [, verb, target] = m;
-    if (!verb || !target) continue;
-    out.push({ verb: verb as Relation["verb"], target });
-  }
-  return out;
-}
 
 export function parseTaskNote(markdown: string): TaskNote {
   const ast = processor.parse(markdown);

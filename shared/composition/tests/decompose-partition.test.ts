@@ -114,7 +114,7 @@ describe("decompose executor — per-cluster partitioning (DESIGN-001-SPEC-005 C
     expect(await decomposeMain(["--plan", planPath])).toBe(0);
 
     // Design: the executor never mutates the source on a clustered split
-    // (decompose SKILL.md Step 6 — "Confirm the source file remains unchanged").
+    // (decompose SKILL.md Step 7 — "Confirm the source file remains unchanged").
     expect(await Bun.file(sourcePath).text()).toBe(originalContent);
 
     const shardA = await Bun.file(join(dir, SHARDS[0] as string)).text();

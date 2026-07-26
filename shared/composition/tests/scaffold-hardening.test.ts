@@ -119,7 +119,12 @@ describe("volume bound (mirrors the regenerated_sections integrity floor)", () =
     expect(ClusterScaffoldSchema.safeParse(scaffold).success).toBe(false);
   });
 
-  test("rejects an unbounded relation list", () => {
+  // Relations carry NO hard maximum, per the canonical conventions: minimum
+  // two, unbounded above, with H3 type-grouping required past twelve as a
+  // formatting rule rather than a cap. A note that legitimately `contains`
+  // forty children must be able to say so; the historical cap was removed
+  // precisely because it forced relationship loss.
+  test("accepts an unbounded relation list — relations have no hard maximum", () => {
     const scaffold = {
       ...validScaffold,
       relations: Array.from({ length: 40 }, (_, i) => ({
@@ -127,7 +132,13 @@ describe("volume bound (mirrors the regenerated_sections integrity floor)", () =
         target: `Note ${i}`,
       })),
     };
-    expect(ClusterScaffoldSchema.safeParse(scaffold).success).toBe(false);
+    expect(ClusterScaffoldSchema.safeParse(scaffold).success).toBe(true);
+  });
+
+  test("still rejects an empty relation list — the minimum survives", () => {
+    expect(ClusterScaffoldSchema.safeParse({ ...validScaffold, relations: [] }).success).toBe(
+      false,
+    );
   });
 
   test("rejects a single field long enough to dwarf a content slice", () => {

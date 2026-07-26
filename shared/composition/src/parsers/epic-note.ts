@@ -7,6 +7,7 @@ import { unified } from "unified";
 import type { Observation, Relation } from "../schemas/common.js";
 import type { EpicFrontmatter, EpicNote } from "../schemas/epic-note.js";
 import { EpicNoteSchema } from "../schemas/epic-note.js";
+import { parseRelations } from "../core/relations.js";
 import {
   extractFrontmatter,
   findTable,
@@ -179,23 +180,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   return out;
 }
 
-/**
- * Shared Relations parser. Each item follows `verb [[Target Title]]`.
- */
-function parseRelations(children: RootContent[]): Relation[] {
-  const list = children.find((n): n is List => n.type === "list");
-  if (!list) return [];
-  const out: Relation[] = [];
-  for (const item of list.children as ListItem[]) {
-    const text = listItemText(item);
-    const m = text.match(/^(\w+)\s+\[\[(.+?)\]\]\s*$/);
-    if (!m) continue;
-    const [, verb, target] = m;
-    if (!verb || !target) continue;
-    out.push({ verb: verb as Relation["verb"], target });
-  }
-  return out;
-}
 
 /**
  * Parse an EPIC note markdown string into a validated EpicNote plus the derived

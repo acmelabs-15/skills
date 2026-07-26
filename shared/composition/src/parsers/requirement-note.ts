@@ -12,6 +12,7 @@ import type {
 } from "../schemas/requirement-note.js";
 import { RequirementNoteSchema } from "../schemas/requirement-note.js";
 import { ParseError, extractFrontmatter, proseFromChildren, sectionizeH2 } from "./ast-helpers.js";
+import { parseRelations } from "../core/relations.js";
 
 const processor = unified().use(remarkParse).use(remarkFrontmatter, ["yaml"]).use(remarkGfm);
 
@@ -91,20 +92,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   return out;
 }
 
-function parseRelations(children: RootContent[]): Relation[] {
-  const list = children.find((n): n is List => n.type === "list");
-  if (!list) return [];
-  const out: Relation[] = [];
-  for (const item of list.children as ListItem[]) {
-    const text = listItemText(item);
-    const m = text.match(/^(\w+)\s+\[\[(.+?)\]\]\s*$/);
-    if (!m) continue;
-    const [, verb, target] = m;
-    if (!verb || !target) continue;
-    out.push({ verb: verb as Relation["verb"], target });
-  }
-  return out;
-}
 
 export function parseRequirementNote(markdown: string): RequirementNote {
   const ast = processor.parse(markdown);

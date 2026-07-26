@@ -68,10 +68,80 @@ disabling the check it was meant to tune.
    - More than 12 relations without H3 type-grouping → structural-fix
    - Last-modified more than the staleness threshold (default 90 days) and
      status not `DONE` / `DEPRECATED` → stale-candidate
-3. **Reporting and delegation.** Format the candidates as grouped markdown.
+3. **Inbound-reference audit.** For every candidate, enumerate the notes that
+   point AT it before proposing to move, merge or delete it. See the section
+   below.
+4. **Reporting and delegation.** Format the candidates as grouped markdown.
    In interactive mode, await user confirmation per candidate and delegate to
    decompose / recompose / Brain MCP delete / Brain MCP edit. In report-only
    mode, write to disk and exit.
+
+## Inbound-reference audit
+
+The quality thresholds above look at a note in isolation: how many observations
+it carries, how long it is, when it was last touched. None of that sees the
+edges. A note with two observations looks like a merge candidate whether it has
+zero inbound references or forty, and the cost of restructuring it is almost
+entirely a function of that number.
+
+Run the scanner over the candidate set to supply the missing dimension:
+
+```bash
+bun run shared/composition/src/reference-scan.ts \
+  --docs-root docs \
+  --targets defrag/reports/defrag-candidates-targets.json \
+  --out defrag/reports/defrag-YYYY-MM-DD-impact.json
+```
+
+The targets file is the candidate list, one entry per note. Candidates surfaced
+by threshold alone have no retired identities, so no aliases are needed; supply
+`aliasTitles` / `aliasPermalinks` / `aliasEntityIds` only where you already know
+a note was renumbered or renamed.
+
+The scan reads each candidate's own Relations section as a formal inbound index
+before scanning prose. Under the bi-directional rule — when note A carries a
+`part_of` edge naming note B, B must carry the inverse `contains` edge naming A
+— a candidate's Relations enumerate the notes that reference it, and one-way
+edges surface as `bidirectional-missing-on-target` and
+`bidirectional-missing-on-referencer` findings with the repair site named.
+
+Those two classes are structural-fix candidates in their own right, independent
+of any split or merge. A one-way edge is a defect whether or not the note is
+ever restructured, and this audit is the only place defrag would notice it.
+
+Optionally widen the scan with a search leg: run Brain MCP search over each
+candidate's title and two or three descriptive descriptors, using `keyword` mode
+for exact identifiers and permalinks, `semantic` for descriptive references, and
+`hybrid` where you judge it useful. Record the mode on each entry. On the
+current build `keyword` returns zero results for every query, so treat an empty
+keyword result as no signal rather than no references and fall back to
+`semantic`; see `scratch/brain-search-capability-survey.md` for current
+mode-by-mode status. Verify every hit against `list_directory` ground truth
+(semantic mode can return cross-project rows), then pass the verified hits via
+`--merge`. Those entries are advisory and never gate anything; they exist to
+catch prose that names a note without naming its identifier.
+
+Fold the per-target totals into the candidates report so each candidate carries
+its inbound-reference count. Two uses:
+
+- **Prioritisation.** A stale-delete candidate with inbound references is not a
+  delete — it is a delete plus a repointing pass, and the report should say so
+  rather than presenting it as a one-step cleanup.
+- **Malformed-reference detection.** The `wikilink-malformed` class flags
+  colon-less and filename-stem wikilinks pointing at the candidate. Those are
+  already broken, independently of any restructuring, and are worth fixing
+  whether or not the candidate is ever touched. Surface them as their own
+  structural-fix findings.
+
+In report-only mode the audit is informational — it changes the report, never
+the exit code, which continues to mean "candidates found". In interactive mode,
+show the inbound count when asking the user to confirm a candidate: consent to
+restructure a note is not informed consent if the blast radius is not on screen.
+
+When a confirmed candidate is delegated, decompose and recompose run their own
+plan-time impact scan and execution-time closure check. Deletes have no such
+owner, so a stale-delete with a non-zero inbound count needs its repointing
+tracked here or it will not be tracked at all.
 
 ## Delegation
 

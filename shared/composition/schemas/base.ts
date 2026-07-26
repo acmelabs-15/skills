@@ -218,7 +218,23 @@ const scaffoldTag = structuralText(80).refine((v) => /^\S+$/.test(v), {
  * proof that guarantees very little about the note a reader actually sees.
  */
 const SCAFFOLD_MAX_OBSERVATIONS = 15;
-const SCAFFOLD_MAX_RELATIONS = 15;
+
+/**
+ * Relations carry NO hard maximum, per the canonical conventions: minimum two,
+ * unbounded above, with H3 type-grouping REQUIRED past twelve as a FORMATTING
+ * rule rather than a cap. The historical eight-relation cap was removed exactly
+ * because it forced relationship loss — a note that legitimately `contains`
+ * twenty children had to either drop edges or fake them.
+ *
+ * A count cap was a poor proxy for the integrity concern above in any case. What
+ * that concern is really about is the RATIO of rendered scaffold to preserved
+ * content: a destination that is mostly scaffold carries a proof that guarantees
+ * little. Ten relations on a two-line slice is that bypass; thirty relations on
+ * a two-thousand-line slice is not. The count is not the ratio, and the schema
+ * layer cannot see the ratio because it validates the plan before any content is
+ * extracted. `decompose.ts` already computes `scaffold_bytes` per destination,
+ * which is where a real ratio guard belongs.
+ */
 
 export const ClusterScaffoldSchema = z
   .object({
@@ -240,10 +256,7 @@ export const ClusterScaffoldSchema = z
       )
       .min(1)
       .max(SCAFFOLD_MAX_OBSERVATIONS),
-    relations: z
-      .array(RelationSchema.extend({ target: structuralText() }))
-      .min(1)
-      .max(SCAFFOLD_MAX_RELATIONS),
+    relations: z.array(RelationSchema.extend({ target: structuralText() })).min(1),
   })
   .strict();
 

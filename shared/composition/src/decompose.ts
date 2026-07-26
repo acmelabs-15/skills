@@ -181,7 +181,7 @@ function integrityError(message: string): Error {
  *      every `.tmp` and leaves the source untouched.
  *
  * The source note is never modified on a clustered split; disposition of the
- * original is the caller's decision (decompose SKILL.md Step 6 reports that the
+ * original is the caller's decision (decompose SKILL.md Step 7 reports that the
  * source remains unchanged).
  */
 export async function executeDistributionPlan(

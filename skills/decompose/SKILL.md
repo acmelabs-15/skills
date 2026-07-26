@@ -108,7 +108,133 @@ directory, which only works when the plan sits beside its targets. The base is
 supplied by you, not by the plan, so an authored plan can never redirect its own
 resolution.
 
-### Step 4: Adjudicate via AskUserQuestion
+### Step 4: Compute the inbound-reference impact manifest
+
+The plan guarantees the content of the notes it moves. It says nothing about the
+notes that POINT AT them. Wikilinks, permalink strings, bare entity IDs and
+section citations all keep naming identifiers the split is about to retire, and
+a hash-clean decompose leaves every one of them dangling. Compute that blast
+radius before adjudication, so the repointing worklist is part of what the user
+approves rather than something review discovers later.
+
+Author a targets file listing the source note and every destination, carrying
+the aliases the scanner cannot infer:
+
+```json
+[
+  {
+    "path": "decisions/ADR-042.md",
+    "aliasTitles": ["ADR-042: Former Title"],
+    "aliasPermalinks": ["decisions/adr-042-former-title"],
+    "aliasEntityIds": ["ADR-041"]
+  },
+  { "path": "decisions/ADR-042a.md" }
+]
+```
+
+Aliases come from the plan you just authored: `renumber_map` supplies retired
+identifiers, and any title or permalink change supplies the rest. The scanner
+never guesses history — an alias you omit is a whole class of stale reference it
+cannot see.
+
+```bash
+bun run shared/composition/src/reference-scan.ts \
+  --docs-root docs \
+  --targets docs/_restructure/decompose-{id}-targets.json \
+  --out docs/_restructure/decompose-{id}-impact.json
+```
+
+#### The three legs
+
+The scan runs two legs itself and accepts a third from you.
+
+**GRAPH — read the target's own Relations first.** The conventions enforce
+bi-directional relations: when note A carries a `part_of` edge naming note B, B
+must carry the inverse `contains` edge naming A. That makes the target's own
+Relations section a FORMAL INDEX of the notes that reference it — an inbound
+index no text scan of the target could ever reconstruct, because the evidence
+lives in the other note. The scanner traverses it automatically, in both
+directions, and reports one-way edges as two classes:
+
+- `bidirectional-missing-on-target` — a note carries a formal edge at the
+  target, but the target carries no inverse. Repair goes on the TARGET.
+- `bidirectional-missing-on-referencer` — the target's Relations name a note
+  that carries no matching outbound edge. Repair goes on the REFERENCER.
+
+For both, `referencingFile` and `line` point at the edge that DOES exist and
+`relation.counterpartFile` names where the missing inverse belongs, so a finding
+tells you where to look and where to write. Fix these BEFORE the split: a split
+that inherits a one-way edge multiplies it across the children.
+
+**TEXT — the informal references.** Six classes: `wikilink`,
+`wikilink-malformed` (a colon-less or filename-stem near-miss, already broken
+before the split), `permalink`, `permalink-project-prefixed`,
+`entity-id-section` (with the cited fragment captured, so repointing can check
+the section still exists in whichever child inherited it), and `entity-id` —
+each with the referencing file, line, and matched text. Overlapping forms are
+reported once, so the counts are a worklist length rather than an overcount.
+
+Each entry carries a `source` tag: `GRAPH`, `TEXT`, or `BOTH` when a text match
+landed on the formal edge itself and the two legs corroborate.
+
+**SEARCH — recall the deterministic legs cannot reach, advisory.** Neither
+deterministic leg sees prose that names a note without naming its identifier:
+"the substrate analysis", "the eviction adjudication". Those go stale exactly
+like an explicit citation and are invisible to both scans.
+
+Run Brain MCP search yourself, and choose the mode per query rather than
+defaulting to one. Record the mode on each entry — a keyword hit and a
+threshold-gated semantic hit do not warrant the same confidence.
+
+| Query kind | Mode |
+|---|---|
+| Exact identifiers, aliases, permalinks | `keyword` — when functional; fall back to `semantic` |
+| Descriptive references | `semantic` |
+| Mixed or uncertain | `hybrid`, at your judgement |
+
+Two live constraints on this build, so plan around them rather than trusting a
+clean result:
+
+- **`keyword` currently returns zero results for every query.** Until that is
+  fixed, treat an empty keyword result as *no signal*, not as *no references*,
+  and fall back to `semantic`. The same defect makes `auto` effectively
+  semantic-only and contributes nothing to `hybrid`.
+- **`depth` above 0 resolves wikilinks through the keyword leg**, so relation
+  expansion is affected by the same defect. The GRAPH leg already traverses
+  relations deterministically and does not depend on the index — prefer it, and
+  do not treat a thin `depth` result as evidence of a small blast radius.
+
+When querying an entity ID in keyword mode, double-quote it (`"ANALYSIS-034"`);
+unquoted multi-term queries are narrower than they look.
+
+For current mode-by-mode behaviour and defect status, see
+`scratch/brain-search-capability-survey.md`.
+
+Verify every hit before you use it: semantic mode can return rows from other
+projects, so check each returned permalink against `list_directory` ground truth
+and drop anything that does not resolve. Write the verified hits to a JSON file
+shaped like the manifest's `findings` entries, each carrying its `mode`, and
+pass it in:
+
+```bash
+bun run shared/composition/src/reference-scan.ts \
+  --docs-root docs \
+  --targets docs/_restructure/decompose-{id}-targets.json \
+  --merge docs/_restructure/decompose-{id}-semantic.json \
+  --out docs/_restructure/decompose-{id}-impact.json
+```
+
+Merged entries are forced to `source: SEARCH` and `advisory: true` whatever the
+file claims, so nothing supplied from outside can promote itself into the
+closure gate. The declared `mode` is preserved. The search leg WIDENS the
+worklist; it never gates it — a recall aid running over an index with known live
+defects is not reproducible enough to fail a step on.
+
+Findings are the answer here, not a failure: the scan exits 0 whether it finds
+one reference or four hundred. Carry the per-class, per-target and per-source
+counts into the Step 5 summary.
+
+### Step 5: Adjudicate via AskUserQuestion
 
 Present the plan to the user with a markdown summary AND the path to the raw YAML for deep inspection. Use AskUserQuestion with exactly these three options:
 
@@ -116,7 +242,7 @@ Present the plan to the user with a markdown summary AND the path to the raw YAM
 - reject — provide feedback; you re-author and re-adjudicate
 - abort — cancel; do not execute, do not retain the plan
 
-On reject, rename the rejected plan file to `decompose-{id}-plan-rejected-{N}.yaml` (incrementing `N` per rejection) so the rejection history is auditable, then re-enter Step 3 with the feedback incorporated.
+On reject, rename the rejected plan file to `decompose-{id}-plan-rejected-{N}.yaml` (incrementing `N` per rejection) so the rejection history is auditable, then re-enter Step 3 with the feedback incorporated. Re-run Step 4 as well — a revised plan changes the destinations and the renumbering, so the previous impact manifest no longer describes it.
 
 On abort, optionally delete the plan file and stop. No further action.
 
@@ -129,10 +255,12 @@ Summary format:
 - `<dest-path-2>` — <description>
 **Renumber map** (M entries): D-1→D-100, D-2→D-101, ...
 **Wikilink map**: <count> entries (or "empty")
+**Inbound-reference impact**: <N> references across <M> files — <per-class counts>
+**Repointing worklist**: `docs/_restructure/decompose-{id}-impact.json`
 **Raw plan**: `docs/_restructure/decompose-{id}-plan.yaml`
 ```
 
-### Step 5: Execute on approval
+### Step 6: Execute on approval
 
 Run the CLI entry point via Bun.$:
 
@@ -159,11 +287,81 @@ Exit codes:
 - `1` — validation error (parse the structured `PlanValidationError` from stderr and report to the user)
 - `2` — integrity failure: either a per-cluster hash mismatch, or a coverage failure where the cluster ranges do not exactly partition the source (a gap, an overlap, or a range not reaching end-of-file). In both cases the script halted before any destructive write; surface it loudly
 
-### Step 6: Report
+### Step 7: Report
 
 Summarize the audit log: number of destination files written, their paths, and the SHA-256 of each. The log carries one entry per cluster, each with its `disposition` and `range`, so the full byte accounting is visible — retained clusters appear with no destination. Confirm the source file remains unchanged.
 
 Note on reversibility: a plan that retains ranges cannot be reversed from its destinations alone, because retained content exists only in the source and appears in no destination. Recompose recovers the concatenation of the written content slices; the source note itself — untouched by the split — is the record for retained ranges. Plans with no scaffolding and no retention keep the full byte-identical decompose-then-recompose round trip.
+
+### Step 8: Verify reference closure
+
+Repoint the references on the Step 4 worklist, then prove it:
+
+```bash
+bun run shared/composition/src/reference-scan.ts \
+  --check --manifest docs/_restructure/decompose-{id}-impact.json \
+  --docs-root docs \
+  --retain docs/_restructure/decompose-{id}-retain.json \
+  --out docs/_restructure/decompose-{id}-closure.json
+```
+
+Every finding from Step 4 comes back as one of:
+
+- `UPDATED` — the stale form is gone.
+- `RETAINED` — you allow-listed it.
+- `OUTSTANDING` — still present, and nothing said to keep it.
+
+Exit code 2 means closure was not reached. The report also lists `newFindings`:
+references that exist now but were absent at plan time, which is how a
+repointing pass that introduced a fresh stale form gets caught.
+
+The check re-runs BOTH deterministic legs, so it verifies more than text
+repointing. Every formal edge you repointed is re-traversed, and an edge whose
+inverse did not travel with it comes back as a bi-directional violation — a
+repoint that updated one end and orphaned the other does not pass.
+
+The summary splits `outstanding` (deterministic — this is what `closed` is
+computed from) and `outstandingAdvisory` (semantic). Advisory entries cannot be
+re-derived by a deterministic scan, so they are carried forward with their prior
+status and marked unverified rather than being silently reported as UPDATED.
+Confirm those by hand or re-run the search.
+
+#### Index staleness
+
+A split can also impact the search index, which is a surface the file tree does
+not cover. The failure mode is a stale row for a retired permalink that keeps
+resolving in search after the note has moved, while reading it by that permalink
+returns nothing — a phantom that survives repointing every citing note, because
+no citing note is what is serving it.
+
+Evidence on this build is mixed and worth stating plainly: notes in this project
+record encountering exactly that phantom for a retired permalink, but a later
+index audit found no orphans in either direction (files on disk and indexed
+entities matched exactly). Treat the check as cheap insurance against a
+documented failure mode, not as a condition known to be live right now.
+
+Search for each retired title and permalink. Any hit still served that
+`list_directory` does not corroborate is an `index-stale` finding: record it in
+the merge file alongside the other search entries. When any `index-stale`
+finding exists, recommend a re-index in the closure report — repointing every
+citing note does not clear a stale index row, and the next agent to run a search
+will find the phantom again.
+
+The retain file is yours to author and is never inferred. A surviving reference
+is either a deliberate historical citation or an unrepaired break, and only you
+know which — a checker that guessed would quietly convert real breakage into a
+pass. An unconstrained rule is refused rather than retaining everything, because
+that is exactly the shape a typo produces:
+
+```json
+[{ "referencingFile": "sessions/SESSION-2026-07-26_01-bootstrap.md" }]
+```
+
+Report the closure summary alongside the audit log. Failure to reach closure is
+a surfaced finding, never a silent pass: state how many references remain
+OUTSTANDING and where they are. Do not report a decompose as complete on the
+strength of the hash proofs alone — those cover the bytes that moved, not the
+notes still pointing at where they used to be.
 
 ## Error handling
 

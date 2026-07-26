@@ -8,6 +8,7 @@ import type { AnalysisFrontmatter, AnalysisNote } from "../schemas/analysis-note
 import { AnalysisNoteSchema } from "../schemas/analysis-note.js";
 import type { Observation, Relation } from "../schemas/common.js";
 import { extractFrontmatter, proseFromChildren, sectionizeH2 } from "./ast-helpers.js";
+import { parseRelations } from "../core/relations.js";
 
 /**
  * AnalysisNote parser (SPEC-008 TASK-006, REQ-002 New Parser Suite, 2026-05-24).
@@ -121,23 +122,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   return out;
 }
 
-/**
- * Shared Relations parser. Each item follows `verb [[Target Title]]`.
- */
-function parseRelations(children: RootContent[]): Relation[] {
-  const list = children.find((n): n is List => n.type === "list");
-  if (!list) return [];
-  const out: Relation[] = [];
-  for (const item of list.children as ListItem[]) {
-    const text = listItemText(item);
-    const m = text.match(/^(\w+)\s+\[\[(.+?)\]\]\s*$/);
-    if (!m) continue;
-    const [, verb, target] = m;
-    if (!verb || !target) continue;
-    out.push({ verb: verb as Relation["verb"], target });
-  }
-  return out;
-}
 
 /**
  * Parse an ANALYSIS note markdown string into a validated AnalysisNote plus the
