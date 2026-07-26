@@ -1,7 +1,7 @@
 ---
 title: "CRIT-005-ADR-002: Clarifications Delta Debate Log"
 type: critique
-status: IN_REVIEW
+status: DONE
 permalink: critique/crit-005-adr-002-clarifications-delta-debate-log
 tags:
 - critique
@@ -104,6 +104,28 @@ Architect returned DISAGREE-AND-COMMIT rather than BLOCK, at HIGH confidence, ha
 
 A resolution round is opened; consensus was not reached at round 1 against a threshold requiring at least 5 ACCEPT and 0 BLOCK. Three workstreams are owner-adjudicated. First, entry rewrites: entry 2's history clause stands as written and needs no correction, per the resolution recorded against analyst's P0 above; entry 1's closing round-trip clause must be split so that retention alone carries the irreversibility bound while scaffolding carries the conditional one; the mirror framing must be restated as an asymmetry. Second, amendment promotion: the retention and scaffold plan-schema shape is to be adjudicated as a D-6 amendment under this note's own C-9 precedent, or at minimum as a Consequences Negative bullet bounding the guarantee, with the Clarifications entry reduced to a provenance pointer. Third, code-fix scope: whether the orphaned CWE-22 guard is wired in this pass or recorded as known-open determines whether the generalized lesson sentence can stand unscoped. Analyst's P0 has since been resolved false on scope by orchestrator disk verification — the modular canonical tree exists outside `src/` and does apply the full rule — so the architect-versus-analyst contradiction is closed and entry 2's history clause is retained unchanged; the remaining basis for analyst's BLOCK is the round-trip overstatement it carried at P1 alongside critic and independent-thinker, which is being resolved in the amendment. Post-review engineering reading refined the resolution further: the modular tree enforces the rule in eight of ten modules (both spec-subtree modules defer to a nonexistent runtime call) and has never itself been YAML-loadable — both carried into the amendment and the code package. Separately, the orchestrator reconciled analyst's P2 suite-count discrepancy as a measurement-basis difference rather than an error: the full-repo run reports 885 tests across 91 files and the package-scoped run reports 795 across 83, both figures true of their own scope, with the commit messages at fault only for failing to name which basis they cited.
 
+## Round 2 Verdict Tally
+
+Re-vote against the owner-adjudicated amendment at skills commit 68a2550 (code identical to 8ac82a7; suite basis: raw bun test at repo root, 1393 of 1393). Every reviewer re-derived citations from HEAD; none relied on this log's round-1 line numbers, which are partially stale against the moved code.
+
+| Agent | Verdict | Confidence | Round-1 findings | New findings |
+|---|---|---|---|---|
+| architect | DISAGREE-AND-COMMIT | HIGH | 7 of 7 RESOLVED | 0 P0, 1 P1, 2 P2 |
+| critic | ACCEPT | HIGH | P0 + 6 of 7 resolved; 1 P1 restated with a new cause | 0 P0, 2 P1, 3 P2 |
+| independent-thinker | ACCEPT | HIGH | 6 of 6 RESOLVED | 0 P0, 0 P1, 4 P2 |
+| security | ACCEPT | HIGH | both conditions EXCEEDED; both P2 satisfied | 0 P0, 1 P1, 3 P2 |
+| analyst | ACCEPT | HIGH | P0 withdrawn on reproduced scope error; rest resolved | 0 P0, 0 P1, 3 P2 |
+| high-level-advisor | ACCEPT | HIGH | 6 of 6 RESOLVED, two at better-than-requested | 0 P0, 0 P1, 3 P2 |
+| **Consensus** | **REACHED — 5 ACCEPT + 1 DISAGREE-AND-COMMIT, zero BLOCK** | — | all four round-1 P0 themes closed | no new P0 anywhere |
+
+**Round-1 theme closures, code-evidenced.** The dead-gate P0 stands resolved-false-on-scope with the surviving dual-tree refinement now the ADR's own account. The CWE-22 orphan is substantively fixed by a DIFFERENT guard — containedWritePath via findUncontainedPaths on both CLI entry points after parse and before I/O, with the symlink escape closed by resolveExistingPrefix — while the originally-named containedPathSchema remains honestly declared open. The round-trip clause is corrected in D-6 and the Consequences Negative bullet, and the audit-log bound is closed IN CODE: the audit entry now records the scaffold object, its provenance, byte count, body hash and source-segment hash, so recovery is satisfiable from the audit rather than by re-authoring. The decision-wearing-clarification-clothes P0 resolved at the advisor's recommended ceiling, D-6 under the C-9 precedent with the entries reduced to provenance.
+
+**The architect's dissent, recorded per protocol.** The new call-site Confirmation item says two BLOCKING guards are open; the architect finds a third — specSubtreeManifestSchema, reachable only through a barrel that only tests import — and holds that the item fails its own check on first run. The analyst's independent ten-guard census found exactly the two named and no unnamed third. The two counts diverge on the GUARD SET, not the arithmetic: whether a D-5-named schema with no BLOCKING marking belongs to "every BLOCKING guard named in this ADR" is the unnamed key. Recorded for the one-sentence scope correction rather than adjudicated here.
+
+**New-findings register, none blocking, dispositions assigned.** Convergent P1 (security + critic): path containment fails OPEN when SKILLS_DOCS_ROOT is unset, and it is set nowhere outside tests while the ADR states the mitigation unconditionally — a count detects a dead gate, not a conditionally dead one; code fix plus one ADR clause. Critic P1: per-cluster frontmatter_map is reachable on decompose with no inverse field on the composition schema and no audit record — the round-1 class with the sign reversed; SPEC-005 follow-up. Architect P1: the census scope correction above. Thinker P2 set: the carve-out's exemplar is two implementations (schemas never import validators; the duplicated isSatisfied predicates agree only via a third declaration) — re-point the example at f8Map, which genuinely is one implementation at many call sites, or hoist the predicate; the retracted mirror framing survives in three code comments; no test pins the tags-sequence indentation, the one construct a js-yaml minor could move under the caret range while the round-trip suite stays green; the audit log has no durable sink — stdout only, no capture in the skill workflow. Advisor P2 sharpening: the honest count at HEAD is one dead gate plus one surviving alternative that D-6's own dead-path rule says to delete. Security P2 set: line-1-cluster scaffolding can emit duplicate frontmatter strip-clean; the defaulted destination path is never realpath-collected; U+2028/9 pass the CR-LF refusal as defense-in-depth notes. Security also records a unit-label nit: scaffold_bytes counts UTF-16 code units, not bytes.
+
+**Disposition.** Consensus threshold met; the amendment stands as the record. ADR text micro-corrections (census scope sentence; carve-out exemplar re-point; fails-open clause) and the code/spec follow-ups (SKILLS_DOCS_ROOT default, frontmatter_map inversion, serializer golden test, audit capture step, skill-doc round-trip framing) ride the skills track's follow-up register, timed with the pending pull request at the owner's call.
+
 ## Observations
 
 - [fact] Entry 2's history claim is verified true on disk — the modular canonical tree lives outside src/ at shared/composition/schemas/ and its distribution schemas apply the map validator to both maps; the challenge to it was a search-scope artifact, and the surviving refinement is that this canonical tree has zero call sites on the production path the CLI loads #dual-tree #scope-artifact
@@ -114,6 +136,8 @@ A resolution round is opened; consensus was not reached at round 1 against a thr
 - [risk] Scaffold rendering interpolates plan-controlled strings raw behind a presence-only schema, making the hash-excluded region an injection surface that a re-derived strip cannot detect #injection #trust-boundary
 - [decision] Consensus NOT REACHED at round 1 — two BLOCK plus one DISAGREE-AND-COMMIT against three conditional accepts, against a threshold of at least five ACCEPT and zero BLOCK #convergence #resolution-round
 - [outcome] Two structural remedies proposed under this ADR's own C-9 precedent — promote the retention and scaffold shape to a D-6 amendment, or add a Consequences Negative bullet bounding the guarantee and reduce the entry to a provenance pointer #d-6-amendment #c-9-precedent
+- [outcome] Round 2 reached consensus at five ACCEPT plus one DISAGREE-AND-COMMIT with zero BLOCK against the amendment at 68a2550 — every round-1 P0 theme closed with code evidence, no new P0 anywhere, and the architect's dissent scoped to a one-sentence census correction #round-2 #consensus
+- [insight] The two call-site censuses diverged on the guard SET rather than the arithmetic — whether a named-but-unmarked schema belongs to "every BLOCKING guard named in this ADR" is the unnamed key, the same interrogate-the-question class the fond record already carries #census #adjudication
 
 ## Relations
 
