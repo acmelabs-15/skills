@@ -3,7 +3,7 @@ title: 'ADR-002: Adapter Contract and Plan Schema'
 type: decision
 status: ACCEPTED
 date: 2026-05-19
-updated: 2026-05-19
+updated: 2026-07-26
 permalink: decisions/adr-002-adapter-contract-and-plan-schema
 tags:
 - decision
@@ -868,6 +868,8 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 **2026-05-19**: ADR-002 round 2 revision applied per CRIT-002 round-1 findings. 10 P1 themes A-J resolved in-ADR: MutationSpec extended with frontmatter_map + regenerated_sections + integrity floor (50%); cross_source_updates + SPEC subtree manifest Zod shapes defined; nested discriminatedUnion (plan_type x source_type) refactored; CompositionAdapter JSDoc clarifies AST/string call sequence; hash extracted to shared utility (5-method interface); BaseMarkdownAdapter pattern documented; containedPathSchema uses realpath + path.sep; injectivity validator enforces key-value domain disjointness for order-independent single-pass replacement. P2 items deferred to spec phase per CRIT-002 documentation. Status remains PROPOSED pending round-2 adr-review re-verification.
 
 **2026-05-21 (C-9 from ADR-004)**: ADR-004 D-2 supersedes the crossSourceUpdateSchema element shape in D-1 SESSION extension. The original D-1 shape (target_file, target_part_id, updates record) was speculative; the implemented shape is target_source_type literal plan, target_path string min 1, optional frontmatter_map Record string string, optional wikilink_map Record string string. The cross_source_updates field name and array position in the SESSION plan schema remain locked per D-1. Only the element shape changed to align with the distribution pipeline map-based transform model. See ADR-004 D-2 and C-3.
+
+**2026-07-26**: Destination-side scaffolding and the retention disposition, recorded from implementation. Two facts are architectural and were previously recorded only in code comments and the decompose skill doc. First, per-cluster destination scaffolding (frontmatter + observations + relations, rendered by the executor) is the mirror of regenerated_sections: derived content excluded from BOTH extraction and hash comparison, verified at strip time by re-derivation rather than trusted byte offsets, so the char-identity chain holds over content slices exactly as before. Second, the retain disposition bounds reversibility: retained ranges are counted by the byte-exact reconstruction proof but written nowhere, so shard-only reconstruction of the full source is impossible by construction for plans using retention — the full round trip holds only for no-scaffold/no-retention plans.
 
 ## Observations
 
