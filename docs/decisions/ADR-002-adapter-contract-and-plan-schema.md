@@ -979,3 +979,4 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - [[CRIT-005-ADR-002: Clarifications Delta Debate Log]]
 - [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
 - [[PLAN-002: Composition Tooling Follow-Up Register]]
+- [[ANALYSIS-006: Brain Search and Impact-Detection Tool Surface]]
