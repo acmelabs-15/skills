@@ -143,7 +143,7 @@ Session notes created before the /plan lifecycle existed may contain `## Workflo
 
 ### Skill responsibilities
 
-- **`/plan` create / migrate**: WRITES the session note (and PLAN). The session body it creates MUST conform to the canonical sections above. Pattern 2 three-phase write applies for the colon-in-title trap.
+- **`/plan` create / migrate**: WRITES the session note (and PLAN). The session body it creates MUST conform to the canonical sections above. The session note and PLAN are each created with a single `write_note` call (CONVENTIONS Section 1.7.2).
 - **`/plan` continue, `/research`, `/decisions`, `/spec`, `/build`, `/review`, `/end`**: APPEND Event NN entries to the active session via two-step edit pattern. They never add new top-level H2 sections to the session.
 
 ### Audit check
@@ -156,15 +156,13 @@ grep -E '^## (Workflow Plan|Phase Progression|Tasks|Cross-Part Dependency Graph|
 
 Any hits in a freshly-created (post-/plan-lifecycle) session indicate drift and require removal before commit.
 
-## Pattern 2 three-phase write (for new PLAN creation)
+## Note creation — a single `write_note` call
 
-When creating a new PLAN note in create / migrate modes, the title contains a colon (`PLAN-NNN: Topic`). Brain MCP's `write_note` may preserve spaces in the derived filename if the title contains a colon. Always use the three-phase pattern (CONVENTIONS Section 1.7.2):
-
-### Phase 1 — write_note with no-colon title
+When creating a new PLAN or SESSION note (create / migrate modes), it is a single `write_note` call (CONVENTIONS Section 1.7.2). Brain MCP intercepts `write_note` to author the file with a kebab filename + bare permalink and index it synchronously — pass the full colon title directly; no `edit_note`/`move_note` follow-up, no `-1` suffix, no `project/` prefix.
 
 ```text
 mcp__plugin_brain_brain__write_note({
-  title: "PLAN-001 Lifecycle Skills Rework",     # no colon
+  title: "PLAN-001: Lifecycle Skills Rework",    # full colon title
   content: "<full PLAN body>",
   directory: "planning",
   note_type: "plan",
@@ -172,32 +170,7 @@ mcp__plugin_brain_brain__write_note({
 })
 ```
 
-The file lands as `planning/PLAN-001 Lifecycle Skills Rework.md` — non-conforming, but fixed in Phase 3.
-
-### Phase 2 — edit_note to insert colons
-
-```text
-mcp__plugin_brain_brain__edit_note({
-  identifier: "planning/PLAN-001 Lifecycle Skills Rework",
-  operation: "find_replace",
-  find_text: "PLAN-001 Lifecycle Skills Rework",
-  content: "PLAN-001: Lifecycle Skills Rework",
-  expected_replacements: 2    # frontmatter title + H1
-})
-```
-
-This inserts the colon into BOTH the frontmatter title AND the H1. Both must update in the same edit (use `expected_replacements: 2`).
-
-### Phase 3 (MANDATORY) — move_note to rename file
-
-```text
-mcp__plugin_brain_brain__move_note({
-  identifier: "planning/PLAN-001 Lifecycle Skills Rework",
-  destination_path: "planning/PLAN-001-lifecycle-skills-rework.md"
-})
-```
-
-Skipping Phase 3 leaves a malformed filename with spaces — violates CONVENTIONS Section 1.6.
+Result: file `planning/PLAN-001-lifecycle-skills-rework.md`, permalink `planning/plan-001-lifecycle-skills-rework`, queryable the instant the call returns.
 
 ### Verification
 
@@ -214,7 +187,7 @@ Confirm:
 
 ## Edit-only updates (continue mode + set-part-done)
 
-When updating an existing PLAN, the two-step pattern applies without Pattern 2 (the file already exists):
+When updating an existing PLAN, the two-step pattern applies (the file already exists, so there is no creation step):
 
 ```text
 1. edit_note on PLAN (find_replace or replace_section)
@@ -296,5 +269,4 @@ Step 3 — Commit.
 | Batching Step 3 across multiple events | Commit boundary obscures Event-to-state correspondence | One Event = one commit |
 | Embedding state-snapshot tables inside Event bodies | Snapshots get stale immediately; pointers don't | Events reference state via wikilinks + file:line; snapshots live in PLAN MUTATE-in-place sections |
 | Writing to PLAN via Read/Edit/Write | Bypasses Brain MCP's entity validation + embedding regeneration + event emission | Always use `mcp__plugin_brain_brain__edit_note` for `docs/**` notes |
-| Using write_note with a colon-containing title | Triggers filename trap (spaces preserved) | Use Pattern 2 three-phase write (Phase 1 no-colon → Phase 2 insert colon → Phase 3 move_note to kebab) |
-| Skipping Phase 3 of Pattern 2 | Leaves malformed filename with spaces | Always execute all 3 phases + verify via list_directory |
+| Following the old three-phase write (write no-colon → edit colon → move) | Obsolete — `write_note` is now a single call that handles the colon title and kebab filename (CONVENTIONS Section 1.7.2) | Pass the full colon title in one `write_note` call; verify via list_directory |

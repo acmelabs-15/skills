@@ -173,7 +173,7 @@ Both treatments use append-only Event semantics.
 
 Apply edits in strict order. Each step uses Brain MCP; commit follows.
 
-1. **Create the new PLAN note** via Pattern 2 three-phase write. Counter-availability check: `list_directory planning` to identify next PLAN-NNN.
+1. **Create the new PLAN note** via a single `write_note` call (CONVENTIONS Section 1.7.2 — pass the full `PLAN-NNN: Topic` colon title directly). Counter-availability check: `list_directory planning` to identify next PLAN-NNN.
 
 2. **Populate top-level sections**: Scope (with classification summary from Step 2), Objectives, Progress Dashboard (initial rollup from Step 5), Workflow Plan (wave/phase structure from Step 4), Phase Progression, Cross-Part Dependency Graph (deps from existing artifacts' `depends_on` relations), Decision Log ("Plan migrated from existing workflow on YYYY-MM-DD"), Progress Log, Blockers.
 

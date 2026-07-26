@@ -34,14 +34,11 @@ tags: [plan, workflow, {workflow-kebab}, {project-slug}, active]
 
 Run `mcp__plugin_brain_brain__list_directory({ dir_name: "planning" })` to find the highest existing `PLAN-NNN`. Use `NNN+1` for the new note.
 
-### Pattern 2 three-phase write (CONVENTIONS Section 1.7.2)
+### Note creation (CONVENTIONS Section 1.7.2)
 
-Title contains a colon → write_note may preserve spaces in the derived filename. Always use the three-phase pattern:
+PLAN creation is a single `write_note` call. Brain MCP intercepts `write_note` to author the file with a kebab filename + bare permalink and index it immediately — pass the full colon title directly:
 
-1. `write_note` with no-colon title (e.g., `PLAN-001 Lifecycle Skills Rework`)
-2. `edit_note` (find_replace) to insert colon into frontmatter title + H1
-3. `move_note` to rename file to kebab form (e.g., `plan-001-lifecycle-skills-rework.md`)
-4. Verify via `list_directory`
+`write_note(title: "PLAN-001: Lifecycle Skills Rework", directory: "planning", project: …)` → file `planning/PLAN-001-lifecycle-skills-rework.md`, permalink `planning/plan-001-lifecycle-skills-rework`, queryable immediately. No `edit_note`/`move_note` follow-up.
 
 ## PLAN-part schema (Contract 6)
 
