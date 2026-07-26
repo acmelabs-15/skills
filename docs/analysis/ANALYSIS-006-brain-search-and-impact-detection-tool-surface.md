@@ -113,7 +113,9 @@ Two further properties matter. The target identifier is nullable while the targe
 
 This was discovered by authoring this note and reading its own edges back out of the index, and it materially bounds relation-type filtering.
 
-The parser derives a relation's type from a single-token prefix appearing before the bracketed reference **on the same line**. A bare `- [[Target]]` line has no prefix, so it falls through to the untyped `links_to` case (`basic_memory/markdown/plugins.py:79-107` for the prefix rule, `:187` for the fallback).
+The parser derives a relation's type from a single-token prefix appearing before the bracketed reference **on the same line**. A bullet carrying only a bracketed reference, with no verb ahead of it, has no prefix and falls through to the untyped `links_to` case (`basic_memory/markdown/plugins.py:79-107` for the prefix rule, `:187` for the fallback).
+
+A related trap surfaced while writing this section, and it is worth recording because it will catch any note that documents wikilink syntax. The parser extracts bracketed references without regard for inline code spans, so a reference used as a typographic example inside backticks still becomes a real edge — in this case an unresolved one, pointing at a target that does not exist. Prose that needs to discuss the syntax must describe it rather than display it. The same hazard applies to any skill that generates note bodies containing sample wikilinks.
 
 The authoring conventions require that a Relations section be grouped under type sub-headings once a note exceeds twelve relations, which moves the verb out of the line and into the heading above it. The parser never sees it.
 
@@ -153,7 +155,7 @@ Effort class **A** means a schema property, a destructure at `apps/mcp/src/tools
 
 | # | Capability | Source | Effort | Value for the manifest |
 |---|---|---|---|---|
-| 1 | Item-type filter, including relations | `basic_memory/mcp/tools/search.py:663-671` | A | Highest — makes backlink traversal portable over MCP, the leg `depth` fails at |
+| 1 | Item-type filter, including relations | `basic_memory/mcp/tools/search.py:663-671` | A | Highest — makes backlink traversal portable over MCP, the leg `depth` fails at. Returns edge existence reliably; per finding 5a the *verb* on those edges is not trustworthy on grouped notes |
 | 2 | JSON response format | `:650` | A | Unblocks everything — the single argument that revives keyword mode and the paths downstream of it |
 | 3 | Retrieval-strategy selector | `:649`, dispatch `:1040-1067` | A | High — gives genuine text search, plus title and permalink exact lookup |
 | 4 | Permalink wildcard patterns | `:1059-1062` | A | High — enumerates a note family with no text query; matches the full path, not the leaf |
@@ -176,7 +178,9 @@ Two capabilities exist inside the wrapper itself but never reach the schema. A f
 
 ## Recommendations
 
-**Build the manifest's backlink leg on the relation table directly, not on the search tool.** It is indexed, uncapped, direction-explicit, and independent of both defects in finding 3. Gate the manifest on two cheap assertions so that a silently empty result can never be mistaken for an absence of impact: parity between the file count on disk and the count of indexed entities carrying permalinks, and a before-and-after count of relations whose target identifier is null. The fond baseline for the second is zero, so any increase is a wikilink the operation broke.
+**Build the manifest's backlink leg on the relation table directly, not on the search tool.** It is indexed, uncapped, direction-explicit, and independent of both defects in finding 3. Gate the manifest on two cheap assertions so that a silently empty result can never be mistaken for an absence of impact: parity between the file count on disk and the count of indexed entities carrying permalinks, and a before-and-after count of relations whose target identifier is null. The second must be read as a delta rather than an absolute: the fond baseline is zero, but this project's is 97, so the assertion is that the count does not rise, not that it is empty.
+
+**Traverse on edge existence, not edge type.** Per finding 5a, relation verbs are absent from the index on any note whose Relations section is type-grouped, which is precisely the set of heavily-referenced hub notes a decomposition is most likely to touch. A manifest that selects edges by type will silently under-report on exactly those notes. If typed traversal is genuinely required, read the note body rather than the index for that step — or fix the parser-visible shape of grouped Relations sections, which is the more durable repair and belongs on the register.
 
 **Scope the text-search leg to what is genuinely unlinked.** Bracketed prose mentions are already edges and belong to the backlink leg. A manifest that text-searches for what the relation table already knows will double-count and appear far less precise than it is. The text leg's job is bare identifiers and restated figures — and it must double-quote hyphenated identifiers to parse at all.
 
@@ -195,6 +199,9 @@ Two capabilities exist inside the wrapper itself but never reach the schema. A f
 - [insight] Two independent embedding stacks share one database — the wrapper's has no project column and a quarter the coverage of the wrapped layer's, which explains the cross-project leak structurally rather than incidentally #embeddings #architecture
 - [risk] Three silent-truncation defaults sit across the toolchain — five links per node, ten related items, and a seven-day timeframe — and none signals that truncation occurred #silent-truncation #caps
 - [outcome] Eleven of fourteen unexposed capabilities are a schema property plus a forwarded argument, which makes the wrapper expansion cheap rather than speculative #delta #effort
+- [problem] The convention requiring type-grouped Relations sub-headings above twelve relations strips the verb from the line the parser reads, so every relation on a grouped note indexes as untyped — measured as fifteen of fifteen on the adapter-contract record #relation-typing #convention-defect
+- [constraint] Edge existence survives grouping even though edge type does not, so an inbound-reference manifest is safe on grouped notes while a type-selective traversal is not #traversal-safety #manifest-design
+- [risk] The parser extracts bracketed references from inside inline code spans, so a wikilink shown as a typographic example becomes a real and usually unresolved edge — this note created one while documenting the rule and had to be corrected #code-span-trap #authoring
 - [fact] The index's documented unreliability did not reproduce under test — exact disk-to-index parity, no genuine duplicate permalinks, and no permalink shared across any two of fifteen projects #index-health #measured
 
 ## Relations
