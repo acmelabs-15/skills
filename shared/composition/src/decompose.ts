@@ -20,7 +20,8 @@
  *   2 = integrity failure — the partition does not account for every source
  *       byte, or a per-cluster round-trip hash mismatch. Nothing is renamed.
  */
-import { existsSync, statSync } from "node:fs";
+// node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
+// All file I/O below is Bun-native: Bun.file for reads/probes, Bun.write to stage.
 import { dirname, resolve } from "node:path";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
@@ -59,18 +60,21 @@ export function parseArgs(argv: readonly string[]): ParsedArgs {
 }
 
 export async function loadPlanYaml(planPath: string): Promise<unknown> {
-  if (!existsSync(planPath)) {
+  const planFile = Bun.file(planPath);
+  if (!(await planFile.exists())) {
     throw new PlanValidationError(`plan file not found: ${planPath}`, [
       { path: planPath, message: "file does not exist" },
     ]);
   }
-  const size = statSync(planPath).size;
+  // Bun.file().size reads metadata only — the 1 MB guard still runs before any
+  // content is loaded, preserving the CWE-400 mitigation ordering.
+  const size = planFile.size;
   if (size > MAX_PLAN_BYTES) {
     throw new PlanValidationError(`plan file exceeds 1 MB size guard (${size} bytes)`, [
       { path: planPath, message: `size ${size} > ${MAX_PLAN_BYTES}` },
     ]);
   }
-  const text = await Bun.file(planPath).text();
+  const text = await planFile.text();
   // FAILSAFE_SCHEMA prevents YAML bombs and type coercion attacks
   return yaml.load(text, { schema: yaml.FAILSAFE_SCHEMA });
 }
@@ -126,12 +130,13 @@ export async function executeDistributionPlan(
 ): Promise<DecomposeAuditEntry[]> {
   const adapter = resolveAdapter(plan.source_type);
   const sourceAbs = resolveRelativeToPlan(plan.source_path, planPath);
-  if (!existsSync(sourceAbs)) {
+  const sourceFile = Bun.file(sourceAbs);
+  if (!(await sourceFile.exists())) {
     throw new PlanValidationError(`source_path not found: ${sourceAbs}`, [
       { path: "source_path", message: `file does not exist: ${sourceAbs}` },
     ]);
   }
-  const sourceContent = await Bun.file(sourceAbs).text();
+  const sourceContent = await sourceFile.text();
   const mutations: Mutations = {
     renumber_map: plan.renumber_map,
     wikilink_map: plan.wikilink_map,
@@ -177,7 +182,7 @@ async function executeRenumberInPlace(
     await stage(sourceAbs, mutated);
     rename(sourceAbs);
   } catch (err) {
-    cleanup(sourceAbs);
+    await cleanup(sourceAbs);
     throw err;
   }
   return {
@@ -268,9 +273,9 @@ async function executePartition(
       );
     }
 
-    clusterAtomicRename(staged.map((s) => s.destAbs));
+    await clusterAtomicRename(staged.map((s) => s.destAbs));
   } catch (err) {
-    rollbackCluster(tmpPaths, []);
+    await rollbackCluster(tmpPaths, []);
     throw err;
   }
 

@@ -13,7 +13,8 @@
  *   1 = validation error
  *   2 = hash mismatch
  */
-import { existsSync, statSync } from "node:fs";
+// node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
+// All file I/O below is Bun-native: Bun.file for reads/probes, Bun.write to stage.
 import { dirname, resolve } from "node:path";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
@@ -49,18 +50,20 @@ export function parseArgs(argv: readonly string[]): ParsedArgs {
 }
 
 export async function loadPlanYaml(planPath: string): Promise<unknown> {
-  if (!existsSync(planPath)) {
+  const planFile = Bun.file(planPath);
+  if (!(await planFile.exists())) {
     throw new PlanValidationError(`plan file not found: ${planPath}`, [
       { path: planPath, message: "file does not exist" },
     ]);
   }
-  const size = statSync(planPath).size;
+  // Metadata-only read; the 1 MB guard still precedes any content load.
+  const size = planFile.size;
   if (size > MAX_PLAN_BYTES) {
     throw new PlanValidationError(`plan file exceeds 1 MB size guard (${size} bytes)`, [
       { path: planPath, message: `size ${size} > ${MAX_PLAN_BYTES}` },
     ]);
   }
-  const text = await Bun.file(planPath).text();
+  const text = await planFile.text();
   return yaml.load(text, { schema: yaml.FAILSAFE_SCHEMA });
 }
 
@@ -87,15 +90,17 @@ export async function executeCompositionPlan(
   const sourceRelPaths = plan.sources ?? [plan.target_path];
   const sourceAbsPaths = sourceRelPaths.map((p) => resolveRelativeToPlan(p, planPath));
 
-  for (const abs of sourceAbsPaths) {
-    if (!existsSync(abs)) {
-      throw new PlanValidationError(`source not found: ${abs}`, [
-        { path: "sources", message: `file does not exist: ${abs}` },
-      ]);
-    }
+  const sourceFiles = sourceAbsPaths.map((p) => Bun.file(p));
+  const presence = await Promise.all(sourceFiles.map((f) => f.exists()));
+  const missingIndex = presence.indexOf(false);
+  if (missingIndex >= 0) {
+    const missing = sourceAbsPaths[missingIndex];
+    throw new PlanValidationError(`source not found: ${missing}`, [
+      { path: "sources", message: `file does not exist: ${missing}` },
+    ]);
   }
 
-  const contents = await Promise.all(sourceAbsPaths.map((p) => Bun.file(p).text()));
+  const contents = await Promise.all(sourceFiles.map((f) => f.text()));
   // Join in declared order. For the single-source identity case this is just
   // the file's content unchanged before mutation.
   const merged = contents.join("");
@@ -119,7 +124,7 @@ export async function executeCompositionPlan(
     await stage(targetAbs, mutated);
     rename(targetAbs);
   } catch (err) {
-    cleanup(targetAbs);
+    await cleanup(targetAbs);
     throw err;
   }
 

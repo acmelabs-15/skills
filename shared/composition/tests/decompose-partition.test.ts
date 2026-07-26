@@ -18,7 +18,10 @@
  *     exactly: the byte-accountability invariant asserted here.
  */
 import { describe, expect, test } from "bun:test";
-import { copyFileSync, existsSync, mkdtempSync, writeFileSync } from "node:fs";
+// node:fs is limited to mkdtemp (a directory op with no Bun equivalent); node:os
+// and node:path likewise have none. All file content I/O is Bun-native per
+// ADR-001 F-6: Bun.write to stage/copy, Bun.file for reads and existence probes.
+import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { sha256 } from "../src/core/hash.js";
@@ -26,6 +29,12 @@ import { main as decomposeMain } from "../src/decompose.js";
 import { main as recomposeMain } from "../src/recompose.js";
 
 const fixtureDir = join(import.meta.dir, "fixtures");
+
+/** Bun-native file copy (OS-level zero-copy where available). */
+const copyFixture = (name: string, destDir: string): Promise<number> =>
+  Bun.write(Bun.file(join(destDir, name)), Bun.file(join(fixtureDir, name)));
+
+const exists = (p: string): Promise<boolean> => Bun.file(p).exists();
 
 const SHARDS = ["multi-cluster-shard-a.md", "multi-cluster-shard-b.md", "multi-cluster-shard-c.md"];
 
@@ -39,18 +48,18 @@ interface StagedWorkspace {
 /** Stage the fixture source plus the pre-authored 3-cluster distribution plan. */
 async function stageMultiClusterPlan(): Promise<StagedWorkspace> {
   const dir = mkdtempSync(join(tmpdir(), "decompose-partition-"));
+  await copyFixture("multi-cluster-round-trip.md", dir);
+  await copyFixture("multi-cluster-decompose-plan.yaml", dir);
   const sourcePath = join(dir, "multi-cluster-round-trip.md");
-  copyFileSync(join(fixtureDir, "multi-cluster-round-trip.md"), sourcePath);
   const planPath = join(dir, "multi-cluster-decompose-plan.yaml");
-  copyFileSync(join(fixtureDir, "multi-cluster-decompose-plan.yaml"), planPath);
   const originalContent = await Bun.file(sourcePath).text();
   return { dir, sourcePath, planPath, originalContent };
 }
 
 /** Write a distribution plan YAML with the given cluster block body. */
-function writePlan(dir: string, name: string, clusterYaml: string): string {
+async function writePlan(dir: string, name: string, clusterYaml: string): Promise<string> {
   const planPath = join(dir, name);
-  writeFileSync(
+  await Bun.write(
     planPath,
     [
       "plan_type: distribution",
@@ -134,8 +143,8 @@ describe("decompose executor — per-cluster partitioning (DESIGN-001-SPEC-005 C
 
     expect(await decomposeMain(["--plan", planPath])).toBe(0);
 
+    await copyFixture("multi-cluster-recompose-plan.yaml", dir);
     const recomposePlan = join(dir, "multi-cluster-recompose-plan.yaml");
-    copyFileSync(join(fixtureDir, "multi-cluster-recompose-plan.yaml"), recomposePlan);
     expect(await recomposeMain(["--plan", recomposePlan])).toBe(0);
 
     const recomposed = await Bun.file(sourcePath).text();
@@ -179,7 +188,7 @@ describe("decompose executor — byte-accountability failure modes", () => {
   test("a gap between cluster ranges aborts with exit 2 and writes nothing", async () => {
     const { dir, sourcePath, originalContent } = await stageMultiClusterPlan();
     // Lines 32-37 (cluster B's region) are unaccounted for.
-    const planPath = writePlan(
+    const planPath = await writePlan(
       dir,
       "gapped-plan.yaml",
       [
@@ -197,16 +206,16 @@ describe("decompose executor — byte-accountability failure modes", () => {
     );
 
     expect(await decomposeMain(["--plan", planPath])).toBe(2);
-    expect(existsSync(join(dir, "gap-shard-a.md"))).toBe(false);
-    expect(existsSync(join(dir, "gap-shard-c.md"))).toBe(false);
-    expect(existsSync(join(dir, "gap-shard-a.md.tmp"))).toBe(false);
-    expect(existsSync(join(dir, "gap-shard-c.md.tmp"))).toBe(false);
+    expect(await exists(join(dir, "gap-shard-a.md"))).toBe(false);
+    expect(await exists(join(dir, "gap-shard-c.md"))).toBe(false);
+    expect(await exists(join(dir, "gap-shard-a.md.tmp"))).toBe(false);
+    expect(await exists(join(dir, "gap-shard-c.md.tmp"))).toBe(false);
     expect(await Bun.file(sourcePath).text()).toBe(originalContent);
   });
 
   test("overlapping cluster ranges abort with exit 2 and write nothing", async () => {
     const { dir } = await stageMultiClusterPlan();
-    const planPath = writePlan(
+    const planPath = await writePlan(
       dir,
       "overlap-plan.yaml",
       [
@@ -224,13 +233,13 @@ describe("decompose executor — byte-accountability failure modes", () => {
     );
 
     expect(await decomposeMain(["--plan", planPath])).toBe(2);
-    expect(existsSync(join(dir, "overlap-shard-a.md"))).toBe(false);
-    expect(existsSync(join(dir, "overlap-shard-b.md"))).toBe(false);
+    expect(await exists(join(dir, "overlap-shard-a.md"))).toBe(false);
+    expect(await exists(join(dir, "overlap-shard-b.md"))).toBe(false);
   });
 
   test("a cluster range that does not start at line 1 aborts with exit 2", async () => {
     const { dir } = await stageMultiClusterPlan();
-    const planPath = writePlan(
+    const planPath = await writePlan(
       dir,
       "truncated-plan.yaml",
       [
@@ -243,14 +252,14 @@ describe("decompose executor — byte-accountability failure modes", () => {
     );
 
     expect(await decomposeMain(["--plan", planPath])).toBe(2);
-    expect(existsSync(join(dir, "trunc-shard-b.md"))).toBe(false);
+    expect(await exists(join(dir, "trunc-shard-b.md"))).toBe(false);
   });
 
   test("a cluster without a range is rejected as a validation error (exit 1)", async () => {
     const { dir } = await stageMultiClusterPlan();
     // `identifiers`-driven extraction is not defined by the adapter contract
     // (ADR-002 D-2 exposes extractByRange only), so the executor refuses.
-    const planPath = writePlan(
+    const planPath = await writePlan(
       dir,
       "identifier-only-plan.yaml",
       [
@@ -262,17 +271,17 @@ describe("decompose executor — byte-accountability failure modes", () => {
     );
 
     expect(await decomposeMain(["--plan", planPath])).toBe(1);
-    expect(existsSync(join(dir, "ident-shard-a.md"))).toBe(false);
+    expect(await exists(join(dir, "ident-shard-a.md"))).toBe(false);
   });
 });
 
 describe("decompose executor — preserved behaviour", () => {
   test("zero-cluster plan still renumbers the source in place", async () => {
     const dir = mkdtempSync(join(tmpdir(), "decompose-degenerate-"));
+    await copyFixture("adr-round-trip.md", dir);
+    await copyFixture("adr-decompose-plan.yaml", dir);
     const sourcePath = join(dir, "adr-round-trip.md");
-    copyFileSync(join(fixtureDir, "adr-round-trip.md"), sourcePath);
     const planPath = join(dir, "adr-decompose-plan.yaml");
-    copyFileSync(join(fixtureDir, "adr-decompose-plan.yaml"), planPath);
 
     expect(await decomposeMain(["--plan", planPath])).toBe(0);
 
@@ -284,7 +293,7 @@ describe("decompose executor — preserved behaviour", () => {
 
   test("absolute destination_path is rejected by the path guard (exit 1)", async () => {
     const { dir } = await stageMultiClusterPlan();
-    const planPath = writePlan(
+    const planPath = await writePlan(
       dir,
       "absolute-dest-plan.yaml",
       [
@@ -301,7 +310,7 @@ describe("decompose executor — preserved behaviour", () => {
 
   test("traversal in destination_path is rejected by the path guard (exit 1)", async () => {
     const { dir } = await stageMultiClusterPlan();
-    const planPath = writePlan(
+    const planPath = await writePlan(
       dir,
       "traversal-dest-plan.yaml",
       [
@@ -314,6 +323,6 @@ describe("decompose executor — preserved behaviour", () => {
     );
 
     expect(await decomposeMain(["--plan", planPath])).toBe(1);
-    expect(existsSync(join(dir, "..", "escaped-shard.md"))).toBe(false);
+    expect(await exists(join(dir, "..", "escaped-shard.md"))).toBe(false);
   });
 });

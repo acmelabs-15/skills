@@ -1,5 +1,4 @@
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import yaml from "js-yaml";
 import { planCompositionPlanSchema } from "../schemas/composition/plan.plan.schema.js";
@@ -247,17 +246,17 @@ row4`;
 });
 
 describe("PLAN fixture YAML parses against schemas (TASK-010 — DoD-2/DoD-4/DoD-6)", () => {
-  test("plan-composition.plan.yaml fixture parses via planCompositionPlanSchema", () => {
+  test("plan-composition.plan.yaml fixture parses via planCompositionPlanSchema", async () => {
     const fixturePath = join(import.meta.dir, "fixtures", "plan-composition.plan.yaml");
-    const raw = readFileSync(fixturePath, "utf8");
+    const raw = await Bun.file(fixturePath).text();
     const doc = yaml.load(raw);
     const result = planCompositionPlanSchema.safeParse(doc);
     expect(result.success).toBe(true);
   });
 
-  test("plan-distribution.plan.yaml fixture parses via planDistributionPlanSchema", () => {
+  test("plan-distribution.plan.yaml fixture parses via planDistributionPlanSchema", async () => {
     const fixturePath = join(import.meta.dir, "fixtures", "plan-distribution.plan.yaml");
-    const raw = readFileSync(fixturePath, "utf8");
+    const raw = await Bun.file(fixturePath).text();
     const doc = yaml.load(raw);
     const result = planDistributionPlanSchema.safeParse(doc);
     expect(result.success).toBe(true);

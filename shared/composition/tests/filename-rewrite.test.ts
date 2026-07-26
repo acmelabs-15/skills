@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { existsSync, mkdtempSync, rmSync } from "node:fs";
+// Directory ops only; existence probes are Bun-native.
+import { mkdtempSync, rmSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -35,10 +36,10 @@ describe("applyFilenameRewrites", () => {
 
     await adapter.applyFilenameRewrites(rootDir, rewrites);
 
-    expect(existsSync(path.join(rootDir, reqOld))).toBe(false);
-    expect(existsSync(path.join(rootDir, taskOld))).toBe(false);
-    expect(existsSync(path.join(rootDir, reqNew))).toBe(true);
-    expect(existsSync(path.join(rootDir, taskNew))).toBe(true);
+    expect(await Bun.file(path.join(rootDir, reqOld)).exists()).toBe(false);
+    expect(await Bun.file(path.join(rootDir, taskOld)).exists()).toBe(false);
+    expect(await Bun.file(path.join(rootDir, reqNew)).exists()).toBe(true);
+    expect(await Bun.file(path.join(rootDir, taskNew)).exists()).toBe(true);
     expect(await Bun.file(path.join(rootDir, reqNew)).text()).toBe("req content");
     expect(await Bun.file(path.join(rootDir, taskNew)).text()).toBe("task content");
   });
@@ -57,9 +58,9 @@ describe("applyFilenameRewrites", () => {
 
     await expect(adapter.applyFilenameRewrites(rootDir, rewrites)).rejects.toThrow(/injectivity/i);
     // No files moved — pre-flight rejected.
-    expect(existsSync(path.join(rootDir, srcA))).toBe(true);
-    expect(existsSync(path.join(rootDir, srcB))).toBe(true);
-    expect(existsSync(path.join(rootDir, dupTarget))).toBe(false);
+    expect(await Bun.file(path.join(rootDir, srcA)).exists()).toBe(true);
+    expect(await Bun.file(path.join(rootDir, srcB)).exists()).toBe(true);
+    expect(await Bun.file(path.join(rootDir, dupTarget)).exists()).toBe(false);
   });
 
   test("AC: path-traversal target rejection (newRelativePath contains '..')", async () => {
@@ -73,7 +74,7 @@ describe("applyFilenameRewrites", () => {
     await expect(adapter.applyFilenameRewrites(rootDir, rewrites)).rejects.toThrow(
       /path-containment/i,
     );
-    expect(existsSync(path.join(rootDir, src))).toBe(true);
+    expect(await Bun.file(path.join(rootDir, src)).exists()).toBe(true);
   });
 
   test("AC: absolute-path target rejection", async () => {
@@ -87,7 +88,7 @@ describe("applyFilenameRewrites", () => {
     await expect(adapter.applyFilenameRewrites(rootDir, rewrites)).rejects.toThrow(
       /path-containment/i,
     );
-    expect(existsSync(path.join(rootDir, src))).toBe(true);
+    expect(await Bun.file(path.join(rootDir, src)).exists()).toBe(true);
   });
 
   test("AC: mid-sequence failure LIFO rollback restores completed renames", async () => {
@@ -124,14 +125,14 @@ describe("applyFilenameRewrites", () => {
     await expect(adapter.applyFilenameRewrites(rootDir, rewrites)).rejects.toThrow();
 
     // LIFO rollback: src1 and src2 should be restored; their dst counterparts removed.
-    expect(existsSync(path.join(rootDir, src1))).toBe(true);
-    expect(existsSync(path.join(rootDir, src2))).toBe(true);
-    expect(existsSync(path.join(rootDir, dst1))).toBe(false);
-    expect(existsSync(path.join(rootDir, dst2))).toBe(false);
+    expect(await Bun.file(path.join(rootDir, src1)).exists()).toBe(true);
+    expect(await Bun.file(path.join(rootDir, src2)).exists()).toBe(true);
+    expect(await Bun.file(path.join(rootDir, dst1)).exists()).toBe(false);
+    expect(await Bun.file(path.join(rootDir, dst2)).exists()).toBe(false);
     expect(await Bun.file(path.join(rootDir, src1)).text()).toBe("one");
     expect(await Bun.file(path.join(rootDir, src2)).text()).toBe("two");
     // src3 untouched (failed before its content was written).
-    expect(existsSync(path.join(rootDir, src3))).toBe(true);
+    expect(await Bun.file(path.join(rootDir, src3)).exists()).toBe(true);
 
     // Suppress unused warnings.
     void dst3;
@@ -143,7 +144,7 @@ describe("applyFilenameRewrites", () => {
 
     await adapter.applyFilenameRewrites(rootDir, []);
 
-    expect(existsSync(path.join(rootDir, src))).toBe(true);
+    expect(await Bun.file(path.join(rootDir, src)).exists()).toBe(true);
     expect(await Bun.file(path.join(rootDir, src)).text()).toBe("content");
   });
 });
