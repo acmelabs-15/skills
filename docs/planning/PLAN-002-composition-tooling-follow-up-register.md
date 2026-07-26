@@ -1,0 +1,46 @@
+---
+title: "PLAN-002: Composition Tooling Follow-Up Register"
+type: plan
+status: IN_PROGRESS
+permalink: planning/plan-002-composition-tooling-follow-up-register
+tags:
+- plan
+- follow-up-register
+- composition-tooling
+- skills-ecosystem
+---
+
+# PLAN-002: Composition Tooling Follow-Up Register
+
+## Context
+
+This note materialises the follow-up register referenced by the round-2 disposition paragraph of [[CRIT-005-ADR-002: Clarifications Delta Debate Log]], which records its ADR text micro-corrections and code/spec follow-ups as riding "the skills track's follow-up register, timed with the pending pull request at the owner's call". No such register existed when that sentence was written. The items it points at were scattered across the body of [[ADR-002: Adapter Contract and Plan Schema]] and that debate log, with no single home and no dispositions in one place.
+
+A predecessor did exist and was lost twice. The skills plan carried a Post-Marathon Follow-Up Backlog inside a custom `## Risks` section. The plan renderer owns the plan note's section set and silently drops sections outside it: the backlog was recovered once at commit `8fc60ad` (recover lost Risks section; flag renderPlanNote custom-section strip) and destroyed again by the clean re-render at commit `5b1c6bf`. This register is therefore a standalone note rather than a custom section inside a rendered one, so no re-render can delete it.
+
+## Register
+
+FU numbering continues after the highest historical identity. FU-1 through FU-6 remain bound to the protocol-hardening marathon backlog — the frontmatter `validates:` key in three QA notes; the workspace tsconfig scope gap, resolved; session-note section placement drift, resolved; the `hooks/**` tsconfig and biome scope gap; the tool-input MCP schema divergence; and the Stop-event input shape, fixed — and are not reused here.
+
+- **FU-7: Two open BLOCKING-guard wirings** — the composition ADR's `## Confirmation` call-site census names two guards with no production call site at the time of writing: the runtime regenerated-sections line-coverage check, where the schema-level ten-section cap does reach the CLI but the 50 percent runtime check has no production caller; and the existence-requiring path-containment refinement, which for destinations is superseded by the create-time variant that the plan-load boundary does call. A guard with zero production importers is a dead gate regardless of how thoroughly it is unit-tested. **Disposition**: OPEN — wire both at their production call sites, or delete the surviving alternative per the dead-path rule. Source: the ADR's Confirmation call-site census item.
+- **FU-8: isSatisfied hoist** — the checkbox terminal-satisfaction rule (an item is terminal when it is done, or carries a non-empty deferred rationale, or, for SPEC-root rows only, carries the deferred marker) is declared in three shapes: inline in the per-note-type item schemas, as a hand-written `isSatisfied` predicate inside each per-type claim validator, and as a marker-aware SPEC-root variant. The copies agree by type coincidence rather than by contract — the inferred item types are structurally identical, so editing one compiles cleanly and diverges silently from the rest. **Disposition**: OPEN — hoist the item schema and the terminal predicate into the shared common schema module. Source: the ADR's D-6 body and its round-2 clarifications entry, both of which register this as the code follow-up.
+- **FU-9: frontmatter_map inversion** — per-cluster `frontmatter_map` is reachable on decompose, but the composition schema carries no inverse field and the audit log records no entry for it, so the transform has no declared reversal. This is the round-1 drift class with the sign reversed. **Disposition**: OPEN — spec follow-up against the decompose and recompose spec. Source: the debate log's round-2 findings paragraph (critic P1).
+- **FU-10: Serializer golden test** — no test pins the rendered frontmatter's tags-sequence indentation, the one construct a js-yaml minor release could move while staying inside the caret range. The round-trip suites cannot catch it, because they re-render both sides with the same functions and a format change moves the comparison with it. **Disposition**: OPEN — add a byte-exact golden over the rendered frontmatter, tags included. Source: the ADR's round-2 clarifications entry, which registers this as the test follow-up, corroborated by the debate log's round-2 findings paragraph.
+- **FU-11: Audit capture step** — the decompose audit log has no durable sink. It writes to stdout and the shipped skill workflow captures nothing, so the provenance the audit records — the scaffold object, its byte count, the body hash and the source-segment hash — survives only as long as the terminal scrollback. **Disposition**: OPEN — add a capture step to the skill workflow. Source: the debate log's round-2 findings paragraph.
+- **FU-12: Skill-doc incoherence pass** — the retracted mirror framing survives in three code comments, and the skill docs still carry the round-trip framing that the amendment corrected, so shipped documentation states a guarantee the ADR no longer makes. **Disposition**: OPEN — incoherence pass over the skill docs and the code comments carrying the superseded framing. Source: the debate log's round-2 findings paragraph.
+- **FU-13: Inbound-reference impact manifest for /decompose, /recompose and /defrag** — the composition operations round-trip-checksum content preservation but compute no inbound-reference impact: notes that wikilink, cite, or enumerate the affected note or notes are left for downstream convergence critiques to discover. Enhancement: at plan time, enumerate every inbound reference (wikilinks, agenda and citation mentions, permalink references) to the source note or notes across the project graph; emit the repointing worklist as part of the distribution or composition plan; at execution, verify every inbound reference was repointed or explicitly retained, and report closure. Owner's framing: the skills "as part of what they're doing should be able to programmatically detect or find references or relations that are going to need to be updated" in the notes being changed or created, as well as in other notes that reference them. Evidence: fond convergence iteration 2 — post-split repair classes included one-way inverse edges, stale citations into renumbered children, and agenda rows pointing at pre-split section numbers, all mechanically enumerable at split time. The owner extended the scope the same day to traverse the Relations graph under the bi-directional rule, so that a missing inverse edge is surfaced as impact rather than left to a later critique, and to remove the residual relation-count caps that would otherwise truncate that traversal. **Disposition**: IN PROGRESS 2026-07-26 — not deferred; the owner directed immediate implementation, dispatched the same day to a Bun engineer on the composition-tooling branch (registry task 8).
+- **FU-14: Plan-renderer custom-section strip** — the plan renderer silently deletes sections it does not own, taking their content with it, with no warning at render time and no record of what was removed. This destroyed this register's own predecessor twice: recovered at `8fc60ad`, stripped again at `5b1c6bf`. It is the same change-without-seeing-what-you-affect class that FU-13 addresses — an operation that rewrites a note while computing nothing about what it is about to destroy. **Disposition**: OPEN — either preserve custom sections across a render, or give the follow-up backlog an explicit schema slot that the renderer owns.
+
+## Observations
+
+- [problem] The follow-up register named by the round-2 disposition paragraph did not exist when that sentence was written; its items sat scattered across the ADR body and the debate log with no single home and no collected dispositions #register #materialised
+- [fact] The predecessor backlog lived in a custom Risks section of the skills plan and was destroyed twice by the plan renderer's custom-section strip — recovered at commit 8fc60ad, stripped again by the clean re-render at 5b1c6bf #renderer-strip #data-loss
+- [decision] This register is a standalone note rather than a custom section inside a rendered note, so that a re-render cannot delete it — the failure mode that took its predecessor #durability #placement
+- [decision] FU numbering continues at FU-7 because FU-1 through FU-6 remain bound to the protocol-hardening marathon backlog and reusing them would collide with the session and QA prose that still cites those identities #numbering #provenance
+- [insight] The renderer strip and the missing inbound-reference manifest are the same failure class — an operation that rewrites notes while computing nothing about what it is about to affect #impact-analysis #failure-class
+- [outcome] Seven items open and one in progress: the impact manifest was pulled out of the deferred set by owner direction on 2026-07-26 and dispatched for immediate implementation rather than riding the pull request #disposition #in-progress
+
+## Relations
+
+- relates_to [[ADR-002: Adapter Contract and Plan Schema]]
+- relates_to [[CRIT-005-ADR-002: Clarifications Delta Debate Log]]

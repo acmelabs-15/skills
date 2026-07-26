@@ -145,3 +145,4 @@ Re-vote against the owner-adjudicated amendment at skills commit 68a2550 (code i
 
 - relates_to [[ADR-002: Adapter Contract and Plan Schema]]
 - pairs_with [[CRIT-002-ADR-002: Adapter Contract and Plan Schema Debate Log]]
+- relates_to [[PLAN-002: Composition Tooling Follow-Up Register]]

@@ -978,3 +978,4 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - [[CRIT-002-ADR-002: Adapter Contract and Plan Schema Debate Log]]
 - [[CRIT-005-ADR-002: Clarifications Delta Debate Log]]
 - [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+- [[PLAN-002: Composition Tooling Follow-Up Register]]
