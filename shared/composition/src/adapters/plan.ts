@@ -4,6 +4,7 @@ import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import type { CompositionAdapter } from "../core/adapter.js";
+import { applyFrontmatterMutations } from "../core/frontmatter-mutations.js";
 import type { LineRange, MutationSpec } from "../core/types.js";
 
 /**
@@ -250,7 +251,7 @@ export class PlanAdapter implements CompositionAdapter {
     const fmMap = mutations.frontmatter_map;
     if (fmMap && Object.keys(fmMap).length > 0) {
       const map = reverse ? this.invertMap(fmMap) : fmMap;
-      result = this.applyFrontmatterMutations(result, map);
+      result = applyFrontmatterMutations(result, map);
     }
     return result;
   }
@@ -284,57 +285,6 @@ export class PlanAdapter implements CompositionAdapter {
    *
    * The inverse is mechanical: invert the map (new → old) and re-apply.
    */
-  private applyFrontmatterMutations(
-    content: string,
-    frontmatterMap: Record<string, string>,
-  ): string {
-    const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
-    if (!fmMatch) return content;
-    let fm = fmMatch[1] ?? "";
-
-    // Walk each line and try to replace its value if the existing value matches a key.
-    const outLines: string[] = [];
-    for (const line of fm.split("\n")) {
-      const m = line.match(/^([^\s:][^:]*):[ \t]+(.+)$/);
-      if (!m) {
-        outLines.push(line);
-        continue;
-      }
-      const field = m[1] ?? "";
-      const existing = (m[2] ?? "").trim();
-      // Direct value match (exact)
-      if (Object.hasOwn(frontmatterMap, existing)) {
-        const replacement = this.renderFrontmatterValue(frontmatterMap[existing] ?? "");
-        outLines.push(`${field}: ${replacement}`);
-        continue;
-      }
-      outLines.push(line);
-    }
-    fm = outLines.join("\n");
-
-    return content.replace(/^---\n[\s\S]*?\n---/, `---\n${fm}\n---`);
-  }
-
-  /**
-   * Render a frontmatter_map entry value into the YAML form. If the value is a JSON
-   * array literal (`["a","b"]`), emit it as a YAML inline array (`[a, b]`). Otherwise
-   * pass through verbatim (callers are responsible for quoting strings that require
-   * it, e.g. `"PLAN-001: Example"`).
-   */
-  private renderFrontmatterValue(raw: string): string {
-    const trimmed = raw.trim();
-    if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
-      try {
-        const parsed = JSON.parse(trimmed) as unknown;
-        if (Array.isArray(parsed)) {
-          return `[${parsed.map((item) => String(item)).join(", ")}]`;
-        }
-      } catch {
-        // Not valid JSON — fall through and emit verbatim.
-      }
-    }
-    return raw;
-  }
 
   /**
    * Verify that reverseMutations recovered at least `integrityFloor` of the

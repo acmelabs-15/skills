@@ -148,19 +148,43 @@ describe("SpecSubtreeAdapter", () => {
     expect(taskChild?.content).toContain("TASK-100-SPEC-001: Scaffold Adapter");
   });
 
-  test("applySubtreeMutations with frontmatter_map updates title in all files", () => {
+  test("applySubtreeMutations with frontmatter_map updates titles across the subtree", () => {
+    // Value-keyed per REQ-004 AC-2, now the semantics on every adapter: each
+    // entry names the EXISTING value. The retired field-keyed shape allowed one
+    // `{title: ...}` entry to blanket-replace every file's title, but it could
+    // not be inverted — so it failed the F-8 comparison on every plan that used
+    // it. Naming each existing value is what makes the mutation reversible.
     const mutations: MutationSpec = {
       renumber_map: {},
       wikilink_map: {},
       frontmatter_map: {
-        title: '"REPLACED: Title"',
+        '"SPEC-001: Composition Core"': '"SPEC-900: Replaced Root"',
+        '"REQ-001-SPEC-001: Adapter Interface"': '"REQ-900-SPEC-900: Replaced Req"',
+        '"TASK-001-SPEC-001: Scaffold Adapter"': '"TASK-900-SPEC-900: Replaced Task"',
       },
     };
     const result = adapter.applySubtreeMutations(manifest, mutations);
-    expect(result.rootContent).toContain('title: "REPLACED: Title"');
-    for (const child of result.children) {
-      expect(child.content).toContain('title: "REPLACED: Title"');
-    }
+    expect(result.rootContent).toContain('title: "SPEC-900: Replaced Root"');
+    expect(result.children.map((c) => c.content).join("\n")).toContain(
+      'title: "REQ-900-SPEC-900: Replaced Req"',
+    );
+    expect(result.children.map((c) => c.content).join("\n")).toContain(
+      'title: "TASK-900-SPEC-900: Replaced Task"',
+    );
+
+    // And the whole subtree reverses cleanly — the property field-keyed lacked.
+    const reversed = adapter.reverseSubtreeMutations(
+      {
+        ...manifest,
+        rootContent: result.rootContent,
+        children: manifest.children.map((c, i) => ({
+          ...c,
+          content: result.children[i]?.content ?? c.content,
+        })),
+      },
+      mutations,
+    );
+    expect(reversed.rootContent).toBe(manifest.rootContent);
   });
 
   test("reverseMutations round-trips a renumber+wikilink combination", () => {

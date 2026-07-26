@@ -508,3 +508,35 @@ describe("per-cluster mutation overrides are reachable from the CLI", () => {
     expect(await decomposeMain(["--plan", planPath])).toBe(1);
   });
 });
+
+describe("frontmatter_map is live from the CLI and survives F-8", () => {
+  test("a cluster may declare frontmatter_map and the split succeeds", async () => {
+    // Previously withheld from the CLI: the field-keyed reading could not be
+    // inverted, so any plan using it exited 2 on the hash comparison. With the
+    // value-keyed semantics adopted everywhere it round-trips, so it is exposed.
+    const { dir } = await stageSource();
+    const planPath = await writePlan(
+      dir,
+      "fm.yaml",
+      [
+        "plan_type: distribution",
+        "source_type: adr",
+        "source_path: multi-cluster-round-trip.md",
+        "renumber_map: {}",
+        "wikilink_map: {}",
+        "clusters:",
+        "  whole:",
+        "    destination_path: whole.md",
+        "    range: { start: 1, end: -1 }",
+        "    frontmatter_map:",
+        "      ACCEPTED: SUPERSEDED",
+        "",
+      ].join("\n"),
+    );
+
+    expect(await decomposeMain(["--plan", planPath])).toBe(0);
+    const written = await Bun.file(join(dir, "whole.md")).text();
+    expect(written).toContain("status: SUPERSEDED");
+    expect(written).not.toContain("status: ACCEPTED");
+  });
+});

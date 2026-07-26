@@ -335,6 +335,7 @@ async function executePartition(
       // frontmatter_map and D-5's regenerated_sections reachable per cluster.
       const clusterMutations: MutationSpec = {
         ...mutations,
+        ...(cluster?.frontmatter_map ? { frontmatter_map: cluster.frontmatter_map } : {}),
         ...(cluster?.regenerated_sections
           ? { regenerated_sections: cluster.regenerated_sections }
           : {}),

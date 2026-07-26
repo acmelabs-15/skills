@@ -13,6 +13,7 @@ import {
   rollbackCluster,
   validateSubtreeHashes,
 } from "../core/cluster-rollback.js";
+import { applyFrontmatterMutations, invertFrontmatterMap } from "../core/frontmatter-mutations.js";
 import { sha256 } from "../core/hash.js";
 import {
   type ProcessResult,
@@ -119,7 +120,7 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
     let result = this.applySinglePassReplace(content, mutations.renumber_map);
     result = this.applySinglePassReplace(result, mutations.wikilink_map);
     if (mutations.frontmatter_map && Object.keys(mutations.frontmatter_map).length > 0) {
-      result = this.applyFrontmatterMutations(result, mutations.frontmatter_map);
+      result = applyFrontmatterMutations(result, mutations.frontmatter_map);
     }
     return result;
   }
@@ -133,7 +134,7 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
     let result = this.applySinglePassReplace(content, invertedRenumber);
     result = this.applySinglePassReplace(result, invertedWikilink);
     if (mutations.frontmatter_map && Object.keys(mutations.frontmatter_map).length > 0) {
-      result = this.applyFrontmatterMutations(result, this.invertMap(mutations.frontmatter_map));
+      result = applyFrontmatterMutations(result, invertFrontmatterMap(mutations.frontmatter_map));
     }
     return result;
   }
@@ -336,22 +337,5 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
       result[v] = k;
     }
     return result;
-  }
-
-  private applyFrontmatterMutations(
-    content: string,
-    frontmatterMap: Record<string, string>,
-  ): string {
-    const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
-    if (!fmMatch) return content;
-    let fm = fmMatch[1] ?? "";
-    for (const [key, value] of Object.entries(frontmatterMap)) {
-      const keyPattern = new RegExp(
-        `^(${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}:\\s*)(.+)$`,
-        "m",
-      );
-      fm = fm.replace(keyPattern, `$1${value}`);
-    }
-    return content.replace(/^---\n[\s\S]*?\n---/, `---\n${fm}\n---`);
   }
 }

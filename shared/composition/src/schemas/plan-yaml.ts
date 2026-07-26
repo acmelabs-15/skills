@@ -22,6 +22,7 @@ import { z } from "zod";
 import {
   ClusterScaffoldSchema,
   dispositionEnum,
+  frontmatterMapSchema,
   lineRangeSchema,
   regeneratedSectionsFloor,
   renumberMapSchema,
@@ -52,18 +53,16 @@ export const DistributionPlanSchema = z
             decisions: z.array(z.string().min(1)).optional(),
             renumbered_to: z.array(z.string().min(1)).optional(),
             range: lineRangeSchema.optional(),
-            // Per-cluster mutation override. Before this the envelope was
-            // .strict() with no field to express it, so D-5's 50%
-            // regenerated_sections integrity floor was dead code on the
-            // production path — no plan the CLI accepted could exercise it.
+            // Per-cluster mutation overrides. Before these the envelope was
+            // .strict() with no field to express them, so D-2's frontmatter_map
+            // contract and D-5's 50% regenerated_sections integrity floor were
+            // both dead code on the production path.
             //
-            // `frontmatter_map` is deliberately NOT exposed here. It is not
-            // invertible as specified: the map carries field -> NEW value and
-            // never the old one, so reverseMutations inverts it to
-            // {newValue: field} and cannot restore the original. Every plan
-            // using it would fail the F-8 comparison and exit 2. Exposing a
-            // field that can only ever fail is worse than withholding it;
-            // see the delivery report's design-gap section.
+            // frontmatter_map is value-keyed (existing value -> replacement),
+            // which is what makes it invertible and therefore safe to expose:
+            // the field-keyed reading could not be reversed and failed the F-8
+            // comparison on every plan that used it.
+            frontmatter_map: frontmatterMapSchema.optional(),
             regenerated_sections: regeneratedSectionsFloor.optional(),
             disposition: dispositionEnum.default("write"),
             scaffold: ClusterScaffoldSchema.optional(),
