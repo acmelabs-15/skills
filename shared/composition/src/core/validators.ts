@@ -18,11 +18,20 @@ export function injectiveDisjointMap(
     const keySet = new Set(keys);
     const valueSet = new Set(values);
 
-    // Injectivity: all values must be distinct
+    // Injectivity: all values must be distinct. Name the colliding targets —
+    // on a map with dozens of entries, "duplicate values detected" alone leaves
+    // the plan author to find the collision by hand.
     if (valueSet.size !== values.length) {
+      const seen = new Set<string>();
+      const duplicates = new Set<string>();
+      for (const v of values) {
+        if (seen.has(v)) duplicates.add(v);
+        seen.add(v);
+      }
+      const listed = [...duplicates].map((v) => `"${v}"`).join(", ");
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: `${fieldName}: map is not injective — duplicate values detected`,
+        message: `${fieldName}: map is not injective — duplicate values detected: ${listed}`,
       });
     }
 

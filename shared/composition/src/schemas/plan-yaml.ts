@@ -12,6 +12,7 @@
  * non-injective maps at load time, before any file I/O occurs.
  */
 import { z } from "zod";
+import { injectiveDisjointMap } from "../core/validators.js";
 import { ObservationSchema, RelationSchema } from "./common.js";
 
 const IdentifierString = z.string().min(1);
@@ -27,23 +28,27 @@ const SafePath = z
     message: "Path traversal (..) or absolute path rejected (CWE-22 mitigation)",
   });
 
-const RenumberMapSchema = z.record(IdentifierString, IdentifierString).superRefine((map, ctx) => {
-  const values = Object.values(map);
-  const seen = new Set<string>();
-  for (const v of values) {
-    if (seen.has(v)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `renumber_map is not injective: codomain value "${v}" appears more than once`,
-        path: ["renumber_map"],
-      });
-      return;
-    }
-    seen.add(v);
-  }
-});
+/**
+ * Both mutation maps carry the ADR-001 F-8 BLOCKING constraint, which covers them
+ * equally: "no two source IDs map to the same target ID; no two source wikilinks
+ * map to the same target wikilink." ADR-002 D-5 names `injectiveDisjointMap` as
+ * the mechanism, and the modular per-type schemas under `schemas/distribution/`
+ * already apply it to both maps — these CLI-facing schemas reuse that same
+ * validator rather than carrying a second, weaker copy of the rule.
+ *
+ * Disjointness (no value also appearing as a key) is enforced alongside
+ * injectivity because it is the precondition that makes single-pass replacement
+ * safe to depend on. `applySinglePassReplace` builds one regex alternation, so a
+ * map like {"D-1":"D-2","D-2":"D-3"} happens to round-trip today; the constraint
+ * exists so that a future move to sequential replacement cannot silently turn
+ * such a plan into content corruption.
+ */
+const mapWithF8Invariants = (fieldName: string) =>
+  z.record(IdentifierString, IdentifierString).superRefine(injectiveDisjointMap(fieldName));
 
-const WikilinkMapSchema = z.record(IdentifierString, IdentifierString);
+const RenumberMapSchema = mapWithF8Invariants("renumber_map");
+
+const WikilinkMapSchema = mapWithF8Invariants("wikilink_map");
 
 /**
  * Integer field tolerant of the string form that `yaml.FAILSAFE_SCHEMA`
