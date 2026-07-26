@@ -42,6 +42,7 @@ import { resolve } from "node:path";
 import { ZodError } from "zod";
 import { checkClosure } from "./core/reference-closure.js";
 import { type TargetSpec, buildImpactManifest } from "./core/reference-scan.js";
+import { augmentManifestWithSearch } from "./core/reference-search.js";
 import { PlanValidationError, zodErrorToIssues } from "./schemas/plan-yaml.js";
 import {
   ImpactManifestSchema,
@@ -63,10 +64,14 @@ interface ParsedArgs {
   retainFile?: string;
   mergeFile?: string;
   out?: string;
+  /** Brain project to run the CLI-backed advisory leg against. */
+  searchProject?: string;
+  searchMode?: string;
+  searchType?: string;
 }
 
 const USAGE =
-  "Usage: reference-scan.ts --docs-root <dir> (--targets <file.json> | --target <note.md> ...) [--merge <file.json>] [--out <file>]\n" +
+  "Usage: reference-scan.ts --docs-root <dir> (--targets <file.json> | --target <note.md> ...) [--merge <file.json>] [--search-project <name> [--search-mode <mode>] [--search-type <type>]] [--out <file>]\n" +
   "       reference-scan.ts --check --manifest <file.json> [--docs-root <dir>] [--retain <file.json>] [--out <file>]";
 
 function usageError(message: string): PlanValidationError {
@@ -107,6 +112,15 @@ export function parseArgs(argv: readonly string[]): ParsedArgs {
         break;
       case "--merge":
         parsed.mergeFile = flagValue(argv, index++, flag);
+        break;
+      case "--search-project":
+        parsed.searchProject = flagValue(argv, index++, flag);
+        break;
+      case "--search-mode":
+        parsed.searchMode = flagValue(argv, index++, flag);
+        break;
+      case "--search-type":
+        parsed.searchType = flagValue(argv, index++, flag);
         break;
       case "--out":
         parsed.out = flagValue(argv, index++, flag);
@@ -195,7 +209,27 @@ async function runScan(parsed: ParsedArgs): Promise<number> {
     targets: await loadTargets(parsed),
     ...(merge.length > 0 ? { merge } : {}),
   });
-  await emit(manifest, parsed.out);
+  if (!parsed.searchProject) {
+    await emit(manifest, parsed.out);
+    return 0;
+  }
+  // The advisory leg runs AFTER the deterministic manifest is complete, and only
+  // widens it. A search outage therefore costs recall on prose references and
+  // nothing else: the gate, the addresses and the write set are all already fixed.
+  const augmented = await augmentManifestWithSearch({
+    manifest,
+    project: parsed.searchProject,
+    ...(parsed.searchMode ? { mode: parsed.searchMode } : {}),
+    ...(parsed.searchType ? { searchType: parsed.searchType } : {}),
+  });
+  await emit(augmented.manifest, parsed.out);
+  // An enumeration that hit a page boundary is reported on stderr rather than
+  // silently accepted: the advisory worklist may be short and the reader must know.
+  if (!augmented.leg.complete) {
+    process.stderr.write(
+      `${JSON.stringify({ warning: "SearchEnumerationIncomplete", queries: augmented.leg.queries.filter((q) => !q.exhausted) })}\n`,
+    );
+  }
   return 0;
 }
 

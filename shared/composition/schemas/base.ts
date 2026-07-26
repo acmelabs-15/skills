@@ -57,6 +57,38 @@ const f8Map = (fieldName: string) =>
 export const renumberMapSchema = f8Map("renumber_map");
 export const wikilinkMapSchema = f8Map("wikilink_map");
 
+/**
+ * Bare permalinks, old to new — the repoint executor's third identifier map.
+ *
+ * Its own primitive rather than an alias of `renumberMapSchema` so an F-8
+ * violation names the field the author actually wrote. An alias would report a
+ * `permalink_map` collision as a `renumber_map` collision and send the author
+ * looking in the wrong half of the plan.
+ */
+export const permalinkMapSchema = f8Map("permalink_map");
+
+/**
+ * Section-fragment remap nested under the OLD entity ID that owned the section:
+ * `{ "ANALYSIS-034": { "Section 6": "Section 3" } }`.
+ *
+ * Nested because `Section 6` means nothing on its own — a flat map would apply
+ * one note's renumbering to another note's citations.
+ *
+ * Deliberately WITHOUT the F-8 invariants every map above carries. Those forbid
+ * ambiguous chained single-pass replacement; a section renumber is legitimately
+ * chained (delete section 3 and 4 becomes 3, 5 becomes 4), which disjointness
+ * would reject, and a section merge is legitimately non-injective. Neither is
+ * ambiguous for this consumer, which remaps by exact lookup against a finding's
+ * already-parsed `sectionFragment` rather than by substituting over a file. The
+ * identifier maps keep F-8 because their keys double as the identities being
+ * repointed, so a key that is also a value is a genuinely unclear plan; a
+ * fragment is a label inside one note and carries no such duality.
+ */
+export const sectionMapSchema = z.record(
+  z.string().min(1),
+  z.record(z.string().min(1), z.string().min(1)),
+);
+
 /** Frontmatter field replacements; not an identifier map, so no F-8 constraint. */
 export const frontmatterMapSchema = z.record(z.string().min(1), z.string());
 

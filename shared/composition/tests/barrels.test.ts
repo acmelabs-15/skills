@@ -31,6 +31,17 @@ describe("src/core barrel", () => {
     "checkClosure",
     "matchLine",
     "escapeRegExp",
+    // repoint
+    "executeRepoint",
+    "resolveReplacement",
+    "sectionAnchored",
+    "parseSectionFragment",
+    "applyEdits",
+    "invertEdits",
+    "verifyAddress",
+    "overlappingEdits",
+    "lineDiff",
+    "MECHANICAL_CLASSES",
     // correction
     "extractObligations",
     "resolveItemTarget",
@@ -100,6 +111,14 @@ describe("src/schemas barrel", () => {
     "REFERENCE_CLASSES",
     "REFERENCE_SOURCES",
     "SEARCH_MODES",
+    "SEARCH_TYPES",
+    "ACTUAL_SOURCES",
+    // repoint plan + report
+    "RepointPlanSchema",
+    "RepointReportSchema",
+    "RepointEditSchema",
+    "RepointResidualSchema",
+    "RESIDUAL_REASONS",
     // correction obligations
     "CorrectionObligationSchema",
     "ReconcileReportSchema",

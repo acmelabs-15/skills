@@ -69,7 +69,7 @@ const DELIMITER_ROW_RE = /^\s*\|[\s:|-]+\|\s*$/;
  * fence is documentation OF a table, not one to count, and a `#` in a shell
  * snippet is a comment rather than a heading.
  */
-function fencedLines(lines: readonly string[]): boolean[] {
+export function fencedLines(lines: readonly string[]): boolean[] {
   const fenced = new Array<boolean>(lines.length).fill(false);
   let open = false;
   for (let index = 0; index < lines.length; index++) {

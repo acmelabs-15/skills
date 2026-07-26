@@ -18,6 +18,9 @@ export { EpicNoteSchema, type EpicNote } from "./epic-note.js";
 
 /** Inbound-reference impact manifest + bi-directional closure report. */
 export {
+  ACTUAL_SOURCES,
+  type ActualSource,
+  ActualSourceSchema,
   type ClassCounts,
   ClassCountsSchema,
   CLOSURE_STATUSES,
@@ -45,14 +48,54 @@ export {
   type RetainRule,
   RetainRuleSchema,
   SEARCH_MODES,
+  SEARCH_TYPES,
   type SearchMode,
   SearchModeSchema,
+  type SearchType,
+  SearchTypeSchema,
   SUPPRESSION_PRECEDENCE,
   TargetsFileSchema,
   type TargetSpecInput,
   TargetSpecSchema,
   TargetSummarySchema,
 } from "./reference-manifest.js";
+
+/** Repoint plan + execution report — the manifest's deterministic repair stage. */
+export {
+  RESIDUAL_REASONS,
+  type RepointEdit,
+  RepointEditSchema,
+  type RepointFileEntry,
+  RepointFileEntrySchema,
+  type RepointLineDiff,
+  RepointLineDiffSchema,
+  type RepointPlan,
+  RepointPlanSchema,
+  type RepointReport,
+  RepointReportSchema,
+  type RepointResidual,
+  RepointResidualSchema,
+  type RepointSkipped,
+  RepointSkippedSchema,
+  type ResidualReason,
+  ResidualReasonSchema,
+  TargetOutcomeSchema,
+} from "./repoint-plan.js";
+
+/** Residue vocabulary — the leaf the plan and the work brief both depend on. */
+export { emptyReasonCounts, reasonCountsShape } from "./repoint-residue.js";
+
+/** The AI-ready work brief: declined repairs, grouped by repair site. */
+export {
+  type WorkBrief,
+  WorkBriefSchema,
+  type WorkBriefEntry,
+  WorkBriefEntrySchema,
+  type WorkBriefEvidence,
+  WorkBriefEvidenceSchema,
+  type WorkBriefNote,
+  WorkBriefNoteSchema,
+} from "./work-brief.js";
 
 /** Correction obligations + reconcile-by-diff report. */
 export {

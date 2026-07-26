@@ -15,11 +15,13 @@
  * removing friction. Extending it later is mechanical; every symbol below was
  * checked for collisions and there are none.
  *
- * Three families, one shared foundation:
+ * Three discovery families and one repair stage, over one shared foundation:
  *
  *   identity      what a note is called, how a reference normalizes, how the
  *                 tree is read. The leaf every family depends on.
  *   reference     inbound-reference impact scanning + bi-directional closure.
+ *   repoint       deterministic repair of the mechanical reference classes the
+ *                 scanner found. The only member of this barrel that writes.
  *   correction    correction-obligation extraction + reconcile-by-diff.
  *   figure        figure-staleness count re-derivation.
  */
@@ -64,6 +66,7 @@ export {
   findTables,
   lineOfOffset,
   listHeadings,
+  fencedLines,
   sliceLeafSections,
   sliceSections,
   splitBlocks,
@@ -97,6 +100,72 @@ export {
 export { applyGraphLeg } from "./reference-graph.js";
 
 export { type ClosureOptions, checkClosure } from "./reference-closure.js";
+
+// --- CLI-backed advisory discovery (widens the worklist, never the gate) -----
+
+export {
+  type SearchHit,
+  type SearchQuery,
+  type SearchResponse,
+  type SearchRunner,
+  MAX_LIMIT,
+  SearchUnavailableError,
+  buildSearchArgs,
+  defaultSearchRunner,
+  searchAll,
+} from "./brain-cli.js";
+
+export {
+  type AugmentOptions,
+  type SearchLegOptions,
+  type SearchLegResult,
+  augmentManifestWithSearch,
+  locateSnippet,
+  runSearchLeg,
+} from "./reference-search.js";
+
+// --- Deterministic repoint (the one write path in this barrel) --------------
+
+export { type RepointOptions, executeRepoint } from "./repoint.js";
+
+export {
+  type Candidate,
+  LazyNoteIndex,
+  classifyFindings,
+  compareFindings,
+  verifyDestination,
+} from "./repoint-classify.js";
+
+export { summarizeRepoint } from "./repoint-report.js";
+
+export {
+  type PermalinkResolver,
+  buildWorkBrief,
+  workBriefEntries,
+} from "./work-brief.js";
+
+export {
+  type SectionFragment,
+  parseSectionFragment,
+  sectionAnchored,
+} from "./repoint-anchors.js";
+
+export {
+  type AddressedEdit,
+  type AddressVerdict,
+  applyEdits,
+  invertEdits,
+  lineDiff,
+  overlappingEdits,
+  verifyAddress,
+} from "./repoint-edits.js";
+
+export {
+  type Replacement,
+  type Resolution,
+  MECHANICAL_CLASSES,
+  resolveReplacement,
+} from "./repoint-resolve.js";
 
 // --- Correction propagation ------------------------------------------------
 

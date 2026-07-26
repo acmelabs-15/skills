@@ -88,10 +88,43 @@ export const REFERENCE_SOURCES = ["TEXT", "GRAPH", "BOTH", "SEARCH"] as const;
 export const ReferenceSourceSchema = z.enum(REFERENCE_SOURCES);
 export type ReferenceSource = z.infer<typeof ReferenceSourceSchema>;
 
-/** Search modes offered by the Brain search tool. */
+/** Search modes offered by the Brain search tool — the REQUESTED routing dial. */
 export const SEARCH_MODES = ["auto", "semantic", "keyword", "hybrid"] as const;
 export const SearchModeSchema = z.enum(SEARCH_MODES);
 export type SearchMode = z.infer<typeof SearchModeSchema>;
+
+/**
+ * Retrieval strategies offered alongside `mode`, and ORTHOGONAL to it.
+ *
+ * `mode` selects which legs run; `search_type` selects how the proxied leg
+ * retrieves. The two compose, so recording only the mode under-specifies the
+ * query: `mode: "keyword"` with `search_type: "text"` is a full-text scan, and
+ * the same mode with `search_type: "permalink"` is an exact-identifier lookup
+ * that additionally does prefix matching on a `*`. Those return categorically
+ * different result shapes, and a finding tagged only `keyword` cannot be told
+ * apart from the other.
+ */
+export const SEARCH_TYPES = ["text", "title", "permalink", "vector", "semantic", "hybrid"] as const;
+export const SearchTypeSchema = z.enum(SEARCH_TYPES);
+export type SearchType = z.infer<typeof SearchTypeSchema>;
+
+/**
+ * Which leg ACTUALLY served a row, as reported by the search surface.
+ *
+ * Distinct from `mode` because the request is routed: a structured filter forces
+ * the request onto the proxied leg whatever mode was asked for, and `auto` tries
+ * semantic then falls back. Requests recorded as `semantic` and as `auto` have
+ * both been observed coming back served by `keyword`. Without this field the
+ * recorded mode no longer establishes which leg produced the row, which defeats
+ * the reason `mode` is recorded at all.
+ *
+ * `auto` is deliberately absent: it is a request-only routing value and never a
+ * leg that serves. A response claiming it is malformed and should fail here
+ * rather than be stored as provenance that explains nothing.
+ */
+export const ACTUAL_SOURCES = ["semantic", "keyword", "hybrid"] as const;
+export const ActualSourceSchema = z.enum(ACTUAL_SOURCES);
+export type ActualSource = z.infer<typeof ActualSourceSchema>;
 
 /** Evidence for a bi-directional closure violation. */
 export const RelationEvidenceSchema = z.object({
@@ -135,14 +168,33 @@ export const ReferenceFindingSchema = z.object({
   sectionFragment: z.string().optional(),
   source: ReferenceSourceSchema.default("TEXT"),
   /**
-   * Which search mode produced a `SEARCH` entry. Absent for the deterministic
-   * legs, which have no mode. Recorded rather than discarded because the modes
-   * differ sharply in precision and in health: an exact-identifier keyword hit
-   * and a threshold-gated semantic hit are not equally trustworthy, and a mode
-   * that is currently returning nothing needs to be distinguishable from a mode
-   * that ran and found nothing.
+   * Which search mode was REQUESTED for a `SEARCH` entry. Absent for the
+   * deterministic legs, which have no mode. Recorded rather than discarded
+   * because the modes differ sharply in precision and in health: an
+   * exact-identifier keyword hit and a threshold-gated semantic hit are not
+   * equally trustworthy, and a mode that is currently returning nothing needs to
+   * be distinguishable from a mode that ran and found nothing.
+   *
+   * The three provenance fields answer three different questions and none
+   * substitutes for another: `mode` is what was asked for, `searchType` is how
+   * the proxied leg retrieved, `actualSource` is which leg answered.
    */
   mode: SearchModeSchema.optional(),
+  /**
+   * The retrieval strategy requested alongside `mode`. Optional in the same
+   * sense `mode` is: absent on deterministic entries, and absent on advisory
+   * entries whose producer did not record it. A manifest written before this
+   * field existed therefore stays loadable unchanged.
+   */
+  searchType: SearchTypeSchema.optional(),
+  /**
+   * The leg that actually served this row, when the surface reports it. The MCP
+   * surface currently reports it once per RESPONSE rather than per row, so a
+   * producer copies the response-level value onto each row it contributes; the
+   * field is per-row anyway because rows from separate calls land in one
+   * manifest and a single response-level field could not describe them.
+   */
+  actualSource: ActualSourceSchema.optional(),
   /**
    * Advisory entries widen the repointing worklist but NEVER gate closure. The
    * search leg is a recall aid — over prose that names a note without naming its

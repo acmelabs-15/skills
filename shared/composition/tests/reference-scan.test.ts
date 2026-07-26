@@ -739,6 +739,80 @@ describe("search advisory leg", () => {
     expect(manifest.findings.every((f) => f.mode === undefined)).toBe(true);
   });
 
+  /**
+   * `mode` alone under-specifies an advisory entry twice over: `search_type` is an
+   * orthogonal retrieval dial the field cannot express, and the leg that actually
+   * served the row is routinely NOT the one requested. Both travel through the
+   * merge untouched, because the merge only forces `source` and `advisory`.
+   */
+  test("searchType and actualSource survive the merge alongside mode", async () => {
+    const manifest = await buildImpactManifest({
+      docsRoot: FIXTURE_ROOT,
+      now: FIXED_NOW,
+      targets: [{ path: TARGET_NOTE }],
+      merge: [
+        {
+          ...semanticEntry,
+          mode: "auto" as const,
+          searchType: "permalink" as const,
+          actualSource: "keyword" as const,
+        },
+      ],
+    });
+    const [entry] = manifest.findings.filter((f) => f.source === "SEARCH");
+    expect(entry?.mode).toBe("auto");
+    expect(entry?.searchType).toBe("permalink");
+    expect(entry?.actualSource).toBe("keyword");
+    expect(ImpactManifestSchema.safeParse(manifest).success).toBe(true);
+  });
+
+  test("the closure detail reports all three provenance fields, not just the mode", async () => {
+    const manifest = await buildImpactManifest({
+      docsRoot: FIXTURE_ROOT,
+      now: FIXED_NOW,
+      targets: [{ path: TARGET_NOTE }],
+      merge: [
+        {
+          ...semanticEntry,
+          mode: "semantic" as const,
+          searchType: "text" as const,
+          actualSource: "keyword" as const,
+        },
+      ],
+    });
+    const report = await checkClosure({ manifest, now: FIXED_NOW });
+    const advisory = report.entries.find((entry) => entry.finding.advisory);
+    expect(advisory?.detail).toContain("mode=semantic");
+    expect(advisory?.detail).toContain("search_type=text");
+    // The divergence is the whole point: a semantic request served by keyword is
+    // what makes the recorded mode insufficient on its own.
+    expect(advisory?.detail).toContain("actual_source=keyword");
+  });
+
+  test("a producer that recorded only a mode still reads cleanly", async () => {
+    const manifest = await buildImpactManifest({
+      docsRoot: FIXTURE_ROOT,
+      now: FIXED_NOW,
+      targets: [{ path: TARGET_NOTE }],
+      merge: [{ ...semanticEntry, mode: "keyword" as const }],
+    });
+    const report = await checkClosure({ manifest, now: FIXED_NOW });
+    const advisory = report.entries.find((entry) => entry.finding.advisory);
+    expect(advisory?.detail).toContain("advisory (search leg, mode=keyword)");
+  });
+
+  test("a deterministic entry's advisory parenthetical carries no provenance at all", async () => {
+    const manifest = await buildImpactManifest({
+      docsRoot: FIXTURE_ROOT,
+      now: FIXED_NOW,
+      targets: [{ path: TARGET_NOTE }],
+      merge: [semanticEntry],
+    });
+    const report = await checkClosure({ manifest, now: FIXED_NOW });
+    const advisory = report.entries.find((entry) => entry.finding.advisory);
+    expect(advisory?.detail).toContain("advisory (search leg)");
+  });
+
   test("an index-stale entry is representable as a finding class", async () => {
     const manifest = await buildImpactManifest({
       docsRoot: FIXTURE_ROOT,
