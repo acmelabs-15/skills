@@ -27,8 +27,18 @@ import yaml from "js-yaml";
 import { ZodError } from "zod";
 import { cleanup, clusterAtomicRename, rename, stage } from "./core/atomic-write.js";
 import { rollbackCluster, validateSubtreeHashes } from "./core/cluster-rollback.js";
+import {
+  type ClusterScaffold,
+  assembleScaffolded,
+  stripScaffold,
+} from "./core/cluster-scaffold.js";
 import { sha256 } from "./core/hash.js";
-import { type ClusterRange, buildPartition, verifyCoverage } from "./core/partition.js";
+import {
+  type ClusterRange,
+  type PartitionSegment,
+  buildPartition,
+  verifyCoverage,
+} from "./core/partition.js";
 import type { RenumberMap, WikilinkMap } from "./core/types.js";
 import { getAdapter } from "./registry.js";
 import {
@@ -83,8 +93,15 @@ export interface DecomposeAuditEntry {
   source_path: string;
   source_type: string;
   cluster_id: string;
-  destination_path: string;
-  destination_sha256: string;
+  /**
+   * Present for every written destination; absent only for a retained cluster,
+   * which by definition produces no file. Existing consumers reading the audit
+   * for written destinations are unaffected.
+   */
+  destination_path?: string;
+  destination_sha256?: string;
+  /** `retain` clusters are counted for coverage but never written. */
+  disposition?: "write" | "retain";
   /** Line range extracted for this cluster; absent on the degenerate path. */
   range?: { start: number; end: number };
   /** SHA-256 of the pre-mutation source extraction (S in the F-8 protocol). */
@@ -241,53 +258,104 @@ async function executePartition(
     );
   }
 
-  // Stage every destination before renaming any (ADR-001 F-8 rollback protocol).
-  const staged = segments.map((segment) => {
-    const cluster = clusters[segment.clusterId];
-    const destRel = cluster?.destination_path ?? `${plan.source_path}.${segment.clusterId}.md`;
-    return {
-      segment,
-      destAbs: resolveRelativeToPlan(destRel, planPath),
-      mutated: adapter.applyMutations(segment.content, mutations),
-    };
-  });
+  // Retained clusters are proven by the coverage check above but produce no file;
+  // only written clusters proceed to staging.
+  const written = segments
+    .filter((segment) => clusters[segment.clusterId]?.disposition !== "retain")
+    .map((segment) => {
+      const cluster = clusters[segment.clusterId];
+      const destRel = cluster?.destination_path ?? `${plan.source_path}.${segment.clusterId}.md`;
+      const mutatedBody = adapter.applyMutations(segment.content, mutations);
+      const scaffold = cluster?.scaffold;
+      return {
+        segment,
+        scaffold,
+        destAbs: resolveRelativeToPlan(destRel, planPath),
+        mutatedBody,
+        // Scaffolding wraps the hashed body; it is never part of the hash scope.
+        fileContent: scaffold ? assembleScaffolded(scaffold, mutatedBody) : mutatedBody,
+      };
+    });
 
-  const tmpPaths = staged.map((s) => `${s.destAbs}.tmp`);
+  const tmpPaths = written.map((s) => `${s.destAbs}.tmp`);
   try {
-    await Promise.all(staged.map((s) => stage(s.destAbs, s.mutated)));
-
-    const validation = validateSubtreeHashes(
-      adapter,
-      staged.map((s) => ({
-        filePath: s.destAbs,
-        sourceContent: s.segment.content,
-        stagedContent: s.mutated,
-        mutations,
-      })),
-    );
-    if (!validation.allPass) {
-      const failure = validation.firstFailure;
-      throw integrityError(
-        `hash mismatch for cluster destination ${failure?.filePath ?? "<unknown>"}: ` +
-          `source ${failure?.sourceHash ?? "?"} !== reversed ${failure?.reversedHash ?? "?"}`,
-      );
-    }
-
-    await clusterAtomicRename(staged.map((s) => s.destAbs));
+    await Promise.all(written.map((s) => stage(s.destAbs, s.fileContent)));
+    verifyStagedHashes(adapter, written, mutations);
+    await clusterAtomicRename(written.map((s) => s.destAbs));
   } catch (err) {
     await rollbackCluster(tmpPaths, []);
     throw err;
   }
 
-  return staged.map((s) => ({
-    source_path: plan.source_path,
-    source_type: plan.source_type,
-    cluster_id: s.segment.clusterId,
-    destination_path: s.destAbs,
-    destination_sha256: sha256(s.mutated),
-    range: { start: s.segment.range.start, end: s.segment.range.end },
-    source_segment_sha256: sha256(s.segment.content),
-  }));
+  const writtenById = new Map(written.map((s) => [s.segment.clusterId, s]));
+  return segments.map((segment) => {
+    const entry = writtenById.get(segment.clusterId);
+    const audit: DecomposeAuditEntry = {
+      source_path: plan.source_path,
+      source_type: plan.source_type,
+      cluster_id: segment.clusterId,
+      disposition: entry ? "write" : "retain",
+      range: { start: segment.range.start, end: segment.range.end },
+      source_segment_sha256: sha256(segment.content),
+    };
+    if (entry) {
+      audit.destination_path = entry.destAbs;
+      audit.destination_sha256 = sha256(entry.fileContent);
+    }
+    return audit;
+  });
+}
+
+/** One staged destination awaiting hash validation. */
+interface StagedDestination {
+  segment: PartitionSegment;
+  scaffold: ClusterScaffold | undefined;
+  destAbs: string;
+  mutatedBody: string;
+  fileContent: string;
+}
+
+/**
+ * Run the ADR-001 F-8 comparison over every staged destination.
+ *
+ * Scaffolded destinations are de-scaffolded first: the planned prologue/epilogue
+ * are re-derived and verified against the staged bytes, then removed, so the
+ * comparison subject is the content slice alone. Over that slice the check is
+ * byte-for-byte as strong as it is for an unscaffolded destination.
+ */
+function verifyStagedHashes(
+  adapter: ReturnType<typeof getAdapter>,
+  written: readonly StagedDestination[],
+  mutations: Mutations,
+): void {
+  const forValidation = written.map((s) => {
+    if (!s.scaffold) {
+      return {
+        filePath: s.destAbs,
+        sourceContent: s.segment.content,
+        stagedContent: s.fileContent,
+        mutations,
+      };
+    }
+    const stripped = stripScaffold(s.scaffold, s.fileContent);
+    if (!stripped.ok) {
+      throw integrityError(`scaffold verification failed for ${s.destAbs}: ${stripped.reason}`);
+    }
+    return {
+      filePath: s.destAbs,
+      sourceContent: s.segment.content,
+      stagedContent: stripped.body,
+      mutations,
+    };
+  });
+
+  const validation = validateSubtreeHashes(adapter, forValidation);
+  if (validation.allPass) return;
+  const failure = validation.firstFailure;
+  throw integrityError(
+    `hash mismatch for cluster destination ${failure?.filePath ?? "<unknown>"}: ` +
+      `source ${failure?.sourceHash ?? "?"} !== reversed ${failure?.reversedHash ?? "?"}`,
+  );
 }
 
 function resolveRelativeToPlan(target: string, planPath: string): string {

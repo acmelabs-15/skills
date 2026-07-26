@@ -19,6 +19,7 @@ import { dirname, resolve } from "node:path";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
 import { cleanup, rename, stage } from "./core/atomic-write.js";
+import { stripScaffold } from "./core/cluster-scaffold.js";
 import { sha256 } from "./core/hash.js";
 import { getAdapter } from "./registry.js";
 import {
@@ -87,8 +88,10 @@ export async function executeCompositionPlan(
     ]);
   }
   const targetAbs = resolveRelativeToPlan(plan.target_path, planPath);
-  const sourceRelPaths = plan.sources ?? [plan.target_path];
-  const sourceAbsPaths = sourceRelPaths.map((p) => resolveRelativeToPlan(p, planPath));
+  const sources = (plan.sources ?? [plan.target_path]).map((entry) =>
+    typeof entry === "string" ? { path: entry } : entry,
+  );
+  const sourceAbsPaths = sources.map((s) => resolveRelativeToPlan(s.path, planPath));
 
   const sourceFiles = sourceAbsPaths.map((p) => Bun.file(p));
   const presence = await Promise.all(sourceFiles.map((f) => f.exists()));
@@ -100,7 +103,23 @@ export async function executeCompositionPlan(
     ]);
   }
 
-  const contents = await Promise.all(sourceFiles.map((f) => f.text()));
+  const rawContents = await Promise.all(sourceFiles.map((f) => f.text()));
+  // Shards written by a scaffolded decompose carry a prologue/epilogue that is
+  // derived content, not preserved source. Strip exactly the planned scaffolding
+  // so the join operates on content slices — the inverse of assembleScaffolded.
+  const contents = rawContents.map((content, i) => {
+    const scaffold = sources[i]?.scaffold;
+    if (!scaffold) return content;
+    const stripped = stripScaffold(scaffold, content);
+    if (!stripped.ok) {
+      const err = new Error(
+        `scaffold verification failed for ${sourceAbsPaths[i]}: ${stripped.reason}`,
+      );
+      (err as Error & { code?: number }).code = 2;
+      throw err;
+    }
+    return stripped.body;
+  });
   // Join in declared order. For the single-source identity case this is just
   // the file's content unchanged before mutation.
   const merged = contents.join("");

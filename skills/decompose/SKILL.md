@@ -52,12 +52,40 @@ renumber_map:
   D-2: D-101
   # Must be injective (no duplicate values).
 wikilink_map: {}            # optional inbound-link substitutions
-clusters:                   # optional — declare the partitioning
+clusters:                   # declare the partitioning
+  head:
+    description: frontmatter + H1 + preamble — stays in the source
+    disposition: retain     # counted for coverage, no file written
+    range: { start: 1, end: 24 }
   cluster_a:
     description: ...
     destination_path: <path/to/dest-a.md>
-    identifiers: [D-100, D-101]
+    range: { start: 25, end: 40 }
+    scaffold:               # optional — makes the destination a standalone note
+      frontmatter:
+        title: "ADR-042a: Cluster A"
+        type: decision
+        status: ACCEPTED
+        permalink: decisions/adr-042a-cluster-a
+        tags: [decision, cluster-a]
+      observations:
+        - category: decision
+          text: Cluster A carries the first decision body
+          tags: [split]
+      relations:
+        - verb: part_of
+          target: "ADR-042: Parent"
+  tail:
+    description: the source's own Observations + Relations — stays in the source
+    disposition: retain
+    range: { start: 41, end: -1 }
 ```
+
+Rules the executor enforces:
+
+- **Ranges must exactly partition the source.** Every line from 1 to `end: -1` belongs to exactly one cluster. Gaps, overlaps, and a final range short of end-of-file all abort with exit 2 before anything is written. `identifiers` alone is not extractable — every cluster needs a `range`.
+- **`disposition: retain`** covers a range for the partition proof without writing a file, so the source's own frontmatter, H1 and trailing Observations/Relations need not be forced verbatim into a child. A retained cluster must not declare `destination_path` or `scaffold`.
+- **`scaffold`** wraps the destination's content slice in a prologue (frontmatter + H1) and epilogue (Observations + Relations), so each written note stands alone. The H1 is derived from `frontmatter.title`, so the two cannot drift. Scaffolding is excluded from the SHA-256 proofs, which stay exactly as strong over the preserved content slice.
 
 Keep the YAML under 1 MB; the loader enforces this guard.
 
@@ -106,16 +134,18 @@ Exit codes:
 
 - `0` — success
 - `1` — validation error (parse the structured `PlanValidationError` from stderr and report to the user)
-- `2` — hash mismatch (the script halted before any destructive write; this is a guarantee violation — surface it loudly)
+- `2` — integrity failure: either a per-cluster hash mismatch, or a coverage failure where the cluster ranges do not exactly partition the source (a gap, an overlap, or a range not reaching end-of-file). In both cases the script halted before any destructive write; surface it loudly
 
 ### Step 6: Report
 
-Summarize the audit log: number of destination files written, their paths, and the SHA-256 of each. Confirm the source file remains unchanged.
+Summarize the audit log: number of destination files written, their paths, and the SHA-256 of each. The log carries one entry per cluster, each with its `disposition` and `range`, so the full byte accounting is visible — retained clusters appear with no destination. Confirm the source file remains unchanged.
+
+Note on reversibility: a plan that retains ranges cannot be reversed from its destinations alone, because retained content exists only in the source and appears in no destination. Recompose recovers the concatenation of the written content slices; the source note itself — untouched by the split — is the record for retained ranges. Plans with no scaffolding and no retention keep the full byte-identical decompose-then-recompose round trip.
 
 ## Error handling
 
 - `PlanValidationError` — Zod rejection. Parse the `issues` array (`{path, message}`), display each, and offer to re-author the plan with corrections.
-- `HashMismatch` (exit 2) — extraordinarily rare; means the adapter's `applyMutations`/`reverseMutations` pair is not bijective on this content. Do NOT retry; surface to user with the source path so the adapter implementation can be investigated.
+- `HashMismatch` (exit 2) — two distinct causes, both blocking and both halting before any write. (a) The adapter's `applyMutations`/`reverseMutations` pair is not bijective on this content — extraordinarily rare; do NOT retry, surface with the source path so the adapter can be investigated. (b) The cluster ranges do not exactly partition the source, so the split would drop or duplicate content; the message names the offending clusters and expected line. Cause (b) is a plan defect — re-author the ranges into a contiguous cover from line 1 to `end: -1` and re-adjudicate.
 - Missing adapter — if `getAdapter` throws "Unknown source_type", the user picked a source_type that has no shipped adapter. Surface the message verbatim and ask the user how to proceed.
 
 ## Constraints
