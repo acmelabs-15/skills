@@ -1,9 +1,24 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import {
-  type SessionDistributionPlan,
-  sessionDistributionPlanSchema,
-} from "../schemas/distribution/session.plan.schema.js";
+import { z } from "zod";
+import { crossSourceUpdateSchema } from "../schemas/distribution/session.plan.schema.js";
+
+/**
+ * Local container for exercising the SESSION cross-source fragment.
+ *
+ * The per-type envelope this used to ride on was retired (non-canonical
+ * `destinations[]` dialect). The rules under test live entirely in
+ * `crossSourceUpdateSchema`, so the container is declared here rather than
+ * reintroducing a second envelope in the source tree.
+ */
+const sessionCrossSourceEnvelope = z
+  .object({
+    plan_type: z.literal("distribution"),
+    source_type: z.literal("session"),
+    cross_source_updates: z.array(crossSourceUpdateSchema).optional(),
+  })
+  .passthrough();
+type SessionCrossSourcePlan = z.infer<typeof sessionCrossSourceEnvelope>;
 import { SessionAdapter } from "../src/adapters/session.js";
 import { sha256 } from "../src/core/hash.js";
 import type { MutationSpec } from "../src/core/types.js";
@@ -53,7 +68,7 @@ describe("SESSION round-trip property tests (THE PROOF)", () => {
   });
 
   test("cross_source_updates field validates correctly through the schema", () => {
-    const plan: SessionDistributionPlan = {
+    const plan: SessionCrossSourcePlan = {
       plan_type: "distribution",
       source_type: "session",
       sources: [{ path: "docs/sessions/SESSION-2026-05-20_01.md", range: { start: 1, end: -1 } }],
@@ -72,7 +87,7 @@ describe("SESSION round-trip property tests (THE PROOF)", () => {
         },
       ],
     };
-    const parsed = sessionDistributionPlanSchema.parse(plan);
+    const parsed = sessionCrossSourceEnvelope.parse(plan);
     expect(parsed.cross_source_updates).toHaveLength(1);
     expect(parsed.cross_source_updates?.[0]?.target_source_type).toBe("plan");
   });

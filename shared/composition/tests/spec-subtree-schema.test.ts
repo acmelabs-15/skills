@@ -1,10 +1,26 @@
 import { describe, expect, test } from "bun:test";
-import { specSubtreeCompositionPlanSchema } from "../schemas/composition/spec-subtree.plan.schema.js";
-import {
-  specSubtreeDistributionPlanSchema,
-  specSubtreeManifestSchema,
-} from "../schemas/distribution/spec-subtree.plan.schema.js";
-import { planSchema } from "../schemas/index.js";
+import { z } from "zod";
+import { specSubtreeManifestSchema } from "../schemas/distribution/spec-subtree.plan.schema.js";
+
+/**
+ * Local containers for exercising the SPEC subtree manifest fragment.
+ *
+ * The per-type envelopes these used to ride on were retired (non-canonical
+ * `destinations[]` dialect). Every rule under test — manifest shape, dest_path
+ * injectivity, path-traversal containment — lives in `specSubtreeManifestSchema`,
+ * so the containers are declared here rather than reintroducing a second
+ * envelope in the source tree.
+ */
+const specSubtreeDistributionPlanSchema = z.object({
+  plan_type: z.literal("distribution"),
+  source_type: z.literal("spec"),
+  subtree_manifest: specSubtreeManifestSchema,
+});
+const specSubtreeCompositionPlanSchema = z.object({
+  plan_type: z.literal("composition"),
+  source_type: z.literal("spec"),
+  subtree_manifest: specSubtreeManifestSchema,
+});
 
 // Reusable valid MutationSpec for tests below.
 const validMutations = {
@@ -189,15 +205,14 @@ describe("specSubtreeDistributionPlanSchema (ADR-002 D-5)", () => {
     expect(result.success).toBe(true);
   });
 
-  test("planSchema discriminated union routes spec distribution", () => {
-    const valid = {
-      plan_type: "distribution" as const,
-      source_type: "spec" as const,
-      subtree_manifest: { root: validRoot, children: [validChild] },
-    };
-    const result = planSchema.safeParse(valid);
-    expect(result.success).toBe(true);
-  });
+  // REMOVED: "planSchema discriminated union routes spec distribution".
+  //
+  // It asserted that the `planSchema` union dispatched a spec plan to the spec
+  // variant. That union was retired along with the per-type envelope wrappers —
+  // there is now ONE envelope, so there is no union left to route. The
+  // per-type assertion it made (a well-formed spec manifest validates) is
+  // already covered by the preceding test in this describe block, so no
+  // refinement lost coverage; only the retired routing concept did.
 
   test("AC4: rejects a SPEC plan missing the subtree_manifest field", () => {
     const invalid = {

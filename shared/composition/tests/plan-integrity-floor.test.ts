@@ -1,8 +1,39 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
 import yaml from "js-yaml";
-import { planCompositionPlanSchema } from "../schemas/composition/plan.plan.schema.js";
-import { planDistributionPlanSchema } from "../schemas/distribution/plan.plan.schema.js";
+import { z } from "zod";
+import { lineRangeSchema, mutationSpecSchema } from "../schemas/base.js";
+import { planSourceEntrySchema } from "../schemas/distribution/plan.plan.schema.js";
+
+/**
+ * Local containers for exercising the PLAN integrity-floor rules.
+ *
+ * The per-type envelopes these rode on were retired (non-canonical
+ * `destinations[]` dialect). The rules under test — `integrity_floor` bounds and
+ * the `regenerated_sections` max-10 guard inside `mutationSpecSchema` — live in
+ * the shared primitives, so the containers are declared here rather than
+ * reintroducing a second envelope in the source tree.
+ */
+const planDestinationEntrySchema = z.object({
+  path: z.string().min(1),
+  content_hash: z.string().min(1),
+});
+const planDistributionPlanSchema = z.object({
+  plan_type: z.literal("distribution"),
+  source_type: z.literal("plan"),
+  source: planSourceEntrySchema,
+  destinations: z.array(planDestinationEntrySchema).min(1),
+  mutations: mutationSpecSchema,
+  integrity_floor: z.number().min(0).max(1).default(0.5),
+});
+const planCompositionPlanSchema = z.object({
+  plan_type: z.literal("composition"),
+  source_type: z.literal("plan"),
+  source: planSourceEntrySchema,
+  destinations: z.array(planDestinationEntrySchema).min(1),
+  integrity_floor: z.number().min(0).max(1).default(0.5),
+});
+void lineRangeSchema;
 import { IntegrityFloorError, PlanAdapter } from "../src/adapters/plan.js";
 import type { MutationSpec } from "../src/core/types.js";
 import { validateIntegrityFloor } from "../src/core/validate.js";

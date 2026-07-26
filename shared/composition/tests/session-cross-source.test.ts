@@ -1,14 +1,31 @@
 import { describe, expect, test } from "bun:test";
+import { z } from "zod";
 import {
   type CrossSourceUpdate,
-  type SessionDistributionPlan,
-  sessionDistributionPlanSchema,
+  crossSourceUpdateSchema,
 } from "../schemas/distribution/session.plan.schema.js";
+
+/**
+ * Local container for exercising the SESSION cross-source fragment.
+ *
+ * The per-type envelope this used to ride on was retired (non-canonical
+ * `destinations[]` dialect). The rules under test live entirely in
+ * `crossSourceUpdateSchema`, so the container is declared here rather than
+ * reintroducing a second envelope in the source tree.
+ */
+const sessionCrossSourceEnvelope = z
+  .object({
+    plan_type: z.literal("distribution"),
+    source_type: z.literal("session"),
+    cross_source_updates: z.array(crossSourceUpdateSchema).optional(),
+  })
+  .passthrough();
+type SessionCrossSourcePlan = z.infer<typeof sessionCrossSourceEnvelope>;
 import { SessionAdapter } from "../src/adapters/session.js";
 
 const adapter = new SessionAdapter();
 
-const basePlan: SessionDistributionPlan = {
+const basePlan: SessionCrossSourcePlan = {
   plan_type: "distribution",
   source_type: "session",
   sources: [{ path: "docs/sessions/SESSION-2026-05-20_01.md", range: { start: 1, end: -1 } }],
@@ -23,7 +40,7 @@ const basePlan: SessionDistributionPlan = {
 
 describe("SESSION cross-source updates", () => {
   test("schema validates a plan WITH cross_source_updates", () => {
-    const planWithUpdates: SessionDistributionPlan = {
+    const planWithUpdates: SessionCrossSourcePlan = {
       ...basePlan,
       cross_source_updates: [
         {
@@ -34,7 +51,7 @@ describe("SESSION cross-source updates", () => {
         },
       ],
     };
-    const parsed = sessionDistributionPlanSchema.parse(planWithUpdates);
+    const parsed = sessionCrossSourceEnvelope.parse(planWithUpdates);
     expect(parsed.cross_source_updates).toHaveLength(1);
     const firstUpdate = parsed.cross_source_updates?.[0];
     expect(firstUpdate?.target_source_type).toBe("plan");
@@ -42,7 +59,7 @@ describe("SESSION cross-source updates", () => {
   });
 
   test("schema validates a plan WITHOUT cross_source_updates (optional field)", () => {
-    const parsed = sessionDistributionPlanSchema.parse(basePlan);
+    const parsed = sessionCrossSourceEnvelope.parse(basePlan);
     expect(parsed.cross_source_updates).toBeUndefined();
   });
 
@@ -56,7 +73,7 @@ describe("SESSION cross-source updates", () => {
         },
       ],
     };
-    const result = sessionDistributionPlanSchema.safeParse(invalid);
+    const result = sessionCrossSourceEnvelope.safeParse(invalid);
     expect(result.success).toBe(false);
   });
 
@@ -73,13 +90,17 @@ describe("SESSION cross-source updates", () => {
         wikilink_map: { "[[A]]": "[[B]]" },
       },
     ];
-    const plan: SessionDistributionPlan = { ...basePlan, cross_source_updates: updates };
-    const result = adapter.getCrossSourceUpdates("any content", plan);
+    const plan: SessionCrossSourcePlan = { ...basePlan, cross_source_updates: updates };
+    const result = adapter.getCrossSourceUpdates("any content", {
+      cross_source_updates: plan.cross_source_updates ?? [],
+    });
     expect(result).toEqual(updates);
   });
 
   test("getCrossSourceUpdates returns [] when plan omits cross_source_updates", () => {
-    const result = adapter.getCrossSourceUpdates("any content", basePlan);
+    const result = adapter.getCrossSourceUpdates("any content", {
+      cross_source_updates: basePlan.cross_source_updates ?? [],
+    });
     expect(result).toEqual([]);
   });
 });

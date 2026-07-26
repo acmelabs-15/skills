@@ -1,54 +1,44 @@
-import { z } from "zod";
-import { adrCompositionPlanSchema } from "./composition/adr.plan.schema.js";
-import { analysisCompositionPlanSchema } from "./composition/analysis.plan.schema.js";
-import { planCompositionPlanSchema } from "./composition/plan.plan.schema.js";
-import { sessionCompositionPlanSchema } from "./composition/session.plan.schema.js";
-import { specSubtreeCompositionPlanSchema } from "./composition/spec-subtree.plan.schema.js";
-import { adrDistributionPlanSchema } from "./distribution/adr.plan.schema.js";
-import { analysisDistributionPlanSchema } from "./distribution/analysis.plan.schema.js";
-import { planDistributionPlanSchema } from "./distribution/plan.plan.schema.js";
-import { sessionDistributionPlanSchema } from "./distribution/session.plan.schema.js";
-import { specSubtreeDistributionPlanSchema } from "./distribution/spec-subtree.plan.schema.js";
-
+/**
+ * Canonical plan-schema surface (ADR-002 D-5 modular layout).
+ *
+ * The plan ENVELOPE is declared exactly once, in `src/schemas/plan-yaml.ts`, and
+ * re-exported here. Per the 2026-07-26 owner adjudication the production CLI
+ * dialect — `source_path` + top-level mutation maps + `clusters{}` — is
+ * canonical.
+ *
+ * The per-type modules under `distribution/` and `composition/` previously each
+ * declared a SECOND envelope (`sources[]` + `destinations[]` with
+ * per-destination mutations). Nothing in production ever loaded them: the CLI
+ * loads plan-yaml, and the wrappers were reachable only from tests. That is the
+ * third time this package has shipped a definition that exists, is tested, and
+ * never sits on the path that runs — the same class as the orphaned
+ * `injectiveDisjointMap` and the never-YAML-loadable `lineRangeSchema`. The
+ * wrappers are therefore retired rather than maintained in parallel.
+ *
+ * What survives in those modules is their real contribution: the per-type
+ * FRAGMENTS — SESSION's `crossSourceUpdateSchema`, SPEC's manifest schemas with
+ * their path-containment refinements, PLAN's source-entry shape. Those compose
+ * into the one envelope instead of competing with it. The ADR and ANALYSIS
+ * modules were deleted outright: they carried no fragment, only the envelope.
+ */
 export { formatValidationErrors } from "./base.js";
 export type { PlanValidationError } from "./base.js";
 
-const distributionPlanSchema = z.discriminatedUnion("source_type", [
-  adrDistributionPlanSchema,
-  analysisDistributionPlanSchema,
-  sessionDistributionPlanSchema,
-  planDistributionPlanSchema,
-  specSubtreeDistributionPlanSchema,
-]);
+export {
+  CompositionPlanSchema as compositionPlanSchema,
+  DistributionPlanSchema as distributionPlanSchema,
+} from "../src/schemas/plan-yaml.js";
+export type { CompositionPlan, DistributionPlan } from "../src/schemas/plan-yaml.js";
 
-const compositionPlanSchema = z.discriminatedUnion("source_type", [
-  adrCompositionPlanSchema,
-  analysisCompositionPlanSchema,
-  sessionCompositionPlanSchema,
-  planCompositionPlanSchema,
-  specSubtreeCompositionPlanSchema,
-]);
+export { crossSourceUpdateSchema } from "./distribution/session.plan.schema.js";
+export type { CrossSourceUpdate } from "./distribution/session.plan.schema.js";
 
-// Outer discriminant: plan_type
-// Inner schemas are themselves discriminated unions (on source_type), so we use z.union
-// rather than z.discriminatedUnion for the outer assembly.
-export const planSchema = z.union([distributionPlanSchema, compositionPlanSchema]);
-
-export type Plan = z.infer<typeof planSchema>;
-export type { AdrCompositionPlan } from "./composition/adr.plan.schema.js";
-export type { AdrDistributionPlan } from "./distribution/adr.plan.schema.js";
-export type { AnalysisCompositionPlan } from "./composition/analysis.plan.schema.js";
-export type { AnalysisDistributionPlan } from "./distribution/analysis.plan.schema.js";
-export type { PlanCompositionPlan } from "./composition/plan.plan.schema.js";
-export type { PlanDistributionPlan } from "./distribution/plan.plan.schema.js";
-export type { SessionCompositionPlan } from "./composition/session.plan.schema.js";
+export {
+  specSubtreeManifestSchema,
+  subtreeManifestChildSchema,
+  subtreeManifestRootSchema,
+} from "./distribution/spec-subtree.plan.schema.js";
 export type {
-  CrossSourceUpdate,
-  SessionDistributionPlan,
-} from "./distribution/session.plan.schema.js";
-export type { SpecSubtreeCompositionPlan } from "./composition/spec-subtree.plan.schema.js";
-export type {
-  SpecSubtreeDistributionPlan,
   SpecSubtreeManifest,
   SubtreeManifestChild,
   SubtreeManifestRoot,
