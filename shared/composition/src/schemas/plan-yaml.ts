@@ -8,109 +8,21 @@
  * Zod schemas at the loader boundary. Validation errors surface as ZodError
  * instances, which the CLI formats into structured PlanValidationError output.
  *
- * Bijection of `renumber_map` is enforced via a Zod `superRefine` to catch
- * non-injective maps at load time, before any file I/O occurs.
+ * This module declares only the two plan ENVELOPES. Every field primitive —
+ * paths, line ranges, mutation maps and their F-8 invariants, scaffolding,
+ * disposition — comes from the canonical `schemas/base.ts` per ADR-002 D-5.
+ * Nothing here re-states a rule that has a home there: a second implementation
+ * of a BLOCKING rule is how a gate becomes optional on the path that runs.
  */
 import { z } from "zod";
-import { injectiveDisjointMap } from "../core/validators.js";
-import { ObservationSchema, RelationSchema } from "./common.js";
-
-const IdentifierString = z.string().min(1);
-
-/**
- * Path field refinement rejecting traversal sequences and absolute paths (CWE-22).
- * Applied to all file-path fields in distribution + composition plan schemas.
- */
-const SafePath = z
-  .string()
-  .min(1)
-  .refine((v) => !v.split(/[/\\]/).includes("..") && !v.startsWith("/") && !/^[A-Z]:\\/i.test(v), {
-    message: "Path traversal (..) or absolute path rejected (CWE-22 mitigation)",
-  });
-
-/**
- * Both mutation maps carry the ADR-001 F-8 BLOCKING constraint, which covers them
- * equally: "no two source IDs map to the same target ID; no two source wikilinks
- * map to the same target wikilink." ADR-002 D-5 names `injectiveDisjointMap` as
- * the mechanism, and the modular per-type schemas under `schemas/distribution/`
- * already apply it to both maps — these CLI-facing schemas reuse that same
- * validator rather than carrying a second, weaker copy of the rule.
- *
- * Disjointness (no value also appearing as a key) is enforced alongside
- * injectivity because it is the precondition that makes single-pass replacement
- * safe to depend on. `applySinglePassReplace` builds one regex alternation, so a
- * map like {"D-1":"D-2","D-2":"D-3"} happens to round-trip today; the constraint
- * exists so that a future move to sequential replacement cannot silently turn
- * such a plan into content corruption.
- */
-const mapWithF8Invariants = (fieldName: string) =>
-  z.record(IdentifierString, IdentifierString).superRefine(injectiveDisjointMap(fieldName));
-
-const RenumberMapSchema = mapWithF8Invariants("renumber_map");
-
-const WikilinkMapSchema = mapWithF8Invariants("wikilink_map");
-
-/**
- * Integer field tolerant of the string form that `yaml.FAILSAFE_SCHEMA`
- * produces. FAILSAFE_SCHEMA is mandated by ADR-001 Confirmation (CWE-502): it
- * resolves every scalar as a string, so `start: 1` reaches Zod as `"1"`. Per
- * ADR-002 D-3 the validator — not the YAML parser — owns type conversion
- * ("YAML type coercion quirks are mitigated by strict Zod validation on load").
- *
- * Coercion is deliberately narrower than `z.coerce.number()`, which would
- * accept `""` as 0 and `" 12 "` as 12: only an optionally-signed run of digits
- * is admitted.
- */
-const YamlInt = z.union([z.number().int(), z.string().regex(/^-?\d+$/)]).transform(Number);
-
-/**
- * Cluster line range per ADR-002 D-5 `lineRangeSchema`: 1-indexed inclusive,
- * `end: -1` meaning end-of-file.
- */
-const LineRangeSchema = z
-  .object({
-    start: YamlInt.refine((n) => n >= 1, { message: "start must be >= 1" }),
-    end: YamlInt,
-  })
-  .refine((r) => r.end === -1 || r.end >= r.start, {
-    message: "end must be >= start, or -1 for end-of-file",
-  });
-
-/**
- * Structured scaffolding for one destination. Rendered by the executor rather
- * than supplied as raw markdown so that "H1 matches the frontmatter title" and
- * the final-two-sections invariant are mechanically guaranteed instead of
- * trusted to the plan author.
- *
- * Scaffolding is excluded from both byte proofs — see core/cluster-scaffold.ts
- * for why that preserves the ADR-001 F-8 guarantee over the content slice.
- */
-const ClusterScaffoldSchema = z
-  .object({
-    frontmatter: z
-      .object({
-        title: z.string().min(1),
-        type: z.string().min(1),
-        status: z.string().min(1),
-        permalink: z.string().min(1),
-        tags: z.array(z.string().min(1)).min(1),
-      })
-      .strict(),
-    observations: z.array(ObservationSchema).min(1),
-    relations: z.array(RelationSchema).min(1),
-  })
-  .strict();
-
-/**
- * Disposition of a cluster's line range.
- *
- * `write` (the default) extracts the range and writes a destination file.
- * `retain` extracts the range and counts it toward the coverage proof but writes
- * nothing — the content stays in the source note. Retention is what lets a split
- * account for every source byte without forcing the source's own frontmatter, H1
- * and trailing Observations/Relations verbatim into a child note.
- */
-const DispositionEnum = z.enum(["write", "retain"]);
+import {
+  ClusterScaffoldSchema,
+  dispositionEnum,
+  lineRangeSchema,
+  renumberMapSchema,
+  safePathSchema,
+  wikilinkMapSchema,
+} from "../../schemas/base.js";
 
 /**
  * Distribution plan: 1-to-N split. Source path is singular; destinations are
@@ -121,21 +33,21 @@ export const DistributionPlanSchema = z
   .object({
     plan_type: z.literal("distribution"),
     source_type: z.string().min(1),
-    source_path: SafePath,
-    renumber_map: RenumberMapSchema,
-    wikilink_map: WikilinkMapSchema.default({}),
+    source_path: safePathSchema,
+    renumber_map: renumberMapSchema,
+    wikilink_map: wikilinkMapSchema.default({}),
     clusters: z
       .record(
         z.string(),
         z
           .object({
             description: z.string().optional(),
-            destination_path: SafePath.optional(),
-            identifiers: z.array(IdentifierString).optional(),
-            decisions: z.array(IdentifierString).optional(),
-            renumbered_to: z.array(IdentifierString).optional(),
-            range: LineRangeSchema.optional(),
-            disposition: DispositionEnum.default("write"),
+            destination_path: safePathSchema.optional(),
+            identifiers: z.array(z.string().min(1)).optional(),
+            decisions: z.array(z.string().min(1)).optional(),
+            renumbered_to: z.array(z.string().min(1)).optional(),
+            range: lineRangeSchema.optional(),
+            disposition: dispositionEnum.default("write"),
             scaffold: ClusterScaffoldSchema.optional(),
           })
           .strict()
@@ -177,10 +89,10 @@ export const DistributionPlanSchema = z
  * concatenated is the preserved content slice rather than the rendered note.
  */
 const CompositionSourceSchema = z.union([
-  SafePath,
+  safePathSchema,
   z
     .object({
-      path: SafePath,
+      path: safePathSchema,
       scaffold: ClusterScaffoldSchema.optional(),
     })
     .strict(),
@@ -190,10 +102,10 @@ export const CompositionPlanSchema = z
   .object({
     plan_type: z.literal("composition"),
     source_type: z.string().min(1),
-    target_path: SafePath,
+    target_path: safePathSchema,
     sources: z.array(CompositionSourceSchema).optional(),
-    renumber_map: RenumberMapSchema,
-    wikilink_map: WikilinkMapSchema.default({}),
+    renumber_map: renumberMapSchema,
+    wikilink_map: wikilinkMapSchema.default({}),
   })
   .strict();
 

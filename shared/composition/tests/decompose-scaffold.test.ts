@@ -349,3 +349,74 @@ describe("decompose executor — byte proofs stay as strong with scaffolding", (
     expect(reversed.join("")).toBe(original);
   });
 });
+
+describe("audit-log scaffold provenance", () => {
+  test("distinguishes rendered scaffolding from preserved bytes", async () => {
+    const { dir } = await stageSource();
+    const planPath = await writePlan(dir, "scaffolded.yaml", SCAFFOLDED_PLAN);
+
+    const written: string[] = [];
+    const originalWrite = process.stdout.write.bind(process.stdout);
+    (process.stdout as { write: unknown }).write = (chunk: string) => {
+      written.push(String(chunk));
+      return true;
+    };
+    try {
+      expect(await decomposeMain(["--plan", planPath])).toBe(0);
+    } finally {
+      (process.stdout as { write: unknown }).write = originalWrite;
+    }
+
+    const entries = written
+      .join("")
+      .split("\n")
+      .filter((l) => l.trim().length > 0)
+      .map((l) => JSON.parse(l) as Record<string, unknown>);
+
+    for (const entry of entries.filter((e) => e["disposition"] === "write")) {
+      // Every written child in this plan is scaffolded, and the scaffolding is
+      // accounted for separately from the checksummed slice.
+      expect(entry["scaffold_provenance"]).toBe("scaffolded");
+      expect(typeof entry["scaffold_bytes"]).toBe("number");
+      expect(entry["scaffold_bytes"] as number).toBeGreaterThan(0);
+    }
+    // Retained clusters write nothing, so they carry no provenance.
+    for (const entry of entries.filter((e) => e["disposition"] === "retain")) {
+      expect(entry["scaffold_provenance"]).toBeUndefined();
+    }
+  });
+
+  test("an unscaffolded destination reports verbatim provenance", async () => {
+    const { dir, original } = await stageSource();
+    void original;
+    await Bun.write(
+      Bun.file(join(dir, "multi-cluster-decompose-plan.yaml")),
+      Bun.file(join(fixtureDir, "multi-cluster-decompose-plan.yaml")),
+    );
+
+    const written: string[] = [];
+    const originalWrite = process.stdout.write.bind(process.stdout);
+    (process.stdout as { write: unknown }).write = (chunk: string) => {
+      written.push(String(chunk));
+      return true;
+    };
+    try {
+      expect(await decomposeMain(["--plan", join(dir, "multi-cluster-decompose-plan.yaml")])).toBe(
+        0,
+      );
+    } finally {
+      (process.stdout as { write: unknown }).write = originalWrite;
+    }
+
+    const entries = written
+      .join("")
+      .split("\n")
+      .filter((l) => l.trim().length > 0)
+      .map((l) => JSON.parse(l) as Record<string, unknown>);
+
+    for (const entry of entries) {
+      expect(entry["scaffold_provenance"]).toBe("verbatim");
+      expect(entry["scaffold_bytes"]).toBe(0);
+    }
+  });
+});

@@ -25,6 +25,7 @@
 import { dirname, resolve } from "node:path";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
+import { findUncontainedPaths } from "../schemas/base.js";
 import { cleanup, clusterAtomicRename, rename, stage } from "./core/atomic-write.js";
 import { rollbackCluster, validateSubtreeHashes } from "./core/cluster-rollback.js";
 import {
@@ -102,6 +103,14 @@ export interface DecomposeAuditEntry {
   destination_sha256?: string;
   /** `retain` clusters are counted for coverage but never written. */
   disposition?: "write" | "retain";
+  /**
+   * Which destination bytes are preserved source vs rendered scaffolding.
+   * `verbatim` — the whole file is the checksummed content slice.
+   * `scaffolded` — prologue/epilogue were rendered around it and excluded from
+   * the hash scope; `scaffold_bytes` records how much of the file that was.
+   */
+  scaffold_provenance?: "verbatim" | "scaffolded";
+  scaffold_bytes?: number;
   /** Line range extracted for this cluster; absent on the degenerate path. */
   range?: { start: number; end: number };
   /** SHA-256 of the pre-mutation source extraction (S in the F-8 protocol). */
@@ -301,6 +310,8 @@ async function executePartition(
     if (entry) {
       audit.destination_path = entry.destAbs;
       audit.destination_sha256 = sha256(entry.fileContent);
+      audit.scaffold_provenance = entry.scaffold ? "scaffolded" : "verbatim";
+      audit.scaffold_bytes = entry.fileContent.length - entry.mutatedBody.length;
     }
     return audit;
   });
@@ -386,6 +397,19 @@ export async function main(argv: readonly string[]): Promise<number> {
       }
       throw err;
     });
+
+    // CWE-22 boundary (ADR-002 D-5): resolve symlinks and confirm every plan
+    // path stays inside the containment root, before any file is touched.
+    const uncontained = await findUncontainedPaths(plan, dirname(resolve(planPath)));
+    if (uncontained.length > 0) {
+      throw new PlanValidationError(
+        `plan paths resolve outside the allowed docs root: ${uncontained.join(", ")}`,
+        uncontained.map((p) => ({
+          path: p,
+          message: "resolves outside SKILLS_DOCS_ROOT (CWE-22)",
+        })),
+      );
+    }
     const entries = await executeDistributionPlan(plan, planPath);
     for (const entry of entries) {
       process.stdout.write(`${JSON.stringify(entry)}\n`);

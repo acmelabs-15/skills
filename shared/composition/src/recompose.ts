@@ -18,6 +18,7 @@
 import { dirname, resolve } from "node:path";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
+import { findUncontainedPaths } from "../schemas/base.js";
 import { cleanup, rename, stage } from "./core/atomic-write.js";
 import { stripScaffold } from "./core/cluster-scaffold.js";
 import { sha256 } from "./core/hash.js";
@@ -183,6 +184,19 @@ export async function main(argv: readonly string[]): Promise<number> {
       }
       throw err;
     });
+
+    // CWE-22 boundary (ADR-002 D-5): resolve symlinks and confirm every plan
+    // path stays inside the containment root, before any file is touched.
+    const uncontained = await findUncontainedPaths(plan, dirname(resolve(planPath)));
+    if (uncontained.length > 0) {
+      throw new PlanValidationError(
+        `plan paths resolve outside the allowed docs root: ${uncontained.join(", ")}`,
+        uncontained.map((p) => ({
+          path: p,
+          message: "resolves outside SKILLS_DOCS_ROOT (CWE-22)",
+        })),
+      );
+    }
     const entry = await executeCompositionPlan(plan, planPath);
     process.stdout.write(`${JSON.stringify(entry)}\n`);
     return 0;

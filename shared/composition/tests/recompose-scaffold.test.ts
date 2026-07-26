@@ -6,13 +6,25 @@
  * same planned scaffolding before joining, so what it concatenates is exactly the
  * set of content slices the split preserved.
  *
- * Scope boundary, stated explicitly: when a distribution plan retains ranges, the
- * retained content lives ONLY in the source note and appears in no shard. No
- * merge over shards alone can therefore reproduce the full original — recompose
- * recovers the concatenation of the content slices, which is the strongest
- * statement that remains true. Plans with neither scaffolding nor retention keep
- * the full byte-identical REQ-006 AC-2 round trip, verified in
- * decompose-partition.test.ts.
+ * Scope boundary — scaffolding and retention are NOT one class, and an earlier
+ * version of this comment wrongly fused them:
+ *
+ *  - **Scaffolding is reversible.** `stripScaffold` is an exact inverse of
+ *    `assembleScaffolded`, so a scaffolded, retention-free plan round-trips
+ *    BYTE-IDENTICALLY end to end — asserted below and verified through the real
+ *    CLI. The condition is that the composition plan restates the identical
+ *    scaffold; recovery is conditional, not impossible.
+ *  - **Retention is irreversible by construction.** Retained content lives only
+ *    in the source and appears in no shard, so no merge over shards alone can
+ *    reproduce the original. What recompose recovers there is the concatenation
+ *    of the written content slices.
+ *
+ * The earlier wording ("the full round trip holds only for no-scaffold /
+ * no-retention plans") was false for the scaffold half, and its predecessor
+ * called slice-concatenation "the strongest statement that remains true" — an
+ * unproven absolute. Recording a shipped capability as impossible invites
+ * someone to build a second recovery path or to declare shards unrecoverable.
+ * Every claim kept here is one these tests demonstrate.
  */
 import { describe, expect, test } from "bun:test";
 import { mkdtempSync } from "node:fs";
