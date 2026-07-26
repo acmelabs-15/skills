@@ -306,6 +306,7 @@ subtree_manifest:
 
 The root vs children distinction ensures the SPEC root note and each child note have independent mutation specifications, enabling per-file hash validation per Considered Options Axis 2.
 
+```yaml
 # ... common envelope
 
 destinations:
