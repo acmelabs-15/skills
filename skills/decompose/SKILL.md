@@ -198,33 +198,79 @@ threshold-gated semantic hit do not warrant the same confidence.
 
 | Query kind | Mode |
 |---|---|
-| Exact identifiers, aliases, permalinks | `keyword` — when functional; fall back to `semantic` |
+| Exact identifiers, aliases, permalinks | `keyword` + `search_type: "text"` |
 | Descriptive references | `semantic` |
 | Mixed or uncertain | `hybrid`, at your judgement |
 
-Two live constraints on this build, so plan around them rather than trusting a
-clean result:
+Double-quote hyphenated identifiers (`"ANALYSIS-034"`) whichever mode you are
+in: the tokenizer splits on hyphens, so an unquoted multi-term query is narrower
+than it looks.
 
-- **`keyword` currently returns zero results for every query.** Until that is
-  fixed, treat an empty keyword result as *no signal*, not as *no references*,
-  and fall back to `semantic`. The same defect makes `auto` effectively
-  semantic-only and contributes nothing to `hybrid`.
-- **`depth` above 0 resolves wikilinks through the keyword leg**, so relation
-  expansion is affected by the same defect. The GRAPH leg already traverses
-  relations deterministically and does not depend on the index — prefer it, and
-  do not treat a thin `depth` result as evidence of a small blast radius.
+Keyword mode returned zero results for every query on the build this section was
+first written against, which also made `auto` effectively semantic-only and left
+`hybrid` with a dead leg. That leg has since been revived end-to-end, and as
+measured on the MCP surface 2026-07-26 an empty keyword result is now evidence of
+no match rather than a dead leg to route around. Four mechanics of the current
+surface matter more than the repair itself:
 
-When querying an entity ID in keyword mode, double-quote it (`"ANALYSIS-034"`);
-unquoted multi-term queries are narrower than they look.
+- **`mode` and `search_type` are different dials.** `mode` selects which leg
+  runs; `search_type` selects how the proxied leg retrieves. Left unset, the
+  proxied leg applies its own default, which is hybrid whenever semantic search
+  is enabled — so `mode: "keyword"` alone is not keyword retrieval. Pass
+  `search_type: "text"` for genuine full-text matching.
+- **`search_type: "permalink"` with a `*` enumerates a note family
+  server-side**, prefix-matching the FULL path: `analysis/analysis-00*`, not
+  `analysis-00*`. When you need every sibling of a numbered series, that is
+  cheaper and more complete than guessing identifiers one at a time.
+- **A filter the running leg cannot evaluate re-routes rather than dropping.**
+  Every structured filter except `after_date` rides the proxied leg, so passing
+  one under `mode: "semantic"` moves the whole request there. Measured
+  2026-07-26, a decision-only `note_types` filter under `mode: "semantic"` came
+  back served by the keyword leg and carrying only decisions. You therefore do
+  not have to pair filters with `keyword` by hand — but you do have to read
+  `actual_source` on the response, which names the leg that actually served.
+- **`depth` above 0 is unchanged and still the wrong instrument.** It resolves
+  wikilinks through the proxied leg and is outbound-only — it follows links FROM
+  a hit, never TO it. Prefer the GRAPH leg for blast radius, and do not treat a
+  thin `depth` result as evidence of a small one.
 
-For current mode-by-mode behaviour and defect status, see
-`scratch/brain-search-capability-survey.md`.
+**Two generations of the search surface are live at once, so establish which one
+answered you.** The plugin MCP path carries the repairs above. The HTTP server
+behind the `brain` CLI is still on the pre-repair build pending a restart, and on
+that generation keyword returns zero for every query and a filter the vector leg
+cannot honour is dropped silently — leaving an unfiltered result that looks
+filtered. The detection rule is the response itself: **a response carrying no
+`actual_source` field is a pre-fix surface.** On seeing one, fall back to the
+older discipline — read an empty keyword result as no signal rather than no
+references, and read any filtered result as unfiltered.
 
-Verify every hit before you use it: semantic mode can return rows from other
-projects, so check each returned permalink against `list_directory` ground truth
-and drop anything that does not resolve. Write the verified hits to a JSON file
-shaped like the manifest's `findings` entries, each carrying its `mode`, and
-pass it in:
+Inbound references are reachable directly. `entity_types: ["relation"]` returns
+graph edges as rows — one per edge, titled `Source Title -> Target Title`, with
+a synthetic edge path (`source/verb/target`) as its permalink. The title is the
+payload: under text retrieval an edge row's snippet comes back empty, because no
+snippet text is stored for relations. Measured 2026-07-26, a quoted entity-ID
+query in this shape returned that note's inbound edges immediately, where `depth`
+expansion had previously exceeded the tool timeout. Three more filters earn their
+place in this step: `note_types` to scope a sweep to one class of note,
+`categories` paired with `entity_types: ["observation"]` to hit decision or
+requirement bullets exactly, and `after_date` for a staleness sweep (strictly
+after, on the index-modified UTC timestamp, so a bare date means that date's
+midnight UTC; relative strings such as "1 week" are rejected outright). A request
+may also omit `query` altogether and enumerate on filters alone.
+
+That makes the backlink question portable; it does not move the gate. The GRAPH
+leg still parses note bodies and still owns the closure check — see the
+traverse-on-existence rule below, which relation rows sharpen rather than retire.
+
+For the full tool surface behind this guidance, see the search and
+impact-detection tool-surface analysis in the project's analysis folder.
+
+Verify every hit before you use it. Semantic mode can still return rows from
+other projects — the fix for that leak exists but is not deployed everywhere —
+and the index can still serve rows for notes that have moved or been renumbered.
+Check each returned permalink against `list_directory` ground truth and drop
+anything that does not resolve. Write the verified hits to a JSON file shaped
+like the manifest's `findings` entries, each carrying its `mode`, and pass it in:
 
 ```bash
 bun run shared/composition/src/reference-scan.ts \
@@ -244,12 +290,15 @@ defects is not reproducible enough to fail a step on.
 relation verbs from H3-grouped Relations entries — it keeps the edge but loses
 whether it was `contains` or `depends_on`, because it reads a verb only when the
 verb shares a line with its target and the grouped form puts the verb in the
-sub-header. Measured at fifteen of fifteen untyped on one ADR. So any query that
-goes through the index — this SEARCH leg, or a future relation-table query — may
-ask "is there an edge here?" and must not ask "is it a `part_of` edge?". Every
-typed step reads the note body. The GRAPH leg is already immune: it parses
-bodies directly and never consults the index, which is why it is the gate and
-this leg is not.
+sub-header. Measured at fifteen of fifteen untyped on one ADR. Nor is a verb that
+IS present trustworthy: a live probe returned an edge whose verb was literally
+`x`, and another returned the same note pair twice under two different verbs, one
+of them absent from the conventions' allowlist entirely. So any query that goes
+through the index — this SEARCH leg, or the relation rows above — may ask "is
+there an edge here?" and must not ask "is it a `part_of` edge?", including when
+the synthetic edge permalink appears to name one. Every typed step reads the note
+body. The GRAPH leg is already immune: it parses bodies directly and never
+consults the index, which is why it is the gate and this leg is not.
 
 **The highest-value use of this leg is the UNEXTRACTABLE channel** of the
 correction check below, not the reference scan. An obligation whose target is

@@ -111,15 +111,44 @@ ever restructured, and this audit is the only place defrag would notice it.
 
 Optionally widen the scan with a search leg: run Brain MCP search over each
 candidate's title and two or three descriptive descriptors, using `keyword` mode
-for exact identifiers and permalinks, `semantic` for descriptive references, and
-`hybrid` where you judge it useful. Record the mode on each entry. On the
-current build `keyword` returns zero results for every query, so treat an empty
-keyword result as no signal rather than no references and fall back to
-`semantic`; see `scratch/brain-search-capability-survey.md` for current
-mode-by-mode status. Verify every hit against `list_directory` ground truth
-(semantic mode can return cross-project rows), then pass the verified hits via
-`--merge`. Those entries are advisory and never gate anything; they exist to
-catch prose that names a note without naming its identifier.
+plus `search_type: "text"` for exact identifiers and permalinks (double-quoting
+hyphenated identifiers, since the tokenizer splits on hyphens), `semantic` for
+descriptive references, and `hybrid` where you judge it useful. Record the mode
+on each entry. `keyword` returned zero results for every query on the build this
+paragraph was first written against and has since been revived end-to-end, so as
+measured on the MCP surface 2026-07-26 an empty keyword result is now evidence of
+no match rather than a dead leg. Two mechanics of the current surface matter here:
+`mode: "keyword"` alone leaves retrieval at the proxied leg's hybrid default, so
+pass `search_type: "text"` for genuine full-text matching; and a structured filter
+the running leg cannot evaluate re-routes the request onto the leg that can rather
+than being dropped, with `actual_source` on the response naming the leg that
+actually served. Verify every hit against `list_directory` ground truth — semantic
+mode can still return cross-project rows, the fix for that leak existing but not
+deployed everywhere, and the index can still serve rows for notes that have moved
+— then pass the verified hits via `--merge`. Those entries are advisory and never
+gate anything; they exist to catch prose that names a note without naming its
+identifier. For the full tool surface behind this guidance, see the search and
+impact-detection tool-surface analysis in the project's analysis folder.
+
+**Two generations of the search surface are live at once, which matters most to
+a cron-scheduled audit that nobody watches.** The plugin MCP path carries the
+repairs above; the HTTP server behind the `brain` CLI is still on the pre-repair
+build pending a restart, where keyword returns zero for every query and a filter
+the running leg cannot honour is dropped silently, leaving an unfiltered result
+that looks filtered. The detection rule is the response itself: **no
+`actual_source` field means a pre-fix surface** — fall back to reading an empty
+keyword result as no signal and any filtered result as unfiltered.
+
+Two expansion filters are worth knowing here even though neither replaces a
+deterministic leg. `entity_types: ["relation"]` returns inbound edges directly
+over MCP, titled `Source Title -> Target Title` with the title rather than the
+snippet carrying the payload — a portable corroboration of the audit's graph leg,
+which still owns the finding because index-derived edge verbs are unreliable:
+absent on type-grouped notes, and on probe sometimes wrong outright. Traverse on
+existence, never on verb. And `after_date` returns notes whose index timestamp is
+strictly after a given date, so its complement is an index-side view of the stale
+set: a cross-check on the staleness classifier above, not a substitute, because
+the timestamp is the index's and lags a just-written note.
 
 Fold the per-target totals into the candidates report so each candidate carries
 its inbound-reference count. Two uses:
