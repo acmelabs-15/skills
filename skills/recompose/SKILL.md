@@ -68,7 +68,11 @@ Summary format:
 ### Step 4: Execute on approval
 
 ```bash
-bun run shared/composition/src/recompose.ts --plan docs/_restructure/recompose-{id}-plan.yaml
+# SKILLS_DOCS_ROOT activates the realpath containment check (CWE-22).
+# Without it the lexical guard still runs, but symlink escapes are not caught.
+export SKILLS_DOCS_ROOT="$(pwd)/docs"
+bun run shared/composition/src/recompose.ts \
+  --plan docs/_restructure/recompose-{id}-plan.yaml --root docs
 ```
 
 The script:
@@ -95,3 +99,49 @@ Identical to `/decompose`. `PlanValidationError` → parse issues, re-author. `H
 
 - Same as `/decompose`: no direct content writes by the LLM, mandatory adjudication, no source-type mixing, all paths relative to the plan YAML.
 - The composition plan does NOT delete sources after merge. Cleanup is a separate explicit step.
+
+
+## Scaffolded sources
+
+A shard written by a scaffolded `/decompose` is `prologue + content slice +
+epilogue` — the prologue and epilogue are rendered content, not preserved
+source. To merge such shards, declare the same scaffold per source so the merge
+strips it before joining:
+
+```yaml
+sources:
+  - path: decisions/ADR-042a.md
+    scaffold:
+      frontmatter:
+        title: "ADR-042a: Cluster A"
+        type: decision
+        status: ACCEPTED
+        permalink: decisions/adr-042a-cluster-a
+        tags: [decision]
+      observations:
+        - category: decision
+          text: Cluster A carries the first decision body
+          tags: [split]
+      relations:
+        - verb: part_of
+          target: "ADR-042: Parent"
+```
+
+A bare path string is still accepted and means "no scaffolding to strip".
+
+The declared scaffold must match the shard's bytes exactly; if it does not, the
+merge exits 2 and writes nothing rather than silently folding rendered content
+into the merged note. The `/decompose` audit log records the scaffold it applied
+for each destination, so a composition plan can be reconstructed from it instead
+of re-authored by hand.
+
+**Reversibility.** Scaffolded shards round-trip byte-identically given the same
+scaffold. Shards from a plan that used `disposition: retain` do not: retained
+content stays in the source and appears in no shard, so a merge over shards
+alone cannot reproduce the original.
+
+## Path resolution
+
+Same as `/decompose`: plan paths are relative, `..` is rejected, and `--root`
+supplies the base. Pass `--root docs` when the plan sits at
+`docs/_restructure/` and its sources live in sibling directories.

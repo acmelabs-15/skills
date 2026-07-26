@@ -32,6 +32,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { assembleScaffolded } from "../src/core/cluster-scaffold.js";
 import { sha256 } from "../src/core/hash.js";
+import { main as decomposeMain } from "../src/decompose.js";
 import { main as recomposeMain } from "../src/recompose.js";
 
 const shardScaffold = (letter: string) => ({
@@ -182,5 +183,70 @@ describe("recompose — scaffolded sources", () => {
 
     expect(await recomposeMain(["--plan", planPath])).toBe(0);
     expect(await Bun.file(join(dir, "merged.md")).text()).toBe("alpha\nbeta\n");
+  });
+});
+
+describe("scaffolded, retention-free plans round-trip byte-identically", () => {
+  test("decompose then recompose reproduces the source exactly", async () => {
+    // The claim three reviewers flagged as overstated in this file's earlier
+    // header. Scaffolding is an exact inverse, so it is NOT a round-trip breaker;
+    // only retention is. Asserted here so the comment cannot drift again.
+    const dir = mkdtempSync(join(tmpdir(), "scaffold-roundtrip-"));
+    const srcPath = join(dir, "src.md");
+    const original =
+      "---\ntitle: x\n---\n\n# X\n\n### D-1: one\n\nbody one\n\n### D-2: two\n\nbody two\n";
+    await Bun.write(srcPath, original);
+
+    const scaffoldBlock = (n: string, indent: string) =>
+      [
+        `${indent}scaffold:`,
+        `${indent}  frontmatter: { title: "ADR-9${n}: Part ${n}", type: decision, status: ACCEPTED, permalink: d/adr-9${n}, tags: [x] }`,
+        `${indent}  observations: [{ category: fact, text: Part ${n}, tags: [p] }]`,
+        `${indent}  relations: [{ verb: part_of, target: "ADR-9: Parent" }]`,
+      ].join("\n");
+
+    await Bun.write(
+      join(dir, "d.yaml"),
+      [
+        "plan_type: distribution",
+        "source_type: adr",
+        "source_path: src.md",
+        'renumber_map: { "D-1": "D-700" }',
+        "wikilink_map: {}",
+        "clusters:",
+        "  a:",
+        "    destination_path: a.md",
+        "    range: { start: 1, end: 9 }",
+        scaffoldBlock("a", "    "),
+        "  b:",
+        "    destination_path: b.md",
+        "    range: { start: 10, end: -1 }",
+        scaffoldBlock("b", "    "),
+        "",
+      ].join("\n"),
+    );
+    await Bun.write(
+      join(dir, "r.yaml"),
+      [
+        "plan_type: composition",
+        "source_type: adr",
+        "target_path: src.md",
+        "sources:",
+        "  - path: a.md",
+        scaffoldBlock("a", "    "),
+        "  - path: b.md",
+        scaffoldBlock("b", "    "),
+        'renumber_map: { "D-700": "D-1" }',
+        "wikilink_map: {}",
+        "",
+      ].join("\n"),
+    );
+
+    expect(await decomposeMain(["--plan", join(dir, "d.yaml")])).toBe(0);
+    expect(await recomposeMain(["--plan", join(dir, "r.yaml")])).toBe(0);
+
+    const recovered = await Bun.file(srcPath).text();
+    expect(recovered).toBe(original);
+    expect(sha256(recovered)).toBe(sha256(original));
   });
 });

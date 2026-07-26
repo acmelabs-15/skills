@@ -10,15 +10,20 @@
  *
  * This module declares only the two plan ENVELOPES. Every field primitive —
  * paths, line ranges, mutation maps and their F-8 invariants, scaffolding,
- * disposition — comes from the canonical `schemas/base.ts` per ADR-002 D-5.
- * Nothing here re-states a rule that has a home there: a second implementation
- * of a BLOCKING rule is how a gate becomes optional on the path that runs.
+ * disposition — comes from the canonical `schemas/base.ts` per ADR-002 D-5, and
+ * the invariants are carried by those primitives rather than re-applied here.
+ * Nothing in this file re-states a rule that has a home there. Two ways a
+ * BLOCKING guard stops running have already been observed in this codebase: a
+ * second, weaker implementation on the path that actually executes, and a
+ * canonical guard with no call site at all. Importing rather than re-stating
+ * closes both.
  */
 import { z } from "zod";
 import {
   ClusterScaffoldSchema,
   dispositionEnum,
   lineRangeSchema,
+  regeneratedSectionsFloor,
   renumberMapSchema,
   safePathSchema,
   wikilinkMapSchema,
@@ -47,6 +52,19 @@ export const DistributionPlanSchema = z
             decisions: z.array(z.string().min(1)).optional(),
             renumbered_to: z.array(z.string().min(1)).optional(),
             range: lineRangeSchema.optional(),
+            // Per-cluster mutation override. Before this the envelope was
+            // .strict() with no field to express it, so D-5's 50%
+            // regenerated_sections integrity floor was dead code on the
+            // production path — no plan the CLI accepted could exercise it.
+            //
+            // `frontmatter_map` is deliberately NOT exposed here. It is not
+            // invertible as specified: the map carries field -> NEW value and
+            // never the old one, so reverseMutations inverts it to
+            // {newValue: field} and cannot restore the original. Every plan
+            // using it would fail the F-8 comparison and exit 2. Exposing a
+            // field that can only ever fail is worse than withholding it;
+            // see the delivery report's design-gap section.
+            regenerated_sections: regeneratedSectionsFloor.optional(),
             disposition: dispositionEnum.default("write"),
             scaffold: ClusterScaffoldSchema.optional(),
           })

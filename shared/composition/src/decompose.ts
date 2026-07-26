@@ -25,7 +25,7 @@
 import { dirname, resolve } from "node:path";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
-import { findUncontainedPaths } from "../schemas/base.js";
+import { findUncontainedPaths, lexicalPathViolation } from "../schemas/base.js";
 import { cleanup, clusterAtomicRename, rename, stage } from "./core/atomic-write.js";
 import { rollbackCluster, validateSubtreeHashes } from "./core/cluster-rollback.js";
 import {
@@ -40,7 +40,7 @@ import {
   buildPartition,
   verifyCoverage,
 } from "./core/partition.js";
-import type { RenumberMap, WikilinkMap } from "./core/types.js";
+import type { MutationSpec, RenumberMap, WikilinkMap } from "./core/types.js";
 import { getAdapter } from "./registry.js";
 import {
   DistributionPlanSchema,
@@ -52,6 +52,18 @@ const MAX_PLAN_BYTES = 1024 * 1024; // 1 MB per ADR-001 Confirmation
 
 interface ParsedArgs {
   planPath: string;
+  /**
+   * Base directory that plan-relative paths resolve against. Defaults to the
+   * plan file's own directory.
+   *
+   * Exists because ADR-001 F-7 LOCKS plans to `docs/_restructure/` while
+   * destinations live in sibling directories like `docs/decisions/` — reaching
+   * them from the plan's directory needs `../`, which the CWE-22 guard rejects.
+   * Supplying the base from the CALLER rather than from the plan keeps that
+   * guard intact on the untrusted document: an LLM-authored plan still cannot
+   * contain `..`, and cannot redirect its own resolution base.
+   */
+  root?: string;
 }
 
 export function parseArgs(argv: readonly string[]): ParsedArgs {
@@ -67,7 +79,15 @@ export function parseArgs(argv: readonly string[]): ParsedArgs {
       { path: "<argv>", message: "missing or malformed --plan argument" },
     ]);
   }
-  return { planPath };
+  const rootFlagIndex = argv.indexOf("--root");
+  const root =
+    rootFlagIndex >= 0 && rootFlagIndex < argv.length - 1 ? argv[rootFlagIndex + 1] : undefined;
+  if (rootFlagIndex >= 0 && (root === undefined || root.startsWith("-"))) {
+    throw new PlanValidationError("Usage: decompose.ts --plan <path> [--root <dir>]", [
+      { path: "<argv>", message: "--root given without a directory" },
+    ]);
+  }
+  return root === undefined ? { planPath } : { planPath, root };
 }
 
 export async function loadPlanYaml(planPath: string): Promise<unknown> {
@@ -111,6 +131,20 @@ export interface DecomposeAuditEntry {
    */
   scaffold_provenance?: "verbatim" | "scaffolded";
   scaffold_bytes?: number;
+  /**
+   * The exact scaffold applied, so a composition plan that recovers this shard
+   * can be reconstructed FROM the audit log rather than re-authored by hand.
+   * Recovery of a scaffolded shard is conditional on the composition plan
+   * restating a byte-identical scaffold; recording it here is what makes that
+   * condition satisfiable after the fact.
+   */
+  scaffold?: ClusterScaffold;
+  /**
+   * SHA-256 of the checksummed content slice AFTER mutation — the subject of the
+   * F-8 comparison. Distinct from `destination_sha256`, which covers the whole
+   * written file including rendered scaffolding.
+   */
+  body_sha256?: string;
   /** Line range extracted for this cluster; absent on the degenerate path. */
   range?: { start: number; end: number };
   /** SHA-256 of the pre-mutation source extraction (S in the F-8 protocol). */
@@ -153,9 +187,10 @@ function integrityError(message: string): Error {
 export async function executeDistributionPlan(
   plan: DistributionPlanParsed,
   planPath: string,
+  root?: string,
 ): Promise<DecomposeAuditEntry[]> {
   const adapter = resolveAdapter(plan.source_type);
-  const sourceAbs = resolveRelativeToPlan(plan.source_path, planPath);
+  const sourceAbs = resolveRelativeToPlan(plan.source_path, planPath, root);
   const sourceFile = Bun.file(sourceAbs);
   if (!(await sourceFile.exists())) {
     throw new PlanValidationError(`source_path not found: ${sourceAbs}`, [
@@ -172,7 +207,7 @@ export async function executeDistributionPlan(
   if (Object.keys(clusters).length === 0) {
     return [await executeRenumberInPlace(adapter, plan, sourceAbs, sourceContent, mutations)];
   }
-  return executePartition(adapter, plan, planPath, sourceAbs, sourceContent, mutations);
+  return executePartition(adapter, plan, planPath, sourceAbs, sourceContent, mutations, root);
 }
 
 function resolveAdapter(sourceType: string): ReturnType<typeof getAdapter> {
@@ -230,11 +265,12 @@ function collectClusterRanges(plan: DistributionPlanParsed): ClusterRange[] {
       // The adapter contract (ADR-002 D-2) exposes extractByRange only; there
       // is no identifier-driven extraction path to fall back on.
       throw new PlanValidationError(
-        `cluster "${clusterId}" declares no line range; per-cluster extraction requires range.start/range.end`,
+        `cluster "${clusterId}" declares no line range; extraction is range-driven. The identifiers/decisions/renumbered_to fields are annotation and cross-check only — they cannot locate content on their own`,
         [
           {
             path: `clusters.${clusterId}.range`,
-            message: "required for per-cluster extraction (identifiers alone are not extractable)",
+            message:
+              "required for per-cluster extraction; identifiers are cross-checked against the extracted slice, never used to find it",
           },
         ],
       );
@@ -251,6 +287,7 @@ async function executePartition(
   sourceAbs: string,
   sourceContent: string,
   mutations: Mutations,
+  root?: string,
 ): Promise<DecomposeAuditEntry[]> {
   const clusters = plan.clusters ?? {};
   const segments = buildPartition(
@@ -258,6 +295,26 @@ async function executePartition(
     sourceContent,
     collectClusterRanges(plan),
   );
+
+  // GAP-1 resolution (c): `identifiers` are annotation, not an extraction
+  // mechanism — but where a plan supplies them they are worth spending as a
+  // post-extraction cross-check. A declared identifier missing from its slice
+  // means the range drifted off the section the author meant, which the
+  // coverage proof cannot see (a wrong-but-contiguous partition still covers
+  // every byte). Checked before any staging.
+  for (const segment of segments) {
+    const declared = clusters[segment.clusterId]?.identifiers ?? [];
+    const missing = declared.filter((id) => !segment.content.includes(id));
+    if (missing.length > 0) {
+      throw new PlanValidationError(
+        `cluster "${segment.clusterId}" declares identifiers absent from its line range: ${missing.join(", ")}`,
+        missing.map((id) => ({
+          path: `clusters.${segment.clusterId}.identifiers`,
+          message: `"${id}" does not appear in lines ${segment.range.start}-${segment.range.end === -1 ? "EOF" : segment.range.end}`,
+        })),
+      );
+    }
+  }
 
   const coverage = verifyCoverage(sourceContent, segments);
   if (!coverage.complete) {
@@ -274,12 +331,21 @@ async function executePartition(
     .map((segment) => {
       const cluster = clusters[segment.clusterId];
       const destRel = cluster?.destination_path ?? `${plan.source_path}.${segment.clusterId}.md`;
-      const mutatedBody = adapter.applyMutations(segment.content, mutations);
+      // Per-cluster overrides layer onto the plan-level maps, making D-2's
+      // frontmatter_map and D-5's regenerated_sections reachable per cluster.
+      const clusterMutations: MutationSpec = {
+        ...mutations,
+        ...(cluster?.regenerated_sections
+          ? { regenerated_sections: cluster.regenerated_sections }
+          : {}),
+      };
+      const mutatedBody = adapter.applyMutations(segment.content, clusterMutations);
       const scaffold = cluster?.scaffold;
       return {
         segment,
         scaffold,
-        destAbs: resolveRelativeToPlan(destRel, planPath),
+        mutations: clusterMutations,
+        destAbs: resolveRelativeToPlan(destRel, planPath, root),
         mutatedBody,
         // Scaffolding wraps the hashed body; it is never part of the hash scope.
         fileContent: scaffold ? assembleScaffolded(scaffold, mutatedBody) : mutatedBody,
@@ -289,7 +355,7 @@ async function executePartition(
   const tmpPaths = written.map((s) => `${s.destAbs}.tmp`);
   try {
     await Promise.all(written.map((s) => stage(s.destAbs, s.fileContent)));
-    verifyStagedHashes(adapter, written, mutations);
+    verifyStagedHashes(adapter, written);
     await clusterAtomicRename(written.map((s) => s.destAbs));
   } catch (err) {
     await rollbackCluster(tmpPaths, []);
@@ -312,6 +378,8 @@ async function executePartition(
       audit.destination_sha256 = sha256(entry.fileContent);
       audit.scaffold_provenance = entry.scaffold ? "scaffolded" : "verbatim";
       audit.scaffold_bytes = entry.fileContent.length - entry.mutatedBody.length;
+      audit.body_sha256 = sha256(entry.mutatedBody);
+      if (entry.scaffold) audit.scaffold = entry.scaffold;
     }
     return audit;
   });
@@ -321,6 +389,7 @@ async function executePartition(
 interface StagedDestination {
   segment: PartitionSegment;
   scaffold: ClusterScaffold | undefined;
+  mutations: MutationSpec;
   destAbs: string;
   mutatedBody: string;
   fileContent: string;
@@ -337,7 +406,6 @@ interface StagedDestination {
 function verifyStagedHashes(
   adapter: ReturnType<typeof getAdapter>,
   written: readonly StagedDestination[],
-  mutations: Mutations,
 ): void {
   const forValidation = written.map((s) => {
     if (!s.scaffold) {
@@ -345,7 +413,7 @@ function verifyStagedHashes(
         filePath: s.destAbs,
         sourceContent: s.segment.content,
         stagedContent: s.fileContent,
-        mutations,
+        mutations: s.mutations,
       };
     }
     const stripped = stripScaffold(s.scaffold, s.fileContent);
@@ -356,7 +424,7 @@ function verifyStagedHashes(
       filePath: s.destAbs,
       sourceContent: s.segment.content,
       stagedContent: stripped.body,
-      mutations,
+      mutations: s.mutations,
     };
   });
 
@@ -369,24 +437,22 @@ function verifyStagedHashes(
   );
 }
 
-function resolveRelativeToPlan(target: string, planPath: string): string {
-  if (target.startsWith("/") || /^[A-Z]:\\/i.test(target)) {
-    throw new PlanValidationError("Absolute paths not allowed in plan YAML (CWE-22)", [
-      { path: "path", message: `Absolute path rejected: ${target}` },
+function resolveRelativeToPlan(target: string, planPath: string, root?: string): string {
+  // Imports the shared lexical rule rather than re-stating it; the realpath
+  // containment layer runs separately at the plan-load boundary.
+  const violation = lexicalPathViolation(target);
+  if (violation !== null) {
+    throw new PlanValidationError(`Unsafe path in plan YAML (CWE-22): ${violation}`, [
+      { path: "path", message: violation },
     ]);
   }
-  if (target.split(/[/\\]/).includes("..")) {
-    throw new PlanValidationError("Path traversal not allowed in plan YAML (CWE-22)", [
-      { path: "path", message: `Path traversal rejected: ${target}` },
-    ]);
-  }
-  const planDir = dirname(resolve(planPath));
-  return resolve(planDir, target);
+  const base = root !== undefined ? resolve(root) : dirname(resolve(planPath));
+  return resolve(base, target);
 }
 
 export async function main(argv: readonly string[]): Promise<number> {
   try {
-    const { planPath } = parseArgs(argv);
+    const { planPath, root } = parseArgs(argv);
     const raw = await loadPlanYaml(planPath);
     const plan = await DistributionPlanSchema.parseAsync(raw).catch((err: unknown) => {
       if (err instanceof ZodError) {
@@ -400,7 +466,10 @@ export async function main(argv: readonly string[]): Promise<number> {
 
     // CWE-22 boundary (ADR-002 D-5): resolve symlinks and confirm every plan
     // path stays inside the containment root, before any file is touched.
-    const uncontained = await findUncontainedPaths(plan, dirname(resolve(planPath)));
+    const uncontained = await findUncontainedPaths(
+      plan,
+      root !== undefined ? resolve(root) : dirname(resolve(planPath)),
+    );
     if (uncontained.length > 0) {
       throw new PlanValidationError(
         `plan paths resolve outside the allowed docs root: ${uncontained.join(", ")}`,
@@ -410,7 +479,7 @@ export async function main(argv: readonly string[]): Promise<number> {
         })),
       );
     }
-    const entries = await executeDistributionPlan(plan, planPath);
+    const entries = await executeDistributionPlan(plan, planPath, root);
     for (const entry of entries) {
       process.stdout.write(`${JSON.stringify(entry)}\n`);
     }

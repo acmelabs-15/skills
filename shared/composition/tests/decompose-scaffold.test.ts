@@ -420,3 +420,91 @@ describe("audit-log scaffold provenance", () => {
     }
   });
 });
+
+describe("identifiers as post-extraction cross-check (GAP-1 resolution)", () => {
+  const planWithIdentifiers = (ids: string) =>
+    [
+      "plan_type: distribution",
+      "source_type: adr",
+      "source_path: multi-cluster-round-trip.md",
+      'renumber_map: { "D-1": "D-700" }',
+      "wikilink_map: {}",
+      "clusters:",
+      "  head:",
+      "    disposition: retain",
+      "    range: { start: 1, end: 24 }",
+      "  body:",
+      "    destination_path: body.md",
+      "    range: { start: 25, end: 31 }",
+      `    identifiers: [${ids}]`,
+      "  tail:",
+      "    disposition: retain",
+      "    range: { start: 32, end: -1 }",
+      "",
+    ].join("\n");
+
+  test("accepts identifiers that appear in the extracted slice", async () => {
+    const { dir } = await stageSource();
+    const planPath = await writePlan(dir, "ids-ok.yaml", planWithIdentifiers('"D-1"'));
+    expect(await decomposeMain(["--plan", planPath])).toBe(0);
+  });
+
+  test("rejects an identifier absent from its range, naming it", async () => {
+    // The failure the coverage proof cannot see: a wrong-but-contiguous
+    // partition still accounts for every byte.
+    const { dir } = await stageSource();
+    const planPath = await writePlan(dir, "ids-bad.yaml", planWithIdentifiers('"D-3"'));
+    expect(await decomposeMain(["--plan", planPath])).toBe(1);
+    expect(await exists(join(dir, "body.md"))).toBe(false);
+  });
+});
+
+describe("per-cluster mutation overrides are reachable from the CLI", () => {
+  test("a cluster may declare regenerated_sections", async () => {
+    // Before this, DistributionPlanSchema was .strict() with no field to carry
+    // it, so D-5's regenerated_sections integrity floor was dead code on the
+    // production path. frontmatter_map stays withheld — it is not invertible.
+    const { dir } = await stageSource();
+    const planPath = await writePlan(
+      dir,
+      "per-cluster.yaml",
+      [
+        "plan_type: distribution",
+        "source_type: adr",
+        "source_path: multi-cluster-round-trip.md",
+        "renumber_map: {}",
+        "wikilink_map: {}",
+        "clusters:",
+        "  whole:",
+        "    destination_path: whole.md",
+        "    range: { start: 1, end: -1 }",
+        "    regenerated_sections: [Observations]",
+        "",
+      ].join("\n"),
+    );
+    expect(await decomposeMain(["--plan", planPath])).toBe(0);
+    expect(await exists(join(dir, "whole.md"))).toBe(true);
+  });
+
+  test("the regenerated_sections integrity floor now applies to CLI plans", async () => {
+    const { dir } = await stageSource();
+    const planPath = await writePlan(
+      dir,
+      "floor.yaml",
+      [
+        "plan_type: distribution",
+        "source_type: adr",
+        "source_path: multi-cluster-round-trip.md",
+        "renumber_map: {}",
+        "wikilink_map: {}",
+        "clusters:",
+        "  whole:",
+        "    destination_path: whole.md",
+        "    range: { start: 1, end: -1 }",
+        `    regenerated_sections: [${Array.from({ length: 11 }, (_, i) => `S${i}`).join(", ")}]`,
+        "",
+      ].join("\n"),
+    );
+    expect(await decomposeMain(["--plan", planPath])).toBe(1);
+  });
+});

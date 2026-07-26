@@ -15,11 +15,13 @@
  * objects rather than against YAML.
  *
  * **Invariant-carrying.** The ADR-001 F-8 BLOCKING map rule lives *inside* the
- * map primitives rather than being re-applied by each consumer. Re-application
- * is what allowed `spec-subtree` to ship with the gate enforced nowhere: it
- * deferred to "the runtime injectiveDisjointMap" and no runtime call site
- * existed. A rule that must be remembered at every call site will eventually be
- * forgotten at one; a rule carried by the primitive cannot be.
+ * map primitives, so every consumer inherits it and no consumer can forget it.
+ * That is the current behaviour and the reason for it: when the rule was
+ * instead re-applied per type, 8 of the 10 modular schemas applied it and both
+ * `spec-subtree` modules did not — the distribution one deferred to "the
+ * runtime injectiveDisjointMap" and the composition one did not reference it at
+ * all, while no runtime call site existed anywhere. A rule that must be
+ * remembered at every call site will eventually be forgotten at one.
  */
 import { resolve } from "node:path";
 import { z } from "zod";
@@ -84,6 +86,23 @@ export const mutationSpecSchema = z.object({
 });
 
 /**
+ * The lexical half of the CWE-22 guard, as a predicate.
+ *
+ * `safePathSchema` is the Zod-facing form; this is the same rule for imperative
+ * call sites that resolve a path outside a schema (the CLI path resolvers and
+ * the subtree filename-rewrite guard). Exported so those sites IMPORT the rule
+ * rather than re-stating it — three hand-rolled copies of this check were the
+ * exact drift pattern the F-8 map rule already taught us to avoid.
+ */
+export function lexicalPathViolation(target: string): string | null {
+  if (target.length === 0) return "empty path";
+  if (target.startsWith("/") || /^[A-Z]:\\/i.test(target))
+    return `absolute path rejected: ${target}`;
+  if (target.split(/[/\\]/).includes("..")) return `path traversal rejected: ${target}`;
+  return null;
+}
+
+/**
  * Path field rejecting traversal and absolute paths (CWE-22), applied to every
  * path in a plan. Deliberately SYNCHRONOUS: a Zod schema containing an async
  * refinement can only be used with `parseAsync`, and attaching containment here
@@ -96,8 +115,16 @@ export const mutationSpecSchema = z.object({
 export const safePathSchema = z
   .string()
   .min(1)
-  .refine((v) => !v.split(/[/\\]/).includes("..") && !v.startsWith("/") && !/^[A-Z]:\\/i.test(v), {
-    message: "Path traversal (..) or absolute path rejected (CWE-22 mitigation)",
+  // Delegates to the single predicate below — the Zod form and the imperative
+  // form are the same rule, not two copies of it.
+  .superRefine((v, ctx) => {
+    const violation = lexicalPathViolation(v);
+    if (violation !== null) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `CWE-22: ${violation}`,
+      });
+    }
   });
 
 /** Every path-shaped value in a plan envelope, for containment checking. */

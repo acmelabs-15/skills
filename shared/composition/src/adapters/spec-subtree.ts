@@ -1,9 +1,10 @@
-import { dirname, isAbsolute, join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import type { Root } from "mdast";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
+import { lexicalPathViolation } from "../../schemas/base.js";
 import type { CompositionAdapter } from "../core/adapter.js";
 import {
   type HashValidationEntry,
@@ -304,15 +305,10 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
    * within rootDir.
    */
   private assertContainedRelativePath(relativePath: string, rootDir: string): void {
-    if (relativePath.length === 0) {
-      throw new Error("Filename rewrite path-containment violation: empty path");
-    }
-    if (isAbsolute(relativePath)) {
-      throw new Error(`Filename rewrite path-containment violation: absolute path ${relativePath}`);
-    }
-    const segments = relativePath.split(/[/\\]/);
-    if (segments.includes("..")) {
-      throw new Error(`Filename rewrite path-containment violation: traversal in ${relativePath}`);
+    // Imports the shared lexical rule rather than re-stating it (CWE-22).
+    const violation = lexicalPathViolation(relativePath);
+    if (violation !== null) {
+      throw new Error(`Filename rewrite path-containment violation: ${violation}`);
     }
     const rootAbs = resolve(rootDir);
     const targetAbs = resolve(rootAbs, relativePath);

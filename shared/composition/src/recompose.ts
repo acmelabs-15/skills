@@ -18,7 +18,7 @@
 import { dirname, resolve } from "node:path";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
-import { findUncontainedPaths } from "../schemas/base.js";
+import { findUncontainedPaths, lexicalPathViolation } from "../schemas/base.js";
 import { cleanup, rename, stage } from "./core/atomic-write.js";
 import { stripScaffold } from "./core/cluster-scaffold.js";
 import { sha256 } from "./core/hash.js";
@@ -33,6 +33,18 @@ const MAX_PLAN_BYTES = 1024 * 1024;
 
 interface ParsedArgs {
   planPath: string;
+  /**
+   * Base directory that plan-relative paths resolve against. Defaults to the
+   * plan file's own directory.
+   *
+   * Exists because ADR-001 F-7 LOCKS plans to `docs/_restructure/` while
+   * destinations live in sibling directories like `docs/decisions/` — reaching
+   * them from the plan's directory needs `../`, which the CWE-22 guard rejects.
+   * Supplying the base from the CALLER rather than from the plan keeps that
+   * guard intact on the untrusted document: an LLM-authored plan still cannot
+   * contain `..`, and cannot redirect its own resolution base.
+   */
+  root?: string;
 }
 
 export function parseArgs(argv: readonly string[]): ParsedArgs {
@@ -48,7 +60,15 @@ export function parseArgs(argv: readonly string[]): ParsedArgs {
       { path: "<argv>", message: "missing or malformed --plan argument" },
     ]);
   }
-  return { planPath };
+  const rootFlagIndex = argv.indexOf("--root");
+  const root =
+    rootFlagIndex >= 0 && rootFlagIndex < argv.length - 1 ? argv[rootFlagIndex + 1] : undefined;
+  if (rootFlagIndex >= 0 && (root === undefined || root.startsWith("-"))) {
+    throw new PlanValidationError("Usage: recompose.ts --plan <path> [--root <dir>]", [
+      { path: "<argv>", message: "--root given without a directory" },
+    ]);
+  }
+  return root === undefined ? { planPath } : { planPath, root };
 }
 
 export async function loadPlanYaml(planPath: string): Promise<unknown> {
@@ -79,6 +99,7 @@ export interface RecomposeAuditEntry {
 export async function executeCompositionPlan(
   plan: ReturnType<typeof CompositionPlanSchema.parse>,
   planPath: string,
+  root?: string,
 ): Promise<RecomposeAuditEntry> {
   let adapter: ReturnType<typeof getAdapter>;
   try {
@@ -88,11 +109,11 @@ export async function executeCompositionPlan(
       { path: "source_type", message: (err as Error).message },
     ]);
   }
-  const targetAbs = resolveRelativeToPlan(plan.target_path, planPath);
+  const targetAbs = resolveRelativeToPlan(plan.target_path, planPath, root);
   const sources = (plan.sources ?? [plan.target_path]).map((entry) =>
     typeof entry === "string" ? { path: entry } : entry,
   );
-  const sourceAbsPaths = sources.map((s) => resolveRelativeToPlan(s.path, planPath));
+  const sourceAbsPaths = sources.map((s) => resolveRelativeToPlan(s.path, planPath, root));
 
   const sourceFiles = sourceAbsPaths.map((p) => Bun.file(p));
   const presence = await Promise.all(sourceFiles.map((f) => f.exists()));
@@ -156,24 +177,22 @@ export async function executeCompositionPlan(
   };
 }
 
-function resolveRelativeToPlan(target: string, planPath: string): string {
-  if (target.startsWith("/") || /^[A-Z]:\\/i.test(target)) {
-    throw new PlanValidationError("Absolute paths not allowed in plan YAML (CWE-22)", [
-      { path: "path", message: `Absolute path rejected: ${target}` },
+function resolveRelativeToPlan(target: string, planPath: string, root?: string): string {
+  // Imports the shared lexical rule rather than re-stating it; the realpath
+  // containment layer runs separately at the plan-load boundary.
+  const violation = lexicalPathViolation(target);
+  if (violation !== null) {
+    throw new PlanValidationError(`Unsafe path in plan YAML (CWE-22): ${violation}`, [
+      { path: "path", message: violation },
     ]);
   }
-  if (target.split(/[/\\]/).includes("..")) {
-    throw new PlanValidationError("Path traversal not allowed in plan YAML (CWE-22)", [
-      { path: "path", message: `Path traversal rejected: ${target}` },
-    ]);
-  }
-  const planDir = dirname(resolve(planPath));
-  return resolve(planDir, target);
+  const base = root !== undefined ? resolve(root) : dirname(resolve(planPath));
+  return resolve(base, target);
 }
 
 export async function main(argv: readonly string[]): Promise<number> {
   try {
-    const { planPath } = parseArgs(argv);
+    const { planPath, root } = parseArgs(argv);
     const raw = await loadPlanYaml(planPath);
     const plan = await CompositionPlanSchema.parseAsync(raw).catch((err: unknown) => {
       if (err instanceof ZodError) {
@@ -187,7 +206,10 @@ export async function main(argv: readonly string[]): Promise<number> {
 
     // CWE-22 boundary (ADR-002 D-5): resolve symlinks and confirm every plan
     // path stays inside the containment root, before any file is touched.
-    const uncontained = await findUncontainedPaths(plan, dirname(resolve(planPath)));
+    const uncontained = await findUncontainedPaths(
+      plan,
+      root !== undefined ? resolve(root) : dirname(resolve(planPath)),
+    );
     if (uncontained.length > 0) {
       throw new PlanValidationError(
         `plan paths resolve outside the allowed docs root: ${uncontained.join(", ")}`,
@@ -197,7 +219,7 @@ export async function main(argv: readonly string[]): Promise<number> {
         })),
       );
     }
-    const entry = await executeCompositionPlan(plan, planPath);
+    const entry = await executeCompositionPlan(plan, planPath, root);
     process.stdout.write(`${JSON.stringify(entry)}\n`);
     return 0;
   } catch (err) {

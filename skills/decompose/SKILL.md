@@ -83,11 +83,30 @@ clusters:                   # declare the partitioning
 
 Rules the executor enforces:
 
-- **Ranges must exactly partition the source.** Every line from 1 to `end: -1` belongs to exactly one cluster. Gaps, overlaps, and a final range short of end-of-file all abort with exit 2 before anything is written. `identifiers` alone is not extractable — every cluster needs a `range`.
+- **Ranges must exactly partition the source.** Every line from 1 to `end: -1` belongs to exactly one cluster. Gaps, overlaps, and a final range short of end-of-file all abort with exit 2 before anything is written.
+- **`range` is what extracts; `identifiers` / `decisions` / `renumbered_to` are annotation.** The adapter contract exposes extraction by line range only, so a cluster without a `range` is refused. When `identifiers` are supplied they are used as a post-extraction cross-check — if a declared identifier does not appear in the extracted slice, the plan is rejected before anything is written, which catches ranges that drifted off their intended section.
 - **`disposition: retain`** covers a range for the partition proof without writing a file, so the source's own frontmatter, H1 and trailing Observations/Relations need not be forced verbatim into a child. A retained cluster must not declare `destination_path` or `scaffold`.
 - **`scaffold`** wraps the destination's content slice in a prologue (frontmatter + H1) and epilogue (Observations + Relations), so each written note stands alone. The H1 is derived from `frontmatter.title`, so the two cannot drift. Scaffolding is excluded from the SHA-256 proofs, which stay exactly as strong over the preserved content slice.
 
 Keep the YAML under 1 MB; the loader enforces this guard.
+
+**Path resolution.** Plan paths are relative and must not contain `..` — the
+CWE-22 guard rejects traversal in plan content. Since the plan lives at
+`docs/_restructure/` while destinations live in sibling directories such as
+`docs/decisions/`, pass the graph root explicitly and write every path relative
+to it:
+
+```bash
+bun run shared/composition/src/decompose.ts \
+  --plan docs/_restructure/decompose-{id}-plan.yaml --root docs
+```
+
+With `--root docs`, `source_path: decisions/ADR-042.md` and
+`destination_path: decisions/ADR-042a.md` both resolve correctly and no `../`
+is needed. Omitting `--root` resolves paths against the plan file's own
+directory, which only works when the plan sits beside its targets. The base is
+supplied by you, not by the plan, so an authored plan can never redirect its own
+resolution.
 
 ### Step 4: Adjudicate via AskUserQuestion
 
@@ -118,7 +137,11 @@ Summary format:
 Run the CLI entry point via Bun.$:
 
 ```bash
-bun run shared/composition/src/decompose.ts --plan docs/_restructure/decompose-{id}-plan.yaml
+# SKILLS_DOCS_ROOT activates the realpath containment check (CWE-22).
+# Without it the lexical guard still runs, but symlink escapes are not caught.
+export SKILLS_DOCS_ROOT="$(pwd)/docs"
+bun run shared/composition/src/decompose.ts \
+  --plan docs/_restructure/decompose-{id}-plan.yaml --root docs
 ```
 
 The script:

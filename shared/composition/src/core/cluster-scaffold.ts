@@ -56,6 +56,31 @@ export type StripResult = { ok: true; body: string } | { ok: false; reason: stri
  * input, which makes the CONVENTIONS rule "H1 matches the frontmatter title
  * verbatim" impossible to violate through the plan.
  */
+/**
+ * Frozen serialization options for scaffold frontmatter.
+ *
+ * `stripScaffold` recovers a body by RE-RENDERING the prologue and matching it
+ * against the bytes on disk, so the renderer's output is part of the recovery
+ * contract, not merely a formatting choice. If `yaml.dump` changed its wrapping,
+ * quoting or key spacing across a js-yaml upgrade, previously-written shards
+ * would stop matching and become un-strippable — recompose would fail closed
+ * (exit 2), which is the right direction, but the shards would be stranded.
+ *
+ * Keeping the options in one frozen constant makes that coupling explicit and
+ * gives an upgrade a single place to diff. The options chosen are also the
+ * stable ones: `lineWidth: -1` disables line wrapping (the most likely thing to
+ * change between versions), and explicit `quotingType` pins quote style rather
+ * than inheriting a default.
+ *
+ * js-yaml is pinned at ^4.1.0 in package.json. Any bump should re-run the
+ * scaffold round-trip tests before landing.
+ */
+const SCAFFOLD_YAML_OPTIONS = Object.freeze({
+  lineWidth: -1,
+  quotingType: '"',
+  forceQuotes: false,
+} as const);
+
 export function renderPrologue(fm: ScaffoldFrontmatter): string {
   // Stable key order, matching the house renderer in renderers/spec-root-note.ts.
   const ordered: Record<string, unknown> = {
@@ -65,9 +90,7 @@ export function renderPrologue(fm: ScaffoldFrontmatter): string {
     permalink: fm.permalink,
     tags: [...fm.tags],
   };
-  const body = yaml
-    .dump(ordered, { lineWidth: -1, quotingType: '"', forceQuotes: false })
-    .trimEnd();
+  const body = yaml.dump(ordered, { ...SCAFFOLD_YAML_OPTIONS }).trimEnd();
   return `---${NL}${body}${NL}---${NL}${NL}# ${fm.title}${NL}${NL}`;
 }
 

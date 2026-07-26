@@ -171,3 +171,50 @@ describe("the unconditional lexical guard is unaffected by configuration", () =>
     expect(result.success).toBe(true);
   });
 });
+
+describe("--root resolves the F-7 plan-location contradiction", () => {
+  // ADR-001 F-7 locks plans to docs/_restructure/ while destinations live in
+  // sibling directories (docs/decisions/). Reaching them from the plan's own
+  // directory needs `../`, which the CWE-22 lexical guard rejects. The base
+  // comes from the CALLER so the untrusted plan still cannot contain `..` and
+  // cannot redirect its own resolution base.
+  test("a sibling-directory destination works via --root, with no traversal in the plan", async () => {
+    delete process.env[ENV_KEY];
+    const graphRoot = mkdtempSync(join(tmpdir(), "graph-"));
+    await mkdir(join(graphRoot, "_restructure"), { recursive: true });
+    await mkdir(join(graphRoot, "decisions"), { recursive: true });
+    await Bun.write(join(graphRoot, "decisions", "ADR-042.md"), "alpha\nbeta\n");
+
+    const planPath = join(graphRoot, "_restructure", "plan.yaml");
+    await Bun.write(
+      planPath,
+      [
+        "plan_type: distribution",
+        "source_type: adr",
+        "source_path: decisions/ADR-042.md",
+        "renumber_map: {}",
+        "wikilink_map: {}",
+        "clusters:",
+        "  only:",
+        "    destination_path: decisions/ADR-042a.md",
+        "    range: {start: 1, end: -1}",
+        "",
+      ].join("\n"),
+    );
+
+    // Without --root the source resolves under _restructure/ and is not found.
+    expect(await decomposeMain(["--plan", planPath])).toBe(1);
+
+    // With --root it resolves against the graph root, exactly as authored.
+    expect(await decomposeMain(["--plan", planPath, "--root", graphRoot])).toBe(0);
+    expect(await Bun.file(join(graphRoot, "decisions", "ADR-042a.md")).text()).toBe(
+      "alpha\nbeta\n",
+    );
+  });
+
+  test("--root without a directory is a usage error", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "rootflag-"));
+    await Bun.write(join(dir, "p.yaml"), "plan_type: distribution\n");
+    expect(await decomposeMain(["--plan", join(dir, "p.yaml"), "--root"])).toBe(1);
+  });
+});
