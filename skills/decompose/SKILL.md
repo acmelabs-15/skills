@@ -90,6 +90,16 @@ Rules the executor enforces:
 
 Keep the YAML under 1 MB; the loader enforces this guard.
 
+**Never put a sample wikilink in a generated note body, not even in backticks.**
+A scaffold's `relations` are rendered into the destination note, and the parser
+that indexes that note treats a wikilink inside a code span as a real edge — a
+backticked example becomes a genuine unresolved relation pointing at a note that
+was never meant to exist. Code-span quoting is not an escape here. When a
+generated body needs to talk about the wikilink form, DESCRIBE it: write "a
+wikilink naming the parent by its full colon title" rather than showing the
+brackets. This applies to any content the scaffold renders, not only the
+relations block.
+
 **Path resolution.** Plan paths are relative and must not contain `..` — the
 CWE-22 guard rejects traversal in plan content. Since the plan lives at
 `docs/_restructure/` while destinations live in sibling directories such as
@@ -230,9 +240,108 @@ closure gate. The declared `mode` is preserved. The search leg WIDENS the
 worklist; it never gates it — a recall aid running over an index with known live
 defects is not reproducible enough to fail a step on.
 
+**Index traversal selects on EXISTENCE, never on edge type.** The index strips
+relation verbs from H3-grouped Relations entries — it keeps the edge but loses
+whether it was `contains` or `depends_on`, because it reads a verb only when the
+verb shares a line with its target and the grouped form puts the verb in the
+sub-header. Measured at fifteen of fifteen untyped on one ADR. So any query that
+goes through the index — this SEARCH leg, or a future relation-table query — may
+ask "is there an edge here?" and must not ask "is it a `part_of` edge?". Every
+typed step reads the note body. The GRAPH leg is already immune: it parses
+bodies directly and never consults the index, which is why it is the gate and
+this leg is not.
+
+**The highest-value use of this leg is the UNEXTRACTABLE channel** of the
+correction check below, not the reference scan. An obligation whose target is
+named only in prose — "the substrate analysis", no entity ID anywhere — is
+already found; it simply cannot be aimed. Semantic search turns that prose name
+into a candidate note and makes the obligation checkable, which is a recall gain
+on work already identified rather than a hunt for new work.
+
+Target it by reason, because only one of the three benefits:
+
+| `reason` | Semantic discovery |
+|---|---|
+| `no-resolvable-target` | YES — the prose names a note; resolve it to a candidate |
+| `ambiguous-target` | Sometimes — may narrow which of several notes was meant |
+| `no-quoted-stale-text` | NO — there is no quote to verify against, so a candidate note does not help |
+
+Running the search over all three wastes most of the effort. Feed the resolved
+candidates back as `--obligations` tuples, and record that they came from an
+advisory resolution rather than from the note's own text.
+
 Findings are the answer here, not a failure: the scan exits 0 whether it finds
 one reference or four hundred. Carry the per-class, per-target and per-source
 counts into the Step 5 summary.
+
+#### Gating assertions: prove the scan actually ran
+
+A scan that found nothing and a scan that silently did not run produce the same
+manifest. Both read as "no impact", and the second is the one that lets a split
+proceed blind. Assert two things before you believe a low count.
+
+**Parity.** Compare the count of markdown files on disk under the docs root
+against the count of indexed entities carrying a permalink. They should match.
+A shortfall means the index does not know about notes that exist, so any
+index-derived leg is under-reporting by exactly that gap. Note the file-count
+must be taken over the same extension set the index covers — an earlier audit
+reported a 69-vs-73 discrepancy that turned out to be the auditor's own `*.md`
+filter excluding four `.yaml` files, not an index defect.
+
+**Null-target relations as a DELTA, never an absolute.** Count relations whose
+target did not resolve. Read the change across the operation, not the number: a
+rise means the split created unresolvable edges. The absolute value carries no
+signal because a healthy baseline is project-specific — one graph in this
+ecosystem sits at 0 and another at 97. A wiring that failed on "null-targets > 0"
+would pass the first graph while permanently failing the second, and would tell
+you nothing about either.
+
+Record both with the manifest so the closure step can compare like with like.
+
+#### Companion checks: unlanded corrections and derivable figures
+
+Two more things a split can invalidate, both cheap to baseline now and
+meaningless to check afterwards without a baseline.
+
+**Unlanded corrections.** A correction that names its target and quotes the text
+it retires is a machine-checkable obligation. Splitting a note that is the target
+of an OUTSTANDING obligation moves the target assertion out from under the
+correction — the obligation then points into a child, or into content that stayed
+behind, and nobody finds out. Check before you split:
+
+```bash
+bun run shared/composition/src/correction-reconcile.ts \
+  --docs-root docs --source <source-note.md> \
+  --out docs/_restructure/decompose-{id}-corrections-before.json
+```
+
+Exit 2 means at least one obligation is OUTSTANDING or its target was not found.
+Resolve those first, or record in the plan summary that you are splitting over
+them deliberately. `LANDED-UNMARKED` findings do not fail the run — they are a
+discipline signal, not a factual defect. The tool performs no discovery, so
+`--source` is repeatable and naming the source plus any note that files
+corrections against it is your job.
+
+**Derivable figures.** A stated figure that summarises a structure — a totals
+row, an "N of M" tally, an "N rows" claim — is re-derivable from that structure,
+and a split is exactly what makes it wrong: the source keeps the claim while the
+table moves to a child, or a child inherits half a table and the whole count.
+Baseline before:
+
+```bash
+bun run shared/composition/src/figure-check.ts \
+  --docs-root docs --note <source-note.md> \
+  --out docs/_restructure/decompose-{id}-figures-before.json
+```
+
+Exit 2 means a figure already mismatches its structure; fix or record it now,
+because after the split you cannot tell an inherited mismatch from one the split
+caused. `UNANCHORED` findings do not fail a run — that is the tool declining to
+guess which structure a figure refers to, which is a report line rather than a
+defect. For claims that need pointing at explicitly, including cross-note ones,
+use a checks file instead of `--note`.
+
+Both are read-only over the tree; the only file either writes is `--out`.
 
 ### Step 5: Adjudicate via AskUserQuestion
 
@@ -325,6 +434,32 @@ computed from) and `outstandingAdvisory` (semantic). Advisory entries cannot be
 re-derived by a deterministic scan, so they are carried forward with their prior
 status and marked unverified rather than being silently reported as UPDATED.
 Confirm those by hand or re-run the search.
+
+#### Companion re-checks
+
+Re-run both Step 4 companions across the source AND every destination, and diff
+against the baselines:
+
+```bash
+bun run shared/composition/src/correction-reconcile.ts \
+  --docs-root docs --source <source-note.md> --source <dest-a.md> --source <dest-b.md> \
+  --out docs/_restructure/decompose-{id}-corrections-after.json
+
+bun run shared/composition/src/figure-check.ts \
+  --docs-root docs --note <source-note.md> --note <dest-a.md> --note <dest-b.md> \
+  --out docs/_restructure/decompose-{id}-figures-after.json
+```
+
+An obligation that was LANDED before and is TARGET-NOT-FOUND after means the
+split moved a corrected assertion out from under its correction — repoint the
+obligation at whichever child inherited it. A figure that matched before and
+mismatches after is a count the split invalidated: the source kept a claim about
+a table that left, or a child inherited a claim wider than the rows it received.
+
+Report both diffs alongside the closure summary. A destination whose figures no
+longer derive is not a clean split even when every SHA-256 proof passed — the
+hashes guarantee the bytes moved intact, not that the sentences about them are
+still true.
 
 #### Index staleness
 

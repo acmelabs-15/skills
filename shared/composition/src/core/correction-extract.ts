@@ -38,7 +38,7 @@ import type {
 } from "../schemas/correction-obligation.js";
 import { findCorrectionMarkers, retirementMatch } from "./correction-markers.js";
 import { atomizeBlocks, sliceSections } from "./markdown-slices.js";
-import { findEntityIds } from "./note-index.js";
+import { findEntityIds } from "./note-identity.js";
 
 export interface ExtractionResult {
   readonly obligations: CorrectionObligation[];

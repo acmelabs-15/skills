@@ -40,7 +40,16 @@ import {
   type ResolvedTarget,
 } from "../schemas/reference-manifest.js";
 import { applyGraphLeg } from "./reference-graph.js";
-import { deriveEntityId, matchLine } from "./reference-matchers.js";
+import { matchLine } from "./reference-matchers.js";
+import {
+  type NoteFileSystem,
+  type NoteIdentity,
+  defaultNoteFileSystem,
+  entityIdOfTitle,
+  locateNote,
+  readFrontmatter,
+  stringField,
+} from "./note-identity.js";
 import { type ParsedRelation, parseRelationEntries } from "./relations.js";
 
 const processor = unified().use(remarkParse).use(remarkGfm).use(remarkFrontmatter, ["yaml"]);
@@ -63,74 +72,25 @@ export interface TargetSpec {
   aliasEntityIds?: readonly string[] | undefined;
 }
 
-/** Identity and graph edges of one note, read once during the scan pass. */
-export interface NoteRecord {
-  /** Path relative to the docs root. */
-  path: string;
-  title: string;
-  entityId: string;
-  permalink: string;
+/**
+ * Identity and graph edges of one note, read once during the scan pass. Extends
+ * the shared identity shape so a `NoteIndex` can resolve references over these
+ * records exactly as it does over the correction and figure passes' records.
+ */
+export interface NoteRecord extends NoteIdentity {
   relations: ParsedRelation[];
   /** 1-indexed line span of the `## Relations` section body, if present. */
   relationsRange: { start: number; end: number } | null;
 }
 
-/** Seam for tests and for callers with a tree that is not on disk. */
-export interface ScanFileSystem {
-  /** Markdown paths relative to `docsRoot`. */
-  listMarkdown(docsRoot: string): AsyncIterable<string>;
-  read(absPath: string): Promise<string>;
-  exists(absPath: string): Promise<boolean>;
-}
-
-export const defaultScanFileSystem: ScanFileSystem = {
-  async *listMarkdown(docsRoot: string) {
-    const glob = new Bun.Glob("**/*.md");
-    for await (const rel of glob.scan({ cwd: docsRoot, onlyFiles: true, absolute: false })) {
-      yield rel;
-    }
-  },
-  async read(absPath: string) {
-    return await Bun.file(absPath).text();
-  },
-  async exists(absPath: string) {
-    return await Bun.file(absPath).exists();
-  },
-};
-
 export interface ScanOptions {
   docsRoot: string;
   targets: readonly TargetSpec[];
-  fileSystem?: ScanFileSystem;
+  fileSystem?: NoteFileSystem;
   /** Externally-supplied advisory entries (semantic search, index staleness). */
   merge?: readonly ReferenceFinding[];
   /** Injected so a manifest can be byte-compared in tests. */
   now?: string;
-}
-
-const FRONTMATTER_RE = /^---\n([\s\S]*?)\n---/;
-
-/**
- * Read frontmatter with FAILSAFE_SCHEMA (CWE-502), matching the plan loader's
- * posture. Every scalar resolves as a string, which is exactly right here —
- * `title` and `permalink` are the only fields read and both are strings.
- */
-function readFrontmatter(content: string): Record<string, unknown> {
-  const match = FRONTMATTER_RE.exec(content);
-  if (!match) return {};
-  const loaded = yaml.load(match[1] ?? "", { schema: yaml.FAILSAFE_SCHEMA });
-  return typeof loaded === "object" && loaded !== null ? (loaded as Record<string, unknown>) : {};
-}
-
-function stringField(frontmatter: Record<string, unknown>, field: string): string {
-  const value = frontmatter[field];
-  return typeof value === "string" ? value.trim() : "";
-}
-
-/** Absolute path plus the docs-root-relative form recorded in the manifest. */
-function locate(docsRoot: string, target: string): { abs: string; rel: string } {
-  const abs = isAbsolute(target) ? resolve(target) : resolve(docsRoot, target);
-  return { abs, rel: relative(resolve(docsRoot), abs) };
 }
 
 function sectionLineRange(children: readonly RootContent[]): { start: number; end: number } | null {
@@ -163,7 +123,7 @@ function noteRecord(path: string, content: string): NoteRecord {
   return {
     path,
     title,
-    entityId: deriveEntityId(title),
+    entityId: entityIdOfTitle(title),
     permalink: stringField(frontmatter, "permalink"),
     relations,
     relationsRange,
@@ -173,7 +133,7 @@ function noteRecord(path: string, content: string): NoteRecord {
 export async function resolveTargets(
   docsRoot: string,
   specs: readonly TargetSpec[],
-  fileSystem: ScanFileSystem = defaultScanFileSystem,
+  fileSystem: NoteFileSystem = defaultNoteFileSystem,
 ): Promise<ResolvedTarget[]> {
   if (specs.length === 0) {
     throw new PlanValidationError("no targets supplied; a scan with no target has no meaning", [
@@ -182,7 +142,7 @@ export async function resolveTargets(
   }
   const resolved: ResolvedTarget[] = [];
   for (const spec of specs) {
-    const { abs, rel } = locate(docsRoot, spec.path);
+    const { abs, rel } = locateNote(docsRoot, spec.path);
     if (!(await fileSystem.exists(abs))) {
       throw new PlanValidationError(`target note not found: ${abs}`, [
         { path: spec.path, message: "file does not exist" },
@@ -197,7 +157,7 @@ export async function resolveTargets(
     }
     resolved.push({
       path: rel,
-      entityId: deriveEntityId(title),
+      entityId: entityIdOfTitle(title),
       title,
       permalink: stringField(frontmatter, "permalink"),
       aliasTitles: [...(spec.aliasTitles ?? [])],
@@ -257,7 +217,7 @@ async function scanTree(
   notes: Map<string, NoteRecord>;
   filesScanned: number;
 }> {
-  const fileSystem = options.fileSystem ?? defaultScanFileSystem;
+  const fileSystem = options.fileSystem ?? defaultNoteFileSystem;
   const root = resolve(options.docsRoot);
   const excluded = new Set(targets.map((target) => target.path));
 
@@ -297,7 +257,7 @@ export async function scanReferences(
 
 /** Resolve targets, scan the tree, merge advisory entries, assemble the manifest. */
 export async function buildImpactManifest(options: ScanOptions): Promise<ImpactManifest> {
-  const fileSystem = options.fileSystem ?? defaultScanFileSystem;
+  const fileSystem = options.fileSystem ?? defaultNoteFileSystem;
   const docsRoot = resolve(options.docsRoot);
   const targets = await resolveTargets(docsRoot, options.targets, fileSystem);
   const { findings, filesScanned } = await scanReferences(targets, { docsRoot, fileSystem });

@@ -10,6 +10,7 @@
 
 import type { ReferenceClass, ReferenceFinding, ResolvedTarget } from "../schemas/reference-manifest.js";
 import { SUPPRESSION_PRECEDENCE } from "../schemas/reference-manifest.js";
+import { ENTITY_PREFIX_SET, normalizeReference } from "./note-identity.js";
 
 /** A match before overlap suppression; carries the span suppression needs. */
 interface Candidate {
@@ -32,30 +33,6 @@ const WIKILINK_RE = /\[\[([^[\]]+)\]\]/g;
 
 export function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-/**
- * Collapse a reference to its comparable skeleton: lowercase, every run of
- * non-alphanumerics folded to a single hyphen. Makes the canonical colon form,
- * the colon-less form, and the filename-stem form all converge, which is how a
- * malformed near-miss is told apart from an unrelated wikilink.
- */
-export function normalizeReference(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-/**
- * Entity ID = the segment before the first colon of a canonical title, so
- * `CRIT-004-PRD-001: Debate Log` yields `CRIT-004-PRD-001`. A title with no
- * colon is malformed per the naming spec; its whole text is used rather than
- * failing the scan, since an unscannable target is worse than an odd ID.
- */
-export function deriveEntityId(title: string): string {
-  const colon = title.indexOf(":");
-  return (colon > 0 ? title.slice(0, colon) : title).trim();
 }
 
 function formsOf(current: string, aliases: readonly string[]): Form[] {
@@ -119,29 +96,6 @@ function matchPermalinks(text: string, target: ResolvedTarget): Candidate[] {
 }
 
 /**
- * Canonical entity prefixes. A designator whose letters are one of these is a
- * reference to a SIBLING note, not a fragment of the preceding one — without
- * this guard `PRD-001 PRD-002` reads as "PRD-001, fragment PRD-002".
- */
-const ENTITY_PREFIXES: ReadonlySet<string> = new Set([
-  "ADR",
-  "ANALYSIS",
-  "CRIT",
-  "DESIGN",
-  "EPIC",
-  "PLAN",
-  "PRD",
-  "QA",
-  "REQ",
-  "RETRO",
-  "SECURITY",
-  "SESSION",
-  "SKILL",
-  "SPEC",
-  "TASK",
-]);
-
-/**
  * A citation fragment takes one of two shapes in practice:
  *
  *   keyword    `ANALYSIS-034 Part C`, `ANALYSIS-047 Sections 6`
@@ -170,7 +124,10 @@ function citationFragment(match: RegExpExecArray | RegExpMatchArray): string | n
   if (keyword !== undefined) return `${keyword} ${(match[2] ?? "").replace(/\.+$/, "")}`;
   const designator = match[3] ?? "";
   const letters = /^[A-Za-z]+/.exec(designator)?.[0]?.toUpperCase() ?? "";
-  if (ENTITY_PREFIXES.has(letters)) return null;
+  // A designator whose letters are a canonical entity prefix is a reference to a
+  // SIBLING note, not a fragment: without this guard `PRD-001 PRD-002` reads as
+  // "PRD-001, fragment PRD-002".
+  if (ENTITY_PREFIX_SET.has(letters)) return null;
   return `${designator}-${(match[4] ?? "").replace(/\.+$/, "")}`;
 }
 

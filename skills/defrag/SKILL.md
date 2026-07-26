@@ -143,6 +143,45 @@ plan-time impact scan and execution-time closure check. Deletes have no such
 owner, so a stale-delete with a non-zero inbound count needs its repointing
 tracked here or it will not be tracked at all.
 
+## Correction and figure audit
+
+Two further audits run over the same candidate set, both read-only, both using
+the defrag convention that exit 2 means the audit found work.
+
+**Unlanded corrections.** A correction naming its target and quoting the text it
+retires is a machine-checkable obligation:
+
+```bash
+bun run shared/composition/src/correction-reconcile.ts \
+  --docs-root docs --source <candidate.md> [--source ...] \
+  --out defrag/reports/defrag-YYYY-MM-DD-corrections.json
+```
+
+An OUTSTANDING obligation on a candidate changes what the candidate is. A note
+carrying an unlanded correction is not a split candidate that happens to need
+tidying — restructuring it moves the target assertion out from under a correction
+nobody has applied yet, and the correction is then pointing into a child. Surface
+it as a blocker on that candidate rather than a note beside it. `TARGET-NOT-FOUND`
+is stronger still: the correction names a note that has moved or never existed.
+
+**Derivable figures.** Stated figures that summarise structure can be re-derived
+from it, and `--all` needs no configuration:
+
+```bash
+bun run shared/composition/src/figure-check.ts \
+  --docs-root docs --all \
+  --out defrag/reports/defrag-YYYY-MM-DD-figures.json
+```
+
+MISMATCH findings are structural-fix candidates in their own right — a stale
+count is wrong whether or not the note is ever restructured, and this sweep is
+the only place defrag would notice. `UNANCHORED` findings are the tool declining
+to guess which structure a figure refers to; report them, do not action them.
+
+Run the `--all` figure sweep even when the candidate list is short. It is the
+cheapest audit in the cycle and the one whose findings are most likely to be
+independent of the thresholds that produced the candidates.
+
 ## Delegation
 
 - **Split** → invoke the decompose skill with the note path and detected

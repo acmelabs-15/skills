@@ -6,7 +6,8 @@ import { mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { checkClosure } from "../src/core/reference-closure.js";
-import { deriveEntityId, matchLine, normalizeReference } from "../src/core/reference-matchers.js";
+import { matchLine } from "../src/core/reference-matchers.js";
+import { entityIdOfTitle, normalizeReference } from "../src/core/note-identity.js";
 import { buildImpactManifest, resolveTargets } from "../src/core/reference-scan.js";
 import { main, parseArgs } from "../src/reference-scan.js";
 import {
@@ -17,6 +18,19 @@ import {
   SEARCH_MODES,
 } from "../src/schemas/reference-manifest.js";
 
+/**
+ * RULING on the `await expect(...).rejects.toThrow(...)` hints in this file.
+ *
+ * A diagnostic flags the `await` as having no effect, and it is right: on Bun
+ * 1.3.14 `expect(promise).rejects.toThrow()` returns `undefined` rather than a
+ * thenable, so awaiting it is a no-op. The assertion still runs and still fails
+ * correctly — verified by an actual observed failure attributed to its own test.
+ *
+ * Left as-is deliberately. This is the house form: five other call sites use it
+ * (`filename-rewrite.test.ts`, `atomic-write.test.ts`). Changing only the three
+ * here would leave two conventions for one thing, which is worse than the
+ * cosmetic hint. It is an eight-site change or none, and none was chosen.
+ */
 const FIXTURE_ROOT = join(import.meta.dir, "fixtures", "reference-tree");
 const TARGET_NOTE = "analysis/ANALYSIS-100-reference-scan-target.md";
 const DECISION_NOTE = "decisions/ADR-100-reference-scan-decision.md";
@@ -42,7 +56,7 @@ function classesOf(text: string, targets: readonly ResolvedTarget[] = [target()]
   return matchLine(text, targets, "some/file.md", 1).map((finding) => finding.class);
 }
 
-describe("normalizeReference / deriveEntityId", () => {
+describe("normalizeReference / entityIdOfTitle", () => {
   test("colon form, colon-less form, and filename-stem form all converge", () => {
     const canonical = normalizeReference("ANALYSIS-100: Reference Scan Target");
     expect(normalizeReference("ANALYSIS-100 Reference Scan Target")).toBe(canonical);
@@ -50,9 +64,9 @@ describe("normalizeReference / deriveEntityId", () => {
   });
 
   test("entity ID is the segment before the first colon", () => {
-    expect(deriveEntityId("ANALYSIS-100: Reference Scan Target")).toBe("ANALYSIS-100");
-    expect(deriveEntityId("CRIT-004-PRD-001: Debate Log")).toBe("CRIT-004-PRD-001");
-    expect(deriveEntityId("SESSION-2026-01-01_01: Ledger")).toBe("SESSION-2026-01-01_01");
+    expect(entityIdOfTitle("ANALYSIS-100: Reference Scan Target")).toBe("ANALYSIS-100");
+    expect(entityIdOfTitle("CRIT-004-PRD-001: Debate Log")).toBe("CRIT-004-PRD-001");
+    expect(entityIdOfTitle("SESSION-2026-01-01_01: Ledger")).toBe("SESSION-2026-01-01_01");
   });
 });
 

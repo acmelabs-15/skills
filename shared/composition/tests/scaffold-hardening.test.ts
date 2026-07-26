@@ -107,7 +107,10 @@ describe("structural injection via observations and relations", () => {
 });
 
 describe("volume bound (mirrors the regenerated_sections integrity floor)", () => {
-  test("rejects an unbounded observation list", () => {
+  // Observations have no hard maximum either: minimum three, unbounded above,
+  // with H3 sub-grouping required past fifteen as a formatting rule. A CRIT that
+  // legitimately tracks forty findings must be able to state them.
+  test("accepts an unbounded observation list — observations have no hard maximum", () => {
     const scaffold = {
       ...validScaffold,
       observations: Array.from({ length: 40 }, (_, i) => ({
@@ -116,7 +119,29 @@ describe("volume bound (mirrors the regenerated_sections integrity floor)", () =
         tags: ["bulk"],
       })),
     };
-    expect(ClusterScaffoldSchema.safeParse(scaffold).success).toBe(false);
+    expect(ClusterScaffoldSchema.safeParse(scaffold).success).toBe(true);
+  });
+
+  test("still rejects an empty observation list — the minimum survives", () => {
+    expect(ClusterScaffoldSchema.safeParse({ ...validScaffold, observations: [] }).success).toBe(
+      false,
+    );
+  });
+
+  test("tag maxima are canonical bounds and STAY enforced", () => {
+    const tooManyFrontmatterTags = {
+      ...validScaffold,
+      frontmatter: {
+        ...validScaffold.frontmatter,
+        tags: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"],
+      },
+    };
+    expect(ClusterScaffoldSchema.safeParse(tooManyFrontmatterTags).success).toBe(false);
+    const tooManyObservationTags = {
+      ...validScaffold,
+      observations: [{ category: "fact" as const, text: "x", tags: ["a", "b", "c", "d"] }],
+    };
+    expect(ClusterScaffoldSchema.safeParse(tooManyObservationTags).success).toBe(false);
   });
 
   // Relations carry NO hard maximum, per the canonical conventions: minimum

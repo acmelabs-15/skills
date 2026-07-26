@@ -23,36 +23,35 @@
  */
 
 import type { ReferenceFinding, ResolvedTarget } from "../schemas/reference-manifest.js";
-import { normalizeReference } from "./reference-matchers.js";
+import { NoteIndex } from "./note-index.js";
+import { normalizeReference } from "./note-identity.js";
 import { inverseVerb } from "./relations.js";
 import type { NoteRecord } from "./reference-scan.js";
 
-/** Resolve `[[Title]]` to a note, tolerating alias titles and near-miss forms. */
-export class TitleIndex {
-  private readonly exact = new Map<string, NoteRecord>();
-  private readonly normalized = new Map<string, NoteRecord>();
-
-  constructor(notes: Iterable<NoteRecord>, targets: readonly ResolvedTarget[]) {
-    for (const note of notes) {
-      this.exact.set(note.title, note);
-      this.normalized.set(normalizeReference(note.title), note);
-    }
-    // Alias titles resolve to the current note so an edge still written with a
-    // retired title is verified rather than silently treated as unresolvable.
-    for (const target of targets) {
-      const note = [...notes].find((candidate) => candidate.path === target.path);
-      if (!note) continue;
-      for (const alias of target.aliasTitles) {
-        if (!this.exact.has(alias)) this.exact.set(alias, note);
-        const key = normalizeReference(alias);
-        if (!this.normalized.has(key)) this.normalized.set(key, note);
-      }
+/**
+ * Resolve an edge target to a note. The shared `NoteIndex` handles the four
+ * canonical forms plus the punctuation-insensitive fallback; the alias map
+ * layered on top is scan-specific — a retired title is history the caller
+ * declared, not a property of the tree — so an edge still written with an old
+ * title is verified rather than silently treated as unresolvable.
+ */
+function buildResolver(
+  notes: readonly NoteRecord[],
+  targets: readonly ResolvedTarget[],
+): (reference: string) => NoteRecord | undefined {
+  const index = new NoteIndex<NoteRecord>("", notes);
+  const aliases = new Map<string, NoteRecord>();
+  const byPath = new Map(notes.map((note) => [note.path, note]));
+  for (const target of targets) {
+    const note = byPath.get(target.path);
+    if (!note) continue;
+    for (const alias of target.aliasTitles) {
+      const key = normalizeReference(alias);
+      if (!aliases.has(key)) aliases.set(key, note);
     }
   }
-
-  lookup(title: string): NoteRecord | undefined {
-    return this.exact.get(title.trim()) ?? this.normalized.get(normalizeReference(title));
-  }
+  return (reference) =>
+    index.resolveNormalized(reference) ?? aliases.get(normalizeReference(reference));
 }
 
 /** Every title form under which a note may legitimately be referenced. */
@@ -99,14 +98,14 @@ function violation(
 function checkOutward(
   target: ResolvedTarget,
   targetNote: NoteRecord,
-  index: TitleIndex,
+  resolve: (reference: string) => NoteRecord | undefined,
   targetForms: readonly string[],
 ): ReferenceFinding[] {
   const out: ReferenceFinding[] = [];
   for (const edge of targetNote.relations) {
     const expected = inverseVerb(edge.verb);
     if (expected === null) continue; // non-canonical verb; a schema concern, not ours
-    const counterpart = index.lookup(edge.target);
+    const counterpart = resolve(edge.target);
     if (!counterpart || counterpart.path === targetNote.path) continue;
     if (hasEdge(counterpart, expected, targetForms)) continue;
     out.push(
@@ -190,14 +189,14 @@ export function applyGraphLeg(params: {
 }): ReferenceFinding[] {
   const { targets, notes, textFindings } = params;
   const all = [...notes.values()];
-  const index = new TitleIndex(all, targets);
+  const resolve = buildResolver(all, targets);
   const graph: ReferenceFinding[] = [];
 
   for (const target of targets) {
     const targetNote = notes.get(target.path);
     if (!targetNote) continue;
     const targetForms = titleFormsOf(targetNote, target);
-    graph.push(...checkOutward(target, targetNote, index, targetForms));
+    graph.push(...checkOutward(target, targetNote, resolve, targetForms));
     graph.push(...checkInward(target, targetNote, all, targetForms));
   }
   return [...promoteCorroborated(textFindings, notes), ...graph];

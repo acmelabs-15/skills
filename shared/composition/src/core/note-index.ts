@@ -14,6 +14,8 @@
  * and one that does not.
  */
 
+// node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
+import { resolve } from "node:path";
 import { PlanValidationError } from "../schemas/plan-yaml.js";
 import {
   type NoteFileSystem,
@@ -38,22 +40,34 @@ export interface IndexedNote extends NoteIdentity {
   readonly content: string;
 }
 
-export class NoteIndex {
-  private readonly byPath = new Map<string, IndexedNote>();
-  private readonly byEntityId = new Map<string, IndexedNote[]>();
-  private readonly byTitle = new Map<string, IndexedNote>();
-  private readonly byPermalink = new Map<string, IndexedNote>();
+/**
+ * Generic over the note record so every pass can share one index. The
+ * correction and figure passes index `IndexedNote` (identity plus content); the
+ * reference scanner indexes a record carrying parsed relations instead. Both
+ * resolve references through the same four-form logic rather than each carrying
+ * a private title map.
+ */
+export class NoteIndex<T extends NoteIdentity = IndexedNote> {
+  private readonly byPath = new Map<string, T>();
+  private readonly byEntityId = new Map<string, T[]>();
+  private readonly byTitle = new Map<string, T>();
+  private readonly byNormalizedTitle = new Map<string, T>();
+  private readonly byPermalink = new Map<string, T>();
 
   constructor(
     readonly docsRoot: string,
-    notes: readonly IndexedNote[],
+    notes: readonly T[],
   ) {
     for (const note of notes) {
       this.byPath.set(note.path, note);
       const bucket = this.byEntityId.get(note.entityId) ?? [];
       bucket.push(note);
       this.byEntityId.set(note.entityId, bucket);
-      if (note.title.length > 0) this.byTitle.set(note.title, note);
+      if (note.title.length > 0) {
+        this.byTitle.set(note.title, note);
+        const normalized = normalizeReference(note.title);
+        if (!this.byNormalizedTitle.has(normalized)) this.byNormalizedTitle.set(normalized, note);
+      }
       if (note.permalink.length > 0) this.byPermalink.set(note.permalink, note);
     }
   }
@@ -62,7 +76,7 @@ export class NoteIndex {
     return this.byPath.size;
   }
 
-  all(): IndexedNote[] {
+  all(): T[] {
     return [...this.byPath.values()].sort((a, b) => a.path.localeCompare(b.path));
   }
 
@@ -72,7 +86,7 @@ export class NoteIndex {
    * — duplicate identifiers are a known defect class in this corpus, and
    * guessing which note a correction meant is exactly the wrong response.
    */
-  resolve(reference: string): IndexedNote | undefined {
+  resolve(reference: string): T | undefined {
     const trimmed = reference.trim();
     const direct = this.byPath.get(trimmed);
     if (direct) return direct;
@@ -83,6 +97,17 @@ export class NoteIndex {
     const bucket = this.byEntityId.get(entityIdOfTitle(trimmed));
     if (bucket?.length === 1) return bucket[0];
     return undefined;
+  }
+
+  /**
+   * `resolve`, then a punctuation-insensitive title fallback so a colon-less or
+   * filename-stem form still lands. Kept as a SEPARATE method rather than
+   * folded into `resolve`: a verification pass that reports unresolvable
+   * targets depends on strict resolution to spot a genuinely broken reference,
+   * and quietly making it lenient would turn those reports into false passes.
+   */
+  resolveNormalized(reference: string): T | undefined {
+    return this.resolve(reference) ?? this.byNormalizedTitle.get(normalizeReference(reference));
   }
 
   /** True when the reference names an entity ID more than one note claims. */
@@ -115,12 +140,6 @@ export async function buildNoteIndex(
     });
   }
   return new NoteIndex(root, notes);
-}
-
-/** Absolute path plus the docs-root-relative form recorded in reports. */
-export function locateNote(docsRoot: string, target: string): { abs: string; rel: string } {
-  const abs = isAbsolute(target) ? resolve(target) : resolve(docsRoot, target);
-  return { abs, rel: relative(resolve(docsRoot), abs) };
 }
 
 /** Load one note by path, failing loudly when it is absent. */

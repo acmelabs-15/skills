@@ -148,8 +148,71 @@ Merged entries are forced to `source: SEARCH` and `advisory: true` whatever the
 file claims; the declared `mode` is preserved. The search leg widens the
 worklist and never gates it.
 
+**Index traversal selects on EXISTENCE, never on edge type.** The index strips
+relation verbs from H3-grouped Relations entries — it reads a verb only when the
+verb shares a line with its target, and the grouped form puts the verb in the
+sub-header. Measured at fifteen of fifteen untyped on one ADR. Any query through
+the index may ask "is there an edge?" and must not ask "is it a `contains`
+edge?"; typed steps read the note body. The GRAPH leg parses bodies directly and
+never consults the index, which is why it gates and this leg does not.
+
+**The highest-value use of this leg is the UNEXTRACTABLE channel** of the
+correction check below. An obligation whose target is named only in prose is
+already found and merely un-aimable; semantic search turns the prose name into a
+candidate note and makes it checkable. Target it by reason —
+`no-resolvable-target` benefits, `ambiguous-target` sometimes, and
+`no-quoted-stale-text` does not (with no quote there is nothing to verify, so a
+candidate note adds nothing). Feed resolved candidates back as `--obligations`
+tuples and record that the aim came from an advisory resolution.
+
+#### Gating assertions: prove the scan actually ran
+
+A scan that found nothing is indistinguishable from a scan that silently did not
+run, and both read as no-impact. Before believing a low count, assert file-count
+parity (markdown files on disk under the docs root against indexed entities
+carrying a permalink — taken over the same extension set, since a mismatched
+filter has already produced a false 69-vs-73 discrepancy), and read null-target
+relation counts as a DELTA across the operation rather than an absolute. A rise
+means the merge created unresolvable edges; the absolute is project-specific and
+carries no signal, with one graph here at 0 and another at 97.
+
 Findings are the answer, not a failure: the scan exits 0 whatever it finds.
 Carry the per-class, per-target and per-source counts into the Step 4 summary.
+
+#### Companion checks: unlanded corrections and derivable figures
+
+A merge invalidates two more classes, both cheap to baseline now and
+uncheckable afterwards without a baseline.
+
+**Unlanded corrections.** A correction naming its target and quoting the text it
+retires is a machine-checkable obligation. Merging a note that is the target of
+an OUTSTANDING obligation buries the target assertion inside a larger note, and
+concatenation can also resurrect a quote a correction had retired — the retired
+text arrives from one source while another source's correction claims it is
+gone. Baseline every source before merging:
+
+```bash
+bun run shared/composition/src/correction-reconcile.ts \
+  --docs-root docs --source <source-a.md> --source <source-b.md> \
+  --out docs/_restructure/recompose-{id}-corrections-before.json
+```
+
+Exit 2 means an obligation is OUTSTANDING or its target was not found. Resolve
+first or record that you are merging over it deliberately. `LANDED-UNMARKED` is
+a discipline signal, not a factual defect.
+
+**Derivable figures.** Figures that summarise structure go wrong on a merge in
+the opposite direction from a split: two sources each claiming "8 rows" become
+one note whose table has sixteen, and both claims survive into it. Baseline:
+
+```bash
+bun run shared/composition/src/figure-check.ts \
+  --docs-root docs --note <source-a.md> --note <source-b.md> \
+  --out docs/_restructure/recompose-{id}-figures-before.json
+```
+
+`UNANCHORED` findings do not fail a run — that is the tool declining to guess.
+Both tools are read-only; the only file either writes is `--out`.
 
 ### Step 4: Adjudicate via AskUserQuestion
 
@@ -220,6 +283,32 @@ The summary splits `outstanding` (deterministic — what `closed` is computed
 from) from `outstandingAdvisory` (search). Advisory entries cannot be re-derived
 deterministically, so they are carried forward marked unverified — with their
 mode named in the detail — rather than silently reported as UPDATED.
+
+#### Companion re-checks
+
+Re-run both Step 3 companions against the merged target and diff the baselines:
+
+```bash
+bun run shared/composition/src/correction-reconcile.ts \
+  --docs-root docs --source <merged-target.md> \
+  --out docs/_restructure/recompose-{id}-corrections-after.json
+
+bun run shared/composition/src/figure-check.ts \
+  --docs-root docs --note <merged-target.md> \
+  --out docs/_restructure/recompose-{id}-figures-after.json
+```
+
+The merge-specific failure to look for: an obligation that was LANDED in its
+source and is OUTSTANDING in the target. That means the concatenation reinstated
+text a correction had retired — the correction's quote is findable again in the
+merged note. Byte-preservation and correctness pull in opposite directions here,
+and the SHA-256 proof will happily confirm the wrong one. Any figure that matched
+per-source and mismatches merged is a count now summarising a bigger structure
+than it was written for.
+
+Report both diffs with the closure summary.
+
+#### Index staleness
 
 Search for each retired title and permalink of the absorbed sources. Any hit
 still served that `list_directory` does not corroborate is an `index-stale`

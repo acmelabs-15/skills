@@ -217,14 +217,21 @@ const scaffoldTag = structuralText(80).refine((v) => /^\S+$/.test(v), {
  * side, since a destination that is mostly rendered scaffold carries a passing
  * proof that guarantees very little about the note a reader actually sees.
  */
-const SCAFFOLD_MAX_OBSERVATIONS = 15;
-
 /**
- * Relations carry NO hard maximum, per the canonical conventions: minimum two,
- * unbounded above, with H3 type-grouping REQUIRED past twelve as a FORMATTING
- * rule rather than a cap. The historical eight-relation cap was removed exactly
- * because it forced relationship loss — a note that legitimately `contains`
- * twenty children had to either drop edges or fake them.
+ * Neither observations nor relations carry a hard maximum, per the canonical
+ * conventions. Observations: minimum three, unbounded above, H3 SUB-GROUPING
+ * required past fifteen. Relations: minimum two, unbounded above, H3
+ * TYPE-GROUPING required past twelve. Both thresholds are FORMATTING rules —
+ * "structure this so it stays scannable" — not caps, and encoding either as a
+ * `.max()` converts a formatting rule into content loss.
+ *
+ * The historical eight-relation cap was removed for exactly this reason: a note
+ * that legitimately `contains` twenty children had to either drop edges or fake
+ * them. The fifteen-observation cap was the same mistake against a CRIT that
+ * legitimately tracks twenty findings.
+ *
+ * Tag counts DO keep their maxima (2-5 in frontmatter, 1-3 per observation).
+ * Those are canonical bounds in their own right, not formatting thresholds.
  *
  * A count cap was a poor proxy for the integrity concern above in any case. What
  * that concern is really about is the RATIO of rendered scaffold to preserved
@@ -254,8 +261,7 @@ export const ClusterScaffoldSchema = z
           tags: z.array(scaffoldTag).min(1).max(3),
         }),
       )
-      .min(1)
-      .max(SCAFFOLD_MAX_OBSERVATIONS),
+      .min(1),
     relations: z.array(RelationSchema.extend({ target: structuralText() })).min(1),
   })
   .strict();
