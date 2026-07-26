@@ -45,6 +45,32 @@ const RenumberMapSchema = z.record(IdentifierString, IdentifierString).superRefi
 const WikilinkMapSchema = z.record(IdentifierString, IdentifierString);
 
 /**
+ * Integer field tolerant of the string form that `yaml.FAILSAFE_SCHEMA`
+ * produces. FAILSAFE_SCHEMA is mandated by ADR-001 Confirmation (CWE-502): it
+ * resolves every scalar as a string, so `start: 1` reaches Zod as `"1"`. Per
+ * ADR-002 D-3 the validator — not the YAML parser — owns type conversion
+ * ("YAML type coercion quirks are mitigated by strict Zod validation on load").
+ *
+ * Coercion is deliberately narrower than `z.coerce.number()`, which would
+ * accept `""` as 0 and `" 12 "` as 12: only an optionally-signed run of digits
+ * is admitted.
+ */
+const YamlInt = z.union([z.number().int(), z.string().regex(/^-?\d+$/)]).transform(Number);
+
+/**
+ * Cluster line range per ADR-002 D-5 `lineRangeSchema`: 1-indexed inclusive,
+ * `end: -1` meaning end-of-file.
+ */
+const LineRangeSchema = z
+  .object({
+    start: YamlInt.refine((n) => n >= 1, { message: "start must be >= 1" }),
+    end: YamlInt,
+  })
+  .refine((r) => r.end === -1 || r.end >= r.start, {
+    message: "end must be >= start, or -1 for end-of-file",
+  });
+
+/**
  * Distribution plan: 1-to-N split. Source path is singular; destinations are
  * either an explicit list (`destinations[]`) OR a `clusters` map describing
  * the partitioning.
@@ -65,12 +91,7 @@ export const DistributionPlanSchema = z
           identifiers: z.array(IdentifierString).optional(),
           decisions: z.array(IdentifierString).optional(),
           renumbered_to: z.array(IdentifierString).optional(),
-          range: z
-            .object({
-              start: z.number().int().positive(),
-              end: z.number().int(),
-            })
-            .optional(),
+          range: LineRangeSchema.optional(),
         }),
       )
       .optional(),

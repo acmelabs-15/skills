@@ -8,21 +8,27 @@
  *   3. Parse with js-yaml FAILSAFE_SCHEMA (CWE-502 mitigation)
  *   4. Validate via DistributionPlanSchema.parseAsync (CWE-22 boundary + bijection)
  *   5. Dispatch to the adapter via getAdapter(source_type)
- *   6. Apply mutations, hash-validate via reverseMutations identity, write
- *      via temp-then-rename atomic write per ADR-001 F-8
+ *   6. Partition the source by each cluster's line range, prove byte
+ *      accountability, apply mutations per cluster, stage every destination,
+ *      hash-validate all, then rename all per ADR-001 F-8
  *   7. Emit a JSON-lines audit log to stdout (one line per destination)
  *
  * Exit codes:
  *   0 = success
- *   1 = validation error (invalid argv, missing file, Zod failure)
- *   2 = hash mismatch (round-trip identity failed)
+ *   1 = validation error (invalid argv, missing file, Zod failure, cluster
+ *       without a line range)
+ *   2 = integrity failure — the partition does not account for every source
+ *       byte, or a per-cluster round-trip hash mismatch. Nothing is renamed.
  */
 import { existsSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
-import { cleanup, rename, stage } from "./core/atomic-write.js";
+import { cleanup, clusterAtomicRename, rename, stage } from "./core/atomic-write.js";
+import { rollbackCluster, validateSubtreeHashes } from "./core/cluster-rollback.js";
 import { sha256 } from "./core/hash.js";
+import { type ClusterRange, buildPartition, verifyCoverage } from "./core/partition.js";
+import type { RenumberMap, WikilinkMap } from "./core/types.js";
 import { getAdapter } from "./registry.js";
 import {
   DistributionPlanSchema,
@@ -75,29 +81,50 @@ export interface DecomposeAuditEntry {
   cluster_id: string;
   destination_path: string;
   destination_sha256: string;
+  /** Line range extracted for this cluster; absent on the degenerate path. */
+  range?: { start: number; end: number };
+  /** SHA-256 of the pre-mutation source extraction (S in the F-8 protocol). */
+  source_segment_sha256?: string;
+}
+
+type DistributionPlanParsed = ReturnType<typeof DistributionPlanSchema.parse>;
+type Mutations = { renumber_map: RenumberMap; wikilink_map: WikilinkMap };
+
+/** Integrity failure that maps to exit code 2 (nothing was renamed). */
+function integrityError(message: string): Error {
+  const err = new Error(message);
+  (err as Error & { code?: number }).code = 2;
+  return err;
 }
 
 /**
  * Execute a validated distribution plan. Returns the audit-log entries; the
  * CLI wrapper emits them as JSON-lines to stdout.
  *
- * The minimum-viable per-cluster pipeline applies the plan's renumber_map and
- * wikilink_map mutations to the full source content (extractByRange is
- * deferred to per-cluster `range` once adapters define it; the SHA-256 round
- * trip identity holds because we still call reverseMutations as the validator).
+ * Per-cluster pipeline per DESIGN-001-SPEC-005 Component 3 and the ADR-001 F-8
+ * hash protocol:
+ *
+ *   1. Extract S_i for every cluster by its plan line range, in range order.
+ *   2. Prove byte accountability — the segments must reconstruct the source
+ *      exactly, so no content is dropped or duplicated by the split. This is
+ *      the partitioned successor to the whole-content round trip, and the
+ *      executor-level statement of REQ-006-SPEC-005 AC-2 (recompose merges
+ *      with `join("")`, so the shards must concatenate back to the source).
+ *   3. Apply mutations to each segment and stage every destination to `.tmp`.
+ *   4. Hash-validate ALL staged destinations: reverseMutations(D_i) must equal
+ *      S_i for every cluster.
+ *   5. Only then rename all — per-cluster all-or-nothing. Any failure removes
+ *      every `.tmp` and leaves the source untouched.
+ *
+ * The source note is never modified on a clustered split; disposition of the
+ * original is the caller's decision (decompose SKILL.md Step 6 reports that the
+ * source remains unchanged).
  */
 export async function executeDistributionPlan(
-  plan: ReturnType<typeof DistributionPlanSchema.parse>,
+  plan: DistributionPlanParsed,
   planPath: string,
 ): Promise<DecomposeAuditEntry[]> {
-  let adapter: ReturnType<typeof getAdapter>;
-  try {
-    adapter = getAdapter(plan.source_type);
-  } catch (err) {
-    throw new PlanValidationError((err as Error).message, [
-      { path: "source_type", message: (err as Error).message },
-    ]);
-  }
+  const adapter = resolveAdapter(plan.source_type);
   const sourceAbs = resolveRelativeToPlan(plan.source_path, planPath);
   if (!existsSync(sourceAbs)) {
     throw new PlanValidationError(`source_path not found: ${sourceAbs}`, [
@@ -105,63 +132,157 @@ export async function executeDistributionPlan(
     ]);
   }
   const sourceContent = await Bun.file(sourceAbs).text();
-
-  const mutations = {
+  const mutations: Mutations = {
     renumber_map: plan.renumber_map,
     wikilink_map: plan.wikilink_map,
-  } as const;
+  };
 
+  const clusters = plan.clusters ?? {};
+  if (Object.keys(clusters).length === 0) {
+    return [await executeRenumberInPlace(adapter, plan, sourceAbs, sourceContent, mutations)];
+  }
+  return executePartition(adapter, plan, planPath, sourceAbs, sourceContent, mutations);
+}
+
+function resolveAdapter(sourceType: string): ReturnType<typeof getAdapter> {
+  try {
+    return getAdapter(sourceType);
+  } catch (err) {
+    throw new PlanValidationError((err as Error).message, [
+      { path: "source_type", message: (err as Error).message },
+    ]);
+  }
+}
+
+/**
+ * Degenerate zero-cluster plan: a whole-file renumber written back over the
+ * source. Retains the original whole-content round-trip check because here the
+ * single destination IS the entire source.
+ */
+async function executeRenumberInPlace(
+  adapter: ReturnType<typeof getAdapter>,
+  plan: DistributionPlanParsed,
+  sourceAbs: string,
+  sourceContent: string,
+  mutations: Mutations,
+): Promise<DecomposeAuditEntry> {
   const mutated = adapter.applyMutations(sourceContent, mutations);
-  // Hash-validate per ADR-001 F-8: reverse must recover the original byte-for-byte.
   const recovered = adapter.reverseMutations(mutated, mutations);
   if (sha256(recovered) !== sha256(sourceContent)) {
-    const err = new Error(
+    throw integrityError(
       `hash mismatch: reverseMutations(applyMutations(source)) !== source for ${sourceAbs}`,
     );
-    (err as Error & { code?: number }).code = 2;
+  }
+  try {
+    await stage(sourceAbs, mutated);
+    rename(sourceAbs);
+  } catch (err) {
+    cleanup(sourceAbs);
+    throw err;
+  }
+  return {
+    source_path: plan.source_path,
+    source_type: plan.source_type,
+    cluster_id: "<self>",
+    destination_path: sourceAbs,
+    destination_sha256: sha256(mutated),
+  };
+}
+
+/** Collect each cluster's declared line range, refusing under-specified plans. */
+function collectClusterRanges(plan: DistributionPlanParsed): ClusterRange[] {
+  const clusters = plan.clusters ?? {};
+  const ranges: ClusterRange[] = [];
+  for (const [clusterId, cluster] of Object.entries(clusters)) {
+    if (!cluster) continue;
+    if (!cluster.range) {
+      // The adapter contract (ADR-002 D-2) exposes extractByRange only; there
+      // is no identifier-driven extraction path to fall back on.
+      throw new PlanValidationError(
+        `cluster "${clusterId}" declares no line range; per-cluster extraction requires range.start/range.end`,
+        [
+          {
+            path: `clusters.${clusterId}.range`,
+            message: "required for per-cluster extraction (identifiers alone are not extractable)",
+          },
+        ],
+      );
+    }
+    ranges.push({ clusterId, range: cluster.range });
+  }
+  return ranges;
+}
+
+async function executePartition(
+  adapter: ReturnType<typeof getAdapter>,
+  plan: DistributionPlanParsed,
+  planPath: string,
+  sourceAbs: string,
+  sourceContent: string,
+  mutations: Mutations,
+): Promise<DecomposeAuditEntry[]> {
+  const clusters = plan.clusters ?? {};
+  const segments = buildPartition(
+    (content, range) => adapter.extractByRange(content, range),
+    sourceContent,
+    collectClusterRanges(plan),
+  );
+
+  const coverage = verifyCoverage(sourceContent, segments);
+  if (!coverage.complete) {
+    throw integrityError(
+      `partition does not account for every byte of ${sourceAbs}: ${coverage.defects.join("; ")} ` +
+        `(source ${coverage.sourceSha256}, reconstructed ${coverage.reconstructedSha256})`,
+    );
+  }
+
+  // Stage every destination before renaming any (ADR-001 F-8 rollback protocol).
+  const staged = segments.map((segment) => {
+    const cluster = clusters[segment.clusterId];
+    const destRel = cluster?.destination_path ?? `${plan.source_path}.${segment.clusterId}.md`;
+    return {
+      segment,
+      destAbs: resolveRelativeToPlan(destRel, planPath),
+      mutated: adapter.applyMutations(segment.content, mutations),
+    };
+  });
+
+  const tmpPaths = staged.map((s) => `${s.destAbs}.tmp`);
+  try {
+    await Promise.all(staged.map((s) => stage(s.destAbs, s.mutated)));
+
+    const validation = validateSubtreeHashes(
+      adapter,
+      staged.map((s) => ({
+        filePath: s.destAbs,
+        sourceContent: s.segment.content,
+        stagedContent: s.mutated,
+        mutations,
+      })),
+    );
+    if (!validation.allPass) {
+      const failure = validation.firstFailure;
+      throw integrityError(
+        `hash mismatch for cluster destination ${failure?.filePath ?? "<unknown>"}: ` +
+          `source ${failure?.sourceHash ?? "?"} !== reversed ${failure?.reversedHash ?? "?"}`,
+      );
+    }
+
+    clusterAtomicRename(staged.map((s) => s.destAbs));
+  } catch (err) {
+    rollbackCluster(tmpPaths, []);
     throw err;
   }
 
-  const audit: DecomposeAuditEntry[] = [];
-  const clusters = plan.clusters ?? {};
-  const clusterIds = Object.keys(clusters);
-  // If no clusters declared, the plan is a degenerate single-output renumber
-  // applied to the source path itself (rare but supported by the schema).
-  if (clusterIds.length === 0) {
-    const destPath = sourceAbs;
-    await stage(destPath, mutated);
-    rename(destPath);
-    audit.push({
-      source_path: plan.source_path,
-      source_type: plan.source_type,
-      cluster_id: "<self>",
-      destination_path: destPath,
-      destination_sha256: sha256(mutated),
-    });
-    return audit;
-  }
-
-  for (const clusterId of clusterIds) {
-    const cluster = clusters[clusterId];
-    if (!cluster) continue;
-    const destRel = cluster.destination_path ?? `${sourceAbs}.${clusterId}.md`;
-    const destAbs = resolveRelativeToPlan(destRel, planPath);
-    try {
-      await stage(destAbs, mutated);
-      rename(destAbs);
-      audit.push({
-        source_path: plan.source_path,
-        source_type: plan.source_type,
-        cluster_id: clusterId,
-        destination_path: destAbs,
-        destination_sha256: sha256(mutated),
-      });
-    } catch (err) {
-      cleanup(destAbs);
-      throw err;
-    }
-  }
-  return audit;
+  return staged.map((s) => ({
+    source_path: plan.source_path,
+    source_type: plan.source_type,
+    cluster_id: s.segment.clusterId,
+    destination_path: s.destAbs,
+    destination_sha256: sha256(s.mutated),
+    range: { start: s.segment.range.start, end: s.segment.range.end },
+    source_segment_sha256: sha256(s.segment.content),
+  }));
 }
 
 function resolveRelativeToPlan(target: string, planPath: string): string {
