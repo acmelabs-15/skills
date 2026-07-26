@@ -1,7 +1,7 @@
 ---
 title: 'QA-079-SPEC-008: Validation Report for TASK-023 Adversarial-Claims Test Runner'
 type: note
-permalink: qa/qa-079-spec-008-task-023-adversarial-claims-test-runner-1
+permalink: qa/qa-079-spec-008-task-023-adversarial-claims-test-runner
 tags:
 - qa
 - spec-008

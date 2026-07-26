@@ -1,7 +1,7 @@
 ---
 title: 'QA-044-SPEC-008: Rename Shared Composition Directory'
 type: qa
-permalink: qa/qa-044-spec-008-rename-shared-composition-directory-1
+permalink: qa/qa-044-spec-008-rename-shared-composition-directory
 tags:
 - qa
 - spec-008

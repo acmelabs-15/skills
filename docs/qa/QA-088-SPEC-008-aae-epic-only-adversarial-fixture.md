@@ -1,7 +1,7 @@
 ---
 title: 'QA-088-SPEC-008: AAE EPIC Only Adversarial Fixture'
 type: qa
-permalink: qa/qa-088-spec-008-aae-epic-only-adversarial-fixture-1
+permalink: qa/qa-088-spec-008-aae-epic-only-adversarial-fixture
 status: DONE
 tags:
 - qa

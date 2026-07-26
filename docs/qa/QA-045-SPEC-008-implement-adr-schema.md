@@ -1,7 +1,7 @@
 ---
 title: 'QA-045-SPEC-008: Implement ADR Schema'
 type: qa
-permalink: qa/qa-045-spec-008-implement-adr-schema-1
+permalink: qa/qa-045-spec-008-implement-adr-schema
 tags:
 - qa
 - spec-008

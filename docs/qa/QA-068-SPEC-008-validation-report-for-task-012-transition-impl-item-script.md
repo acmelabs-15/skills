@@ -2,7 +2,7 @@
 title: 'QA-068-SPEC-008: Validation Report for TASK-012 Transition Impl Item Script'
 status: DONE
 type: qa
-permalink: qa/qa-068-spec-008-validation-report-for-task-012-transition-impl-item-script-1
+permalink: qa/qa-068-spec-008-validation-report-for-task-012-transition-impl-item-script
 tags:
 - qa
 - spec-008

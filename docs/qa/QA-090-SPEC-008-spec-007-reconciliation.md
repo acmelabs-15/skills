@@ -2,7 +2,7 @@
 title: 'QA-090-SPEC-008: SPEC-007 Reconciliation'
 type: qa
 status: DONE
-permalink: qa/qa-090-spec-008-spec-007-reconciliation-1
+permalink: qa/qa-090-spec-008-spec-007-reconciliation
 tags:
 - qa
 - spec-008

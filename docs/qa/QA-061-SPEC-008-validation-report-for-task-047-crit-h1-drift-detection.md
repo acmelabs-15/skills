@@ -1,7 +1,7 @@
 ---
 title: 'QA-061-SPEC-008: Validation Report for TASK-047 CRIT H1-Drift Detection'
 type: qa
-permalink: qa/qa-061-spec-008-validation-report-for-task-047-crit-h1-drift-detection-1
+permalink: qa/qa-061-spec-008-validation-report-for-task-047-crit-h1-drift-detection
 status: DONE
 tags:
 - qa

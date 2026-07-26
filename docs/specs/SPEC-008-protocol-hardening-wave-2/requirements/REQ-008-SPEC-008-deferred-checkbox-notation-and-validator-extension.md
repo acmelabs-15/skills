@@ -1,7 +1,7 @@
 ---
 title: 'REQ-008-SPEC-008: Deferred Checkbox Notation and Validator Extension'
 type: requirement
-permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-008-spec-008-deferred-checkbox-notation-and-validator-extension-1
+permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-008-spec-008-deferred-checkbox-notation-and-validator-extension
 status: ACCEPTED
 tags:
 - requirement

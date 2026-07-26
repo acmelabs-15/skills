@@ -1,7 +1,7 @@
 ---
 title: 'TASK-034-SPEC-008: Repair Brain Note Hygiene Violations from Audit C'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-034-spec-008-repair-brain-note-hygiene-violations-from-audit-c-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-034-spec-008-repair-brain-note-hygiene-violations-from-audit-c
 status: DONE
 effort: M
 estimate: 1d

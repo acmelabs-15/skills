@@ -1,7 +1,7 @@
 ---
 title: 'QA-062-SPEC-008: Validation Report for TASK-007 ADR Accepted Claim Validator'
 type: note
-permalink: qa/qa-062-spec-008-validation-report-for-task-007-adr-accepted-claim-validator-1
+permalink: qa/qa-062-spec-008-validation-report-for-task-007-adr-accepted-claim-validator
 tags:
 - qa
 - spec-008

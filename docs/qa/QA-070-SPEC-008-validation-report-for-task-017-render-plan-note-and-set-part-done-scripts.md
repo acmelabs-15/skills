@@ -3,7 +3,7 @@ title: 'QA-070-SPEC-008: Validation Report for TASK-017 Render Plan Note and Set
   Done Scripts'
 status: DONE
 type: qa
-permalink: qa/qa-070-spec-008-validation-report-for-task-017-render-plan-note-and-set-part-done-scripts-1
+permalink: qa/qa-070-spec-008-validation-report-for-task-017-render-plan-note-and-set-part-done-scripts
 tags:
 - qa
 - spec-008

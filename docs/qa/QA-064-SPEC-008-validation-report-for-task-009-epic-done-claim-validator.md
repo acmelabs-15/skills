@@ -2,7 +2,7 @@
 title: 'QA-064-SPEC-008: Validation Report for TASK-009 Epic Done Claim Validator'
 type: qa
 status: DONE
-permalink: qa/qa-064-spec-008-validation-report-for-task-009-epic-done-claim-validator-1
+permalink: qa/qa-064-spec-008-validation-report-for-task-009-epic-done-claim-validator
 tags:
 - qa
 - spec-008

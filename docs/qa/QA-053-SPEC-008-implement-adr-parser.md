@@ -1,7 +1,7 @@
 ---
 title: 'QA-053-SPEC-008: Implement ADR Parser'
 type: qa
-permalink: qa/qa-053-spec-008-implement-adr-parser-1
+permalink: qa/qa-053-spec-008-implement-adr-parser
 tags:
 - qa
 - spec-008

@@ -1,7 +1,7 @@
 ---
 title: 'TASK-014-SPEC-008: Implement validate-spec-done and run-pre-flight Scripts'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-014-spec-008-implement-validate-spec-done-and-run-pre-flight-scripts-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-014-spec-008-implement-validate-spec-done-and-run-pre-flight-scripts
 status: DONE
 effort: S
 estimate: 1d

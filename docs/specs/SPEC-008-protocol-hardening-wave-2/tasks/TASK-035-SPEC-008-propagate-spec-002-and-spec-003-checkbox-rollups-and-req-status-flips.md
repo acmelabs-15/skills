@@ -1,7 +1,7 @@
 ---
 title: 'TASK-035-SPEC-008: Propagate SPEC-002 and SPEC-003 Checkbox Rollups and REQ Status Flips'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-035-spec-008-propagate-spec-002-and-spec-003-checkbox-rollups-and-req-status-flips-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-035-spec-008-propagate-spec-002-and-spec-003-checkbox-rollups-and-req-status-flips
 status: DONE
 tags:
 - spec-008

@@ -1,7 +1,7 @@
 ---
 title: 'QA-046-SPEC-008: Implement Adversarial Claim Test Harness'
 type: qa
-permalink: qa/qa-046-spec-008-implement-adversarial-claim-test-harness-1
+permalink: qa/qa-046-spec-008-implement-adversarial-claim-test-harness
 tags:
 - qa
 - spec-008

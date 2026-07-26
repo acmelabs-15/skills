@@ -1,7 +1,7 @@
 ---
 title: 'REQ-007-SPEC-008: Integration Tests and Mutation Tests and Drift Regression Markers'
 type: requirement
-permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-007-spec-008-integration-tests-and-mutation-tests-and-drift-regression-markers-1
+permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-007-spec-008-integration-tests-and-mutation-tests-and-drift-regression-markers
 status: ACCEPTED
 tags:
 - requirement

@@ -1,7 +1,7 @@
 ---
 title: 'QA-087-SPEC-008: REQ-009 SPEC-007 Mutation Count'
 type: qa
-permalink: qa/qa-087-spec-008-req-009-spec-007-mutation-count-1
+permalink: qa/qa-087-spec-008-req-009-spec-007-mutation-count
 status: DONE
 tags:
 - spec-008

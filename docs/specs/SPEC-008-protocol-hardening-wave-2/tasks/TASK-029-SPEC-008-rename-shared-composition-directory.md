@@ -1,7 +1,7 @@
 ---
 title: 'TASK-029-SPEC-008: Rename Shared Composition Directory'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-029-spec-008-rename-shared-composition-directory-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-029-spec-008-rename-shared-composition-directory
 status: DONE
 tags:
 - spec-008

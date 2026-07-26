@@ -2,7 +2,7 @@
 title: 'QA-073-SPEC-008: Validation Report for TASK-020 Research and Review Dispatch-Brief
   Generators'
 type: note
-permalink: qa/qa-073-spec-008-validation-report-for-task-020-research-and-review-dispatch-brief-generators-1
+permalink: qa/qa-073-spec-008-validation-report-for-task-020-research-and-review-dispatch-brief-generators
 tags:
 - qa
 - spec-008

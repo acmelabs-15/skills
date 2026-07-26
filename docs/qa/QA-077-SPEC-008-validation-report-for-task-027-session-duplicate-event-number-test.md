@@ -1,7 +1,7 @@
 ---
 title: 'QA-077-SPEC-008: Validation Report for TASK-027 Session Duplicate Event Number Test'
 type: qa
-permalink: qa/qa-077-spec-008-validation-report-for-task-027-session-duplicate-event-number-test-1
+permalink: qa/qa-077-spec-008-validation-report-for-task-027-session-duplicate-event-number-test
 tags:
 - qa
 - spec-008

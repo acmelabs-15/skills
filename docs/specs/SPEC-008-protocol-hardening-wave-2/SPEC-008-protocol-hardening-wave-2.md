@@ -1,7 +1,7 @@
 ---
 title: 'SPEC-008: Protocol Hardening Wave 2'
 type: spec
-permalink: specs/spec-008-protocol-hardening-wave-2/spec-008-protocol-hardening-wave-2-1
+permalink: specs/spec-008-protocol-hardening-wave-2/spec-008-protocol-hardening-wave-2
 status: DONE
 tags:
 - spec

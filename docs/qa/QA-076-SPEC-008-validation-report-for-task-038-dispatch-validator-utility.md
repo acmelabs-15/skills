@@ -1,5 +1,5 @@
 ---
-permalink: qa/qa-076-spec-008-validation-report-for-task-038-dispatch-validator-utility-1
+permalink: qa/qa-076-spec-008-validation-report-for-task-038-dispatch-validator-utility
 ---
 
 ---

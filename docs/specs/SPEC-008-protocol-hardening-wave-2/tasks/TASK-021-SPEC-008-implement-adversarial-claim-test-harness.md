@@ -1,7 +1,7 @@
 ---
 title: 'TASK-021-SPEC-008: Implement Adversarial-Claim Test Harness'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-021-spec-008-implement-adversarial-claim-test-harness-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-021-spec-008-implement-adversarial-claim-test-harness
 status: DONE
 effort: S
 estimate: 0.5d
