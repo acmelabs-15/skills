@@ -29,6 +29,7 @@ export interface DefragOptions {
   reportOnly: boolean;
   projectRoot: string;
   stalenessDays: number;
+  lineMax: number;
   basicMemory: boolean;
   /** Override today for deterministic tests. */
   today?: string;
@@ -74,6 +75,7 @@ export function parseArgs(argv: string[]): DefragOptions {
     reportOnly: false,
     projectRoot: process.cwd(),
     stalenessDays: 90,
+    lineMax: 500,
     basicMemory: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -86,6 +88,9 @@ export function parseArgs(argv: string[]): DefragOptions {
     } else if (a === "--staleness") {
       const v = argv[++i];
       if (v !== undefined) opts.stalenessDays = Number.parseInt(v, 10);
+    } else if (a === "--line-max") {
+      const v = argv[++i];
+      if (v !== undefined) opts.lineMax = Number.parseInt(v, 10);
     } else if (a === "--help" || a === "-h") {
       console.log(usage());
       process.exit(0);
@@ -105,6 +110,7 @@ export function usage(): string {
     "  --report-only         Run audit, write report, exit (no delegation; cron-safe)",
     "  --project-root <dir>  Project root (default: cwd)",
     "  --staleness <days>    Staleness threshold in days (default: 90)",
+    "  --line-max <n>        Line count above which a note splits (default: 500)",
     "  --basic-memory        Treat project as basic-memory (skip CONVENTIONS checks)",
     "  -h, --help            Show this help",
     "",
@@ -221,6 +227,7 @@ export async function main(argv: string[]): Promise<number> {
   const result = await audit({
     projectRoot: options.projectRoot,
     stalenessDays: options.stalenessDays,
+    lineMax: options.lineMax,
   });
 
   if (options.reportOnly) {

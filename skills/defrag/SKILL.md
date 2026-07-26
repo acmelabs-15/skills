@@ -37,6 +37,7 @@ collision.
 bun skills/defrag/scripts/defrag.ts                  # interactive
 bun skills/defrag/scripts/defrag.ts --report-only    # cron / non-interactive
 bun skills/defrag/scripts/defrag.ts --staleness 90   # custom staleness threshold (days)
+bun skills/defrag/scripts/defrag.ts --line-max 800   # custom split threshold (lines)
 bun skills/defrag/scripts/defrag.ts --project-root /path/to/project
 bun skills/defrag/scripts/defrag.ts --basic-memory   # treat as basic-memory context
 ```
@@ -56,7 +57,8 @@ bun skills/defrag/scripts/defrag.ts --basic-memory   # treat as basic-memory con
    note's frontmatter and body.
 2. **Evaluation.** Apply quality thresholds:
    - More than 15 observations without H3 sub-grouping → split-candidate
-   - More than 500 lines with multi-entity content → split-candidate
+   - More than the line-count threshold (default 500 lines, set with
+     `--line-max`) with multi-entity content → split-candidate
    - Fewer than 3 observations or fewer than 2 relations → merge-candidate
    - More than 12 relations without H3 type-grouping → structural-fix
    - Last-modified more than the staleness threshold (default 90 days) and

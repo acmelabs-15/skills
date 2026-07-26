@@ -55,6 +55,21 @@ describe("parseArgs", () => {
     const o = parseArgs(["--basic-memory"]);
     expect(o.basicMemory).toBe(true);
   });
+
+  test("parses --line-max", () => {
+    const o = parseArgs(["--line-max", "800"]);
+    expect(o.lineMax).toBe(800);
+  });
+
+  test("defaults lineMax to 500 when --line-max is absent", () => {
+    expect(parseArgs([]).lineMax).toBe(500);
+  });
+
+  test("non-numeric --line-max yields NaN, matching --staleness handling", () => {
+    const o = parseArgs(["--line-max", "abc", "--staleness", "abc"]);
+    expect(Number.isNaN(o.lineMax)).toBe(true);
+    expect(Number.isNaN(o.stalenessDays)).toBe(true);
+  });
 });
 
 describe("runReportOnly", () => {
@@ -66,6 +81,7 @@ describe("runReportOnly", () => {
         reportOnly: true,
         projectRoot: root,
         stalenessDays: 180,
+        lineMax: 500,
         basicMemory: false,
         today: "2026-05-21",
       };
@@ -86,6 +102,7 @@ describe("runReportOnly", () => {
         reportOnly: true,
         projectRoot: root,
         stalenessDays: 180,
+        lineMax: 500,
         basicMemory: false,
         today: "2026-05-21",
       };
@@ -103,6 +120,7 @@ describe("runInteractive — delegation error handling", () => {
       reportOnly: false,
       projectRoot: "/x",
       stalenessDays: 180,
+      lineMax: 500,
       basicMemory: false,
       delegation,
     };
