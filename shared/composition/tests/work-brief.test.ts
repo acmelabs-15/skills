@@ -309,6 +309,53 @@ describe("buildWorkBrief — the suggested action", () => {
     expect(brief.notes[0]?.entries[0]?.suggestedAction).toContain("re-run reference-scan");
   });
 
+  /**
+   * The two advisory probes need different actions. An index edge-existence row is
+   * not prose, so telling an agent to "read the line and decide whether this prose
+   * names X" costs a wasted lookup on every one of them.
+   */
+  test("an index edge-existence entry gets the edge action, not the prose action", () => {
+    const brief = buildWorkBrief(
+      [
+        residual("advisory", {
+          class: "index-stale",
+          line: 1,
+          column: 1,
+          source: "SEARCH",
+          advisory: true,
+          matchedText: "index holds an edge between ANALYSIS-120 and PRD-001 (verb not trusted)",
+        }),
+      ],
+      PLAN,
+      resolver,
+    );
+    const entry = brief.notes[0]?.entries[0];
+    expect(entry?.suggestedAction).toContain("## Relations");
+    expect(entry?.suggestedAction).toContain("verb is not evidence");
+    expect(entry?.suggestedAction).not.toContain("this prose names");
+  });
+
+  /** A synthetic address is not a measurement and must not be printed as one. */
+  test("an entry with no measured position reads as whole-note, not line 1 col 1", () => {
+    const brief = buildWorkBrief(
+      [
+        residual("advisory", {
+          class: "index-stale",
+          line: 1,
+          column: 1,
+          source: "SEARCH",
+          advisory: true,
+          matchedText: "index holds an edge between ANALYSIS-120 and PRD-001 (verb not trusted)",
+        }),
+      ],
+      PLAN,
+      resolver,
+    );
+    const entry = brief.notes[0]?.entries[0];
+    expect(entry?.anchor).toBe("whole note");
+    expect(entry?.column).toBeUndefined();
+  });
+
   test("an advisory entry is framed as a judgment, never as an edit to apply", () => {
     const brief = buildWorkBrief(
       [residual("advisory", { source: "SEARCH", advisory: true, matchedText: "the source note" })],
