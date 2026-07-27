@@ -124,6 +124,22 @@ export interface CompleteRetrievalRow {
   readonly direction: string;
   /** `--exhaustive` only: how containment was established. Empty on the other leg. */
   readonly evidence: string;
+  /**
+   * Which of a batch's targets or literals this note matched.
+   *
+   * Empty on a single-target request, where the answer is unambiguous. On a batch it
+   * is what keeps the candidate set attributable per target: rows stay deduplicated
+   * to notes, and this says which members each note answers for.
+   */
+  readonly matched: readonly string[];
+}
+
+/** One member's own outcome within a batched request. */
+export interface PerTargetOutcome {
+  readonly target: string;
+  readonly total: number;
+  readonly provable: boolean;
+  readonly reason: string;
 }
 
 export interface CompleteRetrievalResponse {
@@ -152,6 +168,14 @@ export interface CompleteRetrievalResponse {
   readonly resolvedPermalink: string;
   /** `--references` only: edges out of the target that resolve to no note. */
   readonly danglingOutboundEdges: number;
+  /**
+   * Per-member outcomes when a BATCH was requested; empty otherwise.
+   *
+   * Load-bearing for provenance: the manifest records one outcome per PLANNED query,
+   * and batching must not collapse that into a single aggregate row. An unresolvable
+   * target has to stay attributable to itself rather than tainting its companions.
+   */
+  readonly perTarget: readonly PerTargetOutcome[];
 }
 
 interface RawRow {
@@ -160,6 +184,7 @@ interface RawRow {
   file_path?: unknown;
   direction?: unknown;
   evidence?: unknown;
+  matched?: unknown;
 }
 
 function stringOf(value: unknown): string {
@@ -177,7 +202,25 @@ function toRow(raw: RawRow): CompleteRetrievalRow {
     filePath: stringOf(raw.file_path),
     direction: stringOf(raw.direction),
     evidence: stringOf(raw.evidence),
+    matched: Array.isArray(raw.matched) ? raw.matched.map(stringOf).filter((m) => m !== "") : [],
   };
+}
+
+function toPerTarget(raw: unknown): PerTargetOutcome[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((entry) => {
+    const row = entry as { target?: unknown; total?: unknown; completeness?: unknown };
+    const claim =
+      typeof row.completeness === "object" && row.completeness !== null
+        ? (row.completeness as { provable?: unknown; reason?: unknown })
+        : {};
+    return {
+      target: stringOf(row.target),
+      total: numberOf(row.total),
+      provable: claim.provable === true,
+      reason: stringOf(claim.reason),
+    };
+  });
 }
 
 /**
@@ -216,6 +259,7 @@ function parsePayload(stdout: string): CompleteRetrievalResponse {
     project?: unknown;
     resolved_permalink?: unknown;
     dangling_outbound_edges?: unknown;
+    per_target?: unknown;
   };
   if (!Array.isArray(payload.results)) {
     throw unavailable("payload carried no results array", text.slice(0, 400));
@@ -238,6 +282,7 @@ function parsePayload(stdout: string): CompleteRetrievalResponse {
     scope: stringOf(payload.scope),
     resolvedPermalink: stringOf(payload.resolved_permalink),
     danglingOutboundEdges: numberOf(payload.dangling_outbound_edges),
+    perTarget: toPerTarget(payload.per_target),
   };
 }
 
@@ -276,16 +321,28 @@ async function run(
  * resolution to the CLI's own precedence chain. The project that answered comes back
  * in the response echo, so omitting the flag never means not knowing.
  */
-export function buildReferencesArgs(target: string, project?: string): string[] {
-  const args = ["search", "--references", target];
+export function buildReferencesArgs(
+  target: string | readonly string[],
+  project?: string,
+): string[] {
+  // Several targets go as ONE comma-separated flag value, which the surface answers
+  // in a single self-proving pass. The fixed cost of proving the corpus current is
+  // paid once per invocation, so batching is the difference between paying it N times
+  // and paying it once.
+  const targets = typeof target === "string" ? [target] : target;
+  const args = ["search", "--references", targets.join(",")];
   if (project !== undefined && project.length > 0) args.push("--project", project);
   args.push("--json");
   return args;
 }
 
 /** Build the argv for an `--exhaustive` query. Exported so a caller can log what ran. */
-export function buildExhaustiveArgs(query: string, project?: string): string[] {
-  const args = ["search", query, "--exhaustive"];
+export function buildExhaustiveArgs(query: string | readonly string[], project?: string): string[] {
+  // Extra literals are additional POSITIONAL arguments, not a comma-joined string:
+  // a literal can be a note title and titles contain commas, so splitting on them
+  // would silently fracture a query.
+  const literals = typeof query === "string" ? [query] : query;
+  const args = ["search", ...literals, "--exhaustive"];
   if (project !== undefined && project.length > 0) args.push("--project", project);
   args.push("--json");
   return args;
@@ -299,7 +356,7 @@ export function buildExhaustiveArgs(query: string, project?: string): string[] {
  * reason, which the caller must read rather than treat as "no references".
  */
 export async function searchReferences(
-  target: string,
+  target: string | readonly string[],
   project?: string,
   runner: SearchRunner = defaultSearchRunner(),
 ): Promise<CompleteRetrievalResponse> {
@@ -308,7 +365,7 @@ export async function searchReferences(
 
 /** Every note whose full content contains `query` as a literal, case-insensitively. */
 export async function searchExhaustive(
-  query: string,
+  query: string | readonly string[],
   project?: string,
   runner: SearchRunner = defaultSearchRunner(),
 ): Promise<CompleteRetrievalResponse> {

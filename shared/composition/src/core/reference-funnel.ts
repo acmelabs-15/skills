@@ -52,7 +52,14 @@
 // node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
 import { resolve } from "node:path";
 import type { ResolvedTarget } from "../schemas/reference-manifest.js";
-import { type SearchRunner, searchExhaustive, searchReferences, unavailable } from "./brain-cli.js";
+import {
+  type CompleteRetrievalResponse,
+  type PerTargetOutcome,
+  type SearchRunner,
+  searchExhaustive,
+  searchReferences,
+  unavailable,
+} from "./brain-cli.js";
 import { type NoteFileSystem, defaultNoteFileSystem } from "./note-identity.js";
 
 export type FunnelLeg = "references" | "exhaustive";
@@ -195,44 +202,8 @@ export function planQueries(target: ResolvedTarget): FunnelQuery[] {
   return dropSubsumed(queries);
 }
 
-async function runQuery(
-  query: FunnelQuery,
-  options: FunnelOptions,
-): Promise<{ outcome: FunnelQueryOutcome; paths: string[]; project: string }> {
-  const response =
-    query.leg === "references"
-      ? await searchReferences(query.query, options.project, options.runner)
-      : await searchExhaustive(query.query, options.project, options.runner);
-  // A leg that will not state WHAT it covered cannot be trusted to have covered it,
-  // so an absent scope demotes the query exactly as an absent completeness block
-  // does. The two fields are the whole honesty surface and both are required.
-  const scoped = response.scope.length > 0;
-  const provable = response.provable && scoped;
-  const reason = provable
-    ? ""
-    : response.reason.length > 0
-      ? response.reason
-      : scoped
-        ? "the surface did not state completeness as provable"
-        : "the surface stated no scope for this leg";
-  const paths = response.rows.map((row) => row.filePath).filter((path) => path.length > 0);
-  return {
-    outcome: {
-      ...query,
-      total: response.total,
-      provable,
-      reason,
-      scope: response.scope,
-      notes: paths.length,
-      elapsedMs: 0,
-    },
-    paths,
-    project: response.project,
-  };
-}
-
 /**
- * QUERIES RUN SEQUENTIALLY, and that is a decision rather than an oversight.
+ * ONE INVOCATION PER LEG, ISSUED SEQUENTIALLY — a decision, not an oversight.
  *
  * A bounded concurrent pool was built and measured, and rejected on two independent
  * grounds:
@@ -284,27 +255,95 @@ export async function discoverCandidates(
   const fromQueries = new Set<string>();
   const projectsSeen = new Set<string>();
 
+  // ONE invocation per LEG, not one per query.
+  //
+  // Every planned query is independent, and the surface answers a whole batch in a
+  // single self-proving pass — the cost of proving the corpus current is paid once
+  // per invocation regardless of how many literals ride along. Issuing them
+  // separately therefore paid that fixed cost N times over: measured on the fond
+  // graph, 58 sequential invocations against 28 targets. Batching collapses it to
+  // two, and the per-member breakdown in the response is what keeps each planned
+  // query's provenance attributable rather than merged into an aggregate.
   const planned = targets.flatMap((target) => planQueries(target));
   const started = Bun.nanoseconds();
+
+  const referenceQueries = planned.filter((entry) => entry.leg === "references");
+  const exhaustiveQueries = planned.filter((entry) => entry.leg === "exhaustive");
+
+  const batches: Array<{
+    readonly queries: readonly FunnelQuery[];
+    readonly response: CompleteRetrievalResponse;
+  }> = [];
+  if (referenceQueries.length > 0) {
+    batches.push({
+      queries: referenceQueries,
+      response: await searchReferences(
+        referenceQueries.map((entry) => entry.query),
+        options.project,
+        options.runner,
+      ),
+    });
+  }
+  if (exhaustiveQueries.length > 0) {
+    batches.push({
+      queries: exhaustiveQueries,
+      response: await searchExhaustive(
+        exhaustiveQueries.map((entry) => entry.query),
+        options.project,
+        options.runner,
+      ),
+    });
+  }
+
   const queries: FunnelQueryOutcome[] = [];
-  for (const query of planned) {
-    const at = Bun.nanoseconds();
-    const { outcome, paths, project } = await runQuery(query, options);
-    // Per-query timing is recorded so a slow leg is attributable without a rerun,
-    // and so the next pass has a baseline rather than an impression.
-    queries.push({ ...outcome, elapsedMs: Math.round((Bun.nanoseconds() - at) / 1e6) });
-    if (project.length > 0) projectsSeen.add(project);
-    for (const path of paths) {
-      discovered.add(path);
-      fromQueries.add(path);
+  for (const { queries: planned_, response } of batches) {
+    if (response.project.length > 0) projectsSeen.add(response.project);
+
+    // A batch's rows carry `matched`, so each planned query recovers exactly the
+    // notes it accounts for. A surface that did not report per-member outcomes leaves
+    // `perTarget` empty, and the batch's own verdict then stands for every member —
+    // conservative in the right direction, since it can only under-claim.
+    const byMember = new Map<string, PerTargetOutcome>();
+    for (const entry of response.perTarget) byMember.set(entry.target, entry);
+
+    const scoped = response.scope.length > 0;
+    for (const query of planned_) {
+      const member = byMember.get(query.query);
+      const provable = (member?.provable ?? response.provable) && scoped;
+      const reason = provable
+        ? ""
+        : (member?.reason ?? response.reason) ||
+          (scoped
+            ? "the surface did not state completeness as provable"
+            : "the surface stated no scope for this leg");
+      const rows = response.rows.filter(
+        (row) => row.matched.length === 0 || row.matched.includes(query.query),
+      );
+      const paths = rows.map((row) => row.filePath).filter((path) => path.length > 0);
+      queries.push({
+        ...query,
+        total: member?.total ?? response.total,
+        provable,
+        reason,
+        scope: response.scope,
+        notes: paths.length,
+        elapsedMs: 0,
+      });
+    }
+
+    for (const row of response.rows) {
+      if (row.filePath.length === 0) continue;
+      discovered.add(row.filePath);
+      fromQueries.add(row.filePath);
     }
   }
   const elapsedMs = Math.round((Bun.nanoseconds() - started) / 1e6);
 
   // One scan, one graph. Two different projects answering inside a single run means
-  // the environment shifted mid-scan — an env var changed, or the cwd moved — and
-  // the union of two graphs' answers is not a worklist for either. Loud, because a
-  // silently blended result set is unfixable downstream.
+  // the environment shifted mid-scan — an env var changed, or the cwd moved — and the
+  // union of two graphs' answers is not a worklist for either. Loud, because a
+  // silently blended result set is unfixable downstream. Still checked under
+  // batching: two invocations are two chances for the environment to move.
   if (projectsSeen.size > 1) {
     throw unavailable(
       "queries in one scan resolved to different projects",
