@@ -49,3 +49,4 @@ FU numbering continues after the highest historical identity. FU-1 through FU-6 
 - relates_to [[ADR-002: Adapter Contract and Plan Schema]]
 - relates_to [[CRIT-005-ADR-002: Clarifications Delta Debate Log]]
 - relates_to [[ANALYSIS-006: Brain Search and Impact-Detection Tool Surface]]
+- relates_to [[QA-092: Pipeline Completion Build Validation]]

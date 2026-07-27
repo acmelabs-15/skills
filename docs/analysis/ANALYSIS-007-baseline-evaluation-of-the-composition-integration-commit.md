@@ -422,3 +422,4 @@ v1's git and probe evidence is reused throughout and holds up under re-verificat
 - relates_to [[ANALYSIS-006: Brain Search and Impact-Detection Tool Surface]]
 - part_of [[PLAN-002: Composition Tooling Follow-Up Register]]
 - depends_on [[ADR-002: Adapter Contract and Plan Schema]]
+- relates_to [[QA-092: Pipeline Completion Build Validation]]
