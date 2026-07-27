@@ -2,6 +2,7 @@
 title: "QA-092: Pipeline Completion Build Validation"
 type: qa
 permalink: qa/qa-092-pipeline-completion-build-validation
+status: DONE
 tags:
 - qa
 - composition-tooling
@@ -40,13 +41,11 @@ Independent validation of the pipeline-completion delivery at commit `d19085b` o
 
 ## Approach
 
-**Test types**: independent execution of the shipped suite and typecheck; black-box end-to-end CLI driving of the scan, repoint and closure stages; white-box verification of the reversibility mechanism by importing the edit primitives and inverting a real applied edit set; live integration probing of the installed brain CLI including a deliberate unreachable-endpoint case; schema round-trip validation against a pre-existing artifact; static diff review for containment; and a read-only production-graph run with hash-level before and after integrity checks.
+- **Test Types**: independent suite execution, typecheck, black-box end-to-end CLI driving of the scan and repoint and closure stages, white-box verification of the reversibility mechanism, live integration probing of the installed brain CLI, deliberate unreachable-endpoint failure injection, schema round-trip validation, static diff review for containment, read-only production-graph measurement with hash-level before-and-after censuses
+- **Environment**: macOS with Bun 1.3.14 and biome 1.9.4 as pinned by the package. The installed brain CLI reported version 1.0.0 and served searches from the already-running local server, which was left untouched throughout — the same server process was listening before and after the whole validation.
+- **Data Strategy**: three tiers, deliberately separated so nothing under validation could reach a real note. Tier one is the shipped fixture tree, copied to a private scratch directory before any write so the committed fixtures were never mutated. Tier two is a scratch-authored scenario adding two referrer notes to exercise the cited-section anchor and the ordering rules, which the shipped fixtures do not reach. Tier three is the live fond graph, run strictly in scan and dry-run modes only, bracketed by a full-tree hash census. Every output artifact was written to the skills repository scratch directory, which is git-ignored at the repository root.
+- **Test File**: shared/composition/tests/repoint.test.ts, shared/composition/tests/repoint-units.test.ts, shared/composition/tests/work-brief.test.ts, shared/composition/tests/brain-cli.test.ts, shared/composition/tests/reference-scan.test.ts, the fixture tree at shared/composition/tests/fixtures/repoint-tree/, and scratch harnesses driving shared/composition/src/reference-scan.ts and shared/composition/src/repoint.ts with direct imports of shared/composition/src/core/repoint-edits.ts and shared/composition/src/core/brain-cli.ts
 
-**Environment**: macOS, Bun 1.3.14, biome 1.9.4 as pinned by the package. The installed brain CLI reported version 1.0.0 and served searches from the already-running local server, which was left untouched throughout — the same server process was listening before and after the whole validation.
-
-**Data strategy**: three tiers, deliberately separated so nothing under validation could reach a real note. Tier one is the shipped fixture tree, copied to a private scratch directory before any write so the committed fixtures were never mutated. Tier two is a scratch-authored scenario adding two referrer notes to exercise the cited-section anchor and the ordering rules, which the shipped fixtures do not reach. Tier three is the live fond graph, run strictly in scan and dry-run modes only, bracketed by a full-tree hash census. Every output artifact was written to the skills repository scratch directory, which is git-ignored at the repository root.
-
-**Test files and artifacts**: the shipped suites under `shared/composition/tests/`; the fixture tree at `shared/composition/tests/fixtures/repoint-tree/`; and scratch harnesses driving `shared/composition/src/reference-scan.ts` and `shared/composition/src/repoint.ts` plus direct imports of `shared/composition/src/core/repoint-edits.ts` and `shared/composition/src/core/brain-cli.ts`.
 
 ## Results
 
@@ -75,9 +74,9 @@ Arithmetic reconciles: 38 run equals 38 passed plus 0 failed plus 0 skipped.
 | Live fond-graph run, read-only | 6 | 6 | 0 | 0 | PASS |
 | **Total** | **38** | **38** | **0** | **0** | **PASS** |
 
-### Per-check results
+### Test Results by Category
 
-| Check | Category | Status | Evidence |
+| Test | Category | Status | Notes |
 | --- | --- | --- | --- |
 | Suite passes from the repository root | Baseline gates | PASS | 1728 pass, 0 fail, 3502 expect calls across 146 files — the acceptance figure at HEAD `9483c5c` |
 | Committed-state count reconciles to the claimed figure | Baseline gates | PASS | Working tree carried two uncommitted tests in the work-brief suite; 1728 minus 2 equals the claimed 1726, and both extra tests pass |
