@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { entityIdOfTitle, normalizeReference } from "../src/core/note-identity.js";
 import { checkClosure } from "../src/core/reference-closure.js";
 import { matchLine } from "../src/core/reference-matchers.js";
-import { buildImpactManifest, resolveTargets } from "../src/core/reference-scan.js";
+import { buildImpactManifest, resolveTargets, scanReferences } from "../src/core/reference-scan.js";
 import { main, parseArgs } from "../src/reference-scan.js";
 import {
   type ClosureReport,
@@ -317,12 +317,18 @@ describe("buildImpactManifest — fixture tree integration", () => {
     expect(ImpactManifestSchema.safeParse(manifest).success).toBe(true);
   });
 
-  test("target files are excluded from their own scan", () => {
+  /**
+   * Self-citation is suppressed PER CANDIDATE, so a target note is still scanned —
+   * it just cannot produce findings that name itself. The previous form of this
+   * test asserted the file was skipped outright, which is the defect that dropped
+   * cross-target references; see the dedicated describe block below.
+   */
+  test("a target note yields no findings that name itself, but is still scanned", () => {
     const selfReferences = manifest.findings.filter(
-      (finding) => finding.referencingFile === TARGET_NOTE,
+      (finding) => finding.referencingFile === TARGET_NOTE && finding.target === "ANALYSIS-100",
     );
     expect(selfReferences).toEqual([]);
-    expect(manifest.filesScanned).toBe(2);
+    expect(manifest.filesScanned).toBe(4);
   });
 
   test("every reference class is represented across the tree", () => {
@@ -1024,5 +1030,136 @@ describe("findings shape", () => {
     const [wikilink, citation] = findings;
     expect(Object.hasOwn(wikilink ?? {}, "sectionFragment")).toBe(false);
     expect(citation?.sectionFragment).toBe("Section 3");
+  });
+});
+
+/**
+ * Cross-target exclusion: self-citation is suppressed per CANDIDATE, not per FILE.
+ *
+ * Fixtures transcribed from the research harness that measured the defect
+ * (`scratch/deep-research-cells/q5-target-exclusion.ts`). Keying the suppression on
+ * the file skipped a target note entirely, so a target citing a DIFFERENT target
+ * went unreported — 326 such occurrences on the fond graph at a 28-target batch,
+ * across 27 of 28 targets. Closure could not report them, because it diffs against
+ * the same manifest the scan produced.
+ */
+describe("cross-target references inside target notes", () => {
+  const DOCS = "/virtual-docs";
+  const A = "analysis/ANALYSIS-045-substrate.md";
+  const B = "analysis/ANALYSIS-049-funnel.md";
+  const C = "analysis/ANALYSIS-100-bystander.md";
+
+  const note = (title: string, permalink: string, body: string): string =>
+    `---\ntitle: "${title}"\npermalink: ${permalink}\ntype: analysis\n---\n\n# ${title}\n\n${body}\n`;
+
+  const files = new Map<string, string>([
+    [
+      A,
+      note(
+        "ANALYSIS-045: Substrate",
+        "analysis/analysis-045-substrate",
+        "The funnel argument is developed in [[ANALYSIS-049: Funnel]].\nThis note, ANALYSIS-045, restates its own scope for the reader.\nSee ANALYSIS-049 Section 3 for the measured crossover.",
+      ),
+    ],
+    [
+      B,
+      note(
+        "ANALYSIS-049: Funnel",
+        "analysis/analysis-049-funnel",
+        "The substrate premise comes from [[ANALYSIS-045: Substrate]].\nRecorded at analysis/analysis-045-substrate in the ledger.",
+      ),
+    ],
+    [
+      C,
+      note(
+        "ANALYSIS-100: Bystander",
+        "analysis/analysis-100-bystander",
+        "Both [[ANALYSIS-045: Substrate]] and [[ANALYSIS-049: Funnel]] are cited here.",
+      ),
+    ],
+  ]);
+
+  const fileSystem = {
+    async *listMarkdown() {
+      for (const path of files.keys()) yield path;
+    },
+    async read(abs: string) {
+      const content = files.get(abs.replace(`${DOCS}/`, ""));
+      if (content === undefined) throw new Error(`no fixture for ${abs}`);
+      return content;
+    },
+    async exists(abs: string) {
+      return files.has(abs.replace(`${DOCS}/`, ""));
+    },
+  };
+
+  const twoTargets: ResolvedTarget[] = [
+    target({
+      path: A,
+      entityId: "ANALYSIS-045",
+      title: "ANALYSIS-045: Substrate",
+      permalink: "analysis/analysis-045-substrate",
+    }),
+    target({
+      path: B,
+      entityId: "ANALYSIS-049",
+      title: "ANALYSIS-049: Funnel",
+      permalink: "analysis/analysis-049-funnel",
+    }),
+  ];
+
+  async function scan() {
+    return await scanReferences(twoTargets, [A, B, C], { docsRoot: DOCS, fileSystem });
+  }
+
+  test("a target citing a DIFFERENT target is reported", async () => {
+    const { findings } = await scan();
+    const crossTarget = findings.filter(
+      (f) => (f.referencingFile === A || f.referencingFile === B) && f.source !== "GRAPH",
+    );
+    expect(crossTarget).toHaveLength(4);
+    expect(crossTarget.filter((f) => f.referencingFile === A).map((f) => f.target)).toEqual([
+      "ANALYSIS-049",
+      "ANALYSIS-049",
+    ]);
+    expect(crossTarget.filter((f) => f.referencingFile === B).map((f) => f.target)).toEqual([
+      "ANALYSIS-045",
+      "ANALYSIS-045",
+    ]);
+  });
+
+  /**
+   * The load-bearing half. A note's own frontmatter title and permalink lines, and
+   * prose restating its own ID, must still produce nothing — that suppression is
+   * why the exclusion exists at all.
+   */
+  test("self-citations remain suppressed, frontmatter lines included", async () => {
+    const { findings } = await scan();
+    for (const finding of findings) {
+      if (finding.referencingFile === A) expect(finding.target).not.toBe("ANALYSIS-045");
+      if (finding.referencingFile === B) expect(finding.target).not.toBe("ANALYSIS-049");
+    }
+  });
+
+  test("an ordinary note citing both targets is unaffected", async () => {
+    const { findings } = await scan();
+    const bystander = findings.filter((f) => f.referencingFile === C);
+    expect(bystander.map((f) => f.target).sort()).toEqual(["ANALYSIS-045", "ANALYSIS-049"]);
+  });
+
+  test("every scanned note is counted, targets included", async () => {
+    const { filesScanned } = await scan();
+    expect(filesScanned).toBe(3);
+  });
+
+  /**
+   * Single-target repoints had zero exposure to the defect, which is why it
+   * survived. Pinned so a future change cannot regress the common path.
+   */
+  test("a single-target scan reports no self-citations", async () => {
+    const single = [twoTargets[0] as ResolvedTarget];
+    const { findings } = await scanReferences(single, [A, B, C], { docsRoot: DOCS, fileSystem });
+    expect(findings.filter((f) => f.referencingFile === A && f.source !== "GRAPH")).toEqual([]);
+    expect(findings.some((f) => f.referencingFile === B)).toBe(true);
   });
 });

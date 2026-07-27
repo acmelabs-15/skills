@@ -300,7 +300,9 @@ async function scanScope(
 }> {
   const fileSystem = options.fileSystem ?? defaultNoteFileSystem;
   const root = resolve(options.docsRoot);
-  const excluded = new Set(targets.map((target) => target.path));
+  // Entity ID a note answers to, for the notes that are themselves targets. This
+  // is the exclusion key — see below for why it is not the file path.
+  const ownEntityId = new Map(targets.map((target) => [target.path, target.entityId]));
   const paths = [...scope].sort();
 
   const notes = new Map<string, NoteRecord>();
@@ -310,11 +312,30 @@ async function scanScope(
   for (const rel of paths) {
     const content = await fileSystem.read(resolve(root, rel));
     notes.set(rel, noteRecord(rel, content));
-    if (excluded.has(rel)) continue;
     filesScanned++;
+    // Self-citation is suppressed PER CANDIDATE, not per file.
+    //
+    // The intent has always been "a note citing itself is not an inbound
+    // reference". Keying that on the file and skipping the whole file overshoots
+    // whenever more than one target is scanned at once: a target note that cites a
+    // DIFFERENT target was never scanned at all, so those references went
+    // unreported. Measured on the fond graph at a 28-target batch, that dropped 326
+    // cross-target occurrences across 27 of the 28 targets — silently, because
+    // closure diffs against the same manifest and so cannot report what the scan
+    // never produced. The exposure grows with batch width and is zero for a
+    // single-target repoint, which is why it survived this long.
+    //
+    // Filtering by candidate keeps the suppression exact: a note's own frontmatter
+    // title and permalink lines, and any prose restating its own ID, still produce
+    // nothing. Newly surfaced findings inside a target's own `## Relations` section
+    // are promoted to BOTH by the graph leg like any other corroborated edge.
+    const own = ownEntityId.get(rel);
     const lines = content.split("\n");
     for (let index = 0; index < lines.length; index++) {
-      textFindings.push(...matchLine(lines[index] ?? "", targets, rel, index + 1));
+      for (const finding of matchLine(lines[index] ?? "", targets, rel, index + 1)) {
+        if (finding.target === own) continue;
+        textFindings.push(finding);
+      }
     }
   }
   return { textFindings, notes, filesScanned };
