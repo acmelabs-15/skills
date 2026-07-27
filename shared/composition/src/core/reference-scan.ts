@@ -39,6 +39,7 @@ import {
   type ResolvedTarget,
   type SearchReferenceFinding,
 } from "../schemas/reference-manifest.js";
+import type { SearchRunner } from "./brain-cli.js";
 import {
   type NoteFileSystem,
   type NoteIdentity,
@@ -48,6 +49,7 @@ import {
   readFrontmatter,
   stringField,
 } from "./note-identity.js";
+import { discoverCandidates } from "./reference-funnel.js";
 import { applyGraphLeg } from "./reference-graph.js";
 import { matchLine } from "./reference-matchers.js";
 import { type ParsedRelation, parseRelationEntries } from "./relations.js";
@@ -95,6 +97,14 @@ export interface ScanOptions {
    * the boundary rather than here.
    */
   merge?: readonly SearchReferenceFinding[];
+  /**
+   * Brain project to run stage-one funnel discovery against. Optional: when absent
+   * the CLI resolves one from environment or working directory, and the project that
+   * answered is recorded on the manifest.
+   */
+  project?: string | undefined;
+  /** Subprocess seam for the funnel's CLI calls, injected in tests. */
+  runner?: SearchRunner | undefined;
   /** Injected so a manifest can be byte-compared in tests. */
   now?: string;
 }
@@ -105,21 +115,82 @@ function sectionLineRange(children: readonly RootContent[]): { start: number; en
   return start === undefined || end === undefined ? null : { start, end };
 }
 
+const RELATIONS_HEADING = /^##[ \t]*Relations[ \t]*$/;
+const FENCE = /^[ \t]{0,3}(```|~~~)/;
+const H2 = /^##[ \t]/;
+
+/**
+ * Byte range of the `## Relations` section, found by line scan rather than by
+ * parsing the document.
+ *
+ * The whole document used to be parsed to reach one section. Measured on the fond
+ * graph, that cost 1850ms across 69 notes while the Relations sections together are
+ * 34KB of 3.5MB — 1% of the content for 100% of the parse. Slicing first and parsing
+ * only the slice does the same work in 39ms.
+ *
+ * Two hazards are handled, and anything else falls back to the full parse rather
+ * than being guessed at:
+ *
+ *   fenced blocks   a docs repo ABOUT knowledge graphs contains `## Relations`
+ *                   inside example fences. Delimiters before the candidate are
+ *                   counted; an odd count means the line is inside a fence and is
+ *                   not a heading at all.
+ *   duplicates      `sectionizeByDepth` builds a Map, so a later heading overwrites
+ *                   an earlier one. The LAST valid candidate is taken to match.
+ *
+ * Returns null when no ATX candidate survives — including the setext form, which
+ * this cannot see — and the caller then parses the whole document as before. The
+ * fallback is what makes this an optimisation rather than a behaviour change.
+ */
+function sliceRelations(content: string): { text: string; offset: number } | null {
+  const lines = content.split("\n");
+  let fences = 0;
+  let found = -1;
+  for (let index = 0; index < lines.length; index++) {
+    const line = lines[index] ?? "";
+    if (FENCE.test(line)) {
+      fences++;
+      continue;
+    }
+    if (fences % 2 === 0 && RELATIONS_HEADING.test(line)) found = index;
+  }
+  if (found < 0) return null;
+  let end = lines.length;
+  for (let index = found + 1; index < lines.length; index++) {
+    if (H2.test(lines[index] ?? "")) {
+      end = index;
+      break;
+    }
+  }
+  return { text: lines.slice(found, end).join("\n"), offset: found };
+}
+
 /** Parse the `## Relations` section, handling flat and H3-grouped forms alike. */
 function readRelations(content: string): {
   relations: ParsedRelation[];
   relationsRange: { start: number; end: number } | null;
 } {
+  const slice = sliceRelations(content);
   let children: RootContent[] | undefined;
   try {
-    children = sectionizeH2(processor.parse(content)).get("Relations");
+    children = sectionizeH2(processor.parse(slice?.text ?? content)).get("Relations");
   } catch {
     // A note that will not parse still contributes its TEXT findings; losing its
     // graph edges is strictly better than losing the whole file from the scan.
     return { relations: [], relationsRange: null };
   }
   if (!children) return { relations: [], relationsRange: null };
-  return { relations: parseRelationEntries(children), relationsRange: sectionLineRange(children) };
+  // Positions inside a slice are relative to it. The heading sits on slice line 1
+  // and on absolute line `offset + 1`, so absolute = offset + relative.
+  const offset = slice?.offset ?? 0;
+  const range = sectionLineRange(children);
+  return {
+    relations: parseRelationEntries(children).map((relation) =>
+      relation.line === null ? relation : { ...relation, line: relation.line + offset },
+    ),
+    relationsRange:
+      range === null ? null : { start: range.start + offset, end: range.end + offset },
+  };
 }
 
 function noteRecord(path: string, content: string): NoteRecord {
@@ -212,11 +283,15 @@ export function summarize(
 }
 
 /**
- * One pass over the tree: every note contributes its identity and graph edges;
- * every NON-target note also contributes its text matches.
+ * Stage two: read the candidate notes stage one selected.
+ *
+ * Every note contributes its identity and graph edges; every NON-target note also
+ * contributes its text matches. The scope is always supplied — there is no tree
+ * enumeration here and no branch that reintroduces one.
  */
-async function scanTree(
+async function scanScope(
   targets: readonly ResolvedTarget[],
+  scope: readonly string[],
   options: Pick<ScanOptions, "docsRoot" | "fileSystem">,
 ): Promise<{
   textFindings: ReferenceFinding[];
@@ -226,10 +301,7 @@ async function scanTree(
   const fileSystem = options.fileSystem ?? defaultNoteFileSystem;
   const root = resolve(options.docsRoot);
   const excluded = new Set(targets.map((target) => target.path));
-
-  const paths: string[] = [];
-  for await (const rel of fileSystem.listMarkdown(root)) paths.push(rel);
-  paths.sort();
+  const paths = [...scope].sort();
 
   const notes = new Map<string, NoteRecord>();
   const textFindings: ReferenceFinding[] = [];
@@ -254,19 +326,40 @@ async function scanTree(
  */
 export async function scanReferences(
   targets: readonly ResolvedTarget[],
+  scope: readonly string[],
   options: Pick<ScanOptions, "docsRoot" | "fileSystem">,
 ): Promise<{ findings: ReferenceFinding[]; filesScanned: number }> {
-  const { textFindings, notes, filesScanned } = await scanTree(targets, options);
+  const { textFindings, notes, filesScanned } = await scanScope(targets, scope, options);
   const findings = applyGraphLeg({ targets, notes, textFindings }).sort(compareFindings);
   return { findings, filesScanned };
 }
 
-/** Resolve targets, scan the tree, merge advisory entries, assemble the manifest. */
+/**
+ * Resolve targets, run stage one, scan the resulting scope, assemble the manifest.
+ *
+ * There is ONE discovery mechanism: the funnel. `project` is required because a scan
+ * cannot be performed without asking the index which notes are implicated — the
+ * tree-walking alternative was removed rather than retained as a fallback, so that
+ * no run can silently take a different path to a different answer.
+ */
 export async function buildImpactManifest(options: ScanOptions): Promise<ImpactManifest> {
   const fileSystem = options.fileSystem ?? defaultNoteFileSystem;
   const docsRoot = resolve(options.docsRoot);
   const targets = await resolveTargets(docsRoot, options.targets, fileSystem);
-  const { findings, filesScanned } = await scanReferences(targets, { docsRoot, fileSystem });
+
+  // A SearchUnavailableError here propagates: an outage must fail the run rather
+  // than degrade to an empty candidate set that reads as "nothing references these".
+  const funnel = await discoverCandidates(targets, {
+    docsRoot,
+    fileSystem,
+    ...(options.project === undefined ? {} : { project: options.project }),
+    ...(options.runner === undefined ? {} : { runner: options.runner }),
+  });
+
+  const { findings, filesScanned } = await scanReferences(targets, funnel.candidates, {
+    docsRoot,
+    fileSystem,
+  });
 
   // Externally-supplied entries are forced advisory whatever the file claims, so
   // no outside input can promote itself into the closure gate. The declared
@@ -286,6 +379,23 @@ export async function buildImpactManifest(options: ScanOptions): Promise<ImpactM
     docsRoot,
     generatedAt: options.now ?? new Date().toISOString(),
     filesScanned,
+    discovery: {
+      // The project that ANSWERED, recorded so a later closure check re-runs against
+      // the same graph without the caller having to remember which one it was.
+      project: funnel.project,
+      projectSource: funnel.projectSource,
+      provable: funnel.provable,
+      notesConsidered: filesScanned,
+      // Per-query WALL-CLOCK is deliberately dropped here. Two scans of an unchanged
+      // graph must produce byte-identical manifests — that is what makes a manifest
+      // diffable, and it is pinned by a determinism test. Timing is a property of the
+      // run, not of the graph, so it is reported by the caller (which times the call)
+      // rather than baked into the artefact.
+      queries: funnel.queries.map(({ elapsedMs: _elapsedMs, ...record }) => record),
+      missingOnDisk: [...funnel.missingOnDisk],
+      nonNoteCandidates: [...funnel.nonNoteCandidates],
+      projectMismatchSuspected: funnel.projectMismatchSuspected,
+    },
     targets,
     findings: all,
     summary: summarize(all, targets),

@@ -4,10 +4,10 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import type { Observation, Relation } from "../schemas/common.js";
+import { parseRelations } from "../core/relations.js";
+import type { Observation } from "../schemas/common.js";
 import type { CritFinding, CritFrontmatter, CritNote } from "../schemas/crit-note.js";
 import { CritNoteSchema } from "../schemas/crit-note.js";
-import { parseRelations } from "../core/relations.js";
 import {
   extractFrontmatter,
   extractH1,
@@ -154,7 +154,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   }
   return out;
 }
-
 
 /**
  * Parse a CRIT note markdown string into a validated CritNote.

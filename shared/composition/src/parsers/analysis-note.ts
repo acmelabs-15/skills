@@ -4,11 +4,11 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
+import { parseRelations } from "../core/relations.js";
 import type { AnalysisFrontmatter, AnalysisNote } from "../schemas/analysis-note.js";
 import { AnalysisNoteSchema } from "../schemas/analysis-note.js";
-import type { Observation, Relation } from "../schemas/common.js";
+import type { Observation } from "../schemas/common.js";
 import { extractFrontmatter, proseFromChildren, sectionizeH2 } from "./ast-helpers.js";
-import { parseRelations } from "../core/relations.js";
 
 /**
  * AnalysisNote parser (SPEC-008 TASK-006, REQ-002 New Parser Suite, 2026-05-24).
@@ -121,7 +121,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   }
   return out;
 }
-
 
 /**
  * Parse an ANALYSIS note markdown string into a validated AnalysisNote plus the

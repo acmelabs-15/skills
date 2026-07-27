@@ -7,12 +7,12 @@ import {
   PartIdSchema,
   PartSubstatusEnum,
   PlanStatusEnum,
+  QaIdSchema,
   RelationSchema,
   SessionIdSchema,
   SpecTaskIdSchema,
   TaskIdSchema,
   TaskStatusEnum,
-  QaIdSchema,
 } from "./common.js";
 
 /**

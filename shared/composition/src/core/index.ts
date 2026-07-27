@@ -101,28 +101,33 @@ export { applyGraphLeg } from "./reference-graph.js";
 
 export { type ClosureOptions, checkClosure } from "./reference-closure.js";
 
-// --- CLI-backed advisory discovery (widens the worklist, never the gate) -----
+// --- Stage-one discovery: complete retrieval through the brain CLI ----------
+//
+// The one discovery mechanism. `--references` and `--exhaustive` return provably
+// complete sets, and the funnel turns them into the candidate scope stage two
+// reads. There is no ranked-search path and no tree-walking fallback.
 
 export {
-  type SearchHit,
-  type SearchQuery,
-  type SearchResponse,
+  type CompleteRetrievalResponse,
+  type CompleteRetrievalRow,
   type SearchRunner,
-  MAX_LIMIT,
   SearchUnavailableError,
-  buildSearchArgs,
+  buildExhaustiveArgs,
+  buildReferencesArgs,
   defaultSearchRunner,
-  searchAll,
+  searchExhaustive,
+  searchReferences,
 } from "./brain-cli.js";
 
 export {
-  type AugmentOptions,
-  type SearchLegOptions,
-  type SearchLegResult,
-  augmentManifestWithSearch,
-  locateSnippet,
-  runSearchLeg,
-} from "./reference-search.js";
+  type FunnelLeg,
+  type FunnelOptions,
+  type FunnelQuery,
+  type FunnelQueryOutcome,
+  type FunnelResult,
+  discoverCandidates,
+  planQueries,
+} from "./reference-funnel.js";
 
 // --- Deterministic repoint (the one write path in this barrel) --------------
 

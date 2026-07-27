@@ -283,6 +283,17 @@ export function detectLegacyManifest(raw: unknown): string | null {
       return `manifest predates the discriminated finding shape: a ${String(source)} finding carries search provenance, which no deterministic leg produces. Re-run the scan to regenerate it.`;
     }
   }
+  // Checked LAST so a manifest failing both gets the more specific diagnosis. The
+  // finding-level messages name an irrecoverable field; this one names a missing
+  // block. Both remedies are the same re-run, so the more precise message wins.
+  //
+  // A manifest with no discovery block cannot say whether its scope was the whole
+  // tree or a search-scoped subset, which is exactly the question the block answers.
+  // There is no migration: defaulting it to `census` would assert an exhaustiveness
+  // nothing recorded.
+  if ((raw as { discovery?: unknown }).discovery === undefined) {
+    return "manifest predates the discovery-provenance shape: it carries no `discovery` block, so whether its scope was the whole tree or a search-scoped subset was never recorded. Re-run the scan to regenerate it.";
+  }
   return null;
 }
 
@@ -302,11 +313,80 @@ export const TargetSummarySchema = z.object({
   byClass: ClassCountsSchema,
 });
 
+export const FUNNEL_LEGS = ["references", "exhaustive"] as const;
+
+/** Per-query provenance, so a reader can reproduce any one query by hand. */
+export const FunnelQueryRecordSchema = z.object({
+  target: z.string().min(1),
+  leg: z.enum(FUNNEL_LEGS),
+  query: z.string().min(1),
+  /** True when the literal is a RETIRED identity rather than the current one. */
+  viaAlias: z.boolean(),
+  total: z.number().int().nonnegative(),
+  provable: z.boolean(),
+  /** Why completeness could not be proved. Empty when it was. */
+  reason: z.string(),
+  scope: z.string(),
+  notes: z.number().int().nonnegative(),
+});
+export type FunnelQueryRecord = z.infer<typeof FunnelQueryRecordSchema>;
+
+/**
+ * The scope-honesty block. REQUIRED on every manifest, including census runs.
+ *
+ * Required rather than optional because its whole purpose is to stop a manifest
+ * being read as complete when nothing established that it was. An optional field
+ * collapses "discovery proved itself exhaustive" into "nobody recorded whether it
+ * did", and those are exactly the two states this block exists to separate.
+ */
+export const DiscoverySchema = z.object({
+  /**
+   * The project that ANSWERED, so closure can reproduce the queries against the
+   * same graph. Read back off the response rather than assumed from the request,
+   * because the caller may not have named one.
+   */
+  project: z.string(),
+  /**
+   * Whether the caller named that project or the CLI resolved it from environment
+   * or working directory. Recorded because the two carry different confidence: a
+   * caller-supplied project is an assertion, a resolved one is an inference that a
+   * changed cwd or env var could silently have redirected.
+   */
+  projectSource: z.enum(["caller", "cli"]),
+  /**
+   * Whether the scanned scope is PROVABLY the whole reference set: the AND over
+   * every query's own completeness claim. There is no mode field because there is
+   * one discovery mechanism — the funnel — and no fallback path to distinguish it
+   * from.
+   */
+  provable: z.boolean(),
+  /** Notes stage two actually opened. */
+  notesConsidered: z.number().int().nonnegative(),
+  /** Empty on a census run. */
+  queries: z.array(FunnelQueryRecordSchema),
+  /** Candidate paths the index returned that are not on disk. */
+  missingOnDisk: z.array(z.string()),
+  /**
+   * Indexed files that matched but are not notes (the census enumerates markdown
+   * only, and closure re-scans with the census). Recorded so the exclusion is
+   * visible rather than an unexplained gap between the two discovery modes.
+   */
+  nonNoteCandidates: z.array(z.string()).default([]),
+  /**
+   * True when the queries returned notes but essentially none exist under this docs
+   * root — the structural signature of having searched the wrong graph.
+   */
+  projectMismatchSuspected: z.boolean().default(false),
+});
+export type Discovery = z.infer<typeof DiscoverySchema>;
+
 export const ImpactManifestSchema = z.object({
   /** Absolute path the scan ran against; recorded for provenance only. */
   docsRoot: z.string().min(1),
   generatedAt: z.string().min(1),
   filesScanned: z.number().int().nonnegative(),
+  /** How the scanned scope was chosen, and whether it can prove itself whole. */
+  discovery: DiscoverySchema,
   targets: z.array(ResolvedTargetSchema),
   findings: z.array(ReferenceFindingSchema),
   summary: z.object({

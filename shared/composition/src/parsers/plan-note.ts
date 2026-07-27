@@ -4,7 +4,8 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import type { Observation, Relation } from "../schemas/common.js";
+import { parseRelations } from "../core/relations.js";
+import type { Observation } from "../schemas/common.js";
 import type {
   BuildWorkflowItem,
   DecisionState,
@@ -16,7 +17,6 @@ import type {
   Task,
 } from "../schemas/plan-note.js";
 import { PlanNoteSchema } from "../schemas/plan-note.js";
-import { parseRelations } from "../core/relations.js";
 import {
   ParseError,
   bulletFieldMap,
@@ -345,7 +345,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   }
   return out;
 }
-
 
 export function parsePlanNote(markdown: string): PlanNote {
   const ast = processor.parse(markdown);

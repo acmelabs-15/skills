@@ -4,6 +4,7 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
+import { parseRelations } from "../core/relations.js";
 import type {
   AdrFrontmatter,
   AdrNote,
@@ -11,8 +12,7 @@ import type {
   ConsideredOption,
 } from "../schemas/adr-note.js";
 import { AdrNoteSchema } from "../schemas/adr-note.js";
-import type { Observation, Relation } from "../schemas/common.js";
-import { parseRelations } from "../core/relations.js";
+import type { Observation } from "../schemas/common.js";
 import {
   extractFrontmatter,
   findTable,
@@ -259,7 +259,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   }
   return out;
 }
-
 
 /**
  * Parse an ADR note markdown string into a validated AdrNote.

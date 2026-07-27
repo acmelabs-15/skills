@@ -1,100 +1,73 @@
 /**
  * The brain CLI as a search surface for the composition scripts.
  *
- * Post-parity the CLI exposes the full filter set the MCP surface has — permalink
- * wildcards, entity types including relation edges, note types, tags, status,
- * metadata filters, after-date, filter-only queries, pagination — which is what
- * makes "find every note impacted by this restructuring" a query rather than a
- * tree walk. This module is the only place that shells out to it.
+ * This module is the ONLY place that shells out to it, and it exposes exactly one
+ * kind of query: COMPLETE RETRIEVAL. `--references` and `--exhaustive` return a
+ * provably complete set rather than a relevance-ordered subset, take no limit, do
+ * not rank, and do not page — completeness is the contract, and the response states
+ * in-band whether that contract was met.
  *
- * Three measured properties of the surface shape everything here, and each was
- * verified against the installed binary rather than assumed:
+ * The two partition the reference space, which is why stage one runs both:
  *
- * **`total` cannot prove exhaustion.** It mirrors the number of rows returned, not
- * the number available: a query at `--limit 100` reports `total: 100`. So the only
- * valid exhaustion check is to page until a page comes back SHORTER than the limit.
- * Trusting `total` would silently truncate every enumeration at its limit
- * boundary, which is precisely the completeness failure this leg exists to remove.
+ *   --references <target>   every note holding a wikilink EDGE to the target.
+ *                           Existence-only, deduplicated to notes, BOTH directions
+ *                           with a per-note inbound/outbound/both marker.
+ *   --exhaustive <query>    every note whose FULL CONTENT contains the query as a
+ *                           literal case-insensitive substring. Reads the full
+ *                           content column, so it is unaffected by the upstream
+ *                           6000-character truncation that makes ranked keyword
+ *                           search silently miss references past that offset.
+ *
+ * The RANKED surface — `searchAll`, pagination, exhaustion-by-short-page, the mode
+ * and search_type dials — was REMOVED along with the leg that used it. It answered
+ * the same question these two answer, but as a limit-bounded approximation whose
+ * exhaustion could only be inferred from a short page. Keeping it would have left
+ * two answers to one question, diverging above the page limit, with the weaker one
+ * indistinguishable downstream.
+ *
+ * Three measured properties of this surface shape everything below, each verified
+ * against the installed binary rather than assumed:
+ *
+ * **`completeness.provable` is the ONLY signal that a zero is real.** A probe for a
+ * target the index does not know returns `total: 0`, `results: []`, and exit code 0
+ * — indistinguishable from "this note genuinely has no references" unless the
+ * honesty field is read. Verified live: `--references ANALYSIS-999` against a real
+ * project returned exactly that, with `provable: false` and a `reason` naming the
+ * unresolved target. So `provable` is parsed STRICTLY — `=== true` and nothing else
+ * — because every lenient reading of a missing field turns an unproven set into a
+ * claimed-complete one, which is the precise failure this leg exists to remove.
  *
  * **The response is double-wrapped.** The CLI emits an MCP envelope whose single
  * text part contains the real JSON payload, so parsing is two steps. A single
  * `JSON.parse` yields an object with a `content` array and no results, which reads
  * as "the search found nothing" — a silent zero rather than a parse failure.
  *
- * **Verbs from the index are not evidence.** A relation row's verb arrives inside a
- * synthetic edge permalink and an `A -> B` title, and the index is known to strip
- * verbs on H3-grouped notes and to fabricate others. Relation rows are therefore
- * treated as EXISTENCE only; anything verb-typed reads the note body instead.
+ * **`file_path` is what makes stage two addressable.** A permalink is not
+ * mechanically invertible to a filename (the stem lowercases while the file keeps
+ * its CAPS entity prefix). These rows carry the docs-root-relative path directly,
+ * so a candidate note can be opened and position-matched without a tree-wide index
+ * to map it back — which is what lets the tree walk go away entirely.
  *
  * The CLI talks to a local server and will start one if none is running. That is a
  * real dependency: this module fails loudly and immediately when search is
  * unreachable, and never retries in a loop or waits without a bound.
  */
 
-/** One row as the surface returns it. No line or column — see `SearchHit`. */
-export interface SearchHit {
-  readonly permalink: string;
-  readonly title: string;
-  readonly snippet: string;
-  readonly similarityScore: number;
-  /** Which leg served this row, per the surface's own report. */
-  readonly source: string;
-}
-
-export interface SearchResponse {
-  readonly hits: SearchHit[];
-  /** The mode requested. */
-  readonly mode: string;
-  /** The leg that actually served the page, which routinely differs from `mode`. */
-  readonly actualSource: string;
-  /**
-   * True when the enumeration is known complete: the final page came back shorter
-   * than the requested limit. False means a limit boundary was hit and rows may
-   * remain — never treated as completeness.
-   */
-  readonly exhausted: boolean;
-  /** Pages actually fetched, for provenance in a report. */
-  readonly pages: number;
-}
-
-export interface SearchQuery {
-  /** Optional: omit for a filter-only enumeration. */
-  readonly query?: string | undefined;
-  readonly project: string;
-  readonly mode?: string | undefined;
-  readonly searchType?: string | undefined;
-  readonly entityTypes?: readonly string[] | undefined;
-  readonly noteTypes?: readonly string[] | undefined;
-  readonly categories?: readonly string[] | undefined;
-  readonly tags?: readonly string[] | undefined;
-  readonly status?: string | undefined;
-  readonly afterDate?: string | undefined;
-  readonly metadataFilters?: Readonly<Record<string, unknown>> | undefined;
-  /** Rows per page, capped at the surface's own maximum. */
-  readonly limit?: number | undefined;
-  /** Stop after this many pages. A bound, not a target. */
-  readonly maxPages?: number | undefined;
-}
-
 /**
- * The subprocess seam. Injected so the pagination, exhaustion, verb-integrity and
- * failure paths are testable without a server and without touching real notes —
- * the behaviour worth covering is this module's, not the CLI's.
+ * The subprocess seam. Injected so the parsing, honesty and failure paths are
+ * testable without a server and without touching real notes — the behaviour worth
+ * covering is this module's, not the CLI's.
  */
 export type SearchRunner = (
   args: readonly string[],
 ) => Promise<{ exitCode: number; stdout: string; stderr: string }>;
 
-/** The surface's documented maximum rows per request. */
-export const MAX_LIMIT = 100;
-const DEFAULT_LIMIT = 100;
-const DEFAULT_MAX_PAGES = 50;
 const DEFAULT_TIMEOUT_MS = 60_000;
 
 /**
  * Search is unreachable or unusable. Its own error class so a caller can tell "the
- * advisory leg could not run" from "the advisory leg ran and found nothing" —
- * conflating those is how an unavailable index becomes a clean bill of health.
+ * leg could not run" from "the leg ran and found nothing" — conflating those is how
+ * an unavailable index becomes a clean bill of health.
  */
 export class SearchUnavailableError extends Error {
   constructor(
@@ -106,7 +79,7 @@ export class SearchUnavailableError extends Error {
   }
 }
 
-function unavailable(reason: string, detail: string): SearchUnavailableError {
+export function unavailable(reason: string, detail: string): SearchUnavailableError {
   return new SearchUnavailableError(
     `brain search is unavailable: ${reason}. The CLI talks to a local brain server; confirm it is reachable with: brain search "probe" --project <name> --limit 1 --json`,
     detail,
@@ -118,8 +91,8 @@ function unavailable(reason: string, detail: string): SearchUnavailableError {
  *
  * The timeout is the "never hang" half of the server-dependency requirement. A
  * search that has not answered inside the window is treated as unavailable rather
- * than waited on, because a composition script blocking indefinitely on an
- * advisory leg is strictly worse than one that reports the leg could not run.
+ * than waited on, because a composition script blocking indefinitely is strictly
+ * worse than one that reports the leg could not run.
  */
 export function defaultSearchRunner(
   binary = "brain",
@@ -141,56 +114,80 @@ export function defaultSearchRunner(
   };
 }
 
-function pushFlag(args: string[], flag: string, value: string | undefined): void {
-  if (value !== undefined && value.length > 0) args.push(flag, value);
+/** One note in a complete-retrieval result set. */
+export interface CompleteRetrievalRow {
+  readonly permalink: string;
+  readonly title: string;
+  /** Docs-root-relative path — the field stage two opens. */
+  readonly filePath: string;
+  /** `--references` only: `inbound` | `outbound` | `both`. Empty on the other leg. */
+  readonly direction: string;
+  /** `--exhaustive` only: how containment was established. Empty on the other leg. */
+  readonly evidence: string;
 }
 
-function pushList(args: string[], flag: string, values: readonly string[] | undefined): void {
-  if (values !== undefined && values.length > 0) args.push(flag, values.join(","));
-}
-
-/** Build the argv for one page. Exported so a caller can log exactly what ran. */
-export function buildSearchArgs(query: SearchQuery, page: number): string[] {
-  const args = ["search"];
-  if (query.query !== undefined && query.query.length > 0) args.push(query.query);
-  args.push("--project", query.project);
-  pushFlag(args, "--mode", query.mode);
-  pushFlag(args, "--search-type", query.searchType);
-  pushList(args, "--entity-types", query.entityTypes);
-  pushList(args, "--note-types", query.noteTypes);
-  pushList(args, "--categories", query.categories);
-  pushList(args, "--tags", query.tags);
-  pushFlag(args, "--status", query.status);
-  pushFlag(args, "--after-date", query.afterDate);
-  if (query.metadataFilters !== undefined) {
-    args.push("--metadata-filters", JSON.stringify(query.metadataFilters));
-  }
-  args.push("--limit", String(Math.min(query.limit ?? DEFAULT_LIMIT, MAX_LIMIT)));
-  args.push("--page", String(page));
-  args.push("--json");
-  return args;
+export interface CompleteRetrievalResponse {
+  readonly rows: readonly CompleteRetrievalRow[];
+  /**
+   * The project that actually answered, echoed back by the surface.
+   *
+   * Load-bearing when the caller supplied none: the CLI then resolves one itself
+   * (BM_PROJECT, BM_ACTIVE_PROJECT, BRAIN_PROJECT, then a cwd match against
+   * configured code paths), and this echo is the only way to learn WHICH graph the
+   * answer came from. A worklist is meaningless without knowing that.
+   */
+  readonly project: string;
+  /** The surface's own count. Trustworthy here — unlike ranked search, nothing is paged. */
+  readonly total: number;
+  /**
+   * The surface's claim that this set is provably complete. Parsed strictly: a
+   * missing, non-boolean, or false value all yield `false`.
+   */
+  readonly provable: boolean;
+  /** Why completeness could not be proved, when the surface said. Empty otherwise. */
+  readonly reason: string;
+  /** The surface's statement of which reference class this leg covers. */
+  readonly scope: string;
+  /** `--references` only: the permalink the target resolved to. */
+  readonly resolvedPermalink: string;
+  /** `--references` only: edges out of the target that resolve to no note. */
+  readonly danglingOutboundEdges: number;
 }
 
 interface RawRow {
   permalink?: unknown;
   title?: unknown;
-  snippet?: unknown;
-  similarity_score?: unknown;
-  source?: unknown;
+  file_path?: unknown;
+  direction?: unknown;
+  evidence?: unknown;
 }
 
 function stringOf(value: unknown): string {
   return typeof value === "string" ? value : "";
 }
 
+function numberOf(value: unknown): number {
+  return typeof value === "number" && Number.isFinite(value) ? value : 0;
+}
+
+function toRow(raw: RawRow): CompleteRetrievalRow {
+  return {
+    permalink: stringOf(raw.permalink),
+    title: stringOf(raw.title),
+    filePath: stringOf(raw.file_path),
+    direction: stringOf(raw.direction),
+    evidence: stringOf(raw.evidence),
+  };
+}
+
 /**
- * Unwrap the MCP envelope and parse the payload inside it.
+ * Unwrap the MCP envelope and read the completeness contract out of the payload.
  *
  * Both layers are checked explicitly. The failure this guards against is not a
  * crash but a silent one: the envelope parses fine on its own and yields an object
  * with no `results`, which a lenient reader reports as an empty result set.
  */
-function parseEnvelope(stdout: string): { rows: RawRow[]; mode: string; actualSource: string } {
+function parsePayload(stdout: string): CompleteRetrievalResponse {
   let outer: unknown;
   try {
     outer = JSON.parse(stdout);
@@ -211,79 +208,109 @@ function parseEnvelope(stdout: string): { rows: RawRow[]; mode: string; actualSo
   } catch (err) {
     throw unavailable("payload inside the MCP envelope was not JSON", (err as Error).message);
   }
-  const payload = inner as { results?: unknown; mode?: unknown; actual_source?: unknown };
+  const payload = inner as {
+    results?: unknown;
+    total?: unknown;
+    completeness?: unknown;
+    scope?: unknown;
+    project?: unknown;
+    resolved_permalink?: unknown;
+    dangling_outbound_edges?: unknown;
+  };
   if (!Array.isArray(payload.results)) {
     throw unavailable("payload carried no results array", text.slice(0, 400));
   }
+  const completeness = payload.completeness;
+  const claim =
+    typeof completeness === "object" && completeness !== null
+      ? (completeness as { provable?: unknown; reason?: unknown })
+      : {};
   return {
-    rows: payload.results as RawRow[],
-    mode: stringOf(payload.mode),
-    actualSource: stringOf(payload.actual_source),
-  };
-}
-
-function toHit(row: RawRow): SearchHit {
-  return {
-    permalink: stringOf(row.permalink),
-    title: stringOf(row.title),
-    snippet: stringOf(row.snippet),
-    similarityScore: typeof row.similarity_score === "number" ? row.similarity_score : 0,
-    source: stringOf(row.source),
+    rows: (payload.results as RawRow[]).map(toRow),
+    total: numberOf(payload.total),
+    project: stringOf(payload.project),
+    // Strict. `provable === true` or nothing: an absent completeness block, a
+    // non-boolean, and an explicit false are all "not proved", and collapsing any of
+    // them into a claim of completeness is the one error with no recovery — the
+    // worklist looks finished and the missing references are never looked for.
+    provable: claim.provable === true,
+    reason: stringOf(claim.reason),
+    scope: stringOf(payload.scope),
+    resolvedPermalink: stringOf(payload.resolved_permalink),
+    danglingOutboundEdges: numberOf(payload.dangling_outbound_edges),
   };
 }
 
 /**
- * Run one query to exhaustion.
+ * Run one complete-retrieval query.
  *
- * Paging stops on the first SHORT page — one returning fewer rows than the limit —
- * which is the only exhaustion signal the surface actually provides. Hitting
- * `maxPages` with every page full leaves `exhausted` false, so a caller can tell a
- * complete enumeration from a truncated one instead of assuming.
+ * Arguments go to `Bun.spawn` as an argv array, so the shell never sees them and
+ * the CLI's own documented quoting rule for hyphenated identifiers does not apply.
+ * That rule exists because a shell tokenizer splits on hyphens; there is no shell
+ * in this path, and adding quotes here would make them part of the literal being
+ * searched for.
  */
-export async function searchAll(
-  query: SearchQuery,
-  runner: SearchRunner = defaultSearchRunner(),
-): Promise<SearchResponse> {
-  const limit = Math.min(query.limit ?? DEFAULT_LIMIT, MAX_LIMIT);
-  const maxPages = query.maxPages ?? DEFAULT_MAX_PAGES;
-  const hits: SearchHit[] = [];
-  const seen = new Set<string>();
-  let mode = "";
-  let actualSource = "";
-  let exhausted = false;
-  let pages = 0;
-
-  for (let page = 1; page <= maxPages; page++) {
-    const args = buildSearchArgs({ ...query, limit }, page);
-    let result: Awaited<ReturnType<SearchRunner>>;
-    try {
-      result = await runner(args);
-    } catch (err) {
-      throw unavailable("the CLI could not be invoked", (err as Error).message);
-    }
-    if (result.exitCode !== 0) {
-      throw unavailable(
-        `the CLI exited ${result.exitCode}`,
-        result.stderr.trim() || result.stdout.slice(0, 400),
-      );
-    }
-    const parsed = parseEnvelope(result.stdout);
-    pages = page;
-    mode = parsed.mode;
-    actualSource = parsed.actualSource;
-
-    for (const row of parsed.rows) {
-      const hit = toHit(row);
-      // De-duplicated across pages: a page boundary that re-serves a row would
-      // otherwise inflate an enumeration whose whole purpose is an accurate count.
-      if (hit.permalink.length > 0 && seen.has(hit.permalink)) continue;
-      if (hit.permalink.length > 0) seen.add(hit.permalink);
-      hits.push(hit);
-    }
-    if (parsed.rows.length < limit) {
-      exhausted = true;
-      break;
-    }
+async function run(
+  args: readonly string[],
+  runner: SearchRunner,
+): Promise<CompleteRetrievalResponse> {
+  let result: Awaited<ReturnType<SearchRunner>>;
+  try {
+    result = await runner(args);
+  } catch (err) {
+    throw unavailable("the CLI could not be invoked", (err as Error).message);
   }
-  return { hits, mode, actualSource, exhausted, pages };
+  if (result.exitCode !== 0) {
+    throw unavailable(
+      `the CLI exited ${result.exitCode}`,
+      result.stderr.trim() || result.stdout.slice(0, 400),
+    );
+  }
+  return parsePayload(result.stdout);
+}
+
+/**
+ * Build the argv for a `--references` query. Exported so a caller can log what ran.
+ *
+ * An absent project OMITS the flag rather than passing an empty one, which hands
+ * resolution to the CLI's own precedence chain. The project that answered comes back
+ * in the response echo, so omitting the flag never means not knowing.
+ */
+export function buildReferencesArgs(target: string, project?: string): string[] {
+  const args = ["search", "--references", target];
+  if (project !== undefined && project.length > 0) args.push("--project", project);
+  args.push("--json");
+  return args;
+}
+
+/** Build the argv for an `--exhaustive` query. Exported so a caller can log what ran. */
+export function buildExhaustiveArgs(query: string, project?: string): string[] {
+  const args = ["search", query, "--exhaustive"];
+  if (project !== undefined && project.length > 0) args.push("--project", project);
+  args.push("--json");
+  return args;
+}
+
+/**
+ * Every note holding a wikilink edge to `target`, in both directions.
+ *
+ * The target may be a permalink, a full title, or a bare entity ID. An unresolvable
+ * target is NOT an error: it returns an empty set with `provable: false` and a
+ * reason, which the caller must read rather than treat as "no references".
+ */
+export async function searchReferences(
+  target: string,
+  project?: string,
+  runner: SearchRunner = defaultSearchRunner(),
+): Promise<CompleteRetrievalResponse> {
+  return await run(buildReferencesArgs(target, project), runner);
+}
+
+/** Every note whose full content contains `query` as a literal, case-insensitively. */
+export async function searchExhaustive(
+  query: string,
+  project?: string,
+  runner: SearchRunner = defaultSearchRunner(),
+): Promise<CompleteRetrievalResponse> {
+  return await run(buildExhaustiveArgs(query, project), runner);
 }

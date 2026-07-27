@@ -23,7 +23,9 @@ import {
   type RetainRule,
   RetainRuleSchema,
 } from "../schemas/reference-manifest.js";
+import type { SearchRunner } from "./brain-cli.js";
 import type { NoteFileSystem } from "./note-identity.js";
+import { discoverCandidates } from "./reference-funnel.js";
 import { scanReferences } from "./reference-scan.js";
 
 export interface ClosureOptions {
@@ -33,6 +35,10 @@ export interface ClosureOptions {
   /** Caller-owned allow-list; empty means nothing is retained. */
   retain?: readonly RetainRule[];
   fileSystem?: NoteFileSystem;
+  /** Defaults to the project the manifest recorded. */
+  project?: string;
+  /** Subprocess seam for the funnel's CLI calls, injected in tests. */
+  runner?: SearchRunner | undefined;
   now?: string;
 }
 
@@ -137,7 +143,34 @@ export async function checkClosure(options: ClosureOptions): Promise<ClosureRepo
   const scanOptions = options.fileSystem
     ? { docsRoot, fileSystem: options.fileSystem }
     : { docsRoot };
-  const { findings: current } = await scanReferences(options.manifest.targets, scanOptions);
+
+  // The re-scan uses the SAME discovery mechanism the manifest was built with —
+  // there is no tree-walking alternative to fall back to, by design, so a check can
+  // never take a different path to a different answer than the scan did.
+  //
+  // The prior manifest's own files are folded in unconditionally. After a repointing
+  // pass those references are GONE, so the index legitimately stops returning their
+  // notes; re-deriving scope purely from a fresh query would drop exactly the files
+  // being verified and report every repaired reference as UPDATED without ever
+  // opening the file to confirm. Stage two always reads current disk content, so
+  // including a file that no longer references anything costs one read and proves
+  // the repair.
+  const recorded = options.project ?? options.manifest.discovery.project;
+  const scope = await discoverCandidates(options.manifest.targets, {
+    // The recorded project is preferred even when the manifest's was CLI-resolved:
+    // pinning the check to the graph the scan actually used is what makes the two
+    // comparable, and re-resolving could silently move the check to another one.
+    ...(recorded.length > 0 ? { project: recorded } : {}),
+    docsRoot,
+    alwaysInclude: options.manifest.findings.map((finding) => finding.referencingFile),
+    ...(options.fileSystem === undefined ? {} : { fileSystem: options.fileSystem }),
+    ...(options.runner === undefined ? {} : { runner: options.runner }),
+  });
+  const { findings: current } = await scanReferences(
+    options.manifest.targets,
+    scope.candidates,
+    scanOptions,
+  );
 
   const queues = queueByKey(current);
   // Advisory entries were never produced by the deterministic scan, so they can

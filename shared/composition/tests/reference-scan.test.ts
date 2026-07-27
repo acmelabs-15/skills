@@ -11,12 +11,46 @@ import { matchLine } from "../src/core/reference-matchers.js";
 import { buildImpactManifest, resolveTargets } from "../src/core/reference-scan.js";
 import { main, parseArgs } from "../src/reference-scan.js";
 import {
+  type ClosureReport,
+  type ImpactManifest,
   ImpactManifestSchema,
   REFERENCE_CLASSES,
   type ReferenceFinding,
   type ResolvedTarget,
   SEARCH_MODES,
 } from "../src/schemas/reference-manifest.js";
+import { treeRunner } from "./_helpers/funnel-runner.js";
+
+/**
+ * Discovery is the funnel and only the funnel, so every scan needs a search surface
+ * to ask. These two wrappers supply one that returns the whole fixture tree, which
+ * is exactly what the removed tree walk used to hand stage two — so the tests below
+ * keep covering what they were written to cover (matchers, graph leg, closure
+ * arithmetic, manifest shape) rather than becoming discovery tests by accident.
+ *
+ * Discovery itself is covered in `reference-funnel.test.ts`, where the runners are
+ * deliberately narrow.
+ */
+async function scanFixture(
+  options: Omit<Parameters<typeof buildImpactManifest>[0], "project" | "runner"> & {
+    docsRoot: string;
+  },
+): Promise<ImpactManifest> {
+  return await buildImpactManifest({
+    ...options,
+    project: "fixture",
+    runner: await treeRunner(options.docsRoot),
+  });
+}
+
+async function closeFixture(
+  options: Omit<Parameters<typeof checkClosure>[0], "runner">,
+): Promise<ClosureReport> {
+  return await checkClosure({
+    ...options,
+    runner: await treeRunner(options.docsRoot ?? options.manifest.docsRoot),
+  });
+}
 
 /**
  * RULING on the `await expect(...).rejects.toThrow(...)` hints in this file.
@@ -265,7 +299,7 @@ describe("buildImpactManifest — fixture tree integration", () => {
   let manifest: Awaited<ReturnType<typeof buildImpactManifest>>;
 
   beforeAll(async () => {
-    manifest = await buildImpactManifest({
+    manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [
@@ -322,7 +356,7 @@ describe("buildImpactManifest — fixture tree integration", () => {
   });
 
   test("ordering is deterministic and independent of enumeration order", async () => {
-    const again = await buildImpactManifest({
+    const again = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [
@@ -359,7 +393,7 @@ describe("checkClosure", () => {
   }
 
   async function manifestFor(root: string) {
-    return await buildImpactManifest({
+    return await scanFixture({
       docsRoot: root,
       now: FIXED_NOW,
       targets: [
@@ -382,7 +416,7 @@ describe("checkClosure", () => {
 
   test("an untouched tree reports every entry OUTSTANDING and is not closed", async () => {
     const manifest = await manifestFor(tempRoot);
-    const report = await checkClosure({ manifest, now: FIXED_NOW });
+    const report = await closeFixture({ manifest, now: FIXED_NOW });
     expect(report.summary.total).toBe(manifest.findings.length);
     expect(report.summary.outstanding).toBe(manifest.findings.length);
     expect(report.summary.updated).toBe(0);
@@ -392,7 +426,7 @@ describe("checkClosure", () => {
 
   test("a caller allow-list moves entries to RETAINED without the checker deciding", async () => {
     const manifest = await manifestFor(tempRoot);
-    const report = await checkClosure({
+    const report = await closeFixture({
       manifest,
       now: FIXED_NOW,
       retain: [{ class: "entity-id" }],
@@ -405,7 +439,7 @@ describe("checkClosure", () => {
 
   test("an unconstrained retain rule is refused rather than retaining everything", async () => {
     const manifest = await manifestFor(tempRoot);
-    await expect(checkClosure({ manifest, now: FIXED_NOW, retain: [{}] })).rejects.toThrow(
+    await expect(closeFixture({ manifest, now: FIXED_NOW, retain: [{}] })).rejects.toThrow(
       /must constrain at least one field/,
     );
   });
@@ -424,7 +458,7 @@ describe("checkClosure", () => {
           .join("\n");
         await Bun.write(abs, repaired);
       }
-      const report = await checkClosure({ manifest, docsRoot: root, now: FIXED_NOW });
+      const report = await closeFixture({ manifest, docsRoot: root, now: FIXED_NOW });
       expect(report.summary.updated).toBe(manifest.findings.length);
       expect(report.summary.outstanding).toBe(0);
       expect(report.entries.every((entry) => entry.status === "UPDATED")).toBe(true);
@@ -449,7 +483,7 @@ describe("checkClosure", () => {
       );
       const referrer = join(root, "analysis", "ANALYSIS-102-duplicates.md");
       await Bun.write(referrer, "ANALYSIS-100 once\nANALYSIS-100 twice\nANALYSIS-100 thrice\n");
-      const manifest = await buildImpactManifest({
+      const manifest = await scanFixture({
         docsRoot: root,
         now: FIXED_NOW,
         targets: [{ path: TARGET_NOTE }],
@@ -457,7 +491,7 @@ describe("checkClosure", () => {
       expect(manifest.findings.length).toBe(3);
 
       await Bun.write(referrer, "removed\nANALYSIS-100 twice\nremoved\n");
-      const report = await checkClosure({ manifest, docsRoot: root, now: FIXED_NOW });
+      const report = await closeFixture({ manifest, docsRoot: root, now: FIXED_NOW });
       expect(report.summary.updated).toBe(2);
       expect(report.summary.outstanding).toBe(1);
       expect(report.summary.newFindings).toBe(0);
@@ -474,7 +508,7 @@ describe("checkClosure", () => {
         join(root, TARGET_NOTE),
         await Bun.file(join(FIXTURE_ROOT, TARGET_NOTE)).text(),
       );
-      const manifest = await buildImpactManifest({
+      const manifest = await scanFixture({
         docsRoot: root,
         now: FIXED_NOW,
         targets: [{ path: TARGET_NOTE }],
@@ -482,7 +516,7 @@ describe("checkClosure", () => {
       expect(manifest.findings).toEqual([]);
 
       await Bun.write(join(root, "analysis", "ANALYSIS-103-late.md"), "late ANALYSIS-100 ref\n");
-      const report = await checkClosure({ manifest, docsRoot: root, now: FIXED_NOW });
+      const report = await closeFixture({ manifest, docsRoot: root, now: FIXED_NOW });
       expect(report.summary.newFindings).toBe(1);
       expect(report.newFindings[0]?.target).toBe("ANALYSIS-100");
       // A new finding is reported alongside, never folded into the prior contract.
@@ -520,7 +554,10 @@ describe("CLI", () => {
 
   test("scan writes a schema-valid manifest and exits 0", async () => {
     const out = join(mkdtempSync(join(tmpdir(), "reference-cli-")), "manifest.json");
-    const code = await main(["--docs-root", FIXTURE_ROOT, "--target", TARGET_NOTE, "--out", out]);
+    const code = await main(
+      ["--docs-root", FIXTURE_ROOT, "--target", TARGET_NOTE, "--out", out],
+      await treeRunner(FIXTURE_ROOT),
+    );
     expect(code).toBe(0);
     const written: unknown = await Bun.file(out).json();
     expect(ImpactManifestSchema.safeParse(written).success).toBe(true);
@@ -532,15 +569,15 @@ describe("CLI", () => {
     try {
       const manifestPath = join(dir, "manifest.json");
       expect(
-        await main(["--docs-root", FIXTURE_ROOT, "--target", TARGET_NOTE, "--out", manifestPath]),
+        await main(
+          ["--docs-root", FIXTURE_ROOT, "--target", TARGET_NOTE, "--out", manifestPath],
+          await treeRunner(FIXTURE_ROOT),
+        ),
       ).toBe(0);
-      const code = await main([
-        "--check",
-        "--manifest",
-        manifestPath,
-        "--out",
-        join(dir, "closure.json"),
-      ]);
+      const code = await main(
+        ["--check", "--manifest", manifestPath, "--out", join(dir, "closure.json")],
+        await treeRunner(FIXTURE_ROOT),
+      );
       expect(code).toBe(2);
       const report = (await Bun.file(join(dir, "closure.json")).json()) as {
         summary: { closed: boolean; outstanding: number };
@@ -570,7 +607,7 @@ describe("graph leg — bi-directional closure", () => {
   let manifest: Awaited<ReturnType<typeof buildImpactManifest>>;
 
   beforeAll(async () => {
-    manifest = await buildImpactManifest({
+    manifest = await scanFixture({
       docsRoot: GRAPH_ROOT,
       now: FIXED_NOW,
       targets: [{ path: GRAPH_TARGET }],
@@ -641,7 +678,7 @@ describe("graph leg — bi-directional closure", () => {
       for await (const rel of glob.scan({ cwd: GRAPH_ROOT, onlyFiles: true })) {
         await Bun.write(join(root, rel), await Bun.file(join(GRAPH_ROOT, rel)).text());
       }
-      const before = await buildImpactManifest({
+      const before = await scanFixture({
         docsRoot: root,
         now: FIXED_NOW,
         targets: [{ path: GRAPH_TARGET }],
@@ -656,14 +693,14 @@ describe("graph leg — bi-directional closure", () => {
       );
       await Bun.write(missing, patched);
 
-      const after = await buildImpactManifest({
+      const after = await scanFixture({
         docsRoot: root,
         now: FIXED_NOW,
         targets: [{ path: GRAPH_TARGET }],
       });
       expect(after.summary.byClass["bidirectional-missing-on-referencer"]).toBe(0);
 
-      const closure = await checkClosure({ manifest: before, docsRoot: root, now: FIXED_NOW });
+      const closure = await closeFixture({ manifest: before, docsRoot: root, now: FIXED_NOW });
       const repaired = closure.entries.find(
         (entry) => entry.finding.class === "bidirectional-missing-on-referencer",
       );
@@ -729,7 +766,7 @@ describe("search advisory leg", () => {
   };
 
   test("merged entries are forced to SEARCH and advisory whatever the file claims", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
@@ -743,7 +780,7 @@ describe("search advisory leg", () => {
   });
 
   test("every search mode is representable and preserved through the merge", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
@@ -762,7 +799,7 @@ describe("search advisory leg", () => {
   });
 
   test("a keyword-mode entry is advisory exactly like a semantic one", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
@@ -774,13 +811,13 @@ describe("search advisory leg", () => {
   });
 
   test("the closure detail names the mode that produced the entry", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
       merge: [{ ...semanticEntry, mode: "hybrid" as const }],
     });
-    const report = await checkClosure({ manifest, now: FIXED_NOW });
+    const report = await closeFixture({ manifest, now: FIXED_NOW });
     const advisory = report.entries.find((entry) => entry.finding.advisory);
     expect(advisory?.detail).toContain("mode=hybrid");
   });
@@ -792,7 +829,7 @@ describe("search advisory leg", () => {
    * the raw object, so the guarantee is checked rather than assumed away.
    */
   test("the deterministic legs carry no search provenance", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
@@ -844,7 +881,7 @@ describe("search advisory leg", () => {
    * merge untouched, because the merge only forces `source` and `advisory`.
    */
   test("searchType and actualSource survive the merge alongside mode", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
@@ -865,7 +902,7 @@ describe("search advisory leg", () => {
   });
 
   test("the closure detail reports all three provenance fields, not just the mode", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
@@ -878,7 +915,7 @@ describe("search advisory leg", () => {
         },
       ],
     });
-    const report = await checkClosure({ manifest, now: FIXED_NOW });
+    const report = await closeFixture({ manifest, now: FIXED_NOW });
     const advisory = report.entries.find((entry) => entry.finding.advisory);
     expect(advisory?.detail).toContain("mode=semantic");
     expect(advisory?.detail).toContain("search_type=text");
@@ -894,13 +931,13 @@ describe("search advisory leg", () => {
    * hand is now always reproducible.
    */
   test("the parenthetical is always complete, because the triple is always present", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
       merge: [{ ...semanticEntry, mode: "keyword" as const }],
     });
-    const report = await checkClosure({ manifest, now: FIXED_NOW });
+    const report = await closeFixture({ manifest, now: FIXED_NOW });
     const advisory = report.entries.find((entry) => entry.finding.advisory);
     expect(advisory?.detail).toContain("mode=keyword");
     expect(advisory?.detail).toContain("search_type=");
@@ -908,12 +945,12 @@ describe("search advisory leg", () => {
   });
 
   test("a deterministic entry's detail carries no provenance parenthetical at all", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
     });
-    const report = await checkClosure({ manifest, now: FIXED_NOW });
+    const report = await closeFixture({ manifest, now: FIXED_NOW });
     expect(report.entries.length).toBeGreaterThan(0);
     for (const entry of report.entries) {
       expect(entry.finding.advisory).toBe(false);
@@ -923,7 +960,7 @@ describe("search advisory leg", () => {
   });
 
   test("an index-stale entry is representable as a finding class", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
@@ -940,7 +977,7 @@ describe("search advisory leg", () => {
   });
 
   test("advisory entries never gate closure", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
@@ -950,7 +987,7 @@ describe("search advisory leg", () => {
       merge: [{ ...semanticEntry, class: "index-stale" as const }],
     });
     // Retain every deterministic finding so only the advisory one is left open.
-    const report = await checkClosure({
+    const report = await closeFixture({
       manifest,
       now: FIXED_NOW,
       retain: REFERENCE_CLASSES.filter((cls) => cls !== "index-stale").map((cls) => ({
@@ -963,13 +1000,13 @@ describe("search advisory leg", () => {
   });
 
   test("an advisory entry is carried forward unverified, not silently marked UPDATED", async () => {
-    const manifest = await buildImpactManifest({
+    const manifest = await scanFixture({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
       merge: [semanticEntry],
     });
-    const report = await checkClosure({ manifest, now: FIXED_NOW });
+    const report = await closeFixture({ manifest, now: FIXED_NOW });
     const advisory = report.entries.find((entry) => entry.finding.advisory);
     expect(advisory?.status).toBe("OUTSTANDING");
     expect(advisory?.detail).toMatch(/advisory/i);

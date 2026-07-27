@@ -3,10 +3,10 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import type { Observation, Relation } from "../schemas/common.js";
+import { parseRelations } from "../core/relations.js";
+import type { Observation } from "../schemas/common.js";
 import type { BoundPlanRef, Event, SessionNote } from "../schemas/session-note.js";
 import { EventSchema, SessionNoteSchema } from "../schemas/session-note.js";
-import { parseRelations } from "../core/relations.js";
 import {
   ParseError,
   bulletFieldMap,
@@ -258,7 +258,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   }
   return out;
 }
-
 
 export function parseSessionNote(markdown: string): SessionNote {
   const ast = processor.parse(markdown);

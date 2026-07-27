@@ -38,10 +38,12 @@ const INVERSE_PAIRS: ReadonlyArray<readonly [string, string]> = [
 ];
 
 const INVERSE_VERBS: ReadonlyMap<string, string> = new Map([
-  ...INVERSE_PAIRS.flatMap(([outbound, inverse]): Array<[string, string]> => [
-    [outbound, inverse],
-    [inverse, outbound],
-  ]),
+  ...INVERSE_PAIRS.flatMap(
+    ([outbound, inverse]): Array<[string, string]> => [
+      [outbound, inverse],
+      [inverse, outbound],
+    ],
+  ),
   ["pairs_with", "pairs_with"] as [string, string],
   ["relates_to", "relates_to"] as [string, string],
 ]);

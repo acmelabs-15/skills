@@ -4,7 +4,8 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import type { Observation, Relation } from "../schemas/common.js";
+import { parseRelations } from "../core/relations.js";
+import type { Observation } from "../schemas/common.js";
 import type {
   QaApproach,
   QaFrontmatter,
@@ -15,7 +16,6 @@ import type {
   TestRowStatus,
 } from "../schemas/qa-note.js";
 import { QaNoteSchema } from "../schemas/qa-note.js";
-import { parseRelations } from "../core/relations.js";
 import {
   ParseError,
   bulletFieldMap,
@@ -244,7 +244,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   }
   return out;
 }
-
 
 function serializeSectionContent(children: RootContent[]): string {
   const blocks: string[] = [];

@@ -663,8 +663,30 @@ describe("ReferenceFindingSchema provenance fields", () => {
     expect(detectLegacyManifest({ findings: [{ source: "TEXT", mode: "keyword" }] })).toContain(
       "no deterministic leg produces",
     );
-    // A well-formed manifest is not flagged.
-    expect(detectLegacyManifest({ findings: [{ source: "TEXT" }] })).toBeNull();
+    // A well-formed manifest is not flagged. It needs the discovery block: a manifest
+    // that cannot say whether its scope was the tree or a search-scoped subset is
+    // itself legacy, whatever its findings look like.
+    expect(detectLegacyManifest({ findings: [{ source: "TEXT" }], discovery: {} })).toBeNull();
+  });
+
+  /**
+   * The scope-honesty block is required, and its absence is refused rather than
+   * defaulted. Defaulting a missing block to `census` would assert that the whole
+   * tree was read — an exhaustiveness claim nothing in the file supports, and the
+   * precise failure the block exists to prevent.
+   */
+  test("a manifest with no discovery block is refused, not defaulted to census", () => {
+    const remedy = detectLegacyManifest({ findings: [{ source: "TEXT" }] });
+    expect(remedy).toContain("discovery");
+    expect(remedy).toContain("Re-run the scan");
+  });
+
+  /**
+   * Ordering: a manifest failing BOTH checks gets the finding-level message, which
+   * names an irrecoverable field rather than a missing block.
+   */
+  test("a finding-level defect outranks the missing discovery block in the message", () => {
+    expect(detectLegacyManifest({ findings: [{ referencingFile: "a.md" }] })).toContain("`source`");
   });
 
   /**

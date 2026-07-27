@@ -183,11 +183,7 @@ function parseDriftMarker(fixture: string, md: string): DriftMarker {
  * once cross-checked, the comment value and the table value are proven
  * identical, so either may serve as the rejection assertion.
  */
-function assertDriftMarkerMatchesTable(
-  fixture: string,
-  comment: RegExp,
-  table: RegExp,
-): void {
+function assertDriftMarkerMatchesTable(fixture: string, comment: RegExp, table: RegExp): void {
   if (comment.source === table.source && comment.flags === table.flags) return;
   throw new DriftMarkerMismatchError(
     `drift: fixture comment regex != table expectedReject for "${fixture}": ` +
@@ -270,9 +266,21 @@ function synthUnfinishedSpec(specRef: string): SpecRootNote {
     scope_out: [],
     sections: { Context: "Synthetic." },
     observations: [
-      { category: "fact", text: "Synthetic child SPEC stub for EPIC cross-note resolution", tags: ["stub"] },
-      { category: "fact", text: "Status is ACCEPTED (non-DONE) so the EPIC done-claim must fail", tags: ["stub"] },
-      { category: "fact", text: "Only the status field is load-bearing for the validator", tags: ["stub"] },
+      {
+        category: "fact",
+        text: "Synthetic child SPEC stub for EPIC cross-note resolution",
+        tags: ["stub"],
+      },
+      {
+        category: "fact",
+        text: "Status is ACCEPTED (non-DONE) so the EPIC done-claim must fail",
+        tags: ["stub"],
+      },
+      {
+        category: "fact",
+        text: "Only the status field is load-bearing for the validator",
+        tags: ["stub"],
+      },
     ],
     relations: [
       { verb: "part_of", target: "EPIC-092: Sample Adversarial Epic Roadmap" },

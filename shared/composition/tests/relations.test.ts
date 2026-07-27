@@ -3,9 +3,9 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
+import { inverseVerb, isSymmetricVerb, parseRelationEntries } from "../src/core/relations.js";
 import { parseAdrNote } from "../src/parsers/adr-note.js";
 import { sectionizeH2 } from "../src/parsers/ast-helpers.js";
-import { inverseVerb, isSymmetricVerb, parseRelationEntries } from "../src/core/relations.js";
 
 const processor = unified().use(remarkParse).use(remarkGfm).use(remarkFrontmatter, ["yaml"]);
 
@@ -45,7 +45,9 @@ describe("inverse verb table", () => {
 
 describe("parseRelationEntries — flat form", () => {
   test("reads verb-prefixed entries", () => {
-    const entries = relationsOf(`# N\n\n## Relations\n\n- part_of [[A: One]]\n- implements [[B: Two]]\n`);
+    const entries = relationsOf(
+      "# N\n\n## Relations\n\n- part_of [[A: One]]\n- implements [[B: Two]]\n",
+    );
     expect(entries.map((e) => [e.verb, e.target])).toEqual([
       ["part_of", "A: One"],
       ["implements", "B: Two"],
@@ -54,7 +56,7 @@ describe("parseRelationEntries — flat form", () => {
   });
 
   test("records the source line of each entry", () => {
-    const entries = relationsOf(`# N\n\n## Relations\n\n- part_of [[A: One]]\n`);
+    const entries = relationsOf("# N\n\n## Relations\n\n- part_of [[A: One]]\n");
     expect(entries[0]?.line).toBe(5);
   });
 });
@@ -97,7 +99,7 @@ describe("parseRelationEntries — H3-grouped form", () => {
 
   test("an explicit verb wins over the enclosing group", () => {
     const entries = relationsOf(
-      `# N\n\n## Relations\n\n### contains\n\n- [[A: One]]\n- supersedes [[B: Two]]\n`,
+      "# N\n\n## Relations\n\n### contains\n\n- [[A: One]]\n- supersedes [[B: Two]]\n",
     );
     expect(entries.map((e) => [e.verb, e.grouped])).toEqual([
       ["contains", true],
@@ -106,18 +108,18 @@ describe("parseRelationEntries — H3-grouped form", () => {
   });
 
   test("an H3 that is not a relation verb does not type the entries beneath it", () => {
-    const entries = relationsOf(`# N\n\n## Relations\n\n### By category\n\n- [[A: One]]\n`);
+    const entries = relationsOf("# N\n\n## Relations\n\n### By category\n\n- [[A: One]]\n");
     expect(entries).toEqual([]);
   });
 
   test("H3 headers are matched case- and space-insensitively", () => {
-    const entries = relationsOf(`# N\n\n## Relations\n\n### Depends On\n\n- [[A: One]]\n`);
+    const entries = relationsOf("# N\n\n## Relations\n\n### Depends On\n\n- [[A: One]]\n");
     expect(entries[0]?.verb).toBe("depends_on");
   });
 
   test("a flat section following a group still parses", () => {
     const entries = relationsOf(
-      `# N\n\n## Relations\n\n### contains\n\n- [[A: One]]\n\n## Observations\n\n- [fact] x #t\n`,
+      "# N\n\n## Relations\n\n### contains\n\n- [[A: One]]\n\n## Observations\n\n- [fact] x #t\n",
     );
     expect(entries).toHaveLength(1);
   });

@@ -4,7 +4,8 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import type { Observation, Relation } from "../schemas/common.js";
+import { parseRelations } from "../core/relations.js";
+import type { Observation } from "../schemas/common.js";
 import type {
   DodCheckboxItem,
   EffortSummaryRow,
@@ -13,7 +14,6 @@ import type {
   TaskNote,
 } from "../schemas/task-note.js";
 import { TaskNoteSchema } from "../schemas/task-note.js";
-import { parseRelations } from "../core/relations.js";
 import {
   ParseError,
   extractFrontmatter,
@@ -220,7 +220,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   }
   return out;
 }
-
 
 export function parseTaskNote(markdown: string): TaskNote {
   const ast = processor.parse(markdown);

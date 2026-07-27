@@ -15,6 +15,7 @@ import {
   ReferenceFindingSchema,
 } from "../src/schemas/reference-manifest.js";
 import { type RepointPlan, RepointPlanSchema } from "../src/schemas/repoint-plan.js";
+import { treeRunner } from "./_helpers/funnel-runner.js";
 
 const FIXTURE_ROOT = join(import.meta.dir, "fixtures", "repoint-tree");
 const SOURCE = "analysis/ANALYSIS-120-repoint-source.md";
@@ -65,11 +66,18 @@ afterAll(() => {
   for (const dir of staged) rmSync(dir, { recursive: true, force: true });
 });
 
-function manifestFor(docsRoot: string): Promise<ImpactManifest> {
-  return buildImpactManifest({
+/**
+ * Discovery is the funnel, so a scan needs a search surface. These tests are about
+ * the repoint executor rather than discovery, so the runner returns the whole tree —
+ * exactly what the removed tree walk used to hand stage two.
+ */
+async function manifestFor(docsRoot: string): Promise<ImpactManifest> {
+  return await buildImpactManifest({
     docsRoot,
     targets: [{ path: SOURCE }],
     now: FIXED_NOW,
+    project: "fixture",
+    runner: await treeRunner(docsRoot),
   });
 }
 

@@ -52,10 +52,10 @@ import { validateAnalysisAcceptedClaim } from "./analysis-claim-validator.js";
 import { validateDesignComplianceClaim } from "./design-claim-validator.js";
 import { validateEpicDoneClaim } from "./epic-claim-validator.js";
 import { validatePlanDoneClaim } from "./plan-claim-validator.js";
+import { validateQaPassClaim } from "./qa-claim-validator.js";
 import { validateRequirementAcClaim } from "./requirement-claim-validator.js";
 import { validateSpecDoneClaim } from "./spec-claim-validator.js";
 import { validateTaskDoneClaim } from "./task-claim-validator.js";
-import { validateQaPassClaim } from "./qa-claim-validator.js";
 
 /**
  * Claim-bearing note types this extractor handles. Mirrors the dispatch routing
@@ -335,9 +335,7 @@ function checkQa(sections: Map<string, RootContent[]>, status: string): LenientC
     summary: { tests_run, passed, failed, skipped, verdict },
     test_results: testResults,
   };
-  const result = validateQaPassClaim(
-    model as unknown as Parameters<typeof validateQaPassClaim>[0],
-  );
+  const result = validateQaPassClaim(model as unknown as Parameters<typeof validateQaPassClaim>[0]);
   if (result.verdict === "FAIL") {
     return { kind: "claim-fail", failing: joinUnsatisfied(result.unsatisfied) };
   }

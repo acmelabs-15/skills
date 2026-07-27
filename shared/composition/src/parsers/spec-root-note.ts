@@ -4,7 +4,8 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import type { Observation, Relation } from "../schemas/common.js";
+import { parseRelations } from "../core/relations.js";
+import type { Observation } from "../schemas/common.js";
 import type {
   SpecPhase,
   SpecRootCheckboxItem,
@@ -13,7 +14,6 @@ import type {
 } from "../schemas/spec-root-note.js";
 import { SpecRootNoteSchema } from "../schemas/spec-root-note.js";
 import { ParseError, extractFrontmatter, proseFromChildren, sectionizeH2 } from "./ast-helpers.js";
-import { parseRelations } from "../core/relations.js";
 
 const processor = unified().use(remarkParse).use(remarkFrontmatter, ["yaml"]).use(remarkGfm);
 
@@ -211,7 +211,6 @@ function parseObservations(children: RootContent[]): Observation[] {
   }
   return out;
 }
-
 
 export function parseSpecRootNote(markdown: string): SpecRootNote {
   const ast = processor.parse(markdown);
