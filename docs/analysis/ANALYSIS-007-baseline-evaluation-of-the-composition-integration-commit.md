@@ -370,6 +370,10 @@ v1's git and probe evidence is reused throughout and holds up under re-verificat
 
 **The four reverted commits are descendants, and one is narrower than advertised.** `git merge-base --is-ancestor 8aad9681 <sha>` succeeds for all four of `6ff9edc`, `c434301`, `2c87a78` and `a1f6509`, confirming the true first-parent order `69c4999` → `4247a03` → `87b6ae4` → `82a3f6f` → `efdbaf7` → `8aad9681` → the reverted four. Decompose's UNEXTRACTABLE table and traverse-on-existence wiring are present at `skills/decompose/SKILL.md:254` and `:243` in this commit and absent at `efdbaf7`. The refinement on `6ff9edc` is recorded under Component 8: it touches only defrag and recompose, never decompose.
 
+## Erratum — filesScanned semantics changed (2026-07-26, QA-094)
+
+This note's reconciliation of `filesScanned` (41 = 69 markdown files minus 28 targets, with reference-scan.ts:222 excluding targets from their own text scan) was correct FOR THE BUILD IT MEASURED and is now stale on both halves. The cross-target exclusion defect fix (skills commit b3872e3) replaced file-level target exclusion with per-candidate self-citation suppression in `scanScope` (now ~line 332): target notes are genuinely scanned and counted, and only a finding whose target equals the scanning note's own identity is dropped. That change recovered +326 cross-target findings that file-level exclusion had blind-spotted. Re-baselined figures on the same 28-target fond sweep, per the QA-094 validation: `filesScanned` 66 (funnel) / 69 (whole-tree). This entry is a dated correction; the original text stands as a historical measurement, not a dependency.
+
 ## Observations
 
 ### On the boundary hypothesis and the repair loop
