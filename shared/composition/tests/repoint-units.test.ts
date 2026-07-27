@@ -13,7 +13,6 @@ import {
   type ReferenceFinding,
   ReferenceFindingSchema,
   type ResolvedTarget,
-  detectLegacyManifest,
 } from "../src/schemas/reference-manifest.js";
 import { type RepointPlan, RepointPlanSchema } from "../src/schemas/repoint-plan.js";
 
@@ -634,59 +633,27 @@ describe("ReferenceFindingSchema provenance fields", () => {
   });
 
   /**
-   * No back-compat, by owner decision. A SEARCH entry recorded under the old shape is
-   * missing provenance that was never captured and cannot be reconstructed, so the
-   * only honest repair is re-running the scan — and the failure says exactly that
-   * instead of surfacing a four-branch union error.
+   * No back-compat, by owner decision. A SEARCH entry missing any of the provenance
+   * triple is refused by the schema outright — there is no detection layer and no
+   * migration, because the provenance was never recorded and cannot be reconstructed.
+   * A manifest that will not validate is stale, and the CLI's message says to re-run
+   * the scan.
    */
-  test("a manifest written before the fields existed is refused, not migrated", () => {
-    const legacy = {
-      referencingFile: "analysis/A.md",
-      line: 1,
-      column: 1,
-      matchedText: "ANALYSIS-120",
-      class: "entity-id",
-      target: "ANALYSIS-120",
-      viaAlias: false,
-      source: "SEARCH",
-      advisory: true,
-      mode: "keyword",
-    };
-    expect(ReferenceFindingSchema.safeParse(legacy).success).toBe(false);
-    const remedy = detectLegacyManifest({ findings: [legacy] });
-    expect(remedy).toContain("searchType");
-    expect(remedy).toContain("re-run the scan");
-  });
-
-  test("the legacy detector also catches an unlabelled finding and a mislabelled one", () => {
-    expect(detectLegacyManifest({ findings: [{ referencingFile: "a.md" }] })).toContain("`source`");
-    expect(detectLegacyManifest({ findings: [{ source: "TEXT", mode: "keyword" }] })).toContain(
-      "no deterministic leg produces",
-    );
-    // A well-formed manifest is not flagged. It needs the discovery block: a manifest
-    // that cannot say whether its scope was the tree or a search-scoped subset is
-    // itself legacy, whatever its findings look like.
-    expect(detectLegacyManifest({ findings: [{ source: "TEXT" }], discovery: {} })).toBeNull();
-  });
-
-  /**
-   * The scope-honesty block is required, and its absence is refused rather than
-   * defaulted. Defaulting a missing block to `census` would assert that the whole
-   * tree was read — an exhaustiveness claim nothing in the file supports, and the
-   * precise failure the block exists to prevent.
-   */
-  test("a manifest with no discovery block is refused, not defaulted to census", () => {
-    const remedy = detectLegacyManifest({ findings: [{ source: "TEXT" }] });
-    expect(remedy).toContain("discovery");
-    expect(remedy).toContain("Re-run the scan");
-  });
-
-  /**
-   * Ordering: a manifest failing BOTH checks gets the finding-level message, which
-   * names an irrecoverable field rather than a missing block.
-   */
-  test("a finding-level defect outranks the missing discovery block in the message", () => {
-    expect(detectLegacyManifest({ findings: [{ referencingFile: "a.md" }] })).toContain("`source`");
+  test("a SEARCH finding missing part of the provenance triple is refused", () => {
+    expect(
+      ReferenceFindingSchema.safeParse({
+        referencingFile: "analysis/A.md",
+        line: 1,
+        column: 1,
+        matchedText: "ANALYSIS-120",
+        class: "entity-id",
+        target: "ANALYSIS-120",
+        viaAlias: false,
+        source: "SEARCH",
+        advisory: true,
+        mode: "keyword",
+      }).success,
+    ).toBe(false);
   });
 
   /**

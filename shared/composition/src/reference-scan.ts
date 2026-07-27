@@ -73,7 +73,6 @@ import {
   type RetainRule,
   type SearchReferenceFinding,
   TargetsFileSchema,
-  detectLegacyManifest,
 } from "./schemas/reference-manifest.js";
 
 const MAX_INPUT_BYTES = 8 * 1024 * 1024;
@@ -218,16 +217,24 @@ async function loadMergeEntries(parsed: ParsedArgs): Promise<SearchReferenceFind
 }
 
 /**
- * Refuse a pre-discriminated manifest with a message naming the remedy.
+ * Parse a manifest read back from disk, naming the remedy when it will not validate.
  *
- * Runs BEFORE the Zod parse so the reader gets "re-run the scan" rather than a
- * four-branch union error listing every field of every branch. There is deliberately
- * no migration: the provenance a legacy SEARCH entry lacks was never recorded.
+ * A manifest that fails validation is stale — regenerate it. There is deliberately no
+ * migration path and no shape-specific detection: whatever a manifest is missing, it
+ * was produced by a scan and a scan is what replaces it, so one message covers every
+ * way it can be wrong. The Zod issues still list the offending fields underneath.
  */
-function refuseLegacy(raw: unknown, label: string): void {
-  const reason = detectLegacyManifest(raw);
-  if (reason !== null) {
-    throw new PlanValidationError(`${label}: ${reason}`, [{ path: label, message: reason }]);
+function parseManifest(raw: unknown, label: string): ImpactManifest {
+  try {
+    return ImpactManifestSchema.parse(raw);
+  } catch (err) {
+    if (err instanceof ZodError) {
+      throw new PlanValidationError(
+        `${label}: stale or invalid manifest — re-run the scan to regenerate it`,
+        zodErrorToIssues(err),
+      );
+    }
+    throw err;
   }
 }
 
@@ -311,8 +318,7 @@ async function runScan(parsed: ParsedArgs, runner?: SearchRunner): Promise<numbe
 
 async function runCheck(parsed: ParsedArgs, runner?: SearchRunner): Promise<number> {
   const raw = await readJson(parsed.manifestFile ?? "");
-  refuseLegacy(raw, parsed.manifestFile ?? "<manifest>");
-  const manifest = parseOrThrow(ImpactManifestSchema, raw, parsed.manifestFile ?? "<manifest>");
+  const manifest = parseManifest(raw, parsed.manifestFile ?? "<manifest>");
   const report = await checkClosure({
     manifest,
     retain: await loadRetainRules(parsed),

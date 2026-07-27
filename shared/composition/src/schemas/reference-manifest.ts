@@ -248,55 +248,6 @@ export const ReferenceFindingSchema = z.discriminatedUnion("source", [
 ]);
 export type ReferenceFinding = z.infer<typeof ReferenceFindingSchema>;
 
-/**
- * Detect a manifest written under the pre-discriminated shape, so the failure names
- * the remedy instead of surfacing a four-branch union error.
- *
- * Deliberately a detector rather than a compatibility path. There is no migration:
- * the provenance a legacy SEARCH entry lacks was never recorded and cannot be
- * reconstructed, so re-running the scan is the only honest repair. Returns the message
- * to raise, or null when the input is not recognisably legacy.
- */
-export function detectLegacyManifest(raw: unknown): string | null {
-  if (typeof raw !== "object" || raw === null) return null;
-  const findings = (raw as { findings?: unknown }).findings;
-  if (!Array.isArray(findings)) return null;
-  for (const entry of findings) {
-    if (typeof entry !== "object" || entry === null) continue;
-    const finding = entry as Record<string, unknown>;
-    const source = finding["source"];
-    if (source === undefined) {
-      return "manifest predates the discriminated finding shape: a finding carries no `source`. Re-run the scan to regenerate it.";
-    }
-    if (source === "SEARCH") {
-      const missing = ["mode", "searchType", "actualSource"].filter(
-        (field) => finding[field] === undefined,
-      );
-      if (missing.length > 0) {
-        return `manifest predates the discriminated finding shape: a SEARCH finding is missing ${missing.join(", ")}. That provenance was never recorded and cannot be reconstructed, so re-run the scan to regenerate the manifest.`;
-      }
-    } else if (
-      finding["mode"] !== undefined ||
-      finding["searchType"] !== undefined ||
-      finding["actualSource"] !== undefined
-    ) {
-      return `manifest predates the discriminated finding shape: a ${String(source)} finding carries search provenance, which no deterministic leg produces. Re-run the scan to regenerate it.`;
-    }
-  }
-  // Checked LAST so a manifest failing both gets the more specific diagnosis. The
-  // finding-level messages name an irrecoverable field; this one names a missing
-  // block. Both remedies are the same re-run, so the more precise message wins.
-  //
-  // A manifest with no discovery block cannot say whether its scope was the whole
-  // tree or a search-scoped subset, which is exactly the question the block answers.
-  // There is no migration: defaulting it to `census` would assert an exhaustiveness
-  // nothing recorded.
-  if ((raw as { discovery?: unknown }).discovery === undefined) {
-    return "manifest predates the discovery-provenance shape: it carries no `discovery` block, so whether its scope was the whole tree or a search-scoped subset was never recorded. Re-run the scan to regenerate it.";
-  }
-  return null;
-}
-
 /** The SEARCH branch alone — what the advisory leg produces and `--merge` accepts. */
 export const SearchReferenceFindingSchema = searchFinding;
 export type SearchReferenceFinding = z.infer<typeof searchFinding>;

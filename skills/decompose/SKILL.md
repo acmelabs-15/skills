@@ -573,13 +573,11 @@ migrated.** The executor treats the manifest as untrusted input in the same sens
 a plan YAML is — it is read back from disk and may have been hand-edited — so a
 manifest that does not satisfy the current schema fails validation loudly and
 writes nothing, rather than being coerced into something the executor then edits
-from. A manifest predating the funnel is refused on exactly this ground: the
-`discovery` block is required, and one written without it cannot say whether its
-scope was a whole tree or a search-scoped subset, which is the question the block
-exists to answer. The refusal names the remedy rather than emitting a union error.
-Re-running the scan is the remedy in every such case, and it is the only
-one: a hand-migrated manifest would carry addresses measured against a tree that
-has since moved. The same applies when the tree shifts under a valid manifest,
+from. There is no special case for any particular way a manifest can be wrong —
+whatever it is missing, a scan produced it and a scan replaces it — and the
+refusal names that remedy rather than emitting a bare union error. Re-running the
+scan is the remedy in every such case, and it is the only one: a hand-migrated
+manifest would carry addresses measured against a tree that has since moved. The same applies when the tree shifts under a valid manifest,
 which surfaces per finding as `address-drift` — the recorded position no longer
 holds the stale text, so re-scan and re-run.
 

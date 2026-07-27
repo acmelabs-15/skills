@@ -44,7 +44,7 @@ import yaml from "js-yaml";
 import { ZodError } from "zod";
 import { executeRepoint } from "./core/repoint.js";
 import { PlanValidationError, zodErrorToIssues } from "./schemas/plan-yaml.js";
-import { ImpactManifestSchema, detectLegacyManifest } from "./schemas/reference-manifest.js";
+import { type ImpactManifest, ImpactManifestSchema } from "./schemas/reference-manifest.js";
 import { type RepointPlan, RepointPlanSchema } from "./schemas/repoint-plan.js";
 
 const MAX_PLAN_BYTES = 1024 * 1024; // 1 MB, matching decompose/recompose
@@ -141,6 +141,27 @@ export async function loadPlan(planPath: string): Promise<RepointPlan> {
   return parseOrThrow(RepointPlanSchema, raw, planPath);
 }
 
+/**
+ * Parse a manifest read back from disk, naming the remedy when it will not validate.
+ *
+ * A manifest that fails validation is stale — regenerate it. No migration path and no
+ * shape-specific detection: whatever it is missing, a scan produced it and a scan
+ * replaces it, so one message covers every way it can be wrong.
+ */
+function parseManifest(raw: unknown, label: string): ImpactManifest {
+  try {
+    return ImpactManifestSchema.parse(raw);
+  } catch (err) {
+    if (err instanceof ZodError) {
+      throw new PlanValidationError(
+        `${label}: stale or invalid manifest — re-run the scan to regenerate it`,
+        zodErrorToIssues(err),
+      );
+    }
+    throw err;
+  }
+}
+
 async function loadManifest(manifestPath: string): Promise<unknown> {
   const text = await sizedFile(manifestPath, MAX_MANIFEST_BYTES);
   try {
@@ -162,16 +183,9 @@ export async function main(argv: readonly string[]): Promise<number> {
   try {
     const parsed = parseArgs(argv);
     const raw = await loadManifest(parsed.manifestFile);
-    // Named remedy before the union error: a manifest predating the discriminated
-    // finding shape cannot be migrated, because the provenance it lacks was never
-    // recorded. Re-running the scan is the only honest repair, so the message says so.
-    const legacy = detectLegacyManifest(raw);
-    if (legacy !== null) {
-      throw new PlanValidationError(`${parsed.manifestFile}: ${legacy}`, [
-        { path: parsed.manifestFile, message: legacy },
-      ]);
-    }
-    const manifest = parseOrThrow(ImpactManifestSchema, raw, parsed.manifestFile);
+    // A manifest that will not validate is stale; the remedy is to regenerate it, and
+    // the message says so rather than surfacing a bare union error.
+    const manifest = parseManifest(raw, parsed.manifestFile);
     const report = await executeRepoint({
       manifest,
       plan: await loadPlan(parsed.planFile),

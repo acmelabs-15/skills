@@ -401,11 +401,11 @@ re-index or an authored correction, and a map cannot express those.
 A stale manifest is REGENERATED, never migrated: the executor reads it as
 untrusted input, so one that does not satisfy the current schema fails validation
 loudly and writes nothing instead of being coerced into something it then edits
-from. A manifest predating the funnel is refused on that ground — the `discovery`
-block is required, and one written without it cannot say whether its scope was a
-whole tree or a search-scoped subset — and the refusal names the remedy rather
-than emitting a union error. Re-run the scan. The same holds when the tree moves
-under a valid manifest, which surfaces per finding as `address-drift`.
+from. There is no special case for any particular way a manifest can be wrong —
+whatever it is missing, a scan produced it and a scan replaces it — and the
+refusal names that remedy rather than emitting a bare union error. Re-run the
+scan. The same holds when the tree moves under a valid manifest, which surfaces
+per finding as `address-drift`.
 
 Exit codes: `0` when every repairable finding was applied or already applied and
 no residue remains; `1` validation error with nothing written; `2` the run
