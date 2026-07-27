@@ -167,10 +167,53 @@ the exit code, which continues to mean "candidates found". In interactive mode,
 show the inbound count when asking the user to confirm a candidate: consent to
 restructure a note is not informed consent if the blast radius is not on screen.
 
+Also widen the scan itself where the CLI can do it for you: passing
+`--search-project <name>` runs the advisory leg in-library, two probes per
+candidate — a descriptive probe on the candidate's title and a relation probe on
+its entity ID — instead of your running those searches by hand. It only reports
+notes the deterministic legs did not already match, drops any hit whose snippet
+it cannot locate in a note body rather than guessing a line, and reports
+`complete: false` when a query hit a page boundary with every page full. Read that
+last one as a worklist that may be short.
+
 When a confirmed candidate is delegated, decompose and recompose run their own
-plan-time impact scan and execution-time closure check. Deletes have no such
-owner, so a stale-delete with a non-zero inbound count needs its repointing
-tracked here or it will not be tracked at all.
+plan-time impact scan and execution-time closure check. A stale-delete now has an
+owner too: the repoint executor applies the mechanical citation repairs over the
+same manifest, and emits everything it cannot repair as a work brief. That changes
+what a delete candidate costs to schedule, so it is worth stating in the report:
+
+```bash
+# preview is the default and writes nothing; --apply is required to write
+bun run shared/composition/src/repoint.ts \
+  --manifest defrag/reports/defrag-YYYY-MM-DD-impact.json \
+  --plan defrag/reports/defrag-YYYY-MM-DD-repoint.yaml \
+  --docs-root docs --out defrag/reports/defrag-YYYY-MM-DD-repoint-preview.json
+```
+
+For a cron-scheduled audit the preview is the only form that should ever run
+unattended: it performs the identical computation minus the rename, so its counts
+are evidence about what an apply would do, and `--apply` stays a decision a human
+makes. Re-runs are no-ops — an address already repointed is reported as such
+rather than substituted twice — and a manifest that no longer satisfies the
+current schema fails loudly with nothing written, the remedy being a re-scan
+rather than a hand-migration.
+
+Two figures from that preview belong in the candidates report. The applied count
+is the part of a delete that is mechanical. The residual count, broken down by
+reason, is the part that is not: closure findings, index staleness, malformed
+references and every advisory entry are declined by construction, because their
+repair is an edge insertion, a re-index or an authored correction rather than a
+text substitution. A stale-delete whose residue is mostly judgment-class is a
+graph pass wearing a cleanup's clothing, and the report should say so.
+
+The residue arrives as a per-note work brief, which is the agent worklist for that
+follow-up: each entry names the note and permalink to open, an anchor (real line
+and column for prose, `whole note` where no position was ever measured), the class
+and decline reason, the evidence, what the plan says happened to the target, and
+a suggested repair shape. Note that a bi-directional entry's repair site is the
+COUNTERPART note rather than the one holding the evidence. The suggested action
+is a shape and not an instruction — every entry is in the brief precisely because
+a machine could not decide it.
 
 ## Correction and figure audit
 
@@ -217,9 +260,15 @@ independent of the thresholds that produced the candidates.
   source type. decompose enforces SHA-256 char-identity on extraction, so
   zero drift is mechanical.
 - **Merge** → invoke the recompose skill with the candidate note paths.
-- **Stale-delete** → call Brain MCP `delete_note` with audit logging.
+- **Stale-delete** → call Brain MCP `delete_note` with audit logging. Where the
+  candidate had inbound references, the repoint executor applies the mechanical
+  citation repairs and its work brief carries the rest; neither is optional
+  cleanup, because a deleted note's citations are broken links the moment the
+  delete lands.
 - **Structural-fix** → call Brain MCP `edit_note` to insert H3 grouping
-  headers; content is otherwise untouched.
+  headers; content is otherwise untouched. Bi-directional findings belong here
+  too, and the executor never repairs them — it routes them to the brief with the
+  counterpart note named as the repair site.
 
 If decompose or recompose fails for a candidate (hash mismatch, validation
 error, user rejection at sub-prompt level), defrag logs the failure and

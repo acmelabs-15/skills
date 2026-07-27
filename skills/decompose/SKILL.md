@@ -192,9 +192,22 @@ deterministic leg sees prose that names a note without naming its identifier:
 "the substrate analysis", "the eviction adjudication". Those go stale exactly
 like an explicit citation and are invisible to both scans.
 
-Run Brain MCP search yourself, and choose the mode per query rather than
-defaulting to one. Record the mode on each entry — a keyword hit and a
-threshold-gated semantic hit do not warrant the same confidence.
+The scanner can now run this leg itself. Pass `--search-project <name>` and it
+queries the Brain CLI per target, with `--search-mode` and `--search-type`
+selecting the dials described below. Two probes run per target:
+
+- **Descriptive** — queries the target's TITLE, not its identifier. An identifier
+  query returns what the text scan already has; the title is what prose
+  paraphrases when it names a note without citing it.
+- **Relations** — queries the entity ID with `entity_types: ["relation"]`, fixed
+  to keyword plus `search_type: "text"` because an existence probe wants
+  exact-identifier retrieval whatever the descriptive probe was set to. It asks
+  whether the index holds an edge the tree shows no textual link for.
+
+Hits you find by hand still merge in through `--merge`. Both paths land as
+advisory entries, and choosing the mode per query still matters — a keyword hit
+and a threshold-gated semantic hit do not warrant the same confidence, which is
+why the mode is recorded on every entry rather than assumed.
 
 | Query kind | Mode |
 |---|---|
@@ -276,15 +289,40 @@ like the manifest's `findings` entries, each carrying its `mode`, and pass it in
 bun run shared/composition/src/reference-scan.ts \
   --docs-root docs \
   --targets docs/_restructure/decompose-{id}-targets.json \
+  --search-project <brain-project> \
   --merge docs/_restructure/decompose-{id}-semantic.json \
   --out docs/_restructure/decompose-{id}-impact.json
 ```
 
-Merged entries are forced to `source: SEARCH` and `advisory: true` whatever the
-file claims, so nothing supplied from outside can promote itself into the
-closure gate. The declared `mode` is preserved. The search leg WIDENS the
-worklist; it never gates it — a recall aid running over an index with known live
-defects is not reproducible enough to fail a step on.
+Both search paths are forced to `source: SEARCH` and `advisory: true` whatever
+the input claims, so nothing from the index or from a hand-authored file can
+promote itself into the closure gate. The search leg WIDENS the worklist; it
+never gates it — a recall aid running over an index with known live defects is
+not reproducible enough to fail a step on. Every SEARCH entry carries the
+provenance of the query that produced it: the mode that was REQUESTED, the
+retrieval strategy asked for alongside it, and which leg actually answered.
+Those three are recorded separately because they routinely disagree, and none
+substitutes for another. Deterministic entries carry none of them, having no
+query behind them.
+
+Three properties of the automated leg are worth knowing before you read its
+output as a worklist:
+
+- **It never duplicates a deterministic finding.** Only notes absent from the
+  deterministic set produce entries, so a hit on a note the text scan already
+  matched is dropped rather than double-counting that note's impact.
+- **It never invents an address.** When a hit's snippet cannot be located in the
+  note body the hit is DROPPED rather than emitted at line 1 — a confident wrong
+  line costs an agent more than a missing suggestion does. A located line must
+  also share a distinctive word from the target's title, because a semantic hit's
+  snippet is usually the note's opening rather than the sentence naming the
+  target. Measured on a live graph, the ungated probe produced 120 entries for
+  three targets, nearly all the same opening line repeated per target.
+- **Incomplete enumeration is reported, never assumed.** The leg pages until a
+  page comes back SHORTER than the limit, because the response `total` is capped
+  at the limit and would silently truncate every enumeration. If any query hits
+  a page boundary with every page full, the leg reports `complete: false`. Read
+  that as a worklist that may be short, not a finished one.
 
 **Index traversal selects on EXISTENCE, never on edge type.** The index strips
 relation verbs from H3-grouped Relations entries — it keeps the edge but loses
@@ -400,7 +438,18 @@ Present the plan to the user with a markdown summary AND the path to the raw YAM
 - reject — provide feedback; you re-author and re-adjudicate
 - abort — cancel; do not execute, do not retain the plan
 
-On reject, rename the rejected plan file to `decompose-{id}-plan-rejected-{N}.yaml` (incrementing `N` per rejection) so the rejection history is auditable, then re-enter Step 3 with the feedback incorporated. Re-run Step 4 as well — a revised plan changes the destinations and the renumbering, so the previous impact manifest no longer describes it.
+**Author the repoint plan and run its dry-run preview BEFORE adjudicating, and
+present that preview as part of what is being approved.** The split and the
+repointing that follows it are one operation from the user's point of view: a
+split whose citation repairs turn out to be mostly unapplicable is a different
+proposal from one that repoints cleanly, and the user cannot weigh that after the
+notes have already been written. Preview is the executor's default, so this costs
+one extra command and no risk. Carry its applied / already-repointed / residual
+counts into the summary below, and name the residual reasons — a preview showing
+forty repairs and two hundred judgment-class entries is telling you the split
+needs a graph pass more than it needs a text pass.
+
+On reject, rename the rejected plan file to `decompose-{id}-plan-rejected-{N}.yaml` (incrementing `N` per rejection) so the rejection history is auditable, then re-enter Step 3 with the feedback incorporated. Re-run Step 4 as well — a revised plan changes the destinations and the renumbering, so the previous impact manifest no longer describes it. Re-author the repoint plan and re-run its preview for the same reason: its identifier maps were written against the destinations the rejected plan proposed.
 
 On abort, optionally delete the plan file and stop. No further action.
 
@@ -414,7 +463,9 @@ Summary format:
 **Renumber map** (M entries): D-1→D-100, D-2→D-101, ...
 **Wikilink map**: <count> entries (or "empty")
 **Inbound-reference impact**: <N> references across <M> files — <per-class counts>
+**Repoint preview**: <A> applied, <B> already repointed, <C> residual by reason
 **Repointing worklist**: `docs/_restructure/decompose-{id}-impact.json`
+**Repoint plan**: `docs/_restructure/decompose-{id}-repoint.yaml`
 **Raw plan**: `docs/_restructure/decompose-{id}-plan.yaml`
 ```
 
@@ -445,15 +496,127 @@ Exit codes:
 - `1` — validation error (parse the structured `PlanValidationError` from stderr and report to the user)
 - `2` — integrity failure: either a per-cluster hash mismatch, or a coverage failure where the cluster ranges do not exactly partition the source (a gap, an overlap, or a range not reaching end-of-file). In both cases the script halted before any destructive write; surface it loudly
 
-### Step 7: Report
+### Step 7: Repoint the mechanical references
+
+The split moved the content; every note that cited it still points at where it
+used to be. The executor applies the mechanical subset of the Step 4 worklist,
+and the residue it declines becomes an agent worklist rather than a silence.
+
+Author a repoint plan naming what moved. Every value is an identifier, and the
+plan must declare at least one of the three identifier maps — a repoint with no
+mapping would downgrade every finding to residual, so the schema refuses it:
+
+```yaml
+plan_type: repoint
+renumber_map:  { "ANALYSIS-034": "ANALYSIS-041" }
+wikilink_map:  { "ANALYSIS-034: Old Title": "ANALYSIS-041: New Title" }
+permalink_map: { "analysis/analysis-034-old": "analysis/analysis-041-new" }
+section_map:   { "ANALYSIS-034": { "Section 6": "Section 3" } }
+```
+
+Preview first — this is the default and writes nothing — then apply:
+
+```bash
+bun run shared/composition/src/repoint.ts \
+  --manifest docs/_restructure/decompose-{id}-impact.json \
+  --plan docs/_restructure/decompose-{id}-repoint.yaml \
+  --docs-root docs --out docs/_restructure/decompose-{id}-repoint-preview.json
+
+bun run shared/composition/src/repoint.ts \
+  --manifest docs/_restructure/decompose-{id}-impact.json \
+  --plan docs/_restructure/decompose-{id}-repoint.yaml \
+  --apply --docs-root docs --out docs/_restructure/decompose-{id}-repoint.json
+```
+
+Four properties make this safe to run and safe to re-run:
+
+- **Preview is the default; `--apply` is required to write.** A preview runs the
+  identical computation — resolution, the section-existence check, address
+  verification, the reversibility proof — and stops before the rename. It is
+  evidence about what the apply will do, not a cheaper approximation of it.
+- **Nothing is written until everything verifies.** Every file is staged, each
+  file's edit set is proven reversible byte-for-byte against what was read, and
+  only then is anything renamed. A failure anywhere leaves the tree exactly as
+  found.
+- **A second run is a no-op.** An address already holding its repointed form is
+  reported as already-repointed rather than substituted again, so re-running
+  after a partial failure is safe and re-running after success changes nothing.
+- **The write set is the mechanical set only.** Bi-directional closure findings,
+  index staleness, malformed references and every advisory entry are declined by
+  construction — before any file is opened — because their repair is an edge
+  insertion, a re-index or an authored correction, none of which a map can
+  express. Automating them would mean guessing.
+
+**The manifest must be current, and a stale one is regenerated rather than
+migrated.** The executor treats the manifest as untrusted input in the same sense
+a plan YAML is — it is read back from disk and may have been hand-edited — so a
+manifest that does not satisfy the current schema fails validation loudly and
+writes nothing, rather than being coerced into something the executor then edits
+from. Re-running the scan is the remedy in every such case, and it is the only
+one: a hand-migrated manifest would carry addresses measured against a tree that
+has since moved. The same applies when the tree shifts under a valid manifest,
+which surfaces per finding as `address-drift` — the recorded position no longer
+holds the stale text, so re-scan and re-run.
+
+Exit codes:
+
+- `0` — every mechanically repairable finding was applied or was already applied,
+  and the residual worklist is empty.
+- `1` — validation error (argv, missing file, malformed JSON or YAML, Zod
+  rejection, unsafe path). Nothing was written.
+- `2` — the run completed and work remains. This is an EXPECTED outcome, not a
+  failure: a manifest carrying judgment-class or unmapped findings exits 2 by
+  design, and those are worklist items. Same convention as the closure checker.
+- `3` — integrity failure: the pass could not be proven reversible. Nothing was
+  renamed. Distinguished from 2 because 2 is expected and this is a bug.
+
+#### The work brief: everything the executor declined
+
+The report's `workBrief` is the deliverable of a residual, and it is what
+replaces read-everything discovery. It is grouped by the note needing the edit,
+heaviest note first so a partially-worked brief has made the most progress, with
+entries inside each note ordered top-to-bottom so one pass down an open file
+closes everything in it. Each entry answers four questions an agent would
+otherwise re-derive:
+
+- `path` and `permalink` — which note to open.
+- `anchor` — where to look: a real `line` and `col` for prose, plus the cited
+  fragment where one exists.
+- `class` and `reason` — why it was declined.
+- `evidence` — the matched text, and the file and line it was seen in, plus the
+  expected inverse edge and its counterpart on a bi-directional entry.
+- `causingOperation` — what the plan says happened to the target.
+- `suggestedAction` — the shape of the repair.
+
+Three details in there are load-bearing. The repair site for a bi-directional
+finding is the COUNTERPART note, not the note carrying the evidence — the missing
+inverse edge belongs there and the note holding the evidence needs no change at
+all. An entry whose address was never measured from a line of text reads `whole
+note` rather than `line 1, col 1`, because printing a position that was never
+taken sends an agent to the frontmatter. And `causingOperation` is read off the
+plan's declared maps rather than inferred, so it says plainly when the plan
+declared no change to that target instead of asserting a restructuring nobody
+requested.
+
+`suggestedAction` is a SHAPE, not an instruction to follow blindly. Every entry
+in the brief exists precisely because a machine could not decide it, so each one
+names the edit and leaves the judgment where it belongs. For an index-edge entry
+it says so explicitly: open both notes, check their Relations sections carry the
+typed pair in both directions, and do not copy the index's verb — it is not
+evidence.
+
+### Step 8: Report
 
 Summarize the audit log: number of destination files written, their paths, and the SHA-256 of each. The log carries one entry per cluster, each with its `disposition` and `range`, so the full byte accounting is visible — retained clusters appear with no destination. Confirm the source file remains unchanged.
 
 Note on reversibility: a plan that retains ranges cannot be reversed from its destinations alone, because retained content exists only in the source and appears in no destination. Recompose recovers the concatenation of the written content slices; the source note itself — untouched by the split — is the record for retained ranges. Plans with no scaffolding and no retention keep the full byte-identical decompose-then-recompose round trip.
 
-### Step 8: Verify reference closure
+### Step 9: Verify reference closure
 
-Repoint the references on the Step 4 worklist, then prove it:
+Step 7 repointed the mechanical references and handed you a brief for the rest.
+This step proves both: that the applied repairs actually landed, and that nothing
+new broke on the way. Work the brief first, then run the check — a closure run
+against an unworked brief just re-reports what the brief already told you.
 
 ```bash
 bun run shared/composition/src/reference-scan.ts \
@@ -468,6 +631,12 @@ Every finding from Step 4 comes back as one of:
 - `UPDATED` — the stale form is gone.
 - `RETAINED` — you allow-listed it.
 - `OUTSTANDING` — still present, and nothing said to keep it.
+
+This is the executor's acceptance test, and the pairing is exact: a finding the
+executor applied is a finding whose stale form is gone from the tree, which is
+precisely what `UPDATED` describes. So expect one `UPDATED` per repair the report
+counted as applied, and treat any shortfall as the interesting result — a repair
+the executor believed it made is not visible to a fresh scan.
 
 Exit code 2 means closure was not reached. The report also lists `newFindings`:
 references that exist now but were absent at plan time, which is how a
@@ -526,10 +695,12 @@ documented failure mode, not as a condition known to be live right now.
 
 Search for each retired title and permalink. Any hit still served that
 `list_directory` does not corroborate is an `index-stale` finding: record it in
-the merge file alongside the other search entries. When any `index-stale`
-finding exists, recommend a re-index in the closure report — repointing every
-citing note does not clear a stale index row, and the next agent to run a search
-will find the phantom again.
+the merge file alongside the other search entries, or let the automated relation
+probe surface it. When any `index-stale` finding exists, recommend a re-index in
+the closure report — repointing every citing note does not clear a stale index
+row, and the next agent to run a search will find the phantom again. The executor
+declines this class by construction and routes it to the work brief, so the
+re-index recommendation is the action; there is no text edit that would help.
 
 The retain file is yours to author and is never inferred. A surviving reference
 is either a deliberate historical citation or an unrepaired break, and only you
