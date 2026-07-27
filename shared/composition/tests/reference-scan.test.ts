@@ -5,9 +5,9 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { entityIdOfTitle, normalizeReference } from "../src/core/note-identity.js";
 import { checkClosure } from "../src/core/reference-closure.js";
 import { matchLine } from "../src/core/reference-matchers.js";
-import { entityIdOfTitle, normalizeReference } from "../src/core/note-identity.js";
 import { buildImpactManifest, resolveTargets } from "../src/core/reference-scan.js";
 import { main, parseArgs } from "../src/reference-scan.js";
 import {
@@ -152,27 +152,43 @@ describe("matchLine — section citation capture", () => {
   });
 
   test("trailing sentence punctuation is stripped from the fragment but kept in matchedText", () => {
-    const adr = target({ entityId: "ADR-100", title: "ADR-100: X", permalink: "decisions/adr-100" });
+    const adr = target({
+      entityId: "ADR-100",
+      title: "ADR-100: X",
+      permalink: "decisions/adr-100",
+    });
     const [finding] = matchLine("per ADR-100 D-21.", [adr], "f", 1);
     expect(finding?.sectionFragment).toBe("D-21");
     expect(finding?.matchedText).toBe("ADR-100 D-21.");
   });
 
   test("designator citations (D-N, P0-N, S-N) are captured", () => {
-    const adr = target({ entityId: "ADR-100", title: "ADR-100: X", permalink: "decisions/adr-100" });
+    const adr = target({
+      entityId: "ADR-100",
+      title: "ADR-100: X",
+      permalink: "decisions/adr-100",
+    });
     expect(matchLine("ADR-100 D-2 locked", [adr], "f", 1)[0]?.sectionFragment).toBe("D-2");
     expect(matchLine("ADR-100 P0-1 raised", [adr], "f", 1)[0]?.sectionFragment).toBe("P0-1");
     expect(matchLine("ADR-100 S-1 noted", [adr], "f", 1)[0]?.sectionFragment).toBe("S-1");
   });
 
   test("a sibling entity reference is not mistaken for a fragment", () => {
-    const adr = target({ entityId: "ADR-100", title: "ADR-100: X", permalink: "decisions/adr-100" });
+    const adr = target({
+      entityId: "ADR-100",
+      title: "ADR-100: X",
+      permalink: "decisions/adr-100",
+    });
     const findings = matchLine("ADR-100 PRD-001 are two entities", [adr], "f", 1);
     expect(findings.map((f) => f.class)).toEqual(["entity-id"]);
   });
 
   test("ordinary capitalised prose after an ID is not a fragment", () => {
-    const adr = target({ entityId: "ADR-100", title: "ADR-100: X", permalink: "decisions/adr-100" });
+    const adr = target({
+      entityId: "ADR-100",
+      title: "ADR-100: X",
+      permalink: "decisions/adr-100",
+    });
     expect(matchLine("ADR-100 Fond is not a citation", [adr], "f", 1).map((f) => f.class)).toEqual([
       "entity-id",
     ]);
@@ -411,8 +427,13 @@ describe("checkClosure", () => {
       const report = await checkClosure({ manifest, docsRoot: root, now: FIXED_NOW });
       expect(report.summary.updated).toBe(manifest.findings.length);
       expect(report.summary.outstanding).toBe(0);
-      expect(report.summary.closed).toBe(true);
       expect(report.entries.every((entry) => entry.status === "UPDATED")).toBe(true);
+      // Every prior finding is repaired. Whether the GATE closes additionally depends on
+      // whether the repair introduced asymmetry — and this fixture's repair deletes whole
+      // lines, which takes Relations edges with them. The relationship is asserted rather
+      // than a hard-coded verdict, so the test states the semantics instead of the
+      // fixture's incidental edge damage.
+      expect(report.summary.closed).toBe(report.summary.introducedAsymmetry === 0);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
@@ -499,14 +520,7 @@ describe("CLI", () => {
 
   test("scan writes a schema-valid manifest and exits 0", async () => {
     const out = join(mkdtempSync(join(tmpdir(), "reference-cli-")), "manifest.json");
-    const code = await main([
-      "--docs-root",
-      FIXTURE_ROOT,
-      "--target",
-      TARGET_NOTE,
-      "--out",
-      out,
-    ]);
+    const code = await main(["--docs-root", FIXTURE_ROOT, "--target", TARGET_NOTE, "--out", out]);
     expect(code).toBe(0);
     const written: unknown = await Bun.file(out).json();
     expect(ImpactManifestSchema.safeParse(written).success).toBe(true);
@@ -660,7 +674,45 @@ describe("graph leg — bi-directional closure", () => {
   });
 });
 
+/** A minimal well-formed manifest envelope, for schema-level rejection cases. */
+function emptyManifest() {
+  return {
+    docsRoot: "/tmp/docs",
+    generatedAt: FIXED_NOW,
+    filesScanned: 1,
+    targets: [],
+    summary: {
+      totalFindings: 0,
+      byClass: Object.fromEntries(REFERENCE_CLASSES.map((cls) => [cls, 0])),
+      byTarget: {},
+      bySource: { TEXT: 0, GRAPH: 0, BOTH: 0, SEARCH: 0 },
+    },
+  };
+}
+
+function semanticEntryForSchema(): Record<string, unknown> {
+  return {
+    referencingFile: "analysis/A.md",
+    line: 1,
+    column: 1,
+    matchedText: "the target",
+    class: "entity-id",
+    target: "ANALYSIS-100",
+    viaAlias: false,
+    source: "SEARCH",
+    advisory: true,
+    mode: "semantic",
+    searchType: "semantic",
+    actualSource: "keyword",
+  };
+}
+
 describe("search advisory leg", () => {
+  /**
+   * A SEARCH-branch entry. All three provenance fields are present because the
+   * discriminated shape REQUIRES them: an advisory entry that cannot say how it was
+   * found is refused at the boundary rather than stored as unreproducible evidence.
+   */
   const semanticEntry = {
     referencingFile: "analysis/ANALYSIS-101-reference-scan-referrer.md",
     line: 12,
@@ -669,8 +721,11 @@ describe("search advisory leg", () => {
     class: "entity-id" as const,
     target: "ANALYSIS-100",
     viaAlias: false,
-    source: "TEXT" as const,
-    advisory: false,
+    source: "SEARCH" as const,
+    advisory: true as const,
+    mode: "semantic" as const,
+    searchType: "semantic" as const,
+    actualSource: "keyword" as const,
   };
 
   test("merged entries are forced to SEARCH and advisory whatever the file claims", async () => {
@@ -730,13 +785,56 @@ describe("search advisory leg", () => {
     expect(advisory?.detail).toContain("mode=hybrid");
   });
 
-  test("the deterministic legs carry no mode", async () => {
+  /**
+   * Under the discriminated shape this is enforced by the TYPE, not merely observed:
+   * `mode` is not declared on the deterministic branch at all, and `.strict()` rejects
+   * an entry that carries it. The runtime assertion reads the discriminator and then
+   * the raw object, so the guarantee is checked rather than assumed away.
+   */
+  test("the deterministic legs carry no search provenance", async () => {
     const manifest = await buildImpactManifest({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
     });
-    expect(manifest.findings.every((f) => f.mode === undefined)).toBe(true);
+    expect(manifest.findings.length).toBeGreaterThan(0);
+    for (const finding of manifest.findings) {
+      expect(finding.source).not.toBe("SEARCH");
+      expect(finding.advisory).toBe(false);
+      const raw = finding as Record<string, unknown>;
+      expect(raw["mode"]).toBeUndefined();
+      expect(raw["searchType"]).toBeUndefined();
+      expect(raw["actualSource"]).toBeUndefined();
+    }
+  });
+
+  test("a deterministic entry carrying search provenance is refused", () => {
+    const hostile = {
+      referencingFile: "analysis/A.md",
+      line: 1,
+      column: 1,
+      matchedText: "ANALYSIS-100",
+      class: "entity-id",
+      target: "ANALYSIS-100",
+      viaAlias: false,
+      source: "TEXT",
+      advisory: false,
+      mode: "keyword",
+    };
+    expect(
+      ImpactManifestSchema.safeParse({ ...emptyManifest(), findings: [hostile] }).success,
+    ).toBe(false);
+  });
+
+  test("a SEARCH entry missing any provenance field is refused", () => {
+    for (const drop of ["mode", "searchType", "actualSource"]) {
+      const entry: Record<string, unknown> = { ...semanticEntryForSchema() };
+      delete entry[drop];
+      expect(
+        ImpactManifestSchema.safeParse({ ...emptyManifest(), findings: [entry] }).success,
+        `dropping ${drop} should be refused`,
+      ).toBe(false);
+    }
   });
 
   /**
@@ -789,7 +887,13 @@ describe("search advisory leg", () => {
     expect(advisory?.detail).toContain("actual_source=keyword");
   });
 
-  test("a producer that recorded only a mode still reads cleanly", async () => {
+  /**
+   * Under the discriminated shape there is no "recorded only a mode" case left to read
+   * cleanly: all three fields are REQUIRED on a SEARCH entry, so the parenthetical is
+   * always complete. That is the point — an advisory entry a reader has to confirm by
+   * hand is now always reproducible.
+   */
+  test("the parenthetical is always complete, because the triple is always present", async () => {
     const manifest = await buildImpactManifest({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
@@ -798,19 +902,24 @@ describe("search advisory leg", () => {
     });
     const report = await checkClosure({ manifest, now: FIXED_NOW });
     const advisory = report.entries.find((entry) => entry.finding.advisory);
-    expect(advisory?.detail).toContain("advisory (search leg, mode=keyword)");
+    expect(advisory?.detail).toContain("mode=keyword");
+    expect(advisory?.detail).toContain("search_type=");
+    expect(advisory?.detail).toContain("actual_source=");
   });
 
-  test("a deterministic entry's advisory parenthetical carries no provenance at all", async () => {
+  test("a deterministic entry's detail carries no provenance parenthetical at all", async () => {
     const manifest = await buildImpactManifest({
       docsRoot: FIXTURE_ROOT,
       now: FIXED_NOW,
       targets: [{ path: TARGET_NOTE }],
-      merge: [semanticEntry],
     });
     const report = await checkClosure({ manifest, now: FIXED_NOW });
-    const advisory = report.entries.find((entry) => entry.finding.advisory);
-    expect(advisory?.detail).toContain("advisory (search leg)");
+    expect(report.entries.length).toBeGreaterThan(0);
+    for (const entry of report.entries) {
+      expect(entry.finding.advisory).toBe(false);
+      expect(entry.detail).not.toContain("mode=");
+      expect(entry.detail).not.toContain("actual_source=");
+    }
   });
 
   test("an index-stale entry is representable as a finding class", async () => {

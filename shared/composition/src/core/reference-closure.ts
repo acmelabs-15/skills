@@ -14,15 +14,15 @@
  */
 
 import { resolve } from "node:path";
+import { PlanValidationError } from "../schemas/plan-yaml.js";
 import {
   type ClosureEntry,
   type ClosureReport,
   type ImpactManifest,
   type ReferenceFinding,
-  RetainRuleSchema,
   type RetainRule,
+  RetainRuleSchema,
 } from "../schemas/reference-manifest.js";
-import { PlanValidationError } from "../schemas/plan-yaml.js";
 import type { NoteFileSystem } from "./note-identity.js";
 import { scanReferences } from "./reference-scan.js";
 
@@ -77,17 +77,16 @@ function validateRules(retain: readonly RetainRule[]): RetainRule[] {
  *
  * All three fields are reported, not just the requested mode: a carried-forward
  * entry is exactly the thing a reader has to confirm by hand, and "which mode was
- * asked for" is the least useful of the three when the request was routed
- * elsewhere. Absent fields are omitted rather than rendered as "unknown", so the
- * string stays short on the common case of a producer that recorded only a mode.
+ * asked for" is the least useful of the three when the request was routed elsewhere.
+ * Since the schema now REQUIRES all three on a SEARCH entry, there is no absent-field
+ * case left to render.
  */
 function provenanceOf(finding: ReferenceFinding): string {
-  const parts = [
-    finding.mode === undefined ? null : `mode=${finding.mode}`,
-    finding.searchType === undefined ? null : `search_type=${finding.searchType}`,
-    finding.actualSource === undefined ? null : `actual_source=${finding.actualSource}`,
-  ].filter((part): part is string => part !== null);
-  return parts.length === 0 ? "" : `, ${parts.join(", ")}`;
+  // Narrowing on the discriminator is what the union buys: only a SEARCH finding has
+  // provenance to report, and the compiler now says so rather than the reader having
+  // to remember it.
+  if (finding.source !== "SEARCH") return "";
+  return `, mode=${finding.mode}, search_type=${finding.searchType}, actual_source=${finding.actualSource}`;
 }
 
 /** Group current findings by identity, each queue ordered by line. */
@@ -166,6 +165,23 @@ export async function checkClosure(options: ClosureOptions): Promise<ClosureRepo
   const stillOpen = entries.filter((entry) => entry.status === "OUTSTANDING");
   const outstanding = stillOpen.filter((entry) => !entry.finding.advisory).length;
   const outstandingAdvisory = stillOpen.length - outstanding;
+
+  /**
+   * Bi-directional closure violations that were NOT in the prior manifest — edges the
+   * repointing pass itself made one-way.
+   *
+   * Counted separately from `newFindings` as a whole because the two mean different
+   * things. A new text reference is usually just a note edited since the scan, which
+   * is not a failure. A new asymmetric edge is damage the operation caused: repointing
+   * a note's inbound references without renumbering the note leaves its own Relations
+   * pointing at notes that no longer point back. Reporting `closed: true` and exit 0
+   * over that passes a graph the pass just broke.
+   */
+  const introducedAsymmetry = newFindings.filter(
+    (finding) =>
+      finding.class === "bidirectional-missing-on-target" ||
+      finding.class === "bidirectional-missing-on-referencer",
+  ).length;
   return {
     docsRoot,
     checkedAt: options.now ?? new Date().toISOString(),
@@ -178,10 +194,18 @@ export async function checkClosure(options: ClosureOptions): Promise<ClosureRepo
       outstanding,
       outstandingAdvisory,
       newFindings: newFindings.length,
+      introducedAsymmetry,
       // Advisory entries are excluded on purpose: a recall aid over descriptive
       // prose is not reproducible enough to fail a gate it was never precise
       // enough to own.
-      closed: outstanding === 0,
+      //
+      // Introduced asymmetry IS included. `closed` is what a CI gate reads through the
+      // exit code, and a pass that repaired every stale reference while leaving the
+      // graph's edges one-way has not finished the job it was asked to do. Scoped to
+      // the bi-directional classes rather than to `newFindings` generally, so an
+      // unrelated edit landing between the scan and the check does not fail a gate it
+      // has nothing to do with.
+      closed: outstanding === 0 && introducedAsymmetry === 0,
     },
   };
 }

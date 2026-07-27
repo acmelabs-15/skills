@@ -323,6 +323,9 @@ describe("buildWorkBrief — the suggested action", () => {
           column: 1,
           source: "SEARCH",
           advisory: true,
+          mode: "auto",
+          searchType: "hybrid",
+          actualSource: "unreported",
           matchedText: "index holds an edge between ANALYSIS-120 and PRD-001 (verb not trusted)",
         }),
       ],
@@ -345,6 +348,9 @@ describe("buildWorkBrief — the suggested action", () => {
           column: 1,
           source: "SEARCH",
           advisory: true,
+          mode: "auto",
+          searchType: "hybrid",
+          actualSource: "unreported",
           matchedText: "index holds an edge between ANALYSIS-120 and PRD-001 (verb not trusted)",
         }),
       ],
@@ -358,7 +364,16 @@ describe("buildWorkBrief — the suggested action", () => {
 
   test("an advisory entry is framed as a judgment, never as an edit to apply", () => {
     const brief = buildWorkBrief(
-      [residual("advisory", { source: "SEARCH", advisory: true, matchedText: "the source note" })],
+      [
+        residual("advisory", {
+          source: "SEARCH",
+          advisory: true,
+          mode: "semantic",
+          searchType: "semantic",
+          actualSource: "keyword",
+          matchedText: "the source note",
+        }),
+      ],
       PLAN,
       resolver,
     );
@@ -394,7 +409,14 @@ describe("buildWorkBrief — shape and totals", () => {
     const brief = buildWorkBrief(
       [
         residual("no-mapping"),
-        residual("advisory", { source: "SEARCH", advisory: true, line: 5 }),
+        residual("advisory", {
+          source: "SEARCH",
+          advisory: true,
+          mode: "auto",
+          searchType: "hybrid",
+          actualSource: "unreported",
+          line: 5,
+        }),
         residual("judgment-class", {
           class: "bidirectional-missing-on-target",
           column: 1,

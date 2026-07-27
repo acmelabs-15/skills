@@ -244,7 +244,13 @@ describe("executeRepoint — closing the loop with the closure checker", () => {
     expect(closure.entries.every((entry) => entry.status === "UPDATED")).toBe(true);
     expect(closure.summary.updated).toBe(9);
     expect(closure.summary.outstanding).toBe(0);
-    expect(closure.summary.closed).toBe(true);
+    // Every prior finding is repaired — the `UPDATED` status the report always carried
+    // and nothing produced. The gate is nonetheless NOT closed, because repointing this
+    // fixture's inbound references without renumbering the target leaves the target's
+    // own edges one-way; the next test isolates that. Asserting `closed: true` here is
+    // exactly the dishonesty the verdict fix removes.
+    expect(closure.summary.introducedAsymmetry).toBe(2);
+    expect(closure.summary.closed).toBe(false);
   });
 
   test("before the repoint the same check reports every finding OUTSTANDING", async () => {
@@ -273,9 +279,12 @@ describe("executeRepoint — closing the loop with the closure checker", () => {
     expect(
       closure.newFindings.every((found) => found.class === "bidirectional-missing-on-referencer"),
     ).toBe(true);
-    // New findings are reported alongside rather than folded in, so they never
-    // silently reopen a gate the prior manifest closed.
-    expect(closure.summary.closed).toBe(true);
+    // Counted, and it GATES. A run that repaired every stale reference while leaving
+    // the graph asymmetric used to report closed with exit 0, which passed a graph the
+    // repoint had just broken. Unrelated new findings still do not gate — only the
+    // bi-directional classes do.
+    expect(closure.summary.introducedAsymmetry).toBe(2);
+    expect(closure.summary.closed).toBe(false);
   });
 });
 
@@ -313,7 +322,13 @@ describe("executeRepoint — the residual worklist", () => {
     const manifest = await manifestFor(root);
     const report = await executeRepoint({
       manifest: withFindings(manifest, [
-        synthetic({ source: "SEARCH", advisory: true, mode: "semantic", actualSource: "keyword" }),
+        synthetic({
+          source: "SEARCH",
+          advisory: true,
+          mode: "semantic",
+          searchType: "semantic",
+          actualSource: "keyword",
+        }),
       ]),
       plan: PLAN,
       dryRun: false,

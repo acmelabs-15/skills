@@ -23,8 +23,7 @@
 
 // node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
 // All file I/O is Bun-native: Bun.Glob to enumerate, Bun.file to read.
-import { isAbsolute, relative, resolve } from "node:path";
-import yaml from "js-yaml";
+import { resolve } from "node:path";
 import type { RootContent } from "mdast";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
@@ -38,9 +37,8 @@ import {
   REFERENCE_CLASSES,
   type ReferenceFinding,
   type ResolvedTarget,
+  type SearchReferenceFinding,
 } from "../schemas/reference-manifest.js";
-import { applyGraphLeg } from "./reference-graph.js";
-import { matchLine } from "./reference-matchers.js";
 import {
   type NoteFileSystem,
   type NoteIdentity,
@@ -50,6 +48,8 @@ import {
   readFrontmatter,
   stringField,
 } from "./note-identity.js";
+import { applyGraphLeg } from "./reference-graph.js";
+import { matchLine } from "./reference-matchers.js";
 import { type ParsedRelation, parseRelationEntries } from "./relations.js";
 
 const processor = unified().use(remarkParse).use(remarkGfm).use(remarkFrontmatter, ["yaml"]);
@@ -87,8 +87,14 @@ export interface ScanOptions {
   docsRoot: string;
   targets: readonly TargetSpec[];
   fileSystem?: NoteFileSystem;
-  /** Externally-supplied advisory entries (semantic search, index staleness). */
-  merge?: readonly ReferenceFinding[];
+  /**
+   * Externally-supplied advisory entries (semantic search, index staleness).
+   *
+   * Typed to the SEARCH branch rather than the whole union: an entry that cannot state
+   * how it was found has no provenance to carry forward, and the schema refuses it at
+   * the boundary rather than here.
+   */
+  merge?: readonly SearchReferenceFinding[];
   /** Injected so a manifest can be byte-compared in tests. */
   now?: string;
 }
@@ -269,7 +275,10 @@ export async function buildImpactManifest(options: ScanOptions): Promise<ImpactM
   const advisory = (options.merge ?? []).map((finding) => ({
     ...finding,
     source: "SEARCH" as const,
-    advisory: true,
+    // `as const` matters: a widened `boolean` no longer satisfies the SEARCH branch's
+    // literal `true`, which is the schema stating that an advisory entry cannot be
+    // anything else.
+    advisory: true as const,
   }));
   const all = [...findings, ...advisory].sort(compareFindings);
 

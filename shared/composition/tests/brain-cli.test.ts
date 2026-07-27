@@ -265,8 +265,11 @@ describe("augmentManifestWithSearch — widening without moving the gate", () =>
       project: "fixture",
       runner: runnerHitting("decisions/adr-120-repoint-decision", "no such text in that note"),
     });
-    const deterministic = manifest.findings.filter((finding) => !finding.advisory);
-    expect(deterministic).toEqual(before.findings);
+    const deterministic = manifest.findings.filter((finding) => finding.source !== "SEARCH");
+    // Compared as JSON: the filtered array's element type is the deterministic branch
+    // while the original is the full union, so a structural compare is what states
+    // "byte-for-byte the same findings" without a cast.
+    expect(JSON.stringify(deterministic)).toBe(JSON.stringify(before.findings));
     expect(manifest.summary.bySource.TEXT).toBe(before.summary.bySource.TEXT);
     expect(manifest.summary.bySource.GRAPH).toBe(before.summary.bySource.GRAPH);
   });
@@ -319,8 +322,12 @@ describe("augmentManifestWithSearch — widening without moving the gate", () =>
     expect(finding?.source).toBe("SEARCH");
     expect(finding?.advisory).toBe(true);
     // The provenance triple is now populated in-library rather than hand-supplied.
-    expect(finding?.mode).toBe("semantic");
-    expect(finding?.actualSource).toBe("semantic");
+    // Narrowed on the discriminator before reading provenance: the fields exist only
+    // on the SEARCH branch now, which is the guarantee under test.
+    if (finding?.source !== "SEARCH") throw new Error("advisory finding is not SEARCH-sourced");
+    expect(finding.mode).toBe("semantic");
+    expect(finding.actualSource).toBe("semantic");
+    expect(finding.searchType).toBeDefined();
     expect(manifest.summary.bySource.SEARCH).toBe(1);
     expect(DECISION.length).toBeGreaterThan(0);
   });

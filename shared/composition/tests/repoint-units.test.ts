@@ -13,6 +13,7 @@ import {
   type ReferenceFinding,
   ReferenceFindingSchema,
   type ResolvedTarget,
+  detectLegacyManifest,
 } from "../src/schemas/reference-manifest.js";
 import { type RepointPlan, RepointPlanSchema } from "../src/schemas/repoint-plan.js";
 
@@ -625,13 +626,21 @@ describe("ReferenceFindingSchema provenance fields", () => {
       searchType: "permalink",
       actualSource: "keyword",
     });
+    // Narrowed first: the provenance fields live only on the SEARCH branch, which is
+    // the point of the discriminated shape.
+    if (parsed.source !== "SEARCH") throw new Error("expected a SEARCH-sourced finding");
     expect(parsed.searchType).toBe("permalink");
     expect(parsed.actualSource).toBe("keyword");
   });
 
-  /** Back-compat is the absence of a migration: both fields are optional. */
-  test("a manifest written before the fields existed still parses", () => {
-    const parsed = ReferenceFindingSchema.parse({
+  /**
+   * No back-compat, by owner decision. A SEARCH entry recorded under the old shape is
+   * missing provenance that was never captured and cannot be reconstructed, so the
+   * only honest repair is re-running the scan — and the failure says exactly that
+   * instead of surfacing a four-branch union error.
+   */
+  test("a manifest written before the fields existed is refused, not migrated", () => {
+    const legacy = {
       referencingFile: "analysis/A.md",
       line: 1,
       column: 1,
@@ -642,9 +651,20 @@ describe("ReferenceFindingSchema provenance fields", () => {
       source: "SEARCH",
       advisory: true,
       mode: "keyword",
-    });
-    expect(parsed.searchType).toBeUndefined();
-    expect(parsed.actualSource).toBeUndefined();
+    };
+    expect(ReferenceFindingSchema.safeParse(legacy).success).toBe(false);
+    const remedy = detectLegacyManifest({ findings: [legacy] });
+    expect(remedy).toContain("searchType");
+    expect(remedy).toContain("re-run the scan");
+  });
+
+  test("the legacy detector also catches an unlabelled finding and a mislabelled one", () => {
+    expect(detectLegacyManifest({ findings: [{ referencingFile: "a.md" }] })).toContain("`source`");
+    expect(detectLegacyManifest({ findings: [{ source: "TEXT", mode: "keyword" }] })).toContain(
+      "no deterministic leg produces",
+    );
+    // A well-formed manifest is not flagged.
+    expect(detectLegacyManifest({ findings: [{ source: "TEXT" }] })).toBeNull();
   });
 
   /**

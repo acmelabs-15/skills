@@ -47,10 +47,11 @@ import { PlanValidationError, zodErrorToIssues } from "./schemas/plan-yaml.js";
 import {
   ImpactManifestSchema,
   MergeFileSchema,
-  type ReferenceFinding,
   RetainFileSchema,
   type RetainRule,
+  type SearchReferenceFinding,
   TargetsFileSchema,
+  detectLegacyManifest,
 } from "./schemas/reference-manifest.js";
 
 const MAX_INPUT_BYTES = 8 * 1024 * 1024;
@@ -196,10 +197,24 @@ async function emit(payload: unknown, out: string | undefined): Promise<void> {
   else process.stdout.write(json);
 }
 
-async function loadMergeEntries(parsed: ParsedArgs): Promise<ReferenceFinding[]> {
+async function loadMergeEntries(parsed: ParsedArgs): Promise<SearchReferenceFinding[]> {
   if (!parsed.mergeFile) return [];
   const raw = await readJson(parsed.mergeFile);
   return parseOrThrow(MergeFileSchema, raw, parsed.mergeFile);
+}
+
+/**
+ * Refuse a pre-discriminated manifest with a message naming the remedy.
+ *
+ * Runs BEFORE the Zod parse so the reader gets "re-run the scan" rather than a
+ * four-branch union error listing every field of every branch. There is deliberately
+ * no migration: the provenance a legacy SEARCH entry lacks was never recorded.
+ */
+function refuseLegacy(raw: unknown, label: string): void {
+  const reason = detectLegacyManifest(raw);
+  if (reason !== null) {
+    throw new PlanValidationError(`${label}: ${reason}`, [{ path: label, message: reason }]);
+  }
 }
 
 async function runScan(parsed: ParsedArgs): Promise<number> {
@@ -235,6 +250,7 @@ async function runScan(parsed: ParsedArgs): Promise<number> {
 
 async function runCheck(parsed: ParsedArgs): Promise<number> {
   const raw = await readJson(parsed.manifestFile ?? "");
+  refuseLegacy(raw, parsed.manifestFile ?? "<manifest>");
   const manifest = parseOrThrow(ImpactManifestSchema, raw, parsed.manifestFile ?? "<manifest>");
   const report = await checkClosure({
     manifest,

@@ -114,7 +114,10 @@ export async function classifyFindings(
   const residual: RepointResidual[] = [];
 
   for (const finding of [...manifest.findings].sort(compareFindings)) {
-    if (finding.advisory || finding.source === "SEARCH") {
+    // Reading the discriminator alone: the schema makes `advisory` a literal per
+    // branch, so `advisory === true` and `source === "SEARCH"` can no longer disagree
+    // and testing both is now provably redundant.
+    if (finding.source === "SEARCH") {
       residual.push({
         finding,
         reason: "advisory",

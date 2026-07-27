@@ -44,7 +44,7 @@ import yaml from "js-yaml";
 import { ZodError } from "zod";
 import { executeRepoint } from "./core/repoint.js";
 import { PlanValidationError, zodErrorToIssues } from "./schemas/plan-yaml.js";
-import { ImpactManifestSchema } from "./schemas/reference-manifest.js";
+import { ImpactManifestSchema, detectLegacyManifest } from "./schemas/reference-manifest.js";
 import { type RepointPlan, RepointPlanSchema } from "./schemas/repoint-plan.js";
 
 const MAX_PLAN_BYTES = 1024 * 1024; // 1 MB, matching decompose/recompose
@@ -161,11 +161,17 @@ async function emit(payload: unknown, out: string | undefined): Promise<void> {
 export async function main(argv: readonly string[]): Promise<number> {
   try {
     const parsed = parseArgs(argv);
-    const manifest = parseOrThrow(
-      ImpactManifestSchema,
-      await loadManifest(parsed.manifestFile),
-      parsed.manifestFile,
-    );
+    const raw = await loadManifest(parsed.manifestFile);
+    // Named remedy before the union error: a manifest predating the discriminated
+    // finding shape cannot be migrated, because the provenance it lacks was never
+    // recorded. Re-running the scan is the only honest repair, so the message says so.
+    const legacy = detectLegacyManifest(raw);
+    if (legacy !== null) {
+      throw new PlanValidationError(`${parsed.manifestFile}: ${legacy}`, [
+        { path: parsed.manifestFile, message: legacy },
+      ]);
+    }
+    const manifest = parseOrThrow(ImpactManifestSchema, raw, parsed.manifestFile);
     const report = await executeRepoint({
       manifest,
       plan: await loadPlan(parsed.planFile),

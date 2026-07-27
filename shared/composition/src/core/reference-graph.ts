@@ -23,10 +23,10 @@
  */
 
 import type { ReferenceFinding, ResolvedTarget } from "../schemas/reference-manifest.js";
-import { NoteIndex } from "./note-index.js";
 import { normalizeReference } from "./note-identity.js";
-import { inverseVerb } from "./relations.js";
+import { NoteIndex } from "./note-index.js";
 import type { NoteRecord } from "./reference-scan.js";
+import { inverseVerb } from "./relations.js";
 
 /**
  * Resolve an edge target to a note. The shared `NoteIndex` handles the four
@@ -170,6 +170,11 @@ function promoteCorroborated(
   notes: ReadonlyMap<string, NoteRecord>,
 ): ReferenceFinding[] {
   return textFindings.map((finding) => {
+    // Only a TEXT match is promotable. The discriminated finding shape surfaced this
+    // as a latent defect: spreading a SEARCH entry into a `BOTH` one carried its
+    // advisory flag and search provenance across, producing a deterministic-looking
+    // entry that claimed a search mode — and would have entered the closure gate.
+    if (finding.source !== "TEXT") return finding;
     const note = notes.get(finding.referencingFile);
     const range = note?.relationsRange;
     if (!range || finding.class !== "wikilink") return finding;

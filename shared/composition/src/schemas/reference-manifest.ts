@@ -122,7 +122,14 @@ export type SearchType = z.infer<typeof SearchTypeSchema>;
  * leg that serves. A response claiming it is malformed and should fail here
  * rather than be stored as provenance that explains nothing.
  */
-export const ACTUAL_SOURCES = ["semantic", "keyword", "hybrid"] as const;
+/**
+ * `unreported` is the explicit stand-in for a response that carried no
+ * `actual_source` at all. Modelled as a VALUE rather than by leaving the field
+ * optional, because "the surface did not say" and "nobody recorded it" are different
+ * facts and only the first is acceptable. An optional field collapses them, and that
+ * collapse is what let the old shape claim provenance it never had.
+ */
+export const ACTUAL_SOURCES = ["semantic", "keyword", "hybrid", "unreported"] as const;
 export const ActualSourceSchema = z.enum(ACTUAL_SOURCES);
 export type ActualSource = z.infer<typeof ActualSourceSchema>;
 
@@ -151,7 +158,12 @@ export const ResolvedTargetSchema = z.object({
 });
 export type ResolvedTarget = z.infer<typeof ResolvedTargetSchema>;
 
-export const ReferenceFindingSchema = z.object({
+/**
+ * Fields every finding carries, whichever leg produced it. Split out so the two
+ * branches below cannot drift: a field added here reaches both, and neither branch
+ * can quietly omit one.
+ */
+const findingCore = {
   /** Path relative to the docs root. */
   referencingFile: z.string().min(1),
   /** 1-indexed. */
@@ -166,46 +178,117 @@ export const ReferenceFindingSchema = z.object({
   viaAlias: z.boolean(),
   /** Populated for `entity-id-section` only, e.g. "Section 6" or "Part C". */
   sectionFragment: z.string().optional(),
-  source: ReferenceSourceSchema.default("TEXT"),
-  /**
-   * Which search mode was REQUESTED for a `SEARCH` entry. Absent for the
-   * deterministic legs, which have no mode. Recorded rather than discarded
-   * because the modes differ sharply in precision and in health: an
-   * exact-identifier keyword hit and a threshold-gated semantic hit are not
-   * equally trustworthy, and a mode that is currently returning nothing needs to
-   * be distinguishable from a mode that ran and found nothing.
-   *
-   * The three provenance fields answer three different questions and none
-   * substitutes for another: `mode` is what was asked for, `searchType` is how
-   * the proxied leg retrieved, `actualSource` is which leg answered.
-   */
-  mode: SearchModeSchema.optional(),
-  /**
-   * The retrieval strategy requested alongside `mode`. Optional in the same
-   * sense `mode` is: absent on deterministic entries, and absent on advisory
-   * entries whose producer did not record it. A manifest written before this
-   * field existed therefore stays loadable unchanged.
-   */
-  searchType: SearchTypeSchema.optional(),
-  /**
-   * The leg that actually served this row, when the surface reports it. The MCP
-   * surface currently reports it once per RESPONSE rather than per row, so a
-   * producer copies the response-level value onto each row it contributes; the
-   * field is per-row anyway because rows from separate calls land in one
-   * manifest and a single response-level field could not describe them.
-   */
-  actualSource: ActualSourceSchema.optional(),
-  /**
-   * Advisory entries widen the repointing worklist but NEVER gate closure. The
-   * search leg is a recall aid — over prose that names a note without naming its
-   * identifier, and over an index whose modes have known live defects. It is not
-   * reproducible enough to fail a build on, so the deterministic TEXT and GRAPH
-   * legs remain the gate.
-   */
-  advisory: z.boolean().default(false),
   relation: RelationEvidenceSchema.optional(),
-});
+};
+
+/**
+ * A finding from a deterministic leg. It MUST NOT carry search provenance.
+ *
+ * `.strict()` is what enforces that: `mode`, `searchType` and `actualSource` are not
+ * declared here, so a deterministic entry carrying any of them is rejected rather
+ * than silently accepted with meaningless provenance. While those fields were merely
+ * optional there was no shape difference between "a text match" and "a text match
+ * claiming a search mode", and nothing anywhere could tell the two apart.
+ *
+ * `advisory` is a literal `false` because a deterministic finding IS the gate. The
+ * flag is therefore redundant with `source` by construction — deliberately, since
+ * every consumer already branches on it, and a derived value that cannot disagree
+ * with its source is safer than one that can.
+ */
+const deterministicFinding = (source: "TEXT" | "GRAPH" | "BOTH") =>
+  z
+    .object({
+      ...findingCore,
+      source: z.literal(source),
+      advisory: z.literal(false).default(false),
+    })
+    .strict();
+
+/**
+ * A finding from the search leg. It MUST carry all three provenance fields.
+ *
+ * Required rather than optional, because an advisory entry is the one kind a reader
+ * has to confirm by hand, and confirming it means reproducing the query. A recorded
+ * mode alone cannot do that: `searchType` is an orthogonal retrieval dial the mode
+ * cannot express, and the leg that actually served the row routinely differs from the
+ * one requested. An entry missing any of the three is not reproducible, so it is
+ * refused at the boundary instead of stored as evidence it cannot support.
+ */
+const searchFinding = z
+  .object({
+    ...findingCore,
+    source: z.literal("SEARCH"),
+    /** The mode REQUESTED. */
+    mode: SearchModeSchema,
+    /** The retrieval strategy requested alongside `mode`. */
+    searchType: SearchTypeSchema,
+    /** The leg that actually served the row, or `unreported`. */
+    actualSource: ActualSourceSchema,
+    /**
+     * Advisory entries widen the repointing worklist but NEVER gate closure. The
+     * search leg is a recall aid — over prose that names a note without naming its
+     * identifier, and over an index with known live defects. It is not reproducible
+     * enough to fail a build on, so the deterministic legs remain the gate.
+     */
+    advisory: z.literal(true).default(true),
+  })
+  .strict();
+
+/**
+ * Discriminated on `source`. The discriminator has NO default: a finding that does
+ * not say which leg produced it cannot be placed in either branch, and defaulting it
+ * to `TEXT` — as the previous shape did — would admit an unlabelled entry straight
+ * into the closure gate.
+ */
+export const ReferenceFindingSchema = z.discriminatedUnion("source", [
+  deterministicFinding("TEXT"),
+  deterministicFinding("GRAPH"),
+  deterministicFinding("BOTH"),
+  searchFinding,
+]);
 export type ReferenceFinding = z.infer<typeof ReferenceFindingSchema>;
+
+/**
+ * Detect a manifest written under the pre-discriminated shape, so the failure names
+ * the remedy instead of surfacing a four-branch union error.
+ *
+ * Deliberately a detector rather than a compatibility path. There is no migration:
+ * the provenance a legacy SEARCH entry lacks was never recorded and cannot be
+ * reconstructed, so re-running the scan is the only honest repair. Returns the message
+ * to raise, or null when the input is not recognisably legacy.
+ */
+export function detectLegacyManifest(raw: unknown): string | null {
+  if (typeof raw !== "object" || raw === null) return null;
+  const findings = (raw as { findings?: unknown }).findings;
+  if (!Array.isArray(findings)) return null;
+  for (const entry of findings) {
+    if (typeof entry !== "object" || entry === null) continue;
+    const finding = entry as Record<string, unknown>;
+    const source = finding["source"];
+    if (source === undefined) {
+      return "manifest predates the discriminated finding shape: a finding carries no `source`. Re-run the scan to regenerate it.";
+    }
+    if (source === "SEARCH") {
+      const missing = ["mode", "searchType", "actualSource"].filter(
+        (field) => finding[field] === undefined,
+      );
+      if (missing.length > 0) {
+        return `manifest predates the discriminated finding shape: a SEARCH finding is missing ${missing.join(", ")}. That provenance was never recorded and cannot be reconstructed, so re-run the scan to regenerate the manifest.`;
+      }
+    } else if (
+      finding["mode"] !== undefined ||
+      finding["searchType"] !== undefined ||
+      finding["actualSource"] !== undefined
+    ) {
+      return `manifest predates the discriminated finding shape: a ${String(source)} finding carries search provenance, which no deterministic leg produces. Re-run the scan to regenerate it.`;
+    }
+  }
+  return null;
+}
+
+/** The SEARCH branch alone — what the advisory leg produces and `--merge` accepts. */
+export const SearchReferenceFindingSchema = searchFinding;
+export type SearchReferenceFinding = z.infer<typeof searchFinding>;
 
 const classCountsShape = Object.fromEntries(
   REFERENCE_CLASSES.map((cls) => [cls, z.number().int().nonnegative()]),
@@ -295,7 +378,15 @@ export const RetainFileSchema = z.array(RetainRuleSchema);
  * forced advisory regardless of what the file claims, so no external input can
  * promote itself into the closure gate.
  */
-export const MergeFileSchema = z.array(ReferenceFindingSchema);
+export const MergeFileSchema = z.array(
+  searchFinding.extend({
+    // Forced to SEARCH/advisory by the scanner regardless of what the file claims, so
+    // an author need not restate them. The provenance triple is NOT defaulted: an entry
+    // that cannot say how it was found has nothing to contribute.
+    source: z.literal("SEARCH").default("SEARCH"),
+    advisory: z.literal(true).default(true),
+  }),
+);
 
 export const ClosureEntrySchema = z.object({
   finding: ReferenceFindingSchema,
@@ -330,7 +421,18 @@ export const ClosureReportSchema = z.object({
      */
     outstandingAdvisory: z.number().int().nonnegative(),
     newFindings: z.number().int().nonnegative(),
-    /** True when no DETERMINISTIC entry is OUTSTANDING — the closure condition. */
+    /**
+     * New bi-directional closure violations — edges the repointing pass itself made
+     * one-way. Broken out of `newFindings` because it is the only part of that set
+     * that represents damage the operation caused rather than unrelated drift, and it
+     * is therefore the only part that gates.
+     */
+    introducedAsymmetry: z.number().int().nonnegative(),
+    /**
+     * The closure condition: no DETERMINISTIC entry OUTSTANDING, and no asymmetry
+     * introduced. Both halves are required — a pass that repaired every stale
+     * reference while leaving the graph one-way has not finished.
+     */
     closed: z.boolean(),
   }),
 });

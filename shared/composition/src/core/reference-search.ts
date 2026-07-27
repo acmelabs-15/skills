@@ -32,10 +32,15 @@
  * costs more than a missing suggestion.
  */
 
-import type {
-  ImpactManifest,
-  ReferenceFinding,
-  ResolvedTarget,
+import {
+  type ActualSource,
+  type ImpactManifest,
+  type ReferenceFinding,
+  type ResolvedTarget,
+  SEARCH_TYPES,
+  type SearchMode,
+  type SearchReferenceFinding,
+  type SearchType,
 } from "../schemas/reference-manifest.js";
 import {
   type SearchQuery,
@@ -164,8 +169,10 @@ function advisoryFinding(params: {
   response: SearchResponse;
   /** The mode ASKED for. Not the response's echo of it — see below. */
   requestedMode: string;
+  /** The retrieval strategy ASKED for, or empty when the surface default was taken. */
+  requestedSearchType: string;
   cls: ReferenceFinding["class"];
-}): ReferenceFinding {
+}): SearchReferenceFinding {
   const { response } = params;
   return {
     referencingFile: params.path,
@@ -177,29 +184,40 @@ function advisoryFinding(params: {
     viaAlias: false,
     source: "SEARCH",
     advisory: true,
-    // The provenance triple, populated in-library now that the leg runs here. The
-    // requested mode and the leg that served it routinely differ, which is exactly
-    // why both are recorded rather than one standing in for the other.
+    // The provenance triple, all three REQUIRED on a SEARCH finding. The requested
+    // mode and the leg that served it routinely differ, which is exactly why both are
+    // recorded rather than one standing in for the other.
     //
     // `mode` comes from the REQUEST, per its schema contract, not from the response's
     // echo of it. Reading the echo would make the field describe whatever the surface
     // chose to report back, which is the one thing `actualSource` already covers.
-    ...(params.requestedMode.length > 0 ? { mode: modeOf(params.requestedMode) } : {}),
-    ...(response.actualSource.length > 0
-      ? { actualSource: actualSourceOf(response.actualSource) }
-      : {}),
+    mode: modeOf(params.requestedMode),
+    searchType: searchTypeOf(params.requestedSearchType),
+    actualSource: actualSourceOf(response.actualSource),
   };
 }
 
-/** Narrow the surface's free-form strings onto the manifest's closed enums. */
-function modeOf(value: string): ReferenceFinding["mode"] {
-  return value === "auto" || value === "semantic" || value === "keyword" || value === "hybrid"
+/**
+ * Narrow the free-form request and response strings onto the manifest's closed enums.
+ *
+ * Every one of these has a definite fallback rather than `undefined`, because the
+ * schema requires all three on a SEARCH finding. `auto` and `hybrid` are the honest
+ * defaults for a request that named nothing — they are what the surface itself
+ * applies — and `unreported` is the explicit value for a response that said nothing,
+ * which is a different fact from a value nobody bothered to record.
+ */
+function modeOf(value: string): SearchMode {
+  return value === "semantic" || value === "keyword" || value === "hybrid" || value === "auto"
     ? value
-    : undefined;
+    : "auto";
 }
 
-function actualSourceOf(value: string): ReferenceFinding["actualSource"] {
-  return value === "semantic" || value === "keyword" || value === "hybrid" ? value : undefined;
+function searchTypeOf(value: string): SearchType {
+  return SEARCH_TYPES.includes(value as SearchType) ? (value as SearchType) : "hybrid";
+}
+
+function actualSourceOf(value: string): ActualSource {
+  return value === "semantic" || value === "keyword" || value === "hybrid" ? value : "unreported";
 }
 
 /**
@@ -249,6 +267,7 @@ async function probeDescriptive(
         target: target.entityId,
         response,
         requestedMode,
+        requestedSearchType: options.searchType ?? "",
         cls: "entity-id",
       }),
     );
@@ -305,6 +324,7 @@ async function probeRelations(
         target: target.entityId,
         response,
         requestedMode,
+        requestedSearchType: "text",
         cls: "index-stale",
       }),
     );
