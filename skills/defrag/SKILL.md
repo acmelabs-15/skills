@@ -96,7 +96,16 @@ bun run shared/composition/src/reference-scan.ts \
 The targets file is the candidate list, one entry per note. Candidates surfaced
 by threshold alone have no retired identities, so no aliases are needed; supply
 `aliasTitles` / `aliasPermalinks` / `aliasEntityIds` only where you already know
-a note was renumbered or renamed.
+a note was renumbered or renamed. Where you do, each alias becomes a discovery
+query of its own — no query on a note's current identity can reach a retired one,
+which is what makes it retired.
+
+`--project <name>` is optional and pins the graph the queries run against. Left
+off, the CLI resolves one itself (`BM_PROJECT`, `BM_ACTIVE_PROJECT`,
+`BRAIN_PROJECT`, then a match of the working directory against configured code
+paths), and the project that answered is recorded on the impact manifest with
+whether you named it or the CLI resolved it. For a cron-scheduled audit, name it:
+a resolved project is an inference a changed working directory could redirect.
 
 The scan reads each candidate's own Relations section as a formal inbound index
 before scanning prose. Under the bi-directional rule — when note A carries a
@@ -109,46 +118,73 @@ Those two classes are structural-fix candidates in their own right, independent
 of any split or merge. A one-way edge is a defect whether or not the note is
 ever restructured, and this audit is the only place defrag would notice it.
 
-Optionally widen the scan with a search leg: run Brain MCP search over each
-candidate's title and two or three descriptive descriptors, using `keyword` mode
-plus `search_type: "text"` for exact identifiers and permalinks (double-quoting
-hyphenated identifiers, since the tokenizer splits on hyphens), `semantic` for
-descriptive references, and `hybrid` where you judge it useful. Record the mode
-on each entry. `keyword` returned zero results for every query on the build this
-paragraph was first written against and has since been revived end-to-end, so as
-measured on the MCP surface 2026-07-26 an empty keyword result is now evidence of
-no match rather than a dead leg. Two mechanics of the current surface matter here:
-`mode: "keyword"` alone leaves retrieval at the proxied leg's hybrid default, so
-pass `search_type: "text"` for genuine full-text matching; and a structured filter
-the running leg cannot evaluate re-routes the request onto the leg that can rather
-than being dropped, with `actual_source` on the response naming the leg that
-actually served. Verify every hit against `list_directory` ground truth — semantic
-mode can still return cross-project rows, the fix for that leak existing but not
-deployed everywhere, and the index can still serve rows for notes that have moved
-— then pass the verified hits via `--merge`. Those entries are advisory and never
-gate anything; they exist to catch prose that names a note without naming its
-identifier. For the full tool surface behind this guidance, see the search and
-impact-detection tool-surface analysis in the project's analysis folder.
+### How the audit finds referencing notes
 
-**Two generations of the search surface are live at once, which matters most to
-a cron-scheduled audit that nobody watches.** The plugin MCP path carries the
-repairs above; the HTTP server behind the `brain` CLI is still on the pre-repair
-build pending a restart, where keyword returns zero for every query and a filter
-the running leg cannot honour is dropped silently, leaving an unfiltered result
-that looks filtered. The detection rule is the response itself: **no
-`actual_source` field means a pre-fix surface** — fall back to reading an empty
-keyword result as no signal and any filtered result as unfiltered.
+The audit rides the same two-stage funnel the restructuring skills use. The
+scanner no longer walks the docs tree to find referencing notes: that census was
+removed rather than kept as a fallback, so a run cannot silently take a different
+path to a different answer. (The audit cycle's own step 1 still enumerates notes
+under `docs/**` — that walk feeds the quality thresholds, and is a different
+mechanism from reference discovery.)
 
-Two expansion filters are worth knowing here even though neither replaces a
-deterministic leg. `entity_types: ["relation"]` returns inbound edges directly
-over MCP, titled `Source Title -> Target Title` with the title rather than the
-snippet carrying the payload — a portable corroboration of the audit's graph leg,
-which still owns the finding because index-derived edge verbs are unreliable:
-absent on type-grouped notes, and on probe sometimes wrong outright. Traverse on
-existence, never on verb. And `after_date` returns notes whose index timestamp is
-strictly after a given date, so its complement is an index-side view of the stale
-set: a cross-check on the staleness classifier above, not a substitute, because
-the timestamp is the index's and lags a just-written note.
+Stage one asks the brain CLI's complete-retrieval surface which notes could
+possibly reference each candidate, running two arguments per target that between
+them partition the reference space: `--references` returns every note holding a
+wikilink EDGE to the candidate, read off the relation graph; `--exhaustive`
+returns every note whose full content contains a literal, case-insensitively,
+which is what catches permalink strings, section citations and bare prose
+mentions. One exhaustive query on the entity ID already covers the candidate's
+current title and permalink, since both embed the ID by convention; declared
+aliases each get their own. Stage two then opens ONLY those notes, because no
+search response carries a line or a column and an audit that cannot address a
+finding cannot hand it to anyone.
+
+Three properties matter to an audit nobody is watching:
+
+- **Completeness is claimed per query and aggregated by AND.** Each query records
+  whether the surface proved its own set complete and why not when it could not;
+  the manifest is `provable: true` only when every query was. An unproven run
+  warns on stderr naming the queries that could not vouch for themselves. Read
+  `provable: false` as a candidate report that may be short.
+- **An unreachable search FAILS the run.** It never degrades to an empty
+  candidate set, which would read as "nothing references this note" and would
+  turn an outage into a clean bill of health for a delete candidate.
+- **A wrong graph is detected structurally.** It answers fluently — every query
+  proves itself complete over notes that really exist, just not here — so when
+  the queries return notes but essentially none exist under the docs root, the
+  scan says so and names `--project` as the remedy. A handful of returned notes
+  missing from disk is ordinary index staleness instead, reported separately as
+  `missingOnDisk`: paths the index knows and stage two could not open. For a
+  stale-delete audit that list is worth reading directly, since it is the index
+  holding rows for notes the tree no longer has.
+
+**Known boundary: batched candidates do not see each other.** Stage two excludes
+every target FILE from its text scan, on the reasoning that a note citing itself
+is not an inbound reference. Correct for one target; too wide for the batch a
+defrag run naturally produces. A reference from one candidate to another sits
+inside an excluded file, so the inbound count for both is under-reported by
+exactly those edges. Measured on a live graph, batch-scanning 28 targets dropped
+326 cross-target occurrences. A per-candidate filter is the queued fix. Until it
+lands, scan candidates that cite one another individually before acting on either
+— single-target scans have zero exposure — and read a batch report's inbound
+counts as a floor rather than a total.
+
+One class of reference the funnel cannot reach: prose that names a note without
+naming any identifier ("the substrate analysis"). Literal containment needs a
+literal to contain, so those references are found only by hand-run search. Widen
+the audit with one where it is worth the time — search each candidate's title and
+two or three descriptive descriptors, double-quoting hyphenated identifiers since
+the tokenizer splits on hyphens — verify every hit against `list_directory`
+ground truth, and pass the verified hits via `--merge`. Merged entries are forced
+advisory and gate nothing; each must record how it was found (the mode requested,
+the retrieval strategy requested alongside it, and which leg actually served the
+row, or `unreported` when the surface did not say), because an advisory entry is
+the one kind a reader has to confirm by reproducing the query.
+
+An index-derived edge verb is never evidence, which is why the funnel's edge leg
+asks only whether an edge EXISTS. Verbs are absent on type-grouped notes and on
+probe have come back wrong outright. The audit's graph leg owns any typed finding,
+and it earns that by parsing note bodies rather than consulting the index.
 
 Fold the per-target totals into the candidates report so each candidate carries
 its inbound-reference count. Two uses:
@@ -167,14 +203,14 @@ the exit code, which continues to mean "candidates found". In interactive mode,
 show the inbound count when asking the user to confirm a candidate: consent to
 restructure a note is not informed consent if the blast radius is not on screen.
 
-Also widen the scan itself where the CLI can do it for you: passing
-`--search-project <name>` runs the advisory leg in-library, two probes per
-candidate — a descriptive probe on the candidate's title and a relation probe on
-its entity ID — instead of your running those searches by hand. It only reports
-notes the deterministic legs did not already match, drops any hit whose snippet
-it cannot locate in a note body rather than guessing a line, and reports
-`complete: false` when a query hit a page boundary with every page full. Read that
-last one as a worklist that may be short.
+Carry the manifest's `discovery` block into the report alongside those counts,
+because an inbound count is only as good as the scope that produced it. It is
+required on every manifest and names the graph that answered, whether that
+project was declared or resolved, whether every query proved its own set
+complete, which returned paths were missing from disk, and which indexed files
+were excluded as non-markdown. An inbound count of zero under `provable: false`
+is not the same fact as an inbound count of zero under `provable: true`, and a
+report that prints only the number loses the difference.
 
 When a confirmed candidate is delegated, decompose and recompose run their own
 plan-time impact scan and execution-time closure check. A stale-delete now has an

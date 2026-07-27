@@ -143,9 +143,11 @@ the aliases the scanner cannot infer:
 ```
 
 Aliases come from the plan you just authored: `renumber_map` supplies retired
-identifiers, and any title or permalink change supplies the rest. The scanner
-never guesses history — an alias you omit is a whole class of stale reference it
-cannot see.
+identifiers, and any title or permalink change supplies the rest. Each declared
+alias becomes a discovery query of its own, and no query on a target's current
+identity can reach one — that is what makes an identity retired. The scanner
+never guesses history, so an alias you omit is a whole class of stale reference
+nothing downstream can see.
 
 ```bash
 bun run shared/composition/src/reference-scan.ts \
@@ -154,9 +156,86 @@ bun run shared/composition/src/reference-scan.ts \
   --out docs/_restructure/decompose-{id}-impact.json
 ```
 
-#### The three legs
+`--project <name>` is optional and pins the graph the queries run against. Left
+off, the CLI resolves one itself — `BM_PROJECT`, `BM_ACTIVE_PROJECT`,
+`BRAIN_PROJECT`, then a match of the working directory against configured code
+paths — and the project that actually answered is read back off the response and
+recorded on the manifest, together with whether you named it or the CLI resolved
+it. An unnamed project is therefore never an unknown one.
 
-The scan runs two legs itself and accepts a third from you.
+#### How discovery works: the two-stage funnel
+
+The scan does not walk the docs tree. It asks the search surface which notes
+could possibly reference the targets, then opens only those.
+
+**Stage one — the candidate set, with a completeness contract.** Two arguments
+of the brain CLI's complete-retrieval surface run per target, and between them
+they partition the reference space:
+
+- `--references <entity-id>` returns every note holding a wikilink EDGE to the
+  target, in both directions. It reads the relation graph, not note text.
+- `--exhaustive <literal>` returns every note whose FULL CONTENT contains the
+  literal, case-insensitively. That is what catches permalink strings, section
+  citations and bare prose mentions — including any past the 6000-character
+  offset where ranked keyword search silently stops seeing them.
+
+Neither ranks, limits or pages. Each states in-band whether its set is provably
+complete.
+
+One `--exhaustive` query on the entity ID already covers the target's current
+title and permalink: a convention-following title is `{ENTITY-ID}: {Descriptor}`
+and the permalink embeds the same ID, so literal containment reaches both. Those
+forms are queried separately only on the defensive branch where a note breaks
+that convention. Every declared ALIAS, by contrast, gets its own `--exhaustive`
+query, and that is the whole reason the targets file accepts aliases: a retired
+permalink contains no trace of the current entity ID, so nothing about the
+current identity can reach it. Measured on a live graph, one analysis note
+referenced another ONLY through a retired permalink — the entity-ID query
+returned sixteen notes and not that one; the alias query returned it. Aliases get
+no `--references` query, because that leg resolves its target through the
+canonical title form which a retired identity no longer answers to, while an
+alias's wikilink edges are literal text the exhaustive query already returns.
+
+Redundant queries are dropped before anything runs: when one planned literal
+contains another — an alias entity ID and the alias title that embeds it — only
+the shorter one runs, since literal containment makes its result set a superset.
+The survivors then run one at a time. A concurrent pool was built and measured
+and rejected: both surfaces sit on one server over one SQLite store, and
+concurrent invocations hung rather than helping.
+
+**Stage two — the addresses.** No search response carries a line or a column, so
+search can say WHICH notes are implicated and never WHERE. Stage two opens each
+candidate and produces the exact `line:column` findings the repoint executor
+edits by. Both deterministic legs below run here, over the candidate set only.
+The targets are always part of that set whatever the queries returned, because a
+target's own Relations section is the formal index of what points at it.
+
+**Honesty, per query and in aggregate.** Every query records its own total,
+whether the surface proved that set complete, the scope it claims to cover, and
+the reason when it could not prove itself. The manifest keeps all of them, and
+its own `provable` is the AND over them: one unproven query makes the whole
+worklist unproven whatever the others said. This matters because a query for a
+target the index does not know returns zero results and exit 0 — indistinguishable
+from "this note genuinely has no references" unless the completeness claim is
+read. An unproven scan therefore prints a warning naming the queries that could
+not vouch for themselves. Read `provable: false` as a worklist that may be short,
+and say so when you carry the counts into the Step 5 summary.
+
+**An unreachable search FAILS the run.** It is never degraded into an empty
+candidate set, because an empty set is indistinguishable from "nothing references
+these targets" and would hand you a clean bill of health produced by an outage.
+The same holds when queries inside one scan come back from different projects:
+the union of two graphs' answers is a worklist for neither, so the run stops
+rather than blending them.
+
+**The mismatch guard.** A wrong graph answers fluently — every query proves
+itself complete over notes that really exist, just not here — so the finding
+count looks plausible and only disk correspondence gives it away. When the
+queries return notes but essentially none of them exist under the docs root, the
+scan says so and names the likely cause, which is usually a CLI-resolved project
+pointing at another repo; passing `--project` explicitly is the remedy. A handful
+of returned notes missing from disk is the ordinary case instead, and is reported
+separately as index staleness — a path the index knows and stage two cannot open.
 
 **GRAPH — read the target's own Relations first.** The conventions enforce
 bi-directional relations: when note A carries a `part_of` edge naming note B, B
@@ -187,171 +266,86 @@ reported once, so the counts are a worklist length rather than an overcount.
 Each entry carries a `source` tag: `GRAPH`, `TEXT`, or `BOTH` when a text match
 landed on the formal edge itself and the two legs corroborate.
 
-**SEARCH — recall the deterministic legs cannot reach, advisory.** Neither
-deterministic leg sees prose that names a note without naming its identifier:
-"the substrate analysis", "the eviction adjudication". Those go stale exactly
-like an explicit citation and are invisible to both scans.
+**Known boundary: batched targets do not see each other.** Stage two excludes
+every target FILE from the text scan, on the reasoning that a note citing itself
+is not an inbound reference. For a single target that is exactly right. For
+several scanned together it is too wide: a reference from one target to another
+sits inside an excluded file, so it is neither reported nor repaired — and
+because closure diffs the prior manifest, it is not reported there either.
+Measured on a live graph, batch-scanning 28 targets dropped 326 cross-target
+occurrences. A per-candidate filter is the queued fix. Until it lands, scan
+targets that cite one another one at a time — single-target operations have zero
+exposure — or work the cross-target edges by hand.
 
-The scanner can now run this leg itself. Pass `--search-project <name>` and it
-queries the Brain CLI per target, with `--search-mode` and `--search-type`
-selecting the dials described below. Two probes run per target:
+#### The advisory channel: hand-run search via `--merge`
 
-- **Descriptive** — queries the target's TITLE, not its identifier. An identifier
-  query returns what the text scan already has; the title is what prose
-  paraphrases when it names a note without citing it.
-- **Relations** — queries the entity ID with `entity_types: ["relation"]`, fixed
-  to keyword plus `search_type: "text"` because an existence probe wants
-  exact-identifier retrieval whatever the descriptive probe was set to. It asks
-  whether the index holds an edge the tree shows no textual link for.
+Literal containment cannot enumerate prose that names a note without naming any
+identifier — "the substrate analysis", "the eviction adjudication". Those
+references go stale exactly like an explicit citation, and no argument of the
+complete-retrieval surface reaches them, because containment needs a literal to
+contain. That boundary is why `--merge` exists, and hand-run search is the
+documented route across it.
 
-Hits you find by hand still merge in through `--merge`. Both paths land as
-advisory entries, and choosing the mode per query still matters — a keyword hit
-and a threshold-gated semantic hit do not warrant the same confidence, which is
-why the mode is recorded on every entry rather than assumed.
+Run those searches yourself against the same graph: the ranked search surface is
+the right instrument here precisely because the question is paraphrase rather
+than containment. Double-quote hyphenated identifiers (`"ANALYSIS-034"`) when
+you do — the tokenizer splits on hyphens, so an unquoted multi-term query is
+narrower than it looks. The library's own queries need no such quoting: they go
+to the CLI as an argv array with no shell in the path, and quotes added there
+would become part of the literal being searched for.
 
-| Query kind | Mode |
-|---|---|
-| Exact identifiers, aliases, permalinks | `keyword` + `search_type: "text"` |
-| Descriptive references | `semantic` |
-| Mixed or uncertain | `hybrid`, at your judgement |
-
-Double-quote hyphenated identifiers (`"ANALYSIS-034"`) whichever mode you are
-in: the tokenizer splits on hyphens, so an unquoted multi-term query is narrower
-than it looks.
-
-Keyword mode returned zero results for every query on the build this section was
-first written against, which also made `auto` effectively semantic-only and left
-`hybrid` with a dead leg. That leg has since been revived end-to-end, and as
-measured on the MCP surface 2026-07-26 an empty keyword result is now evidence of
-no match rather than a dead leg to route around. Four mechanics of the current
-surface matter more than the repair itself:
-
-- **`mode` and `search_type` are different dials.** `mode` selects which leg
-  runs; `search_type` selects how the proxied leg retrieves. Left unset, the
-  proxied leg applies its own default, which is hybrid whenever semantic search
-  is enabled — so `mode: "keyword"` alone is not keyword retrieval. Pass
-  `search_type: "text"` for genuine full-text matching.
-- **`search_type: "permalink"` with a `*` enumerates a note family
-  server-side**, prefix-matching the FULL path: `analysis/analysis-00*`, not
-  `analysis-00*`. When you need every sibling of a numbered series, that is
-  cheaper and more complete than guessing identifiers one at a time.
-- **A filter the running leg cannot evaluate re-routes rather than dropping.**
-  Every structured filter except `after_date` rides the proxied leg, so passing
-  one under `mode: "semantic"` moves the whole request there. Measured
-  2026-07-26, a decision-only `note_types` filter under `mode: "semantic"` came
-  back served by the keyword leg and carrying only decisions. You therefore do
-  not have to pair filters with `keyword` by hand — but you do have to read
-  `actual_source` on the response, which names the leg that actually served.
-- **`depth` above 0 is unchanged and still the wrong instrument.** It resolves
-  wikilinks through the proxied leg and is outbound-only — it follows links FROM
-  a hit, never TO it. Prefer the GRAPH leg for blast radius, and do not treat a
-  thin `depth` result as evidence of a small one.
-
-**Two generations of the search surface are live at once, so establish which one
-answered you.** The plugin MCP path carries the repairs above. The HTTP server
-behind the `brain` CLI is still on the pre-repair build pending a restart, and on
-that generation keyword returns zero for every query and a filter the vector leg
-cannot honour is dropped silently — leaving an unfiltered result that looks
-filtered. The detection rule is the response itself: **a response carrying no
-`actual_source` field is a pre-fix surface.** On seeing one, fall back to the
-older discipline — read an empty keyword result as no signal rather than no
-references, and read any filtered result as unfiltered.
-
-Inbound references are reachable directly. `entity_types: ["relation"]` returns
-graph edges as rows — one per edge, titled `Source Title -> Target Title`, with
-a synthetic edge path (`source/verb/target`) as its permalink. The title is the
-payload: under text retrieval an edge row's snippet comes back empty, because no
-snippet text is stored for relations. Measured 2026-07-26, a quoted entity-ID
-query in this shape returned that note's inbound edges immediately, where `depth`
-expansion had previously exceeded the tool timeout. Three more filters earn their
-place in this step: `note_types` to scope a sweep to one class of note,
-`categories` paired with `entity_types: ["observation"]` to hit decision or
-requirement bullets exactly, and `after_date` for a staleness sweep (strictly
-after, on the index-modified UTC timestamp, so a bare date means that date's
-midnight UTC; relative strings such as "1 week" are rejected outright). A request
-may also omit `query` altogether and enumerate on filters alone.
-
-That makes the backlink question portable; it does not move the gate. The GRAPH
-leg still parses note bodies and still owns the closure check — see the
-traverse-on-existence rule below, which relation rows sharpen rather than retire.
-
-For the full tool surface behind this guidance, see the search and
-impact-detection tool-surface analysis in the project's analysis folder.
-
-Verify every hit before you use it. Semantic mode can still return rows from
-other projects — the fix for that leak exists but is not deployed everywhere —
-and the index can still serve rows for notes that have moved or been renumbered.
-Check each returned permalink against `list_directory` ground truth and drop
-anything that does not resolve. Write the verified hits to a JSON file shaped
-like the manifest's `findings` entries, each carrying its `mode`, and pass it in:
+Verify every hit before you use it. Search can return rows from other projects,
+and the index can serve rows for notes that have moved or been renumbered. Check
+each returned permalink against `list_directory` ground truth and drop anything
+that does not resolve. Write the verified hits to a JSON file shaped like the
+manifest's `findings` entries and pass it in:
 
 ```bash
 bun run shared/composition/src/reference-scan.ts \
   --docs-root docs \
   --targets docs/_restructure/decompose-{id}-targets.json \
-  --search-project <brain-project> \
-  --merge docs/_restructure/decompose-{id}-semantic.json \
+  --merge docs/_restructure/decompose-{id}-advisory.json \
   --out docs/_restructure/decompose-{id}-impact.json
 ```
 
-Both search paths are forced to `source: SEARCH` and `advisory: true` whatever
-the input claims, so nothing from the index or from a hand-authored file can
-promote itself into the closure gate. The search leg WIDENS the worklist; it
-never gates it — a recall aid running over an index with known live defects is
-not reproducible enough to fail a step on. Every SEARCH entry carries the
-provenance of the query that produced it: the mode that was REQUESTED, the
-retrieval strategy asked for alongside it, and which leg actually answered.
-Those three are recorded separately because they routinely disagree, and none
-substitutes for another. Deterministic entries carry none of them, having no
-query behind them.
+Merged entries are forced to `source: SEARCH` and `advisory: true` whatever the
+file claims, so nothing hand-authored can promote itself into the closure gate.
+The advisory channel WIDENS the worklist; it never gates it. Each entry must also
+state how it was found — the mode requested, the retrieval strategy requested
+alongside it, and which leg actually served the row (or `unreported` when the
+surface did not say). All three are required rather than defaulted, and kept as
+separate facts because they routinely disagree: an advisory entry is the one kind
+a reader has to confirm by hand, and confirming it means reproducing the query.
+Deterministic findings carry none of the three and are rejected if they do.
 
-Three properties of the automated leg are worth knowing before you read its
-output as a worklist:
+**Nothing typed is read out of the index.** Stage one's `--references` leg is
+existence-only by construction — deduplicated to notes, with a direction marker
+and no verb — and that restraint is deliberate rather than a gap. The index
+strips relation verbs from H3-grouped Relations entries: it keeps the edge but
+loses whether it was `contains` or `depends_on`, because it reads a verb only
+when the verb shares a line with its target and the grouped form puts the verb
+in the sub-header. Measured at fifteen of fifteen untyped on one ADR. Nor is a
+verb that IS present trustworthy: a live probe returned an edge whose verb was
+literally `x`, and another returned the same note pair twice under two different
+verbs, one absent from the conventions' allowlist entirely. So a query through
+the index may ask "is there an edge here?" and must not ask "is it a `part_of`
+edge?". Every typed step reads the note body, which is what the GRAPH leg does —
+it parses bodies directly and never consults the index, and that is why it gates.
 
-- **It never duplicates a deterministic finding.** Only notes absent from the
-  deterministic set produce entries, so a hit on a note the text scan already
-  matched is dropped rather than double-counting that note's impact.
-- **It never invents an address.** When a hit's snippet cannot be located in the
-  note body the hit is DROPPED rather than emitted at line 1 — a confident wrong
-  line costs an agent more than a missing suggestion does. A located line must
-  also share a distinctive word from the target's title, because a semantic hit's
-  snippet is usually the note's opening rather than the sentence naming the
-  target. Measured on a live graph, the ungated probe produced 120 entries for
-  three targets, nearly all the same opening line repeated per target.
-- **Incomplete enumeration is reported, never assumed.** The leg pages until a
-  page comes back SHORTER than the limit, because the response `total` is capped
-  at the limit and would silently truncate every enumeration. If any query hits
-  a page boundary with every page full, the leg reports `complete: false`. Read
-  that as a worklist that may be short, not a finished one.
-
-**Index traversal selects on EXISTENCE, never on edge type.** The index strips
-relation verbs from H3-grouped Relations entries — it keeps the edge but loses
-whether it was `contains` or `depends_on`, because it reads a verb only when the
-verb shares a line with its target and the grouped form puts the verb in the
-sub-header. Measured at fifteen of fifteen untyped on one ADR. Nor is a verb that
-IS present trustworthy: a live probe returned an edge whose verb was literally
-`x`, and another returned the same note pair twice under two different verbs, one
-of them absent from the conventions' allowlist entirely. So any query that goes
-through the index — this SEARCH leg, or the relation rows above — may ask "is
-there an edge here?" and must not ask "is it a `part_of` edge?", including when
-the synthetic edge permalink appears to name one. Every typed step reads the note
-body. The GRAPH leg is already immune: it parses bodies directly and never
-consults the index, which is why it is the gate and this leg is not.
-
-**The highest-value use of this leg is the UNEXTRACTABLE channel** of the
+**The highest-value use of hand-run search is the UNEXTRACTABLE channel** of the
 correction check below, not the reference scan. An obligation whose target is
 named only in prose — "the substrate analysis", no entity ID anywhere — is
-already found; it simply cannot be aimed. Semantic search turns that prose name
-into a candidate note and makes the obligation checkable, which is a recall gain
-on work already identified rather than a hunt for new work.
+already found; it simply cannot be aimed. A descriptive search turns that prose
+name into a candidate note and makes the obligation checkable, which is a recall
+gain on work already identified rather than a hunt for new work.
 
 Target it by reason, because only one of the three benefits:
 
-| `reason` | Semantic discovery |
-|---|---|
-| `no-resolvable-target` | YES — the prose names a note; resolve it to a candidate |
-| `ambiguous-target` | Sometimes — may narrow which of several notes was meant |
-| `no-quoted-stale-text` | NO — there is no quote to verify against, so a candidate note does not help |
+| `reason` | Descriptive search |
+| --- | --- |
+| `no-resolvable-target` | YES — the prose names a note; resolve it |
+| `ambiguous-target` | Sometimes — may narrow which note was meant |
+| `no-quoted-stale-text` | NO — no quote to verify, so a candidate is no help |
 
 Running the search over all three wastes most of the effort. Feed the resolved
 candidates back as `--obligations` tuples, and record that they came from an
@@ -361,19 +355,46 @@ Findings are the answer here, not a failure: the scan exits 0 whether it finds
 one reference or four hundred. Carry the per-class, per-target and per-source
 counts into the Step 5 summary.
 
-#### Gating assertions: prove the scan actually ran
+#### Gating assertions: read the discovery block, then check the index
 
-A scan that found nothing and a scan that silently did not run produce the same
-manifest. Both read as "no impact", and the second is the one that lets a split
-proceed blind. Assert two things before you believe a low count.
+A scan that found nothing and a scan that silently did not run used to produce
+the same manifest. They no longer can — an unreachable search fails the run
+loudly. What is still possible is a scan that RAN, proved nothing, and produced
+a short worklist that reads like a finished one. Assert two things before you
+believe a low count.
 
-**Parity.** Compare the count of markdown files on disk under the docs root
-against the count of indexed entities carrying a permalink. They should match.
-A shortfall means the index does not know about notes that exist, so any
-index-derived leg is under-reporting by exactly that gap. Note the file-count
-must be taken over the same extension set the index covers — an earlier audit
-reported a 69-vs-73 discrepancy that turned out to be the auditor's own `*.md`
-filter excluding four `.yaml` files, not an index defect.
+**Read the `discovery` block.** It is the manifest's scope-honesty record and it
+is required on every manifest, so there is always one to read:
+
+- `provable` — false means at least one query could not vouch for its own set.
+  Each query keeps its own `reason`, so the block names which and why.
+- `project` and `projectSource` — which graph answered, and whether you asserted
+  it or the CLI inferred it. An inference a changed working directory could have
+  redirected is worth a second look.
+- `missingOnDisk` — paths the index returned that stage two could not open. That
+  is index staleness, reported rather than dropped.
+- `nonNoteCandidates` — indexed files that matched but are not markdown notes,
+  such as a distribution plan YAML naming the same identifiers. They are excluded
+  deliberately: closure re-scans the same markdown-scoped set, and a finding
+  recorded outside it could never be re-derived, so the next check would call a
+  reference nobody touched repaired.
+- `projectMismatchSuspected` — the wrong-graph signal described above.
+
+Per-query wall-clock is deliberately NOT in the manifest. Two scans of an
+unchanged graph must produce byte-identical manifests, which is what makes one
+diffable; timing is a property of the run rather than of the graph, so it is
+written to stderr instead.
+
+**Parity, because index coverage is the one input discovery cannot self-check.**
+Compare the count of markdown files on disk under the docs root against the
+count of indexed entities carrying a permalink. They should match. A note the
+index does not know about cannot be returned by any query, and no completeness
+claim covers it — the surface proves its set complete over the index, not over
+the disk — so a shortfall is exactly the size of the funnel's blind spot, and
+the remedy is a re-index rather than anything in this pipeline. Take the file
+count over the same extension set the index covers: an earlier audit reported a
+69-vs-73 discrepancy that turned out to be the auditor's own `*.md` filter
+excluding four `.yaml` files, not an index defect.
 
 **Null-target relations as a DELTA, never an absolute.** Count relations whose
 target did not resolve. Read the change across the operation, not the number: a
@@ -486,7 +507,7 @@ The script:
 - Loads the YAML with `js-yaml` FAILSAFE_SCHEMA (CWE-502 mitigation)
 - Validates via Zod (`DistributionPlanSchema.parseAsync`), including bijection of `renumber_map`
 - Resolves the adapter via `getAdapter(source_type)`
-- Applies `applyMutations` then `reverseMutations` and SHA-256-compares the round trip (ADR-001 F-8 invariant — blocking)
+- Applies `applyMutations` then `reverseMutations` and SHA-256-compares the round trip (blocking round-trip invariant)
 - Writes each destination via temp-then-rename atomic write
 - Emits a JSON-lines audit log to stdout, one line per destination
 
@@ -552,7 +573,11 @@ migrated.** The executor treats the manifest as untrusted input in the same sens
 a plan YAML is — it is read back from disk and may have been hand-edited — so a
 manifest that does not satisfy the current schema fails validation loudly and
 writes nothing, rather than being coerced into something the executor then edits
-from. Re-running the scan is the remedy in every such case, and it is the only
+from. A manifest predating the funnel is refused on exactly this ground: the
+`discovery` block is required, and one written without it cannot say whether its
+scope was a whole tree or a search-scoped subset, which is the question the block
+exists to answer. The refusal names the remedy rather than emitting a union error.
+Re-running the scan is the remedy in every such case, and it is the only
 one: a hand-migrated manifest would carry addresses measured against a tree that
 has since moved. The same applies when the tree shifts under a valid manifest,
 which surfaces per finding as `address-drift` — the recorded position no longer
@@ -647,11 +672,23 @@ repointing. Every formal edge you repointed is re-traversed, and an edge whose
 inverse did not travel with it comes back as a bi-directional violation — a
 repoint that updated one end and orphaned the other does not pass.
 
+It re-runs them through the SAME funnel, pinned to the project the manifest
+recorded, so the check cannot take a different path to a different answer than
+the scan did. One addition: every file the prior manifest named is folded into
+the scope unconditionally. After a successful repoint those references are gone,
+so the index legitimately stops returning their notes — re-deriving scope from a
+fresh query alone would drop exactly the files being verified and report every
+repaired reference as UPDATED without opening one of them. Because stage two
+always reads current disk content, including a file that no longer references
+anything costs one read and proves the repair.
+
 The summary splits `outstanding` (deterministic — this is what `closed` is
-computed from) and `outstandingAdvisory` (semantic). Advisory entries cannot be
-re-derived by a deterministic scan, so they are carried forward with their prior
-status and marked unverified rather than being silently reported as UPDATED.
-Confirm those by hand or re-run the search.
+computed from) and `outstandingAdvisory` (the merged advisory entries). Advisory
+entries cannot be re-derived by a deterministic scan, so they are carried forward
+with their prior status and marked unverified rather than being silently reported
+as UPDATED. Confirm those by hand or re-run the search. `closed` additionally
+requires no introduced asymmetry: a pass that repaired every stale reference
+while leaving an edge one-way has not finished.
 
 #### Companion re-checks
 
@@ -693,12 +730,15 @@ index audit found no orphans in either direction (files on disk and indexed
 entities matched exactly). Treat the check as cheap insurance against a
 documented failure mode, not as a condition known to be live right now.
 
-Search for each retired title and permalink. Any hit still served that
-`list_directory` does not corroborate is an `index-stale` finding: record it in
-the merge file alongside the other search entries, or let the automated relation
-probe surface it. When any `index-stale` finding exists, recommend a re-index in
-the closure report — repointing every citing note does not clear a stale index
-row, and the next agent to run a search will find the phantom again. The executor
+The scan surfaces half of this for you: a candidate the queries returned that is
+not on disk lands in the discovery block's `missingOnDisk`, which is the index
+knowing a path the tree no longer holds. The other half — a retired permalink
+still served for a note that moved — needs a hand check. Search for each retired
+title and permalink. Any hit still served that `list_directory` does not
+corroborate is an `index-stale` finding: record it in the merge file alongside
+the other advisory entries. When any `index-stale` finding exists, recommend a
+re-index in the closure report — repointing every citing note does not clear a
+stale index row, and the next agent to search will find the phantom. The executor
 declines this class by construction and routes it to the work brief, so the
 re-index recommendation is the action; there is no text edit that would help.
 
