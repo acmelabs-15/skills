@@ -21,7 +21,17 @@ import {
  * hand-built body that no parser ever produced.
  *
  * The copy is hermetic on purpose. A test reading a live knowledge-graph note fails
- * the day someone edits it, reporting a schema regression that never happened.
+ * the day someone edits it, reporting a schema regression that never happened. The
+ * cost of that choice is drift in the other direction — the fixture has to be
+ * re-copied when the note legitimately changes, and it went stale once already before
+ * the note gained its `status` field and parseable Approach labels.
+ *
+ * HISTORY, because the assertions below read oddly without it. This file originally
+ * PINNED two further defects in the note itself: missing `status` frontmatter, and an
+ * `## Approach` section that yielded no test_types, environment or data_strategy. Both
+ * are now closed in the live note, so those assertions are INVERTED rather than
+ * deleted — they now guard against the note regressing back to unparseable, which is
+ * the more useful direction for a fixture that must stay in sync with a live note.
  */
 const QA_092 = join(import.meta.dir, "fixtures", "qa-092-unparented-build-validation.md");
 const CONTROL = join(import.meta.dir, "fixtures", "qa-note-sample.md");
@@ -56,34 +66,58 @@ describe("the real QA-092 note's identity fields", () => {
   });
 
   /**
-   * TWO INDEPENDENT DEFECTS IN THE NOTE, pinned rather than worked around. Neither is
-   * a schema gap, and accommodating either would weaken validation for every QA note:
-   * `status` is required of all of them, and an `## Approach` section that yields no
-   * test_types, environment or data_strategy is an empty contract.
+   * INVERTED from a pinned-defect assertion. This test used to assert the note was
+   * unparseable for two reasons unrelated to the title form — missing `status`
+   * frontmatter and an `## Approach` section yielding no test_types, environment or
+   * data_strategy. Both are closed in the live note, so the assertion now runs the
+   * other way and guards against regression.
    *
-   * Fixing the note is out of scope here — it is a knowledge-graph note, not code — so
-   * these assertions keep the defects visible until its author closes them, and stop a
-   * future reader mistaking the title fix for the note being well-formed.
+   * Kept as a distinct test from the schema check below because it isolates the two
+   * fields that were specifically broken: a future edit that drops `status` again, or
+   * flattens the Approach labels, fails HERE with a named cause rather than as an
+   * anonymous parse error.
    */
-  test("it is still unparseable for reasons unrelated to the title form", async () => {
+  test("the two formerly-missing pieces are present and parse", async () => {
     const content = await Bun.file(QA_092).text();
     const frontmatter = /^---\n([\s\S]*?)\n---/.exec(content)?.[1] ?? "";
-    expect(frontmatter).not.toContain("status:");
-    expect(() => parseQaNote(content)).toThrow(/expected string/);
+    expect(frontmatter).toContain("status: DONE");
 
-    // With `status` supplied it gets past frontmatter and fails on the empty Approach,
-    // which is what isolates the remaining defect to the body.
-    const patched = content.replace(/^(---\ntitle:[^\n]*)/, "$1\nstatus: DONE");
-    let issuePaths: string[] = [];
-    try {
-      parseQaNote(patched);
-    } catch (err) {
-      issuePaths = ((err as { issues?: Array<{ path: unknown[] }> }).issues ?? []).map((issue) =>
-        issue.path.join("."),
-      );
-    }
-    expect(issuePaths).toContain("approach.test_types");
-    expect(issuePaths).toContain("approach.environment");
+    const parsed = parseQaNote(content);
+    expect(parsed.approach.test_types.length).toBeGreaterThan(0);
+    expect(parsed.approach.environment.length).toBeGreaterThan(0);
+    expect(parsed.approach.data_strategy.length).toBeGreaterThan(0);
+  });
+
+  /**
+   * The end-to-end proof, and no patching. The fixture is byte-identical to the live
+   * note, so this parses and validates exactly what is on disk in the graph.
+   */
+  test("the real note parses and satisfies the schema as written", async () => {
+    const parsed = parseQaNote(await Bun.file(QA_092).text());
+    expect(parsed.frontmatter.title).toBe(QA_092_TITLE);
+    expect(parsed.frontmatter.permalink).toBe(QA_092_PERMALINK);
+    expect(parsed.frontmatter.type).toBe("qa");
+    expect(parsed.frontmatter.status).toBe("DONE");
+
+    const result = QaNoteSchema.safeParse(parsed);
+    expect(result.success, JSON.stringify(result.error?.issues ?? [], null, 1)).toBe(true);
+  });
+
+  /**
+   * The fixture is documented as a byte copy, and it silently went stale once. Pinning
+   * the byte length turns the next drift into a named failure here rather than a
+   * confusing parse error somewhere downstream.
+   */
+  test("the fixture is the size the live note is, so drift is caught not absorbed", async () => {
+    expect((await Bun.file(QA_092).arrayBuffer()).byteLength).toBe(23535);
+  });
+
+  test("its summary arithmetic gates, exactly as for a parented note", async () => {
+    const parsed = parseQaNote(await Bun.file(QA_092).text());
+    const { tests_run, passed, failed, skipped } = parsed.summary;
+    expect(tests_run).toBe(passed + failed + skipped);
+    const broken = { ...parsed, summary: { ...parsed.summary, tests_run: tests_run + 1 } };
+    expect(QaNoteSchema.safeParse(broken).success).toBe(false);
   });
 });
 
