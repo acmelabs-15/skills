@@ -11,6 +11,12 @@
  * this plugin root, so nothing would resolve them at the other end. Bundling
  * makes the shipped plugin self-contained.
  *
+ * An entry point is a file something INVOKES. Library modules — plugin/src/*,
+ * hooks/lib/* — are not listed: their code is inlined into whatever imports
+ * them, so shipping them separately produces output nothing reads. The hook
+ * handlers live in scripts.disabled/ and are deliberately inert until their
+ * layer is complete, so there is nothing to bundle for them either.
+ *
  * Entry points:
  *   - src/*.ts                      → dist/*.js
  *   - hooks/<name>.ts               → dist/hooks/<name>.js
@@ -41,9 +47,6 @@ const outdir = join(pluginRoot, "dist");
  * into the shipped artifact.
  */
 const groups: readonly { readonly base: string; readonly glob: string; readonly outSub: string }[] = [
-  { base: pluginRoot, glob: "src/*.ts", outSub: "" },
-  { base: pluginRoot, glob: "hooks/*.ts", outSub: "" },
-  { base: pluginRoot, glob: "hooks/lib/*.ts", outSub: "" },
   { base: pluginRoot, glob: "skills/*/scripts/*.ts", outSub: "" },
   { base: join(repoRoot, "packages/cli/src"), glob: "*.ts", outSub: "cli" },
 ];
