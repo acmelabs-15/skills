@@ -8,41 +8,27 @@
  * Zod schemas at the loader boundary. Validation errors surface as ZodError
  * instances, which the CLI formats into structured PlanValidationError output.
  *
- * Bijection of `renumber_map` is enforced via a Zod `superRefine` to catch
- * non-injective maps at load time, before any file I/O occurs.
+ * This module declares only the two plan ENVELOPES. Every field primitive —
+ * paths, line ranges, mutation maps and their F-8 invariants, scaffolding,
+ * disposition — comes from the canonical `schemas/base.ts` per ADR-002 D-5, and
+ * the invariants are carried by those primitives rather than re-applied here.
+ * Nothing in this file re-states a rule that has a home there. Two ways a
+ * BLOCKING guard stops running have already been observed in this codebase: a
+ * second, weaker implementation on the path that actually executes, and a
+ * canonical guard with no call site at all. Importing rather than re-stating
+ * closes both.
  */
 import { z } from "zod";
-
-const IdentifierString = z.string().min(1);
-
-/**
- * Path field refinement rejecting traversal sequences and absolute paths (CWE-22).
- * Applied to all file-path fields in distribution + composition plan schemas.
- */
-const SafePath = z
-  .string()
-  .min(1)
-  .refine((v) => !v.split(/[/\\]/).includes("..") && !v.startsWith("/") && !/^[A-Z]:\\/i.test(v), {
-    message: "Path traversal (..) or absolute path rejected (CWE-22 mitigation)",
-  });
-
-const RenumberMapSchema = z.record(IdentifierString, IdentifierString).superRefine((map, ctx) => {
-  const values = Object.values(map);
-  const seen = new Set<string>();
-  for (const v of values) {
-    if (seen.has(v)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `renumber_map is not injective: codomain value "${v}" appears more than once`,
-        path: ["renumber_map"],
-      });
-      return;
-    }
-    seen.add(v);
-  }
-});
-
-const WikilinkMapSchema = z.record(IdentifierString, IdentifierString);
+import {
+  ClusterScaffoldSchema,
+  dispositionEnum,
+  frontmatterMapSchema,
+  lineRangeSchema,
+  regeneratedSectionsFloor,
+  renumberMapSchema,
+  safePathSchema,
+  wikilinkMapSchema,
+} from "../../schemas/base.js";
 
 /**
  * Distribution plan: 1-to-N split. Source path is singular; destinations are
@@ -53,25 +39,56 @@ export const DistributionPlanSchema = z
   .object({
     plan_type: z.literal("distribution"),
     source_type: z.string().min(1),
-    source_path: SafePath,
-    renumber_map: RenumberMapSchema,
-    wikilink_map: WikilinkMapSchema.default({}),
+    source_path: safePathSchema,
+    renumber_map: renumberMapSchema,
+    wikilink_map: wikilinkMapSchema.default({}),
     clusters: z
       .record(
         z.string(),
-        z.object({
-          description: z.string().optional(),
-          destination_path: SafePath.optional(),
-          identifiers: z.array(IdentifierString).optional(),
-          decisions: z.array(IdentifierString).optional(),
-          renumbered_to: z.array(IdentifierString).optional(),
-          range: z
-            .object({
-              start: z.number().int().positive(),
-              end: z.number().int(),
-            })
-            .optional(),
-        }),
+        z
+          .object({
+            description: z.string().optional(),
+            destination_path: safePathSchema.optional(),
+            identifiers: z.array(z.string().min(1)).optional(),
+            decisions: z.array(z.string().min(1)).optional(),
+            renumbered_to: z.array(z.string().min(1)).optional(),
+            range: lineRangeSchema.optional(),
+            // Per-cluster mutation overrides. Before these the envelope was
+            // .strict() with no field to express them, so D-2's frontmatter_map
+            // contract and D-5's 50% regenerated_sections integrity floor were
+            // both dead code on the production path.
+            //
+            // frontmatter_map is value-keyed (existing value -> replacement),
+            // which is what makes it invertible and therefore safe to expose:
+            // the field-keyed reading could not be reversed and failed the F-8
+            // comparison on every plan that used it.
+            frontmatter_map: frontmatterMapSchema.optional(),
+            regenerated_sections: regeneratedSectionsFloor.optional(),
+            disposition: dispositionEnum.default("write"),
+            scaffold: ClusterScaffoldSchema.optional(),
+          })
+          .strict()
+          .superRefine((cluster, ctx) => {
+            if (cluster.disposition !== "retain") return;
+            // A retained range produces no file, so destination-side fields are
+            // contradictory rather than merely redundant — reject them loudly.
+            if (cluster.destination_path !== undefined) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message:
+                  'a cluster with disposition "retain" writes no file and must not declare destination_path',
+                path: ["destination_path"],
+              });
+            }
+            if (cluster.scaffold !== undefined) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message:
+                  'a cluster with disposition "retain" writes no file and must not declare scaffold',
+                path: ["scaffold"],
+              });
+            }
+          }),
       )
       .optional(),
   })
@@ -82,14 +99,30 @@ export const DistributionPlanSchema = z
  * inverse of distribution — singular target and renumber_map describing the
  * unified identifier remap.
  */
+/**
+ * A composition source: either a bare path, or a path plus the scaffolding that
+ * decompose wrapped around its content slice. When `scaffold` is present the
+ * merge strips exactly that prologue/epilogue before joining, so what is
+ * concatenated is the preserved content slice rather than the rendered note.
+ */
+const CompositionSourceSchema = z.union([
+  safePathSchema,
+  z
+    .object({
+      path: safePathSchema,
+      scaffold: ClusterScaffoldSchema.optional(),
+    })
+    .strict(),
+]);
+
 export const CompositionPlanSchema = z
   .object({
     plan_type: z.literal("composition"),
     source_type: z.string().min(1),
-    target_path: SafePath,
-    sources: z.array(SafePath).optional(),
-    renumber_map: RenumberMapSchema,
-    wikilink_map: WikilinkMapSchema.default({}),
+    target_path: safePathSchema,
+    sources: z.array(CompositionSourceSchema).optional(),
+    renumber_map: renumberMapSchema,
+    wikilink_map: wikilinkMapSchema.default({}),
   })
   .strict();
 

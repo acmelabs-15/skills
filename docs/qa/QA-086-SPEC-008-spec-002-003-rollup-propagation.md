@@ -1,7 +1,7 @@
 ---
 title: 'QA-086-SPEC-008: SPEC-002 and SPEC-003 Rollup Propagation'
 type: qa
-permalink: qa/qa-086-spec-008-spec-002-003-rollup-propagation-1
+permalink: qa/qa-086-spec-008-spec-002-003-rollup-propagation
 tags:
 - qa
 - spec-008

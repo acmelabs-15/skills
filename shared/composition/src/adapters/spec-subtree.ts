@@ -1,9 +1,10 @@
-import { dirname, isAbsolute, join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import type { Root } from "mdast";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
+import { lexicalPathViolation } from "../../schemas/base.js";
 import type { CompositionAdapter } from "../core/adapter.js";
 import {
   type HashValidationEntry,
@@ -12,6 +13,7 @@ import {
   rollbackCluster,
   validateSubtreeHashes,
 } from "../core/cluster-rollback.js";
+import { applyFrontmatterMutations, invertFrontmatterMap } from "../core/frontmatter-mutations.js";
 import { sha256 } from "../core/hash.js";
 import {
   type ProcessResult,
@@ -118,7 +120,7 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
     let result = this.applySinglePassReplace(content, mutations.renumber_map);
     result = this.applySinglePassReplace(result, mutations.wikilink_map);
     if (mutations.frontmatter_map && Object.keys(mutations.frontmatter_map).length > 0) {
-      result = this.applyFrontmatterMutations(result, mutations.frontmatter_map);
+      result = applyFrontmatterMutations(result, mutations.frontmatter_map);
     }
     return result;
   }
@@ -132,7 +134,7 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
     let result = this.applySinglePassReplace(content, invertedRenumber);
     result = this.applySinglePassReplace(result, invertedWikilink);
     if (mutations.frontmatter_map && Object.keys(mutations.frontmatter_map).length > 0) {
-      result = this.applyFrontmatterMutations(result, this.invertMap(mutations.frontmatter_map));
+      result = applyFrontmatterMutations(result, invertFrontmatterMap(mutations.frontmatter_map));
     }
     return result;
   }
@@ -304,15 +306,10 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
    * within rootDir.
    */
   private assertContainedRelativePath(relativePath: string, rootDir: string): void {
-    if (relativePath.length === 0) {
-      throw new Error("Filename rewrite path-containment violation: empty path");
-    }
-    if (isAbsolute(relativePath)) {
-      throw new Error(`Filename rewrite path-containment violation: absolute path ${relativePath}`);
-    }
-    const segments = relativePath.split(/[/\\]/);
-    if (segments.includes("..")) {
-      throw new Error(`Filename rewrite path-containment violation: traversal in ${relativePath}`);
+    // Imports the shared lexical rule rather than re-stating it (CWE-22).
+    const violation = lexicalPathViolation(relativePath);
+    if (violation !== null) {
+      throw new Error(`Filename rewrite path-containment violation: ${violation}`);
     }
     const rootAbs = resolve(rootDir);
     const targetAbs = resolve(rootAbs, relativePath);
@@ -340,22 +337,5 @@ export class SpecSubtreeAdapter implements CompositionAdapter {
       result[v] = k;
     }
     return result;
-  }
-
-  private applyFrontmatterMutations(
-    content: string,
-    frontmatterMap: Record<string, string>,
-  ): string {
-    const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
-    if (!fmMatch) return content;
-    let fm = fmMatch[1] ?? "";
-    for (const [key, value] of Object.entries(frontmatterMap)) {
-      const keyPattern = new RegExp(
-        `^(${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}:\\s*)(.+)$`,
-        "m",
-      );
-      fm = fm.replace(keyPattern, `$1${value}`);
-    }
-    return content.replace(/^---\n[\s\S]*?\n---/, `---\n${fm}\n---`);
   }
 }

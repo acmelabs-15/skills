@@ -1,7 +1,7 @@
 ---
 title: 'TASK-015-SPEC-008: Implement spec-Skill Schema Validator Scripts'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-015-spec-008-implement-spec-skill-schema-validator-scripts-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-015-spec-008-implement-spec-skill-schema-validator-scripts
 status: DONE
 effort: S
 estimate: 1d

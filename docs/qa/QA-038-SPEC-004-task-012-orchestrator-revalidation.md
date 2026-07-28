@@ -1,7 +1,7 @@
 ---
 title: 'QA-038-SPEC-004: TASK-012 Orchestrator Revalidation'
 type: qa
-permalink: qa/qa-038-spec-004-task-012-orchestrator-revalidation-1
+permalink: qa/qa-038-spec-004-task-012-orchestrator-revalidation
 status: DONE
 verdict: PASS
 tests_run: 484

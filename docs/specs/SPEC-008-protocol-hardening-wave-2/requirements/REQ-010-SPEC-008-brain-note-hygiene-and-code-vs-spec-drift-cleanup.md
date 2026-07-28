@@ -1,7 +1,7 @@
 ---
 title: 'REQ-010-SPEC-008: Brain Note Hygiene and Code-vs-Spec Drift Cleanup'
 type: requirement
-permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-010-spec-008-brain-note-hygiene-and-code-vs-spec-drift-cleanup-1
+permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-010-spec-008-brain-note-hygiene-and-code-vs-spec-drift-cleanup
 status: ACCEPTED
 tags:
 - requirement

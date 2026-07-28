@@ -1,7 +1,7 @@
 ---
 title: 'QA-071-SPEC-008: Validation Report for TASK-018 Build Dispatch-Brief Generators'
 type: note
-permalink: qa/qa-071-spec-008-validation-report-for-task-018-build-dispatch-brief-generators-1
+permalink: qa/qa-071-spec-008-validation-report-for-task-018-build-dispatch-brief-generators
 tags:
 - qa
 - spec-008

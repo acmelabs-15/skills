@@ -1,7 +1,7 @@
 ---
 title: 'QA-072-SPEC-008: Validation Report for TASK-019 Decisions Dispatch-Brief Generators'
 type: note
-permalink: qa/qa-072-spec-008-validation-report-for-task-019-decisions-dispatch-brief-generators-1
+permalink: qa/qa-072-spec-008-validation-report-for-task-019-decisions-dispatch-brief-generators
 tags:
 - qa
 - spec-008

@@ -4,6 +4,7 @@ import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import type { CompositionAdapter } from "./adapter.js";
+import { applyFrontmatterMutations, invertFrontmatterMap } from "./frontmatter-mutations.js";
 import type { LineRange, MutationSpec } from "./types.js";
 
 export abstract class BaseMarkdownAdapter implements CompositionAdapter {
@@ -38,7 +39,7 @@ export abstract class BaseMarkdownAdapter implements CompositionAdapter {
     let result = this.applySinglePassReplace(content, mutations.renumber_map);
     result = this.applySinglePassReplace(result, mutations.wikilink_map);
     if (mutations.frontmatter_map && Object.keys(mutations.frontmatter_map).length > 0) {
-      result = this.applyFrontmatterMutations(result, mutations.frontmatter_map);
+      result = applyFrontmatterMutations(result, mutations.frontmatter_map);
     }
     return result;
   }
@@ -49,7 +50,7 @@ export abstract class BaseMarkdownAdapter implements CompositionAdapter {
     let result = this.applySinglePassReplace(content, invertedRenumber);
     result = this.applySinglePassReplace(result, invertedWikilink);
     if (mutations.frontmatter_map && Object.keys(mutations.frontmatter_map).length > 0) {
-      result = this.applyFrontmatterMutations(result, this.invertMap(mutations.frontmatter_map));
+      result = applyFrontmatterMutations(result, invertFrontmatterMap(mutations.frontmatter_map));
     }
     return result;
   }
@@ -70,24 +71,5 @@ export abstract class BaseMarkdownAdapter implements CompositionAdapter {
       result[v] = k;
     }
     return result;
-  }
-
-  private applyFrontmatterMutations(
-    content: string,
-    frontmatterMap: Record<string, string>,
-  ): string {
-    // Find the YAML frontmatter block between leading --- delimiters
-    const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
-    if (!fmMatch) return content;
-    let fm = fmMatch[1] ?? "";
-    for (const [key, value] of Object.entries(frontmatterMap)) {
-      // Replace "key: oldvalue" with "key: newvalue" in frontmatter
-      const keyPattern = new RegExp(
-        `^(${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}:\\s*)(.+)$`,
-        "m",
-      );
-      fm = fm.replace(keyPattern, `$1${value}`);
-    }
-    return content.replace(/^---\n[\s\S]*?\n---/, `---\n${fm}\n---`);
   }
 }

@@ -42,6 +42,19 @@ status: TODO
 
 `;
 
+/**
+ * Build a threshold-clean note (3 observations, 2 relations) padded to an exact
+ * line count, so line-threshold assertions are not sensitive to template drift.
+ */
+function makeNoteWithLines(targetLines: number): string {
+  const head = `${FM_TASK}## Observations\n\n- [fact] a #t\n- [fact] b #t\n- [fact] c #t\n\n`;
+  const tail = "## Relations\n- relates_to [[A]]\n- depends_on [[B]]\n";
+  const padCount = Math.max(0, targetLines - `${head}${tail}`.split("\n").length);
+  const padding =
+    padCount > 0 ? `${Array.from({ length: padCount }, () => "padding line").join("\n")}\n` : "";
+  return `${head}${padding}${tail}`;
+}
+
 describe("countObservations", () => {
   test("counts category-prefixed lines in Observations section", () => {
     const body = `${FM_TASK}## Observations\n\n- [decision] Foo #tag\n- [fact] Bar #tag\n- [constraint] Baz #tag\n\n## Relations\n- relates_to [[X]]\n`;
@@ -130,6 +143,35 @@ describe("audit classification", () => {
       adapter: makeAdapter({ "n.md": body }),
     });
     expect(r.by.split.some((c) => c.violationDetail.includes("lineCount"))).toBe(true);
+  });
+
+  test("defaults the line threshold to 500 when lineMax is not supplied", async () => {
+    const r = await audit({
+      projectRoot: "/x",
+      adapter: makeAdapter({ "n.md": makeNoteWithLines(600) }),
+    });
+    const lineSplit = r.by.split.find((c) => c.violationDetail.includes("lineCount"));
+    expect(lineSplit?.violationDetail).toBe("lineCount=600 exceeds 500");
+  });
+
+  test("custom lineMax suppresses a note under the raised threshold", async () => {
+    const r = await audit({
+      projectRoot: "/x",
+      lineMax: 800,
+      adapter: makeAdapter({ "n.md": makeNoteWithLines(600) }),
+    });
+    expect(r.by.split.some((c) => c.violationDetail.includes("lineCount"))).toBe(false);
+  });
+
+  test("custom lineMax flags a note over the raised threshold", async () => {
+    const r = await audit({
+      projectRoot: "/x",
+      lineMax: 800,
+      adapter: makeAdapter({ "n.md": makeNoteWithLines(900) }),
+    });
+    const lineSplit = r.by.split.find((c) => c.violationDetail.includes("lineCount"));
+    expect(lineSplit?.violationDetail).toBe("lineCount=900 exceeds 800");
+    expect(lineSplit?.evidence.lineCount).toBe(900);
   });
 
   test("flags stale candidate when last-modified exceeds staleness AND status non-terminal", async () => {

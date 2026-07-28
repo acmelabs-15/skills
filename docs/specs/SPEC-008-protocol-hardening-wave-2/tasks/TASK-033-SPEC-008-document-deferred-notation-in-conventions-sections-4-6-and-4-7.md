@@ -1,7 +1,7 @@
 ---
 title: 'TASK-033-SPEC-008: Document Deferred Notation in CONVENTIONS Sections 4.6 and 4.7'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-033-spec-008-document-deferred-notation-in-conventions-sections-4-6-and-4-7-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-033-spec-008-document-deferred-notation-in-conventions-sections-4-6-and-4-7
 status: DONE
 tags:
 - spec-008

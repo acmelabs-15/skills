@@ -1,7 +1,7 @@
 ---
 title: 'QA-041-SPEC-006: Fix Iter 1 Revalidation'
 type: qa
-permalink: qa/qa-041-spec-006-fix-iter-1-revalidation-1
+permalink: qa/qa-041-spec-006-fix-iter-1-revalidation
 tags:
 - qa
 - spec-006

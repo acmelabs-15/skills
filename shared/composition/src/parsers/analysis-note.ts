@@ -4,9 +4,10 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
+import { parseRelations } from "../core/relations.js";
 import type { AnalysisFrontmatter, AnalysisNote } from "../schemas/analysis-note.js";
 import { AnalysisNoteSchema } from "../schemas/analysis-note.js";
-import type { Observation, Relation } from "../schemas/common.js";
+import type { Observation } from "../schemas/common.js";
 import { extractFrontmatter, proseFromChildren, sectionizeH2 } from "./ast-helpers.js";
 
 /**
@@ -117,24 +118,6 @@ function parseObservations(children: RootContent[]): Observation[] {
       text: body.trim(),
       tags,
     });
-  }
-  return out;
-}
-
-/**
- * Shared Relations parser. Each item follows `verb [[Target Title]]`.
- */
-function parseRelations(children: RootContent[]): Relation[] {
-  const list = children.find((n): n is List => n.type === "list");
-  if (!list) return [];
-  const out: Relation[] = [];
-  for (const item of list.children as ListItem[]) {
-    const text = listItemText(item);
-    const m = text.match(/^(\w+)\s+\[\[(.+?)\]\]\s*$/);
-    if (!m) continue;
-    const [, verb, target] = m;
-    if (!verb || !target) continue;
-    out.push({ verb: verb as Relation["verb"], target });
   }
   return out;
 }

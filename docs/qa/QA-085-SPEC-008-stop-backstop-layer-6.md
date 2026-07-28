@@ -1,7 +1,7 @@
 ---
 title: 'QA-085-SPEC-008: Stop Backstop Layer 6'
 type: qa
-permalink: qa/qa-085-spec-008-stop-backstop-layer-6-2
+permalink: qa/qa-085-spec-008-stop-backstop-layer-6
 status: DONE
 tags:
 - spec-008

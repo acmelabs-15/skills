@@ -1,7 +1,7 @@
 ---
 title: 'QA-039-SPEC-005: Batched Build Revalidation'
 type: qa
-permalink: qa/qa-039-spec-005-batched-build-revalidation-1
+permalink: qa/qa-039-spec-005-batched-build-revalidation
 status: DONE
 verdict: PASS
 tests_run: 585

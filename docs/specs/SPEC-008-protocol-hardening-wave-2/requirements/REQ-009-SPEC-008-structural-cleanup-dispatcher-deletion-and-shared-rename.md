@@ -1,7 +1,7 @@
 ---
 title: 'REQ-009-SPEC-008: Structural Cleanup Dispatcher Deletion and Shared Rename'
 type: requirement
-permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-009-spec-008-structural-cleanup-dispatcher-deletion-and-shared-rename-2
+permalink: specs/spec-008-protocol-hardening-wave-2/requirements/req-009-spec-008-structural-cleanup-dispatcher-deletion-and-shared-rename
 status: ACCEPTED
 tags:
 - requirement

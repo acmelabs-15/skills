@@ -83,8 +83,12 @@ const baseSpecSubtreeManifestSchema = z.object({
  *     write to the same destination)
  *
  * Injectivity / disjointness of `renumber_map` and `wikilink_map` inside
- * MutationSpec entries is left to the runtime injectiveDisjointMap
- * validator from src/core/validators.ts when applied per-call.
+ * MutationSpec entries is carried by the map primitives in schemas/base.ts and
+ * therefore applies here automatically. This comment previously deferred the
+ * rule "to the runtime injectiveDisjointMap validator when applied per-call" —
+ * but no such runtime call site ever existed, so for source_type `spec` the
+ * BLOCKING F-8 gate was enforced nowhere. Carrying the rule in the primitive,
+ * rather than asking each consumer to re-apply it, is what closed that.
  */
 export const specSubtreeManifestSchema = baseSpecSubtreeManifestSchema.superRefine((data, ctx) => {
   rejectPathTraversal(data.root.source_path, ctx, "root.source_path");
@@ -108,13 +112,6 @@ export const specSubtreeManifestSchema = baseSpecSubtreeManifestSchema.superRefi
   }
 });
 
-export const specSubtreeDistributionPlanSchema = z.object({
-  plan_type: z.literal("distribution"),
-  source_type: z.literal("spec"),
-  subtree_manifest: specSubtreeManifestSchema,
-});
-
-export type SpecSubtreeDistributionPlan = z.infer<typeof specSubtreeDistributionPlanSchema>;
 export type SpecSubtreeManifest = z.infer<typeof specSubtreeManifestSchema>;
 export type SubtreeManifestRoot = z.infer<typeof subtreeManifestRootSchema>;
 export type SubtreeManifestChild = z.infer<typeof subtreeManifestChildSchema>;

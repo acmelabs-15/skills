@@ -1,7 +1,7 @@
 ---
 title: 'QA-049-SPEC-008: Document Deferred Notation'
 type: qa
-permalink: qa/qa-049-spec-008-document-deferred-notation-1
+permalink: qa/qa-049-spec-008-document-deferred-notation
 tags:
 - qa
 - spec-008

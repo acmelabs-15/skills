@@ -1,7 +1,7 @@
 ---
 title: 'TASK-018-SPEC-008: Implement build-Skill Dispatch-Brief Generators'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-018-spec-008-implement-build-skill-dispatch-brief-generators-2
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-018-spec-008-implement-build-skill-dispatch-brief-generators
 status: DONE
 effort: M
 estimate: 2d

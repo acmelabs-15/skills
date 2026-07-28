@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { mkdtempSync, writeFileSync } from "node:fs";
+// mkdtemp is a directory op with no Bun equivalent; content writes are Bun-native.
+import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { main, parseArgs } from "../src/decompose.js";
@@ -15,7 +16,7 @@ describe("decompose.ts CLI", () => {
     const dir = mkdtempSync(join(tmpdir(), "decompose-test-"));
     const planPath = join(dir, "bad.yaml");
     // Missing required `plan_type` and other fields → Zod rejects.
-    writeFileSync(planPath, "source_type: adr\nrenumber_map: {}\n");
+    await Bun.write(planPath, "source_type: adr\nrenumber_map: {}\n");
     const exit = await main(["--plan", planPath]);
     expect(exit).toBe(1);
   });
@@ -23,7 +24,7 @@ describe("decompose.ts CLI", () => {
   test("main() exits 1 on non-injective renumber_map", async () => {
     const dir = mkdtempSync(join(tmpdir(), "decompose-test-"));
     const planPath = join(dir, "noninjective.yaml");
-    writeFileSync(
+    await Bun.write(
       planPath,
       [
         "plan_type: distribution",

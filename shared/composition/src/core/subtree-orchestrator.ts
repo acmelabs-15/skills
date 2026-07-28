@@ -66,8 +66,12 @@ export interface SubtreeFileIO {
   writeTemp(path: string, content: string): Promise<void>;
   /** Atomic rename of `path + ".tmp"` -> `path`. POSIX rename. */
   rename(path: string): void;
-  /** Best-effort cluster cleanup. */
-  rollback(stagedTmpPaths: string[], renamedPaths: string[]): void;
+  /**
+   * Best-effort cluster cleanup. May be sync or async — the default
+   * implementation is async (Bun-native deletes per ADR-001 F-6) while
+   * injected sync test doubles remain valid.
+   */
+  rollback(stagedTmpPaths: string[], renamedPaths: string[]): void | Promise<void>;
   /** Ensure parent directory of `path` exists. */
   ensureDir(path: string): Promise<void>;
 }
@@ -84,8 +88,8 @@ export const defaultSubtreeFileIO: SubtreeFileIO = {
   rename(path) {
     renameSync(`${path}.tmp`, path);
   },
-  rollback(stagedTmpPaths, renamedPaths) {
-    rollbackCluster(stagedTmpPaths, renamedPaths);
+  async rollback(stagedTmpPaths, renamedPaths) {
+    await rollbackCluster(stagedTmpPaths, renamedPaths);
   },
   async ensureDir(path) {
     await mkdir(dirname(path), { recursive: true });
@@ -162,7 +166,7 @@ export async function processSubtree(
       stagedTmps.push(`${entry.filePath}.tmp`);
     }
   } catch (stageErr) {
-    fileIO.rollback(stagedTmps, []);
+    await fileIO.rollback(stagedTmps, []);
     throw stageErr;
   }
 
@@ -176,7 +180,7 @@ export async function processSubtree(
   const validation = validateSubtreeHashes(adapter, validationInputs);
 
   if (!validation.allPass) {
-    fileIO.rollback(stagedTmps, []);
+    await fileIO.rollback(stagedTmps, []);
     return {
       success: false,
       filesProcessed: entries.length,
@@ -204,7 +208,7 @@ export async function processSubtree(
       renamed.push(entry.filePath);
     }
   } catch (renameErr) {
-    fileIO.rollback(remainingTmps, renamed);
+    await fileIO.rollback(remainingTmps, renamed);
     throw renameErr;
   }
 

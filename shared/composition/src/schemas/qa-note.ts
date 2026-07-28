@@ -28,15 +28,44 @@ import { ObservationSchema, QaIdSchema, RelationSchema } from "./common.js";
 
 export const QaNoteStatusEnum = z.enum(["DRAFT", "DONE"]);
 
-const QaFrontmatterSchema = z
-  .object({
-    title: z.string().regex(/^QA-\d{3,}-SPEC-\d{3,}:/),
-    type: z.literal("qa"),
-    permalink: z.string().regex(/^qa\/qa-\d{3,}-spec-\d{3,}/),
-    status: QaNoteStatusEnum,
-    tags: z.array(z.string()).min(2).max(5),
-  })
-  .strict();
+/**
+ * Two title forms, mutually exclusive by construction.
+ *
+ *   PARENTED — QA against a TASK inside a governing SPEC. Patterns unchanged.
+ *   UNPARENTED — build-validation QA over work with no governing SPEC, e.g.
+ *   registry-task or tooling work validated in its own right.
+ *
+ * The unparented form exists because the schema previously rejected a class of note
+ * the process legitimately produces: a QA report on work with no SPEC to parent to
+ * could not be parsed by its own parser. Modelling it is strictly ADDITIVE — the
+ * parented patterns are byte-identical to what they were, so no note that validated
+ * before validates differently now.
+ *
+ * The unparented permalink's negative lookahead is what keeps the two disjoint.
+ * Without it `qa/qa-040-spec-006-...` satisfies both patterns, and a note with a
+ * malformed parented title could validate through the branch that never checks the
+ * parented title — which is exactly the weakening this must not introduce.
+ */
+export const QA_PARENTED_TITLE_RE = /^QA-\d{3,}-SPEC-\d{3,}:/;
+const QA_PARENTED_PERMALINK_RE = /^qa\/qa-\d{3,}-spec-\d{3,}/;
+export const QA_UNPARENTED_TITLE_RE = /^QA-\d{3,}:/;
+const QA_UNPARENTED_PERMALINK_RE = /^qa\/qa-\d{3,}-(?!spec-\d)/;
+
+const qaFrontmatter = (title: RegExp, permalink: RegExp) =>
+  z
+    .object({
+      title: z.string().regex(title),
+      type: z.literal("qa"),
+      permalink: z.string().regex(permalink),
+      status: QaNoteStatusEnum,
+      tags: z.array(z.string()).min(2).max(5),
+    })
+    .strict();
+
+export const QaFrontmatterSchema = z.union([
+  qaFrontmatter(QA_PARENTED_TITLE_RE, QA_PARENTED_PERMALINK_RE),
+  qaFrontmatter(QA_UNPARENTED_TITLE_RE, QA_UNPARENTED_PERMALINK_RE),
+]);
 
 const QaApproachSchema = z
   .object({
@@ -87,11 +116,13 @@ export const QaNoteSchema = z
   })
   .strict()
   .superRefine((data, ctx) => {
-    // Cross-field invariant 1: derived QA id (from frontmatter title) must be
-    // valid per QaIdSchema.
-    const titleMatch = data.frontmatter.title.match(/^(QA-\d{3,}-SPEC-\d{3,}):/);
-    if (titleMatch?.[1]) {
-      const derivedId = titleMatch[1];
+    // Cross-field invariant 1: the derived QA id must be valid for whichever form the
+    // title uses. The parented branch still goes through QaIdSchema untouched; the
+    // unparented branch gets its own check rather than a loosened shared one, so a
+    // parented note can never be validated by the weaker pattern.
+    const parentedMatch = data.frontmatter.title.match(/^(QA-\d{3,}-SPEC-\d{3,}):/);
+    if (parentedMatch?.[1]) {
+      const derivedId = parentedMatch[1];
       const idParse = QaIdSchema.safeParse(derivedId);
       if (!idParse.success) {
         ctx.addIssue({
@@ -99,6 +130,11 @@ export const QaNoteSchema = z
           message: `Frontmatter title yields QA id ${derivedId} which fails QaIdSchema`,
         });
       }
+    } else if (!QA_UNPARENTED_TITLE_RE.test(data.frontmatter.title)) {
+      ctx.addIssue({
+        code: "custom",
+        message: `Frontmatter title "${data.frontmatter.title}" is neither the parented QA-NNN-SPEC-NNN form nor the unparented QA-NNN form`,
+      });
     }
 
     // Cross-field invariant 2: tests_run must equal passed + failed + skipped.

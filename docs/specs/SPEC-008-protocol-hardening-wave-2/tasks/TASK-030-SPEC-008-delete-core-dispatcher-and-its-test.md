@@ -1,7 +1,7 @@
 ---
 title: 'TASK-030-SPEC-008: Delete Core Dispatcher and Its Test'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-030-spec-008-delete-core-dispatcher-and-its-test-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-030-spec-008-delete-core-dispatcher-and-its-test
 status: DONE
 tags:
 - spec-008

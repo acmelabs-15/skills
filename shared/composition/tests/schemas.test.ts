@@ -1,163 +1,104 @@
+/**
+ * Canonical plan-schema surface (`schemas/index.ts`).
+ *
+ * This file previously exercised the `planSchema` discriminated union over the
+ * per-type envelope wrappers. Those wrappers encoded the non-canonical
+ * `sources[]` + `destinations[]` dialect, were loaded by nothing in production,
+ * and were retired when the owner blessed the CLI dialect. The union went with
+ * them — with one envelope there is nothing left to discriminate.
+ *
+ * What is asserted here now is the surface that survives: `index.ts` re-exports
+ * the ONE canonical envelope, and `formatValidationErrors` shapes its errors.
+ *
+ * Coverage that moved rather than disappeared:
+ *  - injective / disjoint map rejection → `plan-yaml-map-invariants.test.ts`
+ *    (12 tests, both maps, both plan types) and `schema-primitives.test.ts`
+ *    (invariants carried by the primitives themselves).
+ *  - per-type refinements → the fragment tests in `spec-subtree-schema.test.ts`,
+ *    `session-cross-source.test.ts`, and `plan-integrity-floor.test.ts`.
+ */
 import { describe, expect, test } from "bun:test";
-import type { Plan } from "../schemas/index.js";
-import { formatValidationErrors, planSchema } from "../schemas/index.js";
+import {
+  type DistributionPlan,
+  compositionPlanSchema,
+  distributionPlanSchema,
+  formatValidationErrors,
+} from "../schemas/index.js";
 
 const validDistribution = {
   plan_type: "distribution",
   source_type: "adr",
-  sources: [{ path: "docs/decisions/ADR-001.md", range: { start: 1, end: -1 } }],
-  destinations: [
-    {
-      path: "parts/D-1.md",
-      range: { start: 10, end: 20 },
-      mutations: { renumber_map: {}, wikilink_map: {} },
+  source_path: "docs/decisions/ADR-001.md",
+  renumber_map: { "D-1": "D-100" },
+  wikilink_map: {},
+  clusters: {
+    "cluster-a": {
+      destination_path: "docs/decisions/ADR-001a.md",
+      range: { start: 1, end: -1 },
     },
-  ],
+  },
 };
 
 const validComposition = {
   plan_type: "composition",
   source_type: "adr",
-  sources: [
-    {
-      path: "parts/D-1.md",
-      range: { start: 1, end: -1 },
-      mutations: { renumber_map: {}, wikilink_map: {} },
-    },
-  ],
-  destinations: [{ path: "docs/decisions/ADR-001.md", range: { start: 10, end: 20 } }],
+  target_path: "docs/decisions/ADR-001.md",
+  sources: ["docs/decisions/ADR-001a.md"],
+  renumber_map: { "D-100": "D-1" },
+  wikilink_map: {},
 };
 
-describe("planSchema", () => {
-  test("valid ADR distribution plan parses", async () => {
-    const result = await planSchema.safeParseAsync(validDistribution);
+describe("canonical envelope re-exported from schemas/index.ts", () => {
+  test("a valid distribution plan parses", async () => {
+    const result = await distributionPlanSchema.safeParseAsync(validDistribution);
     expect(result.success).toBe(true);
   });
 
-  test("valid ADR composition plan parses", async () => {
-    const result = await planSchema.safeParseAsync(validComposition);
+  test("a valid composition plan parses", async () => {
+    const result = await compositionPlanSchema.safeParseAsync(validComposition);
     expect(result.success).toBe(true);
   });
 
-  test("missing required field rejected", async () => {
-    const invalid = {
-      plan_type: "distribution",
-      source_type: "adr",
-      // sources omitted
-      destinations: [
-        {
-          path: "parts/D-1.md",
-          range: { start: 10, end: 20 },
-          mutations: { renumber_map: {}, wikilink_map: {} },
-        },
-      ],
-    };
-    const result = await planSchema.safeParseAsync(invalid);
+  test("a missing required field is rejected", async () => {
+    const { source_path, ...withoutSource } = validDistribution;
+    void source_path;
+    const result = await distributionPlanSchema.safeParseAsync(withoutSource);
     expect(result.success).toBe(false);
   });
 
-  test("non-injective renumber_map rejected", async () => {
-    const invalid = {
-      plan_type: "distribution",
-      source_type: "adr",
-      sources: [{ path: "docs/decisions/ADR-001.md", range: { start: 1, end: -1 } }],
-      destinations: [
-        {
-          path: "parts/D-1.md",
-          range: { start: 10, end: 20 },
-          mutations: {
-            renumber_map: { "D-1": "D-2", "D-3": "D-2" },
-            wikilink_map: {},
-          },
-        },
-      ],
-    };
-    const result = await planSchema.safeParseAsync(invalid);
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      const messages = result.error.issues.map((i) => i.message);
-      expect(messages.some((m) => m.includes("not injective"))).toBe(true);
-    }
-  });
-
-  test("non-disjoint renumber_map rejected", async () => {
-    const invalid = {
-      plan_type: "distribution",
-      source_type: "adr",
-      sources: [{ path: "docs/decisions/ADR-001.md", range: { start: 1, end: -1 } }],
-      destinations: [
-        {
-          path: "parts/D-1.md",
-          range: { start: 10, end: 20 },
-          mutations: {
-            renumber_map: { "D-1": "D-2", "D-2": "D-3" },
-            wikilink_map: {},
-          },
-        },
-      ],
-    };
-    const result = await planSchema.safeParseAsync(invalid);
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      const messages = result.error.issues.map((i) => i.message);
-      expect(messages.some((m) => m.includes("not disjoint"))).toBe(true);
-    }
-  });
-
-  test("unknown plan_type rejected", async () => {
-    const invalid = {
-      plan_type: "invalid",
-      source_type: "adr",
-      sources: [{ path: "docs/decisions/ADR-001.md", range: { start: 1, end: -1 } }],
-      destinations: [
-        {
-          path: "parts/D-1.md",
-          range: { start: 10, end: 20 },
-          mutations: { renumber_map: {}, wikilink_map: {} },
-        },
-      ],
-    };
-    const result = await planSchema.safeParseAsync(invalid);
+  test("an unknown plan_type is rejected", async () => {
+    const result = await distributionPlanSchema.safeParseAsync({
+      ...validDistribution,
+      plan_type: "teleport",
+    });
     expect(result.success).toBe(false);
   });
 
-  test("formatValidationErrors maps ZodError to PlanValidationError array", async () => {
-    const invalid = {
-      plan_type: "distribution",
-      source_type: "adr",
-      sources: [{ path: "docs/decisions/ADR-001.md", range: { start: 1, end: -1 } }],
-      destinations: [
-        {
-          path: "parts/D-1.md",
-          range: { start: 10, end: 20 },
-          mutations: {
-            renumber_map: { "D-1": "D-2", "D-3": "D-2" },
-            wikilink_map: {},
-          },
-        },
-      ],
-    };
-    const result = await planSchema.safeParseAsync(invalid);
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      const errors = formatValidationErrors(result.error);
-      expect(Array.isArray(errors)).toBe(true);
-      expect(errors.length).toBeGreaterThan(0);
-      for (const e of errors) {
-        expect(Array.isArray(e.path)).toBe(true);
-        expect(typeof e.message).toBe("string");
-        expect(e.severity).toBe("error");
-      }
-    }
+  test("the index re-export is the same schema the CLI loads", async () => {
+    // Guards the point of this consolidation: one envelope, not a copy of one.
+    const { DistributionPlanSchema } = await import("../src/schemas/plan-yaml.js");
+    expect(distributionPlanSchema).toBe(DistributionPlanSchema);
   });
 
-  test("parsed plan satisfies Plan type", async () => {
-    const result = await planSchema.safeParseAsync(validDistribution);
-    expect(result.success).toBe(true);
-    if (result.success) {
-      const plan: Plan = result.data;
-      expect(plan.plan_type).toBe("distribution");
-      expect(plan.source_type).toBe("adr");
+  test("a parsed plan satisfies the exported DistributionPlan type", async () => {
+    const parsed = await distributionPlanSchema.parseAsync(validDistribution);
+    const typed: DistributionPlan = parsed;
+    expect(typed.source_path).toBe("docs/decisions/ADR-001.md");
+  });
+});
+
+describe("formatValidationErrors", () => {
+  test("maps a ZodError into the PlanValidationError array shape", async () => {
+    const result = await distributionPlanSchema.safeParseAsync({ plan_type: "distribution" });
+    expect(result.success).toBe(false);
+    if (result.success) return;
+
+    const formatted = formatValidationErrors(result.error);
+    expect(formatted.length).toBeGreaterThan(0);
+    for (const issue of formatted) {
+      expect(Array.isArray(issue.path)).toBe(true);
+      expect(typeof issue.message).toBe("string");
+      expect(issue.severity).toBe("error");
     }
   });
 });

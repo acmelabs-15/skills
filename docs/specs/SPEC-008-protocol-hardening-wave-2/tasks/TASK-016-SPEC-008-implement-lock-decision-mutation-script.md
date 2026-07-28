@@ -1,7 +1,7 @@
 ---
 title: 'TASK-016-SPEC-008: Implement lock-decision-mutation Script'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-016-spec-008-implement-lock-decision-mutation-script-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-016-spec-008-implement-lock-decision-mutation-script
 status: DONE
 effort: S
 estimate: 0.5d

@@ -1,6 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, test } from "bun:test";
 import { mkdtempSync, rmSync } from "node:fs";
-import { mkdir, writeFile } from "node:fs/promises";
+// mkdir is a directory op with no Bun equivalent; content writes are Bun-native.
+import { mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { z } from "zod";
@@ -50,10 +51,10 @@ describe("containedPathSchema", () => {
   beforeAll(async () => {
     tempRoot = mkdtempSync(path.join(tmpdir(), "validators-test-"));
     insideFile = path.join(tempRoot, "inside.txt");
-    await writeFile(insideFile, "content");
+    await Bun.write(insideFile, "content");
     const subdir = path.join(tempRoot, "subdir");
     await mkdir(subdir, { recursive: true });
-    await writeFile(path.join(subdir, "nested.txt"), "nested");
+    await Bun.write(path.join(subdir, "nested.txt"), "nested");
   });
 
   afterAll(() => {

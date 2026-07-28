@@ -41,6 +41,7 @@ stale / structural-fix candidates, then delegates the restructuring work to
 | `--report-only` | Cron mode: write the report to `defrag/reports/defrag-YYYY-MM-DD.md` and exit |
 | `--project-root <dir>` | Set the project root (default: `cwd`) |
 | `--staleness <days>` | Staleness threshold in days (default: 90) |
+| `--line-max <n>` | Line-count split threshold (default: 500) |
 | `--basic-memory` | Treat the project as basic-memory; skip CONVENTIONS-specific checks |
 
 ### Audit cycle
@@ -48,7 +49,8 @@ stale / structural-fix candidates, then delegates the restructuring work to
 1. **Discovery** — enumerate every markdown note under `docs/**`.
 2. **Evaluation** — apply quality thresholds:
    - `> 15` observations without H3 sub-grouping → split candidate
-   - `> 500` lines with multi-entity content → split candidate
+   - more than the line-count threshold (default 500 lines, set with
+     `--line-max`) with multi-entity content → split candidate
    - `< 3` observations OR `< 2` relations → merge candidate
    - `> 12` relations without H3 type-grouping → structural-fix
    - last-modified more than the staleness threshold AND status not `DONE` /
@@ -65,7 +67,7 @@ stale / structural-fix candidates, then delegates the restructuring work to
 bun skills/defrag/scripts/defrag.ts
 
 # Cron / report-only
-bun skills/defrag/scripts/defrag.ts --report-only --staleness 90
+bun skills/defrag/scripts/defrag.ts --report-only --staleness 90 --line-max 800
 
 # Specific project
 bun skills/defrag/scripts/defrag.ts --project-root ~/Dev/brain --report-only

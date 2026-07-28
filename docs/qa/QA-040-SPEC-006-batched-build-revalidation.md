@@ -1,7 +1,7 @@
 ---
 title: 'QA-040-SPEC-006: Batched Build Revalidation'
 type: qa
-permalink: qa/qa-040-spec-006-batched-build-revalidation-1
+permalink: qa/qa-040-spec-006-batched-build-revalidation
 status: DONE
 tags:
 - qa

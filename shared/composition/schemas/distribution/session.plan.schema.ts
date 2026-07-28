@@ -1,6 +1,4 @@
 import { z } from "zod";
-import { injectiveDisjointMap } from "../../src/core/validators.js";
-import { lineRangeSchema, mutationSpecSchema } from "../base.js";
 
 /**
  * A cross-source update describes a side-effect mutation on a SIBLING note
@@ -17,26 +15,14 @@ export const crossSourceUpdateSchema = z.object({
 
 export type CrossSourceUpdate = z.infer<typeof crossSourceUpdateSchema>;
 
-const sessionSourceEntrySchema = z.object({
-  path: z.string().min(1),
-  range: lineRangeSchema,
-});
-
-const sessionDestinationEntrySchema = z.object({
-  path: z.string().min(1),
-  range: lineRangeSchema,
-  mutations: mutationSpecSchema.superRefine((val, ctx) => {
-    injectiveDisjointMap("renumber_map")(val.renumber_map, ctx);
-    injectiveDisjointMap("wikilink_map")(val.wikilink_map, ctx);
-  }),
-});
-
-export const sessionDistributionPlanSchema = z.object({
-  plan_type: z.literal("distribution"),
-  source_type: z.literal("session"),
-  sources: z.array(sessionSourceEntrySchema).min(1),
-  destinations: z.array(sessionDestinationEntrySchema).min(1),
-  cross_source_updates: z.array(crossSourceUpdateSchema).optional(),
-});
-
-export type SessionDistributionPlan = z.infer<typeof sessionDistributionPlanSchema>;
+/**
+ * The only part of a SESSION distribution plan the adapter reads.
+ *
+ * Narrowed from the retired `SessionDistributionPlan` envelope type: the
+ * adapter never touched `sources`/`destinations`, so depending on the whole
+ * envelope coupled it to a shape it did not use — and to the shape that has
+ * now been retired as non-canonical.
+ */
+export interface SessionCrossSourceCarrier {
+  cross_source_updates?: CrossSourceUpdate[];
+}

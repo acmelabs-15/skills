@@ -5,8 +5,7 @@ import type { ClaimResult, UnsatisfiedItem } from "./types.js";
  * SpecRoot DONE-claim validator (Phase X.D.7, 2026-05-21).
  *
  * Mechanical enforcement of the per-TASK build+qa cycle protocol at the
- * SPEC layer (~/.claude/memory/feedback_per_task_build_qa_cycle.md, TIER-1
- * BLOCKING). A claim "SPEC done" requires every Success Criteria item AND
+ * SPEC layer. A claim "SPEC done" requires every Success Criteria item AND
  * every Artifact Status item to be [x] OR deferred-with-rationale.
  *
  * Both sections are OPTIONAL. When both are absent, returns PASS with total 0

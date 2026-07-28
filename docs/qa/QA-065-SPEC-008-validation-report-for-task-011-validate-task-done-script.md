@@ -2,7 +2,7 @@
 title: 'QA-065-SPEC-008: Validation Report for TASK-011 Validate Task Done Script'
 status: DONE
 type: qa
-permalink: qa/qa-065-spec-008-validation-report-for-task-011-validate-task-done-script-1
+permalink: qa/qa-065-spec-008-validation-report-for-task-011-validate-task-done-script
 tags:
 - qa
 - spec-008

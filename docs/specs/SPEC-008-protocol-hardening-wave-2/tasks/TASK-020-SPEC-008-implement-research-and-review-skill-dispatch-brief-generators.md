@@ -2,7 +2,7 @@
 title: 'TASK-020-SPEC-008: Implement research-Skill and review-Skill Dispatch-Brief
   Generators'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-020-spec-008-implement-research-and-review-skill-dispatch-brief-generators-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-020-spec-008-implement-research-and-review-skill-dispatch-brief-generators
 status: DONE
 effort: M
 estimate: 2d

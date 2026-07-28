@@ -1,7 +1,7 @@
 ---
 title: 'QA-055-SPEC-008: Implement Hook Lib Git Helpers'
 type: qa
-permalink: qa/qa-055-spec-008-implement-hook-lib-git-helpers-1
+permalink: qa/qa-055-spec-008-implement-hook-lib-git-helpers
 tags:
 - qa
 - spec-008

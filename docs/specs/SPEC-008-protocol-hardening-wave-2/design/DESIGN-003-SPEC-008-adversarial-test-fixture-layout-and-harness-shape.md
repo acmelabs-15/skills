@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-003-SPEC-008: Adversarial Test Fixture Layout and Harness Shape'
 type: design
-permalink: specs/spec-008-protocol-hardening-wave-2/design/design-003-spec-008-adversarial-test-fixture-layout-and-harness-shape-1
+permalink: specs/spec-008-protocol-hardening-wave-2/design/design-003-spec-008-adversarial-test-fixture-layout-and-harness-shape
 status: ACCEPTED
 tags:
 - design

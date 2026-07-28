@@ -1,7 +1,7 @@
 ---
 title: 'QA-063-SPEC-008: Validation Report for TASK-008 Analysis Accepted Claim Validator'
 type: qa
-permalink: qa/qa-063-spec-008-validation-report-for-task-008-analysis-accepted-claim-validator-1
+permalink: qa/qa-063-spec-008-validation-report-for-task-008-analysis-accepted-claim-validator
 status: DONE
 tags:
 - qa

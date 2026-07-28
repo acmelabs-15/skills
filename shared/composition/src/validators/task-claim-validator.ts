@@ -4,8 +4,7 @@ import type { ClaimResult } from "./types.js";
 /**
  * DoD claim validator (Phase X.D.5, 2026-05-20).
  *
- * Mechanical enforcement of the per-TASK build+qa cycle protocol
- * (~/.claude/memory/feedback_per_task_build_qa_cycle.md, TIER-1 BLOCKING):
+ * Mechanical enforcement of the per-TASK build+qa cycle protocol:
  * an implementer claim "TASK done" requires every Definition of Done item
  * to be [x] OR explicitly deferred-with-rationale. A schema-rejected claim
  * surfaces the specific failing items so the orchestrator can re-engage

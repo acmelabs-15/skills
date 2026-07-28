@@ -5,8 +5,7 @@ import type { ClaimResult } from "./types.js";
  * Requirement acceptance-criteria claim validator (Phase X.D.6, 2026-05-20).
  *
  * Mechanical enforcement of the per-TASK build+qa cycle protocol at the REQ
- * layer (~/.claude/memory/feedback_per_task_build_qa_cycle.md, TIER-1
- * BLOCKING): QA validates implementation against `## Acceptance Criteria`
+ * layer: QA validates implementation against `## Acceptance Criteria`
  * EARS Given/When/Then bullets. A claim "REQ satisfied" requires every AC
  * item to be [x] OR explicitly deferred-with-rationale. The PASS/FAIL verdict
  * surfaces the specific failing items so the orchestrator can re-engage the

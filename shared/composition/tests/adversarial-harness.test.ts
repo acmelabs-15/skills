@@ -56,13 +56,17 @@ describe("parseDriftMarker — presence + parse (AC-7, AC-3)", () => {
   test("throws a distinct FixtureMalformedError when expected-reject: is missing", () => {
     const md = "<!-- drift-marker: drift-04; lying-behavior: x -->\n# Fixture\n";
     expect(() => parseDriftMarker("task/no-field.md", md)).toThrow(FixtureMalformedError);
-    expect(() => parseDriftMarker("task/no-field.md", md)).toThrow(/missing the "expected-reject:" field/);
+    expect(() => parseDriftMarker("task/no-field.md", md)).toThrow(
+      /missing the "expected-reject:" field/,
+    );
   });
 
   test("throws a distinct FixtureMalformedError when the regex literal is unparseable", () => {
     const md = "<!-- drift-marker: drift-05; lying-behavior: x; expected-reject: not-a-regex -->\n";
     expect(() => parseDriftMarker("task/bad-regex.md", md)).toThrow(FixtureMalformedError);
-    expect(() => parseDriftMarker("task/bad-regex.md", md)).toThrow(/unparseable expected-reject regex/);
+    expect(() => parseDriftMarker("task/bad-regex.md", md)).toThrow(
+      /unparseable expected-reject regex/,
+    );
   });
 
   test("malformed-comment error is NOT a validator rejection — it names the fixture", () => {
@@ -90,15 +94,15 @@ describe("assertDriftMarkerMatchesTable — cross-check (AC-7)", () => {
   });
 
   test("throws a drift error naming the fixture when sources diverge", () => {
-    expect(() => assertDriftMarkerMatchesTable("requirement/drift-01.md", /Evidence line/, /Evidence/)).toThrow(
-      DriftMarkerMismatchError,
-    );
-    expect(() => assertDriftMarkerMatchesTable("requirement/drift-01.md", /Evidence line/, /Evidence/)).toThrow(
-      /drift: fixture comment regex != table expectedReject/,
-    );
-    expect(() => assertDriftMarkerMatchesTable("requirement/drift-01.md", /Evidence line/, /Evidence/)).toThrow(
-      /requirement\/drift-01\.md/,
-    );
+    expect(() =>
+      assertDriftMarkerMatchesTable("requirement/drift-01.md", /Evidence line/, /Evidence/),
+    ).toThrow(DriftMarkerMismatchError);
+    expect(() =>
+      assertDriftMarkerMatchesTable("requirement/drift-01.md", /Evidence line/, /Evidence/),
+    ).toThrow(/drift: fixture comment regex != table expectedReject/);
+    expect(() =>
+      assertDriftMarkerMatchesTable("requirement/drift-01.md", /Evidence line/, /Evidence/),
+    ).toThrow(/requirement\/drift-01\.md/);
   });
 
   test("throws when sources match but flags diverge", () => {

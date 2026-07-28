@@ -5,8 +5,7 @@ import type { ClaimResult } from "./types.js";
  * Design compliance claim validator (Phase X.D.6, 2026-05-20).
  *
  * Mechanical enforcement of the per-TASK build+qa cycle protocol at the
- * DESIGN layer (~/.claude/memory/feedback_per_task_build_qa_cycle.md, TIER-1
- * BLOCKING): QA validates implementation against the OPTIONAL `## Compliance`
+ * DESIGN layer: QA validates implementation against the OPTIONAL `## Compliance`
  * (or `## Architecture Compliance`) checkbox list.
  *
  * Asymmetric vs the Task/REQ variants: the compliance section is optional.

@@ -1,7 +1,7 @@
 ---
 title: 'DESIGN-002-SPEC-008: Per-Skill Script Layout and CLI Contract'
 type: design
-permalink: specs/spec-008-protocol-hardening-wave-2/design/design-002-spec-008-per-skill-script-layout-and-cli-contract-1
+permalink: specs/spec-008-protocol-hardening-wave-2/design/design-002-spec-008-per-skill-script-layout-and-cli-contract
 status: ACCEPTED
 tags:
 - design

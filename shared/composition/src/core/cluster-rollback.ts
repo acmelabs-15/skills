@@ -11,7 +11,6 @@
  *     throws; cleanup is best-effort.
  */
 
-import { existsSync, unlinkSync } from "node:fs";
 import { sha256 } from "./hash.js";
 import type { MutationSpec } from "./types.js";
 
@@ -97,27 +96,29 @@ export function validateSubtreeHashes(
 
 /**
  * Best-effort cleanup of staged `.tmp` files and any destinations already
- * renamed when a failure occurred mid-rename. Never throws; per
+ * renamed when a failure occurred mid-rename. Never rejects; per
  * DESIGN-003 Component 2 + ADR-001 F-8 cluster-rollback resilience rule
  * the validation error is the one that must surface to the caller.
+ *
+ * Bun-native per ADR-001 F-6. Bun.file().delete() throws ENOENT on a missing
+ * file, so each removal stays inside its own try/catch — the swallow is what
+ * preserves the never-rejects contract.
  */
-export function rollbackCluster(stagedPaths: string[], renamedPaths: string[]): void {
-  for (const tmp of stagedPaths) {
-    try {
-      if (existsSync(tmp)) {
-        unlinkSync(tmp);
-      }
-    } catch {
-      // Swallow — cleanup is best-effort.
+export async function rollbackCluster(
+  stagedPaths: string[],
+  renamedPaths: string[],
+): Promise<void> {
+  await Promise.all([...stagedPaths, ...renamedPaths].map(removeQuietly));
+}
+
+/** Delete a path, swallowing every failure (missing file included). */
+async function removeQuietly(path: string): Promise<void> {
+  try {
+    const file = Bun.file(path);
+    if (await file.exists()) {
+      await file.delete();
     }
-  }
-  for (const dest of renamedPaths) {
-    try {
-      if (existsSync(dest)) {
-        unlinkSync(dest);
-      }
-    } catch {
-      // Swallow — cleanup is best-effort.
-    }
+  } catch {
+    // Swallow — cleanup is best-effort.
   }
 }

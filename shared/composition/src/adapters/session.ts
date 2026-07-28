@@ -1,6 +1,6 @@
 import type {
   CrossSourceUpdate,
-  SessionDistributionPlan,
+  SessionCrossSourceCarrier,
 } from "../../schemas/distribution/session.plan.schema.js";
 import { BaseMarkdownAdapter } from "../core/base-markdown-adapter.js";
 
@@ -28,7 +28,7 @@ export class SessionAdapter extends BaseMarkdownAdapter {
    */
   getCrossSourceUpdates(
     _content: string,
-    distributionPlan: SessionDistributionPlan,
+    distributionPlan: SessionCrossSourceCarrier,
   ): CrossSourceUpdate[] {
     return distributionPlan.cross_source_updates ?? [];
   }

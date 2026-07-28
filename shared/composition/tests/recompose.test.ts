@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { mkdtempSync, writeFileSync } from "node:fs";
+// mkdtemp is a directory op with no Bun equivalent; content writes are Bun-native.
+import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { main, parseArgs } from "../src/recompose.js";
@@ -15,7 +16,7 @@ describe("recompose.ts CLI", () => {
     const dir = mkdtempSync(join(tmpdir(), "recompose-test-"));
     const planPath = join(dir, "bad.yaml");
     // Wrong plan_type — composition expected.
-    writeFileSync(
+    await Bun.write(
       planPath,
       [
         "plan_type: distribution",

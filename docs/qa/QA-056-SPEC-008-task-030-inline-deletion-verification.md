@@ -1,7 +1,7 @@
 ---
 title: 'QA-056-SPEC-008: Task 030 Inline Deletion Verification'
 type: qa
-permalink: qa/qa-056-spec-008-task-030-inline-deletion-verification-1
+permalink: qa/qa-056-spec-008-task-030-inline-deletion-verification
 status: DONE
 tags:
 - qa

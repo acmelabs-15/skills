@@ -1,7 +1,7 @@
 ---
 title: 'TASK-012-SPEC-008: Implement transition-impl-item Script'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-012-spec-008-implement-transition-impl-item-script-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-012-spec-008-implement-transition-impl-item-script
 status: DONE
 effort: S
 estimate: 0.5d

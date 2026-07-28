@@ -47,7 +47,7 @@ k. Session note Event
 l. Git commit
 m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
 n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
+o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via a single `write_note` call
 p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN` — nothing more; the QA note is the contract document
 q. Session note Event
 r. Orchestrator updates TASK note with `validated_by` relation to the QA note
@@ -149,11 +149,9 @@ Applies to all modes (create / migrate / continue / split / scope) AND to every 
 
 All PLAN and SESSION operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). Generic file tools are forbidden on files under `docs/**`.
 
-PLAN titles contain a colon (`PLAN-NNN: Topic`), so creation uses Pattern 2 three-phase write:
+PLAN creation is a single `write_note` call (CONVENTIONS Section 1.7.2). Brain MCP intercepts `write_note` to author the file with a kebab filename + bare permalink and index it immediately — pass the full colon title directly:
 
-1. `write_note` with a no-colon title (e.g., `PLAN-001 Topic`)
-2. `edit_note` (find_replace) to insert colons into frontmatter title + H1
-3. `move_note` to rename the file to kebab form (e.g., `plan-001-topic.md`)
+`write_note(title: "PLAN-001: Topic", directory: "planning", project: …)` → file `planning/PLAN-001-topic.md`, permalink `planning/plan-001-topic`, queryable immediately. No `edit_note`/`move_note` follow-up.
 
 ## Create mode pipeline
 

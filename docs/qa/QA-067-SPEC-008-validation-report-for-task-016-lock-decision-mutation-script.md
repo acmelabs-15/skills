@@ -2,7 +2,7 @@
 title: 'QA-067-SPEC-008: Validation Report for TASK-016 Lock Decision Mutation Script'
 status: DONE
 type: qa
-permalink: qa/qa-067-spec-008-validation-report-for-task-016-lock-decision-mutation-script-1
+permalink: qa/qa-067-spec-008-validation-report-for-task-016-lock-decision-mutation-script
 tags:
 - qa
 - spec-008

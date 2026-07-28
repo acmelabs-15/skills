@@ -3,7 +3,7 @@ title: 'ADR-002: Adapter Contract and Plan Schema'
 type: decision
 status: ACCEPTED
 date: 2026-05-19
-updated: 2026-05-19
+updated: 2026-07-26
 permalink: decisions/adr-002-adapter-contract-and-plan-schema
 tags:
 - decision
@@ -141,7 +141,13 @@ This ADR specifies the adapter contract and plan YAML schema as 5 composite desi
 
 ### D-1: Plan YAML Schema Shape
 
-The plan YAML uses a nested discriminated union: outer discriminant on `plan_type` (distribution vs composition), inner discriminant on `source_type` per ADR-001 D-4. Distribution plans operate on a singular `source` (1 to N split, used by /decompose). Composition plans operate on plural `sources` (N to 1 merge, used by /recompose). Both share a common envelope with per-type extensions.
+Two plan envelopes, one per direction: a distribution plan (1 to N split, used by /decompose) and a composition plan (N to 1 merge, used by /recompose). Both are discriminated on `plan_type`, and both carry `source_type` selecting the per-type adapter per ADR-001 D-4.
+
+**As-built envelope (canonical).** The shipped envelope is the one the CLI loads, declared at `shared/composition/src/schemas/plan-yaml.ts`. A distribution plan is `source_path` plus top-level `renumber_map` and `wikilink_map` plus a `clusters` record; each cluster carries `range`, an optional `destination_path`, and optional per-cluster overrides (`frontmatter_map`, `regenerated_sections`, `disposition`, `scaffold`). A composition plan is `target_path` plus `sources[]` — each entry either a bare path or a path plus the `scaffold` decompose wrapped around it — plus top-level `renumber_map` and `wikilink_map`. Both envelopes are `.strict()`, so an unrecognised field is rejected rather than silently ignored.
+
+One envelope per direction is the standard. Field primitives — paths, line ranges, mutation maps and their F-8 invariants, scaffolding, disposition — have a single definition site at `shared/composition/schemas/base.ts` and are imported, never re-declared; the envelope module declares only the two envelope shapes. The per-type envelope wrappers that previously restated those shapes were never loaded by either entry point and were retired rather than reconciled.
+
+The YAML blocks that follow in this section predate the as-built envelope and are retained as intent-level illustrations of the per-type extension points (section delimiters, cross-source updates, subtree manifests). Where an illustration's field names differ from the as-built shape above, the as-built shape governs. In particular, the `frontmatter_map` blocks below are written field-keyed; the as-built semantics are value-keyed per D-2.
 
 **Common envelope fields:**
 
@@ -300,6 +306,7 @@ subtree_manifest:
 
 The root vs children distinction ensures the SPEC root note and each child note have independent mutation specifications, enabling per-file hash validation per Considered Options Axis 2.
 
+```yaml
 # ... common envelope
 
 destinations:
@@ -372,18 +379,30 @@ type RenumberMap = Record<string, string>;
 /** Maps from source wikilink to destination wikilink. */
 type WikilinkMap = Record<string, string>;
 
-/** Maps from frontmatter field name to new value. */
+/**
+ * Maps an EXISTING frontmatter value to its replacement (VALUE-KEYED).
+ * A frontmatter line is rewritten when its current value matches a key.
+ *
+ * Value-keyed rather than field-keyed because F-8 requires
+ * reverseMutations to be an exact inverse of applyMutations. A
+ * value-to-value map inverts by swapping keys and values. A field-keyed
+ * map -- {field: newValue} -- cannot be inverted at all, because it never
+ * records the old value: inverting {status: "SUPERSEDED"} yields
+ * {SUPERSEDED: "status"}, which looks for a field named SUPERSEDED.
+ */
 type FrontmatterMap = Record<string, string>;
 
 /**
  * Mutation specification from the plan YAML.
  *
  * renumber_map and wikilink_map govern body-content mutations.
- * frontmatter_map governs YAML frontmatter field mutations
- * (title, permalink, tags, etc.). reverseMutations applies
- * the inverse frontmatter_map (new value -> old value) before
- * hash-comparison so that frontmatter changes do not break
- * char-identity validation.
+ * frontmatter_map governs YAML frontmatter values (title,
+ * permalink, tags, etc.) and is VALUE-KEYED: each entry maps an
+ * existing value to its replacement, matched against the current
+ * value of a frontmatter line rather than against its field name.
+ * reverseMutations applies the inverse frontmatter_map (swap keys
+ * and values) before hash-comparison so that frontmatter changes
+ * do not break char-identity validation.
  *
  * regenerated_sections lists H2/H3 heading names whose content
  * is derived (Information Model Category 2) and therefore
@@ -533,7 +552,9 @@ Notation: S = source extraction (pre-mutation). D = destination content (post-wr
 
 All renumber_map and wikilink_map replacements use single-pass semantics: every occurrence of a key in the content is replaced with its mapped value in ONE pass. For single-pass replacement to be deterministic and reversible, the keys and values MUST come from disjoint domains. Formally: `set(keys) intersection set(values) === empty set`. This constraint is enforced by the Zod injectivity validator in D-5.
 
-Example of a REJECTED map: `{"D-1": "D-2", "D-2": "D-3"}` -- "D-2" appears as both a key AND a value. Applying D-1 to D-2 first creates a false "D-2" that the D-2 to D-3 rule then mutates, producing incorrect output. The hash check would fail or, worse, false-validate if the collision produces coincidentally correct bytes.
+Example of a REJECTED map: `{"D-1": "D-2", "D-2": "D-3"}` -- "D-2" appears as both a key AND a value.
+
+The rule survives on forward-compatibility grounds, not on a present-day miscompare. As implemented, replacement compiles every key into ONE regular-expression alternation and makes a single pass, so each matched position is consumed once and no rule can observe another rule's output; the chained map above therefore happens to apply and invert correctly today. What the constraint protects is the property rather than the current implementation. Any future move to sequential per-key replacement, or any mutation surface that rewrites in more than one pass, reintroduces order dependence — and a map that is disjoint by construction cannot be broken by that change. Rejecting the collision at plan load also keeps the failure at the earliest possible point rather than inside a hash comparison, where the diagnosis is far more expensive.
 
 Implementer note: the simplest renumbering scheme uses target IDs in a high-numbered range (e.g., source D-1..D-5 mapped to target D-100..D-104) to guarantee disjointness. A final-renumber phase in the destination then moves D-100..D-104 down to D-1..D-N target range. This two-phase approach is an implementation detail, not an interface concern.
 
@@ -737,6 +758,8 @@ const containedPathSchema = z.string().refine(
 
 Note: because containedPathSchema uses async `realpath`, the overall plan schema must be parsed via `planSchema.parseAsync(data)` rather than `planSchema.parse(data)`. This is the one async boundary in the validation pipeline; all adapter methods remain synchronous per Axis 1.
 
+**Precondition — this mitigation FAILS OPEN.** The realpath containment layer runs only when a containment root is configured through the `SKILLS_DOCS_ROOT` environment variable. With the variable unset, the plan-level containment driver returns an empty offender list without examining any path, and the write-path refinement returns without adding an issue: containment is skipped silently rather than failing closed. The lexical half of the guard — traversal-segment and absolute-path rejection — still applies unconditionally to every path in the plan, so the residual exposure with the variable unset is symlink escape specifically, not arbitrary traversal. The shipped skill workflows ARM it: the decompose and recompose skill documents export `SKILLS_DOCS_ROOT` in their CLI invocation blocks with the tradeoff stated inline, so on the path this library actually ships, the realpath layer is active. The residual precondition is therefore narrower than fail-open alone suggests — a direct CLI invocation made outside those workflows does not inherit that arming, and because the default is open rather than closed, it degrades silently to the lexical guard rather than refusing to run. The open default is deliberate and documented in the code: failing closed would reject every plan in an unconfigured environment, including plans with no path issue at all. The clause worth carrying is that the CWE-22 symlink mitigation is a property of the invocation, not of the schema.
+
 **Nested discriminated union assembly (index.ts):**
 
 The outer discriminant is `plan_type` (distribution vs composition). Each branch is an inner `z.discriminatedUnion("source_type", [...])` selecting the per-type extension.
@@ -818,6 +841,38 @@ interface PlanValidationError {
 
 Zod's native `ZodError.issues` array is mapped to this format. No raw `_errors` blob is ever surfaced to the user. Warnings are used for non-blocking advisories (e.g., "renumber_map is empty; no renumbering will occur"). Errors are BLOCKING and prevent script execution.
 
+### D-6: Destination Scaffolding and the Retention Disposition
+
+Recorded as a decision rather than a clarification. This is a plan-schema shape absent from D-1 and a bound on the F-8 guarantee D-2 states, which is the same class of change the 2026-05-21 C-9 entry handled by pointing at a decision record rather than at a clarification.
+
+**Disposition.** Every cluster in a distribution plan carries `disposition: "write" | "retain"`, defaulting to `write`. A `write` cluster produces a destination file. A `retain` cluster is counted by the byte-accountability proof but written nowhere, which lets a split account for every source byte without forcing the source's own frontmatter and trailing sections verbatim into a child note. A retained cluster's line range and the SHA-256 of its pre-mutation source extraction are recorded in the audit log; its content is not.
+
+**Retention rejects destination-side fields.** A cluster with `disposition: "retain"` must declare neither `destination_path` nor `scaffold`. Both are rejected by a schema refinement rather than ignored, because on a cluster that writes no file those fields are contradictory rather than merely redundant.
+
+**Scaffolding.** A `write` cluster may carry a `scaffold`: structured frontmatter (title, type, status, permalink, tags), observations, and relations, from which the executor renders a prologue (frontmatter block plus H1) and an epilogue (`## Observations` then `## Relations`) around the preserved content slice. A partitioned slice is not by itself a canonical note — only the cluster covering line 1 inherits the source's frontmatter and H1, and only the final cluster inherits its trailing sections — so scaffolding is what lets every destination satisfy the structural invariants on its own. The prologue's H1 is DERIVED from `frontmatter.title` rather than accepted as separate input, which makes "H1 matches the frontmatter title verbatim" impossible to violate through a plan.
+
+**Scaffolding is asymmetric with regenerated_sections, not a mirror of it.** Both sit outside the hash chain, and the resemblance ends there:
+
+| Property | `regenerated_sections` | `scaffold` |
+|:--|:--|:--|
+| Origin | Derived from source content that is itself hash-verified | Authored in the plan |
+| Exclusion scope | Excluded from extraction AND from hash comparison | Excluded from hash comparison ONLY — scaffolding never exists in the source, so there is nothing to exclude from extraction |
+| Volume bound | Max 10 sections at schema level; runtime check floors coverage at 50% of source lines | Max 10 tags, 15 observations, 15 relations, 500 characters per structural string; transitively bounded by the CWE-400 1 MB plan guard, which reads plan size from metadata before any content is loaded |
+
+Stating the asymmetry matters because the derived-and-floored safety argument does not transfer to authored content. Scaffolding earns its exclusion a different way: it is a pure function of the plan, so the stripper RE-RENDERS the expected prologue and epilogue and exact-matches them against the written bytes before slicing, rather than trusting a recorded offset. Over the remaining body the proof is byte-for-byte as strong as the unscaffolded case.
+
+**Strip failure is BLOCKING.** A failed strip throws an integrity error carrying exit code 2; the staged cluster is rolled back and nothing is renamed. It is not an advisory that may be logged and stepped past.
+
+**The scaffold is a trust boundary, and the schema is the only gate on it.** The hash-excluded region is plan-controlled content rendered into markdown structure, and the byte proof deliberately does not look there — so a malformed string is not caught by it. Line breaks are the vector: a title containing a newline followed by `---` closes the frontmatter block early, and an observation containing a newline followed by `## Relations` forges the final-two-sections structure. Neither corrupts the preserved slice, but both produce a destination whose structure is not what the plan described, and because the stripper re-derives the SAME rendered scaffolding, the strip still succeeds and the comparison still passes over an untouched body. The plan is already untrusted for CWE-502 and CWE-22; treating it as trusted for rendered content would be inconsistent. Every structural scaffold string is therefore length-bounded and rejects carriage returns and newlines, and tags additionally reject whitespace.
+
+**Re-derivation couples strippability to serializer stability.** Because the stripper re-renders the prologue, the frontmatter serializer's output is part of the recovery contract rather than a formatting choice. The options are pinned in one frozen constant (line wrapping disabled, quote style set explicitly) and js-yaml is pinned to a single major version. A serializer change in wrapping, quoting, or key spacing would make previously-written shards un-strippable and strand them. Recompose fails closed at exit 2, which is the right direction, but a dependency bump carries a named obligation, and that obligation is narrower than re-running the scaffold tests generally. The round-trip suites — `tests/decompose-scaffold.test.ts` and `tests/recompose-scaffold.test.ts` — are STRUCTURALLY BLIND to renderer drift, because strip re-renders the expected prologue and epilogue using the very functions that wrote them. A format change moves both sides of the comparison identically and simultaneously, so those suites keep passing while previously-written shards already on disk are stranded. What can catch the drift is the `renderPrologue` describe block in `tests/cluster-scaffold.test.ts`, which asserts against rendered text directly rather than against a re-render. Even that is currently partial: its assertions are substring checks on individual field lines, and nothing asserts on the rendered `tags:` sequence at all. A byte-exact golden over the full rendered frontmatter, tags included, is registered as the test follow-up. `tests/scaffold-hardening.test.ts` substitutes for none of this — it exercises the scaffold schema's structural-injection guards and pins no renderer formatting.
+
+**Dead-path residue is counted, not read.** Four times in this library a definition existed, was tested, and was not the one running on the production path: the canonical map validator with no production import while a weaker local copy ran; a line-range primitive declared with a numeric type and therefore unreachable from any FAILSAFE-parsed YAML; per-type envelope wrappers that nothing loaded; and a frontmatter mutation variant correct in one adapter of three. Each was invisible to a reading of either implementation and immediately visible in a count. The check for a guard with a canonical home is therefore mechanical, and it is TWO counts rather than one: count its production call sites, and count its implementations. Zero call sites is a dead gate; more than one implementation is drift; and either count alone is a false negative for the other. The plan size guard is the live illustration — its call-site count is a healthy two, one per entry point, while its implementation count is also two, because the 1 MB constant is redeclared in each entry point rather than shared from a single definition site. A call-site census alone would pass it. The remedy in every instance above was deleting the alternative rather than reconciling the two. Scoped to this ADR's guards: ONE implementation, arbitrarily many call sites.
+
+This is not licence to remove a legitimate second enforcement POINT. The exemplar to preserve is `f8Map`: one predicate consumed by both map primitives, so the F-8 rule has a single implementation reached from many call sites — which is exactly the shape this rule endorses.
+
+Recorded as a known finding rather than blessed: the checkbox terminal-satisfaction rule is the counter-example living in this same library. That rule — an item is terminal when it is done, or carries a non-empty deferred rationale, or, for SPEC-root rows only, is marked `~` — is declared repeatedly across three shapes: inline in the per-note-type Zod item schemas, as a hand-written `isSatisfied` predicate inside each per-type claim validator, and as a marker-aware SPEC-root variant. The copies agree today by TYPE COINCIDENCE, not by contract. The inferred item types are structurally identical, so TypeScript accepts every copy interchangeably, but nothing forces them to stay identical: editing one — tightening the rationale constraint, adding a field, fixing a bug — compiles cleanly and diverges silently from the rest. The SPEC-root variant is itself duplicated, and the comment above the inline copy asserts a single-source status the code does not support. Hoisting the item schema and the terminal predicate into the shared common schema module is registered as the code follow-up. Until that lands this rule is a divergent-twin instance, and it must not be cited as an example of legitimate multiple enforcement.
+
 ## Technology Stack
 
 No new dependencies beyond what ADR-001 specifies. This ADR is design-level, defining contracts and schemas that are implemented using the technology stack locked in ADR-001:
@@ -844,6 +899,7 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - Nested schema directory (base.ts plus 10 per-type files in distribution/ and composition/ subdirectories plus index.ts) and 5 adapter files create a moderate module count for a ~1,200 LOC library; mitigated by consistent structure, nested directory organization, and single-entry-point composition in index.ts
 - Synchronous interface precludes future async adapter needs without an interface extension; mitigated by the 1 MB file-size guard making event-loop blocking a non-issue for note-sized files
 - PLAN adapter's regenerative-section exclusion from hash validation creates a category of content that is not char-identity verified; mitigated by regenerating from structural content (which IS hash-verified) rather than from the source plan
+- The F-8 char-identity guarantee is bounded, not universal: it holds over the preserved content slice, not over whole destination files. Retention-bearing plans do not round-trip — a retained range is proven by the coverage check and written nowhere, so the source cannot be reconstructed from the shards alone. Scaffolded no-retention plans DO round-trip, conditionally: recovery requires the composition plan to restate a byte-identical scaffold. Two artifacts bear on that condition, and the split between them is RECOVERY INPUT versus VERIFICATION EVIDENCE. The distribution plan is the recovery input and is durable: it persists as a file under the restructure directory, the executor reads it without rewriting, moving, or deleting it, and rejected plans are renamed rather than discarded. It carries each cluster's scaffold as a structured object, and the composition source schema accepts that SAME scaffold shape — so the object transplants plan-to-plan verbatim and the renderer reproduces the bytes deterministically. There is no hand re-authoring step anywhere in that path. The audit log is verification evidence and is caller-captured: it is emitted as JSON-lines on stdout with no durable sink, so what is lost when the caller does not capture it is the post-hoc byte accounting — the pre-mutation segment hash, the body hash, the scaffold byte count, the scaffold provenance flag, and the records of retained clusters. Recovery needs none of that, because recompose revalidates independently against the plan. Both over-readings are therefore wrong: an uncaptured audit does not make a shard unrecoverable, and a retained audit is not a substitute for the plan. Retained content is additionally not guaranteed ABSENT from destinations — nothing validates that a destination's scaffold epilogue does not reproduce a retained observation or relation — so retention is a bound on reversibility, not redaction
 
 ### Neutral
 
@@ -855,19 +911,28 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - [ ] Adapter interface compiles across 5 stub implementations (one per source type) with no type errors
 - [ ] Capability matrix table is consistent with per-adapter implementation scope (each capability checkbox maps to a code path in the adapter)
 - [ ] Per-type hash extraction implemented and passing for ADR adapter (PROOF): extract by H3 range, apply D-N renumber plus wikilink substitution, reverse-mutate, SHA-256 compare
-- [ ] Injectivity validator rejects test fixtures with non-injective renumber_map (e.g., two source IDs mapping to the same target) and non-injective wikilink_map
+- [x] Injectivity validator rejects test fixtures with non-injective renumber_map (e.g., two source IDs mapping to the same target) and non-injective wikilink_map — satisfied by `shared/composition/tests/plan-yaml-map-invariants.test.ts`, which carries 12 test cases (basis: count of `test(` declarations in that file) covering both maps on both plan types, including one named for the non-disjoint map this ADR uses as its documented rejection example
 - [ ] Path containment validator rejects test fixtures with output paths outside docs/ (e.g., path traversal attempts)
 - [ ] PLAN adapter correctly excludes regenerated_sections from hash validation scope (Progress Dashboard and Mermaid graph changes do not trigger hash mismatch)
 - [ ] SPEC subtree adapter hash-validates each child file independently; single-file drift triggers full-cluster ROLLBACK
 - [ ] SESSION adapter emits cross_source_updates in plan output but does not mutate PLAN content directly; PLAN adapter validates its own content
 - [ ] Round-trip property test passes for ADR adapter: serialize(parse(content)) === content (parse/serialize identity precondition)
 - [ ] Error reporting surfaces structured PlanValidationError array, not raw Zod _errors blob
+- [ ] Every BLOCKING guard named in this ADR has at least one production call site. Grep-checkable: for each guard, count the importers outside `tests/`; zero is a dead gate regardless of how thoroughly the guard is unit-tested. Two are open at the time of writing — the runtime regenerated-sections line-coverage check (the schema-level 10-section cap does reach the CLI, but the 50% runtime check has no production caller), and the existence-requiring path-containment refinement, which for destinations is superseded by the create-time variant that the plan-load boundary does call. Guard-set scope: the census covers the guards this ADR names BLOCKING, and only those — the map-invariant predicate plus the two map primitives carrying it, the lexical path predicate and its schema form, both containment refinements plus the plan-level driver that invokes them, the regenerated-sections schema floor and its runtime line-coverage counterpart, the cluster-scaffold schema, the plan size guard, and the subtree hash-comparison entry point. Guards outside that set — the per-note-type claim validators and note schemas, which enforce knowledge-graph invariants rather than the F-8 chain — are out of scope for this item and are not counted by it. The set definition is what decides the count, and two readings diverge without it: a census over the ten guards enumerated above finds exactly the two open cases named here, whereas a reading that admits every schema D-5 names by name additionally surfaces the SPEC subtree manifest schema, which no production code path imports at all — its only importer is a barrel that is itself imported by a single test, and the SPEC subtree adapter does its own containment and injectivity checks without it. That third case is real but belongs to D-5's as-built divergence rather than to the BLOCKING-guard census, which is why the scope clause fixes the set explicitly instead of leaving the reader to infer it
 
 ## Clarifications
 
 **2026-05-19**: ADR-002 round 2 revision applied per CRIT-002 round-1 findings. 10 P1 themes A-J resolved in-ADR: MutationSpec extended with frontmatter_map + regenerated_sections + integrity floor (50%); cross_source_updates + SPEC subtree manifest Zod shapes defined; nested discriminatedUnion (plan_type x source_type) refactored; CompositionAdapter JSDoc clarifies AST/string call sequence; hash extracted to shared utility (5-method interface); BaseMarkdownAdapter pattern documented; containedPathSchema uses realpath + path.sep; injectivity validator enforces key-value domain disjointness for order-independent single-pass replacement. P2 items deferred to spec phase per CRIT-002 documentation. Status remains PROPOSED pending round-2 adr-review re-verification.
 
 **2026-05-21 (C-9 from ADR-004)**: ADR-004 D-2 supersedes the crossSourceUpdateSchema element shape in D-1 SESSION extension. The original D-1 shape (target_file, target_part_id, updates record) was speculative; the implemented shape is target_source_type literal plan, target_path string min 1, optional frontmatter_map Record string string, optional wikilink_map Record string string. The cross_source_updates field name and array position in the SESSION plan schema remain locked per D-1. Only the element shape changed to align with the distribution pipeline map-based transform model. See ADR-004 D-2 and C-3.
+
+**2026-07-26**: Destination scaffolding and the retention disposition are recorded as D-6 above; this entry is the provenance record, not the substance. Three corrections to how they were first stated. Scaffolding is excluded from hash comparison ONLY — it is authored into the destination and never exists in the source, so there is nothing to exclude from extraction. It is asymmetric with regenerated_sections rather than a mirror of them: regenerated sections are derived and floored, whereas scaffolding is authored, verified by re-derivation, and separately volume-bounded, transitively by the CWE-400 1 MB plan guard. And retention ALONE is the irreversibility bound: scaffolded no-retention plans do round-trip, given a composition plan that restates the identical scaffold — which the decompose audit log records, along with the scaffold's provenance and byte count and the hash of the content slice. Retained content is not guaranteed ABSENT from destinations, so retention bounds reversibility rather than redacting. Three further facts belong with them: strip failure is BLOCKING (integrity error, exit code 2, nothing renamed); a `retain` cluster must declare neither `destination_path` nor `scaffold`; and the prologue's H1 derives from `frontmatter.title`, which is what makes the H1-matches-title rule unviolable through a plan.
+
+**2026-07-26**: Enforcement drift on the D-5 map rule. The production CLI schema (plan-yaml) had silently bypassed the canonical injectiveDisjointMap validator, carrying a second, weaker local copy — injectivity on renumber_map only, nothing on wikilink_map — while the modular per-type schemas applied the full rule. Fixed by deletion, and since generalized: the F-8 invariants now live INSIDE the map primitives at their single definition site, so every consumer inherits them and no consumer can forget them. One refinement to the account: the modular tree carrying the correct rule had no call site on the path the CLI loads, so the correct rule ran nowhere that mattered. The root cause is that dual-tree condition rather than duplication as such. The lesson is scoped to implementations, not to enforcement points: ONE implementation, arbitrarily many call sites. A second call site of a single validator is deliberate practice in this library and must not be deleted by citing this entry. The mechanical check is a call-site count, per D-6.
+
+**2026-07-26 (amendment)**: Applied the owner-adjudicated resolution of the CRIT-005 round-1 review. Added D-6, recording the scaffolding and retention plan-schema shape, the asymmetry with regenerated_sections, the scaffold trust boundary, the serializer-stability coupling, and the dead-path call-site rule. Added a Consequences Negative bullet stating the F-8 guarantee's true scope. Corrected D-1 to record the as-built CLI envelope as canonical and to mark the illustrative YAML blocks as intent-level. Corrected D-2's frontmatter_map to value-keyed semantics. Corrected D-4's disjointness rationale, which had asserted a miscompare that single-pass replacement does not in fact produce; the rule now stands on forward-compatibility grounds. Ticked Confirmation item 5 on earned evidence and added a grep-checkable call-site item, which two guards currently fail. The two preceding 2026-07-26 entries were reduced in place rather than appended to, which this line records as the change: the first carried a round-trip clause shown to be empirically false, and the second an imperative that over-reached its own evidence, so leaving either standing would have preserved the defect this pass exists to remove. Their original wording, the evidence against it, and the reasoning for each replacement are quoted in full in [[CRIT-005-ADR-002: Clarifications Delta Debate Log]], which is the durable record of what they said and why it changed.
+
+**2026-07-26 (round-2 micro-corrections)**: Six converged corrections from the round-2 register, recorded here per the self-documentation norm the preceding entry established. The recovery language in Consequences now names the split between recovery INPUT and verification EVIDENCE: the durable plan carries the structured scaffold, the composition schema accepts that same shape so it transplants verbatim with no hand re-authoring step, and what an uncaptured stdout audit costs is post-hoc byte accounting that recovery does not consume. The guard-census Confirmation item now fixes its guard set explicitly and records the two readings that diverge without it. The one-implementation carve-out exemplar is re-pointed at `f8Map`, and the checkbox terminal-satisfaction rule is recorded as the counter-example — declared across three shapes, agreeing by type coincidence rather than contract, with the hoist into the shared schema module registered as the code follow-up. The serializer obligation now names the render-assertion block that can actually catch drift and explains why the round-trip suites cannot: they re-render both sides with the same functions, so a format change moves the comparison with it. A byte-exact golden over the rendered frontmatter, tags included, is registered as the test follow-up. The mechanical dead-path check is now two counts rather than one, call sites and implementations, since a call-site count finds dead gates but not divergent twins and this ADR names both modes. And the path-containment mitigation now states its precondition correctly: it is fail-open by design, the shipped skill workflows arm it in their invocation blocks, and the residual gap is a direct CLI invocation made outside those workflows. An earlier draft of that last clause asserted the variable was set nowhere outside tests; that was false and is superseded by this entry. No locked decision changed in this pass — every correction narrows, qualifies, or adds evidence to an existing claim rather than reversing one. Superseded phrasings are quoted in [[CRIT-005-ADR-002: Clarifications Delta Debate Log]].
 
 ## Observations
 
@@ -884,18 +949,34 @@ No new dependencies beyond what ADR-001 specifies. This ADR is design-level, def
 - [design] Nested discriminatedUnion on plan_type (outer) x source_type (inner) replaces flat 10-variant union; distribution plans use singular source, composition plans use plural sources #schema #nested-union
 - [design] Concrete Zod shapes defined for cross_source_updates (SESSION) and subtree_manifest with root/children distinction (SPEC); eliminates implementor invention gap #schema #concrete-shapes
 - [design] BaseMarkdownAdapter implementation pattern documented for ADR + ANALYSIS + SESSION adapters (config-only overrides); PLAN and SPEC remain distinct implementations #implementation-pattern #reuse
+- [decision] Cluster disposition (write or retain) and destination scaffolding are locked as D-6 — a plan-schema shape absent from D-1 and a bound on D-2's inverse contract, recorded as a decision rather than a clarification under the same precedent that handled the C-9 schema-shape supersession #d-6 #plan-schema
+- [constraint] The F-8 char-identity guarantee holds over the preserved content slice, not over whole destination files: retention-bearing plans do not round-trip, and scaffolded no-retention plans round-trip only against a byte-identical restated scaffold, carried durably by the distribution plan on disk and recorded secondarily in the caller-captured audit log #f-8 #round-trip-bound
 
 ## Relations
 
-- implemented_by [[SPEC-008: Protocol Hardening Wave 2]]
-- implements [[ADR-001: Composition Library Architecture]]
-- part_of [[PLAN-001: Skills Ecosystem]]
-- relates_to [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
-- relates_to [[CRIT-002-ADR-002: Adapter Contract and Plan Schema Debate Log]]
-- implemented_by [[SPEC-001: Composition Core and ADR Adapter]]
-- implemented_by [[SPEC-002: Simple Adapters]]
-- implemented_by [[SPEC-003: PLAN Adapter]]
-- implemented_by [[SPEC-004: SPEC Subtree Adapter]]
-- implemented_by [[SPEC-005: Decompose and Recompose Skills]]
-- implemented_by [[SPEC-006: Defrag and Ingest Skills]]
-- implemented_by [[SPEC-007: Plan/Session Render Implementation]]
+### implemented_by
+
+- [[SPEC-001: Composition Core and ADR Adapter]]
+- [[SPEC-002: Simple Adapters]]
+- [[SPEC-003: PLAN Adapter]]
+- [[SPEC-004: SPEC Subtree Adapter]]
+- [[SPEC-005: Decompose and Recompose Skills]]
+- [[SPEC-006: Defrag and Ingest Skills]]
+- [[SPEC-007: Plan/Session Render Implementation]]
+- [[SPEC-008: Protocol Hardening Wave 2]]
+
+### implements
+
+- [[ADR-001: Composition Library Architecture]]
+
+### part_of
+
+- [[PLAN-001: Skills Ecosystem]]
+
+### relates_to
+
+- [[CRIT-002-ADR-002: Adapter Contract and Plan Schema Debate Log]]
+- [[CRIT-005-ADR-002: Clarifications Delta Debate Log]]
+- [[SESSION-2026-05-19_01: Skills Bootstrap and PLAN-001]]
+- [[PLAN-002: Composition Tooling Follow-Up Register]]
+- [[ANALYSIS-006: Brain Search and Impact-Detection Tool Surface]]

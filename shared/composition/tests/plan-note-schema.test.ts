@@ -33,8 +33,8 @@ function minimalPlan(): PlanNote {
         source_artifacts: ["[[SPEC-001: Test]]"],
         depends_on: ["research"],
         dod: [{ text: "Tests pass", done: false }],
-        // Per feedback_per_task_build_qa_cycle: build.SPEC-NNN parts in any non-PENDING
-        // substatus require per-TASK impl + qa items.
+        // build.SPEC-NNN parts in any non-PENDING substatus require per-TASK
+        // impl + qa items.
         build_workflow_items: [
           {
             id: "impl-TASK-001-SPEC-001",

@@ -48,17 +48,32 @@ describe("applyMutations", () => {
   });
 
   test("frontmatter_map updates frontmatter only, not body", () => {
+    // Value-keyed per REQ-004 AC-2, now the semantics on every adapter: the key
+    // is the EXISTING value, not the field name. Field-keyed was retired because
+    // it could not be inverted, so it failed the F-8 comparison on every plan.
     const content = "---\ntitle: old\nstatus: DRAFT\n---\n# Body\n\ntitle: old in body\n";
     const mutations: MutationSpec = {
       renumber_map: {},
       wikilink_map: {},
-      frontmatter_map: { title: "new" },
+      frontmatter_map: { old: "new" },
     };
     const result = adapter.applyMutations(content, mutations);
     expect(result).toContain("title: new");
     expect(result).toContain("status: DRAFT");
+    // Body text is never considered — only the frontmatter block is rewritten.
     expect(result).toContain("title: old in body");
     expect(result).not.toMatch(/^title: old$/m);
+  });
+
+  test("frontmatter_map round-trips (apply then reverse is identity)", () => {
+    const content = "---\ntitle: old\nstatus: DRAFT\n---\n# Body\n\ntitle: old in body\n";
+    const mutations: MutationSpec = {
+      renumber_map: {},
+      wikilink_map: {},
+      frontmatter_map: { old: "new" },
+    };
+    const forward = adapter.applyMutations(content, mutations);
+    expect(adapter.reverseMutations(forward, mutations)).toBe(content);
   });
 
   test("applies wikilink_map", () => {

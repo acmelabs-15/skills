@@ -1,7 +1,7 @@
 ---
 title: 'QA-051-SPEC-008: Repair Brain Note Hygiene Violations'
 type: qa
-permalink: qa/qa-051-spec-008-repair-brain-note-hygiene-violations-1
+permalink: qa/qa-051-spec-008-repair-brain-note-hygiene-violations
 tags:
 - qa
 - spec-008

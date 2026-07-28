@@ -8,8 +8,7 @@ import { ObservationSchema, RelationSchema, ReqIdSchema } from "./common.js";
  * Section 4.9 and example
  * docs/specs/SPEC-007-plan-session-render/requirements/REQ-001-SPEC-007-schema-common-module.md.
  *
- * Purpose: mechanical enforcement of the per-TASK build+qa cycle
- * (~/.claude/memory/feedback_per_task_build_qa_cycle.md, TIER-1 BLOCKING) at
+ * Purpose: mechanical enforcement of the per-TASK build+qa cycle at
  * the REQ layer. The `## Acceptance Criteria` checkbox list IS the QA
  * contract — QA validates implementation against these EARS-formatted
  * Given/When/Then bullets. Status ACCEPTED requires every AC item to be
@@ -84,7 +83,8 @@ export const RequirementNoteSchema = z
 
     // Cross-field invariant 2: status ACCEPTED requires every Acceptance
     // Criteria item satisfied (done === true OR deferred_rationale present).
-    // Load-bearing protocol enforcement — see feedback_per_task_build_qa_cycle.
+    // Load-bearing protocol enforcement: a claim of ACCEPTED with an open AC is
+    // rejected mechanically rather than trusted.
     if (data.frontmatter.status === "ACCEPTED") {
       const unsatisfied = data.acceptance_criteria.filter(
         (item) => !item.done && !item.deferred_rationale,

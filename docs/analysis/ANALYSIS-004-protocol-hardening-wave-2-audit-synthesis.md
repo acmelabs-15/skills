@@ -1,7 +1,7 @@
 ---
 title: 'ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis'
 type: analysis
-permalink: analysis/analysis-004-protocol-hardening-wave-2-audit-synthesis-2
+permalink: analysis/analysis-004-protocol-hardening-wave-2-audit-synthesis
 status: ACCEPTED
 tags:
 - analysis

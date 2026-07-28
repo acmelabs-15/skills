@@ -1,7 +1,7 @@
 ---
 title: 'ADR-005: Protocol Hardening Wave 2 Architecture'
 type: decision
-permalink: decisions/adr-005-protocol-hardening-wave-2-architecture-1
+permalink: decisions/adr-005-protocol-hardening-wave-2-architecture
 status: ACCEPTED
 date: 2026-05-23
 updated: 2026-05-25

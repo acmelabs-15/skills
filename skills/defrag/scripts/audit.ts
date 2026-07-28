@@ -47,6 +47,8 @@ export interface AuditOptions {
   projectRoot: string;
   /** Staleness threshold in days (default 90, per REQ-002-SPEC-006 AC-5). */
   stalenessDays?: number;
+  /** Line count above which a note becomes a split candidate (default 500). */
+  lineMax?: number;
   /** Adapter for file ops + git (default uses Bun + git). */
   adapter?: MemoryAdapter;
 }
@@ -83,13 +85,22 @@ const OBS_MAX = 15;
 const REL_MAX = 12;
 const OBS_MIN = 3;
 const REL_MIN = 2;
-const LINE_MAX = 500;
+const DEFAULT_LINE_MAX = 500;
 const DEFAULT_STALENESS_DAYS = 90;
 const TERMINAL_STATUSES = new Set(["DONE", "DEPRECATED"]);
 
+/** Caller-tunable classification thresholds, resolved from `AuditOptions`. */
+interface Thresholds {
+  readonly stalenessDays: number;
+  readonly lineMax: number;
+}
+
 export async function audit(options: AuditOptions): Promise<AuditResult> {
   const adapter = options.adapter ?? defaultMemoryAdapter;
-  const stalenessDays = options.stalenessDays ?? DEFAULT_STALENESS_DAYS;
+  const thresholds: Thresholds = {
+    stalenessDays: options.stalenessDays ?? DEFAULT_STALENESS_DAYS,
+    lineMax: options.lineMax ?? DEFAULT_LINE_MAX,
+  };
   const docsPath = join(options.projectRoot, "docs");
   const candidates: AuditCandidate[] = [];
   let notesScanned = 0;
@@ -117,7 +128,7 @@ export async function audit(options: AuditOptions): Promise<AuditResult> {
     };
 
     const notePath = `docs/${rel}`;
-    for (const c of classify(notePath, entityType, evidence, stalenessDays)) candidates.push(c);
+    for (const c of classify(notePath, entityType, evidence, thresholds)) candidates.push(c);
   }
 
   const by: Record<ViolationType, AuditCandidate[]> = {
@@ -134,7 +145,7 @@ function classify(
   path: string,
   entityType: string,
   e: AuditEvidence,
-  stalenessDays: number,
+  t: Thresholds,
 ): AuditCandidate[] {
   const out: AuditCandidate[] = [];
 
@@ -148,13 +159,13 @@ function classify(
       evidence: e,
     });
   }
-  // split: > 500 lines
-  if (e.lineCount > LINE_MAX) {
+  // split: line count over the configured maximum (default 500)
+  if (e.lineCount > t.lineMax) {
     out.push({
       path,
       entityType,
       violationType: "split",
-      violationDetail: `lineCount=${e.lineCount} exceeds ${LINE_MAX}`,
+      violationDetail: `lineCount=${e.lineCount} exceeds ${t.lineMax}`,
       evidence: e,
     });
   }
@@ -191,12 +202,12 @@ function classify(
   // stale: last-modified older than threshold AND status not DONE/DEPRECATED
   if (e.lastModifiedISO && !TERMINAL_STATUSES.has(e.status ?? "")) {
     const ageDays = (Date.now() - new Date(e.lastModifiedISO).getTime()) / 86400000;
-    if (ageDays > stalenessDays) {
+    if (ageDays > t.stalenessDays) {
       out.push({
         path,
         entityType,
         violationType: "stale",
-        violationDetail: `last-modified ${Math.floor(ageDays)}d ago exceeds ${stalenessDays}d threshold; status=${e.status ?? "(unset)"}`,
+        violationDetail: `last-modified ${Math.floor(ageDays)}d ago exceeds ${t.stalenessDays}d threshold; status=${e.status ?? "(unset)"}`,
         evidence: e,
       });
     }

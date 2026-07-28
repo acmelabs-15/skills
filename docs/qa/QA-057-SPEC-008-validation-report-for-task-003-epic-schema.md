@@ -1,7 +1,7 @@
 ---
 title: 'QA-057-SPEC-008: Validation Report for TASK-003 EPIC Schema'
 type: note
-permalink: qa/qa-057-spec-008-validation-report-for-task-003-epic-schema-1
+permalink: qa/qa-057-spec-008-validation-report-for-task-003-epic-schema
 tags:
 - qa
 - spec-008

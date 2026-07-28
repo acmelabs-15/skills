@@ -1,10 +1,27 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import { specSubtreeCompositionPlanSchema } from "../schemas/composition/spec-subtree.plan.schema.js";
-import {
-  specSubtreeDistributionPlanSchema,
-  specSubtreeManifestSchema,
-} from "../schemas/distribution/spec-subtree.plan.schema.js";
+import { z } from "zod";
+import { specSubtreeManifestSchema } from "../schemas/distribution/spec-subtree.plan.schema.js";
+
+/**
+ * Local containers for exercising the SPEC subtree manifest fragment.
+ *
+ * The per-type envelopes these used to ride on were retired (non-canonical
+ * `destinations[]` dialect). Every rule under test — manifest shape, dest_path
+ * injectivity, path-traversal containment — lives in `specSubtreeManifestSchema`,
+ * so the containers are declared here rather than reintroducing a second
+ * envelope in the source tree.
+ */
+const specSubtreeDistributionPlanSchema = z.object({
+  plan_type: z.literal("distribution"),
+  source_type: z.literal("spec"),
+  subtree_manifest: specSubtreeManifestSchema,
+});
+const specSubtreeCompositionPlanSchema = z.object({
+  plan_type: z.literal("composition"),
+  source_type: z.literal("spec"),
+  subtree_manifest: specSubtreeManifestSchema,
+});
 import {
   SpecSubtreeAdapter,
   SubtreeHashValidationError,

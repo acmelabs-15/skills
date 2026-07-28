@@ -1,5 +1,5 @@
 ---
-permalink: qa/qa-075-spec-008-validation-report-for-task-022-initial-adversarial-fixture-set-1
+permalink: qa/qa-075-spec-008-validation-report-for-task-022-initial-adversarial-fixture-set
 ---
 
 ---

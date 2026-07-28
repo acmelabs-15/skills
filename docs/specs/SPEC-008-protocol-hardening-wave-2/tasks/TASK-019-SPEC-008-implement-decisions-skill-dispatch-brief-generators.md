@@ -1,7 +1,7 @@
 ---
 title: 'TASK-019-SPEC-008: Implement decisions-Skill Dispatch-Brief Generators'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-019-spec-008-implement-decisions-skill-dispatch-brief-generators-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-019-spec-008-implement-decisions-skill-dispatch-brief-generators
 status: DONE
 effort: M
 estimate: 2d

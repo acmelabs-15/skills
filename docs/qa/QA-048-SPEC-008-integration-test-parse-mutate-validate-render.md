@@ -1,7 +1,7 @@
 ---
 title: 'QA-048-SPEC-008: Integration Test Parse Mutate Validate Render'
 type: qa
-permalink: qa/qa-048-spec-008-integration-test-parse-mutate-validate-render-1
+permalink: qa/qa-048-spec-008-integration-test-parse-mutate-validate-render
 tags:
 - qa
 - spec-008

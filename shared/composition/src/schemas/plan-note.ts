@@ -7,21 +7,21 @@ import {
   PartIdSchema,
   PartSubstatusEnum,
   PlanStatusEnum,
+  QaIdSchema,
   RelationSchema,
   SessionIdSchema,
   SpecTaskIdSchema,
   TaskIdSchema,
   TaskStatusEnum,
-  QaIdSchema,
 } from "./common.js";
 
 /**
  * BuildWorkflow primitives — per-TASK impl + qa items inside build.SPEC-NNN parts.
  *
- * Added by Phase X (Protocol Hardening, 2026-05-20) to mechanically enforce
- * the rigid per-TASK build+qa cycle. See:
- * - ~/.claude/memory/feedback_per_task_build_qa_cycle.md (TIER-1 BLOCKING protocol)
- * - ~/.claude/memory/feedback_workflow_phase_rigor_at_every_layer.md (meta-rule)
+ * Added by Phase X (Protocol Hardening, 2026-05-20) to mechanically enforce the
+ * rigid per-TASK build+qa cycle: a TASK is built and QA'd as one atomic unit
+ * before the next TASK starts, and every workflow phase carries that rigor at
+ * each enforcement layer — schema, mutation, and validator alike.
  *
  * Every TASK in a spec yields TWO PLAN items: impl-TASK-NNN-SPEC-MMM and
  * qa-TASK-NNN-SPEC-MMM. Each carries its own status enum. Cross-field
@@ -133,8 +133,8 @@ const PartSchema = z
     dod: z.array(DodItemSchema),
     decisions: z.array(DecisionStateSchema).optional(),
     // build_workflow_items: per-TASK impl + qa pairs for build.SPEC-NNN parts.
-    // MANDATORY for build.SPEC-NNN parts when substatus is not PENDING
-    // (per feedback_per_task_build_qa_cycle protocol).
+    // MANDATORY for build.SPEC-NNN parts when substatus is not PENDING — once a
+    // build part is under way, every TASK in it must carry its impl + qa pair.
     build_workflow_items: z.array(BuildWorkflowItemSchema).optional(),
   })
   .strict()

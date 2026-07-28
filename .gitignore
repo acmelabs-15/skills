@@ -17,9 +17,28 @@ dist/
 /build/
 *.tsbuildinfo
 
+# Packaging output: staging tarballs of the skills tree (e.g. _stage_skills.tgz).
+# Derived snapshots, regenerable from the tree they were cut from. Unanchored
+# because no archive is ever source here — nothing under skills/ ships as a .tgz.
+*.tgz
+*.tar.gz
+
 # Test output
 coverage/
 .nyc_output/
+
+# Scratch: run artifacts from the docs-tree verification tools (impact
+# manifests, closure reports, reconcile and figure reports, capability
+# surveys). Anchored to the repo root so a skills/**/scratch/ source dir would
+# not be caught.
+#
+# Ignored rather than committed because every file in here is DERIVED and
+# cheap to regenerate — each is the output of a read-only tool run against a
+# graph that moves independently of this repo. Committing them would freeze a
+# point-in-time census next to the code that produces it, and a stale manifest
+# read as current is worse than no manifest. A run worth keeping belongs in the
+# knowledge graph as a note, not here.
+/scratch/
 
 # Logs
 *.log

@@ -1,7 +1,7 @@
 ---
 title: 'TASK-036-SPEC-008: Amend REQ-009-SPEC-007 Mutation Count from 9 to 11'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-036-spec-008-amend-req-009-spec-007-mutation-count-from-9-to-11-1
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-036-spec-008-amend-req-009-spec-007-mutation-count-from-9-to-11
 status: DONE
 tags:
 - spec-008

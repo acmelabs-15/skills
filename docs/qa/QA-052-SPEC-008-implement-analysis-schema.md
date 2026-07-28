@@ -1,7 +1,7 @@
 ---
 title: 'QA-052-SPEC-008: Implement ANALYSIS Schema'
 type: qa
-permalink: qa/qa-052-spec-008-implement-analysis-schema-1
+permalink: qa/qa-052-spec-008-implement-analysis-schema
 tags:
 - qa
 - spec-008

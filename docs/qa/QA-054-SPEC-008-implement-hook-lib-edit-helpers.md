@@ -1,7 +1,7 @@
 ---
 title: 'QA-054-SPEC-008: Implement Hook Lib Edit Helpers'
 type: qa
-permalink: qa/qa-054-spec-008-implement-hook-lib-edit-helpers-1
+permalink: qa/qa-054-spec-008-implement-hook-lib-edit-helpers
 tags:
 - qa
 - spec-008

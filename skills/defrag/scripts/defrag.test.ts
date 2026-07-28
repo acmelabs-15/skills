@@ -6,6 +6,8 @@ import type { AuditCandidate, AuditResult } from "./audit.ts";
 import {
   type DefragOptions,
   type DelegationAdapter,
+  UsageError,
+  main,
   parseArgs,
   runInteractive,
   runReportOnly,
@@ -55,6 +57,73 @@ describe("parseArgs", () => {
     const o = parseArgs(["--basic-memory"]);
     expect(o.basicMemory).toBe(true);
   });
+
+  test("parses --line-max", () => {
+    const o = parseArgs(["--line-max", "800"]);
+    expect(o.lineMax).toBe(800);
+  });
+
+  test("defaults lineMax to 500 when --line-max is absent", () => {
+    expect(parseArgs([]).lineMax).toBe(500);
+  });
+
+  test("parses --staleness and --line-max together", () => {
+    const o = parseArgs(["--staleness", "180", "--line-max", "800"]);
+    expect(o.stalenessDays).toBe(180);
+    expect(o.lineMax).toBe(800);
+  });
+});
+
+// Both numeric flags share one validator, so both are held to the same table.
+// Looping is the consistency proof: a flag that drifts fails these outright.
+describe("parseArgs — numeric flag validation", () => {
+  const NUMERIC_FLAGS = ["--staleness", "--line-max"] as const;
+
+  for (const flag of NUMERIC_FLAGS) {
+    test(`${flag} accepts a positive integer`, () => {
+      expect(() => parseArgs([flag, "42"])).not.toThrow();
+    });
+
+    test(`${flag} rejects a non-numeric value`, () => {
+      expect(() => parseArgs([flag, "abc"])).toThrow(UsageError);
+      expect(() => parseArgs([flag, "abc"])).toThrow(/positive integer/);
+    });
+
+    test(`${flag} rejects trailing garbage that parseInt would silently truncate`, () => {
+      expect(() => parseArgs([flag, "800xyz"])).toThrow(UsageError);
+    });
+
+    test(`${flag} rejects zero`, () => {
+      expect(() => parseArgs([flag, "0"])).toThrow(UsageError);
+    });
+
+    test(`${flag} rejects a negative value`, () => {
+      expect(() => parseArgs([flag, "-5"])).toThrow(UsageError);
+    });
+
+    test(`${flag} rejects a fractional value`, () => {
+      expect(() => parseArgs([flag, "90.5"])).toThrow(UsageError);
+    });
+
+    test(`${flag} rejects a missing value`, () => {
+      expect(() => parseArgs([flag])).toThrow(UsageError);
+    });
+
+    test(`${flag} rejects a following flag as its value`, () => {
+      expect(() => parseArgs([flag, "--report-only"])).toThrow(UsageError);
+    });
+
+    test(`${flag} names itself in the error message`, () => {
+      expect(() => parseArgs([flag, "abc"])).toThrow(new RegExp(flag));
+    });
+  }
+});
+
+describe("main — usage errors", () => {
+  test("returns exit code 1 on an invalid flag value", async () => {
+    expect(await main(["--line-max", "abc"])).toBe(1);
+    expect(await main(["--staleness", "-1"])).toBe(1);
+  });
 });
 
 describe("runReportOnly", () => {
@@ -66,6 +135,7 @@ describe("runReportOnly", () => {
         reportOnly: true,
         projectRoot: root,
         stalenessDays: 180,
+        lineMax: 500,
         basicMemory: false,
         today: "2026-05-21",
       };
@@ -86,6 +156,7 @@ describe("runReportOnly", () => {
         reportOnly: true,
         projectRoot: root,
         stalenessDays: 180,
+        lineMax: 500,
         basicMemory: false,
         today: "2026-05-21",
       };
@@ -103,6 +174,7 @@ describe("runInteractive — delegation error handling", () => {
       reportOnly: false,
       projectRoot: "/x",
       stalenessDays: 180,
+      lineMax: 500,
       basicMemory: false,
       delegation,
     };

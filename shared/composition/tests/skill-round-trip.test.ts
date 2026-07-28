@@ -7,7 +7,8 @@
  * mutation → hash-validate → atomic write).
  */
 import { describe, expect, test } from "bun:test";
-import { copyFileSync, mkdtempSync, writeFileSync } from "node:fs";
+// mkdtemp is a directory op with no Bun equivalent; all content I/O is Bun-native.
+import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { sha256 } from "../src/core/hash.js";
@@ -21,15 +22,15 @@ describe("SPEC-005 skill-level round-trip", () => {
     // Stage fixtures into a tmp dir so the test isolated from the source tree.
     const workDir = mkdtempSync(join(tmpdir(), "spec-005-rt-"));
     const fixturePath = join(workDir, "adr-round-trip.md");
-    copyFileSync(join(fixtureDir, "adr-round-trip.md"), fixturePath);
+    await Bun.write(Bun.file(fixturePath), Bun.file(join(fixtureDir, "adr-round-trip.md")));
     const originalContent = await Bun.file(fixturePath).text();
     const originalHash = sha256(originalContent);
 
     const decomposePlan = join(workDir, "adr-decompose-plan.yaml");
-    copyFileSync(join(fixtureDir, "adr-decompose-plan.yaml"), decomposePlan);
+    await Bun.write(Bun.file(decomposePlan), Bun.file(join(fixtureDir, "adr-decompose-plan.yaml")));
 
     const recomposePlan = join(workDir, "adr-recompose-plan.yaml");
-    copyFileSync(join(fixtureDir, "adr-recompose-plan.yaml"), recomposePlan);
+    await Bun.write(Bun.file(recomposePlan), Bun.file(join(fixtureDir, "adr-recompose-plan.yaml")));
 
     // Decompose: rewrites adr-round-trip.md in-place with D-1→D-500, D-2→D-501.
     const dexit = await decomposeMain(["--plan", decomposePlan]);
@@ -52,7 +53,7 @@ describe("SPEC-005 skill-level round-trip", () => {
   test("decompose.ts exits 1 with PlanValidationError on invalid source_type", async () => {
     const workDir = mkdtempSync(join(tmpdir(), "spec-005-rt-"));
     const planPath = join(workDir, "bad-source-type.yaml");
-    writeFileSync(
+    await Bun.write(
       planPath,
       [
         "plan_type: distribution",
@@ -72,7 +73,7 @@ describe("SPEC-005 skill-level round-trip", () => {
   test("decompose.ts exits 1 on non-injective renumber_map at Zod load time", async () => {
     const workDir = mkdtempSync(join(tmpdir(), "spec-005-rt-"));
     const planPath = join(workDir, "noninjective.yaml");
-    writeFileSync(
+    await Bun.write(
       planPath,
       [
         "plan_type: distribution",

@@ -1,7 +1,7 @@
 ---
 title: 'TASK-032-SPEC-008: Extend validateSpecDoneClaim for Deferred Notation'
 type: task
-permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-032-spec-008-extend-validate-spec-done-claim-for-deferred-notation-2
+permalink: specs/spec-008-protocol-hardening-wave-2/tasks/task-032-spec-008-extend-validate-spec-done-claim-for-deferred-notation
 status: DONE
 tags:
 - spec-008

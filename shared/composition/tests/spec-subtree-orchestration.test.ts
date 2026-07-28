@@ -14,7 +14,8 @@
  */
 
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+// Directory ops only; file content + existence go through Bun.file/Bun.write.
+import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
@@ -152,30 +153,30 @@ describe("validateSubtreeHashes (DESIGN-003 Component 1)", () => {
 });
 
 describe("rollbackCluster (DESIGN-003 Component 2)", () => {
-  test("removes staged .tmp files unconditionally", () => {
+  test("removes staged .tmp files unconditionally", async () => {
     const tmpA = join(tmpRoot, "a.md.tmp");
     const tmpB = join(tmpRoot, "b.md.tmp");
-    writeFileSync(tmpA, "staged-a");
-    writeFileSync(tmpB, "staged-b");
-    expect(existsSync(tmpA)).toBe(true);
-    expect(existsSync(tmpB)).toBe(true);
-    rollbackCluster([tmpA, tmpB], []);
-    expect(existsSync(tmpA)).toBe(false);
-    expect(existsSync(tmpB)).toBe(false);
+    await Bun.write(tmpA, "staged-a");
+    await Bun.write(tmpB, "staged-b");
+    expect(await Bun.file(tmpA).exists()).toBe(true);
+    expect(await Bun.file(tmpB).exists()).toBe(true);
+    await rollbackCluster([tmpA, tmpB], []);
+    expect(await Bun.file(tmpA).exists()).toBe(false);
+    expect(await Bun.file(tmpB).exists()).toBe(false);
   });
 
-  test("removes already-renamed destinations when failure occurs mid-rename", () => {
+  test("removes already-renamed destinations when failure occurs mid-rename", async () => {
     const dest = join(tmpRoot, "already-renamed.md");
-    writeFileSync(dest, "renamed");
-    expect(existsSync(dest)).toBe(true);
-    rollbackCluster([], [dest]);
-    expect(existsSync(dest)).toBe(false);
+    await Bun.write(dest, "renamed");
+    expect(await Bun.file(dest).exists()).toBe(true);
+    await rollbackCluster([], [dest]);
+    expect(await Bun.file(dest).exists()).toBe(false);
   });
 
-  test("never throws when paths do not exist (best-effort cleanup)", () => {
-    expect(() =>
+  test("never rejects when paths do not exist (best-effort cleanup)", async () => {
+    await expect(
       rollbackCluster([join(tmpRoot, "missing.md.tmp")], [join(tmpRoot, "missing-dest.md")]),
-    ).not.toThrow();
+    ).resolves.toBeUndefined();
   });
 });
 
@@ -196,19 +197,20 @@ describe("SpecSubtreeAdapter.processSubtree (DESIGN-001 Components 1+2)", () => 
     expect(result.hashEntries).toHaveLength(2);
 
     // Destinations exist with mutated content.
-    const rootDest = readFileSync(input.rootPath, "utf8");
-    const reqDest = readFileSync(
+    const rootDest = await Bun.file(input.rootPath).text();
+    const reqDest = await Bun.file(
       join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md"),
-      "utf8",
-    );
+    ).text();
     expect(rootDest).toContain("REQ-100 implemented");
     expect(rootDest).toContain("[[REQ-100-SPEC-001: Adapter Interface]]");
     expect(reqDest).toContain("REQ-100-SPEC-001: Adapter Interface");
 
     // No .tmp files remain.
-    expect(existsSync(`${input.rootPath}.tmp`)).toBe(false);
+    expect(await Bun.file(`${input.rootPath}.tmp`).exists()).toBe(false);
     expect(
-      existsSync(join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md.tmp")),
+      await Bun.file(
+        join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md.tmp"),
+      ).exists(),
     ).toBe(false);
   });
 
@@ -232,16 +234,18 @@ describe("SpecSubtreeAdapter.processSubtree (DESIGN-001 Components 1+2)", () => 
     }
 
     // No .tmp files remain (cluster rollback).
-    expect(existsSync(`${input.rootPath}.tmp`)).toBe(false);
+    expect(await Bun.file(`${input.rootPath}.tmp`).exists()).toBe(false);
     expect(
-      existsSync(join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md.tmp")),
+      await Bun.file(
+        join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md.tmp"),
+      ).exists(),
     ).toBe(false);
 
     // No destinations exist either (failure aborts before rename phase).
-    expect(existsSync(input.rootPath)).toBe(false);
-    expect(existsSync(join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md"))).toBe(
-      false,
-    );
+    expect(await Bun.file(input.rootPath).exists()).toBe(false);
+    expect(
+      await Bun.file(join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md")).exists(),
+    ).toBe(false);
   });
 
   test("empty children array: SPEC root only is staged + validated + renamed", async () => {
@@ -259,8 +263,8 @@ describe("SpecSubtreeAdapter.processSubtree (DESIGN-001 Components 1+2)", () => 
     const result = await adapter.processSubtree(input);
     expect(result.success).toBe(true);
     expect(result.filesProcessed).toBe(1);
-    expect(existsSync(input.rootPath)).toBe(true);
-    expect(existsSync(`${input.rootPath}.tmp`)).toBe(false);
+    expect(await Bun.file(input.rootPath).exists()).toBe(true);
+    expect(await Bun.file(`${input.rootPath}.tmp`).exists()).toBe(false);
   });
 
   test("post-rename per-file SHA-256 matches reverse-mutated destination content (the PROOF, under filesystem orchestration)", async () => {
@@ -274,11 +278,10 @@ describe("SpecSubtreeAdapter.processSubtree (DESIGN-001 Components 1+2)", () => 
     const result = await adapter.processSubtree(input);
     expect(result.success).toBe(true);
 
-    const rootDest = readFileSync(input.rootPath, "utf8");
-    const reqDest = readFileSync(
+    const rootDest = await Bun.file(input.rootPath).text();
+    const reqDest = await Bun.file(
       join(tmpRoot, "requirements/REQ-001-SPEC-001-adapter-interface.md"),
-      "utf8",
-    );
+    ).text();
     const rootRecovered = adapter.reverseMutations(rootDest, mutations);
     const reqRecovered = adapter.reverseMutations(reqDest, mutations);
     expect(sha256(rootRecovered)).toBe(sha256(rootFixture));
