@@ -50,7 +50,7 @@ Layout:
 │   │   └── recompose.ts
 │   ├── schemas/            # JSON Schemas for plan YAMLs
 │   └── tests/              # Round-trip property tests
-└── install.sh              # Symlink ~/.claude/skills/<name> → ~/Dev/skills/<name>
+                            # (install.sh retired — the marketplace plugin delivers the skills)
 
 Locked design decisions:
 

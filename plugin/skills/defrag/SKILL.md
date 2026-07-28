@@ -27,10 +27,6 @@ hash validation.
 
 `defrag`, `defragment`, `curate memories`, `audit notes`, `knowledge-graph audit`.
 
-These names are distinct from the existing `memory-defrag` skill in
-`~/Dev/basic-memory-skills`. Both can be installed simultaneously without
-collision.
-
 ## CLI usage
 
 ```bash
@@ -311,9 +307,3 @@ error, user rejection at sub-prompt level), defrag logs the failure and
 continues with the remaining candidates. The cycle never aborts on a single
 candidate failure.
 
-## Coexistence
-
-defrag coexists with the basic-memory `memory-defrag` skill. They have
-distinct names; Claude Code resolves them by name with no collision.
-`install.sh` only creates symlinks for skills owned by this project and
-never touches `~/Dev/basic-memory-skills/`.

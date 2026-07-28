@@ -25,9 +25,6 @@ generated Observations section is preserved verbatim.
 
 `ingest`, `import note`, `bring into graph`, `ingest file`, `ingest directory`.
 
-Distinct from the existing `memory-ingest` skill in `~/Dev/basic-memory-skills`.
-Both can be installed simultaneously without collision.
-
 ## CLI usage
 
 ```bash
@@ -75,7 +72,3 @@ body. If the source already has a well-formed Observations or Relations
 section, ingest preserves it (and may augment it to meet minimum counts only
 if the existing content is below threshold).
 
-## Coexistence
-
-ingest coexists with the basic-memory `memory-ingest` skill. They have
-distinct names; Claude Code resolves them by name with no collision.
