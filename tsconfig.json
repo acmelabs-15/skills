@@ -14,9 +14,6 @@
     "noEmit": true,
     "allowImportingTsExtensions": true
   },
-  "include": [
-    "plugin/**/*.ts",
-    "packages/**/*.ts"
-  ],
+  "include": ["plugin/**/*.ts", "packages/**/*.ts"],
   "exclude": ["node_modules", "plugin/dist"]
 }

@@ -10,9 +10,6 @@
       "correctness": {
         "noUnusedVariables": "error",
         "noUnusedImports": "error"
-      },
-      "suspicious": {
-        "noExplicitAny": "off"
       }
     }
   },
@@ -30,20 +27,13 @@
     }
   },
   "files": {
-    "include": [
-      "plugin/skills/defrag/**",
-      "plugin/skills/ingest/**",
-      "plugin/src/**"
-    ],
     "ignore": [
       "node_modules",
       "**/node_modules",
-      "plugin/dist",
+      "plugin/dist/**",
       "**/*.md",
       "defrag/reports/**",
-      "packages/fixtures/**",
-      "packages/**",
-      "plugin/dist/**"
+      "packages/fixtures/**"
     ]
   }
 }
