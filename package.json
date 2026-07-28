@@ -3,16 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "workspaces": ["shared/composition"],
+  "workspaces": ["packages/*", "plugin"],
   "scripts": {
-    "test": "bun test skills/defrag skills/ingest shared",
-    "test:all": "bun test",
-    "check": "biome check skills/defrag skills/ingest shared/detect-context.ts shared/detect-context.test.ts",
-    "check:fix": "biome check --fix skills/defrag skills/ingest shared/detect-context.ts shared/detect-context.test.ts",
-    "typecheck": "tsc --noEmit"
+    "prepare": "bun run scripts/build.ts",
+    "build": "bun run scripts/build.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "check": "biome check .",
+    "check:fix": "biome check --fix ."
   },
   "dependencies": {
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "@acmelabs/models": "workspace:*",
+    "@acmelabs/core": "workspace:*",
+    "@acmelabs/cli": "workspace:*",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

@@ -17,14 +17,18 @@ files; this README focuses on the two new composer skills, `/defrag` and
 
 ## Install
 
+The skills ship as the `skills` plugin in the ACMElabs marketplace — Claude Code
+installs them, and no local activation step is needed.
+
 ```bash
-./install.sh
+bun install          # workspace dependencies
+bun run build        # bundle the plugin into plugin/dist/
+bun test             # the suite
 ```
 
-The script creates symlinks at `~/.claude/skills/` for the four skills owned by
-this project (`/decompose`, `/recompose`, `/defrag`, `/ingest`). It is
-idempotent for its own symlinks (`ln -sf`) and never touches symlinks under
-`~/Dev/basic-memory-skills/`.
+`plugin/dist/` is generated and gitignored; every hook, skill script and CLI is
+invoked from it via `${CLAUDE_PLUGIN_ROOT}`, so the installed plugin resolves
+nothing at runtime.
 
 ## /defrag — periodic curator
 
@@ -143,22 +147,6 @@ bun skills/ingest/scripts/ingest.ts notes/ --batch
 bun skills/ingest/scripts/ingest.ts notes/foo.md --basic-memory
 ```
 
-## Coexistence with basic-memory-skills
-
-`/defrag` and `/ingest` coexist with the existing `~/Dev/basic-memory-skills`
-skills (`memory-defrag` and `memory-ingest`). The names are deliberately
-distinct: Claude Code resolves skills by exact name, so both sets can be
-installed simultaneously without ambiguity.
-
-| Skill | Owned by | Target context |
-|:--|:--|:--|
-| `/defrag` | this project | Brain knowledge graph (full CONVENTIONS audit + delegation) |
-| `memory-defrag` | basic-memory-skills | Basic Memory projects |
-| `/ingest` | this project | Brain knowledge graph (Pattern 2 + CONVENTIONS compliance) |
-| `memory-ingest` | basic-memory-skills | Basic Memory projects |
-
-`install.sh` only manages symlinks for the four skills owned by this project;
-it never modifies or removes symlinks owned by `basic-memory-skills`.
 
 ## Development
 

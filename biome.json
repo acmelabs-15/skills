@@ -10,9 +10,6 @@
       "correctness": {
         "noUnusedVariables": "error",
         "noUnusedImports": "error"
-      },
-      "suspicious": {
-        "noExplicitAny": "off"
       }
     }
   },
@@ -30,18 +27,13 @@
     }
   },
   "files": {
-    "include": [
-      "skills/**",
-      "shared/detect-context.ts",
-      "shared/detect-context.test.ts"
-    ],
     "ignore": [
       "node_modules",
       "**/node_modules",
-      "shared/composition",
+      "plugin/dist/**",
       "**/*.md",
       "defrag/reports/**",
-      "test-fixtures/**"
+      "packages/fixtures/**"
     ]
   }
 }

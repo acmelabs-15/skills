@@ -14,10 +14,6 @@
     "noEmit": true,
     "allowImportingTsExtensions": true
   },
-  "include": [
-    "skills/**/*.ts",
-    "shared/detect-context.ts",
-    "shared/detect-context.test.ts"
-  ],
-  "exclude": ["node_modules", "dist", "shared/composition"]
+  "include": ["plugin/**/*.ts", "packages/**/*.ts"],
+  "exclude": ["node_modules", "plugin/dist"]
 }

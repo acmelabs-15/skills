@@ -1,0 +1,90 @@
+import { describe, expect, test } from "bun:test";
+import { join } from "node:path";
+import { sha256 } from "@acmelabs/core/core/hash";
+import { applyPlanMutation } from "@acmelabs/models/mutations/plan-mutations";
+import { applySessionMutation } from "@acmelabs/models/mutations/session-mutations";
+import { parsePlanNote } from "@acmelabs/models/parsers/plan-note";
+import { parseSessionNote } from "@acmelabs/models/parsers/session-note";
+import { renderPlanNote } from "@acmelabs/models/renderers/plan-note";
+import { renderSessionNote } from "@acmelabs/models/renderers/session-note";
+
+const fixtureDir = join(import.meta.dir, "..", "..", "fixtures");
+
+describe("Plan/Session render round-trip property test (ADR-003 D-8 gate)", () => {
+  test("THE PROOF — Plan: SHA-256(render(parse(fixture))) === SHA-256(fixture)", async () => {
+    const md = await Bun.file(join(fixtureDir, "plan-note-sample.md")).text();
+    const parsed = parsePlanNote(md);
+    const rendered = renderPlanNote(parsed);
+    expect(sha256(rendered)).toBe(sha256(md));
+  });
+
+  test("THE PROOF — Session: SHA-256(render(parse(fixture))) === SHA-256(fixture)", async () => {
+    const md = await Bun.file(join(fixtureDir, "session-note-sample.md")).text();
+    const parsed = parseSessionNote(md);
+    const rendered = renderSessionNote(parsed);
+    expect(sha256(rendered)).toBe(sha256(md));
+  });
+
+  test("Plan mutation round-trip: applyPlanMutation output re-parses cleanly", async () => {
+    const md = await Bun.file(join(fixtureDir, "plan-note-sample.md")).text();
+    // Drive the build_workflow_items DONE first (rigid per-TASK cycle); then
+    // flip the part itself. Each step round-trips through render+parse and
+    // hash-compares cleanly.
+    const m1 = applyPlanMutation(md, {
+      type: "transition-impl-item",
+      partId: "build.SPEC-007",
+      taskRef: "TASK-001-SPEC-007",
+      from: "IN_PROGRESS",
+      to: "DONE",
+      owning_session: "SESSION-2026-05-20_04",
+      at_event: 5,
+    });
+    const m2 = applyPlanMutation(m1, {
+      type: "transition-qa-item",
+      partId: "build.SPEC-007",
+      taskRef: "TASK-001-SPEC-007",
+      from: "PENDING",
+      to: "IN_PROGRESS",
+      owning_session: "SESSION-2026-05-20_04",
+      at_event: 6,
+    });
+    const m3 = applyPlanMutation(m2, {
+      type: "transition-qa-item",
+      partId: "build.SPEC-007",
+      taskRef: "TASK-001-SPEC-007",
+      from: "IN_PROGRESS",
+      to: "DONE",
+      owning_session: "SESSION-2026-05-20_04",
+      at_event: 7,
+      qa_ref: "QA-001-SPEC-007",
+    });
+    const mutated = applyPlanMutation(m3, {
+      type: "set-part-substatus",
+      partId: "build.SPEC-007",
+      from: "IN_PROGRESS",
+      to: "DONE",
+      completing_session: "SESSION-2026-05-20_04",
+      outcome: "[[SPEC-007: Sample]]",
+    });
+    // Idempotence: re-rendering the parsed result gives the same hash.
+    const reparsed = parsePlanNote(mutated);
+    const rerendered = renderPlanNote(reparsed);
+    expect(sha256(rerendered)).toBe(sha256(mutated));
+  });
+
+  test("Session mutation round-trip: append-event preserves continuity hash", async () => {
+    const md = await Bun.file(join(fixtureDir, "session-note-sample.md")).text();
+    const mutated = applySessionMutation(md, {
+      type: "append-event",
+      event: {
+        type: "state-change",
+        title: "Wave 2 close",
+        scope: "plan",
+        target: "PLAN-001",
+      },
+    });
+    const reparsed = parseSessionNote(mutated);
+    const rerendered = renderSessionNote(reparsed);
+    expect(sha256(rerendered)).toBe(sha256(mutated));
+  });
+});
