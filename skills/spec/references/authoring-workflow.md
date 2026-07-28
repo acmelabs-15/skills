@@ -29,7 +29,7 @@ Run against every newly-authored note in the SPEC subtree (REQ + DESIGN + TASK +
 
 ### 6-item post-write verification
 
-1. `list_directory` confirms filename is kebab (no spaces, CAPS prefix preserved) — Pattern 2 Phase 3 `move_note` completed
+1. `list_directory` confirms filename is kebab (no spaces, CAPS prefix preserved) — the single `write_note` call produces this directly
 2. `read_note` confirms frontmatter title matches kebab filename stem's un-kebabed form with colon
 3. H1 in body matches frontmatter title character-for-character
 4. Relations section uses only valid types (the 11-type allowlist)
@@ -42,7 +42,7 @@ Any pre-flight OR post-write check failure: HALT via `spec-preflight-halt` with 
 
 Common failures:
 
-- Filename has spaces (Pattern 2 Phase 3 `move_note` skipped) — run `move_note` to correct
+- Filename has spaces — the `write_note` intercept did not run; re-run against a current brain build rather than repairing by hand
 - Frontmatter title missing colon — add via `find_replace`
 - H1 doesn't match frontmatter title — fix via `find_replace`
 - Observations <3 — add more observations with proper `[category]` + `#tags`
@@ -217,7 +217,7 @@ Before declaring Stage 2 complete + flipping SPEC DRAFT → ACCEPTED:
 | Avoid | Why | Instead |
 |---|---|---|
 | Skipping Phase 3 pre-flight on any note | Malformed notes ship; downstream consumers fail silently | Run all 11 pre-flight checks per note |
-| Skipping post-write verification | Pattern 2 Phase 3 `move_note` failures leave malformed filenames | Always verify via `list_directory` after creation |
+| Skipping post-write verification | A `write_note` intercept that did not run leaves malformed filenames | Always verify via `list_directory` after creation |
 | Running Gate A without adversarial framing | Analyst returns "spec looks fine" — useless | Brief MUST include reviewer-asymmetry + "find at least one concern per REQ" |
 | Running Gate B with non-binary checks | Subjective findings; hard to act on | Each check returns binary PASS or FAIL with cited evidence |
 | Skipping ADR coverage gate | Spec layer claims complete while ADRs unimplemented | Gate is BLOCKING; never skip |

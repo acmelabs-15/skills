@@ -211,7 +211,7 @@ ADR top-level structure:
 
 ## Authoring tools
 
-- Use Brain MCP Pattern 2 three-phase write to create the ADR
+- Create the ADR with a single Brain MCP `write_note` call passing the full colon title
 - counter-availability: list_directory decisions to find next ADR-NNN
 - frontmatter title MUST contain colon: "ADR-NNN: {Topic Title Case}"
 - filename kebab: adr-nnn-{slug}.md

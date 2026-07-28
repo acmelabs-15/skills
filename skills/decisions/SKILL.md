@@ -39,18 +39,14 @@ When auto-invoked from `/plan PLAN-NNN`, /decisions arrives via Contract 2 dispa
 |---|---|
 | `d_n_substatus` mutations | PLAN-part: each D-N locked PENDING → LOCKED with verbatim option text |
 | SESSION Event NN entries | One per locked D-N (Contract 5; Type `decision-lock`) |
-| ADR-NNN note | `docs/decisions/ADR-NNN-{slug}.md` (Brain note; Pattern 2 three-phase write) |
+| ADR-NNN note | `docs/decisions/ADR-NNN-{slug}.md` (Brain note; single `write_note` call) |
 | `set-part-done` call back to /plan | Contract 1: `Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=decisions.{N} outcome=<ADR wikilink>")` |
 
 ## Cross-cutting behaviors (all invocations)
 
 ### Brain MCP binary rule
 
-All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). ADR titles contain a colon (`ADR-NNN: Topic`); creation uses Pattern 2 three-phase write:
-
-1. `write_note` with no-colon title (e.g., `ADR-001 Polar MCP`)
-2. `edit_note` (find_replace) to insert colons in frontmatter title + H1
-3. `move_note` to rename file to kebab form (e.g., `adr-001-polar-mcp.md`)
+All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). ADR creation is a single `write_note` call passing the full colon title (e.g., `ADR-001: Polar MCP`); Brain MCP derives the kebab filename (`adr-001-polar-mcp.md`) and bare permalink and indexes the note immediately. Verify via `list_directory`. No `edit_note` or `move_note` follow-up.
 
 ADR frontmatter additionally carries `date: YYYY-MM-DD` (set on first ACCEPTED transition) + `updated: YYYY-MM-DD` (refreshed on Clarifications or substantive body change).
 

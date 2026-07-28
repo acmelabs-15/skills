@@ -82,7 +82,7 @@ Brief includes:
 
 ## Step 2 — Analyst writes ANALYSIS-NNN: SPEC Clustering
 
-The analyst writes to `docs/analysis/` via Brain MCP Pattern 2 three-phase. Required body sections:
+The analyst writes to `docs/analysis/` via a single Brain MCP `write_note` call passing the full colon title. Required body sections:
 
 ```markdown
 # ANALYSIS-NNN: SPEC Clustering for {Topic}

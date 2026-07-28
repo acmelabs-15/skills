@@ -33,7 +33,7 @@ For each requirement identified in the Stage 1 cluster, create a REQ note.
 - Filename: `REQ-{NNN}-SPEC-{NNN}-{descriptor}.md`
 - Title: `REQ-{NNN}-SPEC-{NNN}: {Descriptor in Title Case}`
 - Folder: `specs/SPEC-NNN-{feature-kebab}/requirements/`
-- Pattern 2 three-phase write (CONVENTIONS Section 1.7.2)
+- Single `write_note` call passing the full colon title (CONVENTIONS Section 1.7.2)
 
 Required sections (see `spec-templates.md` for full template):
 

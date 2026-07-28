@@ -76,11 +76,7 @@ Stage 2 (per-SPEC; spec.SPEC-NNN):
 
 ### Brain MCP binary rule
 
-All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). All 4 SPEC subtree note types (SPEC root, REQ, DESIGN, TASK) have colons in titles; creation uses Pattern 2 three-phase write:
-
-1. `write_note` with no-colon title (e.g., `REQ-001-SPEC-001 Injectable Data Source`)
-2. `edit_note` (find_replace) to insert colons in frontmatter title + H1
-3. `move_note` to rename to kebab filename (e.g., `req-001-spec-001-injectable-data-source.md`)
+All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). All 4 SPEC subtree note types (SPEC root, REQ, DESIGN, TASK) have colons in titles, and each is created with a single `write_note` call passing the full colon title (e.g., `REQ-001-SPEC-001: Injectable Data Source`); Brain MCP derives the kebab filename (`req-001-spec-001-injectable-data-source.md`) and bare permalink and indexes the note immediately. Verify via `list_directory`. No `edit_note` or `move_note` follow-up.
 
 ### Two-step edit pattern (per D-04 + Contract 5)
 
