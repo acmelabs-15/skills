@@ -81,7 +81,7 @@ one — that is what makes an identity retired. The scanner never guesses histor
 an alias you omit is a class of stale reference nothing downstream can see.
 
 ```bash
-bun run shared/composition/src/reference-scan.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
   --docs-root docs \
   --targets docs/_restructure/recompose-{id}-targets.json \
   --out docs/_restructure/recompose-{id}-impact.json
@@ -201,7 +201,7 @@ can return rows from other projects, and the index can serve rows for notes that
 have moved or been renumbered — then pass the verified hits via `--merge`:
 
 ```bash
-bun run shared/composition/src/reference-scan.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
   --docs-root docs \
   --targets docs/_restructure/recompose-{id}-targets.json \
   --merge docs/_restructure/recompose-{id}-advisory.json \
@@ -282,7 +282,7 @@ text arrives from one source while another source's correction claims it is
 gone. Baseline every source before merging:
 
 ```bash
-bun run shared/composition/src/correction-reconcile.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/correction-reconcile.js" \
   --docs-root docs --source <source-a.md> --source <source-b.md> \
   --out docs/_restructure/recompose-{id}-corrections-before.json
 ```
@@ -296,7 +296,7 @@ the opposite direction from a split: two sources each claiming "8 rows" become
 one note whose table has sixteen, and both claims survive into it. Baseline:
 
 ```bash
-bun run shared/composition/src/figure-check.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/figure-check.js" \
   --docs-root docs --note <source-a.md> --note <source-b.md> \
   --out docs/_restructure/recompose-{id}-figures-before.json
 ```
@@ -338,7 +338,7 @@ Summary format:
 # SKILLS_DOCS_ROOT activates the realpath containment check (CWE-22).
 # Without it the lexical guard still runs, but symlink escapes are not caught.
 export SKILLS_DOCS_ROOT="$(pwd)/docs"
-bun run shared/composition/src/recompose.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/recompose.js" \
   --plan docs/_restructure/recompose-{id}-plan.yaml --root docs
 ```
 
@@ -375,12 +375,12 @@ section_map:   { "ANALYSIS-034": { "Section 6": "Section 3" } }
 Preview first — the default, which writes nothing — then apply:
 
 ```bash
-bun run shared/composition/src/repoint.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/repoint.js" \
   --manifest docs/_restructure/recompose-{id}-impact.json \
   --plan docs/_restructure/recompose-{id}-repoint.yaml \
   --docs-root docs --out docs/_restructure/recompose-{id}-repoint-preview.json
 
-bun run shared/composition/src/repoint.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/repoint.js" \
   --manifest docs/_restructure/recompose-{id}-impact.json \
   --plan docs/_restructure/recompose-{id}-repoint.yaml \
   --apply --docs-root docs --out docs/_restructure/recompose-{id}-repoint.json
@@ -448,7 +448,7 @@ Work the brief first, then run the check — a closure run against an unworked b
 only re-reports what the brief already said:
 
 ```bash
-bun run shared/composition/src/reference-scan.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
   --check --manifest docs/_restructure/recompose-{id}-impact.json \
   --docs-root docs \
   --retain docs/_restructure/recompose-{id}-retain.json \
@@ -491,11 +491,11 @@ finished.
 Re-run both Step 3 companions against the merged target and diff the baselines:
 
 ```bash
-bun run shared/composition/src/correction-reconcile.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/correction-reconcile.js" \
   --docs-root docs --source <merged-target.md> \
   --out docs/_restructure/recompose-{id}-corrections-after.json
 
-bun run shared/composition/src/figure-check.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/figure-check.js" \
   --docs-root docs --note <merged-target.md> \
   --out docs/_restructure/recompose-{id}-figures-after.json
 ```

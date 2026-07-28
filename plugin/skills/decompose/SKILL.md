@@ -23,7 +23,7 @@ This skill follows the locked three-phase workflow from `KICKOFF-BRIEF.md`:
 
 1. LLM authoring — you read the source, classify its `source_type`, identify cluster seams, and author a distribution plan YAML
 2. User adjudication — you present the plan via AskUserQuestion; the user approves, rejects with feedback (refinement loop), or aborts
-3. Script execution — on approval, you invoke `bun run shared/composition/src/decompose.ts --plan <path>` and report the audit log
+3. Script execution — on approval, you invoke `bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/decompose.js" --plan <path>` and report the audit log
 
 Never write to destination files directly. Never bypass the adjudication step.
 
@@ -107,7 +107,7 @@ CWE-22 guard rejects traversal in plan content. Since the plan lives at
 to it:
 
 ```bash
-bun run shared/composition/src/decompose.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/decompose.js" \
   --plan docs/_restructure/decompose-{id}-plan.yaml --root docs
 ```
 
@@ -150,7 +150,7 @@ never guesses history, so an alias you omit is a whole class of stale reference
 nothing downstream can see.
 
 ```bash
-bun run shared/composition/src/reference-scan.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
   --docs-root docs \
   --targets docs/_restructure/decompose-{id}-targets.json \
   --out docs/_restructure/decompose-{id}-impact.json
@@ -301,7 +301,7 @@ that does not resolve. Write the verified hits to a JSON file shaped like the
 manifest's `findings` entries and pass it in:
 
 ```bash
-bun run shared/composition/src/reference-scan.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
   --docs-root docs \
   --targets docs/_restructure/decompose-{id}-targets.json \
   --merge docs/_restructure/decompose-{id}-advisory.json \
@@ -418,7 +418,7 @@ correction — the obligation then points into a child, or into content that sta
 behind, and nobody finds out. Check before you split:
 
 ```bash
-bun run shared/composition/src/correction-reconcile.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/correction-reconcile.js" \
   --docs-root docs --source <source-note.md> \
   --out docs/_restructure/decompose-{id}-corrections-before.json
 ```
@@ -437,7 +437,7 @@ table moves to a child, or a child inherits half a table and the whole count.
 Baseline before:
 
 ```bash
-bun run shared/composition/src/figure-check.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/figure-check.js" \
   --docs-root docs --note <source-note.md> \
   --out docs/_restructure/decompose-{id}-figures-before.json
 ```
@@ -498,7 +498,7 @@ Run the CLI entry point via Bun.$:
 # SKILLS_DOCS_ROOT activates the realpath containment check (CWE-22).
 # Without it the lexical guard still runs, but symlink escapes are not caught.
 export SKILLS_DOCS_ROOT="$(pwd)/docs"
-bun run shared/composition/src/decompose.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/decompose.js" \
   --plan docs/_restructure/decompose-{id}-plan.yaml --root docs
 ```
 
@@ -538,12 +538,12 @@ section_map:   { "ANALYSIS-034": { "Section 6": "Section 3" } }
 Preview first — this is the default and writes nothing — then apply:
 
 ```bash
-bun run shared/composition/src/repoint.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/repoint.js" \
   --manifest docs/_restructure/decompose-{id}-impact.json \
   --plan docs/_restructure/decompose-{id}-repoint.yaml \
   --docs-root docs --out docs/_restructure/decompose-{id}-repoint-preview.json
 
-bun run shared/composition/src/repoint.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/repoint.js" \
   --manifest docs/_restructure/decompose-{id}-impact.json \
   --plan docs/_restructure/decompose-{id}-repoint.yaml \
   --apply --docs-root docs --out docs/_restructure/decompose-{id}-repoint.json
@@ -642,7 +642,7 @@ new broke on the way. Work the brief first, then run the check — a closure run
 against an unworked brief just re-reports what the brief already told you.
 
 ```bash
-bun run shared/composition/src/reference-scan.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
   --check --manifest docs/_restructure/decompose-{id}-impact.json \
   --docs-root docs \
   --retain docs/_restructure/decompose-{id}-retain.json \
@@ -694,11 +694,11 @@ Re-run both Step 4 companions across the source AND every destination, and diff
 against the baselines:
 
 ```bash
-bun run shared/composition/src/correction-reconcile.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/correction-reconcile.js" \
   --docs-root docs --source <source-note.md> --source <dest-a.md> --source <dest-b.md> \
   --out docs/_restructure/decompose-{id}-corrections-after.json
 
-bun run shared/composition/src/figure-check.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/figure-check.js" \
   --docs-root docs --note <source-note.md> --note <dest-a.md> --note <dest-b.md> \
   --out docs/_restructure/decompose-{id}-figures-after.json
 ```

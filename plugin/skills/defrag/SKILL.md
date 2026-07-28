@@ -83,7 +83,7 @@ entirely a function of that number.
 Run the scanner over the candidate set to supply the missing dimension:
 
 ```bash
-bun run shared/composition/src/reference-scan.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
   --docs-root docs \
   --targets defrag/reports/defrag-candidates-targets.json \
   --out defrag/reports/defrag-YYYY-MM-DD-impact.json
@@ -216,7 +216,7 @@ what a delete candidate costs to schedule, so it is worth stating in the report:
 
 ```bash
 # preview is the default and writes nothing; --apply is required to write
-bun run shared/composition/src/repoint.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/repoint.js" \
   --manifest defrag/reports/defrag-YYYY-MM-DD-impact.json \
   --plan defrag/reports/defrag-YYYY-MM-DD-repoint.yaml \
   --docs-root docs --out defrag/reports/defrag-YYYY-MM-DD-repoint-preview.json
@@ -256,7 +256,7 @@ the defrag convention that exit 2 means the audit found work.
 retires is a machine-checkable obligation:
 
 ```bash
-bun run shared/composition/src/correction-reconcile.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/correction-reconcile.js" \
   --docs-root docs --source <candidate.md> [--source ...] \
   --out defrag/reports/defrag-YYYY-MM-DD-corrections.json
 ```
@@ -272,7 +272,7 @@ is stronger still: the correction names a note that has moved or never existed.
 from it, and `--all` needs no configuration:
 
 ```bash
-bun run shared/composition/src/figure-check.ts \
+bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/figure-check.js" \
   --docs-root docs --all \
   --out defrag/reports/defrag-YYYY-MM-DD-figures.json
 ```

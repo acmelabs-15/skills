@@ -29,21 +29,33 @@ const root = import.meta.dir;
 const repoRoot = join(root, "..");
 const outdir = join(root, "dist");
 
-const patterns: readonly { readonly base: string; readonly glob: string }[] = [
-  { base: root, glob: "src/*.ts" },
-  { base: root, glob: "hooks/*.ts" },
-  { base: root, glob: "hooks/lib/*.ts" },
-  { base: root, glob: "skills/*/scripts/*.ts" },
-  { base: repoRoot, glob: "packages/cli/src/*.ts" },
+/**
+ * Each group builds with its own `root`, which is what decides the shape of the
+ * output path. The CLIs build from `packages/cli/src` so they land at
+ * `dist/cli/<name>.js` rather than carrying the source tree's directory names
+ * into the shipped artifact.
+ */
+const groups: readonly { readonly base: string; readonly glob: string; readonly outSub: string }[] = [
+  { base: root, glob: "src/*.ts", outSub: "" },
+  { base: root, glob: "hooks/*.ts", outSub: "" },
+  { base: root, glob: "hooks/lib/*.ts", outSub: "" },
+  { base: root, glob: "skills/*/scripts/*.ts", outSub: "" },
+  { base: join(repoRoot, "packages/cli/src"), glob: "*.ts", outSub: "cli" },
 ];
 
-const entrypoints: string[] = [];
-for (const { base, glob } of patterns) {
+const builds: { readonly entrypoints: string[]; readonly root: string; readonly outdir: string }[] = [];
+for (const { base, glob, outSub } of groups) {
+  const found: string[] = [];
   for await (const file of new Glob(glob).scan({ cwd: base, absolute: true })) {
     if (file.endsWith(".test.ts") || file.includes("__tests__")) continue;
-    entrypoints.push(file);
+    found.push(file);
   }
+  if (found.length === 0) continue;
+  const existing = builds.find((b) => b.root === base && b.outdir === join(outdir, outSub));
+  if (existing) existing.entrypoints.push(...found);
+  else builds.push({ entrypoints: found, root: base, outdir: join(outdir, outSub) });
 }
+const entrypoints = builds.flatMap((b) => b.entrypoints);
 
 if (entrypoints.length === 0) {
   console.log("skills build: no entry points found — nothing to bundle.");
@@ -52,26 +64,30 @@ if (entrypoints.length === 0) {
 
 await rm(outdir, { recursive: true, force: true });
 
-const result = await Bun.build({
-  entrypoints,
-  outdir,
-  root: repoRoot,
-  target: "bun",
-  splitting: false,
-  sourcemap: "linked",
-});
+let artifacts = 0;
+for (const build of builds) {
+  const result = await Bun.build({
+    entrypoints: build.entrypoints,
+    outdir: build.outdir,
+    root: build.root,
+    target: "bun",
+    splitting: false,
+    sourcemap: "linked",
+  });
 
-if (!result.success) {
-  console.error("skills build FAILED");
-  for (const log of result.logs) console.error(`  ${log}`);
-  process.exit(1);
+  if (!result.success) {
+    console.error("skills build FAILED");
+    for (const log of result.logs) console.error(`  ${log}`);
+    process.exit(1);
+  }
+  artifacts += result.outputs.length;
 }
 
 const lines = [
   `# skills plugin build`,
   ``,
   `- **Entry points**: ${entrypoints.length}`,
-  `- **Artifacts**: ${result.outputs.length}`,
+  `- **Artifacts**: ${artifacts}`,
   `- **Output**: \`${relative(repoRoot, outdir)}/\``,
   ``,
   `Every artifact is self-contained: the workspace packages and npm dependencies`,

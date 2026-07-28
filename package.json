@@ -8,6 +8,7 @@
     "plugin"
   ],
   "scripts": {
+    "prepare": "bun run plugin/build.ts",
     "build": "bun run plugin/build.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
