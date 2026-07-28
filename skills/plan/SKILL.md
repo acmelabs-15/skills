@@ -25,64 +25,13 @@ Flags applicable across modes:
 
 ### Role of /plan in the rigid cycle
 
-/plan is the lifecycle orchestrator. When a build part advances, /plan's PlanNote renderer (X.D.2) emits the per-TASK impl + qa instruction blocks; the orchestrator dispatches with those blocks verbatim. /plan never elides the cycle steps a–u. On failed QA, /plan re-enters step (a) for the same TASK with the orchestrator's fix-brief.
+> /plan is the lifecycle orchestrator. It holds sequence and status: when a build part advances, /plan's renderer emits the per-TASK impl + qa items as a progress rollup, and the dispatch briefs are rendered separately from the TASK/REQ/DESIGN subtree by `build/scripts/dispatch-implementer.ts` and `dispatch-qa.ts`. /plan never elides the cycle steps a–u. On failed QA, /plan re-enters step (a) for the same TASK with the orchestrator's fix-brief.
 
-## Rigid per-TASK build+QA cycle
+## Per-TASK build+QA cycle
 
-When a SPEC enters build, the orchestrator advances ONE TASK at a time through a fixed sequence. NO step may be skipped or reordered, NO batching, NO shortcuts.
+The cycle is defined once, in `../build/references/per-task-build-qa-cycle.md`. Read it there; it is not restated here.
 
-For each `TASK-NNN-SPEC-MMM` in the SPEC:
-
-a. PLAN transition `impl-TASK-NNN PENDING → IN_PROGRESS` (FIRST action)
-b. Session note Event appended capturing transition
-c. Git commit
-d. Orchestrator dispatches implementer; brief = rendered impl item content verbatim from PLAN
-e. Implementer reads ENTIRE spec subtree, implements ONLY this TASK, marks DoD `[x]` per item satisfied
-f. Implementer returns `## State Changes` (this TASK only)
-g. Session note Event
-h. PLAN transition `impl-TASK-NNN IN_PROGRESS → DONE`
-i. Git commit (code + PLAN + session note atomically)
-j. PLAN transition `qa-TASK-NNN PENDING → IN_PROGRESS`
-k. Session note Event
-l. Git commit
-m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
-n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via a single `write_note` call
-p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN` — nothing more; the QA note is the contract document
-q. Session note Event
-r. Orchestrator updates TASK note with `validated_by` relation to the QA note
-s. On PASS: PLAN `qa-TASK-NNN → DONE`; TASK note status → DONE. On FAILED: PLAN `qa-TASK-NNN → FAILED`; PLAN `impl-TASK-NNN DONE → IN_PROGRESS`; orchestrator translates QA findings into a fix-brief that quotes each unchecked item verbatim with QA evidence (file:line, test name)
-t. Git commit
-u. Move to TASK N+1; repeat from (a)
-
-## Checkbox-as-contract
-
-Implementer and QA do NOT figure out what counts as done from prose. The contract is mechanical:
-
-- `TASK ## Definition of Done` checkboxes — implementer's build contract
-- `REQ ## Acceptance Criteria` (EARS Given/When/Then) — QA validates against these
-- `DESIGN ## Compliance` or `## Architecture Compliance` checkboxes (when present) — QA validates against these
-
-When dispatching implementer: brief MUST quote the TASK DoD verbatim + link the linked REQs/DESIGNs + state "you implement against the checkboxes; you check [x] as each is satisfied".
-
-When dispatching QA: brief MUST quote the TASK DoD + linked REQ AC + linked DESIGN compliance verbatim + state "you validate each checkbox individually with evidence; you mark [x] for satisfied items, leave [ ] for unsatisfied; per-item PASS/FAIL/PARTIAL evidence to the QA note".
-
-## Schema-validated agent-claim verification
-
-The composition library at `shared/composition/` provides programmatic validators:
-
-- `TaskNoteSchema` + `validateTaskDoneClaim()` — rejects implementer "DONE" claim if any DoD `[ ]` unsatisfied
-- `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`
-- `DesignNoteSchema` + `validateDesignComplianceClaim()` — same for DESIGN
-- `SpecRootNoteSchema` + `validateSpecDoneClaim()` — same for SPEC root
-- `QaNoteSchema` + `validateQaPassClaim()` + schema superRefine — rejects QA "PASS" verdict that doesn't match per-row results AND rejects `tests_run !== passed + failed + skipped`
-- `PlanNoteSchema.BuildWorkflowItem` + `transition-impl-item` / `transition-qa-item` mutations — mandate session context (`owning_session` + `at_event`), throw on missing
-
-Lying agents are mechanically caught. The agent must actually do the work to satisfy the schema.
-
-## Defense in depth
-
-This protocol embeds at every enforcement layer — Zod schemas + templates + renderers + skill SKILL.md + orchestrator dispatch briefs. Single-layer enforcement fails under load. Each layer is independent and redundant by design.
+What /plan owns in that cycle is the lifecycle: it holds part sequence and status, advances ONE TASK at a time (NO batching, NO shortcuts), and records each impl/qa transition as a PLAN state change paired with a SESSION Event. The dispatch briefs are not /plan's — they are rendered from the TASK/REQ/DESIGN subtree by the two `build/scripts/dispatch-*.ts` scripts.
 
 ## Cross-cutting behaviors (all modes)
 
