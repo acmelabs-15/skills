@@ -1,0 +1,43 @@
+import { describe, expect, test } from "bun:test";
+// mkdtemp is a directory op with no Bun equivalent; content writes are Bun-native.
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { main, parseArgs } from "@acmelabs/cli/decompose";
+import { PlanValidationError } from "@acmelabs/core/schemas/plan-yaml";
+
+describe("decompose.ts CLI", () => {
+  test("rejects invalid --plan argument with usage message", () => {
+    expect(() => parseArgs([])).toThrow(PlanValidationError);
+    expect(() => parseArgs(["--plan"])).toThrow(/Usage: decompose.ts/);
+  });
+
+  test("main() exits 1 on plan YAML failing Zod validation", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "decompose-test-"));
+    const planPath = join(dir, "bad.yaml");
+    // Missing required `plan_type` and other fields → Zod rejects.
+    await Bun.write(planPath, "source_type: adr\nrenumber_map: {}\n");
+    const exit = await main(["--plan", planPath]);
+    expect(exit).toBe(1);
+  });
+
+  test("main() exits 1 on non-injective renumber_map", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "decompose-test-"));
+    const planPath = join(dir, "noninjective.yaml");
+    await Bun.write(
+      planPath,
+      [
+        "plan_type: distribution",
+        "source_type: adr",
+        "source_path: nope.md",
+        "renumber_map:",
+        "  D-1: D-100",
+        "  D-2: D-100", // duplicate codomain value
+        "wikilink_map: {}",
+        "",
+      ].join("\n"),
+    );
+    const exit = await main(["--plan", planPath]);
+    expect(exit).toBe(1);
+  });
+});

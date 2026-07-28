@@ -21,8 +21,8 @@
  */
 
 import { resolve, sep } from "node:path";
-import { parseSpecRootNote } from "../../../shared/composition/src/parsers/spec-root-note.ts";
-import { validateSpecDoneClaim } from "../../../shared/composition/src/validators/spec-claim-validator.ts";
+import { parseSpecRootNote } from "@acmelabs/models/parsers/spec-root-note";
+import { validateSpecDoneClaim } from "@acmelabs/models/validators/spec-claim-validator";
 
 async function main(args: string[]): Promise<number> {
   const specPath = args[0];

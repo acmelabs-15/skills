@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { ObservationCategoryEnum } from "../../../../shared/composition/src/schemas/common.ts";
+import { ObservationCategoryEnum } from "@acmelabs/models/schemas/common";
 import { main, renderAnalystBrief } from "../dispatch-analyst.ts";
 
 const REQ_SCOPE = "REQ-005-SPEC-008";

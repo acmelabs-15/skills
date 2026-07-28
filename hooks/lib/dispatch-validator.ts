@@ -46,26 +46,26 @@
 
 import { load as loadYaml } from "js-yaml";
 
-import { extractAndCheckClaim } from "../../shared/composition/src/validators/lenient-claim-extract.ts";
+import { extractAndCheckClaim } from "@acmelabs/models/validators/lenient-claim-extract";
 
-import { parseAdrNote } from "../../shared/composition/src/parsers/adr-note.ts";
-import { parseAnalysisNote } from "../../shared/composition/src/parsers/analysis-note.ts";
-import { parseDesignNote } from "../../shared/composition/src/parsers/design-note.ts";
-import { parseEpicNote } from "../../shared/composition/src/parsers/epic-note.ts";
-import { parsePlanNote } from "../../shared/composition/src/parsers/plan-note.ts";
-import { parseRequirementNote } from "../../shared/composition/src/parsers/requirement-note.ts";
-import { parseSpecRootNote } from "../../shared/composition/src/parsers/spec-root-note.ts";
-import { parseTaskNote } from "../../shared/composition/src/parsers/task-note.ts";
-import { parseQaNote } from "../../shared/composition/src/parsers/qa-note.ts";
-import { validateAdrAcceptedClaim } from "../../shared/composition/src/validators/adr-claim-validator.ts";
-import { validateAnalysisAcceptedClaim } from "../../shared/composition/src/validators/analysis-claim-validator.ts";
-import { validateDesignComplianceClaim } from "../../shared/composition/src/validators/design-claim-validator.ts";
-import { validateEpicDoneClaim } from "../../shared/composition/src/validators/epic-claim-validator.ts";
-import { validatePlanDoneClaim } from "../../shared/composition/src/validators/plan-claim-validator.ts";
-import { validateRequirementAcClaim } from "../../shared/composition/src/validators/requirement-claim-validator.ts";
-import { validateSpecDoneClaim } from "../../shared/composition/src/validators/spec-claim-validator.ts";
-import { validateTaskDoneClaim } from "../../shared/composition/src/validators/task-claim-validator.ts";
-import { validateQaPassClaim } from "../../shared/composition/src/validators/qa-claim-validator.ts";
+import { parseAdrNote } from "@acmelabs/models/parsers/adr-note";
+import { parseAnalysisNote } from "@acmelabs/models/parsers/analysis-note";
+import { parseDesignNote } from "@acmelabs/models/parsers/design-note";
+import { parseEpicNote } from "@acmelabs/models/parsers/epic-note";
+import { parsePlanNote } from "@acmelabs/models/parsers/plan-note";
+import { parseRequirementNote } from "@acmelabs/models/parsers/requirement-note";
+import { parseSpecRootNote } from "@acmelabs/models/parsers/spec-root-note";
+import { parseTaskNote } from "@acmelabs/models/parsers/task-note";
+import { parseQaNote } from "@acmelabs/models/parsers/qa-note";
+import { validateAdrAcceptedClaim } from "@acmelabs/models/validators/adr-claim-validator";
+import { validateAnalysisAcceptedClaim } from "@acmelabs/models/validators/analysis-claim-validator";
+import { validateDesignComplianceClaim } from "@acmelabs/models/validators/design-claim-validator";
+import { validateEpicDoneClaim } from "@acmelabs/models/validators/epic-claim-validator";
+import { validatePlanDoneClaim } from "@acmelabs/models/validators/plan-claim-validator";
+import { validateRequirementAcClaim } from "@acmelabs/models/validators/requirement-claim-validator";
+import { validateSpecDoneClaim } from "@acmelabs/models/validators/spec-claim-validator";
+import { validateTaskDoneClaim } from "@acmelabs/models/validators/task-claim-validator";
+import { validateQaPassClaim } from "@acmelabs/models/validators/qa-claim-validator";
 
 /** Brain-note `type:` values that carry a claim contract (CRIT excluded per ADR-005 D-5). */
 export type DispatchNoteType =

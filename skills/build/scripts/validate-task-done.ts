@@ -14,8 +14,8 @@
  */
 
 import { resolve, sep } from "node:path";
-import { parseTaskNote } from "../../../shared/composition/src/parsers/task-note.ts";
-import { validateTaskDoneClaim } from "../../../shared/composition/src/validators/task-claim-validator.ts";
+import { parseTaskNote } from "@acmelabs/models/parsers/task-note";
+import { validateTaskDoneClaim } from "@acmelabs/models/validators/task-claim-validator";
 
 async function main(args: string[]): Promise<number> {
   const taskPath = args[0];

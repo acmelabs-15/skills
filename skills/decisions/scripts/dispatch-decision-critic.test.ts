@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { validRelationTypes } from "../../../shared/composition/src/schemas/common.ts";
+import { validRelationTypes } from "@acmelabs/models/schemas/common";
 import {
   ADVERSARIAL_ASYMMETRY_MANDATE_MARKER,
   main,

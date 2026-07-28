@@ -12,7 +12,7 @@
  */
 
 import { resolve, sep } from "node:path";
-import { parseTaskNote } from "../../../shared/composition/src/parsers/task-note.ts";
+import { parseTaskNote } from "@acmelabs/models/parsers/task-note";
 
 /** Captured stream lines — exported for test ergonomics. */
 export interface CaptureResult {

@@ -22,8 +22,8 @@
  */
 
 import path from "node:path";
-import { applyPlanMutation } from "../../../shared/composition/src/mutations/plan-mutations.ts";
-import type { BuildWorkflowStatus } from "../../../shared/composition/src/schemas/plan-note.ts";
+import { applyPlanMutation } from "@acmelabs/models/mutations/plan-mutations";
+import type { BuildWorkflowStatus } from "@acmelabs/models/schemas/plan-note";
 
 const WORKFLOW_STATUSES: readonly BuildWorkflowStatus[] = [
   "PENDING",

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { validRelationTypes } from "../../../shared/composition/src/schemas/common.ts";
+import { validRelationTypes } from "@acmelabs/models/schemas/common";
 import { main, renderQaBrief } from "./dispatch-qa.ts";
 
 const TASK_REF = "TASK-018-SPEC-008";

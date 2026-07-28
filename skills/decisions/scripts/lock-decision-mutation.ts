@@ -23,8 +23,8 @@
  */
 
 import path from "node:path";
-import { applyPlanMutation } from "../../../shared/composition/src/mutations/plan-mutations.ts";
-import { parsePlanNote } from "../../../shared/composition/src/parsers/plan-note.ts";
+import { applyPlanMutation } from "@acmelabs/models/mutations/plan-mutations";
+import { parsePlanNote } from "@acmelabs/models/parsers/plan-note";
 
 interface LockDecisionArgs {
   planPath: string;

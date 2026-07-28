@@ -2,7 +2,7 @@
  * Fixture loaders for the hook smoke tests.
  *
  * The adversarial fixtures authored by Track 3 (REQ-006) live under
- * `shared/composition/tests/fixtures/adversarial/<type>/`. Per ADR-005 D-8
+ * `packages/fixtures/adversarial/<type>/`. Per ADR-005 D-8
  * Cross-D-N Implications, each fixture IS the lying claim a hook must deny, so
  * the smoke tests reuse them directly rather than re-authoring lying notes.
  *
@@ -28,9 +28,7 @@ const REPO_ROOT = resolve(import.meta.dir, "..", "..", "..", "..");
 /** Directory holding the Track-3 adversarial fixture tree. */
 const ADVERSARIAL_DIR = resolve(
   REPO_ROOT,
-  "shared",
-  "composition",
-  "tests",
+  "packages",
   "fixtures",
   "adversarial",
 );
@@ -38,9 +36,7 @@ const ADVERSARIAL_DIR = resolve(
 /** Canonical composition-library TASK sample (status IN_PROGRESS by default). */
 const TASK_SAMPLE = resolve(
   REPO_ROOT,
-  "shared",
-  "composition",
-  "tests",
+  "packages",
   "fixtures",
   "task-note-sample.md",
 );

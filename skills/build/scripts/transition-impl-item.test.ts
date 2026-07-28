@@ -2,11 +2,11 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { renderPlanNote } from "../../../shared/composition/src/renderers/plan-note.ts";
+import { renderPlanNote } from "@acmelabs/models/renderers/plan-note";
 import type {
   BuildWorkflowStatus,
   PlanNote,
-} from "../../../shared/composition/src/schemas/plan-note.ts";
+} from "@acmelabs/models/schemas/plan-note";
 import { transitionImplItemCli } from "./transition-impl-item.ts";
 
 const SESSION = "SESSION-2026-05-23_01";

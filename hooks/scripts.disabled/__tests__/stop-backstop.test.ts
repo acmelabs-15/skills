@@ -52,7 +52,7 @@ async function initRepo(): Promise<string> {
 // The canonical composition-library TASK sample (status IN_PROGRESS — claim
 // gate dormant, dispatch returns allow). Read at runtime so the fixture stays
 // authoritative as the schema evolves.
-const FIXTURE_DIR = new URL("../../../shared/composition/tests/fixtures/", import.meta.url);
+const FIXTURE_DIR = new URL("../../../packages/fixtures/", import.meta.url);
 
 async function taskSample(): Promise<string> {
   return Bun.file(new URL("task-note-sample.md", FIXTURE_DIR)).text();

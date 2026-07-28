@@ -22,7 +22,7 @@
  *   2  usage error (missing required scope arg — stderr = usage line)
  */
 
-import { ObservationCategoryEnum } from "../../../shared/composition/src/schemas/common.ts";
+import { ObservationCategoryEnum } from "@acmelabs/models/schemas/common";
 
 export interface AnalystBriefArgs {
   /** Per-requirement scope identifier, e.g. "REQ-005-SPEC-008" or a topic slug. */

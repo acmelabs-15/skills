@@ -54,7 +54,7 @@ async function initRepoWithOrigin(): Promise<{ baseDir: string; repoRoot: string
   return { baseDir, repoRoot };
 }
 
-const FIXTURE_DIR = new URL("../../../shared/composition/tests/fixtures/", import.meta.url);
+const FIXTURE_DIR = new URL("../../../packages/fixtures/", import.meta.url);
 
 async function taskSample(): Promise<string> {
   return Bun.file(new URL("task-note-sample.md", FIXTURE_DIR)).text();

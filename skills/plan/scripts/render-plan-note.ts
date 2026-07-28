@@ -24,8 +24,8 @@
  */
 
 import path from "node:path";
-import { parsePlanNote } from "../../../shared/composition/src/parsers/plan-note.ts";
-import { renderPlanNote } from "../../../shared/composition/src/renderers/plan-note.ts";
+import { parsePlanNote } from "@acmelabs/models/parsers/plan-note";
+import { renderPlanNote } from "@acmelabs/models/renderers/plan-note";
 
 interface RenderArgs {
   readonly planPath: string;

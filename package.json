@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "workspaces": ["shared/composition"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "test": "bun test skills/defrag skills/ingest shared",
     "test:all": "bun test",
@@ -12,7 +14,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "@acmelabs/models": "workspace:*",
+    "@acmelabs/core": "workspace:*",
+    "@acmelabs/cli": "workspace:*",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

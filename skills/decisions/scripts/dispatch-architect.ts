@@ -20,12 +20,12 @@
  *   2  usage error — missing required args; stderr prints usage line
  */
 
-import { AdrNoteStatusEnum } from "../../../shared/composition/src/schemas/adr-note.ts";
+import { AdrNoteStatusEnum } from "@acmelabs/models/schemas/adr-note";
 import {
   ObservationCategoryEnum,
   RelationVerbEnum,
   validRelationTypes,
-} from "../../../shared/composition/src/schemas/common.ts";
+} from "@acmelabs/models/schemas/common";
 
 export interface ArchitectBriefArgs {
   /** Wikilink-style ADR ref, e.g. "ADR-005: Protocol Hardening Wave 2 Architecture" */

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { applyPlanMutation } from "../../../shared/composition/src/mutations/plan-mutations.ts";
+import { applyPlanMutation } from "@acmelabs/models/mutations/plan-mutations";
 import { transitionQaItemCli } from "./transition-qa-item.ts";
 
 const SESSION = "SESSION-2026-05-24_01";

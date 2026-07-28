@@ -15,7 +15,7 @@
  *   2  usage error (missing required args — stderr = usage line)
  */
 
-import { validRelationTypes } from "../../../shared/composition/src/schemas/common.ts";
+import { validRelationTypes } from "@acmelabs/models/schemas/common";
 
 interface QaBriefArgs {
   taskRef: string;

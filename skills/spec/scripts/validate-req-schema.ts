@@ -11,7 +11,7 @@
  */
 
 import { resolve, sep } from "node:path";
-import { parseRequirementNote } from "../../../shared/composition/src/parsers/requirement-note.ts";
+import { parseRequirementNote } from "@acmelabs/models/parsers/requirement-note";
 
 /** Captured stream lines — exported for test ergonomics. */
 export interface CaptureResult {

@@ -11,7 +11,7 @@
  */
 
 import { resolve, sep } from "node:path";
-import { parseDesignNote } from "../../../shared/composition/src/parsers/design-note.ts";
+import { parseDesignNote } from "@acmelabs/models/parsers/design-note";
 
 /** Captured stream lines — exported for test ergonomics. */
 export interface CaptureResult {

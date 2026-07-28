@@ -20,7 +20,7 @@
  *   2  usage error — missing required args; stderr prints usage line
  */
 
-import { validRelationTypes } from "../../../shared/composition/src/schemas/common.ts";
+import { validRelationTypes } from "@acmelabs/models/schemas/common";
 
 /** Stable marker substring asserted by colocated tests. */
 export const ADVERSARIAL_ASYMMETRY_MANDATE_MARKER = "ADVERSARIAL ASYMMETRY MANDATE";

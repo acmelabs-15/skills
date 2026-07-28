@@ -25,7 +25,7 @@ import yaml from "js-yaml";
 import {
   ObservationCategoryEnum,
   validRelationTypes,
-} from "../../../shared/composition/src/schemas/common.ts";
+} from "@acmelabs/models/schemas/common";
 
 /** The 16 canonical entity types (CONVENTIONS Section 3, item 8.1.5). */
 const CANONICAL_TYPES = new Set<string>([
