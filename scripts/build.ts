@@ -1,8 +1,15 @@
 #!/usr/bin/env bun
 /**
- * skills plugin build — bundles every runtime entry point into `dist/`, INLINING
- * the workspace packages (@acmelabs/models, @acmelabs/core, @acmelabs/cli) and
- * npm deps so the installed plugin needs ZERO runtime dependency resolution.
+ * skills plugin build — bundles every runtime entry point into `dist/`, pulling
+ * in the workspace packages (@acmelabs/models, @acmelabs/core, @acmelabs/cli)
+ * and npm deps so the installed plugin needs ZERO runtime dependency
+ * resolution.
+ *
+ * The packages are NOT build targets. They are dependencies of the entry
+ * points, resolved through the workspace by specifier exactly as a published
+ * package would be, and the bundler decides how they land in the output. No
+ * source file references `dist/`; the build reads source and writes artifacts,
+ * never the reverse.
  *
  * Why: Anthropic documents that an installed plugin cannot reference files
  * outside its own directory — "Paths that traverse outside the plugin root (such
@@ -79,8 +86,25 @@ for (const build of builds) {
     outdir: build.outdir,
     root: build.root,
     target: "bun",
-    splitting: false,
-    sourcemap: "linked",
+    /**
+     * Shared code is emitted ONCE as a content-hashed chunk that the entry
+     * points import, instead of being inlined into all 31 of them. The
+     * workspace packages are large relative to the scripts that use them, so
+     * inlining them per entry point produced 31 copies — 34 MB where 1.6 MB
+     * carries the same code.
+     *
+     * Nothing in the source tree references a chunk: entry points import
+     * `@acmelabs/models/...` by workspace specifier and the bundler decides
+     * the output shape. Chunk filenames are content-hashed and disposable,
+     * which is what keeps them out of the source tree's vocabulary.
+     */
+    splitting: true,
+    /**
+     * Sourcemaps are a development artifact, not a shipped one — they were
+     * 24 MB of the previous 34 MB output. Debugging happens against the
+     * source tree, which is what the maps would point back at anyway.
+     */
+    sourcemap: "none",
   });
 
   if (!result.success) {
@@ -98,8 +122,11 @@ const lines = [
   `- **Artifacts**: ${artifacts}`,
   `- **Output**: \`${relative(repoRoot, outdir)}/\``,
   ``,
-  `Every artifact is self-contained: the workspace packages and npm dependencies`,
-  `are inlined, so nothing resolves at runtime. Invoke via`,
-  `\`bun "\${CLAUDE_PLUGIN_ROOT}/dist/…"\`.`,
+  `- **Shared chunks**: ${artifacts - entrypoints.length}`,
+  ``,
+  `The workspace packages and npm dependencies are bundled in, so nothing`,
+  `resolves against \`node_modules\` at runtime. Code shared across entry points`,
+  `is emitted once as a chunk those entry points import, rather than inlined`,
+  `into each. Invoke via \`bun "\${CLAUDE_PLUGIN_ROOT}/dist/…"\`.`,
 ];
 console.log(lines.join("\n"));
