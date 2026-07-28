@@ -33,7 +33,13 @@ import {
  * deleted — they now guard against the note regressing back to unparseable, which is
  * the more useful direction for a fixture that must stay in sync with a live note.
  */
-const QA_092 = join(import.meta.dir, "..", "..", "fixtures", "qa-092-unparented-build-validation.md");
+const QA_092 = join(
+  import.meta.dir,
+  "..",
+  "..",
+  "fixtures",
+  "qa-092-unparented-build-validation.md",
+);
 const CONTROL = join(import.meta.dir, "..", "..", "fixtures", "qa-note-sample.md");
 
 const QA_092_TITLE = "QA-092: Pipeline Completion Build Validation";

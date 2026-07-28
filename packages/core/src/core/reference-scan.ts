@@ -24,12 +24,13 @@
 // node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
 // All file I/O is Bun-native: Bun.Glob to enumerate, Bun.file to read.
 import { resolve } from "node:path";
+import { sectionizeH2 } from "@acmelabs/models/parsers/ast-helpers";
 import type { RootContent } from "mdast";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import { sectionizeH2 } from "@acmelabs/models/parsers/ast-helpers";
+import { type ParsedRelation, parseRelationEntries } from "../../../models/src/relations.js";
 import { PlanValidationError } from "../schemas/plan-yaml.js";
 import {
   type ClassCounts,
@@ -52,7 +53,6 @@ import {
 import { discoverCandidates } from "./reference-funnel.js";
 import { applyGraphLeg } from "./reference-graph.js";
 import { matchLine } from "./reference-matchers.js";
-import { type ParsedRelation, parseRelationEntries } from "../../../models/src/relations.js";
 
 const processor = unified().use(remarkParse).use(remarkGfm).use(remarkFrontmatter, ["yaml"]);
 

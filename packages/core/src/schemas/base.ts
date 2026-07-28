@@ -25,8 +25,8 @@
  */
 import { resolve } from "node:path";
 import { z } from "zod";
-import { containedWritePath, injectiveDisjointMap } from "../core/validators.js";
 import { ObservationSchema, RelationSchema } from "../../../models/src/schemas/common.js";
+import { containedWritePath, injectiveDisjointMap } from "../core/validators.js";
 
 /**
  * Integer tolerant of the string form `FAILSAFE_SCHEMA` produces.

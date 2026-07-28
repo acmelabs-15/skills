@@ -23,8 +23,8 @@ import { mkdtempSync, symlinkSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { findUncontainedPaths } from "@acmelabs/core/schemas/base";
 import { main as decomposeMain } from "@acmelabs/cli/decompose";
+import { findUncontainedPaths } from "@acmelabs/core/schemas/base";
 import { DistributionPlanSchema } from "@acmelabs/core/schemas/plan-yaml";
 
 const ENV_KEY = "SKILLS_DOCS_ROOT" as const;

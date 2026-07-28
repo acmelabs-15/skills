@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import yaml from "js-yaml";
-import { z } from "zod";
 import { lineRangeSchema, mutationSpecSchema } from "@acmelabs/core/schemas/base";
 import { planSourceEntrySchema } from "@acmelabs/core/schemas/distribution/plan.plan.schema";
+import yaml from "js-yaml";
+import { z } from "zod";
 
 /**
  * Local containers for exercising the PLAN integrity-floor rules.
@@ -286,7 +286,13 @@ describe("PLAN fixture YAML parses against schemas (TASK-010 — DoD-2/DoD-4/DoD
   });
 
   test("plan-distribution.plan.yaml fixture parses via planDistributionPlanSchema", async () => {
-    const fixturePath = join(import.meta.dir, "..", "..", "fixtures", "plan-distribution.plan.yaml");
+    const fixturePath = join(
+      import.meta.dir,
+      "..",
+      "..",
+      "fixtures",
+      "plan-distribution.plan.yaml",
+    );
     const raw = await Bun.file(fixturePath).text();
     const doc = yaml.load(raw);
     const result = planDistributionPlanSchema.safeParse(doc);

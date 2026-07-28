@@ -21,11 +21,8 @@
  */
 
 import { basename, resolve, sep } from "node:path";
+import { ObservationCategoryEnum, validRelationTypes } from "@acmelabs/models/schemas/common";
 import yaml from "js-yaml";
-import {
-  ObservationCategoryEnum,
-  validRelationTypes,
-} from "@acmelabs/models/schemas/common";
 
 /** The 16 canonical entity types (CONVENTIONS Section 3, item 8.1.5). */
 const CANONICAL_TYPES = new Set<string>([

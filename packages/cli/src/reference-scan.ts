@@ -60,7 +60,6 @@
 
 // node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
 import { resolve } from "node:path";
-import { ZodError } from "zod";
 import type { SearchRunner } from "@acmelabs/core/core/brain-cli";
 import { checkClosure } from "@acmelabs/core/core/reference-closure";
 import { type TargetSpec, buildImpactManifest } from "@acmelabs/core/core/reference-scan";
@@ -74,6 +73,7 @@ import {
   type SearchReferenceFinding,
   TargetsFileSchema,
 } from "@acmelabs/core/schemas/reference-manifest";
+import { ZodError } from "zod";
 
 const MAX_INPUT_BYTES = 8 * 1024 * 1024;
 

@@ -16,9 +16,9 @@ import { describe, expect, test } from "bun:test";
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { main as decomposeMain } from "@acmelabs/cli/decompose";
 import { type ClusterScaffold, stripScaffold } from "@acmelabs/core/core/cluster-scaffold";
 import { sha256 } from "@acmelabs/core/core/hash";
-import { main as decomposeMain } from "@acmelabs/cli/decompose";
 
 const fixtureDir = join(import.meta.dir, "..", "..", "fixtures");
 const exists = (p: string): Promise<boolean> => Bun.file(p).exists();

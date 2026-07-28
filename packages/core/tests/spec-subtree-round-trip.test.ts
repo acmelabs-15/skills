@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import { z } from "zod";
 import { specSubtreeManifestSchema } from "@acmelabs/core/schemas/distribution/spec-subtree.plan.schema";
+import { z } from "zod";
 
 /**
  * Local containers for exercising the SPEC subtree manifest fragment.

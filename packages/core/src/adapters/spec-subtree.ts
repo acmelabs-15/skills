@@ -4,7 +4,6 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
-import { lexicalPathViolation } from "../schemas/base.js";
 import type { CompositionAdapter } from "../core/adapter.js";
 import {
   type HashValidationEntry,
@@ -23,6 +22,7 @@ import {
   processSubtree as orchestrateSubtree,
 } from "../core/subtree-orchestrator.js";
 import type { LineRange, MutationSpec } from "../core/types.js";
+import { lexicalPathViolation } from "../schemas/base.js";
 
 export type {
   HashValidationEntry,

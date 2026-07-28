@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import { ZodError } from "zod";
 import { parseAdrNote } from "@acmelabs/models/parsers/adr-note";
+import { ZodError } from "zod";
 
 const fixtureDir = join(import.meta.dir, "..", "..", "..", "fixtures");
 

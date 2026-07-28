@@ -12,6 +12,7 @@ let captured: string[] = [];
 
 beforeEach(() => {
   captured = [];
+  // biome-ignore lint/suspicious/noExplicitAny: stubbing a readonly stream method
   (process.stdout as any).write = (chunk: string | Uint8Array): boolean => {
     if (typeof chunk === "string") {
       captured.push(chunk);
@@ -23,6 +24,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  // biome-ignore lint/suspicious/noExplicitAny: restoring the stub from above
   (process.stdout as any).write = originalWrite;
 });
 

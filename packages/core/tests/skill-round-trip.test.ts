@@ -11,9 +11,9 @@ import { describe, expect, test } from "bun:test";
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { sha256 } from "@acmelabs/core/core/hash";
 import { main as decomposeMain } from "@acmelabs/cli/decompose";
 import { main as recomposeMain } from "@acmelabs/cli/recompose";
+import { sha256 } from "@acmelabs/core/core/hash";
 
 const fixtureDir = join(import.meta.dir, "..", "..", "fixtures");
 

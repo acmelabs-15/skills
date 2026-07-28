@@ -25,8 +25,8 @@
  * byte-for-byte identical in strength to the unscaffolded case.
  */
 
-import yaml from "js-yaml";
 import type { Observation, Relation } from "@acmelabs/models/schemas/common";
+import yaml from "js-yaml";
 
 const NL = "\n";
 

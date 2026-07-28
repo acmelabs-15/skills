@@ -16,18 +16,18 @@
 // node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
 // All file I/O below is Bun-native: Bun.file for reads/probes, Bun.write to stage.
 import { dirname, resolve } from "node:path";
-import yaml from "js-yaml";
-import { ZodError } from "zod";
-import { findUncontainedPaths, lexicalPathViolation } from "../../core/src/schemas/base.js";
 import { cleanup, rename, stage } from "@acmelabs/core/core/atomic-write";
 import { stripScaffold } from "@acmelabs/core/core/cluster-scaffold";
 import { sha256 } from "@acmelabs/core/core/hash";
-import { getAdapter } from "./registry.js";
 import {
   CompositionPlanSchema,
   PlanValidationError,
   zodErrorToIssues,
 } from "@acmelabs/core/schemas/plan-yaml";
+import yaml from "js-yaml";
+import { ZodError } from "zod";
+import { findUncontainedPaths, lexicalPathViolation } from "../../core/src/schemas/base.js";
+import { getAdapter } from "./registry.js";
 
 const MAX_PLAN_BYTES = 1024 * 1024;
 

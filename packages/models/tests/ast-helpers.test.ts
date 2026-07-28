@@ -1,8 +1,4 @@
 import { describe, expect, test } from "bun:test";
-import remarkFrontmatter from "remark-frontmatter";
-import remarkGfm from "remark-gfm";
-import remarkParse from "remark-parse";
-import { unified } from "unified";
 import {
   ParseError,
   bulletFieldMap,
@@ -16,6 +12,10 @@ import {
   stripWikilink,
   tableRows,
 } from "@acmelabs/models/parsers/ast-helpers";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkGfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import { unified } from "unified";
 
 function parse(md: string) {
   return unified().use(remarkParse).use(remarkFrontmatter, ["yaml"]).use(remarkGfm).parse(md);

@@ -4,11 +4,11 @@ import { afterAll, describe, expect, test } from "bun:test";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { main, parseArgs } from "@acmelabs/cli/repoint";
 import { checkClosure } from "@acmelabs/core/core/reference-closure";
 import { buildImpactManifest, summarize } from "@acmelabs/core/core/reference-scan";
 import { executeRepoint } from "@acmelabs/core/core/repoint";
 import { workBriefEntries } from "@acmelabs/core/core/work-brief";
-import { main, parseArgs } from "@acmelabs/cli/repoint";
 import {
   type ImpactManifest,
   type ReferenceFinding,

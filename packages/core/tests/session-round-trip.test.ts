@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { join } from "node:path";
-import { z } from "zod";
 import { crossSourceUpdateSchema } from "@acmelabs/core/schemas/distribution/session.plan.schema";
+import { z } from "zod";
 
 /**
  * Local container for exercising the SESSION cross-source fragment.

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { ZodError } from "zod";
 import { parseEpicNote } from "@acmelabs/models/parsers/epic-note";
+import { ZodError } from "zod";
 
 /**
  * Inline fixture: a valid EPIC with `contains` relations and a matching

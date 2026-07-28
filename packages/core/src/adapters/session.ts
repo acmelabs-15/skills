@@ -1,8 +1,8 @@
+import { BaseMarkdownAdapter } from "../core/base-markdown-adapter.js";
 import type {
   CrossSourceUpdate,
   SessionCrossSourceCarrier,
 } from "../schemas/distribution/session.plan.schema.js";
-import { BaseMarkdownAdapter } from "../core/base-markdown-adapter.js";
 
 /**
  * Adapter for SESSION notes.

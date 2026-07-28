@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test";
+import { parseAdrNote } from "@acmelabs/models/parsers/adr-note";
+import { sectionizeH2 } from "@acmelabs/models/parsers/ast-helpers";
+import { inverseVerb, isSymmetricVerb, parseRelationEntries } from "@acmelabs/models/relations";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import { inverseVerb, isSymmetricVerb, parseRelationEntries } from "@acmelabs/models/relations";
-import { parseAdrNote } from "@acmelabs/models/parsers/adr-note";
-import { sectionizeH2 } from "@acmelabs/models/parsers/ast-helpers";
 
 const processor = unified().use(remarkParse).use(remarkGfm).use(remarkFrontmatter, ["yaml"]);
 

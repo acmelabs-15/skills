@@ -3,10 +3,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { renderPlanNote } from "@acmelabs/models/renderers/plan-note";
-import type {
-  BuildWorkflowStatus,
-  PlanNote,
-} from "@acmelabs/models/schemas/plan-note";
+import type { BuildWorkflowStatus, PlanNote } from "@acmelabs/models/schemas/plan-note";
 import { transitionImplItemCli } from "./transition-impl-item.ts";
 
 const SESSION = "SESSION-2026-05-23_01";

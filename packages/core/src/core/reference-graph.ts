@@ -22,11 +22,11 @@
  * where to write.
  */
 
+import { inverseVerb } from "../../../models/src/relations.js";
 import type { ReferenceFinding, ResolvedTarget } from "../schemas/reference-manifest.js";
 import { normalizeReference } from "./note-identity.js";
 import { NoteIndex } from "./note-index.js";
 import type { NoteRecord } from "./reference-scan.js";
-import { inverseVerb } from "../../../models/src/relations.js";
 
 /**
  * Resolve an edge target to a note. The shared `NoteIndex` handles the four

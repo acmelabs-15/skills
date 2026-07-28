@@ -53,19 +53,19 @@ import { parseAnalysisNote } from "@acmelabs/models/parsers/analysis-note";
 import { parseDesignNote } from "@acmelabs/models/parsers/design-note";
 import { parseEpicNote } from "@acmelabs/models/parsers/epic-note";
 import { parsePlanNote } from "@acmelabs/models/parsers/plan-note";
+import { parseQaNote } from "@acmelabs/models/parsers/qa-note";
 import { parseRequirementNote } from "@acmelabs/models/parsers/requirement-note";
 import { parseSpecRootNote } from "@acmelabs/models/parsers/spec-root-note";
 import { parseTaskNote } from "@acmelabs/models/parsers/task-note";
-import { parseQaNote } from "@acmelabs/models/parsers/qa-note";
 import { validateAdrAcceptedClaim } from "@acmelabs/models/validators/adr-claim-validator";
 import { validateAnalysisAcceptedClaim } from "@acmelabs/models/validators/analysis-claim-validator";
 import { validateDesignComplianceClaim } from "@acmelabs/models/validators/design-claim-validator";
 import { validateEpicDoneClaim } from "@acmelabs/models/validators/epic-claim-validator";
 import { validatePlanDoneClaim } from "@acmelabs/models/validators/plan-claim-validator";
+import { validateQaPassClaim } from "@acmelabs/models/validators/qa-claim-validator";
 import { validateRequirementAcClaim } from "@acmelabs/models/validators/requirement-claim-validator";
 import { validateSpecDoneClaim } from "@acmelabs/models/validators/spec-claim-validator";
 import { validateTaskDoneClaim } from "@acmelabs/models/validators/task-claim-validator";
-import { validateQaPassClaim } from "@acmelabs/models/validators/qa-claim-validator";
 
 /** Brain-note `type:` values that carry a claim contract (CRIT excluded per ADR-005 D-5). */
 export type DispatchNoteType =
@@ -321,9 +321,7 @@ const ROUTES: Record<DispatchNoteType, RouteEntry> = {
     parse: parseQaNote,
     terminalStatus: "DONE",
     check: (note) => {
-      const result = validateQaPassClaim(
-        note as Parameters<typeof validateQaPassClaim>[0],
-      );
+      const result = validateQaPassClaim(note as Parameters<typeof validateQaPassClaim>[0]);
       if (result.verdict === "FAIL") {
         return denyReason(
           "QaNoteSchema",

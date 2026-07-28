@@ -32,7 +32,6 @@
 
 // node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
 import { resolve } from "node:path";
-import { ZodError } from "zod";
 import { extractObligations } from "@acmelabs/core/core/correction-extract";
 import { reconcile } from "@acmelabs/core/core/correction-verify";
 import { buildNoteIndex, readNoteAt } from "@acmelabs/core/core/note-index";
@@ -44,6 +43,7 @@ import type {
 } from "@acmelabs/core/schemas/correction-obligation";
 import { ObligationsFileSchema } from "@acmelabs/core/schemas/correction-obligation";
 import { PlanValidationError, zodErrorToIssues } from "@acmelabs/core/schemas/plan-yaml";
+import { ZodError } from "zod";
 
 const MAX_INPUT_BYTES = 8 * 1024 * 1024;
 

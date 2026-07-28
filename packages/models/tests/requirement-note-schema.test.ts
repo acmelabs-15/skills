@@ -1,5 +1,8 @@
 import { describe, expect, test } from "bun:test";
-import { type RequirementNote, RequirementNoteSchema } from "@acmelabs/models/schemas/requirement-note";
+import {
+  type RequirementNote,
+  RequirementNoteSchema,
+} from "@acmelabs/models/schemas/requirement-note";
 
 function minimalReq(): RequirementNote {
   return {

@@ -26,20 +26,10 @@ import { resolve } from "node:path";
 const REPO_ROOT = resolve(import.meta.dir, "..", "..", "..", "..", "..");
 
 /** Directory holding the Track-3 adversarial fixture tree. */
-const ADVERSARIAL_DIR = resolve(
-  REPO_ROOT,
-  "packages",
-  "fixtures",
-  "adversarial",
-);
+const ADVERSARIAL_DIR = resolve(REPO_ROOT, "packages", "fixtures", "adversarial");
 
 /** Canonical composition-library TASK sample (status IN_PROGRESS by default). */
-const TASK_SAMPLE = resolve(
-  REPO_ROOT,
-  "packages",
-  "fixtures",
-  "task-note-sample.md",
-);
+const TASK_SAMPLE = resolve(REPO_ROOT, "packages", "fixtures", "task-note-sample.md");
 
 /** Terminal status per claim-bearing note type (the status the hook gate runs at). */
 export const TERMINAL_STATUS = {

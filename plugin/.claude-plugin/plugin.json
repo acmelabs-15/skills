@@ -9,11 +9,5 @@
   "homepage": "https://github.com/acmelabs-15/skills",
   "repository": "https://github.com/acmelabs-15/skills",
   "license": "MIT",
-  "keywords": [
-    "brain",
-    "knowledge-graph",
-    "composition",
-    "lifecycle",
-    "skills"
-  ]
+  "keywords": ["brain", "knowledge-graph", "composition", "lifecycle", "skills"]
 }

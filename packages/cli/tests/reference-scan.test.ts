@@ -5,11 +5,15 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { main, parseArgs } from "@acmelabs/cli/reference-scan";
 import { entityIdOfTitle, normalizeReference } from "@acmelabs/core/core/note-identity";
 import { checkClosure } from "@acmelabs/core/core/reference-closure";
 import { matchLine } from "@acmelabs/core/core/reference-matchers";
-import { buildImpactManifest, resolveTargets, scanReferences } from "@acmelabs/core/core/reference-scan";
-import { main, parseArgs } from "@acmelabs/cli/reference-scan";
+import {
+  buildImpactManifest,
+  resolveTargets,
+  scanReferences,
+} from "@acmelabs/core/core/reference-scan";
 import {
   type ClosureReport,
   type ImpactManifest,

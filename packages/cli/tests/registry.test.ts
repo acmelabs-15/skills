@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { AdrAdapter } from "@acmelabs/core/adapters/adr";
 import { getAdapter, listRegisteredSourceTypes } from "@acmelabs/cli/registry";
+import { AdrAdapter } from "@acmelabs/core/adapters/adr";
 
 describe("SPEC-005 registry dispatcher", () => {
   test("getAdapter('adr') returns AdrAdapter instance", () => {

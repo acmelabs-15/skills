@@ -21,7 +21,6 @@
  *     own, so the two trees cannot drift apart again.
  */
 import { describe, expect, test } from "bun:test";
-import yaml from "js-yaml";
 import {
   lineRangeSchema,
   mutationSpecSchema,
@@ -29,6 +28,7 @@ import {
   wikilinkMapSchema,
   yamlInt,
 } from "@acmelabs/core/schemas/base";
+import yaml from "js-yaml";
 
 /** Load through the same parser the CLI uses, so tests see production types. */
 const failsafe = (text: string): unknown => yaml.load(text, { schema: yaml.FAILSAFE_SCHEMA });

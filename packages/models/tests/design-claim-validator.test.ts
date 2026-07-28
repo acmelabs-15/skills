@@ -90,7 +90,9 @@ describe("validateDesignComplianceClaim", () => {
 
   test("round-trips through parser produces FAIL when fixture has unchecked items", async () => {
     const { parseDesignNote } = await import("@acmelabs/models/parsers/design-note");
-    const md = await Bun.file(new URL("../../fixtures/design-note-sample.md", import.meta.url)).text();
+    const md = await Bun.file(
+      new URL("../../fixtures/design-note-sample.md", import.meta.url),
+    ).text();
     const design = parseDesignNote(md);
     const result = validateDesignComplianceClaim(design);
     expect(result.verdict).toBe("FAIL");

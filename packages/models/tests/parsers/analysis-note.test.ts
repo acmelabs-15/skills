@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { ZodError } from "zod";
 import { parseAnalysisNote } from "@acmelabs/models/parsers/analysis-note";
+import { ZodError } from "zod";
 
 /**
  * Inline fixture: a minimal valid ACCEPTED ANALYSIS with NO Open Questions

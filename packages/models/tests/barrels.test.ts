@@ -95,11 +95,7 @@ describe("src/core barrel", () => {
 });
 
 describe("@acmelabs/models schemas barrel", () => {
-  const schemaExports = [
-    "AdrNoteSchema",
-    "AnalysisNoteSchema",
-    "EpicNoteSchema",
-  ] as const;
+  const schemaExports = ["AdrNoteSchema", "AnalysisNoteSchema", "EpicNoteSchema"] as const;
 
   test("every schema resolves", () => {
     for (const name of schemaExports) {

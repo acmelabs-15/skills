@@ -40,12 +40,15 @@
 
 // node:path only — Bun exposes no native path API (ADR-001 F-6 exception).
 import { resolve } from "node:path";
-import yaml from "js-yaml";
-import { ZodError } from "zod";
 import { executeRepoint } from "@acmelabs/core/core/repoint";
 import { PlanValidationError, zodErrorToIssues } from "@acmelabs/core/schemas/plan-yaml";
-import { type ImpactManifest, ImpactManifestSchema } from "@acmelabs/core/schemas/reference-manifest";
+import {
+  type ImpactManifest,
+  ImpactManifestSchema,
+} from "@acmelabs/core/schemas/reference-manifest";
 import { type RepointPlan, RepointPlanSchema } from "@acmelabs/core/schemas/repoint-plan";
+import yaml from "js-yaml";
+import { ZodError } from "zod";
 
 const MAX_PLAN_BYTES = 1024 * 1024; // 1 MB, matching decompose/recompose
 const MAX_MANIFEST_BYTES = 8 * 1024 * 1024; // 8 MB, matching reference-scan

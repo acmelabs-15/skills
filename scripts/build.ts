@@ -34,9 +34,9 @@
  * reason to bundle them.
  */
 
-import { Glob } from "bun";
 import { exists, mkdir, rename, rm } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
+import { Glob } from "bun";
 
 const repoRoot = join(import.meta.dir, "..");
 const pluginRoot = join(repoRoot, "plugin");
@@ -162,18 +162,17 @@ for await (const file of new Glob("**/*.js").scan({ cwd: outdir, absolute: true 
 }
 
 const lines = [
-  `# skills plugin build`,
-  ``,
+  "# skills plugin build",
+  "",
   `- **Entry points**: ${entrypoints.length}`,
   `- **Artifacts**: ${artifacts}`,
   `- **Output**: \`${relative(repoRoot, outdir)}/\``,
-  ``,
   `- **Shared chunks**: ${artifacts - entrypoints.length}`,
   `- **Relocated imports repointed**: ${repointed}`,
-  ``,
-  `The workspace packages and npm dependencies are bundled in, so nothing`,
-  `resolves against \`node_modules\` at runtime. Code shared across entry points`,
-  `is emitted once as a chunk those entry points import, rather than inlined`,
-  `into each. Invoke via \`bun "\${CLAUDE_PLUGIN_ROOT}/dist/…"\`.`,
+  "",
+  "The workspace packages and npm dependencies are bundled in, so nothing",
+  "resolves against `node_modules` at runtime. Code shared across entry points",
+  "is emitted once as a chunk those entry points import, rather than inlined",
+  'into each. Invoke via `bun "${CLAUDE_PLUGIN_ROOT}/dist/…"`.',
 ];
 console.log(lines.join("\n"));

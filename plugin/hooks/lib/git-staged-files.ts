@@ -44,12 +44,7 @@ function isBrainNote(filePath: string): boolean {
  * Returns `[]` when no Brain notes are staged.
  */
 export async function readStagedBrainNotes(repoRoot: string): Promise<StagedNote[]> {
-  const rawList = await runGit(repoRoot, [
-    "diff",
-    "--cached",
-    "--name-only",
-    "--diff-filter=ACM",
-  ]);
+  const rawList = await runGit(repoRoot, ["diff", "--cached", "--name-only", "--diff-filter=ACM"]);
   const paths = rawList
     .split("\n")
     .map((line) => line.trim())

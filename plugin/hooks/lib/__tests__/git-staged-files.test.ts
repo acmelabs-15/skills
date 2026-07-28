@@ -73,9 +73,7 @@ describe("readStagedBrainNotes", () => {
     const notes = await readStagedBrainNotes(repoRoot);
     expect(notes).toHaveLength(2);
     const byPath = new Map(notes.map((n) => [n.filePath, n.content]));
-    expect(byPath.get("docs/decisions/ADR-001-test.md")).toBe(
-      "---\ntitle: 'ADR-001: Test'\n---\n",
-    );
+    expect(byPath.get("docs/decisions/ADR-001-test.md")).toBe("---\ntitle: 'ADR-001: Test'\n---\n");
     expect(byPath.get("docs/specs/SPEC-001-test/REQ-001.md")).toBe("# REQ-001\n");
   });
 
