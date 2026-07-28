@@ -13,7 +13,6 @@
  */
 export { AdrNoteSchema, type AdrNote } from "./adr-note.js";
 export { AnalysisNoteSchema, type AnalysisNote } from "./analysis-note.js";
-export { CritNoteSchema, type CritNote } from "./crit-note.js";
 export { EpicNoteSchema, type EpicNote } from "./epic-note.js";
 
 /** Inbound-reference impact manifest + bi-directional closure report. */

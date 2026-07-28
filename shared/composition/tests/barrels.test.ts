@@ -99,7 +99,6 @@ describe("src/schemas barrel", () => {
     // pre-existing note schemas
     "AdrNoteSchema",
     "AnalysisNoteSchema",
-    "CritNoteSchema",
     "EpicNoteSchema",
     // reference manifest
     "ImpactManifestSchema",

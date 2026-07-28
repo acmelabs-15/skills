@@ -23,7 +23,6 @@ import { ObservationSchema, QaIdSchema, RelationSchema } from "./common.js";
  * Status enum is intentionally narrow (DRAFT | DONE): QA notes are typically
  * authored in one shot when QA returns; DRAFT covers in-progress authoring.
  *
- * Renderer companion: src/renderers/qa-note.ts.
  */
 
 export const QaNoteStatusEnum = z.enum(["DRAFT", "DONE"]);
