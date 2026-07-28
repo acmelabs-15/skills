@@ -4,8 +4,11 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./*": "./src/*.ts"
+    "./decompose": "./src/decompose.ts",
+    "./recompose": "./src/recompose.ts",
+    "./reference-scan": "./src/reference-scan.ts",
+    "./registry": "./src/registry.ts",
+    "./repoint": "./src/repoint.ts"
   },
   "dependencies": {
     "@acmelabs/models": "workspace:*",
