@@ -8,8 +8,7 @@ import { EffortEnum, ObservationSchema, RelationSchema, SpecTaskIdSchema } from 
  * ~/KNOWLEDGE-GRAPH-STRUCTURES.md Section 4.8 and example
  * docs/specs/SPEC-007-plan-session-render/tasks/TASK-001-SPEC-007-implement-common-schema.md.
  *
- * Purpose: mechanical enforcement of the per-TASK build+qa cycle
- * (~/.claude/memory/feedback_per_task_build_qa_cycle.md, TIER-1 BLOCKING).
+ * Purpose: mechanical enforcement of the per-TASK build+qa cycle.
  * Status DONE requires every Definition of Done item to be checked or
  * deferred-with-rationale. Schema-rejected claims fail mechanically,
  * eliminating the silent-skip failure mode.
@@ -109,7 +108,8 @@ export const TaskNoteSchema = z
 
     // Cross-field invariant 2: status DONE requires every DoD item satisfied
     // (done === true OR deferred_rationale present). This is the load-bearing
-    // protocol enforcement — see feedback_per_task_build_qa_cycle.
+    // protocol enforcement: a DONE claim with an open DoD item is rejected
+    // mechanically rather than trusted.
     if (data.frontmatter.status === "DONE") {
       const unsatisfied = data.definition_of_done.filter(
         (item) => !item.done && !item.deferred_rationale,

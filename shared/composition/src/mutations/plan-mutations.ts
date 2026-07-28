@@ -86,8 +86,8 @@ export type ClearBlockers = { type: "clear-blockers" };
 /**
  * Advance an `impl-TASK-NNN-SPEC-MMM` workflow item to a new status.
  *
- * Per `feedback_per_task_build_qa_cycle` (TIER-1 BLOCKING), every transition
- * MANDATES session context (`owning_session` + `at_event`). These fields are
+ * Every transition MANDATES session context (`owning_session` + `at_event`) so
+ * the PLAN records who moved the item and at which event. These fields are
  * required at the type level AND defensively validated at runtime — the
  * mutation throws if either is missing or malformed.
  */
@@ -268,7 +268,7 @@ function assertSessionContext(
 ): void {
   if (typeof owning_session !== "string" || owning_session.trim().length === 0) {
     throw new Error(
-      `${mutationType}: owning_session is required (per feedback_per_task_build_qa_cycle — every workflow transition MUST carry session context)`,
+      `${mutationType}: owning_session is required — every workflow transition must carry the session that owns it, so the PLAN records who moved the item and at which event`,
     );
   }
   if (!Number.isInteger(at_event) || at_event <= 0) {
