@@ -38,7 +38,18 @@ coverage/
 # point-in-time census next to the code that produces it, and a stale manifest
 # read as current is worse than no manifest. A run worth keeping belongs in the
 # knowledge graph as a note, not here.
-/scratch/
+# Written as `/scratch/*` rather than `/scratch/` so the exception below can
+# apply: git never descends into an excluded directory, so a negation inside one
+# is silently dead. Excluding the CONTENTS keeps the directory traversable.
+/scratch/*
+
+# Exception: the consolidation programme's prompts are NOT derived artifacts.
+# `prompts-v2/` carries the owner's rulings in his own quoted words, the run
+# contract, and the twelve authored prompts that drive the programme. None of it
+# regenerates from a tool run — losing it loses the decisions themselves — and
+# each edit to a ruling is exactly the kind of change that wants a reviewable
+# diff. Tracked for history and recovery; the rest of scratch/ stays ignored.
+!/scratch/prompts-v2/
 
 # Logs
 *.log
