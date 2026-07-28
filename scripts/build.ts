@@ -25,9 +25,14 @@ import { Glob } from "bun";
 import { rm } from "node:fs/promises";
 import { join, relative } from "node:path";
 
-const root = import.meta.dir;
-const repoRoot = join(root, "..");
-const outdir = join(root, "dist");
+const repoRoot = join(import.meta.dir, "..");
+const pluginRoot = join(repoRoot, "plugin");
+/**
+ * Output lands INSIDE the plugin because installation copies only the plugin
+ * directory. A root-level dist/ would sit outside that boundary and be
+ * unreachable at runtime — the same constraint that makes bundling necessary.
+ */
+const outdir = join(pluginRoot, "dist");
 
 /**
  * Each group builds with its own `root`, which is what decides the shape of the
@@ -36,10 +41,10 @@ const outdir = join(root, "dist");
  * into the shipped artifact.
  */
 const groups: readonly { readonly base: string; readonly glob: string; readonly outSub: string }[] = [
-  { base: root, glob: "src/*.ts", outSub: "" },
-  { base: root, glob: "hooks/*.ts", outSub: "" },
-  { base: root, glob: "hooks/lib/*.ts", outSub: "" },
-  { base: root, glob: "skills/*/scripts/*.ts", outSub: "" },
+  { base: pluginRoot, glob: "src/*.ts", outSub: "" },
+  { base: pluginRoot, glob: "hooks/*.ts", outSub: "" },
+  { base: pluginRoot, glob: "hooks/lib/*.ts", outSub: "" },
+  { base: pluginRoot, glob: "skills/*/scripts/*.ts", outSub: "" },
   { base: join(repoRoot, "packages/cli/src"), glob: "*.ts", outSub: "cli" },
 ];
 

@@ -8,8 +8,8 @@
     "plugin"
   ],
   "scripts": {
-    "prepare": "bun run plugin/build.ts",
-    "build": "bun run plugin/build.ts",
+    "prepare": "bun run scripts/build.ts",
+    "build": "bun run scripts/build.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "check": "biome check .",
