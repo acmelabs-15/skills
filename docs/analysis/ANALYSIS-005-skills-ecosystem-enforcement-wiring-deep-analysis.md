@@ -224,3 +224,4 @@ This is analysis output (recommended sequence), not an implementation directive;
 - relates_to [[ADR-005: Protocol Hardening Wave 2 Architecture]]
 - inspired_by [[RETRO-004: PLAN-001 Skills Ecosystem Retrospective]]
 - relates_to [[ANALYSIS-004: Protocol Hardening Wave 2 Audit Synthesis]]
+- relates_to [[ANALYSIS-009: Shared-Code Shape for a Copied Plugin Artifact]]

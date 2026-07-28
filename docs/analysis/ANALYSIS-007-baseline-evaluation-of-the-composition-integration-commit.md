@@ -427,3 +427,4 @@ This note's reconciliation of `filesScanned` (41 = 69 markdown files minus 28 ta
 - part_of [[PLAN-002: Composition Tooling Follow-Up Register]]
 - depends_on [[ADR-002: Adapter Contract and Plan Schema]]
 - relates_to [[QA-092: Pipeline Completion Build Validation]]
+- relates_to [[ANALYSIS-009: Shared-Code Shape for a Copied Plugin Artifact]]
