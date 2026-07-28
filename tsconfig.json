@@ -15,9 +15,8 @@
     "allowImportingTsExtensions": true
   },
   "include": [
-    "skills/**/*.ts",
-    "shared/detect-context.ts",
-    "shared/detect-context.test.ts"
+    "plugin/**/*.ts",
+    "packages/**/*.ts"
   ],
-  "exclude": ["node_modules", "dist", "shared/composition"]
+  "exclude": ["node_modules", "plugin/dist"]
 }

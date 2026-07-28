@@ -13,7 +13,7 @@
 import {
   CANONICAL_ENTITY_TYPES,
   type CanonicalEntityType,
-} from "../../../shared/detect-context.ts";
+} from "../../../src/detect-context.ts";
 import type { ParsedSource } from "./parse.ts";
 
 /** CONVENTIONS Section 5.1 entity-type-to-folder mapping (16 canonical types). */

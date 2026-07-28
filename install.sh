@@ -42,7 +42,7 @@ SKILLS=(
 )
 
 for skill in "${SKILLS[@]}"; do
-  src="${REPO_ROOT}/skills/${skill}"
+  src="${REPO_ROOT}/plugin/skills/${skill}"
   dest="${TARGET_ROOT}/${skill}"
 
   if [[ ! -d "${src}" ]]; then

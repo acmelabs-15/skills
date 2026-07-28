@@ -31,17 +31,19 @@
   },
   "files": {
     "include": [
-      "skills/**",
-      "shared/detect-context.ts",
-      "shared/detect-context.test.ts"
+      "plugin/skills/defrag/**",
+      "plugin/skills/ingest/**",
+      "plugin/src/**"
     ],
     "ignore": [
       "node_modules",
       "**/node_modules",
-      "shared/composition",
+      "plugin/dist",
       "**/*.md",
       "defrag/reports/**",
-      "test-fixtures/**"
+      "packages/fixtures/**",
+      "packages/**",
+      "plugin/dist/**"
     ]
   }
 }

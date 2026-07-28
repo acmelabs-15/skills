@@ -6,13 +6,14 @@ import { join } from "node:path";
 import type { DispatchOutcome } from "../../lib/dispatch-validator.ts";
 import type { StagedNote } from "../../lib/git-staged-files.ts";
 import {
+  DEFAULT_BASE_REF,
   PathContainmentError,
   decideForNotes,
   emitFailOpen,
-  evaluatePush,
-  parsePushCommand,
+  evaluatePrCreate,
+  parsePrCreateBase,
   readCommand,
-} from "../pre-push-validate.ts";
+} from "../pre-pr-create-validate.ts";
 
 const GIT_ENV = {
   ...process.env,
@@ -37,24 +38,20 @@ async function writeFixture(repoRoot: string, relPath: string, content: string):
   await Bun.write(abs, content);
 }
 
-async function initRepoWithOrigin(): Promise<{ baseDir: string; repoRoot: string }> {
-  const baseDir = await mkdtemp(join(tmpdir(), "pre-push-test-"));
-  const originPath = join(baseDir, "origin.git");
-  const repoRoot = join(baseDir, "work");
-  await mkdir(originPath, { recursive: true });
-  await runGit(originPath, ["init", "--bare", "--initial-branch=main", "--quiet"]);
+async function initRepoOnFeatureBranch(): Promise<{ parentDir: string; repoRoot: string }> {
+  const parentDir = await mkdtemp(join(tmpdir(), "pre-pr-test-"));
+  const repoRoot = join(parentDir, "work");
   await mkdir(repoRoot, { recursive: true });
   await runGit(repoRoot, ["init", "--initial-branch=main", "--quiet"]);
   await runGit(repoRoot, ["config", "commit.gpgsign", "false"]);
-  await runGit(repoRoot, ["remote", "add", "origin", originPath]);
   await writeFixture(repoRoot, "README.md", "# seed\n");
   await runGit(repoRoot, ["add", "README.md"]);
   await runGit(repoRoot, ["commit", "-m", "seed", "--quiet"]);
-  await runGit(repoRoot, ["push", "-u", "origin", "main", "--quiet"]);
-  return { baseDir, repoRoot };
+  await runGit(repoRoot, ["checkout", "-b", "feature", "--quiet"]);
+  return { parentDir, repoRoot };
 }
 
-const FIXTURE_DIR = new URL("../../../packages/fixtures/", import.meta.url);
+const FIXTURE_DIR = new URL("../../../../packages/fixtures/", import.meta.url);
 
 async function taskSample(): Promise<string> {
   return Bun.file(new URL("task-note-sample.md", FIXTURE_DIR)).text();
@@ -67,7 +64,7 @@ function asDenying(content: string): string {
 /**
  * The canonical sample sits at the structural floor (3 observations, 2
  * relations), so its dispatch verdict is `allow-with-warning`, which a BOUNDARY
- * gate (Layer 4) denies. Lift BOTH counts above the floor (a 4th observation +
+ * gate (Layer 5) denies. Lift BOTH counts above the floor (a 4th observation +
  * a 3rd relation) so a genuinely clean note verdicts `allow`.
  */
 function asFullyClean(content: string): string {
@@ -78,56 +75,53 @@ function asFullyClean(content: string): string {
   return `${withObs.trimEnd()}\n- relates_to [[ANALYSIS-001: Sample]]\n`;
 }
 
-describe("parsePushCommand", () => {
-  test("defaults to origin/HEAD with no positional args", () => {
-    expect(parsePushCommand("git push")).toEqual({ remote: "origin", branch: "HEAD" });
+describe("parsePrCreateBase", () => {
+  test("defaults to origin/HEAD when no --base is present", () => {
+    expect(parsePrCreateBase("gh pr create --fill")).toBe(DEFAULT_BASE_REF);
   });
 
-  test("parses `git push <remote>`", () => {
-    expect(parsePushCommand("git push upstream")).toEqual({ remote: "upstream", branch: "HEAD" });
+  test("parses `--base <branch>`", () => {
+    expect(parsePrCreateBase("gh pr create --base develop --fill")).toBe("develop");
   });
 
-  test("parses `git push <remote> <branch>`", () => {
-    expect(parsePushCommand("git push origin feature/x")).toEqual({
-      remote: "origin",
-      branch: "feature/x",
-    });
+  test("parses `--base=<branch>`", () => {
+    expect(parsePrCreateBase("gh pr create --base=develop")).toBe("develop");
   });
 
-  test("skips the -u / --set-upstream flag", () => {
-    expect(parsePushCommand("git push -u origin main")).toEqual({
-      remote: "origin",
-      branch: "main",
-    });
-    expect(parsePushCommand("git push --set-upstream origin main")).toEqual({
-      remote: "origin",
-      branch: "main",
-    });
+  test("parses the `-B <branch>` short form", () => {
+    expect(parsePrCreateBase("gh pr create -B release/2.0")).toBe("release/2.0");
   });
 
-  test("skips no-value flags and `--opt=value` forms", () => {
-    expect(parsePushCommand("git push --force --no-verify origin main")).toEqual({
-      remote: "origin",
-      branch: "main",
-    });
-    expect(parsePushCommand("git push --repo=x origin main")).toEqual({
-      remote: "origin",
-      branch: "main",
-    });
+  test("parses the `-B=<branch>` short form", () => {
+    expect(parsePrCreateBase("gh pr create -B=release/3.0")).toBe("release/3.0");
   });
 
-  test("rejects a remote ref carrying a traversal segment", () => {
-    expect(() => parsePushCommand("git push ../evil main")).toThrow(PathContainmentError);
+  test("rejects a `-B=` form with a traversal segment", () => {
+    expect(() => parsePrCreateBase("gh pr create -B=../evil")).toThrow(/traversal/);
   });
 
-  test("rejects a branch ref carrying a traversal segment", () => {
-    expect(() => parsePushCommand("git push origin ../../etc")).toThrow(/traversal/);
+  test("throws when --base is followed by another flag", () => {
+    expect(() => parsePrCreateBase("gh pr create --base --draft")).toThrow(
+      /without a branch value/,
+    );
+  });
+
+  test("throws when --base is present without a value", () => {
+    expect(() => parsePrCreateBase("gh pr create --base --fill")).toThrow(/without a branch value/);
+  });
+
+  test("rejects a base ref carrying a traversal segment", () => {
+    expect(() => parsePrCreateBase("gh pr create --base ../evil")).toThrow(PathContainmentError);
+  });
+
+  test("rejects a `--base=` form with a traversal segment", () => {
+    expect(() => parsePrCreateBase("gh pr create --base=../../etc")).toThrow(/traversal/);
   });
 });
 
 describe("readCommand", () => {
   test("returns the command string", () => {
-    expect(readCommand({ command: "git push" })).toBe("git push");
+    expect(readCommand({ command: "gh pr create" })).toBe("gh pr create");
   });
 
   test("throws when command is missing", () => {
@@ -144,15 +138,19 @@ describe("emitFailOpen", () => {
       return true;
     }) as typeof process.stderr.write;
     try {
-      emitFailOpen("pre-push-validate", new PathContainmentError("boom"));
+      emitFailOpen("pre-pr-create-validate", new PathContainmentError("boom"));
+      emitFailOpen("pre-pr-create-validate", "raw string error");
     } finally {
       process.stderr.write = orig;
     }
-    expect(JSON.parse(captured[0] ?? "{}")).toMatchObject({
-      handler: "pre-push-validate",
+    const first = JSON.parse(captured[0] ?? "{}");
+    expect(first).toMatchObject({
+      handler: "pre-pr-create-validate",
       error: "PathContainmentError",
       message: "boom",
     });
+    const second = JSON.parse(captured[1] ?? "{}");
+    expect(second).toMatchObject({ error: "Error", message: "raw string error" });
   });
 });
 
@@ -162,41 +160,35 @@ describe("decideForNotes", () => {
     (_content: string, filePath: string): DispatchOutcome =>
       verdicts[filePath] ?? { verdict: "allow" };
 
-  test("denies and names every failing pushed note", () => {
-    const notes: StagedNote[] = [
-      { filePath: "docs/a.md", content: "x" },
-      { filePath: "docs/b.md", content: "y" },
-    ];
+  test("denies and names every failing PR-diff note", () => {
+    const notes: StagedNote[] = [{ filePath: "docs/a.md", content: "x" }];
     const decision = decideForNotes(
       notes,
-      stub({
-        "docs/a.md": { verdict: "deny", reason: "DoD unchecked" },
-        "docs/b.md": { verdict: "allow" },
-      }),
+      stub({ "docs/a.md": { verdict: "deny", reason: "AC unsatisfied" } }),
     );
     expect(decision.verdict).toBe("deny");
-    expect(decision.reason).toContain("Push blocked");
+    expect(decision.reason).toContain("PR open blocked");
     expect(decision.reason).toContain("docs/a.md");
   });
 
-  test("allows a clean pushed set", () => {
+  test("allows a clean PR-diff set", () => {
     expect(decideForNotes([], stub({})).verdict).toBe("allow");
   });
 });
 
-describe("evaluatePush (integration against a real repo)", () => {
-  let baseDir: string;
+describe("evaluatePrCreate (integration against a real repo)", () => {
+  let parentDir: string;
   let repoRoot: string;
 
   beforeEach(async () => {
-    ({ baseDir, repoRoot } = await initRepoWithOrigin());
+    ({ parentDir, repoRoot } = await initRepoOnFeatureBranch());
   });
 
   afterEach(async () => {
-    await rm(baseDir, { recursive: true, force: true });
+    await rm(parentDir, { recursive: true, force: true });
   });
 
-  test("allows when fully clean pushed Brain notes pass their claims", async () => {
+  test("allows when fully clean PR-diff Brain notes pass their claims", async () => {
     await writeFixture(
       repoRoot,
       "docs/specs/SPEC-001/tasks/TASK-001.md",
@@ -204,19 +196,19 @@ describe("evaluatePush (integration against a real repo)", () => {
     );
     await runGit(repoRoot, ["add", "."]);
     await runGit(repoRoot, ["commit", "-m", "add task", "--quiet"]);
-    expect((await evaluatePush(repoRoot, "git push origin main")).verdict).toBe("allow");
+    expect((await evaluatePrCreate(repoRoot, "gh pr create --base main")).verdict).toBe("allow");
   });
 
-  test("denies a pushed note with only a hygiene issue (floor warning)", async () => {
+  test("denies a PR-diff note with only a hygiene issue (floor warning)", async () => {
     await writeFixture(repoRoot, "docs/specs/SPEC-001/tasks/TASK-001.md", await taskSample());
     await runGit(repoRoot, ["add", "."]);
     await runGit(repoRoot, ["commit", "-m", "add task", "--quiet"]);
-    const decision = await evaluatePush(repoRoot, "git push origin main");
+    const decision = await evaluatePrCreate(repoRoot, "gh pr create --base main");
     expect(decision.verdict).toBe("deny");
     expect(decision.reason).toContain("docs/specs/SPEC-001/tasks/TASK-001.md");
   });
 
-  test("denies when a pushed Brain note fails its claim", async () => {
+  test("denies when a PR-diff Brain note fails its claim", async () => {
     await writeFixture(
       repoRoot,
       "docs/specs/SPEC-001/tasks/TASK-001.md",
@@ -224,17 +216,17 @@ describe("evaluatePush (integration against a real repo)", () => {
     );
     await runGit(repoRoot, ["add", "."]);
     await runGit(repoRoot, ["commit", "-m", "add task", "--quiet"]);
-    const decision = await evaluatePush(repoRoot, "git push -u origin main");
+    const decision = await evaluatePrCreate(repoRoot, "gh pr create --base main");
     expect(decision.verdict).toBe("deny");
     expect(decision.reason).toContain("docs/specs/SPEC-001/tasks/TASK-001.md");
   });
 
-  test("allows (empty diff) when nothing is ahead of the remote", async () => {
-    expect((await evaluatePush(repoRoot, "git push")).verdict).toBe("allow");
+  test("allows (empty diff) when no commits are ahead of base", async () => {
+    expect((await evaluatePrCreate(repoRoot, "gh pr create --base main")).verdict).toBe("allow");
   });
 
   test("rejects a traversal-bearing repo root before invoking git", async () => {
-    await expect(evaluatePush("/tmp/work/../etc", "git push")).rejects.toThrow(
+    await expect(evaluatePrCreate("/tmp/work/../etc", "gh pr create --base main")).rejects.toThrow(
       PathContainmentError,
     );
   });

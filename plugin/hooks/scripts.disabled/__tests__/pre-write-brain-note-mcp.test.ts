@@ -38,7 +38,7 @@ import {
 const MCP_WRITE_NOTE = "mcp__plugin_brain_brain__write_note";
 const MCP_EDIT_NOTE = "mcp__plugin_brain_brain__edit_note";
 
-const FIXTURE_DIR = new URL("../../../packages/fixtures/", import.meta.url);
+const FIXTURE_DIR = new URL("../../../../packages/fixtures/", import.meta.url);
 
 async function sample(name: string): Promise<string> {
   return Bun.file(new URL(name, FIXTURE_DIR)).text();

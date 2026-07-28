@@ -19,7 +19,7 @@
 
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
-import { detectProjectContext } from "../../../shared/detect-context.ts";
+import { detectProjectContext } from "../../../src/detect-context.ts";
 import { type AssembledNote, assembleNote } from "./assemble.ts";
 import {
   SPEC_NESTED_TYPES,

@@ -23,7 +23,7 @@
 import { resolve } from "node:path";
 
 /** Repo root resolved from this file's location (…/hooks/__tests__/smoke/_helpers). */
-const REPO_ROOT = resolve(import.meta.dir, "..", "..", "..", "..");
+const REPO_ROOT = resolve(import.meta.dir, "..", "..", "..", "..", "..");
 
 /** Directory holding the Track-3 adversarial fixture tree. */
 const ADVERSARIAL_DIR = resolve(

@@ -65,3 +65,6 @@ bun-debug.log*
 # OS noise (Windows + Linux)
 Thumbs.db
 desktop.ini
+
+# plugin build output — generated, never committed
+plugin/dist/

@@ -21,7 +21,7 @@ import {
  * authored in-file.
  */
 
-const FIXTURE_DIR = new URL("../../../packages/fixtures/", import.meta.url);
+const FIXTURE_DIR = new URL("../../../../packages/fixtures/", import.meta.url);
 
 async function sample(name: string): Promise<string> {
   return Bun.file(new URL(name, FIXTURE_DIR)).text();

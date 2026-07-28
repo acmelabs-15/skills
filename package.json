@@ -4,14 +4,15 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "plugin"
   ],
   "scripts": {
-    "test": "bun test skills/defrag skills/ingest shared",
-    "test:all": "bun test",
-    "check": "biome check skills/defrag skills/ingest shared/detect-context.ts shared/detect-context.test.ts",
-    "check:fix": "biome check --fix skills/defrag skills/ingest shared/detect-context.ts shared/detect-context.test.ts",
-    "typecheck": "tsc --noEmit"
+    "build": "bun run plugin/build.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "check": "biome check .",
+    "check:fix": "biome check --fix ."
   },
   "dependencies": {
     "js-yaml": "^4.1.0",

@@ -13,7 +13,7 @@
 
 import { join } from "node:path";
 import yaml from "js-yaml";
-import { extractFrontmatter } from "../../../shared/detect-context.ts";
+import { extractFrontmatter } from "../../../src/detect-context.ts";
 
 export type ViolationType = "split" | "merge" | "stale" | "structural-fix";
 

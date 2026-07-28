@@ -6,7 +6,7 @@ import {
   CANONICAL_ENTITY_TYPES,
   detectProjectContext,
   extractFrontmatter,
-} from "./detect-context.ts";
+} from "../detect-context.ts";
 
 async function makeTmp(): Promise<string> {
   return await mkdtemp(join(tmpdir(), "detect-context-"));
