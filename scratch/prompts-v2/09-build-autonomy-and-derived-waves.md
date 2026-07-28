@@ -23,7 +23,7 @@ Make the autonomous build phase real in `/Users/peter.kloss/Dev/ACMElabs/skills`
 
 **Read the whole prompt before touching a file.** Most of what follows is already true in the repository and needs *documenting*, with the competing prose deleted. If you find yourself designing something, stop and check whether it already ships (P4-13).
 
-**HUMAN ATTENTION: one map gate, ten W-items at their natural moments, the findings review, plus create-skill's own gates on the skills touched.**
+**HUMAN ATTENTION: one map gate, ten W-items at their natural moments, the findings review, plus skill-creator's own gates on the skills touched.**
 
 **Working spec on disk:** `scratch/prompts-v2/MESSAGE-STANDARD-DRAFT.md` (v0.3) is the ratified working spec for the message standard. Once Step 6 lands the templates, the agent files are canonical and that draft becomes a design record. [DECIDED — R-22]
 
@@ -33,7 +33,7 @@ Make the autonomous build phase real in `/Users/peter.kloss/Dev/ACMElabs/skills`
 - **P4-2 — One decision per question, one question in flight.** A multiselect decomposing a single decision is not a bundle.
 - **P4-3 — Author the moment it locks.**
 - **P4-4 — Independent evaluation mandate on every skill touched (D-2).** Cold-read, ranked findings, recommended action + one-line rationale each, nothing applied without approval.
-- **P4-5 — The full `create-skill` lifecycle runs for every skill touched, under the skill's own procedure** [DECIDED — D-2 + R-30: create-skill is the runtime authority for skill-authoring mechanics; this prompt does not restate them]. Repo facts the skill cannot know: the prompt-1 snapshot is the baseline — find it, point evals at it, never re-baseline; `skill-creator@claude-plugins-official` and `plugin-eval@claude-code-workflows` are `false` in `settings.json`; `create-skill` and `grill-me` are user-level under `/Users/peter.kloss/.claude/skills/`; verify `skill-reviewer` resolves before treating it as a gate. **Hard gate kept:** `python -m scripts.quick_validate <skill-dir>` passes for every SKILL.md changed, and the description-triggering benchmark shows no regression against the prompt-1 baseline.
+- **P4-5 — The full `skill-creator` lifecycle runs for every skill touched, under the skill's own procedure** [DECIDED — D-2 + R-30: create-skill is the runtime authority for skill-authoring mechanics; this prompt does not restate them]. Repo facts the skill cannot know: the prompt-1 snapshot is the baseline — find it, point evals at it, never re-baseline; `skill-creator@claude-plugins-official` (`settings.json:245`) and `plugin-eval@claude-code-workflows` (`:241`) are `false`, while `skill-creator@ACMElabs` is `true` (`:269`) and is the live path; `grill-me` is user-level under `/Users/peter.kloss/.claude/skills/`, whereas `skill-creator` is a plugin at `/Users/peter.kloss/Dev/ACMElabs/skill-creator/skills/skill-creator/`; `skill-reviewer` now ships in-plugin as `skill-creator:skill-reviewer` and resolves, so the fallback branch is moot. **The predecessor `create-skill` was deleted 2026-07-28 (R-32)** — descriptions are now capability-first with a deliverable clause and a same-domain exclusion (pushiness is a measured defect, inverting the old advice), and body size is a dual limit of under 500 lines AND under 5,000 tokens, both reported. **Hard gate kept:** `bun scripts/quick-validate.ts <skill-dir> --extended` passes for every SKILL.md changed, and the description-triggering benchmark shows no regression against the prompt-1 baseline.
 - **P4-6 — Binary tool rule.** `docs/**` → Brain MCP; everything else → `Read`/`Edit`/`Write` (Brain MCP forbidden). Nearly everything here is skill text and `.ts`.
 - **P4-7 — Git.** Verify branch first; one branch; coherent commits (≤5 files or one logical change); unmerged; no push; no `--no-verify`; no AI attribution in any commit message.
 - **P4-8 — Update cost is work, not an argument (D-19).**
@@ -144,7 +144,7 @@ One branch; coherent commits (waves / cap / references / template installs / mig
 - [ ] `build` computes a part payload and hands it to `/plan`, mirroring `spec-decomposition.md:230-241`; the analysis agent is named with its citation.
 - [ ] The three agent files end with their v0.3 templates, appended and nothing else changed; both dispatch scripts render the dispatch template (asymmetry closed); the QA deny gate is wired per item 12 with `validateQaPassClaim`; the brain hook post-mortem is reported.
 - [ ] All 23 memories live at their destinations and read back; sources still on disk; the four conflicts reconciled as specified; per-note-type enums published; Gate 3 resolved or explicitly accepted in writing; EH-23 stated once; EH-28 conditioned.
-- [ ] `quick_validate` passes for every SKILL.md changed; description benchmark shows no regression against the prompt-1 baseline.
+- [ ] `quick-validate.ts` passes for every SKILL.md changed; description benchmark shows no regression against the prompt-1 baseline.
 - [ ] Ranked findings delivered; nothing applied without approval.
 - [ ] Boundary respected: `end/` untouched at the three sites; brain agents untouched beyond the appends; nothing deleted.
 - [ ] One branch, coherent commits, unmerged, no push, no AI attribution.

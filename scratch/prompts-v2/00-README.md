@@ -19,7 +19,7 @@ Run the prompts in order, with the exceptions noted below.
 | 1 | `freeze-and-baseline` — freeze the window, take the baseline, route the regrowth | autonomous | 0 | — |
 | 2 | `cycle-collapse-and-brief-contract` — eight copies of one cycle | autonomous | 0 | 1 |
 | 3 | **DISSOLVED 2026-07-27** — the owner's content review ruled 21 of its 22 memories DELETE and the deletions were executed during the walkthrough (see `OWNER-RULED-DELETE.md` and the tombstone in `03-*.md`); the one survivor rides in prompt 4 | — | — | — |
-| 4 | `pd-refactor-and-classifier-seam` — create-skill drives; three spines, one defrag, the classifier seam (+ the markdown-first append) — **rewritten 2026-07-27 under the R-30 provenance register** | create-skill-driven | map gate + W-1…W-6 + findings | 1 |
+| 4 | `pd-refactor-and-classifier-seam` — skill-creator drives; three spines, one defrag, the classifier seam — **rewritten 2026-07-27 under the R-30 provenance register; authority re-pointed 2026-07-28 (R-32) and the markdown-first append dropped (R-33)** | skill-creator-driven | map gate + W-1…W-6 + findings | 1 |
 | 5 | `plan-data-model` — one PLAN definition, a parser that reads real PLANs — **rewritten (R-30)** | register | map + 5 W | 1, 2 |
 | 6 | `curate-and-tier-chain` — curate before you write — **rewritten (R-30)** | register | map + 8 W | 4 |
 | 7 | `never-defer-research-and-decisions` — author the moment it locks; + the ASK-STANDARD grilling — **rewritten (R-30)** | register | map + 13 W | 5, 6 |

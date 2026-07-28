@@ -1,5 +1,7 @@
 # Eight copies of one cycle, and the brief that never came from the PLAN
 
+> **HISTORICAL RECORD — do not act on this prompt's `create-skill` citations.** This prompt **already ran** and is merged into `main` (commit `5f3f374`). Its references to `create-skill`, `eval-workflow.md:69` and `create-skill/SKILL.md:128` were accurate when it executed. The skill was **deleted on 2026-07-28** and replaced by the `skill-creator@ACMElabs` plugin (R-32), so those file:line citations no longer resolve. The text is left unedited deliberately, as the record of what actually ran — prompts 4 through 12 carry the corrected citations.
+
 **Execution contract (R-31): before doing anything else, read `scratch/prompts-v2/RUN-CONTRACT.md` — it sits beside this file — and run this entire prompt in its collaborative mode: granular, guided, opinions labeled, no assumptions. It overrides any "autonomous" framing below.**
 
 I want one thing collapsed and one lie deleted, in `/Users/peter.kloss/Dev/ACMElabs/skills`.

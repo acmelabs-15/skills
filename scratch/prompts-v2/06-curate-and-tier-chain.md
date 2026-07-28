@@ -1,4 +1,4 @@
-# Prompt 6 — `curate` and the tier chain: the pre-write curation gate, built by create-skill
+# Prompt 6 — `curate` and the tier chain: the pre-write curation gate, built by skill-creator
 
 _Run after prompt 1 (`freeze-and-baseline`) and prompt 4 (`pd-refactor-and-classifier-seam`) — this prompt imports the classifier seam prompt 4's W-3 interview settled. One of the programme's 11 active prompts. Paste everything below into a fresh Claude Code conversation._
 
@@ -19,7 +19,7 @@ If anything below reads as [DECIDED] but smells like an assumption, stop and sur
 
 ## The authority rule  [DECIDED 2026-07-27]
 
-**`create-skill` (user-level, `/Users/peter.kloss/.claude/skills/create-skill/`) is the authority for skill-authoring mechanics — and this prompt creates a skill.** Load it first and let it drive `curate`'s creation lifecycle end to end — its stages, its eval workflow, its validators, its own sign-off gates, at its own pace. This prompt deliberately does **not** restate the skill's internals. Where anything here appears to conflict with `create-skill` about *how* to author or test a skill, `create-skill` wins — say so in the report when it happens.
+**`skill-creator` (the `skill-creator@ACMElabs` plugin, `/Users/peter.kloss/Dev/ACMElabs/skill-creator/skills/skill-creator/`) is the authority for skill-authoring mechanics — and this prompt creates a skill.** Load it first and let it drive `curate`'s creation lifecycle end to end — its stages, its eval workflow, its validators, its own sign-off gates, at its own pace. This prompt deliberately does **not** restate the skill's internals. Where anything here appears to conflict with `skill-creator` about *how* to author or test a skill, `skill-creator` wins — say so in the report when it happens.
 
 Peter's words, from the review: *"why are we defining this now when the create-skill skill knows how to handle it?"* [DECIDED — R-30] — this prompt supplies only what the skill cannot know: facts about this repo, Peter's decisions, and Peter's open questions.
 
@@ -29,7 +29,7 @@ Peter's words, from the review: *"why are we defining this now when the create-s
 - **P4-2 — One decision per question, one question in flight.** A multiselect decomposing a single decision is not a bundle.
 - **P4-3 — Author the moment it locks.** Never defer to a later phase or turn.
 - **P4-4 — Independent evaluation mandate on every skill touched (D-2).** Evaluate as if handed the skill cold. Ranked findings, each with a recommended action and one-line rationale. Apply nothing without approval. Honest short list beats padding.
-- **P4-5 — The full `create-skill` lifecycle runs for every skill touched, under the skill's own procedure.** [DECIDED — D-2 plus the authority rule above.] The one repo fact the skill cannot know: **prompt 1 already took the week-0 snapshot** to a dated off-tree workspace. Find it, confirm it covers every existing file this prompt edits (the lifecycle skills and the brain `memory` skill; `curate` is net-new, so an empty before-state is correct for it), record the path. **If it does not exist, stop and tell Peter.**
+- **P4-5 — The full `skill-creator` lifecycle runs for every skill touched, under the skill's own procedure.** [DECIDED — D-2 plus the authority rule above.] The one repo fact the skill cannot know: **prompt 1 already took the week-0 snapshot** to a dated off-tree workspace. Find it, confirm it covers every existing file this prompt edits (the lifecycle skills and the brain `memory` skill; `curate` is net-new, so an empty before-state is correct for it), record the path. **If it does not exist, stop and tell Peter.**
 - **P4-6 — Binary tool rule.** `docs/**` → Brain MCP; everything else (skill bodies, references, config, `.ts`, `~/CLAUDE.md`) → `Read`/`Edit`/`Write`, on which Brain MCP is forbidden. Essentially all of this prompt's output is non-graph. Normative source: `KNOWLEDGE-GRAPH-CONVENTIONS.md:184-186`, `:202`.
 - **P4-7 — Git.** Verify the branch first. One branch for the whole prompt. Coherent commits (≤5 files or one logical change). Leave unmerged. Do not push. No `--no-verify`, no force-push. No indication of AI contribution in any commit message.
 - **P4-8 — Update cost is work, not an argument (D-19).** *"I wanna do something because it's the right decision to make."*
@@ -113,10 +113,10 @@ These are Peter's open questions, carried here so they are asked **once, at the 
 
 ## Execution steps
 
-1. **Load `create-skill`; find the prompt-1 snapshot** (P4-5); run `curate`'s creation — and the edits to every other skill touched — under the skill's own procedure and gates. Its sign-offs are additional human rounds and belong to it, not to this prompt.
+1. **Load `skill-creator`; find the prompt-1 snapshot** (P4-5); run `curate`'s creation — and the edits to every other skill touched — under the skill's own procedure and gates. Its sign-offs are additional human rounds and belong to it, not to this prompt.
 2. **Verify the prompt-4 inheritance; report a built-vs-inherited table**: `classify`'s export, `Thresholds`, `evaluateDraft`, the shared delegation module, the W-4 note-checker wiring, `TYPE_FOLDER`'s `feature` entry. Raise W-1 if the seam is incomplete. Any classification piece W-1 approves is authored **in `defrag`'s files** — classification stays on `defrag`'s side of the seam — pure Bun (R-21), with tests. Never `import` a name before proving it resolves.
 3. **Author `CONTEXT.md`** at the skills-plugin root from the approved map-gate draft. From here on, every instruction written in this prompt that names "decompose" or "defrag" uses the canonical sense or qualifies itself.
-4. **Interview W-2 → W-5, then author the skill**: `skills/curate/SKILL.md` + `curate/references/note-authoring.md` + `curate/scripts/` (pure Bun). The four Step-9 source memories total 413 lines; ~140 body / ~150 reference is the working target [DEFAULT — `create-skill`'s style authority governs]. The body carries:
+4. **Interview W-2 → W-5, then author the skill**: `skills/curate/SKILL.md` + `curate/references/note-authoring.md` + `curate/scripts/` (pure Bun). The four Step-9 source memories total 413 lines; ~140 body / ~150 reference is the working target [DEFAULT — `skill-creator`'s style authority governs]. The body carries:
    - the three-way decision, **create documented as the fallback and never the default** [DECIDED — D-6];
    - the seam, stated so no future reader re-derives it: `defrag` classifies (imported), `curate` adjudicates (`decideCuration`, net-new), `decompose`/`recompose` execute (invoked via `Skill()`, through the shared delegation contract where it exists), `run-pre-flight` validates. Thresholds imported, never re-declared;
    - the merge path exactly as W-4 settled it, **with its reason stated in the body** — a rule whose reason is absent gets optimised away by the next reader;
@@ -174,7 +174,7 @@ These are Peter's open questions, carried here so they are asked **once, at the 
 |---|---|
 | `curate` lives in the skills plugin, as `defrag`'s pre-write sibling | D-22 |
 | The invocation chain and four-tier shape; no frontmatter `skills:` links; no bundling into `memory` | D-22 (ledger: *"tentatively accepted"* — shape set; deviations reported, not re-asked) |
-| create-skill drives `curate`'s creation; this prompt supplies only repo facts, decisions, open questions | owner, 2026-07-27 (R-30) |
+| skill-creator drives `curate`'s creation; this prompt supplies only repo facts, decisions, open questions | owner, 2026-07-27 (R-30) |
 | Curation runs before writing; create is the fallback, never the default | D-6 |
 | The discipline sits in skill bodies, early — not progressively disclosed | D-7 |
 | New captures are routed: lifecycle-owned leaves the layer, non-lifecycle may stay; the layer is thinned, never eliminated | R-13; R-1 |
@@ -192,7 +192,7 @@ Verify branch first; one branch; coherent commits (suggested: curate skill; W-1 
 ## Done means
 
 - [ ] Step 0's three maps plus the `CONTEXT.md` draft delivered and answered **before any edit**; `CONTEXT.md` approved before `curate/SKILL.md` was authored, and every instruction naming "decompose"/"defrag" uses the canonical sense or qualifies itself.
-- [ ] `create-skill` loaded and drove the lifecycle; its own gates were respected; the prompt-1 snapshot was found and covers every existing file touched (or the run stopped).
+- [ ] `skill-creator` loaded and drove the lifecycle; its own gates were respected; the prompt-1 snapshot was found and covers every existing file touched (or the run stopped).
 - [ ] **Every W item was raised at its marked moment, once, in plain language, and its answer is recorded verbatim in the report. No W item was decided silently, and none was asked twice.**
 - [ ] The built-vs-inherited seam table reported; `classify` imported, never copied; any `evaluateDraft` authored lives in `defrag`'s `audit.ts`; thresholds still declared exactly once (`audit.ts:84-90`).
 - [ ] `decideCuration` exists and returns the three-way verdict; `create` documented in the body as the fallback; the merge path documented as W-4 answered it, with the checksum reason and the rejected-merge fate stated.
@@ -205,6 +205,6 @@ Verify branch first; one branch; coherent commits (suggested: curate skill; W-1 
 - [ ] The four memories destination-first re-authored into `curate` and read back; source files still on disk; every solely-memory-derived constraint flagged per R-26; the `:98-105` SESSION block not migrated verbatim; `feedback_draft_adrs_evolve_continuously.md:38`'s clause live with prompt 7's ownership recorded.
 - [ ] The `research-and-incorporate` note-count contradiction surfaced as a finding, not absorbed.
 - [ ] The session-template twins untouched, with the reason recorded in the commit.
-- [ ] `create-skill`'s validator passes for every skill touched, and there is no benchmark regression against the prompt-1 snapshot — both reported, under the skill's own procedure.
+- [ ] `skill-creator`'s validator passes for every skill touched, and there is no benchmark regression against the prompt-1 snapshot — both reported, under the skill's own procedure.
 - [ ] Ranked findings delivered for all three evaluated skills; nothing applied without approval.
 - [ ] Branch/commits per P4-7; every deletion went through the rm gate with no workaround, and the report says so.

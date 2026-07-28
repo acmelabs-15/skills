@@ -32,7 +32,7 @@ If anything below reads as [DECIDED] but smells like an assumption, stop and sur
 - **The canonical session model** — prompt 10 (R-3..R-7).
 - **The state-writer ruling** — prompt 9's lane (R-17). If it has landed, apply it; if not, use R-17's stated working default (orchestrator single-writer) and say so in the report.
 - **ASK-STANDARD** — developed in prompt 7's interview (R-29); until it lands, P4-1 below is the standard.
-- **Skill-edit mechanics** — `create-skill` (P4-5), under its own gates. **Vocabulary** — "milestone" is dead as rival PLAN vocabulary (R-11).
+- **Skill-edit mechanics** — `skill-creator` (P4-5), under its own gates. **Vocabulary** — "milestone" is dead as rival PLAN vocabulary (R-11).
 
 ## Standing rules (programme-wide)
 
@@ -40,7 +40,7 @@ If anything below reads as [DECIDED] but smells like an assumption, stop and sur
 - **P4-2 — One decision per question, one question in flight.** A multiselect decomposing a single decision is not a bundle.
 - **P4-3 — Author the moment it locks.** Never defer to a later phase or turn.
 - **P4-4 — Independent evaluation on every skill or agent touched (D-2).** Cold read, ranked findings, recommended action plus one-line rationale each; apply nothing without approval.
-- **P4-5 — `create-skill` drives every skill edit, under its own procedure.** The prompt-1 snapshot is the baseline — point at it, never re-baseline. Verify `skill-reviewer` resolves before treating it as a gate; otherwise use create-skill's inline fresh-eyes fallback and say which path ran.
+- **P4-5 — `skill-creator` drives every skill edit, under its own procedure.** The prompt-1 snapshot is the baseline — point at it, never re-baseline. Verify `skill-reviewer` resolves before treating it as a gate; otherwise use skill-creator's inline fresh-eyes fallback and say which path ran.
 - **P4-6 — Binary tool rule.** `docs/**` → Brain MCP; everything else (home specs, skill bodies, agent definitions, config, `.ts`) → `Read`/`Edit`/`Write`, on which Brain MCP is forbidden. Normative source `KNOWLEDGE-GRAPH-CONVENTIONS.md:184-186`, `:202`. This prompt makes **exactly two** `docs/**` writes (Step 9); everything else is non-graph.
 - **P4-7 — Git.** Verify the branch first. One branch for the whole prompt. Coherent commits (≤5 files or one logical change). Leave unmerged. Do not push. No `--no-verify`, no force-push. No indication of AI contribution in any commit message.
 - **P4-8 — Update cost is work, not an argument (D-19).** *"I wanna do something because it's the right decision to make."*
@@ -319,7 +319,7 @@ The last migration slice whose destinations are inside the brain plugin. Prompt 
 - [ ] One canonical phase-and-part model applied from prompt 7 across all three surfaces, backward transitions included; residual disagreements flagged with sites, none silently picked; `workflows.html` matches it and the five preserved claims are intact; the Defer branch tightened.
 - [ ] **Exactly two `docs/**` writes happened, both via Brain MCP**: the QA-note edge and ADR-002's dated Clarifications line.
 - [ ] Six memories re-authored at their destinations per R-26 and read back; sources still on disk for prompt 12's lane.
-- [ ] Every skill touched passed create-skill's own gates against the prompt-1 baseline; every skill and agent touched has a P4-4 evaluation; nothing applied without approval.
+- [ ] Every skill touched passed skill-creator's own gates against the prompt-1 baseline; every skill and agent touched has a P4-4 evaluation; nothing applied without approval.
 - [ ] Branch/commits per P4-7; no file deletions occurred; the report says so.
 
 ## Flags for Peter's routing (report-only, not questions)

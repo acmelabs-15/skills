@@ -2,6 +2,8 @@
 
 _First prompt of the programme. Everything else depends on this one._
 
+> **HISTORICAL RECORD — do not act on this prompt's `create-skill` citations.** This prompt **already ran** (2026-07-27; its snapshot, `BASELINE.md` and `FICTION-REGISTER.md` are at `~/Desktop/brain-consolidation-baseline-2026-07-27/`). Its references to `create-skill`, `authoring-style.md`, `eval-workflow.md` and `python -m scripts.quick_validate` were accurate when it executed. The skill was **deleted on 2026-07-28** and replaced by the `skill-creator@ACMElabs` plugin (R-32), so those file:line citations no longer resolve. The text is left unedited deliberately, as the record of what actually ran — prompts 4 through 12 carry the corrected citations. The predecessor's files survive read-only inside this prompt's own snapshot at `skill-snapshot/create-skill/`.
+
 **Execution contract (R-31): before doing anything else, read `scratch/prompts-v2/RUN-CONTRACT.md` — it sits beside this file — and run this entire prompt in its collaborative mode: granular, guided, opinions labeled, no assumptions. It overrides any "autonomous" framing below.**
 
 ---

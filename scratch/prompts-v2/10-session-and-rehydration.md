@@ -26,7 +26,7 @@ Two sourcing corrections: the conversation ledger's PART 1 decisions are citable
 Split by subject:
 
 - **The session model is Peter's, ruled R-3..R-7** (next section). The interview asks only what those rulings left open.
-- **`create-skill` (user-level, `/Users/peter.kloss/.claude/skills/create-skill/`) is the authority for skill-authoring mechanics.** Every SKILL.md this prompt authors, renames or edits runs under its lifecycle, validators and gates — this prompt does not restate them. The two repo facts the skill cannot know: prompt 1 took the week-0 snapshot (point evals at it; never re-baseline), and a rename or `description` change is the likeliest benchmark regression — re-run on exactly those skills.
+- **`skill-creator` (the `skill-creator@ACMElabs` plugin, `/Users/peter.kloss/Dev/ACMElabs/skill-creator/skills/skill-creator/`) is the authority for skill-authoring mechanics.** Every SKILL.md this prompt authors, renames or edits runs under its lifecycle, validators and gates — this prompt does not restate them. The two repo facts the skill cannot know: prompt 1 took the week-0 snapshot (point evals at it; never re-baseline), and a rename or `description` change is the likeliest benchmark regression — re-run on exactly those skills.
 
 ## Standing rules (programme-wide)
 
@@ -34,7 +34,7 @@ Split by subject:
 - **P4-2 — One decision per question, one question in flight.** A multiselect decomposing a single decision is not a bundle.
 - **P4-3 — Author the moment it locks.** Never defer to a later phase or turn.
 - **P4-4 — Independent evaluation mandate on every skill touched (D-2).** Cold read, ranked findings each with a recommended action and one-line rationale; apply nothing without approval; honest short list beats padding.
-- **P4-5 — Full `create-skill` lifecycle for every skill touched, under the skill's own procedure** (authority rule above).
+- **P4-5 — Full `skill-creator` lifecycle for every skill touched, under the skill's own procedure** (authority rule above).
 - **P4-6 — Binary tool rule.** `docs/**` → Brain MCP; everything else (skill bodies, references, config, `.ts`, home specs, memory files) → `Read`/`Edit`/`Write`, on which Brain MCP is forbidden. Normative source: `KNOWLEDGE-GRAPH-CONVENTIONS.md:184-186`, `:202`. Nearly everything this prompt writes is non-graph.
 - **P4-7 — Git.** Verify the branch first. One branch for the whole prompt. Coherent commits (≤5 files or one logical change, except where this prompt mandates a wider single commit). Leave unmerged. Do not push. No `--no-verify`, no force-push. No indication of AI contribution in any commit message.
 - **P4-8 — Update cost is work, not an argument (D-19).** *"I wanna do something because it's the right decision to make."*
