@@ -35,8 +35,8 @@
  */
 
 import { Glob } from "bun";
-import { rm } from "node:fs/promises";
-import { join, relative } from "node:path";
+import { exists, mkdir, rename, rm } from "node:fs/promises";
+import { dirname, join, relative } from "node:path";
 
 const repoRoot = join(import.meta.dir, "..");
 const pluginRoot = join(repoRoot, "plugin");
@@ -48,29 +48,38 @@ const pluginRoot = join(repoRoot, "plugin");
 const outdir = join(pluginRoot, "dist");
 
 /**
- * Each group builds with its own `root`, which is what decides the shape of the
- * output path. The CLIs build from `packages/cli/src` so they land at
- * `dist/cli/<name>.js` rather than carrying the source tree's directory names
- * into the shipped artifact.
+ * Entry points come from two places in the source tree — the per-skill scripts
+ * inside the plugin, and the composition CLIs in `packages/cli`. They are
+ * collected into ONE list because `splitting` only deduplicates across entry
+ * points it can see in a single build: two `Bun.build()` calls produce two
+ * independent chunk graphs, so every module shared between the groups ships
+ * twice. Both groups import `@acmelabs/models` and `@acmelabs/core`, so that
+ * cost is not hypothetical — it measured ~800 KB of the artifact.
+ *
+ * `root` is therefore the repo root, the only ancestor common to both, which
+ * makes Bun mirror the source layout into the output. `relocations` maps the
+ * groups that do not already sit at the right depth back to their shipped
+ * paths, because `SKILL.md` files invoke `dist/cli/<name>.js` and nothing in
+ * the artifact should carry `packages/cli/src` in its path.
  */
-const groups: readonly { readonly base: string; readonly glob: string; readonly outSub: string }[] = [
-  { base: pluginRoot, glob: "skills/*/scripts/*.ts", outSub: "" },
-  { base: join(repoRoot, "packages/cli/src"), glob: "*.ts", outSub: "cli" },
+const groups: readonly { readonly base: string; readonly glob: string }[] = [
+  { base: pluginRoot, glob: "skills/*/scripts/*.ts" },
+  { base: join(repoRoot, "packages/cli/src"), glob: "*.ts" },
 ];
 
-const builds: { readonly entrypoints: string[]; readonly root: string; readonly outdir: string }[] = [];
-for (const { base, glob, outSub } of groups) {
-  const found: string[] = [];
+/** Built path (relative to `outdir`) → shipped path. Applied after the build. */
+const relocations: readonly { readonly from: string; readonly to: string }[] = [
+  { from: "packages/cli/src", to: "cli" },
+  { from: "plugin/skills", to: "skills" },
+];
+
+const entrypoints: string[] = [];
+for (const { base, glob } of groups) {
   for await (const file of new Glob(glob).scan({ cwd: base, absolute: true })) {
     if (file.endsWith(".test.ts") || file.includes("__tests__")) continue;
-    found.push(file);
+    entrypoints.push(file);
   }
-  if (found.length === 0) continue;
-  const existing = builds.find((b) => b.root === base && b.outdir === join(outdir, outSub));
-  if (existing) existing.entrypoints.push(...found);
-  else builds.push({ entrypoints: found, root: base, outdir: join(outdir, outSub) });
 }
-const entrypoints = builds.flatMap((b) => b.entrypoints);
 
 if (entrypoints.length === 0) {
   console.log("skills build: no entry points found — nothing to bundle.");
@@ -80,11 +89,11 @@ if (entrypoints.length === 0) {
 await rm(outdir, { recursive: true, force: true });
 
 let artifacts = 0;
-for (const build of builds) {
+{
   const result = await Bun.build({
-    entrypoints: build.entrypoints,
-    outdir: build.outdir,
-    root: build.root,
+    entrypoints,
+    outdir,
+    root: repoRoot,
     target: "bun",
     /**
      * Shared code is emitted ONCE as a content-hashed chunk that the entry
@@ -115,6 +124,43 @@ for (const build of builds) {
   artifacts += result.outputs.length;
 }
 
+/**
+ * Lift each group from its source-mirrored location to its shipped one. Chunks
+ * stay at the `dist/` root where the build put them, and the entry points'
+ * relative imports of those chunks are rewritten to match their new depth.
+ */
+for (const { from, to } of relocations) {
+  const src = join(outdir, from);
+  if (!(await exists(src))) continue;
+  const dest = join(outdir, to);
+  await mkdir(dirname(dest), { recursive: true });
+  await rename(src, dest);
+}
+
+/** Prune the now-empty source-mirror scaffolding (`packages/`, `plugin/`). */
+for (const stem of new Set(relocations.map(({ from }) => from.split("/")[0]))) {
+  await rm(join(outdir, stem), { recursive: true, force: true });
+}
+
+/**
+ * A relocated entry point moved by some number of directory levels, so the
+ * `../` prefix it uses to reach a root-level chunk no longer resolves. Rewrite
+ * each import to the depth the file now sits at.
+ */
+let repointed = 0;
+for await (const file of new Glob("**/*.js").scan({ cwd: outdir, absolute: true })) {
+  const depth = relative(outdir, file).split("/").length - 1;
+  const source = await Bun.file(file).text();
+  const fixed = source.replace(/(["'])(?:\.\.\/)+(chunk-[^"']+)\1/g, (_m, quote, chunk) => {
+    const prefix = depth === 0 ? "./" : "../".repeat(depth);
+    return `${quote}${prefix}${chunk}${quote}`;
+  });
+  if (fixed !== source) {
+    await Bun.write(file, fixed);
+    repointed += 1;
+  }
+}
+
 const lines = [
   `# skills plugin build`,
   ``,
@@ -123,6 +169,7 @@ const lines = [
   `- **Output**: \`${relative(repoRoot, outdir)}/\``,
   ``,
   `- **Shared chunks**: ${artifacts - entrypoints.length}`,
+  `- **Relocated imports repointed**: ${repointed}`,
   ``,
   `The workspace packages and npm dependencies are bundled in, so nothing`,
   `resolves against \`node_modules\` at runtime. Code shared across entry points`,
