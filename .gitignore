@@ -17,6 +17,12 @@ dist/
 /build/
 *.tsbuildinfo
 
+# Packaging output: staging tarballs of the skills tree (e.g. _stage_skills.tgz).
+# Derived snapshots, regenerable from the tree they were cut from. Unanchored
+# because no archive is ever source here — nothing under skills/ ships as a .tgz.
+*.tgz
+*.tar.gz
+
 # Test output
 coverage/
 .nyc_output/
