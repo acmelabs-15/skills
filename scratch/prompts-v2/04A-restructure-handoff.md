@@ -20,15 +20,26 @@ It paused because W-3's third item — "move the shared delegation contract into
 `~/Dev/ACMElabs/skills` | `refactor/packages-and-plugin-root` | 5 commits — the restructure, in a worktree at `/tmp/skills-restructure` |
 `~/Dev/ACMElabs/skill-creator` | `feat/plugin-shared-code-and-typescript-standards` | 5 commits — the two standards + a validator size check |
 
-The worktree at `/tmp/skills-restructure` may be gone. Its commits are **not** — they live in the main repo's `.git`. Recreate with:
+### First command of the session — orient before anything else
+
+You start in `~/Dev/ACMElabs/skills`, which is on `refactor/pd-decompose-recompose-defrag`. **The restructure is not on that branch.** It lives on `refactor/packages-and-plugin-root`, checked out in a separate worktree. Editing the source tree would silently produce work on the wrong branch.
+
+```bash
+cd ~/Dev/ACMElabs/skills && git worktree list
+```
+
+- **If `/tmp/skills-restructure` appears** — `cd` there and confirm `git branch --show-current` reads `refactor/packages-and-plugin-root`. It existed at handoff time, on commit `bab358c`.
+- **If it does not** — `/tmp` was cleared. The commits survive; they live in the main repo's `.git`. Recreate:
 
 ```bash
 cd ~/Dev/ACMElabs/skills
 git worktree add /tmp/skills-restructure refactor/packages-and-plugin-root
-cd /tmp/skills-restructure && bun install
+cd /tmp/skills-restructure && bun install   # `prepare` builds plugin/dist/ automatically
 ```
 
-Work in the worktree, not the source tree. `settings.json` sets `autoUpdate: true` on a marketplace sourced from a local file, so the plugin cache re-syncs from the live repo — editing in place would push a half-restructured tree into all eleven skills mid-session.
+Then verify you are on solid ground before changing anything: `git log --oneline -5` should show `bab358c build: ship only what gets invoked` at the top, and `bun test` should report **1,708 pass / 0 fail**. A different number means something moved and the state below is stale — say so rather than proceeding.
+
+**Every restructure edit happens in the worktree, never in `~/Dev/ACMElabs/skills`.** `settings.json` sets `autoUpdate: true` on a marketplace sourced from a local file, so the plugin cache re-syncs from the live repo — editing in place would push a half-restructured tree into all eleven skills mid-session. The one exception is `scratch/prompts-v2/**`, which is prompt bookkeeping and belongs on the source-tree branch.
 
 ## Rulings that bind this work
 
