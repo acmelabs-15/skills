@@ -90,11 +90,7 @@ What /build owns is the execution: it runs the two steps per TASK — implement 
 
 ### Brain MCP binary rule
 
-All `docs/**` operations use Brain MCP tools. QA note titles contain colons; creation uses Pattern 2 three-phase write:
-
-1. `write_note` with no-colon title (e.g., `QA-001-SPEC-001 Login Auth Path`)
-2. `edit_note` (find_replace) to insert colons in frontmatter title + H1
-3. `move_note` to rename file to kebab form
+All `docs/**` operations use Brain MCP tools. QA note creation is a single `write_note` call passing the full canonical colon title (e.g., `QA-001-SPEC-001: Login Auth Path`); Brain MCP derives the kebab filename and bare permalink and indexes the note immediately. Verify via `list_directory`. No `edit_note` or `move_note` follow-up.
 
 Code files (`src/**`, `lib/**`, etc.) use Read/Edit/Write per the binary rule — NEVER Brain MCP on non-graph files.
 

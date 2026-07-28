@@ -33,7 +33,7 @@ When auto-invoked from `/plan PLAN-NNN`, /research arrives via Contract 2 dispat
 
 | Output | Location |
 |---|---|
-| PRD-NNN note | `docs/planning/PRD-NNN-{slug}.md` (Brain note; Pattern 2 three-phase write) |
+| PRD-NNN note | `docs/planning/PRD-NNN-{slug}.md` (Brain note; single `write_note` call) |
 | ANALYSIS-NNN notes (one per requirement) | `docs/analysis/ANALYSIS-NNN-{descriptor}.md` |
 | `complexity_tier` set on PLAN frontmatter | Per Contract 8; required before any downstream phase proceeds |
 | `set-part-done` call back to /plan | Contract 1: `Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=research outcome=<PRD wikilink> secondary_outcomes=<ANALYSIS wikilinks>")` |
@@ -42,11 +42,7 @@ When auto-invoked from `/plan PLAN-NNN`, /research arrives via Contract 2 dispat
 
 ### Brain MCP binary rule
 
-All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). Generic file tools (Read/Edit/Write) are forbidden on Brain notes. PRD titles contain a colon (`PRD-NNN: Topic`); creation uses Pattern 2 three-phase write:
-
-1. `write_note` with no-colon title (e.g., `PRD-001 Lifecycle Skills Rework`)
-2. `edit_note` (find_replace) to insert colons in frontmatter title + H1
-3. `move_note` to rename file to kebab form (e.g., `prd-001-lifecycle-skills-rework.md`)
+All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). Generic file tools (Read/Edit/Write) are forbidden on Brain notes. PRD creation is a single `write_note` call passing the full colon title (e.g., `PRD-001: Lifecycle Skills Rework`); Brain MCP derives the kebab filename (`prd-001-lifecycle-skills-rework.md`) and bare permalink and indexes the note immediately. Verify via `list_directory`. No `edit_note` or `move_note` follow-up.
 
 ### Memory-first gate (Step 0.5)
 

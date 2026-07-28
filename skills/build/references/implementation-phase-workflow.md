@@ -219,7 +219,7 @@ Brief:
 - The TASK's DoD checklist (now annotated with implementer's `[x]` marks for completed items)
 - Mandate: "Verify each DoD item passes. Cite test results (`bun test`, `pytest`, etc.) per item. Surface regressions in adjacent modules. Reviewer-asymmetry framing — review as a stranger; cite file:line evidence."
 
-QA writes `QA-NNN-SPEC-NNN-{task-slug}.md` to `docs/qa/` via Brain MCP Pattern 2 three-phase. Frontmatter status: `PASS | FAIL | PARTIAL`.
+QA writes `QA-NNN-SPEC-NNN-{task-slug}.md` to `docs/qa/` via a single Brain MCP `write_note` call passing the full colon title. Frontmatter status: `PASS | FAIL | PARTIAL`.
 
 ### 4d — On QA FAIL: fix-implementer loop
 
