@@ -39,18 +39,14 @@ When auto-invoked from `/plan PLAN-NNN`, /decisions arrives via Contract 2 dispa
 |---|---|
 | `d_n_substatus` mutations | PLAN-part: each D-N locked PENDING → LOCKED with verbatim option text |
 | SESSION Event NN entries | One per locked D-N (Contract 5; Type `decision-lock`) |
-| ADR-NNN note | `docs/decisions/ADR-NNN-{slug}.md` (Brain note; Pattern 2 three-phase write) |
+| ADR-NNN note | `docs/decisions/ADR-NNN-{slug}.md` (Brain note; single `write_note` call) |
 | `set-part-done` call back to /plan | Contract 1: `Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=decisions.{N} outcome=<ADR wikilink>")` |
 
 ## Cross-cutting behaviors (all invocations)
 
 ### Brain MCP binary rule
 
-All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). ADR titles contain a colon (`ADR-NNN: Topic`); creation uses Pattern 2 three-phase write:
-
-1. `write_note` with no-colon title (e.g., `ADR-001 Polar MCP`)
-2. `edit_note` (find_replace) to insert colons in frontmatter title + H1
-3. `move_note` to rename file to kebab form (e.g., `adr-001-polar-mcp.md`)
+All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). ADR creation is a single `write_note` call passing the full colon title (e.g., `ADR-001: Polar MCP`); Brain MCP derives the kebab filename (`adr-001-polar-mcp.md`) and bare permalink and indexes the note immediately. Verify via `list_directory`. No `edit_note` or `move_note` follow-up.
 
 ADR frontmatter additionally carries `date: YYYY-MM-DD` (set on first ACCEPTED transition) + `updated: YYYY-MM-DD` (refreshed on Clarifications or substantive body change).
 
@@ -251,60 +247,7 @@ For any skill name dispatched, check `~/.claude/skills/<name>/SKILL.md` first; i
 
 ### Role of /decisions in the rigid cycle
 
-/decisions runs the per-D-N analog of the build cycle: decision-critic → AskUserQuestion (with verbatim option labels and descriptions) → user adjudication → verbatim echo of the locked decision → diff approval → 2-step edit to ADR/PLAN → commit. Each D-N is its own atomic micro-cycle; never batch D-N adjudications. Locked decisions land in their destination doc within the SAME turn (no queueing). ADR ACCEPTED transitions are gated on `brain:---adr-review` PASS (BLOCKING). Composite ADRs that author REQ / DESIGN / TASK contracts produce the checkbox shapes the build cycle later validates.
-
-## Rigid per-TASK build+QA cycle
-
-When a SPEC enters build, the orchestrator advances ONE TASK at a time through a fixed sequence. NO step may be skipped or reordered, NO batching, NO shortcuts.
-
-For each `TASK-NNN-SPEC-MMM` in the SPEC:
-
-a. PLAN transition `impl-TASK-NNN PENDING → IN_PROGRESS` (FIRST action)
-b. Session note Event appended capturing transition
-c. Git commit
-d. Orchestrator dispatches implementer; brief = rendered impl item content verbatim from PLAN
-e. Implementer reads ENTIRE spec subtree, implements ONLY this TASK, marks DoD `[x]` per item satisfied
-f. Implementer returns `## State Changes` (this TASK only)
-g. Session note Event
-h. PLAN transition `impl-TASK-NNN IN_PROGRESS → DONE`
-i. Git commit (code + PLAN + session note atomically)
-j. PLAN transition `qa-TASK-NNN PENDING → IN_PROGRESS`
-k. Session note Event
-l. Git commit
-m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
-n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
-p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN`
-q. Session note Event
-r. Orchestrator updates TASK note with `validated_by` relation to the QA note
-s. On PASS: PLAN `qa-TASK-NNN → DONE`; TASK note status → DONE. On FAILED: PLAN `qa-TASK-NNN → FAILED`; PLAN `impl-TASK-NNN DONE → IN_PROGRESS`; orchestrator translates QA findings into a fix-brief that quotes each unchecked item verbatim with QA evidence
-t. Git commit
-u. Move to TASK N+1; repeat from (a)
-
-## Checkbox-as-contract
-
-Implementer and QA do NOT figure out what counts as done from prose. The contract is mechanical:
-
-- `TASK ## Definition of Done` checkboxes — implementer's build contract
-- `REQ ## Acceptance Criteria` (EARS Given/When/Then) — QA validates against these
-- `DESIGN ## Compliance` or `## Architecture Compliance` checkboxes (when present) — QA validates against these
-
-## Schema-validated agent-claim verification
-
-The composition library at `shared/composition/` provides programmatic validators:
-
-- `TaskNoteSchema` + `validateTaskDoneClaim()` — rejects implementer "DONE" claim if any DoD `[ ]` unsatisfied
-- `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`
-- `DesignNoteSchema` + `validateDesignComplianceClaim()` — same for DESIGN
-- `SpecRootNoteSchema` + `validateSpecDoneClaim()` — same for SPEC root
-- `QaNoteSchema` + `validateQaPassClaim()` — rejects QA "PASS" that doesn't match per-row results
-- `PlanNoteSchema.BuildWorkflowItem` + `transition-impl-item` / `transition-qa-item` mutations — mandate session context, throw on missing
-
-Lying agents are mechanically caught.
-
-## Defense in depth
-
-This protocol embeds at every enforcement layer. Single-layer enforcement fails under load.
+> /decisions runs the per-D-N analog of the build cycle: decision-critic → AskUserQuestion (with verbatim option labels and descriptions) → user adjudication → verbatim echo of the locked decision → diff approval → 2-step edit to ADR/PLAN → commit. Each D-N is its own atomic micro-cycle; never batch D-N adjudications. Locked decisions land in their destination doc within the SAME turn (no queueing). ADR ACCEPTED transitions are gated on `brain:---adr-review` PASS (BLOCKING). Composite ADRs that author REQ / DESIGN / TASK contracts produce the checkbox shapes the build cycle later validates. /decisions does not run the build cycle; it is defined in `../build/references/per-task-build-qa-cycle.md`.
 
 ## Reference files
 

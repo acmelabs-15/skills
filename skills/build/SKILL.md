@@ -60,64 +60,13 @@ When auto-invoked from `/plan PLAN-NNN`, /build arrives via Contract 2 (`Skill(s
 
 ### Role of /build in the rigid cycle
 
-> /build is the per-TASK executor. Each invocation advances exactly ONE TASK through steps (a)-(u). /build NEVER batches multiple TASKs in a single dispatch; NEVER skips the QA gate; NEVER trusts an implementer's claim without running the schema validator. The implementer dispatch brief is the PLAN's rendered impl item content verbatim; the QA dispatch brief is the rendered qa item content verbatim. The FAIL path's fix-brief translation (step s on FAILED) is /build's responsibility — quote each unchecked item with QA evidence.
+> /build is the per-TASK executor. Each invocation advances exactly ONE TASK through steps (a)-(u). /build NEVER batches multiple TASKs in a single dispatch; NEVER skips the QA gate; and never accepts an implementer's claim without adversarial QA validation — the QA agent reads the same TASK/REQ/DESIGN notes and rules valid or invalid, with per-checkbox evidence in the QA note. Both dispatch briefs are rendered from the TASK/REQ/DESIGN subtree by `scripts/dispatch-implementer.ts` and `scripts/dispatch-qa.ts`. The FAIL path's fix-brief translation (step s on FAILED) is /build's responsibility — quote each unchecked item with QA evidence.
 
-## Rigid per-TASK build+QA cycle
+## Per-TASK build+QA cycle
 
-When a SPEC enters build, the orchestrator advances ONE TASK at a time through a fixed sequence. NO step may be skipped or reordered, NO batching, NO shortcuts.
+The cycle is defined once, in `references/per-task-build-qa-cycle.md`. Read it there; it is not restated here.
 
-For each `TASK-NNN-SPEC-MMM` in the SPEC:
-
-a. PLAN transition `impl-TASK-NNN PENDING → IN_PROGRESS` (FIRST action)
-b. Session note Event appended capturing transition
-c. Git commit
-d. Orchestrator dispatches implementer; brief = rendered impl item content verbatim from PLAN
-e. Implementer reads ENTIRE spec subtree, implements ONLY this TASK, marks DoD `[x]` per item satisfied
-f. Implementer returns `## State Changes` (this TASK only)
-g. Session note Event
-h. PLAN transition `impl-TASK-NNN IN_PROGRESS → DONE`
-i. Git commit (code + PLAN + session note atomically)
-j. PLAN transition `qa-TASK-NNN PENDING → IN_PROGRESS`
-k. Session note Event
-l. Git commit
-m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
-n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
-p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN` — nothing more; the QA note is the contract document
-q. Session note Event
-r. Orchestrator updates TASK note with `validated_by` relation to the QA note
-s. On PASS: PLAN `qa-TASK-NNN → DONE`; TASK note status → DONE. On FAILED: PLAN `qa-TASK-NNN → FAILED`; PLAN `impl-TASK-NNN DONE → IN_PROGRESS`; orchestrator translates QA findings into a fix-brief that quotes each unchecked item verbatim with QA evidence (file:line, test name)
-t. Git commit
-u. Move to TASK N+1; repeat from (a)
-
-## Checkbox-as-contract
-
-Implementer and QA do NOT figure out what counts as done from prose. The contract is mechanical:
-
-- `TASK ## Definition of Done` checkboxes — implementer's build contract
-- `REQ ## Acceptance Criteria` (EARS Given/When/Then) — QA validates against these
-- `DESIGN ## Compliance` or `## Architecture Compliance` checkboxes (when present) — QA validates against these
-
-When dispatching implementer: brief MUST quote the TASK DoD verbatim + link the linked REQs/DESIGNs + state "you implement against the checkboxes; you check [x] as each is satisfied".
-
-When dispatching QA: brief MUST quote the TASK DoD + linked REQ AC + linked DESIGN compliance verbatim + state "you validate each checkbox individually with evidence; you mark [x] for satisfied items, leave [ ] for unsatisfied; per-item PASS/FAIL/PARTIAL evidence to the QA note".
-
-## Schema-validated agent-claim verification
-
-The composition library at `shared/composition/` provides programmatic validators:
-
-- `TaskNoteSchema` + `validateTaskDoneClaim()` — rejects implementer "DONE" claim if any DoD `[ ]` unsatisfied
-- `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`
-- `DesignNoteSchema` + `validateDesignComplianceClaim()` — same for DESIGN
-- `SpecRootNoteSchema` + `validateSpecDoneClaim()` — same for SPEC root
-- `QaNoteSchema` + `validateQaPassClaim()` + schema superRefine — rejects QA "PASS" verdict that doesn't match per-row results AND rejects `tests_run !== passed + failed + skipped`
-- `PlanNoteSchema.BuildWorkflowItem` + `transition-impl-item` / `transition-qa-item` mutations — mandate session context (`owning_session` + `at_event`), throw on missing
-
-Lying agents are mechanically caught.
-
-## Defense in depth
-
-This protocol embeds at every enforcement layer — Zod schemas + templates + renderers + skill SKILL.md + orchestrator dispatch briefs. Single-layer enforcement fails under load.
+What /build owns is the execution: it runs the two steps per TASK — implement via `brain:🧠-implementer`, then validate via `brain:🧠-qa`, looping until PASS — and translates QA findings into the fix-brief on the FAIL path. The briefs themselves are rendered by `scripts/dispatch-implementer.ts` and `scripts/dispatch-qa.ts`, which are the only definition of brief content.
 
 ## Inputs and outputs
 
@@ -141,11 +90,7 @@ This protocol embeds at every enforcement layer — Zod schemas + templates + re
 
 ### Brain MCP binary rule
 
-All `docs/**` operations use Brain MCP tools. QA note titles contain colons; creation uses Pattern 2 three-phase write:
-
-1. `write_note` with no-colon title (e.g., `QA-001-SPEC-001 Login Auth Path`)
-2. `edit_note` (find_replace) to insert colons in frontmatter title + H1
-3. `move_note` to rename file to kebab form
+All `docs/**` operations use Brain MCP tools. QA note creation is a single `write_note` call passing the full canonical colon title (e.g., `QA-001-SPEC-001: Login Auth Path`); Brain MCP derives the kebab filename and bare permalink and indexes the note immediately. Verify via `list_directory`. No `edit_note` or `move_note` follow-up.
 
 Code files (`src/**`, `lib/**`, etc.) use Read/Edit/Write per the binary rule — NEVER Brain MCP on non-graph files.
 
@@ -220,8 +165,9 @@ See `references/implementation-phase-workflow.md` for the full per-TASK cycle. S
 For each TASK in dependency order:
 
 1. **4a — Implementer dispatch** (foreground per the foreground-permission-tools principle):
-   - `Task(subagent_type="brain:🧠-implementer")` with TASK scope + parent SPEC + applicable ADRs
-   - Brief MUST include: **TDD directive** ("If project has tests, write failing test for each acceptance criterion BEFORE implementation code"), **canonical-source-mirror constraint** ("If code mirrors an existing source, cite path + quote verbatim"), **evidence hierarchy** ("Cite tool output > files read > web/docs > training knowledge"), **quality self-check questions** (hard to test? methods read like sentences? coupling intentional?), **memory-first gate** (search Brain memory before changing existing code)
+   - `Task(subagent_type="brain:🧠-implementer")`. The brief is generated by `scripts/dispatch-implementer.ts` — that script is the only definition of brief content, and it emits the five directives (TDD, canonical-source-mirror, evidence hierarchy, quality self-check, memory-first gate) plus the contract. Full directive text is in `references/implementation-phase-workflow.md`.
+   - Test-first is unconditional for code TASKs: a failing test per acceptance criterion BEFORE implementation code.
+   - Two things the script does not take as parameters, so the orchestrator supplies them in the dispatch alongside the rendered brief: the parent SPEC + applicable ADR set, and the Step 3 pre-mortem risk list.
 2. **4b — Process State Changes**: implementer returns `## State Changes` listing every status transition. Cross-check each against Contract 7 task enum (`TODO | IN_PROGRESS | DONE | BLOCKED`). HALT via `build-step4b-invalid-status-halt` on any non-canonical status.
 3. **4c — QA dispatch**: `Task(subagent_type="brain:🧠-qa")` → writes `QA-NNN-SPEC-NNN-{task-slug}.md` to `docs/qa/`.
 4. **4d — On QA FAIL**: dispatch fix-implementer with the QA findings as context; loop 4a → 4c until PASS. **Max 3 iterations**; HALT via `build-step4d-iteration-halt` for user intervention.
@@ -310,7 +256,7 @@ Coverage notes (severity INFO; non-BLOCKING):
 | Letting per-task QA findings accumulate | Each TASK closes its own QA before next starts | Stage A loop is atomic per TASK |
 | Pushing to sync-jira before TASK frontmatter flipped DONE | Jira drifts ahead of source-of-truth | Step 4e state propagation FIRST, then Step 4f sync-jira |
 | Running pre-mortem AFTER coding starts | Defeats its purpose; pre-mortem informs implementer approach | Step 3 BEFORE Step 4 always |
-| Implementer dispatch without TDD directive | Tests get written after the fact; coverage drift | Brief MUST include TDD directive when project has tests |
+| Implementer dispatch without TDD directive | Tests get written after the fact; coverage drift | Test-first is unconditional for code TASKs; the script always emits the directive |
 | Implementer dispatch without canonical-source-mirror | Code claims to mirror but doesn't cite source | Brief MUST include the constraint |
 | Fix-implementer loop without max-iteration cap | Infinite loop when QA findings can't be resolved | Max 3 iterations; HALT for user intervention |
 | Treating Gate 3 coverage-note as a blocker | orphan-ref-validator is INFO (non-BLOCKING) per Contract 9 | Document gap; CONTINUE |

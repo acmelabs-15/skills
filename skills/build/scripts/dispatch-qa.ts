@@ -74,16 +74,17 @@ export function renderQaBrief(args: QaBriefArgs): string {
     "Read the ENTIRE spec subtree (TASK DoD + linked REQ Acceptance Criteria + linked DESIGN Compliance).",
     "Evaluate each checkbox individually with evidence (file:line, test name, or explicit absence).",
     "Mark `[x]` for items with evidence; leave `[ ]` for items without evidence.",
-    "Write per-checkbox findings to a QA-NNN-SPEC-NNN-{task-slug}.md note via Pattern 2 three-phase write.",
+    "Write per-checkbox findings to a QA-NNN-SPEC-NNN-{task-slug}.md note via a single `write_note` call passing the full colon title.",
     "Return verdict ONLY: `PASS` or `FAILED + see QA-NNN-SPEC-NNN-{task-slug}`.",
     "The QA note is the contract document — do not summarize findings in your return message.",
     "",
-    "## Schema-validated claim verification",
+    "## Your judgment is the verification",
     "",
-    "The composition library validators will be run against your QA note:",
-    "- `validateQaPassClaim()` — rejects PASS verdict that does not match per-row results",
-    "- Rejects `tests_run !== passed + failed + skipped`",
-    "Lying about PASS when per-row results show failures is mechanically caught.",
+    "No validator runs behind you. The valid/invalid ruling on every checkbox is yours alone,",
+    "and the QA note's per-item evidence is what the orchestrator acts on:",
+    "- A `PASS` verdict must match your per-row results — if any row failed, the verdict is `FAILED`.",
+    "- Report `tests_run` as the true total: it must equal passed + failed + skipped.",
+    "Nothing downstream will catch an inaccurate verdict, which is why the accuracy has to come from you.",
   ].join("\n");
 }
 

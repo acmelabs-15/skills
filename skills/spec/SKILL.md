@@ -76,11 +76,7 @@ Stage 2 (per-SPEC; spec.SPEC-NNN):
 
 ### Brain MCP binary rule
 
-All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). All 4 SPEC subtree note types (SPEC root, REQ, DESIGN, TASK) have colons in titles; creation uses Pattern 2 three-phase write:
-
-1. `write_note` with no-colon title (e.g., `REQ-001-SPEC-001 Injectable Data Source`)
-2. `edit_note` (find_replace) to insert colons in frontmatter title + H1
-3. `move_note` to rename to kebab filename (e.g., `req-001-spec-001-injectable-data-source.md`)
+All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). All 4 SPEC subtree note types (SPEC root, REQ, DESIGN, TASK) have colons in titles, and each is created with a single `write_note` call passing the full colon title (e.g., `REQ-001-SPEC-001: Injectable Data Source`); Brain MCP derives the kebab filename (`req-001-spec-001-injectable-data-source.md`) and bare permalink and indexes the note immediately. Verify via `list_directory`. No `edit_note` or `move_note` follow-up.
 
 ### Two-step edit pattern (per D-04 + Contract 5)
 
@@ -235,63 +231,7 @@ For any skill name dispatched, check `~/.claude/skills/<name>/SKILL.md` first; i
 
 ### Role of /spec in the rigid cycle
 
-> /spec authors the CHECKBOX CONTRACTS the rigid cycle later validates. Every TASK note MUST have a `## Definition of Done` checkbox list — that is the implementer's contract. Every REQ note MUST have a `## Acceptance Criteria` EARS-format checkbox list — that is the QA contract. DESIGN notes MAY include a `## Compliance` or `## Architecture Compliance` checkbox list when the design choices admit binary verification. /spec produces notes whose checkbox shapes pass the X.D.5/6/7 schemas (TaskNoteSchema / RequirementNoteSchema / DesignNoteSchema). Vague prose without a verifiable checkbox = a gap the build cycle cannot close.
-
-## Rigid per-TASK build+QA cycle
-
-When a SPEC enters build, the orchestrator advances ONE TASK at a time through a fixed sequence. NO step may be skipped or reordered, NO batching, NO shortcuts.
-
-For each `TASK-NNN-SPEC-MMM` in the SPEC:
-
-a. PLAN transition `impl-TASK-NNN PENDING → IN_PROGRESS` (FIRST action)
-b. Session note Event appended capturing transition
-c. Git commit
-d. Orchestrator dispatches implementer; brief = rendered impl item content verbatim from PLAN
-e. Implementer reads ENTIRE spec subtree, implements ONLY this TASK, marks DoD `[x]` per item satisfied
-f. Implementer returns `## State Changes` (this TASK only)
-g. Session note Event
-h. PLAN transition `impl-TASK-NNN IN_PROGRESS → DONE`
-i. Git commit (code + PLAN + session note atomically)
-j. PLAN transition `qa-TASK-NNN PENDING → IN_PROGRESS`
-k. Session note Event
-l. Git commit
-m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
-n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
-p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN`
-q. Session note Event
-r. Orchestrator updates TASK note with `validated_by` relation to the QA note
-s. On PASS: PLAN `qa-TASK-NNN → DONE`; TASK note status → DONE. On FAILED: PLAN `qa-TASK-NNN → FAILED`; PLAN `impl-TASK-NNN DONE → IN_PROGRESS`; orchestrator translates QA findings into a fix-brief that quotes each unchecked item verbatim with QA evidence
-t. Git commit
-u. Move to TASK N+1; repeat from (a)
-
-## Checkbox-as-contract
-
-Implementer and QA do NOT figure out what counts as done from prose. The contract is mechanical:
-
-- `TASK ## Definition of Done` checkboxes — implementer's build contract
-- `REQ ## Acceptance Criteria` (EARS Given/When/Then) — QA validates against these
-- `DESIGN ## Compliance` or `## Architecture Compliance` checkboxes (when present) — QA validates against these
-
-When dispatching implementer: brief MUST quote the TASK DoD verbatim + link the linked REQs/DESIGNs.
-
-When dispatching QA: brief MUST quote the TASK DoD + linked REQ AC + linked DESIGN compliance verbatim + state per-item PASS/FAIL/PARTIAL evidence goes to the QA note.
-
-## Schema-validated agent-claim verification
-
-The composition library at `shared/composition/` provides programmatic validators:
-
-- `TaskNoteSchema` + `validateTaskDoneClaim()` — rejects implementer "DONE" claim if any DoD `[ ]` unsatisfied
-- `RequirementNoteSchema` + `validateRequirementAcClaim()` — rejects REQ ACCEPTED if any AC `[ ]`
-- `DesignNoteSchema` + `validateDesignComplianceClaim()` — same for DESIGN
-- `SpecRootNoteSchema` + `validateSpecDoneClaim()` — same for SPEC root
-- `QaNoteSchema` + `validateQaPassClaim()` + schema superRefine — rejects QA "PASS" that doesn't match per-row results
-
-Lying agents are mechanically caught.
-
-## Defense in depth
-
-This protocol embeds at every enforcement layer. Single-layer enforcement fails under load.
+> /spec authors the CHECKBOX CONTRACTS the build cycle later validates. Every TASK note MUST have a `## Definition of Done` checkbox list — that is the implementer's contract. Every REQ note MUST have a `## Acceptance Criteria` EARS-format checkbox list — that is the QA contract. DESIGN notes MAY include a `## Compliance` or `## Architecture Compliance` checkbox list when the design choices admit binary verification. /spec produces notes whose checkbox shapes pass the TaskNoteSchema / RequirementNoteSchema / DesignNoteSchema shapes. Vague prose without a verifiable checkbox = a gap the build cycle cannot close. /spec does not run the cycle; it is defined in `../build/references/per-task-build-qa-cycle.md`.
 
 ## Reference files
 

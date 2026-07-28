@@ -79,7 +79,7 @@ export function renderAnalystBrief(args: AnalystBriefArgs): string {
     "",
     "## ANALYSIS note structure",
     "",
-    "Author the ANALYSIS-NNN note via Pattern 2 three-phase write.",
+    "Author the ANALYSIS-NNN note via a single `write_note` call passing the full colon title.",
     `Observations: minimum 3 entries; each with a \`[category]\` prefix from: ${validCategories}`,
     "Relations: minimum 2 entries; `## Observations` then `## Relations` are the FINAL two sections.",
   ].join("\n");

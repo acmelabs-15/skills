@@ -66,7 +66,7 @@ Skill(skill="requirements-interview")
 
 Produces a PRD with EARS-traced requirements (WHEN/THE SYSTEM SHALL/SO THAT) + 7-branch checklist coverage (user stories / data model / integrations / failure modes / security / observability / scope boundaries) + structured 11-section output (Problem / User stories / Data model / Integrations / Failure modes / Security / Observability / Acceptance criteria / Out of scope / Deferred / Open questions).
 
-The PRD lands at `docs/planning/PRD-NNN-{slug}.md` via Brain MCP Pattern 2 three-phase write.
+The PRD lands at `docs/planning/PRD-NNN-{slug}.md` via a single Brain MCP `write_note` call passing the full colon title.
 
 **Loop iteration**: when `/research` re-enters Step 1 from Step 7, the interview is scoped to the gap — new requirements only. The existing PRD is enhanced, not replaced.
 

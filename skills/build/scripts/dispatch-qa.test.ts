@@ -46,9 +46,14 @@ describe("renderQaBrief()", () => {
     expect(brief).toContain("FAILED");
   });
 
-  test("brief contains schema-validated claim verification section", () => {
+  test("brief places the verification burden on the QA agent, promising no validator run", () => {
     const brief = renderQaBrief({ taskRef: TASK_REF, reqRefs: REQ_REFS });
-    expect(brief).toContain("validateQaPassClaim");
+    expect(brief).toContain("No validator runs behind you");
+    expect(brief).toContain("passed + failed + skipped");
+    // Regression guard: the brief must not promise mechanical enforcement that
+    // no step performs. The QA agent's judgment is the verification.
+    expect(brief).not.toContain("validators will be run");
+    expect(brief).not.toContain("mechanically caught");
   });
 
   test("brief works with no REQ refs (graceful empty case)", () => {

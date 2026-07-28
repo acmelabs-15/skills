@@ -98,16 +98,19 @@ For each TASK in dependency order (read from TASK frontmatter `depends_on` relat
 Task(subagent_type="brain:🧠-implementer")
 ```
 
-Dispatch brief MUST include:
+The brief is rendered by `../scripts/dispatch-implementer.ts`, which is the only definition of its content. That script emits each directive below as a one-line summary; the full text here is the canonical expansion of what each one means. Do not re-implement the brief from this file.
 
-#### TDD directive (when project has tests)
+Two inputs the script does not accept as parameters — the parent SPEC + applicable ADR set, and the pre-mortem risk briefing — are supplied by the orchestrator alongside the rendered brief.
+
+#### TDD directive
 
 ```text
-If the project has a test framework, write a failing test for each acceptance
-criterion BEFORE implementation code. Per-slice sequence:
+Write a failing test for each acceptance criterion BEFORE implementation code.
+Per-slice sequence:
   failing test → minimum code to pass → refactor → commit
 
-Skip TDD only if no test framework exists OR this TASK is non-code (docs, config).
+This is unconditional for code TASKs. Non-code TASKs (docs, config) have no
+acceptance criteria to test.
 ```
 
 #### Canonical-source-mirror constraint
@@ -170,29 +173,9 @@ Pre-mortem identified critical risks:
 Watch for these during implementation; apply mitigations preemptively.
 ```
 
-#### TASK scope + DoD
+#### TASK scope
 
-```text
-TASK: [[TASK-NNN-SPEC-NNN: {Title}]]
-
-Objective: {from TASK note Objective section}
-
-Files Affected (from TASK note):
-| File | Action | Purpose |
-| {table from TASK note}
-
-Definition of Done (from TASK note):
-- [ ] {DoD item 1, traces to REQ-NNN}
-- [ ] {DoD item 2, traces to REQ-NNN}
-- (per the TASK note's DoD checklist)
-
-ADR Compliance (from TASK note):
-- [ ] {ADR constraint 1}
-- [ ] (per the TASK note's ADR Compliance checklist)
-
-Return: list of files changed + test results + `## State Changes` section
-listing every status transition (e.g., `TASK-NNN-SPEC-NNN: TODO → DONE`).
-```
+Not templated here. `dispatch-implementer.ts` embeds the rendered TASK note body verbatim under a `## Rendered TASK content` heading, so the Objective, Files Affected table, Definition of Done and ADR Compliance checklists arrive as authored rather than as a re-typed summary. Its `## Contract` section states the return shape: files changed, test results, and a `## State Changes` section listing every status transition (e.g., `TASK-NNN-SPEC-NNN: TODO → DONE`).
 
 Implementer runs foreground (per the foreground-permission-tools principle); orchestrator awaits return before proceeding.
 
@@ -219,7 +202,7 @@ Brief:
 - The TASK's DoD checklist (now annotated with implementer's `[x]` marks for completed items)
 - Mandate: "Verify each DoD item passes. Cite test results (`bun test`, `pytest`, etc.) per item. Surface regressions in adjacent modules. Reviewer-asymmetry framing — review as a stranger; cite file:line evidence."
 
-QA writes `QA-NNN-SPEC-NNN-{task-slug}.md` to `docs/qa/` via Brain MCP Pattern 2 three-phase. Frontmatter status: `PASS | FAIL | PARTIAL`.
+QA writes `QA-NNN-SPEC-NNN-{task-slug}.md` to `docs/qa/` via a single Brain MCP `write_note` call passing the full colon title. Frontmatter status: `PASS | FAIL | PARTIAL`.
 
 ### 4d — On QA FAIL: fix-implementer loop
 

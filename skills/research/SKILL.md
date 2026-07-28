@@ -33,7 +33,7 @@ When auto-invoked from `/plan PLAN-NNN`, /research arrives via Contract 2 dispat
 
 | Output | Location |
 |---|---|
-| PRD-NNN note | `docs/planning/PRD-NNN-{slug}.md` (Brain note; Pattern 2 three-phase write) |
+| PRD-NNN note | `docs/planning/PRD-NNN-{slug}.md` (Brain note; single `write_note` call) |
 | ANALYSIS-NNN notes (one per requirement) | `docs/analysis/ANALYSIS-NNN-{descriptor}.md` |
 | `complexity_tier` set on PLAN frontmatter | Per Contract 8; required before any downstream phase proceeds |
 | `set-part-done` call back to /plan | Contract 1: `Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=research outcome=<PRD wikilink> secondary_outcomes=<ANALYSIS wikilinks>")` |
@@ -42,11 +42,7 @@ When auto-invoked from `/plan PLAN-NNN`, /research arrives via Contract 2 dispat
 
 ### Brain MCP binary rule
 
-All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). Generic file tools (Read/Edit/Write) are forbidden on Brain notes. PRD titles contain a colon (`PRD-NNN: Topic`); creation uses Pattern 2 three-phase write:
-
-1. `write_note` with no-colon title (e.g., `PRD-001 Lifecycle Skills Rework`)
-2. `edit_note` (find_replace) to insert colons in frontmatter title + H1
-3. `move_note` to rename file to kebab form (e.g., `prd-001-lifecycle-skills-rework.md`)
+All `docs/**` operations use Brain MCP tools (`mcp__plugin_brain_brain__*`). Generic file tools (Read/Edit/Write) are forbidden on Brain notes. PRD creation is a single `write_note` call passing the full colon title (e.g., `PRD-001: Lifecycle Skills Rework`); Brain MCP derives the kebab filename (`prd-001-lifecycle-skills-rework.md`) and bare permalink and indexes the note immediately. Verify via `list_directory`. No `edit_note` or `move_note` follow-up.
 
 ### Memory-first gate (Step 0.5)
 
@@ -202,51 +198,7 @@ Never fall back to the ai-agents path. Currently verified present at Brain locat
 
 ### Role of /research in the rigid cycle
 
-> /research produces the upstream ANALYSIS notes the rest of the cycle consumes. Analysis output stays at the options-with-pros/cons layer — locking choices happens in /decisions, not here. Analyses MUST land WITHOUT unresolved questions (resolution belongs IN the analysis phase via codebase research, external research, or real-time user check-in). Per-analysis briefs may include extension directives so the analyst adds dimensions specific to the codebase/topic beyond the rubric floor. Analyses that feed downstream contracts (REQs/DESIGNs/TASKs) should articulate criteria that translate cleanly into EARS or checkbox form so the spec phase can author verifiable contracts.
-
-## Rigid per-TASK build+QA cycle
-
-When a SPEC enters build, the orchestrator advances ONE TASK at a time through a fixed sequence. NO step may be skipped or reordered, NO batching, NO shortcuts.
-
-For each `TASK-NNN-SPEC-MMM` in the SPEC:
-
-a. PLAN transition `impl-TASK-NNN PENDING → IN_PROGRESS` (FIRST action)
-b. Session note Event appended capturing transition
-c. Git commit
-d. Orchestrator dispatches implementer; brief = rendered impl item content verbatim from PLAN
-e. Implementer reads ENTIRE spec subtree, implements ONLY this TASK, marks DoD `[x]` per item satisfied
-f. Implementer returns `## State Changes` (this TASK only)
-g. Session note Event
-h. PLAN transition `impl-TASK-NNN IN_PROGRESS → DONE`
-i. Git commit (code + PLAN + session note atomically)
-j. PLAN transition `qa-TASK-NNN PENDING → IN_PROGRESS`
-k. Session note Event
-l. Git commit
-m. Orchestrator dispatches QA; brief = rendered qa item content verbatim from PLAN
-n. QA reads ENTIRE spec, evaluates each linked DoD + REQ AC + DESIGN compliance checkbox individually with evidence
-o. QA writes per-checkbox findings to `QA-NNN-SPEC-MMM-{task-slug}.md` via Pattern 2 three-phase write
-p. QA returns verdict ONLY: `PASS` or `FAILED + see QA-NNN`
-q. Session note Event
-r. Orchestrator updates TASK note with `validated_by` relation to the QA note
-s. On PASS: PLAN `qa-TASK-NNN → DONE`; TASK note status → DONE. On FAILED: PLAN `qa-TASK-NNN → FAILED`; PLAN `impl-TASK-NNN DONE → IN_PROGRESS`; orchestrator translates QA findings into a fix-brief that quotes each unchecked item verbatim with QA evidence
-t. Git commit
-u. Move to TASK N+1; repeat from (a)
-
-## Checkbox-as-contract
-
-Implementer and QA do NOT figure out what counts as done from prose. The contract is mechanical:
-
-- `TASK ## Definition of Done` checkboxes — implementer's build contract
-- `REQ ## Acceptance Criteria` (EARS Given/When/Then) — QA validates against these
-- `DESIGN ## Compliance` or `## Architecture Compliance` checkboxes (when present) — QA validates against these
-
-## Schema-validated agent-claim verification
-
-The composition library at `shared/composition/` provides programmatic validators across TaskNote, RequirementNote, DesignNote, SpecRootNote, QaNote. Lying agents are mechanically caught.
-
-## Defense in depth
-
-This protocol embeds at every enforcement layer. Single-layer enforcement fails under load.
+> /research produces the upstream ANALYSIS notes the rest of the cycle consumes. Analysis output stays at the options-with-pros/cons layer — locking choices happens in /decisions, not here. Analyses MUST land WITHOUT unresolved questions (resolution belongs IN the analysis phase via codebase research, external research, or real-time user check-in). Per-analysis briefs may include extension directives so the analyst adds dimensions specific to the codebase/topic beyond the rubric floor. Analyses that feed downstream contracts (REQs/DESIGNs/TASKs) should articulate criteria that translate cleanly into EARS or checkbox form so the spec phase can author verifiable contracts. /research does not run the cycle; it is defined in `../build/references/per-task-build-qa-cycle.md`.
 
 ## Reference files
 

@@ -162,7 +162,7 @@ Required brief elements:
 - Canonical-source-mirror constraint (cite SESSION Event references inline when mirroring)
 - Reviewer-asymmetry directive (architect operates as author with detail-parity discipline; review is downstream via adr-review)
 
-Architect writes the ADR via Brain MCP Pattern 2 three-phase. Frontmatter:
+Architect writes the ADR via a single Brain MCP `write_note` call passing the full colon title. Frontmatter:
 
 ```yaml
 ---
