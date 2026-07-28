@@ -74,10 +74,12 @@ If Peter wants Gate 3 to become BLOCKING in the future:
 For markdown files in changed set:
 
 ```bash
-npx markdownlint-cli2 --fix "**/*.md"
+npx markdownlint-cli2 --fix "**/*.md" "!**/docs/**"
 ```
 
 `--fix` auto-fixes most issues in place. After fixes land, re-stage + amend the commit (or create a new lint-fix commit).
+
+`docs/**` is excluded and MUST stay excluded. `--fix` rewrites the colon-space inside underscore-titled wikilinks, breaking the link targets the knowledge graph resolves on — and a build cycle has just written QA, TASK and SPEC notes there. Never widen this glob to cover `docs/**`, and diff-review any multi-file auto-fix before committing it.
 
 For TS/JS files if `biome.json` exists in project root:
 

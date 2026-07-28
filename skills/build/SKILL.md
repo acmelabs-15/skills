@@ -197,7 +197,7 @@ See `references/exit-gates.md` for full gate details, Gate 5 trigger detection, 
 | 1 | `Skill(skill="brain:---code-qualities-assessment", args="--changed-only")` | Reject build cycle on critical finding |
 | 2 | `Skill(skill="brain:---incoherence", args="--diff-base main")` (substitutes for `doc-accuracy` per Contract 9) | Reject on critical incoherence |
 | 3 | `orphan-ref-validator` — ABSENT at Brain locations | Emit `build-gate3-coverage-note` severity INFO per Contract 3; CONTINUE (non-BLOCKING) |
-| 4 | `npx markdownlint-cli2 --fix "**/*.md"` (markdown) + `biome check` (TS/JS if `biome.json` exists) | Fix in-place; commit if changes |
+| 4 | `npx markdownlint-cli2 --fix "**/*.md" "!**/docs/**"` (markdown; `docs/**` excluded — `--fix` breaks wikilinks) + `biome check` (TS/JS if `biome.json` exists) | Fix in-place; commit if changes |
 | 5 (conditional, Q10) | `Skill(skill="brain:---prompt-engineer")` IF diff contains prompt-like content (heuristics in `exit-gates.md`) | Reject build cycle on critical finding |
 
 If any BLOCKING gate flags: HALT via `build-step7-gate{N}-halt`; address findings in this same /build invocation. **"I'll fix in review" is NOT acceptable rationale.**

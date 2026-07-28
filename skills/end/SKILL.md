@@ -183,7 +183,7 @@ Skip Check 2 entirely if no test framework detected.
 
 **Status**: DISABLED. Brain knowledge-graph repos accumulate prose-heavy markdown content (analyses, ADRs, sessions, plans) that conflicts with default markdownlint rules — particularly MD013 (line-length) and MD060 (table-column-style) for wikilink-table cells. Without a project-level `.markdownlint.json` config, defaults produce 30k+ errors that aren't actionable per-PR. Verify-only HALT made every brain PR fail Check 3 against the systemic baseline rather than against the PR's actual delta.
 
-**Effect**: Check 3 is SKIPPED in the pre-flight sequence. Treat as `n/a` in the Step 5 report. Step 4b `markdownlint-cli2 --fix` still runs to land any safe auto-fixes — that's a one-way improvement, not a verification gate.
+**Effect**: Check 3 is SKIPPED in the pre-flight sequence. Treat as `n/a` in the Step 5 report. Step 4b `markdownlint-cli2 --fix` still runs to land any safe auto-fixes outside `docs/**` — that's a one-way improvement, not a verification gate.
 
 **Re-enable when**: project adopts a custom `.markdownlint.json` (or `.markdownlint-cli2.jsonc`) that calibrates rules for prose-heavy KG content, OR enforces lint via CI workflow on a delta-only basis (only flag new violations introduced by the PR, not the pre-existing baseline). Restore the original spec below by deleting this DISABLED block:
 
@@ -235,10 +235,12 @@ git commit -m "end: final session state for SESSION-YYYY-MM-DD_NN-{slug}"
 ### 4b — Markdown lint fix pass
 
 ```bash
-npx markdownlint-cli2 --fix "**/*.md"
+npx markdownlint-cli2 --fix "**/*.md" "!**/docs/**"
 ```
 
 Auto-fixes any markdown issues that landed since pre-flight Check 3.
+
+`docs/**` is excluded and MUST stay excluded. `--fix` rewrites the colon-space inside underscore-titled wikilinks, which silently breaks the link targets the knowledge graph resolves on. Step 4a has just committed session and PLAN notes there, so without the exclusion this step damages notes it then commits in 4c — an unreviewed write to the graph.
 
 ### 4c — Final commit
 
