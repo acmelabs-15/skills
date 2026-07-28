@@ -178,10 +178,12 @@ If no changes (rare; session already up-to-date): skip the commit (`git diff --s
 ### 4b — Markdown lint fix pass
 
 ```bash
-npx markdownlint-cli2 --fix "**/*.md"
+npx markdownlint-cli2 --fix "**/*.md" "!**/docs/**"
 ```
 
 Auto-fixes any remaining markdown issues. Common fixes: trailing whitespace, missing newline at EOF, heading-level skips, list-marker consistency.
+
+`docs/**` is excluded and MUST stay excluded: `--fix` rewrites the colon-space inside underscore-titled wikilinks and breaks the targets the knowledge graph resolves on. Step 4a has already committed session and PLAN notes there, so an unscoped `--fix` damages them and 4c commits the damage.
 
 ### 4c — Final commit (lint fixes)
 
