@@ -33,7 +33,9 @@
       "plugin/dist/**",
       "**/*.md",
       "defrag/reports/**",
-      "packages/fixtures/**"
+      "packages/fixtures/**",
+      "scratch/**",
+      ".claude/**"
     ]
   }
 }
