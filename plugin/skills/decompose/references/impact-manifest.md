@@ -130,7 +130,7 @@ A scan that found nothing and a scan that silently did not run used to produce t
 - `provable` — false means at least one query could not vouch for its own set. Each query keeps its own `reason`, so the block names which and why.
 - `project` and `projectSource` — which graph answered, and whether you asserted it or the CLI inferred it. An inference a changed working directory could have redirected is worth a second look.
 - `missingOnDisk` — paths the index returned that stage two could not open. That is index staleness, reported rather than dropped.
-- `nonNoteCandidates` — indexed files that matched but are not markdown notes, such as a distribution plan YAML naming the same identifiers. They are excluded deliberately: closure re-scans the same markdown-scoped set, and a finding recorded outside it could never be re-derived, so the next check would call a reference nobody touched repaired.
+- `nonNoteCandidates` — indexed files that matched but are not markdown notes, such as the plan YAML naming the same identifiers. They are excluded deliberately: closure re-scans the same markdown-scoped set, and a finding recorded outside it could never be re-derived, so the next check would call a reference nobody touched repaired.
 - `projectMismatchSuspected` — the wrong-graph signal described above.
 
 Per-query wall-clock is deliberately NOT in the manifest. Two scans of an unchanged graph must produce byte-identical manifests, which is what makes one diffable; timing is a property of the run rather than of the graph, so it is written to stderr instead.

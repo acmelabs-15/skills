@@ -148,7 +148,9 @@ Failure to reach closure is a surfaced finding, never a silent pass: state how m
 
 ## Error handling
 
-Identical to `/decompose`. `PlanValidationError` → parse issues, re-author. `HashMismatch` → surface loudly, do not retry. Unknown source_type → report verbatim.
+- `PlanValidationError` — Zod rejection. Parse the `issues` array, display each, offer to re-author. Same as `/decompose`.
+- `HashMismatch` (exit 2) — halts before any write, and the cause decides what to do. If the adapter's mutation pair is not bijective on this content, do NOT retry: surface it with the source paths so the adapter can be investigated. If a declared `scaffold` does not match its shard's bytes, that is a plan defect rather than an adapter bug — correct the scaffold against what `/decompose`'s audit log recorded for that destination and re-adjudicate. The two are distinguished by whether the message names a scaffold.
+- Missing adapter — `getAdapter` throwing "Unknown source_type" means the type has no shipped adapter. Surface the message verbatim and ask how to proceed. Same as `/decompose`.
 
 ## Constraints
 
