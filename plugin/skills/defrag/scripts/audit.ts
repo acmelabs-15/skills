@@ -89,11 +89,23 @@ const DEFAULT_LINE_MAX = 500;
 const DEFAULT_STALENESS_DAYS = 90;
 const TERMINAL_STATUSES = new Set(["DONE", "DEPRECATED"]);
 
-/** Caller-tunable classification thresholds, resolved from `AuditOptions`. */
-interface Thresholds {
+/**
+ * Caller-tunable classification thresholds, resolved from `AuditOptions`.
+ *
+ * Exported so a caller outside this module can pass a partial override without
+ * redeclaring the shape. The constants above remain the single source of the
+ * default values — nothing else declares them.
+ */
+export interface Thresholds {
   readonly stalenessDays: number;
   readonly lineMax: number;
 }
+
+/** The defaults `audit` applies when a caller supplies no override. */
+export const DEFAULT_THRESHOLDS: Thresholds = {
+  stalenessDays: DEFAULT_STALENESS_DAYS,
+  lineMax: DEFAULT_LINE_MAX,
+};
 
 export async function audit(options: AuditOptions): Promise<AuditResult> {
   const adapter = options.adapter ?? defaultMemoryAdapter;
@@ -116,15 +128,9 @@ export async function audit(options: AuditOptions): Promise<AuditResult> {
     }
     const fm = extractFrontmatter(body) ?? {};
     const entityType = typeof fm["type"] === "string" ? fm["type"] : "unknown";
-    const status = typeof fm["status"] === "string" ? fm["status"] : null;
     const evidence: AuditEvidence = {
-      observationCount: countObservations(body),
-      relationCount: countRelations(body),
-      lineCount: body.split("\n").length,
-      hasObservationH3Grouping: hasH3InSection(body, "Observations"),
-      hasRelationH3Grouping: hasH3InSection(body, "Relations"),
+      ...measureBody(body),
       lastModifiedISO: await adapter.lastModified(absPath),
-      status,
     };
 
     const notePath = `docs/${rel}`;
@@ -141,7 +147,50 @@ export async function audit(options: AuditOptions): Promise<AuditResult> {
   return { candidates, notesScanned, by };
 }
 
-function classify(
+/**
+ * Everything about a note that can be read from its text alone. Split out of
+ * `audit`'s walk so a caller holding a draft — text that is not on disk yet —
+ * can measure it the same way a written note is measured.
+ *
+ * `lastModifiedISO` is deliberately absent: it comes from git, not from the
+ * body, so only a caller that has a file can supply it.
+ */
+function measureBody(body: string): Omit<AuditEvidence, "lastModifiedISO"> {
+  const fm = extractFrontmatter(body) ?? {};
+  return {
+    observationCount: countObservations(body),
+    relationCount: countRelations(body),
+    lineCount: body.split("\n").length,
+    hasObservationH3Grouping: hasH3InSection(body, "Observations"),
+    hasRelationH3Grouping: hasH3InSection(body, "Relations"),
+    status: typeof fm["status"] === "string" ? fm["status"] : null,
+  };
+}
+
+/**
+ * Classify a draft — note text that has not been written yet.
+ *
+ * The same `classify` runs against it, so a caller deciding where content
+ * should go gets the same verdict the post-write audit would give. Staleness is
+ * the one check that cannot apply: it reads git history, and a draft has none,
+ * so `lastModifiedISO` is null and the stale arm never fires. That is a real
+ * exclusion rather than a default, and a caller relying on it should know the
+ * stale bucket is always empty here.
+ *
+ * `path` is used only to label the returned candidates, so a caller with no
+ * path yet can pass any stable identifier.
+ */
+export function evaluateDraft(
+  draft: string,
+  entityType: string,
+  path = "<draft>",
+  thresholds: Partial<Thresholds> = {},
+): AuditCandidate[] {
+  const evidence: AuditEvidence = { ...measureBody(draft), lastModifiedISO: null };
+  return classify(path, entityType, evidence, { ...DEFAULT_THRESHOLDS, ...thresholds });
+}
+
+export function classify(
   path: string,
   entityType: string,
   e: AuditEvidence,
