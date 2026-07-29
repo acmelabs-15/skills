@@ -43,6 +43,7 @@ import {
 } from "@acmelabs/core/schemas/figure-check";
 import { PlanValidationError, zodErrorToIssues } from "@acmelabs/core/schemas/plan-yaml";
 import { ZodError } from "zod";
+import { invokedName } from "./invoked-name.ts";
 
 const MAX_INPUT_BYTES = 8 * 1024 * 1024;
 
@@ -54,8 +55,7 @@ interface ParsedArgs {
   out?: string;
 }
 
-const USAGE =
-  "Usage: figure-check.ts --docs-root <dir> (--note <note.md> ... | --all | --checks <file.json>) [--out <file>]";
+const USAGE = `Usage: ${invokedName("figure-check.ts")} --docs-root <dir> (--note <note.md> ... | --all | --checks <file.json>) [--out <file>]`;
 
 function usageError(message: string): PlanValidationError {
   return new PlanValidationError(`${message}\n${USAGE}`, [{ path: "<argv>", message }]);

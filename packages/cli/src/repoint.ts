@@ -49,6 +49,7 @@ import {
 import { type RepointPlan, RepointPlanSchema } from "@acmelabs/core/schemas/repoint-plan";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
+import { invokedName } from "./invoked-name.ts";
 
 const MAX_PLAN_BYTES = 1024 * 1024; // 1 MB, matching decompose/recompose
 const MAX_MANIFEST_BYTES = 8 * 1024 * 1024; // 8 MB, matching reference-scan
@@ -61,9 +62,8 @@ interface ParsedArgs {
   apply: boolean;
 }
 
-const USAGE =
-  "Usage: repoint.ts --manifest <file.json> --plan <file.yaml> [--apply] [--docs-root <dir>] [--out <file>]\n" +
-  "       preview is the default; --apply is required to write";
+const USAGE = `Usage: ${invokedName("repoint.ts")} --manifest <file.json> --plan <file.yaml> [--apply] [--docs-root <dir>] [--out <file>]
+       preview is the default; --apply is required to write`;
 
 function usageError(message: string): PlanValidationError {
   return new PlanValidationError(`${message}\n${USAGE}`, [{ path: "<argv>", message }]);

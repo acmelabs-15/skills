@@ -74,6 +74,7 @@ import {
   TargetsFileSchema,
 } from "@acmelabs/core/schemas/reference-manifest";
 import { ZodError } from "zod";
+import { invokedName } from "./invoked-name.ts";
 
 const MAX_INPUT_BYTES = 8 * 1024 * 1024;
 
@@ -90,9 +91,9 @@ interface ParsedArgs {
   project?: string;
 }
 
-const USAGE =
-  "Usage: reference-scan.ts --docs-root <dir> [--project <name>] (--targets <file.json> | --target <note.md> ...) [--merge <file.json>] [--out <file>]\n" +
-  "       reference-scan.ts --check --manifest <file.json> [--docs-root <dir>] [--project <name>] [--retain <file.json>] [--out <file>]";
+const SCAN_NAME = invokedName("reference-scan.ts");
+const USAGE = `Usage: ${SCAN_NAME} --docs-root <dir> [--project <name>] (--targets <file.json> | --target <note.md> ...) [--merge <file.json>] [--out <file>]
+       ${SCAN_NAME} --check --manifest <file.json> [--docs-root <dir>] [--project <name>] [--retain <file.json>] [--out <file>]`;
 
 function usageError(message: string): PlanValidationError {
   return new PlanValidationError(`${message}\n${USAGE}`, [{ path: "<argv>", message }]);

@@ -46,6 +46,7 @@ import {
 import yaml from "js-yaml";
 import { ZodError } from "zod";
 import { findUncontainedPaths, lexicalPathViolation } from "../../core/src/schemas/base.js";
+import { invokedName } from "./invoked-name.ts";
 import { getAdapter } from "./registry.js";
 
 const MAX_PLAN_BYTES = 1024 * 1024; // 1 MB per ADR-001 Confirmation
@@ -69,23 +70,26 @@ interface ParsedArgs {
 export function parseArgs(argv: readonly string[]): ParsedArgs {
   const planFlagIndex = argv.indexOf("--plan");
   if (planFlagIndex < 0 || planFlagIndex >= argv.length - 1) {
-    throw new PlanValidationError("Usage: decompose.ts --plan <path-to-plan.yaml>", [
-      { path: "<argv>", message: "missing or malformed --plan argument" },
-    ]);
+    throw new PlanValidationError(
+      `Usage: ${invokedName("decompose.ts")} --plan <path-to-plan.yaml>`,
+      [{ path: "<argv>", message: "missing or malformed --plan argument" }],
+    );
   }
   const planPath = argv[planFlagIndex + 1];
   if (!planPath || planPath.startsWith("-")) {
-    throw new PlanValidationError("Usage: decompose.ts --plan <path-to-plan.yaml>", [
-      { path: "<argv>", message: "missing or malformed --plan argument" },
-    ]);
+    throw new PlanValidationError(
+      `Usage: ${invokedName("decompose.ts")} --plan <path-to-plan.yaml>`,
+      [{ path: "<argv>", message: "missing or malformed --plan argument" }],
+    );
   }
   const rootFlagIndex = argv.indexOf("--root");
   const root =
     rootFlagIndex >= 0 && rootFlagIndex < argv.length - 1 ? argv[rootFlagIndex + 1] : undefined;
   if (rootFlagIndex >= 0 && (root === undefined || root.startsWith("-"))) {
-    throw new PlanValidationError("Usage: decompose.ts --plan <path> [--root <dir>]", [
-      { path: "<argv>", message: "--root given without a directory" },
-    ]);
+    throw new PlanValidationError(
+      `Usage: ${invokedName("decompose.ts")} --plan <path> [--root <dir>]`,
+      [{ path: "<argv>", message: "--root given without a directory" }],
+    );
   }
   return root === undefined ? { planPath } : { planPath, root };
 }

@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     "./decompose": "./src/decompose.ts",
+    "./invoked-name": "./src/invoked-name.ts",
     "./recompose": "./src/recompose.ts",
     "./reference-scan": "./src/reference-scan.ts",
     "./registry": "./src/registry.ts",

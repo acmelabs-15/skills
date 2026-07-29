@@ -44,6 +44,7 @@ import type {
 import { ObligationsFileSchema } from "@acmelabs/core/schemas/correction-obligation";
 import { PlanValidationError, zodErrorToIssues } from "@acmelabs/core/schemas/plan-yaml";
 import { ZodError } from "zod";
+import { invokedName } from "./invoked-name.ts";
 
 const MAX_INPUT_BYTES = 8 * 1024 * 1024;
 
@@ -54,8 +55,7 @@ interface ParsedArgs {
   out?: string;
 }
 
-const USAGE =
-  "Usage: correction-reconcile.ts --docs-root <dir> (--source <note.md> ... | --obligations <file.json>) [--out <file>]";
+const USAGE = `Usage: ${invokedName("correction-reconcile.ts")} --docs-root <dir> (--source <note.md> ... | --obligations <file.json>) [--out <file>]`;
 
 function usageError(message: string): PlanValidationError {
   return new PlanValidationError(`${message}\n${USAGE}`, [{ path: "<argv>", message }]);
