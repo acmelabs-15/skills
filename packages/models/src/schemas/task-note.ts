@@ -1,5 +1,11 @@
 import { z } from "zod";
-import { EffortEnum, ObservationSchema, RelationSchema, SpecTaskIdSchema } from "./common.js";
+import {
+  EffortEnum,
+  ObservationSchema,
+  RelationSchema,
+  SpecTaskIdSchema,
+  StatusAtom,
+} from "./common.js";
 
 /**
  * TaskNote Zod schema (Phase X.D.5, 2026-05-20).
@@ -18,19 +24,33 @@ import { EffortEnum, ObservationSchema, RelationSchema, SpecTaskIdSchema } from 
  */
 
 /**
- * Status enum for TaskNote frontmatter.
+ * Status enum for TaskNote frontmatter — a work-progress subset, plus `TODO`.
  *
- * NOTE: TASK notes use "TODO" (not "PENDING"), per the example fixture
- * at TASK-001-SPEC-007. Distinct from PartSubstatusEnum/TaskStatusEnum
- * in common.ts which apply to PLAN parts and PLAN-scoped tasks.
+ * `TODO` is the same state the atoms call `PENDING`: not started. Two names for
+ * one state is exactly what the shared vocabulary exists to prevent, and this is
+ * the single case where the synonym is not local drift — `~/KNOWLEDGE-GRAPH-
+ * CONVENTIONS.md` Section 8.1 item 6 specifies task-note values as
+ * `TODO | IN_PROGRESS | DONE | BLOCKED`, and every TASK note on disk was authored
+ * against that.
+ *
+ * So `TODO` stays, and it stays as the ONLY spelling: `PENDING` is deliberately
+ * excluded here, because accepting both would put two names for one state inside
+ * a single note type — the precise ambiguity the shared vocabulary exists to
+ * remove. A test asserts the rejection. Renaming `TODO` to `PENDING` outright
+ * would mean changing the home spec, the note corpus and every fixture together,
+ * which is a decision about the spec rather than a schema tidy-up.
+ *
+ * The rest of the enum subsets the work-progress atoms normally, so only the
+ * not-started state carries the exception.
+ *
+ * `CANCELLED` is deliberately absent despite having appeared on one real note.
+ * That note was corrected to `ABANDONED`, which is the atom for
+ * stopped-deliberately-with-a-rationale and matched what its own observations
+ * already recorded. Admitting the value would have given one state two spellings.
  */
 export const TaskNoteStatusEnum = z.enum([
   "TODO",
-  "IN_PROGRESS",
-  "DONE",
-  "BLOCKED",
-  "DEFERRED",
-  "ABANDONED",
+  ...StatusAtom.extract(["IN_PROGRESS", "BLOCKED", "DONE", "DEFERRED", "ABANDONED"]).options,
 ]);
 
 const TaskFrontmatterSchema = z

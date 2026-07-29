@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ObservationSchema, RelationSchema, ReqIdSchema } from "./common.js";
+import { ObservationSchema, RelationSchema, ReqIdSchema, StatusAtom } from "./common.js";
 
 /**
  * RequirementNote Zod schema (Phase X.D.6, 2026-05-20).
@@ -22,7 +22,9 @@ import { ObservationSchema, RelationSchema, ReqIdSchema } from "./common.js";
  * Out of scope this round: RequirementNote renderer (write-back path).
  */
 
-export const RequirementNoteStatusEnum = z.enum(["DRAFT", "PROPOSED", "ACCEPTED", "DEPRECATED"]);
+export const RequirementNoteStatusEnum = z.enum(
+  StatusAtom.extract(["DRAFT", "PROPOSED", "ACCEPTED", "DEPRECATED"]).options,
+);
 
 const RequirementFrontmatterSchema = z
   .object({

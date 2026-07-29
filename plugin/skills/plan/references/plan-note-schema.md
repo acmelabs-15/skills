@@ -24,7 +24,7 @@ tags: [plan, workflow, {workflow-kebab}, {project-slug}, active]
 |---|---|---|
 | title | yes | `PLAN-NNN: {Topic Title Case}` (colon + space + Title Case) |
 | type | yes | Always `plan` |
-| status | yes | `IN_PROGRESS` while active; `DONE` after `/end` completes the final part; `PAUSED` is invalid for PLANs (PAUSED is a SESSION state, not a PLAN state) |
+| status | yes | `IN_PROGRESS` while active; `PAUSED` when parked between sittings; `DONE` after `/end` completes the final part |
 | complexity_tier | yes after `/research` Step 2 | One of `TIER_1..TIER_5`. May be `TBD` in create mode pre-research; first downstream phase skill HALTs if still `TBD` (per Contract 8) |
 | branches | yes; populated on first creation | YAML list of all branches the PLAN has used, chronological (most-recent-last). Each `/plan` invocation that does work appends a new entry — branches are not reused across work units. The most recent entry is the active branch; prior entries are historical (typically merged or abandoned). See branch policy in SKILL.md. |
 | permalink | yes | `planning/{filename-stem-kebab-lowercase}` |

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ObservationSchema, RelationSchema, SpecIdSchema } from "./common.js";
+import { ObservationSchema, RelationSchema, SpecIdSchema, StatusAtom } from "./common.js";
 
 /**
  * SpecRootNote Zod schema (Phase X.D.7, 2026-05-21).
@@ -29,13 +29,9 @@ import { ObservationSchema, RelationSchema, SpecIdSchema } from "./common.js";
  * suffice for claim validation and read-side workflows.
  */
 
-export const SpecRootNoteStatusEnum = z.enum([
-  "DRAFT",
-  "PROPOSED",
-  "ACCEPTED",
-  "DONE",
-  "DEPRECATED",
-]);
+export const SpecRootNoteStatusEnum = z.enum(
+  StatusAtom.extract(["DRAFT", "PROPOSED", "ACCEPTED", "DONE", "DEPRECATED"]).options,
+);
 
 const SpecRootFrontmatterSchema = z
   .object({

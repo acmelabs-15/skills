@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EntityIdSchema, ObservationSchema, RelationSchema } from "./common.js";
+import { EntityIdSchema, ObservationSchema, RelationSchema, StatusAtom } from "./common.js";
 
 /**
  * EpicNote Zod schema (SPEC-008 Track 1, REQ-001, TASK-003, 2026-05-24).
@@ -40,15 +40,17 @@ import { EntityIdSchema, ObservationSchema, RelationSchema } from "./common.js";
  * cross-note resolver-driven done-claim check in TASK-009 (NOT enforced at
  * the schema layer).
  */
-export const EpicNoteStatusEnum = z.enum([
-  "DRAFT",
-  "PROPOSED",
-  "IN_PROGRESS",
-  "IN_REVIEW",
-  "ACCEPTED",
-  "DONE",
-  "DEPRECATED",
-]);
+export const EpicNoteStatusEnum = z.enum(
+  StatusAtom.extract([
+    "DRAFT",
+    "PROPOSED",
+    "IN_PROGRESS",
+    "IN_REVIEW",
+    "ACCEPTED",
+    "DONE",
+    "DEPRECATED",
+  ]).options,
+);
 
 const EpicFrontmatterSchema = z
   .object({

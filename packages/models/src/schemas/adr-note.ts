@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EntityIdSchema, ObservationSchema, RelationSchema } from "./common.js";
+import { EntityIdSchema, ObservationSchema, RelationSchema, StatusAtom } from "./common.js";
 
 /**
  * AdrNote Zod schema (SPEC-008 Track 1, REQ-001, 2026-05-23).
@@ -38,7 +38,9 @@ import { EntityIdSchema, ObservationSchema, RelationSchema } from "./common.js";
  * the gated terminal state for the two superRefine checks below. Distinct from
  * the general-note status enums in common.ts and from DesignNoteStatusEnum.
  */
-export const AdrNoteStatusEnum = z.enum(["PROPOSED", "ACCEPTED", "DEPRECATED", "SUPERSEDED"]);
+export const AdrNoteStatusEnum = z.enum(
+  StatusAtom.extract(["PROPOSED", "ACCEPTED", "DEPRECATED", "SUPERSEDED"]).options,
+);
 
 /**
  * ISO calendar date `YYYY-MM-DD`. ADR-specific frontmatter fields per

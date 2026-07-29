@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EntityIdSchema, ObservationSchema, RelationSchema } from "./common.js";
+import { EntityIdSchema, ObservationSchema, RelationSchema, StatusAtom } from "./common.js";
 
 /**
  * AnalysisNote Zod schema (SPEC-008 Track 1, REQ-001, TASK-002, 2026-05-24).
@@ -36,15 +36,17 @@ import { EntityIdSchema, ObservationSchema, RelationSchema } from "./common.js";
  * ANALYSIS uses this general enum. ACCEPTED is the gated state for the
  * Open-Questions-rejection superRefine check below.
  */
-export const AnalysisNoteStatusEnum = z.enum([
-  "DRAFT",
-  "PROPOSED",
-  "IN_PROGRESS",
-  "IN_REVIEW",
-  "ACCEPTED",
-  "DONE",
-  "DEPRECATED",
-]);
+export const AnalysisNoteStatusEnum = z.enum(
+  StatusAtom.extract([
+    "DRAFT",
+    "PROPOSED",
+    "IN_PROGRESS",
+    "IN_REVIEW",
+    "ACCEPTED",
+    "DONE",
+    "DEPRECATED",
+  ]).options,
+);
 
 const AnalysisFrontmatterSchema = z
   .object({

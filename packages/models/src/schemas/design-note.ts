@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DesignIdSchema, ObservationSchema, RelationSchema } from "./common.js";
+import { DesignIdSchema, ObservationSchema, RelationSchema, StatusAtom } from "./common.js";
 
 /**
  * DesignNote Zod schema (Phase X.D.6, 2026-05-20).
@@ -27,7 +27,9 @@ import { DesignIdSchema, ObservationSchema, RelationSchema } from "./common.js";
  * Out of scope this round: DesignNote renderer (write-back path).
  */
 
-export const DesignNoteStatusEnum = z.enum(["DRAFT", "PROPOSED", "ACCEPTED", "DEPRECATED"]);
+export const DesignNoteStatusEnum = z.enum(
+  StatusAtom.extract(["DRAFT", "PROPOSED", "ACCEPTED", "DEPRECATED"]).options,
+);
 
 const DesignFrontmatterSchema = z
   .object({

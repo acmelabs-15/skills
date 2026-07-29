@@ -11,6 +11,7 @@ import {
   RelationSchema,
   SessionIdSchema,
   SpecTaskIdSchema,
+  TERMINAL_WORK_ATOMS,
   TaskIdSchema,
   TaskStatusEnum,
 } from "./common.js";
@@ -269,8 +270,11 @@ const EditorMirrorEntrySchema = z
  * literal tuple so the schema's `superRefine` arm and the runtime
  * `validatePlanDoneClaim` validator share the same source-of-truth.
  */
-const TERMINAL_PART_SUBSTATUSES = ["DONE", "DEFERRED", "ABANDONED"] as const;
-type TerminalPartSubstatus = (typeof TERMINAL_PART_SUBSTATUSES)[number];
+// Re-exported from the shared atoms rather than restated here: this list used to
+// be a second literal copy of the same three values, which is exactly the
+// duplication the status-atom vocabulary exists to remove.
+const TERMINAL_PART_SUBSTATUSES = TERMINAL_WORK_ATOMS;
+type TerminalPartSubstatus = (typeof TERMINAL_WORK_ATOMS)[number];
 
 export function isTerminalPartSubstatus(value: string): value is TerminalPartSubstatus {
   return (TERMINAL_PART_SUBSTATUSES as readonly string[]).includes(value);
