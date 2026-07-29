@@ -2,7 +2,7 @@
 
 The mechanics of the impact manifest, repointing and closure are direction-neutral and live in `impact-manifest.md`, `repoint.md` and `closure.md`. This file carries the part that is not: which failure to expect when the operation is a split.
 
-It exists because the failures invert. `recompose/references/merge-divergences.md` is its mirror, and reading the wrong one sends you looking for the wrong thing — the same CLI, the same exit codes, the opposite defect.
+It exists because the failures invert. `../../recompose/references/merge-divergences.md` is its mirror, and reading the wrong one sends you looking for the wrong thing — the same CLI, the same exit codes, the opposite defect.
 
 ## What retires
 

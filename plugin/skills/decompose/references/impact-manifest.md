@@ -2,7 +2,7 @@
 
 How the reference scanner finds every note that points at a note you are about to restructure, and how to read what it gives back. Read this before adjudicating any restructuring: the manifest is the blast radius, and it is only useful computed beforehand.
 
-**This file is direction-neutral.** It describes the mechanism for splitting, merging and auditing alike. What differs between those is which failure to expect, and that lives with the caller: `decompose` carries the split-side risks, `recompose/references/merge-divergences.md` the merge-side ones, and `defrag/graph-audits.md` the audit framing. Nothing here assumes what you are doing to the notes.
+**This file is direction-neutral.** It describes the mechanism for splitting, merging and auditing alike. What differs between those is which failure to expect, and that lives with the caller: `decompose` carries the split-side risks, `../../recompose/references/merge-divergences.md` the merge-side ones, and `../../defrag/graph-audits.md` the audit framing. Nothing here assumes what you are doing to the notes.
 
 ## Why it must come first
 
