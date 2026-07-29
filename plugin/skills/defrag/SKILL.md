@@ -7,8 +7,9 @@ description: |
   confirmed ones to the decompose and recompose skills. Use when the report or
   the resulting restructuring is the deliverable — to defrag or defragment a
   graph, to curate memories, to audit notes, to run a knowledge-graph audit, or
-  to find which notes have outgrown themselves. Runs interactively, confirming
-  each candidate, or writes the report and exits. Do not use when a specific
+  to find which notes have outgrown themselves. Walks the candidates one at a
+  time printing the dispatch each calls for, or writes the report and exits;
+  the confirming and the restructuring are the caller's. Do not use when a specific
   note is already known to need splitting or merging: invoke decompose or
   recompose directly, since this skill only finds candidates and delegates. Do
   not use to check whether one note is well-formed, to write or edit a note's
@@ -44,12 +45,27 @@ disabling the check it was meant to tune.
 
 ## Operation modes
 
-- **Interactive (default).** Runs the audit, prints the candidates report,
-  then walks each candidate one at a time. The user confirms or skips. Confirmed
-  candidates are delegated.
+- **Interactive (default).** Runs the audit, prints the candidates report, then
+  walks each candidate one at a time and prints the dispatch each one calls for.
 - **Report-only (`--report-only`).** Runs the audit and writes the report to
   `defrag/reports/defrag-YYYY-MM-DD.md`. Exits with code 2 if candidates were
-  found, code 0 if the graph is clean. No delegation; safe for cron.
+  found, code 0 if the graph is clean. Safe for cron.
+
+**What "interactive" does NOT do, running as shipped.** It does not prompt, and
+it does not restructure anything. The confirm callback defaults to yes
+(`scripts/defrag.ts:169`) and nothing overrides it, so every candidate is
+accepted without a question; and the default delegation adapter
+(`printingDelegation`, `:58-76`) prints a line like
+`→ Invoke /recompose skill with paths=[...]` and returns success without calling
+decompose, recompose or Brain MCP. A run therefore reports `merge=2` having
+merged nothing.
+
+Both are deliberate: a `Skill(...)` dispatch only resolves inside a Claude Code
+session, so the CLI emits the instruction for an agent or a human to act on.
+**Treat the output as a worklist, and perform the confirmation and the
+delegation yourself** — the section below says what each candidate class calls
+for. A caller that needs real programmatic delegation supplies its own
+`DelegationAdapter`, which is how the tests exercise it.
 
 ## Audit cycle
 
@@ -87,9 +103,9 @@ disabling the check it was meant to tune.
    it is a delete plus a repointing pass, which is a different proposal.
 4. **Reporting and delegation.** Report format is specified in
    `report-format.md` and pinned by tests — a heading, a scan summary, then one
-   section per violation type, in a fixed order, empty sections included. In interactive mode, await
-   user confirmation per candidate and delegate to decompose / recompose /
-   Brain MCP delete / Brain MCP edit. In report-only mode, write to disk and
+   section per violation type, in a fixed order, empty sections included. In
+   interactive mode the CLI prints a dispatch line per candidate; YOU confirm
+   each one with the user and perform the delegation below. In report-only mode it writes to disk and
    exit: **exit code 2 when candidates were found, 0 when the graph is
    clean**, so a scheduled run surfaces work rather than passing silently.
 
@@ -117,3 +133,21 @@ error, user rejection at sub-prompt level), defrag logs the failure and
 continues with the remaining candidates. The cycle never aborts on a single
 candidate failure.
 
+## References
+
+Two files belong to this skill:
+
+- `report-format.md` — the report contract: four-part structure, fixed section
+  order, the finding-line shape, empty-section handling. Pinned by tests.
+- `graph-audits.md` — the three audits that read a candidate's place in the
+  graph rather than its contents, and what each one's findings oblige. Agent
+  procedure; `defrag.ts` performs none of it.
+
+Two are owned by `decompose` and read there, not copied:
+
+- `../decompose/references/impact-manifest.md` — the reference scanner: the
+  two-stage funnel, the GRAPH and TEXT legs, the gating assertions to run before
+  believing a low finding count.
+- `../decompose/references/repoint.md` — the repoint executor a stale-delete
+  with inbound references obliges: its plan shape, its four safety properties,
+  its exit codes, and the work brief it hands back for what it declines.

@@ -140,8 +140,8 @@ export function usage(): string {
     "  -h, --help            Show this help",
     "",
     "Exit codes:",
-    "  0  Candidates handled (or empty graph in report-only mode after handling)",
-    "  2  Report-only mode found candidates",
+    "  0  Graph clean, or interactive mode finished walking the candidates",
+    "  2  Report-only mode found candidates (non-zero means there is work)",
     "  1  Invalid usage or internal error",
   ].join("\n");
 }

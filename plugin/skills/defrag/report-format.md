@@ -43,7 +43,7 @@ Candidates: 7
 Notes that exceed structural thresholds; recommend invoking decompose to split into smaller notes.
 
 - `docs/analysis/ANALYSIS-004-audit.md` (analysis) — lineCount=982 exceeds 500
-- `docs/decisions/ADR-002-adapter.md` (decision) — 21 observations without H3 sub-grouping
+- `docs/decisions/ADR-002-adapter.md` (decision) — observations=21 exceeds 15 without H3 sub-grouping
 
 ## Stale candidates
 
