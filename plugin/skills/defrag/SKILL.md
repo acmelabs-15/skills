@@ -80,6 +80,11 @@ disabling the check it was meant to tune.
    figures are in play, check those too. These are agent steps, not something
    `defrag.ts` performs: it classifies and reports. Procedure and commands in
    `graph-audits.md`.
+
+   **Show the inbound count when asking the user to confirm a candidate.**
+   Consent to restructure a note is not informed consent if the blast radius is
+   not on screen, and a stale-delete with inbound references is not a delete —
+   it is a delete plus a repointing pass, which is a different proposal.
 4. **Reporting and delegation.** Report format is specified in
    `report-format.md` and pinned by tests — a heading, a scan summary, then one
    section per violation type, in a fixed order, empty sections included. In interactive mode, await

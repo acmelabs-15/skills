@@ -48,6 +48,30 @@ Those two classes are structural-fix candidates in their own right, independent
 of any split or merge. A one-way edge is a defect whether or not the note is
 ever restructured, and this audit is the only place defrag would notice it.
 
+**Malformed references are the third such class. Surface them as their own
+structural-fix findings.** The `wikilink-malformed` class flags colon-less and
+filename-stem wikilinks pointing at the candidate. Those are already broken,
+independently of any restructuring, and are worth fixing whether or not the
+candidate is ever touched — so a scan run for a proposed merge routinely turns
+up repairs that have nothing to do with the merge. Do not discard them because
+the candidate was skipped.
+
+### What the report must carry
+
+Two things the finding line does not have a field for, and both change what the
+user decides:
+
+**A stale-delete candidate with inbound references is not a delete.** It is a
+delete plus a repointing pass, and the report should say so rather than
+presenting it as one-step cleanup. The cost of the two is not comparable, and
+the count is the only thing that distinguishes them.
+
+**Show the inbound count when asking the user to confirm a candidate.** Consent
+to restructure a note is not informed consent if the blast radius is not on
+screen. Carry the manifest's `discovery` block alongside the count, because a
+count is only as good as the scope that produced it — an unproven scan's low
+number is a claim, not a reassurance.
+
 ### How the audit finds referencing notes
 
 The audit rides the same two-stage funnel the restructuring skills use, and that
