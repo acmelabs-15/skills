@@ -6,6 +6,28 @@ _Continuation of prompt 4, which paused mid-interview when the restructure it de
 
 ---
 
+## STATUS 2026-07-29 — the restructure is COMPLETE; only prompt 4's interview remains
+
+_Audited against the tree, not against this document. The sections below were written mid-restructure and describe work that has since landed; they are kept as the record of what was done and why, not as instructions. Do not re-run them._
+
+Every restructure item in `## Restructure: what is left` and every box in `## Done means` that concerns the restructure is now satisfied:
+
+| Item | Evidence |
+|---|---|
+| A0 research → owner → ruling | `shared-code-architecture.md` cites the measured 34 MB → 1.0 MB result and the splitting trade |
+| A. `dist/` as packages-plus-chunks | `plugin/dist/` is 1.0 MB, 23 shared chunks, 7 self-contained CLIs |
+| `skill-creator` writeback | 3 commits on `feat/plugin-shared-code-and-typescript-standards` correcting the standard against what shipped |
+| B. tests → `__tests__/` per R-37 | 146 of 146 test files under `__tests__/`, zero stragglers |
+| C. worktree merged; `marketplace.json` | `source` reads `./skills/plugin`; the restructure branch is merged into `refactor/pd-decompose-recompose-defrag` |
+| CLI usage strings name the running file | `invoked-name.ts` derives the name from `process.argv[1]`; `decompose.js` prints `decompose.js`, `decompose.ts` prints `decompose.ts` — verified by running both |
+| Gates | 1,737 tests pass / 0 fail, typecheck clean, `claude plugin validate plugin --strict` passes, `bun run check` clean across 305 files |
+
+**The one thing genuinely outstanding is prompt 4's own interview: W-3, W-4, W-5, W-6.** W-1 and W-2 are answered (see `## Then: resume prompt 4 at W-3` below) and must never be re-asked. A conversation picking this up should read `04-pd-refactor-and-classifier-seam.md`, skip its Step 0 gate, and open at W-3.
+
+Two items remain handed forward, unchanged and still owed to a later phase: the contradicted `REQ-005-SPEC-005` (an accepted requirement mandating an install script that no longer exists — superseding it needs the decisions phase), and the ~200 files never linted, now tractable per package. Both are described at the foot of this document.
+
+---
+
 ## Where you are
 
 Prompt 4 (`04-pd-refactor-and-classifier-seam.md`) is a progressive-disclosure refactor of `decompose`, `recompose` and `defrag`. Its Step 0 map gate **passed**. Its interview is **paused after W-2**; W-3 through W-6 remain.
