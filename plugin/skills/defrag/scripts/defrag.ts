@@ -2,11 +2,17 @@
 /**
  * defrag CLI entry point.
  *
- * Parses --report-only, --staleness, --project-root, --basic-memory flags.
+ * Parses --report-only, --staleness, --project-root and --line-max flags.
  * Orchestrates the audit → report → delegation cycle.
  *
  * In report-only mode, writes the report to defrag/reports/defrag-YYYY-MM-DD.md
- * and exits (code 0 if candidates found, code 2 if clean).
+ * and exits: **code 2 if candidates were found, code 0 if the graph is clean.**
+ * That is the inverse of the usual shell convention, and it is deliberate — a
+ * cron job wants a non-zero exit to mean "there is work here", so the run
+ * surfaces rather than passing silently. The code, `usage()`, the SKILL.md and
+ * the tests all agree on it; a previous version of this comment had the two
+ * reversed, which is worth knowing because scheduled callers depend on the
+ * current behaviour and the comment was the only thing that was wrong.
  *
  * In interactive mode, prints the report and walks each candidate one at a time.
  * Confirmed candidates are delegated to /decompose, /recompose, Brain MCP
@@ -30,7 +36,6 @@ export interface DefragOptions {
   projectRoot: string;
   stalenessDays: number;
   lineMax: number;
-  basicMemory: boolean;
   /** Override today for deterministic tests. */
   today?: string;
   /** Optional delegation adapter (defaults to a stub that records intents). */
@@ -101,12 +106,10 @@ export function parseArgs(argv: string[]): DefragOptions {
     projectRoot: process.cwd(),
     stalenessDays: 90,
     lineMax: 500,
-    basicMemory: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--report-only") opts.reportOnly = true;
-    else if (a === "--basic-memory") opts.basicMemory = true;
     else if (a === "--project-root") {
       const v = argv[++i];
       if (v !== undefined) opts.projectRoot = v;
@@ -134,7 +137,6 @@ export function usage(): string {
     "  --project-root <dir>  Project root (default: cwd)",
     "  --staleness <days>    Staleness threshold in days (default: 90)",
     "  --line-max <n>        Line count above which a note splits (default: 500)",
-    "  --basic-memory        Treat project as basic-memory (skip CONVENTIONS checks)",
     "  -h, --help            Show this help",
     "",
     "Exit codes:",

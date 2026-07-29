@@ -267,7 +267,12 @@ const PATH_DEPENDENT_ITEMS = new Set([2, 10]);
 function checkDraft(markdown: string): Finding[] {
   return runChecks(markdown, "<draft>").map((f) =>
     PATH_DEPENDENT_ITEMS.has(f.item)
-      ? { item: f.item, ok: true, skipped: true, detail: `${f.detail} — skipped: draft has no path` }
+      ? {
+          item: f.item,
+          ok: true,
+          skipped: true,
+          detail: `${f.detail} — skipped: draft has no path`,
+        }
       : f,
   );
 }

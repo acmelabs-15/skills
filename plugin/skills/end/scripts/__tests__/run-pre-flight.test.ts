@@ -203,7 +203,11 @@ describe("checkFolder — every canonical entity type has a folder", () => {
    */
   test("a feature note resolves to roadmap/ rather than failing forever", () => {
     const findings = runChecks(
-      conformantNote({ type: "feature", title: "FEAT-001: Fixture Feature", h1: "FEAT-001: Fixture Feature" }),
+      conformantNote({
+        type: "feature",
+        title: "FEAT-001: Fixture Feature",
+        h1: "FEAT-001: Fixture Feature",
+      }),
       "/repo/docs/roadmap/FEAT-001-fixture-feature.md",
     );
     const folder = findings.find((f) => f.item === 10);

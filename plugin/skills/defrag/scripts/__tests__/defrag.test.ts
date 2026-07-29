@@ -53,11 +53,6 @@ describe("parseArgs", () => {
     expect(o.stalenessDays).toBe(90);
   });
 
-  test("parses --basic-memory", () => {
-    const o = parseArgs(["--basic-memory"]);
-    expect(o.basicMemory).toBe(true);
-  });
-
   test("parses --line-max", () => {
     const o = parseArgs(["--line-max", "800"]);
     expect(o.lineMax).toBe(800);
@@ -136,7 +131,6 @@ describe("runReportOnly", () => {
         projectRoot: root,
         stalenessDays: 180,
         lineMax: 500,
-        basicMemory: false,
         today: "2026-05-21",
       };
       const r = await runReportOnly(options, makeResult([candidate]));
@@ -157,7 +151,6 @@ describe("runReportOnly", () => {
         projectRoot: root,
         stalenessDays: 180,
         lineMax: 500,
-        basicMemory: false,
         today: "2026-05-21",
       };
       const r = await runReportOnly(options, makeResult([]));
@@ -175,7 +168,6 @@ describe("runInteractive — delegation error handling", () => {
       projectRoot: "/x",
       stalenessDays: 180,
       lineMax: 500,
-      basicMemory: false,
       delegation,
     };
   }

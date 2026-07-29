@@ -152,6 +152,19 @@ For Option 3 (abandon-session): session status `IN_PROGRESS → PAUSED`; revert 
 
 See `references/end-checklist.md` for full details. All must PASS to proceed to Step 4.
 
+Two of these checks have shipped implementations rather than inline procedure, and they are the ones worth invoking rather than performing by hand:
+
+```bash
+bun "${CLAUDE_PLUGIN_ROOT}/dist/skills/end/scripts/run-pre-flight.js" <note-path>
+bun "${CLAUDE_PLUGIN_ROOT}/dist/skills/end/scripts/validate-spec-done.js" <spec-root-path>
+```
+
+`run-pre-flight` checks one note against the eleven authoring invariants — title, filename and permalink shape, H1 agreement, type, status, tags, observation and relation minimums with valid categories and verbs, folder-by-type, and Observations-then-Relations as the final two sections. It exits 0 when all pass, 1 naming each failure, 2 when the note cannot be read or sits outside the project. It also exports `checkDraft` for text that has no file yet, which reports the two location-dependent checks as skipped rather than failed.
+
+`validate-spec-done` refuses a SPEC's DONE claim while any success criterion or artifact row is still unchecked.
+
+Neither is optional busywork: both encode rules that are otherwise enforced only by a reader noticing.
+
 ### Check 1 — Secret-scan
 
 Grep diff for common credential patterns:

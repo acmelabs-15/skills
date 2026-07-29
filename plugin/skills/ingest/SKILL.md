@@ -53,9 +53,19 @@ bun skills/ingest/scripts/ingest.ts <path> --dry-run             # show plan, do
 5. **Three-phase write (Brain context).** Phase 1: `write_note` with a
    space-separated title (no colon). Phase 2: `edit_note find_replace` to add
    the colon in frontmatter and H1. Phase 3: `move_note` to kebab filename.
-6. **Verify.** Check all six items from CONVENTIONS Section 8.2: kebab
-   filename, frontmatter title matches, H1 matches, valid relation types,
-   counts above minimums, final-two-sections.
+6. **Verify.** Check what can be checked from the assembled text, and know
+   what is not covered. Enforced, each failing the run: the filename has no
+   spaces, the frontmatter title matches the plan, the H1 matches the plan,
+   observations number at least 3 and relations at least 2, and Observations is
+   followed by Relations with no section after it. Two of CONVENTIONS Section
+   8.2's six items are **not** enforced here — the full kebab-case check is a
+   no-op, and relation verbs are not validated, because generated relations use
+   valid verbs by construction and a preserved section is trusted. Under
+   `--basic-memory` only the first three run.
+
+   Verification happens **after** the write, and the three-phase write is not
+   reversible — so a failure names what is wrong in a note that already exists,
+   rather than preventing it. Treat the result as a repair list.
 
 ## Brain vs basic-memory routing
 
@@ -68,7 +78,9 @@ or Relations requirement.
 
 ingest never edits source body content. Only structural elements (frontmatter
 block, Observations section, Relations section) are added around the source
-body. If the source already has a well-formed Observations or Relations
-section, ingest preserves it (and may augment it to meet minimum counts only
-if the existing content is below threshold).
+body. If the source already has an Observations or Relations section, ingest
+preserves it **verbatim**; if it has none, ingest generates one. There is no
+middle path — a preserved section is never extended, so a source arriving with
+two observations keeps two and fails verification for being below the minimum
+of three. Fix that in the source, not by expecting ingest to top it up.
 
