@@ -98,7 +98,10 @@ disabling the check it was meant to tune.
   candidate had inbound references, the repoint executor applies the mechanical
   citation repairs and its work brief carries the rest; neither is optional
   cleanup, because a deleted note's citations are broken links the moment the
-  delete lands.
+  delete lands. The executor's plan shape, its four safety properties, its exit
+  codes and the work-brief fields are in
+  `../decompose/references/repoint.md` — read them there before running it, since
+  a delete is the one delegation with nothing to roll back.
 - **Structural-fix** → call Brain MCP `edit_note` to insert H3 grouping
   headers; content is otherwise untouched. Bi-directional findings belong here
   too, and the executor never repairs them — it routes them to the brief with the

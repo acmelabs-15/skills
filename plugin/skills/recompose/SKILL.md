@@ -89,6 +89,7 @@ Summary format:
 **Inbound-reference impact**: <N> references across <M> files — <per-class counts>
 **Repoint preview**: <A> applied, <B> already repointed, <C> residual by reason
 **Repointing worklist**: `docs/_restructure/recompose-{id}-impact.json`
+**Repoint plan**: `docs/_restructure/recompose-{id}-repoint.yaml`
 **Raw plan**: `docs/_restructure/recompose-{id}-plan.yaml`
 ```
 
