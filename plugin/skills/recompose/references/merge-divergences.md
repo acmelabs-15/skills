@@ -34,11 +34,11 @@ N sources' inbound indices converge on one target. Every note that pointed at an
 
 Those are judgment-class entries the executor declines by construction, so a merge's preview typically shows **few mechanical repairs and a large residue**. That is the expected shape rather than a defect: a preview like that is telling you the merge is mostly a graph pass. Read it as a workload estimate, not a failure.
 
-## The batch boundary: LOWER stakes
+## Cross-source references
 
-Stage two excludes target files from the text scan, so cross-target references are neither reported nor repaired.
+Sources being merged often cite each other, and those citations are reported: self-citation is suppressed per candidate rather than per file, so a source citing a sibling source comes back like any other reference. Scan every source and the target together.
 
-For a merge this matters less than it does for a split. The sources dissolve into one target anyway, so a missed source-to-source reference usually lands inside content that ends up in the same note. It is still worth knowing — a source that is not absorbed, or an unmerged residual, keeps the stale citation.
+What is specific to a merge is what those findings mean. A citation between two sources usually ends up inside the merged note pointing at content that is now in the same note — a self-reference the merge created, worth rewriting as prose rather than repointing as a link. That is a judgment call and the executor declines it, so expect these in the work brief rather than in the applied set.
 
 ## Reversibility
 

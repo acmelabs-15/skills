@@ -117,7 +117,7 @@ Four things bind before you proceed:
 - **A low finding count is a claim, not a result.** Read the manifest's `discovery` block: `provable: false` means at least one query could not vouch for its own set, and the worklist may be short.
 - **Aliases are yours to declare.** Every identifier `renumber_map` retires is a literal no query on the current identity can reach. What a split retires, and the failures to expect from it, are in `references/split-divergences.md`.
 - **Run the two companion baselines now**, before the split, because they are meaningless afterwards without a before-state. `correction-reconcile.js` catches a note that is the target of an outstanding correction; `figure-check.js` catches a figure that already disagrees with the structure it counts. Exit 2 from either means resolve it first, or record in the plan summary that you are splitting over it deliberately. Commands and full semantics in `references/impact-manifest.md`.
-- **If this split writes two or more destinations that might cite each other, scan them one at a time.** Batched targets are excluded from each other's text scan, so a reference between two of them is neither reported nor repaired — measured at 326 dropped occurrences across 28 batched targets. This bites splits harder than merges because every destination survives as a live note; see `references/split-divergences.md`.
+- **Scan the source and every destination in one batch.** Self-citation is suppressed per candidate rather than per file, so a destination that cites a sibling destination is reported like any other reference. Splitting the scan into one run per target buys nothing and costs you the cross-destination findings a single manifest would have carried.
 
 ## Step 5: Adjudicate via AskUserQuestion
 

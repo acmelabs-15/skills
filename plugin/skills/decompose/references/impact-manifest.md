@@ -75,11 +75,13 @@ Six classes: `wikilink`, `wikilink-malformed` (a colon-less or filename-stem nea
 
 Each entry carries a `source` tag: `GRAPH`, `TEXT`, or `BOTH` when a text match landed on the formal edge itself and the two legs corroborate.
 
-### Known boundary: batched targets do not see each other
+### Self-citation is suppressed per candidate, not per file
 
-Stage two excludes every target FILE from the text scan, on the reasoning that a note citing itself is not an inbound reference. For a single target that is exactly right. For several scanned together it is too wide: a reference from one target to another sits inside an excluded file, so it is neither reported nor repaired — and because closure diffs the prior manifest, it is not reported there either. Measured on a live graph, batch-scanning 28 targets dropped 326 cross-target occurrences. A per-candidate filter is the queued fix. Until it lands, scan targets that cite one another one at a time — single-target operations have zero exposure — or work the cross-target edges by hand.
+A note citing itself is not an inbound reference, so those matches are dropped. The suppression is keyed on the finding's target rather than on the file it was found in, which is what keeps it exact: a target's own frontmatter title, its permalink line and any prose restating its own ID all produce nothing, while a target that cites a DIFFERENT target is scanned and reported like any other note.
 
-The stakes of that gap differ by operation, so the callers' riders say which way it cuts.
+That distinction matters because keying on the file overshoots as soon as more than one target is in play — a whole target file goes unscanned, so its references to its siblings are never produced, and closure cannot report what the scan never generated. Measured on a live graph before the fix, a 28-target batch dropped 326 cross-target occurrences across 27 of the 28. Batching targets that cite one another is therefore safe now; it was not before.
+
+Findings newly surfaced inside a target's own `## Relations` section are promoted to `BOTH` by the graph leg, like any other corroborated edge.
 
 ## Nothing typed is read out of the index
 

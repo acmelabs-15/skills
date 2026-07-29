@@ -33,11 +33,11 @@ One target's inbound index disperses across N children. Every note that pointed 
 
 The risk is a repair that lands on the wrong child. It is not a broken link, so nothing downstream catches it: the edge resolves, at a note that does not contain what the citation claims.
 
-## The batch boundary: HIGH stakes
+## Cross-destination references
 
-Stage two excludes target files from the text scan, so cross-target references are neither reported nor repaired.
+A split's destinations frequently cite each other — a child carrying `D-1` referring to the child that took `D-2` is the ordinary case, not an edge case, and every one of those notes survives as an independent live note.
 
-For a split this matters more than it does for a merge. The destinations all survive as independent notes, so a missed destination-to-destination reference is a permanent stale citation between two live notes. Scan targets that cite one another one at a time.
+Scan the source and all destinations together. Self-citation is suppressed per candidate rather than per file, so a destination citing a sibling is reported normally; one manifest covers the whole set. What to watch for is not a gap in the scan but the volume: a wide split produces cross-destination findings roughly in proportion to how interconnected the source's sections were.
 
 ## Reversibility
 

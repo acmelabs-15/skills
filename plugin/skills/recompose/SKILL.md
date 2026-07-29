@@ -151,7 +151,8 @@ Identical to `/decompose`. `PlanValidationError` → parse issues, re-author. `H
 
 ## Constraints
 
-- Same as `/decompose`: no direct content writes by the LLM, mandatory adjudication, no source-type mixing, all paths relative to the plan YAML.
+- Same as `/decompose`: no direct content writes by the LLM, mandatory adjudication, all paths relative to the plan YAML.
+- **No source-type mixing** — this one is recompose's own, not shared. `/decompose` reads a single source, so it has nothing to mix; a merge takes N and refuses them if their frontmatter `type` values differ (Step 1).
 - Never skip adjudication. AskUserQuestion approval is mandatory before execution.
 - **Sources are never deleted by this operation.** That is deliberate, not an oversight: the merge is proven by hash against content that must still exist to prove it against. Deleting the absorbed sources is a separate step the user has to request explicitly, and until they do, a citation to an absorbed source still opens — which is why Step 8 matters.
 
