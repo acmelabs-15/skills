@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { mkdir, mkdtemp, rm } from "node:fs/promises";
 import { join, relative } from "node:path";
-import { main, runChecks } from "../run-pre-flight.ts";
+import { checkDraft, main, runChecks } from "../run-pre-flight.ts";
 
 /**
  * Conformant TASK-note markdown satisfying all 11 CONVENTIONS Section 8.1
@@ -190,6 +190,68 @@ describe("run-pre-flight runChecks() — per-item failures cite the 8.1 number",
     fail(
       11,
       conformantNote({ trailing: "\n## Clarifications\n\nextra section after relations.\n" }),
+    );
+  });
+});
+
+describe("checkFolder — every canonical entity type has a folder", () => {
+  /**
+   * A type absent from the folder table yields `expected === undefined`, and the
+   * check ANDs against that — so the note fails permanently, with a detail line
+   * reading `expects folder containing "?"`. `feature` was the one canonical
+   * type missing, which made every feature note unfixable.
+   */
+  test("a feature note resolves to roadmap/ rather than failing forever", () => {
+    const findings = runChecks(
+      conformantNote({ type: "feature", title: "FEAT-001: Fixture Feature", h1: "FEAT-001: Fixture Feature" }),
+      "/repo/docs/roadmap/FEAT-001-fixture-feature.md",
+    );
+    const folder = findings.find((f) => f.item === 10);
+    expect(folder?.detail).not.toContain('"?"');
+    expect(folder?.ok).toBe(true);
+  });
+
+  test("an unknown type still fails, naming the type it could not place", () => {
+    const findings = runChecks(
+      conformantNote({ type: "not-a-real-type" }),
+      "/repo/docs/analysis/x.md",
+    );
+    const folder = findings.find((f) => f.item === 10);
+    expect(folder?.ok).toBe(false);
+    expect(folder?.detail).toContain("not-a-real-type");
+  });
+});
+
+describe("checkDraft — note text with no file yet", () => {
+  test("the two path-dependent checks report skipped, not failed", () => {
+    const findings = checkDraft(conformantNote());
+    const skipped = findings.filter((f) => f.skipped === true).map((f) => f.item);
+    expect(skipped.sort((a, b) => a - b)).toEqual([2, 10]);
+    for (const f of findings.filter((f) => f.skipped === true)) {
+      expect(f.ok).toBe(true);
+      expect(f.detail).toContain("draft has no path");
+    }
+  });
+
+  test("a conformant draft passes every check that can be evaluated", () => {
+    expect(checkDraft(conformantNote()).filter((f) => !f.ok)).toEqual([]);
+  });
+
+  test("content defects still fail — skipping paths is not skipping substance", () => {
+    const thin = checkDraft(conformantNote({ observations: "- [fact] only one #a" }));
+    expect(thin.find((f) => f.item === 8)?.ok).toBe(false);
+  });
+
+  test("section order is still enforced without a path", () => {
+    const misordered = checkDraft(
+      conformantNote({ trailing: "\n## Clarifications\n\nafter relations.\n" }),
+    );
+    expect(misordered.find((f) => f.item === 11)?.ok).toBe(false);
+  });
+
+  test("the same eleven checks run as for a written note", () => {
+    expect(checkDraft(conformantNote()).length).toBe(
+      runChecks(conformantNote(), "/repo/docs/analysis/x.md").length,
     );
   });
 });

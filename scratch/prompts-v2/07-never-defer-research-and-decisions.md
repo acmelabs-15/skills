@@ -8,6 +8,24 @@ _Runs after prompt 5 (`plan-data-model`) and prompt 6 (`curate-and-tier-chain`).
 
 **Execution contract (R-31): before doing anything else, read `scratch/prompts-v2/RUN-CONTRACT.md` — it sits beside this file — and run this entire prompt in its collaborative mode: granular, guided, opinions labeled, no assumptions. It overrides any "autonomous" framing below.**
 
+## R-40 rider — memory-first is more than "search before you research"  [DECIDED 2026-07-28, prompt 4A runtime]
+
+This prompt already lands a memory-first gate in `decisions`, which currently has none. R-40 widens what that gate has to mean, and this prompt is where the widening applies, because research⇄decisions is the phase it describes.
+
+The owner's framing: agents must not defer writing a decision or a returned research finding to a memory note — *"the session could end at any time and if that hasn't happened, it'll be lost"* — which this prompt already covers. The addition is that they must not simply **create** a note either, nor blindly append to one:
+
+> *"There should be a constant memory-first searching the notes. Oh, I'm going to add it onto this note. Oh, now that note's too big. I'm going to split the note and I'm going to add this content to one of the new resulting notes as a result of this split. And it's not just going to be appended onto the bottom, it's going to be put somewhere where it makes the most sense."*
+
+So the gate has four parts, not one: **search** the graph for existing coverage; **judge** whether the topic already spans several notes and whether this content should be divided across them; **place** the content where it belongs inside the target rather than at the bottom; and **restructure** when the addition makes a note outgrow itself. The owner's summary of why this phase in particular: *"especially during these planning phases up front, the knowledge graph is growing rapidly, so you should be constantly curating it."*
+
+Where each part lives [owner-ruled]:
+
+- **The policy — when and how often — belongs to the memory skill and memory agent.** *"That frequency I'm talking about probably belongs in the memory skill and memory agent, and they should be the ones leveraging that very flexible curate skill."* This prompt's phase gates should invoke that policy, not restate it.
+- **The mechanics — how to split, merge, and place — belong to `curate`**, which prompt 6 authors as a capability carrying no schedule of its own.
+- **The mechanical structural checks belong at the write boundary**, where a malformed note is denied with clear reasons rather than reported after the fact. The mechanism exists at `plugin/hooks/scripts.disabled/pre-write-brain-note.ts` and is deliberately inert.
+
+Consequence for this prompt: the `decisions` memory-first gate is not satisfied by a search that returns results and an agent that then appends. Whatever wording lands should make the judge-place-restructure half explicit, and W-11's question about how returning analyses derive their questions is adjacent — an analysis that returns into an already-covered topic is exactly the case this rider describes.
+
 ## How to read this prompt — the provenance register
 
 Every substantive statement below carries one of four tags. This is the contract that keeps Peter's decisions his, and the assistant's analysis labeled as analysis:

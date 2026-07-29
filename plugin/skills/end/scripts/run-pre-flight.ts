@@ -57,6 +57,7 @@ const TYPE_FOLDER: Record<string, string> = {
   plan: "planning/",
   prd: "planning/",
   epic: "roadmap/",
+  feature: "roadmap/",
   retrospective: "retrospective/",
   qa: "qa/",
   security: "security/",
@@ -78,6 +79,15 @@ interface Finding {
   item: number;
   ok: boolean;
   detail: string;
+  /**
+   * Set when a check could not be evaluated rather than evaluated and failed.
+   * Two of the eleven checks read the note's location, so a caller holding
+   * unwritten text has nothing for them to read. Reporting those as failures
+   * would tell a caller its draft is malformed when the truth is that the
+   * question does not apply yet, so they are marked skipped and `ok` stays
+   * true — a skip must never gate a write.
+   */
+  skipped?: boolean;
 }
 
 interface ParsedNote {
@@ -241,6 +251,27 @@ function runChecks(markdown: string, filePath: string): Finding[] {
   ];
 }
 
+/** The two checks that read the note's location rather than its text. */
+const PATH_DEPENDENT_ITEMS = new Set([2, 10]);
+
+/**
+ * Check note text that has no file yet.
+ *
+ * Nine of the eleven checks read only the markdown, so a draft can be held to
+ * the same standard as a written note before anything lands on disk. The two
+ * that need a path — filename shape and folder-by-type — come back `skipped`
+ * with `ok` left true, so a caller gating a write on this result refuses
+ * malformed content without refusing content whose location is simply not
+ * decided yet.
+ */
+function checkDraft(markdown: string): Finding[] {
+  return runChecks(markdown, "<draft>").map((f) =>
+    PATH_DEPENDENT_ITEMS.has(f.item)
+      ? { item: f.item, ok: true, skipped: true, detail: `${f.detail} — skipped: draft has no path` }
+      : f,
+  );
+}
+
 async function main(args: string[]): Promise<number> {
   const notePath = args[0];
   if (notePath === undefined || notePath.length === 0) {
@@ -284,4 +315,4 @@ if (import.meta.main) {
   process.exit(await main(Bun.argv.slice(2)));
 }
 
-export { main, runChecks };
+export { main, runChecks, checkDraft };

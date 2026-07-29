@@ -1,10 +1,30 @@
-# Prompt 6 — `curate` and the tier chain: the pre-write curation gate, built by skill-creator
+# Prompt 6 — `curate` and the tier chain: the restructuring capability, built by skill-creator
 
 _Run after prompt 1 (`freeze-and-baseline`) and prompt 4 (`pd-refactor-and-classifier-seam`) — this prompt imports the classifier seam prompt 4's W-3 interview settled. One of the programme's 11 active prompts. Paste everything below into a fresh Claude Code conversation._
 
 ---
 
 **Execution contract (R-31): before doing anything else, read `scratch/prompts-v2/RUN-CONTRACT.md` — it sits beside this file — and run this entire prompt in its collaborative mode: granular, guided, opinions labeled, no assumptions. It overrides any "autonomous" framing below.**
+
+## R-40 supersedes this prompt's framing of `curate`  [DECIDED 2026-07-28, prompt 4A runtime — READ FIRST]
+
+This prompt was written with `curate` as **`defrag`'s pre-write sibling**: two skills doing the same audit, split by when they run. The owner rejected that shape at prompt 4A runtime. Every statement below that rests on it is superseded by R-40 in `RULINGS-LOG.md`; read the ruling before treating any framing here as current.
+
+What changed, and it is load-bearing for this prompt's whole design:
+
+- **One skill, not two.** *"I don't think there needs to be two separate skills that do the exact same thing, but are just run at different times."* Do NOT author a second skill alongside `defrag`. The name is `curate` [assistant-adopted, owner-indifferent: *"I'm not really sure I care which one it is, defrag or curate. It should not be both"*]; "defrag" names a periodic batch operation and carries the model being rejected, so the rename is part of this prompt's work rather than a cosmetic follow-on.
+- **`curate` is a capability with no schedule and no frequency policy.** *"The curate skill just explains that it has the ability to be given many different ways of restructuring an existing note into multiple notes, new content into an existing note. It should just know how to handle that when it gets told, however it gets told."* It documents every way `decompose` and `recompose` can be used to handle the scenarios a caller may face, and says nothing about when. `defrag`'s current framing — *"Periodic curator skill… report-only mode for cron scheduling"*, six cron references in its body — must not survive into it. The original defect was not that cron was the wrong schedule but that a capability carried one at all; replacing it with "continuously, during research" would repeat the mistake with better timing.
+- **The frequency policy belongs to the memory skill and memory agent**, which this prompt already touches at W-2 and W-8. *"That frequency I'm talking about probably belongs in the memory skill and memory agent, and they should be the ones leveraging that very flexible curate skill to be dynamically growing the data graph."* They own memory-first in practice: search before writing, recognise the same scope being updated repeatedly, notice a note outgrowing itself, and call `curate` accordingly. W-2's question — does the memory *agent* own curation dispatch — is therefore no longer only about dispatch plumbing; it is about which of the two owns this policy.
+- **Curation is most needed with a human in the loop, not when idle.** *"Even though right now it kind of frames it as something that should be scheduled, happens autonomously during like a scheduled cron job, in actuality it should be happening like very actively way, way more in those human-in-the-loop moments."* The research⇄decisions phase is where notes are written every few minutes, the same scope is updated several times running, and a note outgrows itself mid-conversation. A scheduled sweep is a backstop for what the continuous path missed. This is policy, so it lands in the memory skill — not in `curate`.
+- **Content placement is a named gap with no implementation.** *"It's not just going to be appended onto the bottom, it's going to be put somewhere where it makes the most sense."* `classify` sorts whole notes into split / merge / stale / structural-fix buckets and says nothing about where new content belongs inside one. Nothing in the composition library does this today. It is this prompt's to design.
+- **The mechanical checks are a write-boundary gate, not skill content.** Owner, on structural violations: *"if that type of violation is found, it should probably result in the note not getting written or the update not happening, and then as part of the denying of that, providing extremely clear guidance on the one or more reasons why that happened. Very clear, so that the agent doesn't have to struggle to figure it out."* That mechanism already exists and is deliberately inert: `plugin/hooks/scripts.disabled/pre-write-brain-note.ts` returns `permissionDecision: "deny"` with a `permissionDecisionReason`, across seven handlers and 253 tests, held back by SPEC-008 pending parser conformance. **Wire, do not rebuild** (P4-13), and treat going live as its own gated work. Section order, tag counts, folder-by-type and observation/relation minimums are mechanical and belong there; *"does this topic already span two notes, and where inside them does this content go"* is agent judgment and belongs to the memory skill.
+
+Two prompt-4A deliverables this prompt consumes:
+
+- `classify`, `Thresholds`, `DEFAULT_THRESHOLDS` and `evaluateDraft` are exported from `plugin/skills/defrag/scripts/audit.ts` with 19 direct tests. `evaluateDraft` classifies text that is not on disk; staleness is unreachable there by construction, since it reads git history and a draft has none.
+- `run-pre-flight.ts` gained `checkDraft`, which runs all eleven checks and reports the two path-dependent ones (items 2 and 10) as `skipped` with `ok` true, so a caller gating a write refuses malformed content without refusing content whose location is undecided. `TYPE_FOLDER` now includes `feature`.
+
+W-3's third seam edit — moving the delegation contract to a shared module — was **deliberately not done**, and this prompt should not expect it. Its premise was two skills sharing one contract; there is one skill.
 
 ## How to read this prompt — the provenance register
 
@@ -44,7 +64,7 @@ Peter's words, from the review: *"why are we defining this now when the create-s
 
 ## The mission
 
-Author `curate` — `defrag`'s **pre-write sibling**: `defrag` audits notes after the fact, `curate` runs before any note is written. It lives in the **skills plugin, not brain** [DECIDED — D-22]. The chain and tiering are D-22's (the ledger records the architecture as *"proposed and tentatively accepted"* — treat the shape as set; report, don't ask, any deviation the work forces):
+Author `curate` — the **restructuring capability** the memory skill and memory agent call: it knows every way `decompose` and `recompose` can reshape the graph, and carries no schedule of its own (R-40, above — this supersedes D-22's pre-write-sibling framing, and there is no second skill). It lives in the **skills plugin, not brain** [DECIDED — D-22]. The chain and tiering are D-22's (the ledger records the architecture as *"proposed and tentatively accepted"* — treat the shape as set; report, don't ask, any deviation the work forces):
 
 > brain `memory` skill (preloaded by every specialist, carries the imperative) → **invokes** `curate` → **invokes** `decompose`/`recompose`/`defrag` only when the plan calls for one. Every link an **invocation**, never a frontmatter `skills:` entry (frontmatter preloads the full body). Do **not** bundle the three execution skills into `memory`.
 
@@ -172,7 +192,8 @@ These are Peter's open questions, carried here so they are asked **once, at the 
 
 | Decision | Source |
 |---|---|
-| `curate` lives in the skills plugin, as `defrag`'s pre-write sibling | D-22 |
+| `curate` lives in the skills plugin | D-22 |
+| `curate` is ONE skill and a capability with no schedule; frequency policy belongs to the memory skill and agent; content placement is an unimplemented gap this prompt owns | owner, 2026-07-28 (R-40, superseding D-22's pre-write-sibling framing) |
 | The invocation chain and four-tier shape; no frontmatter `skills:` links; no bundling into `memory` | D-22 (ledger: *"tentatively accepted"* — shape set; deviations reported, not re-asked) |
 | skill-creator drives `curate`'s creation; this prompt supplies only repo facts, decisions, open questions | owner, 2026-07-27 (R-30) |
 | Curation runs before writing; create is the fallback, never the default | D-6 |
