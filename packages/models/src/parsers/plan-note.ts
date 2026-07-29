@@ -16,10 +16,11 @@ import type {
   PlanNote,
   Task,
 } from "../schemas/plan-note.js";
-import { PlanNoteSchema } from "../schemas/plan-note.js";
+import { DROPPED_H2_HEADINGS, PlanNoteSchema } from "../schemas/plan-note.js";
 import {
   ParseError,
   bulletFieldMap,
+  captureUnknownH2Sections,
   checkboxItems,
   extractFrontmatter,
   findTable,
@@ -346,12 +347,35 @@ function parseObservations(children: RootContent[]): Observation[] {
   return out;
 }
 
+/**
+ * H2 headings this parser turns into typed fields. Anything outside this set and
+ * outside `DROPPED_H2_HEADINGS` is captured verbatim into `unmodelled_sections`
+ * so the round trip cannot lose it.
+ */
+const MODELLED_H2_HEADINGS = new Set<string>([
+  "Scope",
+  "Objectives",
+  "Phase Progression",
+  "Tasks",
+  "Pending User Decisions",
+  "Editor Mirror IDs",
+  "Blockers",
+  "Observations",
+  "Relations",
+]);
+
 export function parsePlanNote(markdown: string): PlanNote {
   const ast = processor.parse(markdown);
   const fmRaw = extractFrontmatter(ast);
   const frontmatter = parseFrontmatter(fmRaw);
 
   const sections = sectionizeH2(ast);
+  const dropped = new Set<string>(DROPPED_H2_HEADINGS);
+  const unmodelled = captureUnknownH2Sections(
+    markdown,
+    ast,
+    (heading) => MODELLED_H2_HEADINGS.has(heading) || dropped.has(heading),
+  );
   const scopeChildren = sections.get("Scope") ?? [];
   const scopeData = parseScope(scopeChildren);
 
@@ -366,6 +390,7 @@ export function parsePlanNote(markdown: string): PlanNote {
     blockers: parseBlockers(sections.get("Blockers") ?? []),
     observations: parseObservations(sections.get("Observations") ?? []),
     relations: parseRelations(sections.get("Relations") ?? []),
+    unmodelled_sections: unmodelled,
   };
   if (scopeData.source_reference !== undefined) {
     model.source_reference = scopeData.source_reference;

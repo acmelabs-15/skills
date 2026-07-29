@@ -25,36 +25,6 @@ Sample plan for round-trip fixture. Covers minimum viable structure to exercise 
 - [ ] Round-trip parser and renderer
 - [x] Cross-field invariants enforced
 
-## Progress Dashboard
-
-| Phase | PENDING | IN_PROGRESS | BLOCKED | DONE | Total |
-|:--|--:|--:|--:|--:|--:|
-| research | 0 | 0 | 0 | 1 | 1 |
-| decisions | 0 | 0 | 0 | 1 | 1 |
-| build | 0 | 1 | 0 | 0 | 1 |
-| **Total** | **0** | **1** | **0** | **2** | **3** |
-
-## Cross-Part Dependency Graph
-
-```mermaid
-%%{init: {'theme':'base','flowchart':{'curve':'stepAfter','nodeSpacing':18,'rankSpacing':55,'padding':16,'diagramPadding':20,'htmlLabels':true},'themeVariables':{'fontFamily':'-apple-system, BlinkMacSystemFont, system-ui, sans-serif','fontSize':'13px','clusterBkg':'#f9fafb','clusterBorder':'#e5e7eb'}}}%%
-graph TD
-
-  classDef done fill:#ffffff,stroke:#e5e7eb,stroke-width:1px,color:#111827,rx:14,ry:14
-  classDef inprogress fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12,rx:14,ry:14
-  classDef pending fill:#fafafa,stroke:#d1d5db,stroke-width:1px,color:#6b7280,stroke-dasharray:3 3,rx:14,ry:14
-
-  research("✅ <b>research</b><br/><span style='color:#6b7280;font-size:11px'>Research</span>")
-  decisions_1("✅ <b>decisions.1</b><br/><span style='color:#6b7280;font-size:11px'>Lock ADR-001</span>")
-  build_SPEC_007("⚡ <b>build.SPEC-007</b><br/><span style='color:#6b7280;font-size:11px'>Build SPEC-007</span>")
-
-  research --> decisions_1
-  decisions_1 --> build_SPEC_007
-
-  class research,decisions_1 done
-  class build_SPEC_007 inprogress
-```
-
 ## Phase Progression
 
 ### research

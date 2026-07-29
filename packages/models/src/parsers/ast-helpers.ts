@@ -26,6 +26,58 @@ export function sectionizeH2(ast: Root): Map<string, RootContent[]> {
   return sectionizeByDepth(ast.children, 2);
 }
 
+/** An H2 section captured as raw source text, with the order it appeared in. */
+export interface RawSection {
+  /** Heading text without the `## ` prefix, e.g. `Risks (pre-mortem)`. */
+  heading: string;
+  /** The section verbatim, heading line included, trailing blank lines trimmed. */
+  text: string;
+  /** 0-based index among all H2s in the source, so document order survives. */
+  index: number;
+}
+
+/**
+ * Capture every H2 section whose heading is not in `known`, sliced verbatim from
+ * the source string rather than re-serialised from the AST.
+ *
+ * Raw slicing is the point. A model-then-render round trip normalises whatever it
+ * does not understand — table padding, emphasis characters, list markers, hard
+ * breaks — so a section carried as AST comes back subtly rewritten. Sections
+ * captured here are ones no schema describes, which makes any normalisation
+ * silent corruption of content nobody is validating. Slicing by line offset
+ * guarantees the bytes that arrive are the bytes that leave.
+ *
+ * Matching is exact on heading text, so `Risks` and `Risks (pre-mortem)` are
+ * different headings; callers wanting prefix tolerance pass a predicate.
+ */
+export function captureUnknownH2Sections(
+  markdown: string,
+  ast: Root,
+  known: (heading: string) => boolean,
+): RawSection[] {
+  const lines = markdown.split("\n");
+  const h2s: { heading: string; startLine: number }[] = [];
+  for (const node of ast.children) {
+    if (node.type !== "heading" || (node as Heading).depth !== 2) continue;
+    const startLine = node.position?.start.line;
+    if (startLine === undefined) continue;
+    h2s.push({ heading: mdToString(node as Heading).trim(), startLine });
+  }
+
+  const out: RawSection[] = [];
+  for (let i = 0; i < h2s.length; i++) {
+    const entry = h2s[i];
+    if (!entry || known(entry.heading)) continue;
+    // Runs to the line before the next H2, or to end-of-file for the last one.
+    const nextStart = h2s[i + 1]?.startLine;
+    const endLine = nextStart === undefined ? lines.length : nextStart - 1;
+    const slice = lines.slice(entry.startLine - 1, endLine);
+    while (slice.length > 0 && slice[slice.length - 1]?.trim() === "") slice.pop();
+    out.push({ heading: entry.heading, text: slice.join("\n"), index: i });
+  }
+  return out;
+}
+
 /** Split a children array into a map of H3 heading text → children. */
 export function sectionizeH3(children: RootContent[]): Map<string, RootContent[]> {
   return sectionizeByDepth(children, 3);

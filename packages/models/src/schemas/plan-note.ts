@@ -16,6 +16,31 @@ import {
 } from "./common.js";
 
 /**
+ * Headings the renderer deliberately does not emit.
+ *
+ * Both were derived rollups regenerated on every render: a status summary and a
+ * Mermaid dependency diagram, each computed from `parts`. They are no longer part
+ * of a plan note. A source file that still carries one parses without error and
+ * the section is simply absent from the output — dropped, never diagnosed, since
+ * their presence is a historical artifact rather than an authoring mistake.
+ *
+ * This list is deliberately closed and deliberately short. Every H2 not named
+ * here and not modelled by a field is PRESERVED verbatim via
+ * `unmodelled_sections`; adding a heading here converts it from preserved to
+ * deleted, which is why it takes a decision rather than a convenience.
+ */
+export const DROPPED_H2_HEADINGS = ["Progress Dashboard", "Cross-Part Dependency Graph"] as const;
+
+/** An H2 section carried verbatim because no field models it. */
+export const RawSectionSchema = z
+  .object({
+    heading: z.string().min(1),
+    text: z.string().min(1),
+    index: z.number().int().min(0),
+  })
+  .strict();
+
+/**
  * BuildWorkflow primitives — per-TASK impl + qa items inside build.SPEC-NNN parts.
  *
  * Added by Phase X (Protocol Hardening, 2026-05-20) to mechanically enforce the
@@ -264,6 +289,22 @@ export const PlanNoteSchema = z
     blockers: z.array(z.string()),
     observations: z.array(ObservationSchema).min(3),
     relations: z.array(RelationSchema).min(2),
+    /**
+     * H2 sections the model does not describe, carried verbatim so a parse-render
+     * round trip cannot delete them.
+     *
+     * Before this field existed the parser read nine named H2s and dropped every
+     * other one before validation, and the renderer rebuilt the document from the
+     * model alone — so a successful render deleted whatever it had not understood.
+     * That was masked only because parsing failed on every real plan note; fixing
+     * the parser without this field would have turned a silent no-op into silent
+     * deletion of authored content.
+     *
+     * Not a dumping ground: a section belongs here precisely as long as nothing
+     * models it. When one earns a schema, it moves out of this array and into a
+     * typed field, and the round trip keeps proving byte-identity throughout.
+     */
+    unmodelled_sections: z.array(RawSectionSchema).optional(),
   })
   .strict()
   .superRefine((data, ctx) => {

@@ -4,10 +4,19 @@
  *
  * Drives the deterministic PlanNote renderer: reads a PLAN markdown file,
  * parses it to the typed model (parsePlanNote), re-renders the canonical
- * markdown (renderPlanNote), and writes the result back. The renderer
- * regenerates derived sections (Progress Dashboard + Cross-Part Dependency
- * Graph) from `parts[]` on every render, so this script is the mechanism by
- * which a PLAN's rollups are reconciled.
+ * markdown (renderPlanNote), and writes the result back IN PLACE.
+ *
+ * Understand what that means before pointing this at a file. The renderer
+ * rebuilds the whole document from the model; it does not patch and it does not
+ * merge. Sections the model does not describe are carried verbatim through
+ * `unmodelled_sections`, which is what makes writing back safe — but the two
+ * headings in `DROPPED_H2_HEADINGS` (Progress Dashboard, Cross-Part Dependency
+ * Graph) are removed on purpose and will disappear from the file.
+ *
+ * An earlier version of this comment said the renderer "regenerates derived
+ * sections … so this script is the mechanism by which a PLAN's rollups are
+ * reconciled." Both halves are now false: those two sections are no longer
+ * emitted, and there are no rollups left for this script to reconcile.
  *
  * Determinism (D-4): the render is a pure generator — same input PLAN produces
  * byte-identical output every time (no timestamps, randomness, or env reads in

@@ -9,19 +9,30 @@ import type {
   PlanNote,
   Task,
 } from "../schemas/plan-note.js";
-import { renderMermaid } from "./mermaid.js";
 
 /**
  * PlanNote renderer (ADR-003 D-3 deterministic Bun+TS render).
  *
- * Canonical section order:
- *   frontmatter → H1 → Scope → Objectives → Progress Dashboard → Cross-Part
- *   Dependency Graph → Phase Progression → Tasks → Pending User Decisions →
- *   Editor Mirror IDs → Blockers → Observations → Relations.
+ * This rebuilds the ENTIRE document from the model. It is not a patcher and it
+ * does not merge with the file on disk, so anything absent from the model is
+ * absent from the output. An earlier version of this comment claimed the renderer
+ * "regenerates the two derived sections", which understated it to the point of
+ * being wrong: every section is regenerated, and unmodelled ones used to vanish.
  *
- * Progress Dashboard + Cross-Part Dependency Graph are DERIVED from parts[]
- * (Information Model Category 2 rollups) — the parser SKIPS them and the
- * renderer regenerates them every time.
+ * Modelled section order:
+ *   frontmatter → H1 → Scope → Objectives → Phase Progression → Tasks →
+ *   Pending User Decisions → Editor Mirror IDs → Blockers → Observations →
+ *   Relations.
+ *
+ * Two other categories share the document:
+ *
+ * - `unmodelled_sections` — H2s no field describes, carried verbatim by the
+ *   parser and re-inserted here at their recorded position. This is what keeps a
+ *   round trip from deleting authored content the schema has no opinion about.
+ * - `DROPPED_H2_HEADINGS` — Progress Dashboard and Cross-Part Dependency Graph.
+ *   Formerly derived rollups regenerated on every render; no longer emitted at
+ *   all. A source file still carrying one parses cleanly and loses the section on
+ *   output, with no error, because their presence is a historical artifact.
  */
 
 const NL = "\n";
@@ -56,63 +67,6 @@ function renderObjectives(plan: PlanNote): string {
   for (const o of plan.objectives) {
     lines.push(`- [${o.done ? "x" : " "}] ${o.text}`);
   }
-  return lines.join(NL);
-}
-
-function renderProgressDashboard(plan: PlanNote): string {
-  // Group parts by phase, count substatuses.
-  const phases = ["research", "decisions", "spec-decomposition", "spec", "build", "review", "end"];
-  const rows = new Map<
-    string,
-    { PENDING: number; IN_PROGRESS: number; BLOCKED: number; DONE: number; total: number }
-  >();
-  for (const phase of phases) {
-    rows.set(phase, { PENDING: 0, IN_PROGRESS: 0, BLOCKED: 0, DONE: 0, total: 0 });
-  }
-  for (const part of plan.parts) {
-    const row = rows.get(part.phase);
-    if (!row) continue;
-    row.total += 1;
-    if (part.substatus === "DONE") row.DONE += 1;
-    else if (part.substatus === "IN_PROGRESS") row.IN_PROGRESS += 1;
-    else if (part.substatus === "BLOCKED") row.BLOCKED += 1;
-    else row.PENDING += 1;
-  }
-  const lines = [
-    "## Progress Dashboard",
-    "",
-    "| Phase | PENDING | IN_PROGRESS | BLOCKED | DONE | Total |",
-    "|:--|--:|--:|--:|--:|--:|",
-  ];
-  let totP = 0;
-  let totI = 0;
-  let totB = 0;
-  let totD = 0;
-  let totT = 0;
-  for (const phase of phases) {
-    const r = rows.get(phase);
-    if (!r || r.total === 0) continue;
-    lines.push(
-      `| ${phase} | ${r.PENDING} | ${r.IN_PROGRESS} | ${r.BLOCKED} | ${r.DONE} | ${r.total} |`,
-    );
-    totP += r.PENDING;
-    totI += r.IN_PROGRESS;
-    totB += r.BLOCKED;
-    totD += r.DONE;
-    totT += r.total;
-  }
-  lines.push(`| **Total** | **${totP}** | **${totI}** | **${totB}** | **${totD}** | **${totT}** |`);
-  return lines.join(NL);
-}
-
-function renderDepsGraph(plan: PlanNote): string {
-  const lines = [
-    "## Cross-Part Dependency Graph",
-    "",
-    "```mermaid",
-    renderMermaid(plan.parts),
-    "```",
-  ];
   return lines.join(NL);
 }
 
@@ -328,32 +282,39 @@ function renderRelations(rels: Relation[]): string {
 }
 
 export function renderPlanNote(plan: PlanNote): string {
-  const sections: string[] = [];
-  sections.push(renderFrontmatter(plan.frontmatter));
-  sections.push("");
-  sections.push(`# ${plan.frontmatter.title}`);
-  sections.push("");
-  sections.push(renderScope(plan));
-  sections.push("");
-  sections.push(renderObjectives(plan));
-  sections.push("");
-  sections.push(renderProgressDashboard(plan));
-  sections.push("");
-  sections.push(renderDepsGraph(plan));
-  sections.push("");
-  sections.push(renderPhaseProgression(plan));
-  sections.push("");
-  sections.push(renderTasks(plan));
-  sections.push("");
-  sections.push(renderPendingDecisions(plan.pending_decisions));
-  sections.push("");
-  sections.push(renderEditorMirror(plan.editor_mirror));
-  sections.push("");
-  sections.push(renderBlockers(plan.blockers));
-  sections.push("");
-  sections.push(renderObservations(plan.observations));
-  sections.push("");
-  sections.push(renderRelations(plan.relations));
-  sections.push("");
-  return sections.join(NL);
+  // Modelled sections in canonical order, each tagged with the position it holds
+  // among the source's H2s so preserved sections can be interleaved back in.
+  const modelled: string[] = [
+    renderScope(plan),
+    renderObjectives(plan),
+    renderPhaseProgression(plan),
+    renderTasks(plan),
+    renderPendingDecisions(plan.pending_decisions),
+    renderEditorMirror(plan.editor_mirror),
+    renderBlockers(plan.blockers),
+    renderObservations(plan.observations),
+    renderRelations(plan.relations),
+  ];
+
+  // Preserved sections re-enter at their recorded index. Ascending order matters:
+  // each splice shifts everything after it, so inserting low-to-high keeps every
+  // later index valid without recomputing offsets.
+  const body = [...modelled];
+  const preserved = [...(plan.unmodelled_sections ?? [])].sort((a, b) => a.index - b.index);
+  for (const section of preserved) {
+    const at = Math.min(section.index, body.length);
+    body.splice(at, 0, section.text);
+  }
+
+  const out: string[] = [
+    renderFrontmatter(plan.frontmatter),
+    "",
+    `# ${plan.frontmatter.title}`,
+    "",
+  ];
+  for (const section of body) {
+    out.push(section);
+    out.push("");
+  }
+  return out.join(NL);
 }
