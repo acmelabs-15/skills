@@ -57,10 +57,10 @@ Sample plan for round-trip fixture. Covers minimum viable structure to exercise 
 
 **Decisions**:
 
-| ID | Status | Topic |
-|:--|:--|:--|
-| D-1 | LOCKED | Use Zod |
-| D-2 | LOCKED | Use unified+remark |
+| ID | Status | Topic | Decision |
+|:--|:--|:--|:--|
+| D-1 | LOCKED | Use Zod | — |
+| D-2 | LOCKED | Use unified+remark | — |
 
 ### build.SPEC-007
 

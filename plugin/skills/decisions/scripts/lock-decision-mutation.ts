@@ -104,7 +104,12 @@ function lockedMarkdown(markdown: string, args: LockDecisionArgs): string {
     type: "lock-decision",
     partId: args.partId,
     decisionId: args.decisionId,
-    topic: args.optionText,
+    // `--option-text` is the chosen option verbatim, so it belongs in `decision`.
+    // It was previously passed as `topic`, which overwrote the short label for what
+    // was being decided with the answer to it — and left the verbatim text with
+    // nowhere to live, so a downstream detail audit had nothing real to compare an
+    // authored ADR against.
+    decision: args.optionText,
   });
 
   // Phase 2 — when every decision in the part is now LOCKED and the part is

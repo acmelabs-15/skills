@@ -54,7 +54,9 @@ Each part in the PLAN is an entry with these fields:
   owning_session: <SESSION-YYYY-MM-DD_NN>    # set on status → IN_PROGRESS
   completing_session: <SESSION-YYYY-MM-DD_NN># set on status → DONE
   d_n_substatus:                             # ONLY for decisions parts
-    - { id: D-1, status: <PENDING|LOCKED>, decision: <verbatim text> }
+    - { id: D-1, status: <PENDING|LOCKED|REJECTED|DEFERRED>,
+        topic: <short label for what is being decided>,
+        decision: <the chosen option, verbatim> }
 ```
 
 ### Status transitions (Contract 7)

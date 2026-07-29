@@ -33,7 +33,18 @@ export type LockDecision = {
   type: "lock-decision";
   partId: string;
   decisionId: string;
-  topic: string;
+  /**
+   * What was chosen, verbatim, in the words the option was presented in.
+   *
+   * This used to be passed as `topic` and stored there, which conflated the
+   * question with the answer: `topic` is a short label for what is being decided,
+   * and the chosen option's full text was overwriting it. A downstream audit that
+   * checks an authored ADR against the decision it records was therefore comparing
+   * against a label, and passing trivially.
+   */
+  decision: string;
+  /** Optional short label for what was being decided; preserved if already set. */
+  topic?: string;
 };
 
 export type FlipDodItem = {
@@ -195,9 +206,27 @@ function lockDecision(plan: PlanNote, m: LockDecision): PlanNote {
       const idx = decisions.findIndex((d) => d.id === m.decisionId);
       if (idx >= 0) {
         const existing = decisions[idx];
-        if (existing) decisions[idx] = { ...existing, status: "LOCKED", topic: m.topic };
+        if (existing) {
+          // An existing topic is kept unless the caller supplies one. The topic was
+          // authored when the decision was surfaced and describes the question; the
+          // lock supplies the answer, and should not overwrite the question with it.
+          decisions[idx] = {
+            ...existing,
+            status: "LOCKED",
+            topic: m.topic ?? existing.topic,
+            decision: m.decision,
+          };
+        }
       } else {
-        decisions.push({ id: m.decisionId, status: "LOCKED", topic: m.topic });
+        decisions.push({
+          id: m.decisionId,
+          status: "LOCKED",
+          // No prior entry means nothing surfaced this decision, so no topic was
+          // ever authored. Falling back to the decision text keeps the required
+          // field populated with something true rather than empty.
+          topic: m.topic ?? m.decision,
+          decision: m.decision,
+        });
       }
       return { ...p, decisions };
     }),

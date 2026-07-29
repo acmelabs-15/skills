@@ -154,13 +154,73 @@ const DodItemSchema = z
   })
   .strict();
 
+/**
+ * A single D-N decision's state inside a decisions part.
+ *
+ * `topic` and `decision` are different things, and conflating them is what this
+ * schema previously did. The topic is what was being decided — a short label, "the
+ * parser strategy". The decision is what was chosen, verbatim, in the words the
+ * option was presented in.
+ *
+ * Why the verbatim text has to live here: a later phase audits whether an authored
+ * ADR carries the same detail as the decision it records. Without this field that
+ * audit compares against `topic`, a short label, and so passes trivially — it was
+ * comparing against nothing. The audit is only meaningful if the exact wording the
+ * decision was locked with is recoverable.
+ *
+ * `decision` is optional, and deliberately not required even when LOCKED.
+ *
+ * Requiring it on LOCKED was tried and reverted: every decision locked before this
+ * field existed has no text, so the rule failed 45 tests and would fail every real
+ * plan note on disk. A schema that rejects the whole document cannot validate any
+ * of the state inside it — the same reason the part-id grammar reports instead of
+ * rejecting. What matters is that new locks record the text, which the mutation now
+ * requires at the type level: `LockDecision.decision` is non-optional, so a caller
+ * cannot omit it. Enforcement sits at the writing edge, where it prevents the gap,
+ * rather than at the reading edge, where it only punishes history.
+ *
+ * `missingDecisionText` reports LOCKED decisions with no text, for a caller that
+ * wants to surface them.
+ */
 const DecisionStateSchema = z
   .object({
     id: z.string(),
+    /**
+     * Status of this decision.
+     *
+     * Four values, not the two the prose specified (`PENDING|LOCKED`). REJECTED and
+     * DEFERRED are real outcomes — an option can be considered and turned down, or
+     * consciously postponed — and the enum has always accepted them. The
+     * reconciliation runs toward the implementation and the prose is corrected,
+     * because narrowing to two would delete the ability to record either.
+     */
     status: z.enum(["PENDING", "LOCKED", "REJECTED", "DEFERRED"]),
+    /** What is being decided — a short label, not the answer. */
     topic: z.string(),
+    /** What was chosen, verbatim, in the words the option was presented in. */
+    decision: z.string().optional(),
   })
   .strict();
+
+/**
+ * LOCKED decisions that record no verbatim text.
+ *
+ * These are the decisions a downstream detail audit cannot check, because there is
+ * nothing to compare an authored ADR against. Reported rather than rejected: notes
+ * predate the field, and failing a whole document over it would validate nothing.
+ */
+export function missingDecisionText(plan: PlanNote): Array<{ partId: string; id: string }> {
+  const out: Array<{ partId: string; id: string }> = [];
+  for (const part of plan.parts) {
+    for (const decision of part.decisions ?? []) {
+      if (decision.status !== "LOCKED") continue;
+      if (!decision.decision || decision.decision.trim().length === 0) {
+        out.push({ partId: part.id, id: decision.id });
+      }
+    }
+  }
+  return out;
+}
 
 const PartSchema = z
   .object({

@@ -109,10 +109,14 @@ function renderPart(part: Part): string {
 
   if (part.decisions && part.decisions.length > 0) {
     lines.push("", "**Decisions**:", "");
-    lines.push("| ID | Status | Topic |");
-    lines.push("|:--|:--|:--|");
+    lines.push("| ID | Status | Topic | Decision |");
+    lines.push("|:--|:--|:--|:--|");
     for (const d of part.decisions) {
-      lines.push(`| ${d.id} | ${d.status} | ${d.topic} |`);
+      // The verbatim chosen option is the point of the row: an audit downstream
+      // compares an authored ADR against it. A pipe inside the text would break the
+      // table, so it is escaped rather than dropped.
+      const decision = d.decision ? d.decision.replaceAll("|", "\\|") : "—";
+      lines.push(`| ${d.id} | ${d.status} | ${d.topic} | ${decision} |`);
     }
   }
 

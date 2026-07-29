@@ -192,19 +192,19 @@ describe("mutation invariants — double-apply idempotency", () => {
     expect(twice).toBe(once);
   });
 
-  test("lock-decision (same topic) is idempotent on double apply", async () => {
+  test("lock-decision (same decision) is idempotent on double apply", async () => {
     const md = await loadFixture();
     const once = applyPlanMutation(md, {
       type: "lock-decision",
       partId: "decisions.1",
       decisionId: "D-1",
-      topic: "Use Zod",
+      decision: "Use Zod",
     });
     const twice = applyPlanMutation(once, {
       type: "lock-decision",
       partId: "decisions.1",
       decisionId: "D-1",
-      topic: "Use Zod",
+      decision: "Use Zod",
     });
     expect(hashOf(twice)).toBe(hashOf(once));
     expect(twice).toBe(once);

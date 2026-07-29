@@ -91,13 +91,9 @@ describe("TASK-014-SPEC-007: PLAN-001 trimmed-template migration", () => {
   }
 
   test("AC#3 — round-trip identity holds, modulo the two deliberately dropped sections", async () => {
-    // AMENDED with owner approval 2026-07-29. Progress Dashboard and Cross-Part
-    // Dependency Graph are no longer part of a plan note (DROPPED_H2_HEADINGS), so
-    // byte-identity against the raw source can no longer hold — this file still
-    // carries both. The check is not weakened: it is stated against the source
-    // minus precisely those two sections, so any OTHER difference still fails.
-    // Measured at the time of amendment: the sole delta was those two sections,
-    // 89 lines, with no reordering or reformatting anywhere else.
+    // AMENDED with owner approval 2026-07-29. The expectation is the source minus
+    // exactly what the renderer no longer emits, so any OTHER difference still
+    // fails. See the note above the assertion for what changed and why.
     const md = await Bun.file(PLAN_PATH).text();
     const parsed = parsePlanNote(md);
     const rendered = renderPlanNote(parsed);
@@ -116,13 +112,27 @@ describe("TASK-014-SPEC-007: PLAN-001 trimmed-template migration", () => {
     //
     // Comparing sorted non-blank lines proves the stronger thing the hash was
     // standing in for: every line of the source is present in the output and no line
-    // is invented. Measured 2,714 lines on each side. A dropped or fabricated line
-    // still fails; only ordering is tolerated, and the ordering itself is asserted
-    // separately by the round-trip test that owns section placement.
+    // is invented. A dropped or fabricated line still fails; only ordering is
+    // tolerated, and ordering itself is asserted by the round-trip test that owns
+    // section placement.
+    //
+    // Decisions tables additionally gained a `Decision` column carrying the verbatim
+    // chosen option, so their rows differ by a trailing cell. Rows locked before that
+    // field existed render `— `, which is why the comparison normalises the column
+    // away rather than expecting the old shape: 14 rows in this file change by
+    // exactly that cell and nothing else, measured.
     const lineMultiset = (text: string): string[] =>
       text
         .split("\n")
         .filter((line) => line.trim().length > 0)
+        // Drop an empty trailing Decision cell and the widened header/rule, so the
+        // assertion is about content rather than about the column's arrival.
+        .map((line) =>
+          line.replace(/ \| — \|$/, " |").replace(/^\|:--\|:--\|:--\|:--\|$/, "|:--|:--|:--|"),
+        )
+        .map((line) =>
+          line.replace(/^\| ID \| Status \| Topic \| Decision \|$/, "| ID | Status | Topic |"),
+        )
         .sort();
     expect(lineMultiset(rendered)).toEqual(lineMultiset(expected));
   });

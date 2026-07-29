@@ -252,11 +252,19 @@ function parsePart(partHeading: string, children: RootContent[]): Part {
   const decisionsTable = findTableWithColumns(children, ["ID", "Status"]);
   if (decisionsTable) {
     const rows = tableRows(decisionsTable);
-    const decisions: DecisionState[] = rows.map((r) => ({
-      id: r["ID"] ?? "",
-      status: (r["Status"] ?? "PENDING") as DecisionState["status"],
-      topic: r["Topic"] ?? "",
-    }));
+    const decisions: DecisionState[] = rows.map((r) => {
+      const state: DecisionState = {
+        id: r["ID"] ?? "",
+        status: (r["Status"] ?? "PENDING") as DecisionState["status"],
+        topic: r["Topic"] ?? "",
+      };
+      // The verbatim chosen option. Absent on notes written before the column
+      // existed, and on decisions still PENDING; the schema requires it only once
+      // a decision is LOCKED.
+      const decision = r["Decision"];
+      if (decision && decision !== "—") state.decision = decision;
+      return state;
+    });
     if (decisions.length > 0) part.decisions = decisions;
   }
 
