@@ -104,10 +104,6 @@ const planModel: PlanNote = {
       ],
     },
   ],
-  editor_mirror: [
-    { task_id: "T-01", cc_id: "cc-123", cursor_id: null, last_synced: "2026-05-20T12:00:00Z" },
-    { task_id: "T-02", cc_id: null, cursor_id: "cur-456", last_synced: null },
-  ],
   blockers: [],
   observations: [
     { category: "decision", text: "Markdown is authoritative state", tags: ["adr-003", "render"] },

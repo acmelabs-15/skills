@@ -41,14 +41,17 @@ describe("parsePlanNote — fixture-based", () => {
     expect(dec.decisions?.[0]?.id).toBe("D-1");
   });
 
-  test("preserves pending decisions and editor mirror IDs", async () => {
+  test("preserves pending decisions", async () => {
+    // The editor-mirror assertions that stood here are gone with the field. That
+    // table mapped a plan task id to Claude Code and Cursor task-list ids so the
+    // three could be kept in sync; the sync was never built, all four columns were
+    // nullable, and every row in every plan read `(none)`. Pending decisions stay:
+    // a question that outlives its session is real, and its emptiness elsewhere is
+    // a missing writer rather than a wrong model.
     const md = await Bun.file(join(fixtureDir, "plan-note-sample.md")).text();
     const plan = parsePlanNote(md);
     expect(plan.pending_decisions).toHaveLength(1);
     expect(plan.pending_decisions[0]?.id).toBe("PUD-001");
-    expect(plan.editor_mirror).toHaveLength(2);
-    expect(plan.editor_mirror[0]?.task_id).toBe("T-01");
-    expect(plan.editor_mirror[0]?.cc_id).toBe("cc-123");
   });
 
   test("observations and relations parse with expected counts", async () => {

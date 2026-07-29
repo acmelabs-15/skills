@@ -119,10 +119,6 @@ unmodelled is exactly why it must survive verbatim.
 
 (none)
 
-### Backlog
-
-(none)
-
 ### Archive
 
 (none)
@@ -168,6 +164,12 @@ describe("plan note round trip preserves unmodelled sections", () => {
       "Risks (pre-mortem)",
       "Open Parallel Threads (DO NOT FORGET)",
       "Build",
+      // `Editor Mirror IDs` became unmodelled when that field was removed, so it is
+      // now PRESERVED rather than generated — a note carrying one keeps it, and
+      // nothing writes a new one. That is the intended landing: the field recorded
+      // an editor task-list sync that was never built, but deleting text a human
+      // wrote is a separate act from deleting a model field.
+      "Editor Mirror IDs",
     ]);
   });
 

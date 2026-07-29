@@ -104,7 +104,9 @@ export type BuildWorkflowStatus = z.infer<typeof BuildWorkflowStatusEnum>;
  * Enforces:
  * - PLAN owns forward-looking state (D-2).
  * - T-NN task IDs plan-scoped, consolidated at PLAN top level (D-5, D-6).
- * - PUD + Editor Mirror IDs at PLAN top level (D-9).
+ * - Pending User Decisions at PLAN top level (D-9). D-9's editor-mirror half is
+ *   dropped: it recorded a task-id sync with editor task lists that nothing ever
+ *   performed, so all four of its columns were nullable and every row read (none).
  * - No Decision Log / Progress Log / Workflow Plan prose (D-10, D-11) — by omission.
  * - Cross-field invariants: tasks reference existing parts; part dependencies are valid.
  */
@@ -265,15 +267,6 @@ const PendingDecisionSchema = z
   })
   .strict();
 
-const EditorMirrorEntrySchema = z
-  .object({
-    task_id: TaskIdSchema,
-    cc_id: z.string().nullable(),
-    cursor_id: z.string().nullable(),
-    last_synced: z.string().nullable(),
-  })
-  .strict();
-
 /**
  * Terminal part substatuses for the PLAN done-claim invariant (SPEC-008
  * REQ-001, TASK-010). A PLAN whose `frontmatter.status === "DONE"` requires
@@ -304,7 +297,6 @@ export const PlanNoteSchema = z
     parts: z.array(PartSchema).min(1),
     tasks: z.array(TaskSchema),
     pending_decisions: z.array(PendingDecisionSchema),
-    editor_mirror: z.array(EditorMirrorEntrySchema),
     blockers: z.array(z.string()),
     observations: z.array(ObservationSchema).min(3),
     relations: z.array(RelationSchema).min(2),
@@ -371,5 +363,4 @@ export type Objective = z.infer<typeof ObjectiveSchema>;
 export type DodItem = z.infer<typeof DodItemSchema>;
 export type DecisionState = z.infer<typeof DecisionStateSchema>;
 export type PendingDecision = z.infer<typeof PendingDecisionSchema>;
-export type EditorMirrorEntry = z.infer<typeof EditorMirrorEntrySchema>;
 export type PlanFrontmatter = z.infer<typeof PlanFrontmatterSchema>;

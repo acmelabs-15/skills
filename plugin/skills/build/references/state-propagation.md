@@ -51,7 +51,8 @@ Edit PLAN body via `mcp__plugin_brain_brain__edit_note`:
 
 1. Locate the `build.SPEC-NNN` part section
 2. Mark the part's SPEC-level checkbox (typically a `[ ] SPEC-NNN done` line in the part body) `[x]`
-3. Update PLAN's `## Progress Dashboard` if present (decrement IN_PROGRESS, increment DONE for the spec/build column)
+
+Do not hand-update a progress dashboard. `## Progress Dashboard` is no longer part of a PLAN note — it was a derived rollup regenerated on every render, and the renderer no longer emits it. Editing one by hand was always writing to a section that the next render would overwrite; now it writes a section that will be removed.
 
 This is a PLAN-level mutation; per Contract 6, the part's `status` field will transition to DONE in Step 8 set-part-done (not here).
 
@@ -105,5 +106,5 @@ Sub-step 6.4 batches commits across 6.1-6.3 because they're all SPEC-level state
 | Skipping EPIC update when EPIC exists | EPIC rollup stale; EPIC consumers see wrong state | Always check SPEC.Relations.part_of [[EPIC-]] and update if present |
 | sync-jira push before SPEC status flips | Jira leads source-of-truth | sync-jira is push-after-source-of-truth; here Stage C runs BEFORE Step 8 SPEC status flip, so this is the SPEC's "I'm done with all tasks; ready for closure" push (status flip is Step 8) |
 | Splitting Stage C into multiple commits | Commit clutter; harder git history | Atomic commit covering all Stage C edits |
-| Forgetting PLAN's Progress Dashboard refresh | Dashboard rollup drift; cross-PLAN view wrong | Always refresh dashboard if it lists SPEC-level rollups |
+| Hand-updating a PLAN progress dashboard | Writes to a section the renderer removes; invented state that no longer has a home | `## Progress Dashboard` is not part of a PLAN note. Update the part's own fields; nothing derives from a hand-written rollup |
 | Running Stage C twice on G2 resume | Idempotency violation; double-push to Jira | Skip already-completed sub-steps per G2 markers |

@@ -92,17 +92,18 @@ The PLAN body holds derived views + per-part rich state. SESSION notes reference
 
 1. `## Scope` — one-paragraph workflow description + Workflow Type + Agent Sequence + complexity + risk
 2. `## Objectives` — checklist of plan-level acceptance signals (all `[ ]` at draft)
-3. `## Progress Dashboard` — rollup table (Phase × {DRAFT/IN_PROGRESS/BLOCKED/DONE} counts)
-4. `## Workflow Plan` — phase/wave structure with source-artifact traceability
-5. `## Phase Progression` — table of phase status + output artifacts
-6. `## Cross-Part Dependency Graph` — Mermaid graph showing inter-part dependencies
-7. `## Decision Log` — plan-level decisions (e.g., creation event, scope-evaluation outcomes)
-8. `## Progress Log` — chronological part transitions
-9. `## Blockers` — open blockers (none if clean)
-10. Phase H2s (`## Analysis`, `## Decisions`, etc.) — each contains per-part H3s
-11. `## Risks` — top 2-3 critical risks from pre-mortem (create mode Step 8)
-12. `## Observations` — penultimate; universal invariant
-13. `## Relations` — last; universal invariant
+3. `## Phase Progression` — per-part H3s, or a phase-status summary with the parts under phase H2s
+4. Phase H2s (`## Research`, `## Decisions`, `## Build`, …) — each contains per-part H3s
+5. `## Tasks` — session-scoped work items, partitioned `Active` / `Archive`
+6. `## Pending User Decisions` — open questions awaiting an answer
+7. `## Blockers` — open blockers (none if clean)
+8. `## Risks` — execution and sequencing risks from the pre-mortem (create mode Step 8)
+9. `## Observations` — penultimate; universal invariant
+10. `## Relations` — last; universal invariant
+
+Sections not in this list are preserved verbatim through a parse-render round trip rather than dropped, so a plan carrying `## Workflow Plan`, `## Decision Log`, `## Progress Log` or anything else keeps it.
+
+Two headings are the exception and are removed on render: `## Progress Dashboard` and `## Cross-Part Dependency Graph`. Both were derived rollups regenerated from `parts` on every render, and neither is part of a PLAN note any longer. A file still carrying one parses without error and loses the section on output.
 
 ### Per-part H3 structure
 
@@ -121,26 +122,17 @@ Each part section under a phase H2 follows:
 - [ ] {acceptance signal 1}
 - [ ] {acceptance signal 2}
 
-#### Workflow Plan (for {part-id})
-{phase-specific protocol summary}
-
-#### Tasks (for {part-id})
-{Active / Backlog-Unblocked / Backlog-Blocked / Archive tables}
-
-#### Intra-part Deps Graph (Mermaid)
-{nodes scoped to this part}
-
-#### D-N substatus list      (ONLY for decisions parts)
-{Contract 6 d_n_substatus rendered as a table}
-
-#### Editor Mirror IDs (for {part-id})
-{T-ID ↔ CC-ID ↔ Cursor-ID mapping if Tasks tools are in use}
-
-#### Pending User Decisions (for {part-id})
-{open questions awaiting user response}
+#### impl-TASK-NNN-SPEC-NNN      (build parts only)
+{per-TASK build workflow item fields}
 ```
 
-The per-part scaffold is rich (Workflow Plan, Tasks, Deps Graph, D-N substatus list, Editor Mirror IDs, Pending User Decisions). All work-tracking state lives here in the PLAN; SESSION holds Events + Scope pointer only.
+The only H4 a part body carries is a build workflow item, and only in `build.SPEC-NNN` parts. Six other per-part H4 scaffolds were documented here and emitted by nothing, read by nothing: `Workflow Plan`, `Tasks`, `Intra-part Deps Graph`, `D-N substatus list`, `Editor Mirror IDs` and `Pending User Decisions`, each `(for {part-id})`.
+
+They are removed rather than left as aspiration. The parser treats every H4 in a part body as a build workflow item, and now fails loudly on one it cannot read instead of skipping it silently — so a part actually authored to the scaffold above would hard-fail. The scaffolds survived only because that silent skip hid them.
+
+Where their content belongs: workflow protocol is skill documentation, not plan state; a per-part task table is the plan-level `## Tasks` register filtered by its `Part` column; a per-part dependency graph is derivable from `Depends On`; the decisions substatus list is the part's own decisions table; editor mirror ids and pending decisions live at plan top level.
+
+All work-tracking state lives in the PLAN; SESSION holds Events + a Scope pointer only.
 
 ## Observations + Relations
 

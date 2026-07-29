@@ -3,7 +3,6 @@ import type { Observation, Relation } from "../schemas/common.js";
 import type {
   BuildWorkflowItem,
   DodItem,
-  EditorMirrorEntry,
   Part,
   PendingDecision,
   PlanNote,
@@ -21,7 +20,7 @@ import type {
  *
  * Modelled section order:
  *   frontmatter → H1 → Scope → Objectives → Phase Progression → Tasks →
- *   Pending User Decisions → Editor Mirror IDs → Blockers → Observations →
+ *   Pending User Decisions → Blockers → Observations →
  *   Relations.
  *
  * Two other categories share the document:
@@ -188,11 +187,26 @@ function renderTaskTable(label: string, tasks: Task[]): string {
   return lines.join(NL);
 }
 
+/**
+ * Session-scoped work items, partitioned by status.
+ *
+ * Two partitions, not three. `Backlog` was `plan.tasks.filter((_t) => false)` —
+ * hardcoded empty, so every task landed in Active or Archive regardless of status
+ * and the section rendered `(none)` forever. A partition that cannot receive a row
+ * is not a partition; it is a heading that lies about the model having somewhere to
+ * put scheduled-but-not-started work. If that distinction is wanted later it needs
+ * a status atom to hang on, not an empty filter.
+ *
+ * On what belongs here at all: these are session-scoped items — "Adjudicate Q1",
+ * "Author ADR-001" — which are plan state with a status machine, per ADR-003 D-2.
+ * SPEC tasks are a different thing and stay in the SPEC subtree, surfacing in a
+ * plan only as derived rollup. The rule against a plan-level task tier is about
+ * those, not about this register.
+ */
 function renderTasks(plan: PlanNote): string {
   const active = plan.tasks.filter(
     (t) => t.status === "IN_PROGRESS" || t.status === "PENDING" || t.status === "BLOCKED",
   );
-  const backlog = plan.tasks.filter((_t) => false); // Spec only defines 3 partitions; backlog reserved for future "scheduled but not yet pending" — currently empty by definition.
   const archive = plan.tasks.filter(
     (t) => t.status === "DONE" || t.status === "DEFERRED" || t.status === "ABANDONED",
   );
@@ -200,13 +214,10 @@ function renderTasks(plan: PlanNote): string {
   // Sort each partition by ID for stability
   const idOrder = (a: Task, b: Task) => a.id.localeCompare(b.id);
   active.sort(idOrder);
-  backlog.sort(idOrder);
   archive.sort(idOrder);
 
   const lines = ["## Tasks", ""];
   lines.push(renderTaskTable("Active", active));
-  lines.push("");
-  lines.push(renderTaskTable("Backlog", backlog));
   lines.push("");
   lines.push(renderTaskTable("Archive", archive));
   return lines.join(NL);
@@ -234,22 +245,6 @@ function renderPendingDecisions(pds: PendingDecision[]): string {
       lines.push(`- **${opt.label}**: ${opt.description}`);
     }
     if (i < pds.length - 1) lines.push("");
-  }
-  return lines.join(NL);
-}
-
-function renderEditorMirror(rows: EditorMirrorEntry[]): string {
-  const lines = ["## Editor Mirror IDs", ""];
-  if (rows.length === 0) {
-    lines.push("(none)");
-    return lines.join(NL);
-  }
-  lines.push("| Task | CC ID | Cursor ID | Last Synced |");
-  lines.push("|:--|:--|:--|:--|");
-  for (const r of rows) {
-    lines.push(
-      `| ${r.task_id} | ${r.cc_id ?? "—"} | ${r.cursor_id ?? "—"} | ${r.last_synced ?? "—"} |`,
-    );
   }
   return lines.join(NL);
 }
@@ -290,7 +285,6 @@ export function renderPlanNote(plan: PlanNote): string {
     renderPhaseProgression(plan),
     renderTasks(plan),
     renderPendingDecisions(plan.pending_decisions),
-    renderEditorMirror(plan.editor_mirror),
     renderBlockers(plan.blockers),
     renderObservations(plan.observations),
     renderRelations(plan.relations),

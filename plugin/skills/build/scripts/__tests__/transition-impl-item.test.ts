@@ -58,7 +58,6 @@ function planFixture(implStatus: BuildWorkflowStatus = "PENDING"): string {
     ],
     tasks: [],
     pending_decisions: [],
-    editor_mirror: [],
     blockers: [],
     observations: [
       { category: "decision", text: "Markdown is authoritative state", tags: ["adr-003"] },

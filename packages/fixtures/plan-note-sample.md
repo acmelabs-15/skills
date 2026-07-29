@@ -108,10 +108,6 @@ Sample plan for round-trip fixture. Covers minimum viable structure to exercise 
 |:--|:--|:--|:--|:--|:--|:--|:--|:--|
 | T-01 | Implement parser | build.SPEC-007 | IN_PROGRESS | M | — | src/parsers/plan-note.ts | 1 | — |
 
-### Backlog
-
-(none)
-
 ### Archive
 
 | ID | Subject | Part | Status | Effort | Agent | Files | Created | Resolved |

@@ -116,7 +116,7 @@ These are all owned by the PLAN note now (see `plan-note-schema.md` per-part sca
 | `## Tasks` (and Active / Backlog / Archive tables) | PLAN per-part `#### Tasks (for {part-id})` | Tasks belong to PLAN parts; session events reference them via wikilink |
 | `## Cross-Part Dependency Graph` / Mermaid deps graph | PLAN top-level + per-part `#### Intra-part Deps Graph` | Graph state mirrors PLAN; session refs PLAN graph by link |
 | `## Pending User Decisions` | PLAN per-part `#### Pending User Decisions (for {part-id})` | Decisions queued per-part on PLAN |
-| `## Editor Mirror IDs` / `## Tasks ID Mirror` | PLAN per-part `#### Editor Mirror IDs (for {part-id})` | T-ID ↔ CC-ID ↔ Cursor-ID mapping is PLAN-scoped |
+| `## Editor Mirror IDs` / `## Tasks ID Mirror` | delete — nowhere | The task-id mirror is gone from the PLAN model too: it recorded a sync with editor task lists that nothing performed, so every row read `(none)`. A session carrying one drops it rather than relocating it |
 | `## D-N substatus list` | PLAN decisions parts `#### D-N substatus list` | Per-decision lock state lives on PLAN |
 | `## Progress Dashboard` | PLAN top-level | Rollup view of PLAN parts |
 | Any state-snapshot table embedded in an Event body | PLAN MUTATE-in-place sections | Event bodies are append-only pointers; snapshots go stale |

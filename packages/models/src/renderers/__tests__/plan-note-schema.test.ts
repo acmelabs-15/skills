@@ -63,7 +63,6 @@ function minimalPlan(): PlanNote {
       },
     ],
     pending_decisions: [],
-    editor_mirror: [],
     blockers: [],
     observations: [
       { category: "fact", text: "obs 1", tags: ["a"] },

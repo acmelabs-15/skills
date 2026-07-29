@@ -59,7 +59,6 @@ function makePlan(buildPart: Part): PlanNote {
     ],
     tasks: [],
     pending_decisions: [],
-    editor_mirror: [],
     blockers: [],
     observations: BASE_OBSERVATIONS,
     relations: BASE_RELATIONS,

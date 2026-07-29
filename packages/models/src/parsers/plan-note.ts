@@ -10,7 +10,6 @@ import type {
   BuildWorkflowItem,
   DecisionState,
   DodItem,
-  EditorMirrorEntry,
   Part,
   PendingDecision,
   PlanNote,
@@ -457,6 +456,10 @@ function parseTaskTable(children: RootContent[]): Task[] {
 function parseTasks(children: RootContent[]): Task[] {
   const subs = sectionizeH3(children);
   const all: Task[] = [];
+  // `Backlog` is still READ so notes written before it was dropped keep their rows;
+  // it is simply no longer rendered, since a partition fed by a hardcoded-empty
+  // filter could never hold anything. A task's partition is derived from its status
+  // on the way out, so reading a stale heading loses nothing.
   for (const label of ["Active", "Backlog", "Archive"]) {
     const c = subs.get(label);
     if (!c) continue;
@@ -493,18 +496,6 @@ function parsePendingDecisions(children: RootContent[]): PendingDecision[] {
     });
   }
   return pds;
-}
-
-function parseEditorMirror(children: RootContent[]): EditorMirrorEntry[] {
-  const tbl = findTable(children);
-  if (!tbl) return [];
-  const rows = tableRows(tbl);
-  return rows.map((r) => ({
-    task_id: r["Task"] ?? "",
-    cc_id: r["CC ID"] === "—" ? null : (r["CC ID"] ?? null),
-    cursor_id: r["Cursor ID"] === "—" ? null : (r["Cursor ID"] ?? null),
-    last_synced: r["Last Synced"] === "—" ? null : (r["Last Synced"] ?? null),
-  }));
 }
 
 function parseBlockers(children: RootContent[]): string[] {
@@ -560,7 +551,6 @@ const MODELLED_H2_HEADINGS = new Set<string>([
   "Phase Progression",
   "Tasks",
   "Pending User Decisions",
-  "Editor Mirror IDs",
   "Blockers",
   "Observations",
   "Relations",
@@ -588,7 +578,6 @@ export function parsePlanNote(markdown: string): PlanNote {
     parts: collectParts(sections),
     tasks: parseTasks(sections.get("Tasks") ?? []),
     pending_decisions: parsePendingDecisions(sections.get("Pending User Decisions") ?? []),
-    editor_mirror: parseEditorMirror(sections.get("Editor Mirror IDs") ?? []),
     blockers: parseBlockers(sections.get("Blockers") ?? []),
     observations: parseObservations(sections.get("Observations") ?? []),
     relations: parseRelations(sections.get("Relations") ?? []),
