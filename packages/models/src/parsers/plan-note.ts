@@ -16,14 +16,20 @@ import type {
   PlanNote,
   Task,
 } from "../schemas/plan-note.js";
-import { DROPPED_H2_HEADINGS, PlanNoteSchema } from "../schemas/plan-note.js";
+import {
+  BuildWorkflowItemIdSchema,
+  DROPPED_H2_HEADINGS,
+  PlanNoteSchema,
+} from "../schemas/plan-note.js";
 import {
   ParseError,
   bulletFieldMap,
   captureUnknownH2Sections,
   checkboxItems,
   extractFrontmatter,
+  fieldMap,
   findTable,
+  findTableWithColumns,
   proseFromChildren,
   sectionizeH2,
   sectionizeH3,
@@ -105,22 +111,126 @@ function parseDodList(children: RootContent[]): DodItem[] {
   });
 }
 
-function parsePart(partId: string, children: RootContent[]): Part {
-  const fieldMap = bulletFieldMap(children);
+/**
+ * Derive a part's phase from its id when no `Phase` field is written.
+ *
+ * The id already encodes it — `build.SPEC-003` is a build part, `decisions.2` a
+ * decisions part — and hand-authored notes routinely omit the field because it
+ * would only restate the id. Deriving beats defaulting to a fixed phase, which
+ * would silently misfile every part that omits it.
+ */
+function inferPhaseFromId(id: string): string {
+  const stem = id.split(".")[0] ?? id;
+  return stem;
+}
+
+/**
+ * Take the value from a field that may carry a parenthetical aside.
+ *
+ * Authors annotate values in place, and the annotation is often the interesting
+ * part:
+ *
+ *     **Substatus**: DONE (reached DONE with 15 specs → reopened → re-closed)
+ *     **Failed iterations**: 0 (1 orchestrator pre-DONE correction, not a QA-fail)
+ *
+ * The value is what precedes the first `(`. The aside is deliberately dropped
+ * rather than preserved: it is prose about the value, the schema has no field for
+ * it, and the alternative was failing the whole document over a note someone left
+ * for a reader. Losing it costs a comment; rejecting it costs every other field in
+ * the document.
+ */
+function stripValueAside(raw: string | undefined): string | undefined {
+  if (raw === undefined) return undefined;
+  const paren = raw.indexOf("(");
+  const value = (paren >= 0 ? raw.slice(0, paren) : raw).trim();
+  return value.length > 0 ? value : undefined;
+}
+
+/**
+ * Split a part heading into its id and any descriptive remainder.
+ *
+ * Headings come in two forms. `### build.SPEC-003` is bare id. `### research —
+ * Multi-level gap audit (3 items)` carries a human title after an em dash, which
+ * is genuinely useful to a reader and is not part of the id — feeding the whole
+ * string to the id check rejects the part outright.
+ *
+ * The em dash is the separator; a hyphen is not, because ids legitimately contain
+ * hyphens (`spec-decomposition`).
+ */
+function splitPartHeading(heading: string): { id: string; title?: string } {
+  const dash = heading.indexOf("—");
+  if (dash < 0) return { id: heading.trim() };
+  const id = heading.slice(0, dash).trim();
+  const title = heading.slice(dash + 1).trim();
+  return title ? { id, title } : { id };
+}
+
+/**
+ * Read a session reference that may be written bare or as a wikilink.
+ *
+ * Both spellings occur, sometimes in the same note:
+ *
+ *     **Owning session**: SESSION-2026-06-16_01
+ *     **Owning session**: [[SESSION-2026-06-16_01: DataTable Client-Side …]]
+ *
+ * The wikilink form carries a descriptor after a colon, which the id itself never
+ * contains, so taking everything up to the first colon inside the brackets
+ * recovers the id without needing to know the descriptor.
+ */
+/**
+ * Take the entity id from a reference that may carry a trailing descriptor.
+ *
+ * Entity ids never contain a colon, and wikilink titles always do
+ * (`TASK-001-SPEC-003: Operator-Key Rename`), so the first colon is an unambiguous
+ * boundary. Brackets are stripped if present.
+ */
+function stripRefDescriptor(raw: string | undefined): string | undefined {
+  if (!raw) return undefined;
+  const inner = raw.trim().match(/^\[\[(.+?)\]\]$/)?.[1] ?? raw.trim();
+  const id = inner.split(":")[0]?.trim();
+  return id && id.length > 0 ? id : undefined;
+}
+
+function parseSessionRef(raw: string | undefined): string | undefined {
+  if (!raw) return undefined;
+  const trimmed = raw.trim();
+  // `—` is the written placeholder for "no session yet", and the renderer emits it
+  // too. Treating it as a value produces a field that fails its own id check for
+  // a part that is simply not started.
+  if (trimmed === "" || trimmed === "—" || trimmed === "-" || trimmed === "(none)") {
+    return undefined;
+  }
+  const inner = trimmed.match(/^\[\[(.+?)\]\]$/)?.[1] ?? trimmed;
+  const id = inner.split(":")[0]?.trim();
+  return id && id.length > 0 ? id : undefined;
+}
+
+function parsePart(partHeading: string, children: RootContent[]): Part {
+  // `fieldMap` (not `bulletFieldMap`) because real plan notes write part fields as
+  // bold-prefixed paragraph lines rather than list items, and spell the same key
+  // with different capitalisation across notes — `Owning session` and
+  // `Owning Session` both occur. Case-sensitive list-only reading found neither,
+  // and reported the field as absent rather than erroring, so the whole part came
+  // back empty and the note failed on a downstream required-field check instead of
+  // where the problem was.
+  const fields = fieldMap(children);
+  const { id, title: headingTitle } = splitPartHeading(partHeading);
   const part: Part = {
-    id: partId,
-    phase: fieldMap.get("Phase") ?? "",
-    title: fieldMap.get("Title") ?? "",
-    substatus: (fieldMap.get("Substatus") ?? "PENDING") as Part["substatus"],
-    source_artifacts: parseListField(fieldMap.get("Source Artifacts")),
-    depends_on: parseListField(fieldMap.get("Depends On")),
+    id,
+    phase: fields.get("phase") ?? inferPhaseFromId(id),
+    // An explicit `Title` field wins; otherwise the heading's descriptive half is
+    // the title, which is where hand-authored notes put it.
+    title: fields.get("title") ?? headingTitle ?? id,
+    substatus: (stripValueAside(fields.get("substatus")) ?? "PENDING") as Part["substatus"],
+    source_artifacts: parseListField(fields.get("source artifacts")),
+    depends_on: parseListField(fields.get("depends on")),
     dod: [],
   };
-  const owning = fieldMap.get("Owning Session");
+  const owning = parseSessionRef(fields.get("owning session"));
   if (owning) part.owning_session = owning;
-  const completing = fieldMap.get("Completing Session");
+  const completing = parseSessionRef(fields.get("completing session"));
   if (completing) part.completing_session = completing;
-  const outcome = fieldMap.get("Outcome");
+  const outcome = fields.get("outcome");
   if (outcome) part.outcome = outcome;
 
   // DoD list is the SECOND list in the part body (first list is the bullet fields)
@@ -130,10 +240,19 @@ function parsePart(partId: string, children: RootContent[]): Part {
     if (dodList) part.dod = parseDodList([dodList]);
   }
 
-  // Decisions table (if present)
-  const tbl = findTable(children);
-  if (tbl) {
-    const rows = tableRows(tbl);
+  // Decisions table — identified by its COLUMNS, not by being the first table.
+  //
+  // `findTable` returns the first table in the part body, which in real notes is
+  // often a task list (`| Task | Status |`) or a DoD table. Reading that as
+  // decisions produced rows whose `status` held task values like `TODO`, failing
+  // the decision-status enum — an error that pointed at the enum while the real
+  // fault was picking the wrong table. A wrong answer, not a missing one.
+  //
+  // The requirement is an `ID` column plus a `Status` column, which is what makes
+  // a decisions table a decisions table.
+  const decisionsTable = findTableWithColumns(children, ["ID", "Status"]);
+  if (decisionsTable) {
+    const rows = tableRows(decisionsTable);
     const decisions: DecisionState[] = rows.map((r) => ({
       id: r["ID"] ?? "",
       status: (r["Status"] ?? "PENDING") as DecisionState["status"],
@@ -153,12 +272,27 @@ function optStr(value: string | undefined): string | undefined {
   return value;
 }
 
+/**
+ * Read an event number written either bare or prose-prefixed.
+ *
+ * Real notes write `Event 34` where the renderer writes `34`. `Number("Event 34")`
+ * is NaN, and the old implementation returned undefined for it — so an event
+ * linkage that WAS recorded read as absent. A wrong answer rather than an error,
+ * and invisible: the field simply looked unset.
+ *
+ * A leading label is stripped and the first integer taken. Anything with no digits
+ * at all is still undefined, which is the honest answer for a genuinely empty
+ * field.
+ */
 function optNum(value: string | undefined): number | undefined {
   const s = optStr(value);
   if (s === undefined) return undefined;
   const n = Number(s);
-  if (!Number.isFinite(n)) return undefined;
-  return n;
+  if (Number.isFinite(n)) return n;
+  const digits = s.match(/\d+/);
+  if (!digits) return undefined;
+  const parsed = Number(digits[0]);
+  return Number.isFinite(parsed) ? parsed : undefined;
 }
 
 function parseBuildWorkflowItems(children: RootContent[]): BuildWorkflowItem[] {
@@ -171,6 +305,12 @@ function parseBuildWorkflowItems(children: RootContent[]): BuildWorkflowItem[] {
     if (!node || node.type !== "heading") continue;
     if ((node as Heading).depth !== 4) continue;
     const id = mdToString(node as Heading).trim();
+    // Only H4s whose heading IS a build-workflow-item id are items. Parts contain
+    // other H4s — `#### D-N substatus list`, documented per-part scaffolds — and
+    // treating every H4 as an item turns each one into a hard failure now that the
+    // guard below is loud. The id shape is the discriminator because it is already
+    // specified: `impl-TASK-NNN-SPEC-NNN` or `qa-TASK-NNN-SPEC-NNN`.
+    if (!BuildWorkflowItemIdSchema.safeParse(id).success) continue;
     // Find the next list following this heading (skip paragraphs between).
     let listChild: RootContent | undefined;
     for (let j = i + 1; j < children.length; j++) {
@@ -183,12 +323,32 @@ function parseBuildWorkflowItems(children: RootContent[]): BuildWorkflowItem[] {
       }
     }
     if (!listChild) continue;
-    const fm = bulletFieldMap([listChild]);
-    const type = fm.get("Type") as BuildWorkflowItem["type"] | undefined;
-    const taskRef = fm.get("Task Ref");
-    const status = fm.get("Status") as BuildWorkflowItem["status"] | undefined;
-    const failedIterationsRaw = fm.get("Failed Iterations");
-    if (!type || !taskRef || !status) continue;
+    // `fieldMap`, not `bulletFieldMap`: keys are matched case-insensitively and
+    // the paragraph spelling is read too. Real notes write `Test report ref` where
+    // the renderer writes `QA Ref`, and `Event 34` where it writes `34`; a
+    // case-sensitive list-only lookup returned nothing for six of the eight field
+    // names, so `type`/`taskRef`/`status` came back undefined and the item was
+    // silently dropped by the guard below.
+    const fm = fieldMap([listChild]);
+    const type = fm.get("type") as BuildWorkflowItem["type"] | undefined;
+    // The written value carries the id plus a human descriptor after a colon —
+    // `TASK-001-SPEC-003: Operator-Key Rename — Number to AGG-Canonical` — where
+    // the id itself never contains one. Same shape as a session ref, so the id is
+    // everything before the first colon.
+    const taskRef = stripRefDescriptor(fm.get("task ref") ?? fm.get("task"));
+    const status = stripValueAside(fm.get("status")) as BuildWorkflowItem["status"] | undefined;
+    const failedIterationsRaw = stripValueAside(fm.get("failed iterations"));
+    if (!type || !taskRef || !status) {
+      // Fail loudly. This guard used to `continue`, which meant a malformed item
+      // vanished with no error and no count — the defect that hid the field-name
+      // mismatch above for as long as it existed. A parser that cannot read
+      // something says so.
+      const present = [...fm.keys()].join(", ") || "(no fields found)";
+      throw new ParseError(
+        `build workflow item "${id}" is missing required fields (needs type, task ref, status; found: ${present})`,
+        ["parts", "build_workflow_items", id],
+      );
+    }
     const item: BuildWorkflowItem = {
       id,
       type,
@@ -196,13 +356,14 @@ function parseBuildWorkflowItems(children: RootContent[]): BuildWorkflowItem[] {
       status,
       failed_iterations: failedIterationsRaw === undefined ? 0 : (Number(failedIterationsRaw) ?? 0),
     };
-    const owningSession = optStr(fm.get("Owning Session"));
+    const owningSession = optStr(fm.get("owning session"));
     if (owningSession !== undefined) item.owning_session = owningSession;
-    const transitionedAt = optNum(fm.get("Transitioned At Event"));
+    const transitionedAt = optNum(fm.get("transitioned at event"));
     if (transitionedAt !== undefined) item.transitioned_at_event = transitionedAt;
-    const qaRef = optStr(fm.get("QA Ref"));
+    // `Test report ref` predates the QA rename and means the same thing.
+    const qaRef = optStr(fm.get("qa ref") ?? fm.get("test report ref"));
     if (qaRef !== undefined) item.qa_ref = qaRef;
-    const fixBriefFor = optNum(fm.get("Fix Brief For Event"));
+    const fixBriefFor = optNum(fm.get("fix brief for event"));
     if (fixBriefFor !== undefined) item.fix_brief_for_event = fixBriefFor;
     items.push(item);
   }
@@ -217,11 +378,52 @@ function parseListField(value: string | undefined): string[] {
     .filter((s) => s.length > 0);
 }
 
-function parsePhaseProgression(children: RootContent[]): Part[] {
-  const partSections = sectionizeH3(children);
+/**
+ * Does this H3 body describe a plan part?
+ *
+ * The test is the presence of a `Substatus` field, which is what distinguishes a
+ * part from every other H3 in a plan note. That matters because H3s are not
+ * exclusive to parts: `## Risks` holds `### R1 — …` rows, `## Relations` holds
+ * grouped H3s, and treating "any H3 under any H2" as a part turns risk rows into
+ * parts with empty ids.
+ *
+ * Deliberately NOT a list of phase heading names. Real notes spell those headings
+ * `## Research`, `## Research Parts (kickoff Phase 0–4)`, `## Build Parts` and
+ * `## Spec Decomposition`, so any exact-match list misses some and any
+ * prefix-match list eventually collides with a section that merely starts with a
+ * phase word. The body says what the thing is; the heading only says where the
+ * author filed it.
+ */
+function isPartBody(children: RootContent[]): boolean {
+  return fieldMap(children).has("substatus");
+}
+
+/**
+ * Collect parts from every H2 that contains part-shaped H3s.
+ *
+ * Parts live under `## Phase Progression` in notes the renderer produced, and
+ * under per-phase H2s (`## Research`, `## Build`, …) in notes written by hand.
+ * Both are read, so neither shape loses its parts, and the H2 a part was found
+ * under is not recorded — a part's own `phase` field carries that, and trusting
+ * the heading instead would make `## Spec Parts (kickoff Phase 5–6)` a different
+ * phase from `## Spec`.
+ *
+ * Order follows the document, so a plan's parts come back in the sequence a
+ * reader sees them.
+ */
+function collectParts(sections: Map<string, RootContent[]>): Part[] {
   const parts: Part[] = [];
-  for (const [partId, partChildren] of partSections) {
-    parts.push(parsePart(partId, partChildren));
+  const seen = new Set<string>();
+  for (const [, sectionChildren] of sections) {
+    for (const [partId, partChildren] of sectionizeH3(sectionChildren)) {
+      if (!isPartBody(partChildren)) continue;
+      // A duplicate part id across two H2s is a real authoring error, but the
+      // schema's own uniqueness check reports it far better than a parse-time
+      // throw would; skipping here would hide it from that check entirely.
+      if (seen.has(partId)) continue;
+      seen.add(partId);
+      parts.push(parsePart(partId, partChildren));
+    }
   }
   return parts;
 }
@@ -383,7 +585,7 @@ export function parsePlanNote(markdown: string): PlanNote {
     frontmatter,
     scope: scopeData.scope,
     objectives: parseObjectives(sections.get("Objectives") ?? []),
-    parts: parsePhaseProgression(sections.get("Phase Progression") ?? []),
+    parts: collectParts(sections),
     tasks: parseTasks(sections.get("Tasks") ?? []),
     pending_decisions: parsePendingDecisions(sections.get("Pending User Decisions") ?? []),
     editor_mirror: parseEditorMirror(sections.get("Editor Mirror IDs") ?? []),

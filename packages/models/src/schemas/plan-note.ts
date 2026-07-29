@@ -116,7 +116,22 @@ const PlanFrontmatterSchema = z
     status: PlanStatusEnum,
     complexity_tier: ComplexityTierEnum,
     branches: z.array(z.string()).min(1),
-    permalink: z.string().regex(/^planning\//),
+    /**
+     * `planning/plan-nnn-…`, optionally preceded by a project segment.
+     *
+     * The bare form is canonical: `~/KNOWLEDGE-GRAPH-CONVENTIONS.md` Section
+     * 1.7.2 specifies it, and a `project/`-prefixed permalink is documented there
+     * as the legacy signal that an outdated brain build wrote the note.
+     *
+     * Both are accepted anyway, because five of seven real plan notes carry the
+     * prefixed form and rejecting them buys nothing: the permalink is not what
+     * this schema is for, and a note that fails to parse over a stale prefix
+     * cannot have any of its actual state validated. Tolerating the legacy form
+     * here does mean the schema is no longer a place that would flag those notes
+     * — that belongs to a graph audit, which can see the whole corpus at once and
+     * has somewhere to report.
+     */
+    permalink: z.string().regex(/^(?:[a-z0-9-]+\/)?planning\//),
     tags: z.array(z.string()).min(2).max(5),
   })
   .strict();

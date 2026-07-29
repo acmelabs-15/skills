@@ -6,6 +6,7 @@ import {
   RelationSchema,
   SessionIdSchema,
   TaskIdSchema,
+  nonCanonicalPartIds,
 } from "@acmelabs/models/schemas/common";
 
 describe("common schema — entity IDs", () => {
@@ -31,10 +32,32 @@ describe("common schema — entity IDs", () => {
     expect(PartIdSchema.safeParse("end").success).toBe(true);
   });
 
-  test("PartIdSchema rejects unknown part forms", () => {
-    expect(PartIdSchema.safeParse("decisions").success).toBe(false);
-    expect(PartIdSchema.safeParse("spec.007").success).toBe(false);
-    expect(PartIdSchema.safeParse("post-review").success).toBe(false);
+  test("PartIdSchema accepts non-canonical ids; the grammar reports instead of rejecting", () => {
+    // AMENDED 2026-07-29 by owner ruling. This previously asserted rejection.
+    // Rejecting is too blunt: one bad id fails its whole document, and 17 of 52
+    // parts in real plan notes sit outside the canonical grammar in four shapes
+    // (bare phase name, `phase-N`, non-SPEC build work, unfilled placeholder). A
+    // note that cannot parse cannot have any of its real state validated either.
+    // The grammar is unchanged and still strict — see the canonical/non-canonical
+    // assertions below — but it now surfaces findings rather than blocking reads.
+    expect(PartIdSchema.safeParse("decisions").success).toBe(true);
+    expect(PartIdSchema.safeParse("spec.007").success).toBe(true);
+    expect(PartIdSchema.safeParse("post-review").success).toBe(true);
+  });
+
+  test("PartIdSchema still rejects malformed ids", () => {
+    // Unconventional is tolerated; malformed is not. An id with whitespace is a
+    // parsing accident (a heading read past its boundary), not an authoring style.
+    expect(PartIdSchema.safeParse("").success).toBe(false);
+    expect(PartIdSchema.safeParse("build SPEC-003").success).toBe(false);
+    expect(PartIdSchema.safeParse("build\nspec").success).toBe(false);
+  });
+
+  test("nonCanonicalPartIds names exactly the ids outside the grammar", () => {
+    const ids = ["research", "build.SPEC-003", "decisions", "phase-0", "stories", "decisions.1"];
+    expect(nonCanonicalPartIds(ids)).toEqual(["decisions", "phase-0", "stories"]);
+    // Canonical ids report nothing, so a conforming plan produces no warnings.
+    expect(nonCanonicalPartIds(["research", "end", "spec.SPEC-007"])).toEqual([]);
   });
 
   test("TaskIdSchema enforces T-NN with min 2 digits", () => {

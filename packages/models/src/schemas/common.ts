@@ -8,11 +8,43 @@ import { z } from "zod";
 
 // Entity ID schemas
 export const EntityIdSchema = z.string().regex(/^[A-Z]+-\d+/);
+/** The canonical part-id grammar. Ids outside it are reported, not rejected. */
+export const CANONICAL_PART_ID =
+  /^(research|decisions\.\d+|spec-decomposition|spec\.SPEC-\d+|build\.SPEC-\d+|review|end|protocol-hardening|protocol-hardening\.[A-Z]+\.\d+)$/;
+
+/**
+ * A part id.
+ *
+ * Deliberately permissive at parse time, and deliberately strict about what it
+ * considers canonical. Any non-empty single-token id is accepted; ids failing
+ * `CANONICAL_PART_ID` are collected by `nonCanonicalPartIds` for a caller to
+ * report as warnings.
+ *
+ * Why not enforce the grammar here: 17 of 52 parts in real plan notes sit outside
+ * it, in four shapes — a bare phase name (`build`, `spec`), a numbered phase
+ * (`phase-0`), non-SPEC build work (`build.deps`, `stories`, `intl`), and an
+ * unfilled placeholder (`build.SPEC-NNN`). One rejected id fails its entire
+ * document, so enforcing meant five of seven notes could not be read at all, and
+ * nothing about their real state could be validated. A warning surfaces the same
+ * information without that cost.
+ *
+ * The `stories`/`intl` group is not merely a naming slip: non-SPEC build work — a
+ * dependency bump, a Storybook pass, an i18n sweep — has no canonical id, so those
+ * were authored by hand out of necessity. Whether the grammar should gain a form
+ * for it is an open question, which is another reason not to hard-fail on it now.
+ *
+ * Still rejected: the empty string, whitespace, and anything containing a space or
+ * newline. Those are malformed rather than unconventional.
+ */
 export const PartIdSchema = z
   .string()
-  .regex(
-    /^(research|decisions\.\d+|spec-decomposition|spec\.SPEC-\d+|build\.SPEC-\d+|review|end|protocol-hardening|protocol-hardening\.[A-Z]+\.\d+)$/,
-  );
+  .min(1)
+  .refine((v) => !/[\s]/.test(v), { message: "part id must not contain whitespace" });
+
+/** The subset of the given ids that do not match the canonical grammar. */
+export function nonCanonicalPartIds(ids: readonly string[]): string[] {
+  return ids.filter((id) => !CANONICAL_PART_ID.test(id));
+}
 export const TaskIdSchema = z.string().regex(/^T-\d{2,}$/);
 export const SessionIdSchema = z.string().regex(/^SESSION-\d{4}-\d{2}-\d{2}_\d{2}$/);
 export const EventNumberSchema = z.number().int().positive();

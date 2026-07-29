@@ -121,6 +121,33 @@ export function findTable(children: RootContent[]): Table | undefined {
   return children.find((n): n is Table => n.type === "table");
 }
 
+/**
+ * Find the first table whose header row carries all the given columns.
+ *
+ * Positional table lookup — "the first table in this section" — is a silent wrong
+ * answer whenever a section holds more than one table, and real notes routinely
+ * do: a task list, a DoD table and a decisions table can all sit inside one part.
+ * The first-table rule then reads task rows as decisions and fails on a status
+ * enum, pointing at the enum rather than at the mis-identification.
+ *
+ * Matching on columns says what the table IS. Comparison is case-insensitive and
+ * trimmed, since header spelling varies between hand-authored and rendered notes.
+ */
+export function findTableWithColumns(
+  children: RootContent[],
+  required: readonly string[],
+): Table | undefined {
+  const want = required.map((c) => c.trim().toLowerCase());
+  for (const node of children) {
+    if (node.type !== "table") continue;
+    const header = (node as Table).children[0];
+    if (!header) continue;
+    const cols = header.children.map((cell) => mdToString(cell).trim().toLowerCase());
+    if (want.every((c) => cols.includes(c))) return node as Table;
+  }
+  return undefined;
+}
+
 /** Parse a GFM table into an array of header→cell-text records. */
 export function tableRows(table: Table): Array<Record<string, string>> {
   const rows = table.children;
@@ -175,6 +202,78 @@ export function bulletFieldMap(children: RootContent[]): Map<string, string> {
     const key = rawKey.replace(/^\*\*(.+)\*\*$/, "$1").trim();
     const value = text.slice(idx + 1).trim();
     map.set(key, value);
+  }
+  return map;
+}
+
+/**
+ * Read `**Key**: value` fields whether they are written as list items or as
+ * bold-prefixed paragraph lines.
+ *
+ * Both spellings occur in real plan notes, and the paragraph form dominates:
+ *
+ *     **Substatus**: DONE
+ *     **Owning session**: SESSION-2026-06-16_01
+ *
+ * versus the list form the renderer emits:
+ *
+ *     - **Substatus**: DONE
+ *
+ * Keys are matched case-insensitively and returned lowercased, because the same
+ * field appears as `Owning session` and `Owning Session` across notes — a
+ * case-sensitive lookup silently missed one spelling and returned nothing, which
+ * is worse than an error since the field simply appeared absent.
+ *
+ * A consecutive run of paragraph lines is treated as one field block, so a value
+ * containing a colon (a wikilink, a URL) keeps everything after its FIRST colon.
+ */
+export function fieldMap(children: RootContent[]): Map<string, string> {
+  const map = new Map<string, string>();
+  // Stop at the first sub-heading. A section's own fields precede its
+  // subsections, and everything after that first H3/H4/H5 belongs to a child —
+  // reading through it makes a part's `Substatus` lookup return a nested build
+  // workflow item's `Status` instead, which is a wrong answer rather than a
+  // missing one.
+  const own: RootContent[] = [];
+  for (const node of children) {
+    if (node.type === "heading" && (node as Heading).depth >= 3) break;
+    own.push(node);
+  }
+
+  const record = (raw: string): void => {
+    const idx = raw.indexOf(":");
+    if (idx <= 0) return;
+    const key = raw
+      .slice(0, idx)
+      .trim()
+      .replace(/^\*\*(.+)\*\*$/, "$1")
+      .trim()
+      .toLowerCase();
+    if (!key) return;
+    const value = raw.slice(idx + 1).trim();
+    // First occurrence wins: a field restated later in the same body is a
+    // duplicate rather than an override, and preferring the first keeps the
+    // reading order a human would use.
+    if (!map.has(key)) map.set(key, value);
+  };
+
+  for (const node of own) {
+    if (node.type === "list") {
+      for (const item of (node as List).children as ListItem[]) {
+        record(mdToString(item).trim());
+      }
+      continue;
+    }
+    if (node.type === "paragraph") {
+      // A paragraph may hold several `**Key**: value` lines separated by soft
+      // breaks. `mdToString` flattens those to newlines AND strips the emphasis
+      // markers, so the text arriving here reads `Substatus: DONE` with no
+      // asterisks — matching on a leading `**` finds nothing. Split on newlines
+      // and let `record` decide by the colon instead.
+      for (const line of mdToString(node).split("\n")) {
+        record(line.trim());
+      }
+    }
   }
   return map;
 }

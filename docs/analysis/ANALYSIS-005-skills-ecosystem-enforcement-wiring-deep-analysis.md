@@ -148,7 +148,7 @@ Residual gaps (honest, not dispatched — low leverage for stated goal): depende
 | (d) `validated_by` (66) / `closed_by` (5) | AMEND-CONVENTIONS+RELAX-SCHEMA for validated_by (add validates/validated_by pair); FIX-NOTES for closed_by | validated_by fills a real TASK→QA gap, 72 uses; closed_by maps to existing verb. |
 | (e) Priority >200 chars (6) | RELAX-SCHEMA | 200-cap is ungrounded in CONVENTIONS. |
 | (f) tags >5 (~61) | FIX-NOTES (trim) | CONVENTIONS Section 3 + Section 6 + schema all agree on max 5; notes drifted. |
-| (g) CANCELLED status (1) | RELAX-SCHEMA | real terminal state; add to enum + CONVENTIONS Section 8.1. |
+| (g) CANCELLED status (1) | ~~RELAX-SCHEMA~~ FIX-NOTE | SUPERSEDED 2026-07-29: not relaxed. The one note carrying it was corrected to `ABANDONED`, the canonical terminal atom for stopped-deliberately-with-a-rationale — which is exactly what that note's own observations recorded. Admitting a second spelling would have given one state two names, the ambiguity the shared status-atom vocabulary exists to remove. |
 | (g2) free-form Action cells (~19) | FIX-NOTES | schema defines NEW/MODIFY/DELETE; CONVENTIONS silent; normalize notes. |
 
 - **RETRO-004 action sequence sufficiency** → REMED verdict: ordering (B before A) correct, but Problem B is ~2x under-scoped (sees ~35 notes, real surface ~140 across 7 classes) and 3 gates are missing (fix-direction decision; parse-all verification; plugin.json hooks key). Bulk-rewrite tool is mis-ordered (needed BEFORE note-fixes, not after wiring).
@@ -174,7 +174,7 @@ This is analysis output (recommended sequence), not an implementation directive;
 1. Lock fix-direction per failure class (the adjudication table above) — a documented decision; CONVENTIONS amendments are architectural.
 
 **Tier 1 — Contract reconciliation (Problem B):**
-2. Amend CONVENTIONS + schema: add `design`/`task` obs-categories; add `validated_by`/`validates` verb pair (Section 4.4); add `CANCELLED` TASK status; raise/remove priority cap; fix REQ parser to accept `## EARS` (1-line, unbundled from the larger refactor).
+2. Amend CONVENTIONS + schema: add `design`/`task` obs-categories; add `validated_by`/`validates` verb pair (Section 4.4); ~~add `CANCELLED` TASK status~~ (SUPERSEDED 2026-07-29 — the note was corrected to `ABANDONED` instead; see row (g)); raise/remove priority cap; fix REQ parser to accept `## EARS` (1-line, unbundled from the larger refactor).
 3. Build the MCP-backed bulk-rewrite tool (SKILL-012 gap) — prerequisite for note fixes.
 4. Bulk-fix notes (~80+): trim tags to 5, normalize Action cells, replace `closed_by`.
 5. **Parse-all verification gate**: run all 204 notes through their parsers+schemas; zero failures required (this gate is itself the proof Problem B is closed).
