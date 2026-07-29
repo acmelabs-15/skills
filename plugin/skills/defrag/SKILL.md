@@ -1,18 +1,18 @@
 ---
 name: defrag
 description: |
-  Periodic curator skill for a Brain knowledge graph. Audits notes under docs/**
-  against quality thresholds and scope-evaluation heuristics, classifies them into
-  split / merge / stale / structural-fix candidates, then delegates restructuring
-  to the decompose and recompose primitive skills (and to native delete for stale
-  entries). Supports interactive mode (user confirms each candidate) and report-only
-  mode for cron scheduling.
-triggers:
-  - defrag
-  - defragment
-  - curate memories
-  - audit notes
-  - knowledge-graph audit
+  Produces a candidates report for a Brain knowledge graph: reads every note
+  under docs/**, measures each against structural thresholds, and groups what it
+  finds into split, merge, stale and structural-fix candidates, then hands
+  confirmed ones to the decompose and recompose skills. Use when the report or
+  the resulting restructuring is the deliverable — to defrag or defragment a
+  graph, to curate memories, to audit notes, to run a knowledge-graph audit, or
+  to find which notes have outgrown themselves. Runs interactively, confirming
+  each candidate, or writes the report and exits. Do not use when a specific
+  note is already known to need splitting or merging: invoke decompose or
+  recompose directly, since this skill only finds candidates and delegates. Do
+  not use to check whether one note is well-formed, to write or edit a note's
+  content, or to search the graph for information.
 ---
 
 # defrag

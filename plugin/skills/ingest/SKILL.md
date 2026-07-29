@@ -1,17 +1,17 @@
 ---
 name: ingest
 description: |
-  Bring external content into a Brain knowledge graph as a well-formed note.
-  Parses source files, auto-detects entity type, generates CONVENTIONS-compliant
-  frontmatter / observations / relations, executes the Pattern 2 three-phase
-  write, and verifies the result. Source body is preserved character-for-character.
-  Falls back to a simplified write_note path for basic-memory projects.
-triggers:
-  - ingest
-  - import note
-  - bring into graph
-  - ingest file
-  - ingest directory
+  Produces a conventions-compliant Brain note from content that came from
+  somewhere else: parses the source, detects its entity type, generates the
+  frontmatter, observations and relations it needs, writes it under the correct
+  name, then reports what it could and could not verify. The source body is
+  preserved character-for-character. Use when the new note is the deliverable —
+  ingest file, ingest directory, import note content from another tool, or bring
+  into graph material that is currently outside it. Do not use
+  to author a note from scratch or from conversation: this skill needs existing
+  content to convert, and generates only the scaffolding around it. Do not use to
+  restructure notes already in the graph, to append to an existing note, or to
+  correct a malformed one — it writes new notes and never edits.
 ---
 
 # ingest
