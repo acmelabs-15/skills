@@ -205,7 +205,7 @@ If any BLOCKING gate flags: HALT via `build-step7-gate{N}-halt`; address finding
 ## Step 8 — set-part-done
 
 ```text
-Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=build.SPEC-NNN outcome=[[SPEC-NNN: ...]] status=DONE")
+Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=build.SPEC-NNN outcome=[[SPEC-NNN: ...]] status=DONE session=SESSION-YYYY-MM-DD_NN event=<NN>")
 ```
 
 Per Contract 1. SPEC status flips `ACCEPTED → IN_PROGRESS → DONE` for the build phase. /plan flips `build.SPEC-NNN` part status → DONE; surfaces next-ready part as recommendation; user re-invokes `/plan PLAN-NNN` to continue (typically with `build.SPEC-NNN+1` if multiple build parts) OR runs `/end` if this was the last build/review part.

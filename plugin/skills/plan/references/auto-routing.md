@@ -51,7 +51,7 @@ Phase mapping (part.phase → skill):
 The phase skill signals completion back to `/plan` via:
 
 ```text
-Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=<part-id> outcome=[[<wikilink>]] [status=DONE|DEFERRED|ABANDONED] [rationale=<text if not DONE>]")
+Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=<part-id> outcome=[[<wikilink>]] session=SESSION-YYYY-MM-DD_NN event=<NN> [status=DONE|DEFERRED|ABANDONED] [rationale=<text if not DONE>]")
 ```
 
 ### set-part-done handling in /plan

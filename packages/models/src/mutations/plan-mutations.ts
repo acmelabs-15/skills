@@ -27,6 +27,13 @@ export type SetPartSubstatus = {
   to: string;
   completing_session?: string;
   outcome?: string;
+  /**
+   * Session event number at which the transition happened.
+   *
+   * The caller has always been required to supply this; until now it was validated
+   * and discarded, so the part recorded no trace of when it moved.
+   */
+  at_event?: number;
 };
 
 export type LockDecision = {
@@ -192,6 +199,9 @@ function setPartSubstatus(plan: PlanNote, m: SetPartSubstatus): PlanNote {
       const next = { ...p, substatus: m.to as typeof p.substatus };
       if (m.completing_session) next.completing_session = m.completing_session;
       if (m.outcome) next.outcome = m.outcome;
+      // Record WHEN. Callers were already required to supply this and it was being
+      // dropped here, so the part carried no trace of the event that moved it.
+      if (m.at_event !== undefined) next.transitioned_at_event = m.at_event;
       return next;
     }),
   };

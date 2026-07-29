@@ -89,6 +89,9 @@ function renderPart(part: Part): string {
   if (part.owning_session) lines.push(`- **Owning Session**: ${part.owning_session}`);
   if (part.completing_session) lines.push(`- **Completing Session**: ${part.completing_session}`);
   if (part.outcome) lines.push(`- **Outcome**: ${part.outcome}`);
+  if (part.transitioned_at_event !== undefined) {
+    lines.push(`- **Transitioned At Event**: ${part.transitioned_at_event}`);
+  }
   if (part.source_artifacts.length > 0) {
     lines.push(`- **Source Artifacts**: ${part.source_artifacts.join(", ")}`);
   } else {

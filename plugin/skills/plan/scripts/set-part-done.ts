@@ -26,6 +26,8 @@
  *      missing rationale for DEFERRED|ABANDONED
  */
 
+// readdir is a directory listing with no Bun equivalent; all file I/O is Bun-native.
+import { readdir } from "node:fs/promises";
 import path from "node:path";
 import { applyPlanMutation } from "@acmelabs/models/mutations/plan-mutations";
 import { parsePlanNote } from "@acmelabs/models/parsers/plan-note";
@@ -39,7 +41,7 @@ interface SetPartDoneArgs {
   readonly partId: string;
   readonly status: TerminalStatus;
   readonly outcome: string;
-  readonly owningSession: string;
+  readonly completingSession: string;
   readonly atEvent: number;
   readonly rationale?: string;
   readonly projectRoot: string;
@@ -50,7 +52,11 @@ const FLAG_MAP: Record<string, string> = {
   "--part-id": "partId",
   "--status": "status",
   "--outcome": "outcome",
-  "--owning-session": "owningSession",
+  "--completing-session": "completingSession",
+  // Accepted alias. The old name said "owning" while populating `completing_session`
+  // — the session that FINISHES a part is not the one that owns it, and a caller
+  // reading the flag name would have recorded the wrong session deliberately.
+  "--owning-session": "completingSession",
   "--at-event": "atEvent",
   "--rationale": "rationale",
   "--project-root": "projectRoot",
@@ -60,6 +66,85 @@ type ParseResult = { ok: true; value: SetPartDoneArgs } | { ok: false; error: st
 
 function isTerminalStatus(value: string): value is TerminalStatus {
   return (TERMINAL_STATUSES as readonly string[]).includes(value);
+}
+
+/**
+ * Accept the `key=value` form the documentation uses, alongside `--flag value`.
+ *
+ * Every documented invocation of this script is spelled
+ * `set-part-done plan=PLAN-NNN part=<id> outcome=[[...]] status=DONE`, which this
+ * parser rejected outright — so a call copied verbatim from any of the four doc
+ * sites exited 2. Two separate mismatches caused that: the `key=value` spelling,
+ * and `plan=` carrying an identifier where the script wanted a filesystem path.
+ *
+ * Normalising here rather than rewriting the docs is the deliberate choice: an
+ * identifier is what a human types and what every skill step already passes, so the
+ * script meets its callers instead of four documents being edited to match it.
+ */
+const KEY_VALUE_ALIASES: Record<string, string> = {
+  plan: "--plan-path",
+  "plan-path": "--plan-path",
+  part: "--part-id",
+  "part-id": "--part-id",
+  outcome: "--outcome",
+  status: "--status",
+  rationale: "--rationale",
+  session: "--completing-session",
+  "completing-session": "--completing-session",
+  "owning-session": "--completing-session",
+  "at-event": "--at-event",
+  event: "--at-event",
+  "project-root": "--project-root",
+};
+
+/** Rewrite `key=value` tokens into the `--flag value` pairs the parser expects. */
+function normalizeArgv(argv: readonly string[]): string[] {
+  const out: string[] = [];
+  for (const token of argv) {
+    // A leading `--` means it is already a flag; only bare `key=value` is rewritten,
+    // so `--rationale=x` and a value that happens to contain `=` are left alone.
+    if (!token.startsWith("--") && token.includes("=")) {
+      const eq = token.indexOf("=");
+      const key = token.slice(0, eq);
+      const value = token.slice(eq + 1);
+      const flag = KEY_VALUE_ALIASES[key];
+      if (flag) {
+        out.push(flag, value);
+        continue;
+      }
+    }
+    out.push(token);
+  }
+  return out;
+}
+
+/**
+ * Resolve a PLAN identifier to its file path, leaving an actual path untouched.
+ *
+ * `PLAN-001` and `PLAN-001-skills-ecosystem` both resolve; anything containing a
+ * path separator or ending `.md` is treated as already-a-path. Resolution is a
+ * prefix match against `docs/planning`, so the caller does not have to know the
+ * descriptor half of the filename.
+ */
+async function resolvePlanPath(value: string, projectRoot: string): Promise<string> {
+  if (value.includes("/") || value.endsWith(".md")) return value;
+  const dir = path.join(projectRoot, "docs", "planning");
+  let entries: string[];
+  try {
+    entries = await readdir(dir);
+  } catch {
+    // No planning directory: hand back the original so the caller's not-found error
+    // names what was asked for rather than a directory listing failure.
+    return value;
+  }
+  const prefix = value.toLowerCase();
+  const match = entries
+    .filter((name) => name.endsWith(".md") && name.toLowerCase().startsWith(prefix))
+    .sort()[0];
+  // Joined to the project root, not left project-relative: every caller downstream
+  // resolves against the process cwd, so a bare `docs/planning/…` only works when
+  // cwd happens to BE the project root. It is not when `--project-root` is passed.
+  return match ? path.join(dir, match) : value;
 }
 
 function parseArgs(argv: readonly string[]): ParseResult {
@@ -74,15 +159,20 @@ function parseArgs(argv: readonly string[]): ParseResult {
     raw[flag] = value;
   }
 
-  const required: readonly string[] = [
-    "--plan-path",
-    "--part-id",
-    "--outcome",
-    "--owning-session",
-    "--at-event",
+  // Each entry is the set of spellings that satisfy one requirement, so an accepted
+  // alias counts. Checking `--completing-session` alone would reject a caller using
+  // the older `--owning-session`, which the flag map still accepts.
+  const required: ReadonlyArray<readonly string[]> = [
+    ["--plan-path", "--plan"],
+    ["--part-id", "--part"],
+    ["--outcome"],
+    ["--completing-session", "--owning-session"],
+    ["--at-event"],
   ];
-  for (const flag of required) {
-    if (raw[flag] === undefined) return { ok: false, error: `missing required flag: ${flag}` };
+  for (const spellings of required) {
+    if (spellings.every((flag) => raw[flag] === undefined)) {
+      return { ok: false, error: `missing required flag: ${spellings[0]}` };
+    }
   }
 
   const status = raw["--status"] ?? "DONE";
@@ -106,7 +196,7 @@ function parseArgs(argv: readonly string[]): ParseResult {
     partId: raw["--part-id"] ?? "",
     status,
     outcome: raw["--outcome"] ?? "",
-    owningSession: raw["--owning-session"] ?? "",
+    completingSession: raw["--completing-session"] ?? raw["--owning-session"] ?? "",
     atEvent,
     projectRoot: raw["--project-root"] ?? process.cwd(),
     ...(rationale !== undefined ? { rationale } : {}),
@@ -152,18 +242,24 @@ function appliedMarkdown(markdown: string, args: SetPartDoneArgs): string {
     partId: args.partId,
     from: "IN_PROGRESS",
     to: args.status,
-    completing_session: args.owningSession,
+    completing_session: args.completingSession,
+    at_event: args.atEvent,
     outcome: composeOutcome(args),
   });
 }
 
 export async function setPartDoneCli(argv: readonly string[]): Promise<number> {
-  const parsed = parseArgs(argv);
+  // `key=value` first, so a call copied verbatim from the documentation parses.
+  const parsed = parseArgs(normalizeArgv(argv));
   if (!parsed.ok) {
     console.error(`Usage error: ${parsed.error}`);
     return 2;
   }
-  const args = parsed.value;
+  // An identifier (`PLAN-001`) becomes a path; a path stays a path. Resolution runs
+  // BEFORE the containment check so the check still sees a real path, and a resolved
+  // path is still contained by construction — it is built from the project root.
+  const resolvedPlanPath = await resolvePlanPath(parsed.value.planPath, parsed.value.projectRoot);
+  const args = { ...parsed.value, planPath: resolvedPlanPath };
 
   if (!isContained(args.projectRoot, args.planPath)) {
     console.error(`Path-containment violation: ${args.planPath} escapes ${args.projectRoot}`);

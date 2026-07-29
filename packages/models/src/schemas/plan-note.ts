@@ -231,6 +231,23 @@ const PartSchema = z
     owning_session: SessionIdSchema.optional(),
     completing_session: SessionIdSchema.optional(),
     outcome: z.string().optional(),
+    /**
+     * The session event number at which this part reached its current substatus.
+     *
+     * Added because `set-part-done` has always REQUIRED `--at-event`, validated it,
+     * and then never recorded it: the flag was parsed, checked for being a positive
+     * integer, stored on the args object, and omitted from the mutation payload. So
+     * the event linkage that the two-step edit pattern exists to guarantee was not
+     * written by the script performing the state change — a required argument with
+     * no effect, which is worse than no argument, because it reads as evidence the
+     * linkage is enforced.
+     *
+     * Build workflow items and tasks already carried their event
+     * (`transitioned_at_event`, `resolved_at_event`); a part was the level that
+     * could not answer "when did this happen". Optional, since parts transitioned
+     * before this field existed have no value to backfill.
+     */
+    transitioned_at_event: EventNumberSchema.optional(),
     source_artifacts: z.array(z.string()),
     depends_on: z.array(PartIdSchema),
     dod: z.array(DodItemSchema),

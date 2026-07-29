@@ -231,6 +231,9 @@ function parsePart(partHeading: string, children: RootContent[]): Part {
   if (completing) part.completing_session = completing;
   const outcome = fields.get("outcome");
   if (outcome) part.outcome = outcome;
+  // Written `Event 34` as often as `34`; optNum handles both.
+  const atEvent = optNum(fields.get("transitioned at event"));
+  if (atEvent !== undefined) part.transitioned_at_event = atEvent;
 
   // DoD list is the SECOND list in the part body (first list is the bullet fields)
   const lists = children.filter((n) => n.type === "list");

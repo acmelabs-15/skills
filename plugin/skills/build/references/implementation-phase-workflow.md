@@ -285,7 +285,7 @@ See `exit-gates.md` for per-gate details including Gate 5 trigger detection heur
 ## Step 8 — set-part-done
 
 ```text
-Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=build.SPEC-NNN outcome=[[SPEC-NNN: ...]] status=DONE")
+Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=build.SPEC-NNN outcome=[[SPEC-NNN: ...]] status=DONE session=SESSION-YYYY-MM-DD_NN event=<NN>")
 ```
 
 Per Contract 1. /plan flips `build.SPEC-NNN` part status → DONE; sets `completing_session`; surfaces next-ready part.

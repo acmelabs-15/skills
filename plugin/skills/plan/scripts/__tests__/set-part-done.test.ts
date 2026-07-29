@@ -140,6 +140,65 @@ describe("setPartDoneCli", () => {
     await rm(projectRoot, { recursive: true, force: true });
   });
 
+  test("a call in the DOCUMENTED shape executes and exits 0", async () => {
+    // The regression this guards. Every documented invocation of this script is
+    // spelled `set-part-done plan=PLAN-NNN part=<id> outcome=[[…]] status=DONE`, and
+    // a verbatim copy used to exit 2 for two independent reasons: the parser accepted
+    // only `--flag value`, and `plan=` carries an IDENTIFIER where the script wanted a
+    // filesystem path. Both are now handled, so the docs and the script agree.
+    const code = await setPartDoneCli([
+      "--project-root",
+      projectRoot,
+      "plan=PLAN-001",
+      "part=spec.SPEC-001",
+      "outcome=[[SPEC-001: Sample]]",
+      "status=DONE",
+      "session=SESSION-2026-07-29_01",
+      "event=99",
+    ]);
+    expect(code).toBe(0);
+    const after = await Bun.file(planPath).text();
+    expect(after).toMatch(/### spec\.SPEC-001[\s\S]*?- \*\*Substatus\*\*: DONE/);
+  });
+
+  test("the event number is RECORDED, not just validated", async () => {
+    // `--at-event` was required, parsed, range-checked, stored on the args object —
+    // and omitted from the mutation payload, so the event linkage the two-step edit
+    // pattern exists to guarantee was never written by the script performing the
+    // state change. A required argument with no effect is worse than no argument,
+    // because it reads as evidence the linkage is enforced.
+    const code = await setPartDoneCli([...baseArgs(planPath, projectRoot), "--at-event", "77"]);
+    expect(code).toBe(0);
+    const after = await Bun.file(planPath).text();
+    expect(after).toMatch(/### spec\.SPEC-001[\s\S]*?- \*\*Transitioned At Event\*\*: 77/);
+  });
+
+  test("--completing-session and the older --owning-session are both accepted", async () => {
+    // The flag was named `--owning-session` while populating `completing_session`.
+    // The session that FINISHES a part is not the one that owns it, so a caller
+    // trusting the flag name recorded the wrong session on purpose. Renamed, with
+    // the old spelling kept working rather than silently breaking callers.
+    const code = await setPartDoneCli([
+      "--project-root",
+      projectRoot,
+      "--plan-path",
+      planPath,
+      "--part-id",
+      "spec.SPEC-001",
+      "--outcome",
+      "[[SPEC-001: Sample]]",
+      "--owning-session",
+      "SESSION-2026-07-29_01",
+      "--at-event",
+      "5",
+    ]);
+    expect(code).toBe(0);
+    const after = await Bun.file(planPath).text();
+    expect(after).toMatch(
+      /### spec\.SPEC-001[\s\S]*?- \*\*Completing Session\*\*: SESSION-2026-07-29_01/,
+    );
+  });
+
   test("default status DONE flips spec.SPEC-001 substatus IN_PROGRESS → DONE", async () => {
     const code = await setPartDoneCli(baseArgs(planPath, projectRoot));
     expect(code).toBe(0);

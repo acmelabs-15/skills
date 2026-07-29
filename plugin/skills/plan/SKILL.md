@@ -167,7 +167,7 @@ Skill(skill="<research|decisions|spec|build|review>",
 Phase skills signal completion via the Contract 1 `set-part-done` call:
 
 ```text
-Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=<part-id> outcome=[[<wikilink>]] [status=DONE|DEFERRED|ABANDONED] [rationale=<text if not DONE>]")
+Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=<part-id> outcome=[[<wikilink>]] session=SESSION-YYYY-MM-DD_NN event=<NN> [status=DONE|DEFERRED|ABANDONED] [rationale=<text if not DONE>]")
 ```
 
 On `set-part-done` receipt:
