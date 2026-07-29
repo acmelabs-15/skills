@@ -6,7 +6,9 @@ It exists because the failures invert. `recompose/references/merge-divergences.m
 
 ## What retires
 
-A split retires **identifier strings**, not notes. The source note usually survives on disk as a retained shell — its frontmatter, H1 and trailing sections stay behind — while the identifiers that named its sections move into children under new names.
+A split retires **identifiers within a surviving note**, not the note's own identity. The source keeps its title, permalink and entity ID; what retires is the labels that named its sections — every `D-N` the `renumber_map` moves — as those sections leave for children under new names.
+
+That is the difference from a merge, which retires whole identities: there, N-1 complete sets of title, permalink and entity ID stop being current at once.
 
 So the aliases that matter are the ones `renumber_map` names. Every retired `D-N`, every renumbered entity ID, is a literal no query on the current identity can reach. A split that renumbers and declares no aliases produces a manifest that looks clean and is short by exactly the number of retired identifiers.
 

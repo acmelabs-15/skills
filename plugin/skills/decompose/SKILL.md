@@ -112,10 +112,12 @@ bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
 
 The mechanism is defined once, in `references/impact-manifest.md` — the targets-file shape, the two-stage funnel, the GRAPH and TEXT legs, the advisory channel, the gating assertions to run before believing a low count, and the two companion baselines. Read it there; it is not restated here.
 
-Two things bind before you proceed:
+Four things bind before you proceed:
 
 - **A low finding count is a claim, not a result.** Read the manifest's `discovery` block: `provable: false` means at least one query could not vouch for its own set, and the worklist may be short.
 - **Aliases are yours to declare.** Every identifier `renumber_map` retires is a literal no query on the current identity can reach. What a split retires, and the failures to expect from it, are in `references/split-divergences.md`.
+- **Run the two companion baselines now**, before the split, because they are meaningless afterwards without a before-state. `correction-reconcile.js` catches a note that is the target of an outstanding correction; `figure-check.js` catches a figure that already disagrees with the structure it counts. Exit 2 from either means resolve it first, or record in the plan summary that you are splitting over it deliberately. Commands and full semantics in `references/impact-manifest.md`.
+- **If this split writes two or more destinations that might cite each other, scan them one at a time.** Batched targets are excluded from each other's text scan, so a reference between two of them is neither reported nor repaired — measured at 326 dropped occurrences across 28 batched targets. This bites splits harder than merges because every destination survives as a live note; see `references/split-divergences.md`.
 
 ## Step 5: Adjudicate via AskUserQuestion
 
@@ -197,7 +199,9 @@ bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
   --out docs/_restructure/decompose-{id}-closure.json
 ```
 
-Every finding returns as `UPDATED`, `RETAINED` or `OUTSTANDING`. Exit 2 means closure was not reached. The full contract — the executor-pairing expectation, `newFindings`, the deterministic-vs-advisory split, the retain file's authoring rule, index staleness — is in `references/closure.md`, and the companion re-checks are there too.
+Every finding returns as `UPDATED`, `RETAINED` or `OUTSTANDING`. Exit 2 means closure was not reached. The full contract — the executor-pairing expectation, `newFindings`, the deterministic-vs-advisory split, the retain file's authoring rule, index staleness — is in `references/closure.md`.
+
+**Re-run both companion checks across the source AND every destination, and diff against the baselines you took in Step 4.** An obligation that was LANDED before and TARGET-NOT-FOUND after means the split moved a corrected assertion out from under its correction. A figure that matched before and mismatches after is a count the split invalidated. Commands in `references/closure.md`; which direction each failure moves is in `references/split-divergences.md`.
 
 Failure to reach closure is a surfaced finding, never a silent pass: state how many references remain OUTSTANDING and where. **Do not report a decompose as complete on the strength of the hash proofs alone** — the hashes guarantee the bytes moved intact, not that the sentences about them are still true.
 

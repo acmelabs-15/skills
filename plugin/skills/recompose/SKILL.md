@@ -65,10 +65,12 @@ bun "${CLAUDE_PLUGIN_ROOT}/dist/cli/reference-scan.js" \
 
 The mechanism is defined once, in `../decompose/references/impact-manifest.md` — the targets-file shape, the two-stage funnel, the GRAPH and TEXT legs, the advisory channel, the gating assertions to run before believing a low count, and the two companion baselines. Read it there; it is not restated here.
 
-Two things bind before you proceed, and both are merge-specific:
+Four things bind before you proceed:
 
 - **Every absorbed source's identity becomes an alias.** N-1 titles, permalinks and entity IDs stop being the current name of anything, and no query on the surviving identity reaches them.
 - **A reference to an absorbed source still resolves**, because recompose leaves its sources on disk. Resolving is not the same as being current. What that costs, along with figure inflation, correction resurrection and the edge-verb workload, is in `references/merge-divergences.md`.
+- **A low finding count is a claim, not a result.** Read the manifest's `discovery` block: `provable: false` means at least one query could not vouch for its own set.
+- **Run the two companion baselines now**, before the merge, because they are meaningless afterwards without a before-state. `correction-reconcile.js` catches a source that is the target of an outstanding correction; `figure-check.js` catches a figure that already disagrees with the structure it counts. Exit 2 from either means resolve it first, or record in the plan summary that you are merging over it deliberately. Commands and full semantics in `../decompose/references/impact-manifest.md`.
 
 ## Step 4: Adjudicate via AskUserQuestion
 
@@ -139,6 +141,8 @@ Every finding returns as `UPDATED`, `RETAINED` or `OUTSTANDING`. Exit 2 means cl
 
 This check earns its keep on a merge more than anywhere else, for the reason in `references/merge-divergences.md`: an absorbed source is still a file, so a stale citation to it opens cleanly and nothing but this scan tells you it is stale.
 
+**Re-run both companion checks across every source AND the target, and diff against the baselines you took in Step 3.** An obligation that was LANDED before and OUTSTANDING after has been resurrected over a wider assertion than it was written for. A figure that matched before and mismatches after is a claim the merge inflated past its structure. Commands in `../decompose/references/closure.md`; which direction each failure moves is in `references/merge-divergences.md`.
+
 Failure to reach closure is a surfaced finding, never a silent pass: state how many references remain OUTSTANDING and where. **Do not report a recompose as complete on the strength of the hash proofs alone** — the hashes guarantee the bytes moved intact, not that the sentences about them are still true.
 
 ## Error handling
@@ -149,6 +153,7 @@ Identical to `/decompose`. `PlanValidationError` → parse issues, re-author. `H
 
 - Same as `/decompose`: no direct content writes by the LLM, mandatory adjudication, no source-type mixing, all paths relative to the plan YAML.
 - Never skip adjudication. AskUserQuestion approval is mandatory before execution.
+- **Sources are never deleted by this operation.** That is deliberate, not an oversight: the merge is proven by hash against content that must still exist to prove it against. Deleting the absorbed sources is a separate step the user has to request explicitly, and until they do, a citation to an absorbed source still opens — which is why Step 8 matters.
 
 ## Path resolution
 

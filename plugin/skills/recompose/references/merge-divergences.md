@@ -6,7 +6,9 @@ It exists because the failures invert. `../decompose/references/split-divergence
 
 ## What retires
 
-A merge retires **identities**, not identifier strings. N sources collapse into one target, so N-1 titles, permalinks and entity IDs stop being the current name of anything — while the source files themselves usually remain on disk.
+A merge retires **whole identities**. N sources collapse into one target, so N-1 complete sets of title, permalink and entity ID stop being the current name of anything at once — while the source files themselves usually remain on disk.
+
+That is the difference from a split, which retires identifiers *within* a surviving note: there, individual `D-N` labels get renumbered while the note keeps its own name. Here the note's entire identity goes, all three forms together.
 
 That last part is the trap, and it has no split-side counterpart. **Because recompose leaves its sources on disk, a reference to an absorbed source still resolves to a file** — which is precisely why the closure check matters. Resolving is not the same as being current, and nothing but that scan distinguishes a citation that was repointed from one that merely still opens.
 
