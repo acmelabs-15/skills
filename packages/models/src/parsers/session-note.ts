@@ -27,15 +27,31 @@ function asStringArray(v: unknown): string[] {
   return v.map((x) => asString(x));
 }
 
+/**
+ * Read session frontmatter, carrying every key rather than a fixed six.
+ *
+ * The previous version listed six keys and returned exactly those, so anything else
+ * a note carried was discarded on read — including the five R-4 filtering keys and
+ * the `status_history` one real note uses. R-4 rules that out explicitly: keys are
+ * carried, and unspecified ones are reported rather than dropped.
+ *
+ * `binds_to` also stops being mandatory. It was required here and by the schema
+ * while only 3 of 10 real session notes carried it, so the requirement was already
+ * fiction; a note without it now reads instead of throwing.
+ */
 function parseFrontmatter(raw: Record<string, unknown>): SessionNote["frontmatter"] {
-  return {
+  const fm: Record<string, unknown> = {
+    // Spread first so the typed reads below win on any key they cover.
+    ...raw,
     title: asString(raw["title"]),
     type: "session",
     status: asString(raw["status"]) as SessionNote["frontmatter"]["status"],
-    binds_to: asStringArray(raw["binds_to"]),
     permalink: asString(raw["permalink"]),
     tags: asStringArray(raw["tags"]),
   };
+  if (raw["binds_to"] !== undefined) fm["binds_to"] = asStringArray(raw["binds_to"]);
+  if (raw["parts"] !== undefined) fm["parts"] = asStringArray(raw["parts"]);
+  return fm as SessionNote["frontmatter"];
 }
 
 /**
