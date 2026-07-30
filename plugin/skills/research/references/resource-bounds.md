@@ -23,13 +23,13 @@ trigger: Step 8 convergence loop
 question: Did the 3rd convergence iteration close all gaps?
 answer: "no"
 test_failed: max iteration budget exhausted; gaps remain
-deferral: Surface scope concern to user. Recommend `/plan PLAN-NNN --split` to decompose the part into smaller scope-coherent sub-parts; re-run /research per sub-part.
+deferral: Surface the scope concern and STOP. The user decides what to narrow; nothing is split automatically.
 ```
 ````
 
 Surface to user:
 
-> "Convergence loop exhausted after 3 iterations. {N} gaps remain unresolved. The scope is likely too broad for a single /research pass. Recommend `/plan PLAN-NNN --split` to decompose into smaller scope-coherent sub-parts, then re-run /research per sub-part."
+> "Convergence loop exhausted after 3 iterations. {N} gaps remain unresolved: {list them}. The scope is likely too broad for a single /research pass. Tell me how to narrow it — which of these gaps belong to this part, and which belong somewhere else."
 
 Track iteration count on PRD frontmatter as `convergence_iteration: N`. Each loop iteration increments via `mcp__plugin_brain_brain__edit_note`.
 
@@ -41,14 +41,14 @@ If the user wants to push past 3 iterations for legitimate reasons (e.g., a genu
 Question: "Convergence iteration cap reached (3). Options?"
 
 Options:
-  1. Split via /plan --split (Recommended)
-     — Decompose the part into smaller scope-coherent sub-parts; re-run /research per sub-part. Each sub-part gets its own 3-iteration budget. This is the canonical path forward.
-  2. Extend iteration cap manually
-     — Override the cap to N iterations for this specific PLAN part. Document rationale in PLAN Decision Log. NOT Recommended — usually indicates the part is genuinely too broad.
-  3. Defer with rationale
-     — Pause /research with status DEFERRED on the part; resume later. Document why convergence couldn't be reached.
+  1. Narrow this part's scope (Recommended)
+     — Say which of the unresolved gaps belong to this part and which do not. The ones that do not become a separate part, or a separate plan. This is a scope decision, so it is yours; nothing is restructured without it.
+  2. Extend the iteration cap for this part
+     — Run N more iterations on the same scope. Reasonable for a genuinely deep domain, and usually a sign the part is too broad — which option 1 addresses directly.
+  3. Defer the part
+     — Transition it to DEFERRED with a rationale, and resume later. A real terminal state, so the phase can close over it.
   4. Abandon the part
-     — Mark the part ABANDONED; document why the analysis is intractable. Downstream phases skip this part.
+     — Transition it to ABANDONED with a rationale. Downstream phases skip it.
 ```
 
 ## Skill / tool degradation protocol
@@ -177,6 +177,6 @@ These budgets are advisory. The hard cap is the 3-iteration convergence loop bud
 | Looping past 3 iterations without surfacing the halt | Bypasses the user-agency point on scope | Always halt at iteration 3 + surface options |
 | Treating Brain MCP unavailability as a coverage-note (INFO) | Brain MCP is always available; an unavailability is a system error | Surface as research-brain-mcp-error-halt (severity FAIL) |
 | Skipping retry on search empty | Single-query empty might be query-phrasing problem, not actual gap | Retry with 2 alternative queries before noting coverage gap |
-| Auto-extending the iteration budget without user confirmation | User loses agency over scope decisions | AskUserQuestion before extending; default Recommended is /plan --split |
+| Auto-extending the iteration budget without user confirmation | User loses agency over scope decisions | AskUserQuestion before extending; the Recommended default is narrowing the part's scope, which is the user's call |
 | Coverage-note for a BLOCKING tool | BLOCKING means the step cannot proceed without the tool | Halt with severity FAIL; never coverage-note for BLOCKING |
 | Skipping coverage-note for non-BLOCKING tools | Silent gaps surface downstream | Always emit coverage-note (severity INFO) for any non-BLOCKING tool unavailability |

@@ -144,7 +144,7 @@ See `pre-author-composite-gate.md` for full threshold tables + escalation rules.
 - Evaluate D-N count vs tier-aware soft/hard thresholds
 - Evaluate estimated ADR line count (sum of D-N section line estimates) vs tier-aware soft/hard thresholds
 - Soft threshold: emit warning; proceed
-- Hard threshold: HALT `decisions-step4-halt`; require `Skill(skill="plan", args="split")`; re-run /decisions per sub-part
+- Hard threshold: HALT `decisions-step4-halt`; surface the D-N groupings for a scope decision; re-run /decisions per resulting part
 
 **G2 resume**: skip if gate-passed marker exists for current D-N count + tier.
 
@@ -256,7 +256,7 @@ After /plan receives set-part-done:
 | `decisions-step3.5-c-halt` | Demand-signal-alignment check fails | Re-open D-Ns or augment to address demand |
 | `decisions-step3.5-d-halt` | Tier-consistency check fails | Re-classify tier or split part |
 | `decisions-step3.6-halt` | buy-vs-build returns BUY for unfit capability | Accept BUY, PARTNER, or DEFER (re-opens D-N) |
-| `decisions-step4-halt` | Pre-author gate triggers (over hard threshold) | Invoke `/plan --split`; re-run /decisions per sub-part |
+| `decisions-step4-halt` | Pre-author gate triggers (over hard threshold) | Surface the D-N groupings for a scope decision; re-run /decisions per resulting part |
 | `decisions-step6-iteration-halt` | Detail-parity audit fails after 3 architect re-dispatches | Surface to user; scope split or manual ADR authoring |
 | `decisions-step7-iteration-halt` | adr-review non-PASS after 3 iterations | Surface findings; user adjudicates fix path |
 

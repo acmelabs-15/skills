@@ -1,6 +1,6 @@
 ---
 name: plan
-description: This skill should be used when the user asks to "start a new session", "plan this work", "create a workflow plan", "continue PLAN-NNN", "what's next on PLAN-NNN", "pick up the plan", "split PLAN-NNN", "evaluate scope of PLAN-NNN", "migrate to a plan", "retrofit a plan", "kick off planning for X", "set up tracking for X", or invokes /plan in any mode (create, continue, continue-part, split, scope, migrate). Authors and maintains PLAN notes that track lifecycle work across sessions with phase-keyed parts, complexity-tier classification, and auto-routing to phase skills (/research, /decisions, /spec, /build, /review).
+description: This skill should be used when the user asks to "start a new session", "plan this work", "create a workflow plan", "continue PLAN-NNN", "what's next on PLAN-NNN", "pick up the plan", "go to the build phase of PLAN-NNN", "kick off planning for X", "set up tracking for X", or invokes /plan with or without a position. Authors and maintains PLAN notes that track lifecycle work across sessions with phase-keyed parts, complexity-tier classification, and auto-routing to phase skills (/research, /decisions, /spec, /build, /review). Takes a POSITION, never a verb - no argument creates a plan, and PLAN-NNN followed by an optional phase and part opens one and drills to that point. Do not use for note surgery — splitting or merging notes is decompose and recompose, invoked directly on the note.
 user-invocable: true
 ---
 
@@ -8,16 +8,20 @@ user-invocable: true
 
 Lifecycle planning skill for the Brain knowledge graph. Author PLAN notes, track work across sessions via phase-keyed parts, auto-route to phase skills.
 
-## Modes
+## Invocation
 
-| Mode | Invocation | Purpose |
-|---|---|---|
-| create | `/plan "<description>" [--name <slug>]` | New PLAN note + new branch + new session |
-| continue | `/plan PLAN-NNN` | Resume PLAN; auto-route to next-ready part |
-| continue-part | `/plan PLAN-NNN --part <part-id>` | Continue a specific part |
-| split | `/plan PLAN-NNN --split` | Multi-point scope evaluation + content-preserving split |
-| scope | `/plan PLAN-NNN --scope` | Scope evaluation only (recommend; do not split) |
-| migrate | `/plan --migrate [--name <slug>]` | Retrofit a PLAN onto in-progress work |
+`/plan` takes a POSITION, not a verb. Either you pass nothing and get a new plan, or you name where to go and it drills in.
+
+| Invocation | Meaning |
+|---|---|
+| `/plan "<description>" [--name <slug>]` | No position — create a new PLAN note, branch and session |
+| `/plan PLAN-NNN` | Open the plan; auto-route to the next-ready part |
+| `/plan PLAN-NNN <phase>` | Drill to that phase |
+| `/plan PLAN-NNN <phase> <part>` | Drill to that part |
+
+There is no `create`, `split`, `scope` or `migrate` verb, and no `--part` flag — depth is expressed by how much of the coordinate you supply. `continue` and `continue-part` were the same act at two depths, which is why they collapse into one form.
+
+Two things `/plan` deliberately does NOT do. It does not restructure notes: splitting a note into several, or merging several into one, is `decompose` and `recompose`, invoked directly on the notes. And it does not retrofit itself onto existing work automatically; a plan is authored, and no phase skill halts a session to make you run a plan mode.
 
 Flags applicable across modes:
 
@@ -33,7 +37,7 @@ The cycle is defined once, in `../build/references/per-task-build-qa-cycle.md`. 
 
 What /plan owns in that cycle is the lifecycle: it holds part sequence and status, advances ONE TASK at a time (NO batching, NO shortcuts), and records each impl/qa transition as a PLAN state change paired with a SESSION Event. The dispatch briefs are not /plan's — they are rendered from the TASK/REQ/DESIGN subtree by the two `build/scripts/dispatch-*.ts` scripts.
 
-## Cross-cutting behaviors (all modes)
+## Cross-cutting behaviors
 
 ### Branch policy
 
@@ -53,7 +57,7 @@ On conflict (derived name matches an existing local branch):
 
 When `--name <slug>` is provided, the slug overrides auto-derivation in TWO places:
 
-1. **PLAN title** (create + migrate modes only): `PLAN-NNN: <Title Case of slug>` instead of derived from description (create) or default (migrate). De-kebab the slug for the title descriptor with acronym/version preservation per CONVENTIONS Section 3 — e.g., `brain-v2-rebuild` → `Brain v2 Rebuild` (preserve `v2` lowercase as a versioning convention); `lifecycle-skills-rework` → `Lifecycle Skills Rework`; `oauth-pkce-flow` → `OAuth PKCE Flow` (preserve well-known acronyms).
+1. **PLAN title** (when creating a plan): `PLAN-NNN: <Title Case of slug>` instead of derived from description (create) or default (migrate). De-kebab the slug for the title descriptor with acronym/version preservation per CONVENTIONS Section 3 — e.g., `brain-v2-rebuild` → `Brain v2 Rebuild` (preserve `v2` lowercase as a versioning convention); `lifecycle-skills-rework` → `Lifecycle Skills Rework`; `oauth-pkce-flow` → `OAuth PKCE Flow` (preserve well-known acronyms).
 2. **Branch name** (any mode creating a new branch off main): `feat/plan-NNN-<slug>` instead of derived from session scope. The PLAN counter (NNN) is resolved before the branch name is constructed (counter-check `list_directory planning` in create + migrate; existing PLAN-NNN in continue/split/scope/continue-part).
 
 **Slug normalization**:
@@ -102,9 +106,9 @@ PLAN creation is a single `write_note` call (CONVENTIONS Section 1.7.2). Brain M
 
 `write_note(title: "PLAN-001: Topic", directory: "planning", project: …)` → file `planning/PLAN-001-topic.md`, permalink `planning/plan-001-topic`, queryable immediately. No `edit_note`/`move_note` follow-up.
 
-## Create mode pipeline
+## Creating a plan (no position given)
 
-1. Execute the orchestrator workflow routing protocol: Triage → Clarification Gate → Task Classification → Domain Identification → Workflow Paths → Workflow Definition. See `references/orchestrator-routing-protocol.md`. (No auto-detection prompt for existing artifacts; that path runs only via explicit `/plan --migrate` per the D-13 revision.)
+1. Execute the orchestrator workflow routing protocol: Triage → Clarification Gate → Task Classification → Domain Identification → Workflow Paths → Workflow Definition. See `references/orchestrator-routing-protocol.md`. (No auto-detection of existing artifacts, in any form — a plan is authored, never inferred from a graph sweep.)
 3. Read source artifacts (PRD if research complete, ACCEPTED ADRs if decisions complete, prior PLAN if migrating).
 4. Map to existing code via Brain MCP `search` (Memory-First; avoid duplication).
 5. Dispatch `Task(subagent_type="brain:🧠-analyst")` with the 5 first-principles forcing questions:
@@ -120,7 +124,7 @@ PLAN creation is a single `write_note` call (CONVENTIONS Section 1.7.2). Brain M
 10. Estimate reconciliation: if rolled-up estimate diverges >10% from source-artifact estimates, HALT and require documented reconciliation: (a) update source estimate, (b) document rationale, or (c) flag for user review via AskUserQuestion.
 11. Apply the two-step edit pattern + commit.
 
-## Continue mode pipeline (auto-routing)
+## Opening a plan (auto-routing to next-ready)
 
 1. Read PLAN-NNN; identify the next-ready part (status `READY` with all dependencies `DONE`).
 2. If multiple parts are READY: surface via AskUserQuestion (list candidates + dependency context). Pick the lowest-numbered as the recommended default.
@@ -128,23 +132,21 @@ PLAN creation is a single `write_note` call (CONVENTIONS Section 1.7.2). Brain M
 4. Apply the two-step edit pattern + commit.
 5. Auto-dispatch to the matching phase skill via the Contract 2 dispatch shape. See `references/auto-routing.md`.
 
-## Continue-part mode
+## Drilling to a phase or part
 
-Same as continue mode, but skip "find next-ready" and use the user-provided `--part <id>` instead.
+`/plan PLAN-NNN <phase>` and `/plan PLAN-NNN <phase> <part>` run the continue pipeline with the search for next-ready replaced by the position the caller named. There is no separate mode for this: the same act at a finer coordinate.
 
-## Split mode
+An unrecognised phase or part id is an error, not a search — a typo should say so rather than quietly resuming somewhere else.
 
-Invoke the scope-preserving split protocol on the PLAN: multi-point scope evaluation → split thresholds → distribution plan → content-preservation audit. Surface the proposed split via AskUserQuestion before applying. See `references/scope-evaluation-and-split.md`.
+## Removed modes
 
-## Scope mode
+`split`, `scope` and `migrate` are gone, and `create` is the no-argument case rather than a verb.
 
-Run scope evaluation only; output a recommendation without splitting. The user reviews and decides whether to invoke `--split`.
+`split` never worked. The part-id grammar admitted no split form, there was no `SPLIT` substatus, and a part in one would have been non-terminal — permanently blocking its plan from reaching DONE. What it promised, `decompose` delivers for real: line-range extraction, byte-accountability proof, a SHA-256 round trip, and nothing renamed on mismatch. `scope` was its read-only half and had no pipeline of its own.
 
-## Migrate mode
+`migrate` retrofitted a plan onto work already in progress, by sweeping the graph and guessing which notes belonged to which phase. A plan is authored instead.
 
-Retrofit a PLAN onto in-progress work. Gather references to ALL existing in-progress notes via the 4× `list_directory` sweep + classification (ANALYSIS → research; ADR → decisions.N; SPEC → spec/build; in-progress SESSION → bind via `owning_session`). If no refs are produced AND the user did not pass explicit refs, AskUserQuestion to identify notes manually; fall back to `/plan create` if the user cannot enumerate any. Surface the proposed PLAN for content-preservation audit before locking. See `references/workflow-migration.md` and `references/migrate-auto-detection.md`.
-
-**PLAN title**: if `--name <slug>` was provided, title = `PLAN-NNN: <Title Case of slug>` per Name override rules; otherwise derive a concise Title Case descriptor from the inventory's project slug and inferred workflow type (e.g., `PLAN-NNN: {Project} {Workflow Type}`). The user is implicitly approving the title via the Step 4 part-reconstruction confirmation; if the auto-derived title is wrong, the user can refine inline.
+Note surgery is not a plan concern at all. Splitting one note into several is `decompose`; merging several into one is `recompose`; finding which notes need either is `defrag`. Each is invoked directly on the notes.
 
 ## Phase-specific dispatch contracts
 
@@ -230,9 +232,6 @@ Never fall back to the ai-agents path. `brain:---planner` is unaffected — it r
 
 - `references/plan-note-schema.md` — Per-part schema (Contract 6); PLAN frontmatter fields (branches, complexity_tier).
 - `references/auto-routing.md` — Auto-routing from `/plan PLAN-NNN` to phase skills (D-03 + Contract 2).
-- `references/scope-evaluation-and-split.md` — Scope evaluation thresholds + content-preserving split protocol.
-- `references/workflow-migration.md` — Migrate mode: retrofitting a PLAN onto in-progress work.
-- `references/migrate-auto-detection.md` — 4× `list_directory` protocol + classification + askuser fallback.
 - `references/per-decision-micro-cycle.md` — D-N lock pattern (cross-linked with `/decisions`).
 - `references/orchestrator-routing-protocol.md` — 6-step protocol per D-02 (Triage → Clarification → Task Classification → Domain Identification → Workflow Paths → Workflow Definition).
 - `references/two-step-edit-pattern.md` — PLAN-then-SESSION-then-commit pattern per D-04.

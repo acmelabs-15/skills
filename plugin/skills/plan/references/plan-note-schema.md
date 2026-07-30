@@ -47,7 +47,7 @@ Each part in the PLAN is an entry with these fields:
 ```yaml
 - id: <part-id>                              # e.g., "research", "decisions.1", "spec.SPEC-001"
   phase: <research|decisions|spec-decomposition|spec|build|review|end>
-  status: <PENDING|READY|IN_PROGRESS|DONE|DEFERRED|ABANDONED|BLOCKED>
+  status: <PENDING|READY|IN_PROGRESS|BLOCKED|FAILED|DONE|DEFERRED|ABANDONED>
   dependencies: [<other part-ids>]           # READY = all deps DONE
   source_artifacts: [<wikilinks>]            # PRD/ADR/SPEC refs feeding this part
   outcome: <wikilink>                        # populated by set-part-done
@@ -84,7 +84,9 @@ any → BLOCKED                    (transient; resolves back to prior state once
 | review | `review` | `review` |
 | end | `end` | `end` |
 
-For split parts: append `.split` and successor letters (`.a`, `.b`, ...) — e.g., `decisions.1.split`, `decisions.1.a`, `decisions.1.b`.
+There is no split-part form. `.split` and successor letters were specified here and admitted by nothing: the part-id grammar had no such pattern, there was no `SPLIT` substatus, and a part in one would have been non-terminal — permanently blocking its plan from reaching DONE.
+
+Ids outside the patterns above still PARSE, and are reported as non-canonical rather than rejected. One bad id used to fail its entire document, which meant none of the real state inside it could be validated either.
 
 ## Body structure
 
@@ -99,7 +101,7 @@ The PLAN body holds derived views + per-part rich state. SESSION notes reference
 5. `## Tasks` — session-scoped work items, partitioned `Active` / `Archive`
 6. `## Pending User Decisions` — open questions awaiting an answer
 7. `## Blockers` — open blockers (none if clean)
-8. `## Risks` — execution and sequencing risks from the pre-mortem (create mode Step 8)
+8. `## Risks` — execution and sequencing risks from the pre-mortem run when the plan is created
 9. `## Observations` — penultimate; universal invariant
 10. `## Relations` — last; universal invariant
 
@@ -114,7 +116,7 @@ Each part section under a phase H2 follows:
 ```markdown
 ### {part-id} — {Concrete scope descriptor}
 
-**Substatus**: <PENDING|READY|IN_PROGRESS|DONE|DEFERRED|ABANDONED|BLOCKED|SPLIT>
+**Substatus**: <PENDING|READY|IN_PROGRESS|BLOCKED|FAILED|DONE|DEFERRED|ABANDONED>
 **Owning session**: [[SESSION-...: ...]] OR —
 **Completing session**: [[SESSION-...: ...]] OR —
 **Outcome**: [[<entity wikilink>]] OR — (will be [[...]])
@@ -156,7 +158,7 @@ Universal invariant per CONVENTIONS Section 4.0: every PLAN note ends with `## O
 ```markdown
 ## Relations
 - contains [[SESSION-YYYY-MM-DD_NN: ...]]   # bound sessions
-- contains [[ANALYSIS-NNN: ...]]            # bound analyses (esp. migrate mode)
+- contains [[ANALYSIS-NNN: ...]]            # analyses bound to this plan's parts
 - contains [[ADR-NNN: ...]]                 # bound ADRs
 - contains [[SPEC-NNN: ...]]                # bound SPECs
 - implements [[EPIC-NNN: ...]]              # if part of an EPIC

@@ -1,6 +1,8 @@
-# Pre-Author Composite Artifact Gate — Tier-Aware Thresholds + Split Escalation
+# Pre-Author Composite Artifact Gate — Tier-Aware Thresholds
 
-The Step 4 gate that BLOCKS composite-ADR authoring when D-N count or estimated ADR line count exceeds tier-aware hard thresholds. Forces `/plan --split` to decompose the part into smaller scope-coherent sub-parts BEFORE the architect spends effort authoring a too-large ADR.
+The Step 4 gate that BLOCKS composite-ADR authoring when D-N count or estimated ADR line count exceeds tier-aware hard thresholds, so the architect does not spend effort authoring a too-large ADR.
+
+The gate HALTS for a scope decision. It used to force a plan-skill split mode that was never executable, so the only documented exit from a hard block led nowhere. Narrowing scope is the user's call, and a stuck session gets a question rather than an instruction to run something that does not work.
 
 ## Why the gate matters
 
@@ -60,13 +62,13 @@ IF count > hard threshold for tier OR estimated lines > hard threshold for tier:
        question: Is the composite ADR within tier thresholds?
        answer: "no — {count} D-Ns / {estimated lines} lines exceeds hard threshold for TIER_N"
        test_failed: D-N count OR ADR line count over hard threshold
-       deferral: Invoke Skill(skill="plan", args="split") to decompose decisions.{N} into sub-parts; re-run /decisions per sub-part.
+       deferral: HALT for a scope decision. Surface the D-N list grouped by affinity and ask which groups are separate decisions parts. Nothing is restructured without an answer.
 
 ELSE IF count > soft threshold for tier OR estimated lines > soft threshold for tier:
-   → emit warning (not halt): "Over soft threshold ({count}>{soft}). Recommend split."
-   → ask user via AskUserQuestion: split now (safer), or proceed-with-soft-warning?
-   → if user chooses proceed: document rationale in Decision Log entry; continue to Step 5
-   → if user chooses split: HALT same as hard threshold case
+   → emit warning (not halt): "Over soft threshold ({count}>{soft})."
+   → ask user via AskUserQuestion: narrow the part now (safer), or proceed as one composite ADR?
+   → if user chooses proceed: record the choice as an Event and continue to Step 5
+   → if user chooses to narrow: HALT same as the hard threshold case
 
 ELSE:
    → gate-passed marker added to PLAN-part; proceed to Step 5
@@ -78,13 +80,13 @@ ELSE:
 Question: "decisions.{N} has {count} LOCKED D-Ns ({estimated_lines} line estimate) at TIER_N. Soft threshold ({soft_count}) exceeded; hard threshold ({hard_count}) not yet hit. Proceed with composite ADR or split first?"
 
 Options:
-  1. Split first (Recommended when count is closer to hard than soft)
-     — Invoke /plan --split now; decompose into coherent sub-parts
-     — Re-run /decisions per sub-part; each gets a smaller ADR
-     — Trade-off: more sub-parts; more parallel ADR-review gates
-  2. Proceed with composite (acceptable when count is closer to soft than hard)
+  1. Narrow the part first (Recommended when count is closer to hard than soft)
+     — Say which D-Ns group together; each group becomes its own decisions part
+     — Re-run /decisions per part; each gets a smaller ADR
+     — Trade-off: more parts; more parallel ADR-review gates
+  2. Proceed with one composite ADR (acceptable when count is closer to soft than hard)
      — Continue to Step 5 architect dispatch
-     — Document rationale in PLAN Decision Log ("Proceeded with composite at {count} D-Ns despite soft warning; rationale: ...")
+     — Record the choice as an Event on the session, naming the count it was made at
      — Trade-off: larger ADR; possible detail-parity strain
   3. Re-evaluate tier (when soft threshold is tripping persistently — maybe tier should be higher)
      — Update PLAN frontmatter complexity_tier
@@ -96,12 +98,13 @@ Options:
 
 When the gate hard-halts (or user chooses split on soft warning):
 
-1. Emit halt block; surface to user
-2. User invokes `Skill(skill="plan", args="split PLAN-NNN decisions.{N}")` (or `/plan PLAN-NNN --split`)
-3. `/plan` runs the scope-evaluation-and-split protocol (see /plan's references): cohesion analysis → AskUserQuestion for cluster groupings → Distribution Plan → content-preservation audit → source part flipped SPLIT (terminal); new sub-parts created
-4. `/plan` returns control; user re-invokes `/plan PLAN-NNN` to continue
-5. `/plan` continue mode picks the first next-ready sub-part (decisions.{N}.a)
-6. `/plan` auto-routes to `/decisions` with the new sub-part
+1. Emit the halt block and surface the D-N list, grouped by affinity as a proposal
+2. The user says which groups are separate decisions parts — a scope decision, not a mechanical one
+3. Author the additional parts against that answer; the original keeps the group that stays with it
+4. Re-invoke `/plan PLAN-NNN` to continue; continue mode picks the next ready part
+5. `/plan` auto-routes to `/decisions` for it
+
+If a decisions part has grown so large that its NOTES need restructuring rather than its scope, that is `decompose`'s job and it is invoked directly on the note. The plan skill is for plan status and sequence; it does not do note surgery.
 7. `/decisions` runs Step 1-9 for the sub-part (which now has fewer D-Ns within thresholds)
 
 ## Anti-patterns
@@ -111,10 +114,10 @@ When the gate hard-halts (or user chooses split on soft warning):
 | Skipping the gate because "the ADR will be fine" | 25 D-Ns at Tier 3 = >1200 line ADR = detail-parity fails + adr-review struggles | Always run the gate; trust the threshold table |
 | Counting PENDING D-Ns toward the threshold | PENDING entries won't be in the ADR | Count only LOCKED entries |
 | Estimating ADR lines based on existing ADRs of similar D-N count | Existing ADRs may have been compressed; bad reference | Use the per-D-N × tier heuristic (50-100 lines × 11 sub-sections × D-N count) |
-| Proceeding past hard threshold "just this once" | Sets a precedent; future parts also "just this once" | Hard threshold is non-negotiable; split first |
-| Splitting at soft threshold without user agency | User may have legitimate reasons to proceed | Soft threshold = AskUserQuestion; user adjudicates |
+| Proceeding past hard threshold "just this once" | Sets a precedent; future parts also "just this once" | Hard threshold is non-negotiable; narrow the part first |
+| Narrowing at soft threshold without user agency | User may have legitimate reasons to proceed | Soft threshold = AskUserQuestion; user adjudicates |
 | Tier escalation to bypass thresholds | Tier should reflect actual complexity, not gate-bypass convenience | Re-evaluate tier honestly; if D-N count legitimately reflects Tier 4 work, the tier was undersized in /research |
-| Splitting a too-large part WITHOUT running the gate first | Wasted /plan --split cycle if part was actually within thresholds | Run gate first; split only when gate halts (hard) or user chooses split (soft) |
+| Narrowing a too-large part WITHOUT running the gate first | Wasted scope conversation if the part was actually within thresholds | Run the gate first; narrow only when it halts (hard) or the user chooses to (soft) |
 | Composite ADRs without the gate at Tier 4-5 | Composite is allowed at 4-5 BUT only up to 25-40 D-Ns | Even at Tier 5, >40 D-Ns hard-halts; gate still applies |
 
 ## Tier 4-5 composite allowance rationale

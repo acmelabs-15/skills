@@ -122,7 +122,7 @@ If the framework returns BUILD or PARTNER, document the decision in PRD body and
 
 See `references/convergence-protocol.md` for the full convergence protocol. High-level: run critic + decision-critic in parallel; collect gap findings; if any new requirements or gaps surface, GOTO Step 1 to enhance PRD then back to Step 5 for additional analyses. Loop until no new gaps + user confirms completeness via Step 8 AskUserQuestion (4 options: confirm complete / surface new requirements / surface specific gaps / pause).
 
-Max 3 convergence-loop iterations per Step 8.6 (see `references/resource-bounds.md`); HALT on the 3rd iteration's convergence failure and recommend `/plan PLAN-NNN --split`.
+Max 3 convergence-loop iterations per Step 8.6 (see `references/resource-bounds.md`); HALT on the 3rd iteration's convergence failure and surface the unresolved gaps for a scope decision.
 
 ## Halt blocks
 
@@ -144,7 +144,7 @@ Examples:
 - `research-step2-tier-low-confidence-halt` — analyst returns low-confidence Tier classification; user adjudicates
 - `research-step3-halt` — buy-vs-build returns BUY for unfit capability
 - `research-step6-critical-gap-halt` — critic surfaces gap requiring architectural re-think
-- `research-step8-convergence-halt` — max iterations exceeded; recommend `/plan split`
+- `research-step8-convergence-halt` — max iterations exceeded; surface the gaps and stop for a scope decision
 - `research-step8.6-tool-unavailable-halt` — BLOCKING dispatched skill missing at both Brain locations (per Contract 9)
 
 Coverage notes (severity INFO; non-blocking) for non-BLOCKING tool unavailability:

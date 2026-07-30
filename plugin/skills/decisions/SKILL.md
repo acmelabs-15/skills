@@ -138,7 +138,7 @@ Evaluate D-N count + estimated ADR line count against tier-aware thresholds (see
 | 4-5 | >20 | >25 (composite allowed; >40 hard halt) | >1200 | >1500 |
 
 If over soft threshold: emit warning; proceed.
-If over hard threshold: HALT with `decisions-step4-halt`; require `Skill(skill="plan", args="split")` before re-invoking /decisions on the resulting sub-parts.
+If over hard threshold: HALT with `decisions-step4-halt`; surface the D-Ns grouped by affinity and ask which groups are separate decisions parts, then re-invoke /decisions per part.
 
 ## Step 5 — Architect dispatch (detail-parity)
 
@@ -210,7 +210,7 @@ Full halt inventory:
 | `decisions-step3.5-c-halt` | Demand-signal-alignment check fails: locked D-N set doesn't address original demand | Re-open D-Ns or augment to address demand |
 | `decisions-step3.5-d-halt` | Tier-consistency check fails: D-N count + depth don't match `complexity_tier` | Re-classify tier OR split the part |
 | `decisions-step3.6-halt` | buy-vs-build returns BUY for unfit capability | Accept BUY anyway, pursue PARTNER, or DEFER |
-| `decisions-step4-halt` | Pre-author gate triggers (over hard threshold) | Invoke `Skill(skill="plan", args="split")`; re-run /decisions per sub-part |
+| `decisions-step4-halt` | Pre-author gate triggers (over hard threshold) | Surface the D-N groupings for a scope decision; re-run /decisions per resulting part |
 | `decisions-step6-iteration-halt` | Detail-parity audit fails after 3 architect re-dispatches | Surface to user; consider scope split or manual ADR authoring |
 | `decisions-step7-iteration-halt` | brain:---adr-review returns non-PASS after 3 iterations | Surface adr-review findings; user adjudicates fix path |
 

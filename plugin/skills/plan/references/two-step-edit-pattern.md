@@ -137,9 +137,9 @@ If a future reader wants the current workflow state, they read the PLAN (canonic
 
 Session notes created before the /plan lifecycle existed may contain `## Workflow Plan`, `## Phase Progression`, `## Tasks` sections because they doubled as workflow trackers when no PLAN existed. These are LEGACY and:
 
-- Are preserved verbatim during `/plan --migrate` (Step 7 immutability rule — DONE session Scope is never rewritten retroactively)
+- Are preserved verbatim: a DONE session's Scope is never rewritten retroactively, by any mode or skill
 - Should NOT be re-added when a new session is created under the /plan lifecycle
-- Are referenced by `/plan --migrate` Step 7 + `workflow-migration.md:86` for "parse Scope + any prior Workflow Plan section" — that's a READ of legacy data, not a write of new sections
+- Were referenced by the removed migrate mode for "parse Scope + any prior Workflow Plan section" — a READ of legacy data, never a write of new sections. Legacy sessions carrying those sections still parse; nothing authors them.
 
 ### Skill responsibilities
 

@@ -92,7 +92,7 @@ ELSE IF insufficient analyses (refinement needed, no new reqs):
 ELSE IF architectural inconsistency requiring scope re-think:
    → HALT via research-step6-critical-gap-halt
    → surface to user
-   → may require /plan PLAN-NNN --scope evaluation (recommend that next-action)
+   → the user decides whether the plan's scope changes; do not act on it unasked
 ```
 
 The loop iteration counter is tracked in PRD frontmatter as `convergence_iteration: N` (1-based). Resource bounds (`resource-bounds.md`) cap this at 3.
@@ -139,7 +139,7 @@ When the loop fires (Option 2 or 3 from Step 8, or auto-decided in Step 7):
 | Running Step 6 with non-adversarial briefs | "Looks good" returns are useless | Briefs MUST embed reviewer-asymmetry mandate + "find at least one concrete concern" + cite-evidence requirement |
 | Skipping decision-critic because critic already ran | Different lenses surface different findings | Both agents run in parallel; their outputs complement |
 | Auto-proceeding from Step 7 to Step 8 without user confirmation | User loses agency over loop continuation | Step 8 AskUserQuestion is non-skippable |
-| Looping endlessly when each iteration surfaces new gaps | Convergence is never reached; user fatigue | Max 3 iterations per `resource-bounds.md`; HALT and recommend `/plan --split` |
+| Looping endlessly when each iteration surfaces new gaps | Convergence is never reached; user fatigue | Max 3 iterations per `resource-bounds.md`; HALT and surface the gaps for a scope decision |
 | Treating critical findings as non-blocking | Settled options re-open downstream | Critical architectural inconsistencies HALT (research-step6-critical-gap-halt) |
 | Re-running entire pipeline from Step 0 on loop | Wasted first-principles + memory-first work | Loop re-enters at Step 1 (interview scoped to new reqs); Step 0/0.5 marked PASSED stays passed |
 | Mixing PRD content edits with analysis dispatches in same turn | Mutation interleaving = harder rollback | Each loop iteration: edit PRD first → commit → dispatch analyses → commit → run convergence → commit |

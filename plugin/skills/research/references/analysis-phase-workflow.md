@@ -182,7 +182,7 @@ Outputs combined into a single "Convergence Findings" report. Categories:
 | No gaps + no new requirements | Proceed to Step 8 |
 | New requirements surfaced | GOTO Step 1 (enhance PRD with new reqs) then GOTO Step 5 (dispatch additional analyses) |
 | Insufficient analyses surfaced | GOTO Step 5 (re-dispatch with refined briefs) without re-running Step 1 |
-| Architectural inconsistency requiring scope re-think | HALT via `research-step6-critical-gap-halt`; surface to user; may require `/plan PLAN-NNN --scope` evaluation |
+| Architectural inconsistency requiring scope re-think | HALT via `research-step6-critical-gap-halt`; surface the inconsistency to the user; a scope change is theirs to decide |
 
 ## Step 8 — User-confirms termination
 
@@ -202,7 +202,7 @@ See `retrieval-density-pass.md`. Summary: for each ANALYSIS produced in Step 5, 
 
 ## Step 8.6 — Resource-bounds + degradation protocol
 
-See `resource-bounds.md`. Summary: iteration budget = max 3 convergence-loop iterations (HALT on 3rd-iteration convergence failure; recommend `/plan PLAN-NNN --split`); skill/tool degradation protocol per Contract 3 (INFO coverage-note for non-BLOCKING tool unavailability; FAIL halt for BLOCKING); search-failure fallback retries with 2 alternative queries before noting as a coverage gap.
+See `resource-bounds.md`. Summary: iteration budget = max 3 convergence-loop iterations (HALT on 3rd-iteration convergence failure; surface the unresolved gaps for a scope decision); skill/tool degradation protocol per Contract 3 (INFO coverage-note for non-BLOCKING tool unavailability; FAIL halt for BLOCKING); search-failure fallback retries with 2 alternative queries before noting as a coverage gap.
 
 ## Step 9 — set-part-done
 
@@ -224,8 +224,8 @@ After /plan receives set-part-done:
 | `research-step0-halt` | First-principles gate fails | Address the failed question concretely; re-invoke /research |
 | `research-step2-tier-low-confidence-halt` | Analyst returns LOW CONFIDENCE on tier | User confirms tier choice via AskUserQuestion |
 | `research-step3-halt` | Buy-vs-build returns BUY for unfit capability | User decides: accept BUY, pursue PARTNER, or DEFER |
-| `research-step6-critical-gap-halt` | Critic surfaces architectural inconsistency requiring scope re-think | Surface to user; may require `/plan --scope` evaluation |
-| `research-step8-convergence-halt` | Max 3 convergence iterations exceeded without convergence | Recommend `/plan PLAN-NNN --split`; surface scope concern |
+| `research-step6-critical-gap-halt` | Critic surfaces architectural inconsistency requiring scope re-think | Surface the inconsistency and stop; the user decides whether the plan's scope changes |
+| `research-step8-convergence-halt` | Max 3 convergence iterations exceeded without convergence | Surface the unresolved gaps and stop; the user narrows the scope |
 | `research-step8.6-tool-unavailable-halt` | BLOCKING dispatched skill missing at both Brain locations | Per Contract 9: port the skill OR replace with Brain-side alternative |
 
 ## Anti-patterns

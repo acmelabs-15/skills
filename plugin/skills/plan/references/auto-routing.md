@@ -1,8 +1,8 @@
 # Auto-Routing from `/plan PLAN-NNN`
 
-When `/plan PLAN-NNN` is invoked without an explicit `--part` flag, the skill auto-routes to the matching phase skill for the next-ready part. Sourced from D-03 + Contract 2.
+When `/plan PLAN-NNN` is invoked with no phase or part after it, the skill auto-routes to the matching phase skill for the next-ready part. Sourced from D-03 + Contract 2.
 
-## Continue mode pipeline (auto-routing)
+## Opening a plan (auto-routing to next-ready)
 
 1. Read PLAN-NNN via `mcp__plugin_brain_brain__read_note`.
 2. Validate `complexity_tier` is set (not `TBD`); halt and surface if missing (per Contract 8).
@@ -69,9 +69,11 @@ Skill(skill="plan", args="set-part-done plan=PLAN-NNN part=<part-id> outcome=[[<
    - If all parts are DONE: surface "all parts complete; run /end to close the session and create the PR."
 8. **Do not auto-invoke the next phase skill** — the user re-invokes `/plan PLAN-NNN` (or `/end`) to continue. Auto-progression within a single turn is forbidden; each phase warrants a fresh user-driven invocation for oversight.
 
-## Continue-part mode
+## Drilling to a named phase or part
 
-`/plan PLAN-NNN --part <part-id>` skips the "find next-ready" step and uses the user-provided part directly. All other steps (branch check, IN_PROGRESS transition, two-step edit, auto-dispatch) apply identically.
+`/plan PLAN-NNN <phase>` and `/plan PLAN-NNN <phase> <part>` skip the "find next-ready" step and use the position the caller named. All other steps (branch check, IN_PROGRESS transition, two-step edit, auto-dispatch) apply identically — it is the same act at a finer coordinate, which is why there is no separate flag for it.
+
+An unrecognised phase or part id is an error, not a search: a typo should say so rather than quietly resuming somewhere else.
 
 Validation: the user-provided `part-id` MUST exist in the PLAN AND have status ∈ {`READY`, `IN_PROGRESS`}. If `PENDING`: halt (dependencies unmet). If `DONE` / `DEFERRED` / `ABANDONED`: halt (already terminal). If `BLOCKED`: halt with blocker context.
 
@@ -93,7 +95,7 @@ All halt blocks use the Contract 3 schema (fenced code block with `<skill>-<step
 | Avoid | Why | Instead |
 |---|---|---|
 | Auto-invoking the next phase skill after set-part-done | Bypasses user oversight; user can't intervene between phases | Surface next-ready part as recommendation; user re-invokes /plan PLAN-NNN |
-| Skipping the `complexity_tier` validation in continue mode | Downstream phase skills will halt anyway — surface the gap at /plan time for cleaner UX | Halt at /plan Step 2 if tier is missing |
+| Skipping the `complexity_tier` validation when opening a plan | Downstream phase skills will halt anyway — surface the gap at /plan time for cleaner UX | Halt at /plan Step 2 if tier is missing |
 | Picking next-ready part silently when multiple qualify | User loses agency over which work to start | AskUserQuestion with candidate list |
 | Dispatching without sourcing `source_artifacts` from the part | Phase skill receives no inputs, has to re-discover them | Source from `part.source_artifacts`; pass via phase-specific args |
 | Marking part DONE on dispatch (eager-DONE) | Phase skill hasn't actually finished; set-part-done is the canonical signal | Set IN_PROGRESS on dispatch; DONE only via inbound set-part-done call |
