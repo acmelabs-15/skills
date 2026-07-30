@@ -8,9 +8,24 @@ import { z } from "zod";
 
 // Entity ID schemas
 export const EntityIdSchema = z.string().regex(/^[A-Z]+-\d+/);
-/** The canonical part-id grammar. Ids outside it are reported, not rejected. */
+/**
+ * The canonical part-id grammar. Ids outside it are reported, not rejected.
+ *
+ * One project's phase names used to be baked in here: `protocol-hardening` and
+ * `protocol-hardening.[A-Z]+.\d+`, in a shared module every consumer imports. A
+ * grammar that names a specific project's work is not a grammar, and the sub-part
+ * form was never used by anything. Both are removed.
+ *
+ * The cost is one warning: `docs/planning/PLAN-001-skills-ecosystem.md` has a single
+ * `protocol-hardening` part, DONE since May, which is now reported as non-canonical
+ * rather than admitted. That part still parses — the grammar reports and does not
+ * reject — so nothing breaks, and the plan that contains it keeps working.
+ *
+ * A project needing a phase the workflow does not have is a real signal, and it
+ * belongs in a scope conversation rather than in a regex.
+ */
 export const CANONICAL_PART_ID =
-  /^(research|decisions\.\d+|spec-decomposition|spec\.SPEC-\d+|build\.SPEC-\d+|review|end|protocol-hardening|protocol-hardening\.[A-Z]+\.\d+)$/;
+  /^(research|decisions\.\d+|spec-decomposition|spec\.SPEC-\d+|build\.SPEC-\d+|review|end)$/;
 
 /**
  * A part id.
