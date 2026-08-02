@@ -184,6 +184,26 @@ On `set-part-done` receipt:
 
 When `/decisions` is auto-routed from a decisions part, it runs the per-D-N micro-cycle (decision-critic → AskUserQuestion → verbatim echo → diff approval → 2-step edit → commit, per D-N). `/plan` receives `set-part-done` after each D-N is locked, the composite ADR is authored, and `brain:---adr-review` passes. See `references/per-decision-micro-cycle.md`.
 
+## The PLAN is the state indicator
+
+Phases are not sequential latch-shut gates. Research, decisions and spec run in constant tension — assess, decide, update, reassess — until the gaps are closed enough that an implementer cannot make assumptions. Finishing spec can still loop back into research.
+
+The PLAN is the dynamic state indicator, and its pending items are the authoritative signal of whether a phase is complete.
+
+A phase is NOT done just because the artifacts it set out to produce exist. If new decision or analysis categories were discovered DURING the phase and added to the plan, those pending items belong to that phase. Discovery expands a phase's scope, and the plan already recorded that expansion — so a "phase closed" claim that contradicts the plan's own pending items is wrong. Fix the claim, not the plan.
+
+Before declaring any phase done, or marking a downstream phase ready: scan the plan for pending items in the current phase, including ones added while it ran. Any pending item means the phase is IN_PROGRESS.
+
+**A pending item is closed by resolving it, or by an explicit terminal transition on the item itself — `DEFERRED` or `ABANDONED`, visible in the plan's own state.** It is never closed by writing a rationale for moving on. The earlier form of this rule allowed "explicitly close it with documented rationale," which is a proceed-anyway branch sitting inside the very rule whose thesis is that the plan is authoritative: it let a phase close over pending items so long as someone explained why. A terminal transition is a state a reader can see; a rationale is a paragraph they have to find and evaluate.
+
+## This skill wins conflicts about what a PLAN is
+
+Inside this skill's execution, its own `references/` files are the authoritative operational source, and they win any conflict with the general specs — `~/KNOWLEDGE-GRAPH-CONVENTIONS.md`, `~/KNOWLEDGE-GRAPH-STRUCTURES.md`, `~/AGENT-SYSTEM.md`. Do not default to "the general spec wins" here. The general specs describe note types broadly; this skill describes how its own phase authors and mutates them, and is maintained closer to the workflow.
+
+The concrete trap, seen in practice: authoring a PLAN from the general structures document's Phase-and-Milestone shape instead of this skill's phase-keyed parts. That shape uses "milestone" as plan-structure vocabulary, which is a rival definition of what a plan is rather than a different name for the same thing — parts and phases are the vocabulary here. A PLAN authored the other way had to be deleted and re-authored.
+
+Distinguish a genuine rule conflict, where this skill wins, from a tool-bug workaround that serves this skill's own stated requirement — the latter is not an override. And where two sources agree and only a third, staler one differs, the stale source loses with no precedence question to answer.
+
 ## Status enums (Contract 7)
 
 - **PLAN-part substatus**: `PENDING | READY | IN_PROGRESS | DONE | DEFERRED | ABANDONED | BLOCKED`. `READY` = all dependencies `DONE`. `DEFERRED` and `ABANDONED` require `rationale`.
@@ -235,3 +255,5 @@ Never fall back to the ai-agents path. `brain:---planner` is unaffected — it r
 - `references/per-decision-micro-cycle.md` — D-N lock pattern (cross-linked with `/decisions`).
 - `references/orchestrator-routing-protocol.md` — 6-step protocol per D-02 (Triage → Clarification → Task Classification → Domain Identification → Workflow Paths → Workflow Definition).
 - `references/two-step-edit-pattern.md` — PLAN-then-SESSION-then-commit pattern per D-04.
+- `references/completion-gating.md` — verifying a wave or phase flip against the PLAN's exit criteria before making it; how the gate gets bypassed.
+- `references/enforcement-layers.md` — where a phase protocol is actually enforced, and why enforcing on write beats enforcing on read.
