@@ -102,7 +102,7 @@ export const regeneratedSectionsFloor = z
   .array(z.string())
   .refine((sections) => sections.length <= 10, {
     message:
-      "regenerated_sections declares more than 10 sections; likely integrity bypass. Maximum 10 sections (enforced at schema level); runtime validates <=50% of source lines.",
+      "regenerated_sections declares more than 10 sections; likely integrity bypass. Maximum 10 sections enforced here; the <=50%-of-source-lines floor is enforced per cluster by decompose before anything is staged.",
   });
 
 // Note: `satisfies z.ZodType<MutationSpec>` is omitted here. With Zod's `.optional()`

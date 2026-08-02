@@ -63,6 +63,20 @@ export class IntegrityFloorError extends Error {
  * the old ids.
  *
  * Schema-aware PLAN decomposition is net-new work, not a property this adapter has.
+ * Two of those gaps are now closed at the CLI: `decompose` enforces the integrity
+ * floor per cluster before staging, and parses a scaffolded shard through
+ * `PlanNoteSchema` before renaming it.
+ *
+ * On re-rendering regenerated sections rather than excluding them — the remaining
+ * addition, and it has nothing left to act on. `regenerated_sections` exists to carve
+ * out the Progress Dashboard and the Cross-Part Dependency Graph, and those two are no
+ * longer part of a PLAN note at all: the renderer stopped emitting them, and a source
+ * file still carrying one loses it on output. A carve-out for content that no longer
+ * exists needs no re-render path.
+ *
+ * The mechanism stays, unused, because it is source-type-generic and a future note type
+ * may genuinely have a derived view worth excluding. What would be wrong is building a
+ * re-render path for two headings that are gone.
  */
 export class PlanAdapter implements CompositionAdapter {
   readonly sourceType = "plan";

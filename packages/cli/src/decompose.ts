@@ -38,11 +38,14 @@ import {
   verifyCoverage,
 } from "@acmelabs/core/core/partition";
 import type { MutationSpec, RenumberMap, WikilinkMap } from "@acmelabs/core/core/types";
+import { validateIntegrityFloor } from "@acmelabs/core/core/validate";
 import {
   DistributionPlanSchema,
   PlanValidationError,
   zodErrorToIssues,
 } from "@acmelabs/core/schemas/plan-yaml";
+import { parsePlanNote } from "@acmelabs/models/parsers/plan-note";
+import { PlanNoteSchema } from "@acmelabs/models/schemas/plan-note";
 import yaml from "js-yaml";
 import { ZodError } from "zod";
 import { findUncontainedPaths, lexicalPathViolation } from "../../core/src/schemas/base.js";
@@ -328,6 +331,32 @@ async function executePartition(
     );
   }
 
+  // Integrity floor: regenerated sections may cover at most half the source.
+  //
+  // This is the production call site `validateIntegrityFloor` never had. It shipped
+  // fully built with three invocations, all inside one test file, while
+  // `schemas/base.ts` advertised it as live — "runtime validates <=50% of source
+  // lines" — and capped only the section COUNT at 10. A plan declaring 10 sections
+  // covering 90% of a note therefore passed every gate, after which the SHA-256
+  // round trip trivially succeeded because almost nothing was left to mutate. A gate
+  // that certifies its own bypass.
+  //
+  // Placed before staging so a breach fails before any file is written, and checked
+  // per cluster because `regenerated_sections` is a per-cluster override: a
+  // plan-level check would miss a cluster that widens it.
+  for (const segment of segments) {
+    const cluster = clusters[segment.clusterId];
+    const sections = cluster?.regenerated_sections;
+    if (!sections || sections.length === 0) continue;
+    const floor = validateIntegrityFloor(segment.content, sections);
+    if (!floor.valid) {
+      throw integrityError(
+        `cluster "${segment.clusterId}" breaches the integrity floor: ${floor.message ?? "regenerated sections cover more than half the source"} ` +
+          `(${floor.coveragePercent.toFixed(1)}% of ${sourceAbs}). Regenerated content is excluded from hash validation, so a majority-regenerated cluster proves nothing about what survived.`,
+      );
+    }
+  }
+
   // Retained clusters are proven by the coverage check above but produce no file;
   // only written clusters proceed to staging.
   const written = segments
@@ -434,12 +463,58 @@ function verifyStagedHashes(
   });
 
   const validation = validateSubtreeHashes(adapter, forValidation);
-  if (validation.allPass) return;
-  const failure = validation.firstFailure;
-  throw integrityError(
-    `hash mismatch for cluster destination ${failure?.filePath ?? "<unknown>"}: ` +
-      `source ${failure?.sourceHash ?? "?"} !== reversed ${failure?.reversedHash ?? "?"}`,
-  );
+  if (!validation.allPass) {
+    const failure = validation.firstFailure;
+    throw integrityError(
+      `hash mismatch for cluster destination ${failure?.filePath ?? "<unknown>"}: ` +
+        `source ${failure?.sourceHash ?? "?"} !== reversed ${failure?.reversedHash ?? "?"}`,
+    );
+  }
+
+  // Is what came out still a PLAN? The hash proves bytes survived; it says nothing
+  // about whether the result is a valid note.
+  //
+  // No note schema ran anywhere in the decompose path — `decompose.ts` and
+  // `recompose.ts` import only the base and plan-yaml schemas — so `PlanNoteSchema`'s
+  // referential checks never fired on a split result. Part ids are the designated
+  // MUTATION surface and a part's phase derives from its id, so a renumber that
+  // changes a phase prefix silently reclassifies the part, and no byte-level proof can
+  // see that.
+  //
+  // Checked only for SCAFFOLDED shards, and that limit is structural rather than
+  // cautious: an unscaffolded shard is a bare line-range slice with no frontmatter
+  // unless its range happened to start at line 1. Parsing one would fail on every
+  // split, reporting a malformed note where the real answer is that a fragment is not
+  // a note yet. Scaffolding is what makes a shard whole, so it is exactly the case
+  // where the question is answerable.
+  for (const dest of written) {
+    if (!dest.scaffold) continue;
+    if (adapter.sourceType !== "plan") continue;
+    const parsed = PlanNoteSchema.safeParse(safeParsePlanNote(dest.fileContent));
+    if (!parsed.success) {
+      const issues = parsed.error.issues
+        .map((i) => `${i.path.join(".") || "<root>"}: ${i.message}`)
+        .join("; ");
+      throw integrityError(
+        `cluster destination ${dest.destAbs} is not a valid PLAN after the split: ${issues}. The bytes round-tripped, so this is a structural defect in the split rather than content loss.`,
+      );
+    }
+  }
+}
+
+/**
+ * Parse a shard to the PlanNote model, or return a value the schema will reject.
+ *
+ * `parsePlanNote` throws on malformed input while `safeParse` wants a value, so the
+ * throw is converted here. Returning `null` on failure lets the caller report a single
+ * "not a valid PLAN" error rather than two differently-shaped ones.
+ */
+function safeParsePlanNote(content: string): unknown {
+  try {
+    return parsePlanNote(content);
+  } catch {
+    return null;
+  }
 }
 
 function resolveRelativeToPlan(target: string, planPath: string, root?: string): string {
