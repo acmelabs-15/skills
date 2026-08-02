@@ -96,8 +96,8 @@ The PLAN body holds derived views + per-part rich state. SESSION notes reference
 
 1. `## Scope` — one-paragraph workflow description + Workflow Type + Agent Sequence + complexity + risk
 2. `## Objectives` — checklist of plan-level acceptance signals (all `[ ]` at draft)
-3. `## Phase Status` — **generated**; one row per phase with parts-done-over-total and status
-4. `## Sequence` — **generated**; Mermaid graph computed from each part's `depends_on`
+3. `## Phase Status` — **generated; not yet implemented** (see the notice below — do not author by hand)
+4. `## Sequence` — **generated; not yet implemented** (see the notice below — do not author by hand)
 5. `## Phase Progression` — per-part H3s, or a phase-status summary with the parts under phase H2s
 6. Phase H2s (`## Research`, `## Decisions`, `## Build`, …) — each contains per-part H3s
 7. `## Tasks` — session-scoped work items, partitioned `Active` / `Archive`
@@ -110,6 +110,8 @@ The PLAN body holds derived views + per-part rich state. SESSION notes reference
 Sections not in this list are preserved verbatim through a parse-render round trip rather than dropped, so a plan carrying `## Workflow Plan`, `## Decision Log`, `## Progress Log` or anything else keeps it.
 
 ### Status and sequence are generated, never authored
+
+> **NOT YET IMPLEMENTED.** The rule below is decided, and the renderer does not do it yet: it emits neither section, and neither name is in the parser's modelled-heading set. So a hand-authored `## Phase Status` or `## Sequence` is preserved verbatim as an unmodelled section rather than replaced — which is the drift this rule exists to prevent. **Until the renderer emits them, do not author either section by hand.** The generator is deferred with the wider template work, because the sequence view depends on whether waves become a modelled concept.
 
 A PLAN's job is the status, the sequence, and the state of phases and their parts. Two sections carry that and **both are generated from `parts` on every render**:
 
