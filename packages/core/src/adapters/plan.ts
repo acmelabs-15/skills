@@ -48,13 +48,39 @@ export class IntegrityFloorError extends Error {
  * - applyMutations / reverseMutations: apply renumber_map, wikilink_map, frontmatter_map
  *   only OUTSIDE the byte spans of regenerated_sections. Content inside regenerated
  *   sections passes through unchanged.
+ *
+ * What this adapter does NOT do, stated because its absence has read as a guarantee:
+ * it can slice a PLAN without losing bytes, and it cannot tell you whether what came
+ * out is still a PLAN. No note schema runs in the decompose path — `decompose.ts` and
+ * `recompose.ts` import only the base and plan-yaml schemas — so `PlanNoteSchema`'s
+ * referential checks never fire on a split result, and no cycle detection exists.
+ *
+ * Two consequences worth knowing before trusting a split. Part ids are the designated
+ * MUTATION surface rather than a preserved one, and a part's phase is derived from its
+ * id, so an injective renumber that changes a phase prefix silently reclassifies the
+ * part and no byte-level proof can see it. And regenerated spans pass through
+ * unmutated, so after a renumbering split a Cross-Part Dependency Graph still names
+ * the old ids.
+ *
+ * Schema-aware PLAN decomposition is net-new work, not a property this adapter has.
  */
 export class PlanAdapter implements CompositionAdapter {
   readonly sourceType = "plan";
 
   /**
    * Public, observable section delimiter for PLAN phase boundaries.
-   * Per REQ-001-SPEC-003 AC-1: phase sections under Workflow Plan use `### {phase}.{part-id}`.
+   *
+   * Per REQ-001-SPEC-003 AC-1, which is ACCEPTED and names this field by name:
+   * "sourceType === 'plan' and section_delimiter === '### '". So it is a satisfied
+   * requirement, not an unread field, and it stays.
+   *
+   * Worth being precise about what that means, because the surrounding seam WAS
+   * fiction. `BaseMarkdownAdapter` used to declare abstract `sectionDelimiter`,
+   * `identifierPattern` and `identifierPrefix`, forcing three adapters to supply
+   * values no method body ever read — grep-confirmed at zero. Those are removed.
+   * These two survive because a requirement asks for them to be observable, which is
+   * a real contract even though no internal caller consults them. The snake_case
+   * spelling is likewise required rather than drift.
    */
   readonly section_delimiter = "### ";
 
@@ -97,20 +123,29 @@ export class PlanAdapter implements CompositionAdapter {
    * Optionally accepts a third `regenerated_sections` argument; when supplied, lines
    * belonging to those regenerative spans are stripped from the extracted output.
    */
+  /**
+   * Extract a line range, optionally stripping regenerated sections from it.
+   *
+   * The `{ section: string }` alternative that used to be accepted here is gone,
+   * along with the `extractBySectionName` helper behind it. It was unreachable by
+   * type, not merely unused: `ClusterRange.range` is a `LineRange`, and the
+   * `CompositionAdapter` interface declares this method as taking one — so nothing
+   * could ever pass a section name in. It read as a heading-aware extraction path
+   * the adapter supported, and none existed.
+   *
+   * Extraction is range-driven by design. Identifiers and section names are
+   * cross-checked against what a range yields; they never locate content, because a
+   * name that appears twice in a document cannot say which occurrence was meant.
+   */
   extractByRange(
     content: string,
-    range: LineRange | { section: string },
+    range: LineRange,
     regeneratedSections?: readonly string[],
   ): string {
-    let extracted: string;
-    if ("section" in range) {
-      extracted = this.extractBySectionName(content, range.section);
-    } else {
-      const lines = content.split("\n");
-      const start = range.start - 1; // convert 1-indexed to 0-indexed
-      const end = range.end === -1 ? lines.length : range.end; // end is inclusive 1-indexed
-      extracted = lines.slice(start, end).join("\n");
-    }
+    const lines = content.split("\n");
+    const start = range.start - 1; // convert 1-indexed to 0-indexed
+    const end = range.end === -1 ? lines.length : range.end; // end is inclusive 1-indexed
+    let extracted = lines.slice(start, end).join("\n");
     if (regeneratedSections && regeneratedSections.length > 0) {
       extracted = this.stripRegeneratedSections(extracted, regeneratedSections);
     }
@@ -124,25 +159,6 @@ export class PlanAdapter implements CompositionAdapter {
    *
    * Returns "" if the section is not found.
    */
-  private extractBySectionName(content: string, sectionName: string): string {
-    const wanted = sectionName.trim();
-    const lines = content.split("\n");
-    const startIdx = lines.findIndex((line) => {
-      const m = line.match(/^(###)[ \t]+(.+?)[ \t]*$/);
-      return m !== null && (m[2] ?? "").trim() === wanted;
-    });
-    if (startIdx === -1) return "";
-    // Find next H1/H2/H3 boundary
-    let endIdx = lines.length;
-    for (let i = startIdx + 1; i < lines.length; i++) {
-      if (/^#{1,3}[ \t]+/.test(lines[i] ?? "")) {
-        endIdx = i;
-        break;
-      }
-    }
-    return lines.slice(startIdx, endIdx).join("\n");
-  }
-
   applyMutations(content: string, mutations: MutationSpec): string {
     return this.transformExcludingRegenerated(content, mutations, false);
   }

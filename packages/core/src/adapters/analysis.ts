@@ -7,7 +7,4 @@ import { BaseMarkdownAdapter } from "../core/base-markdown-adapter.js";
  */
 export class AnalysisAdapter extends BaseMarkdownAdapter {
   readonly sourceType = "analysis";
-  protected readonly sectionDelimiter = "### ";
-  protected readonly identifierPattern = /item-(\d+)/i;
-  protected readonly identifierPrefix = "item-";
 }

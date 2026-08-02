@@ -10,10 +10,19 @@ import type { LineRange, MutationSpec } from "./types.js";
 export abstract class BaseMarkdownAdapter implements CompositionAdapter {
   abstract readonly sourceType: string;
 
-  // Subclasses provide these for adapter-specific behavior
-  protected abstract readonly sectionDelimiter: string;
-  protected abstract readonly identifierPattern: RegExp;
-  protected abstract readonly identifierPrefix: string;
+  // No `sectionDelimiter` / `identifierPattern` / `identifierPrefix` here.
+  //
+  // Those three were declared abstract, which forced every subclass to supply them,
+  // and NO method body in this class or any adapter ever read one — grep-confirmed at
+  // zero. They described a seam where an adapter could customise how sections are
+  // delimited and identifiers matched, and that seam was never built: extraction is
+  // range-driven and mutation is find-and-replace, neither of which consults them.
+  //
+  // `PlanAdapter` was the tell. It implements `CompositionAdapter` directly rather
+  // than extending this class, and declared unrelated snake_case twins
+  // (`section_delimiter`, `identifier_pattern`) with no `identifierPrefix` equivalent.
+  // A contract adopted in name only diverges in spelling, because nothing forces the
+  // two to agree.
 
   private readonly processor = unified()
     .use(remarkParse)

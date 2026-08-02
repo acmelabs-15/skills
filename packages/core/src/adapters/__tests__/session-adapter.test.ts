@@ -44,9 +44,29 @@ describe("SessionAdapter", () => {
     expect(adapter.sourceType).toBe("session");
   });
 
-  test("identifierPrefix is 'Event-' (DESIGN-001 Component 2)", () => {
-    // Accessing protected via index access for test introspection.
-    expect((adapter as unknown as { identifierPrefix: string }).identifierPrefix).toBe("Event-");
+  test("event identifiers round-trip through a renumber", () => {
+    // REPLACES a test asserting `identifierPrefix === "Event-"`, reached through a cast
+    // to read a protected field — which is itself the signal that nothing legitimate
+    // consumed it. That field, and the abstract `sectionDelimiter` /
+    // `identifierPattern` / `identifierPrefix` slots on BaseMarkdownAdapter, were
+    // declared by three adapters and read by no method body anywhere. They described a
+    // customisation seam that was never built; extraction is range-driven and mutation
+    // is find-and-replace, and neither consults them.
+    //
+    // A DESIGN note names them; no accepted REQUIREMENT does. (PlanAdapter's
+    // snake_case `section_delimiter` and `identifier_pattern` are different — those
+    // ARE named by REQ-001-SPEC-003 AC-1 as observable, so they stay.)
+    //
+    // What matters is that event identifiers actually mutate, which this asserts
+    // against behaviour rather than against a declared constant.
+    const content = "## Event 01 — First\n\nBody.\n\n## Event 02 — Second\n\nBody.\n";
+    const spec = { renumber_map: { "Event 01": "Event 11" }, wikilink_map: {} };
+    const mutated = adapter.applyMutations(content, spec);
+    expect(mutated).toContain("## Event 11 — First");
+    expect(mutated).toContain("## Event 02 — Second");
+    // And the inverse recovers the original, which is the property the prefix was
+    // presumably meant to support.
+    expect(adapter.reverseMutations(mutated, spec)).toBe(content);
   });
 
   test("supportsCrossSourceUpdates is true (DESIGN-001 Component 2 + TASK-002 DoD item 7)", () => {

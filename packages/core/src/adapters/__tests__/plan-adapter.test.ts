@@ -152,19 +152,27 @@ Second spec body.
 Tail content.
 `;
 
-  test("extractByRange with {section} returns inclusive-of-heading exclusive-of-next-heading", () => {
-    const extracted = adapter.extractByRange(planWithBuildParts, { section: "build.SPEC-001" });
+  test("extraction is range-driven; a section name cannot locate content", () => {
+    // REPLACES two tests that exercised a `{ section: string }` branch of
+    // extractByRange. They passed, which is exactly how the branch read as a live
+    // heading-aware extraction path — but nothing could ever reach it. It was
+    // unreachable by TYPE: `ClusterRange.range` is a `LineRange` and the
+    // `CompositionAdapter` interface declares the parameter as one, so no caller
+    // could pass a section name. The branch and its helper are removed; this asserts
+    // the contract that actually holds.
+    //
+    // Identifiers and section names are cross-check material, never locators: a
+    // heading appearing twice in a document cannot say which occurrence was meant,
+    // which is why a line range is the only thing that can.
+    const buildOne = planWithBuildParts.split("\n").findIndex((l) => l === "### build.SPEC-001");
+    const buildTwo = planWithBuildParts.split("\n").findIndex((l) => l === "### build.SPEC-002");
+    const extracted = adapter.extractByRange(planWithBuildParts, {
+      start: buildOne + 1,
+      end: buildTwo,
+    });
     expect(extracted).toContain("### build.SPEC-001");
     expect(extracted).toContain("First spec body.");
     expect(extracted).not.toContain("### build.SPEC-002");
-    expect(extracted).not.toContain("Second spec body.");
-  });
-
-  test("extractByRange section-aware closes on next H2 (higher level)", () => {
-    const extracted = adapter.extractByRange(planWithBuildParts, { section: "build.SPEC-002" });
-    expect(extracted).toContain("### build.SPEC-002");
-    expect(extracted).toContain("Second spec body.");
-    expect(extracted).not.toContain("## Other Section");
   });
 
   test("extractByRange strips regenerated_sections from output when provided", () => {

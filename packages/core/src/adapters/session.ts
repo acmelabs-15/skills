@@ -11,9 +11,6 @@ import type {
  */
 export class SessionAdapter extends BaseMarkdownAdapter {
   readonly sourceType = "session";
-  protected readonly sectionDelimiter = "## Event ";
-  protected readonly identifierPattern = /Event-(\d+)/i;
-  protected readonly identifierPrefix = "Event-";
   readonly supportsCrossSourceUpdates = true;
 
   /**
