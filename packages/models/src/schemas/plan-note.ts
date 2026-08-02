@@ -222,6 +222,31 @@ export function missingDecisionText(plan: PlanNote): Array<{ partId: string; id:
   return out;
 }
 
+/**
+ * A dependency on work in ANOTHER plan.
+ *
+ * Deliberately a separate field from `depends_on` rather than a widening of it.
+ * `depends_on` holds part ids and is checked against this plan's own parts, so a
+ * cross-plan reference put there would be reported as dangling — correctly, since
+ * the part genuinely is not in this document. Widening the check to tolerate
+ * unknown ids would lose the dangling-reference guard for every intra-plan
+ * dependency, which is the more common case and the more useful check.
+ *
+ * `plan` is a permalink because a plan lives in its own file and a part id alone is
+ * ambiguous across plans. `part` is optional: a plan can depend on another plan
+ * wholesale, or on one specific part of it.
+ */
+const CrossPlanRefSchema = z
+  .object({
+    /** Permalink of the other plan, e.g. `planning/plan-004-datatable`. */
+    plan: z.string().min(1),
+    /** A specific part of that plan, when the dependency is narrower than the plan. */
+    part: PartIdSchema.optional(),
+    /** Why this dependency exists, so a reader is not left inferring it. */
+    reason: z.string().optional(),
+  })
+  .strict();
+
 const PartSchema = z
   .object({
     id: PartIdSchema,
@@ -250,6 +275,28 @@ const PartSchema = z
     transitioned_at_event: EventNumberSchema.optional(),
     source_artifacts: z.array(z.string()),
     depends_on: z.array(PartIdSchema),
+    /**
+     * What is blocking this part, when its substatus is BLOCKED.
+     *
+     * `BLOCKED` was a status with nothing attached, so a blocked part could say that
+     * it was stuck and not what would unstick it. Opening a plan then surfaced a
+     * dead end: the reader has to go and remember why. A pointer makes the block
+     * answerable — the superRefine below requires one when substatus is BLOCKED.
+     *
+     * Either a part in this plan, or work in another one. Both are pointers rather
+     * than prose so `/plan continue` can follow them.
+     */
+    blocked_by: z
+      .object({
+        /** A part in THIS plan. */
+        part: PartIdSchema.optional(),
+        /** Work in another plan. */
+        plan: CrossPlanRefSchema.optional(),
+        /** What has to be true for this to unblock. */
+        note: z.string().optional(),
+      })
+      .strict()
+      .optional(),
     dod: z.array(DodItemSchema),
     decisions: z.array(DecisionStateSchema).optional(),
     // build_workflow_items: per-TASK impl + qa pairs for build.SPEC-NNN parts.
@@ -261,6 +308,31 @@ const PartSchema = z
   .superRefine((data, ctx) => {
     if (data.substatus === "DONE" && !data.outcome) {
       ctx.addIssue({ code: "custom", message: "DONE part must have outcome" });
+    }
+    // A block with no pointer is a dead end for whoever reads it next. Enforced on
+    // WRITE rather than on read: BLOCKED is a state something transitions INTO, so
+    // there is no corpus of pre-existing blocked parts this could retroactively fail
+    // — unlike the part-id grammar or the verbatim-decision field, where enforcing on
+    // read would have rejected notes already written.
+    if (data.substatus === "BLOCKED") {
+      const pointer = data.blocked_by;
+      const hasTarget = pointer?.part !== undefined || pointer?.plan !== undefined;
+      if (!hasTarget) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["blocked_by"],
+          message: `part ${data.id} is BLOCKED but records nothing blocking it; name the part or plan it waits on so a reader can follow it`,
+        });
+      }
+    }
+    // A part cannot wait on itself, in either spelling. Self-dependency is a typo
+    // that would otherwise present as a permanently unreachable part.
+    if (data.blocked_by?.part === data.id) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["blocked_by", "part"],
+        message: `part ${data.id} cannot be blocked by itself`,
+      });
     }
     // build.SPEC-NNN parts MUST carry build_workflow_items once they leave PENDING
     if (data.id.startsWith("build.SPEC-") && data.substatus !== "PENDING") {
@@ -393,6 +465,20 @@ export const PlanNoteSchema = z
      * typed field, and the round trip keeps proving byte-identity throughout.
      */
     unmodelled_sections: z.array(RawSectionSchema).optional(),
+    /**
+     * Plans this one waits on, and plans waiting on it.
+     *
+     * Plan-level rather than part-level because the question a reader asks is "can
+     * this plan proceed at all", and answering it by scanning every part's
+     * `blocked_by` means reading the whole document. A part-level block is still
+     * where the detail lives; this is the index over it.
+     *
+     * Both directions are stored. An edge recorded on only one side is invisible from
+     * the other, so the plan that is BLOCKING something has no idea it is — which is
+     * the side that usually needs to know.
+     */
+    depends_on_plans: z.array(CrossPlanRefSchema).optional(),
+    blocks_plans: z.array(CrossPlanRefSchema).optional(),
   })
   .strict()
   .superRefine((data, ctx) => {
@@ -413,6 +499,18 @@ export const PlanNoteSchema = z
             message: `Part ${part.id}: depends_on ${dep} not found in parts`,
           });
         }
+      }
+      // An intra-plan block gets the same dangling check as a dependency: a pointer
+      // at a part that does not exist is worse than no pointer, because it reads as
+      // followable. A CROSS-plan block is deliberately not checked here — the other
+      // plan is a separate document this schema cannot see, and pretending otherwise
+      // would make every legitimate cross-plan block an error.
+      const blockedByPart = part.blocked_by?.part;
+      if (blockedByPart !== undefined && !partIds.has(blockedByPart)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Part ${part.id}: blocked_by part ${blockedByPart} not found in parts`,
+        });
       }
     }
   })

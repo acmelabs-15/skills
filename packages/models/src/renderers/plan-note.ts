@@ -92,6 +92,16 @@ function renderPart(part: Part): string {
   if (part.transitioned_at_event !== undefined) {
     lines.push(`- **Transitioned At Event**: ${part.transitioned_at_event}`);
   }
+  if (part.blocked_by) {
+    // Emitted only when set, so an unblocked part gains no noise. The cross-plan form
+    // is `permalink#part` — one line a reader can follow either way.
+    const target = part.blocked_by.part
+      ? part.blocked_by.part
+      : part.blocked_by.plan
+        ? `${part.blocked_by.plan.plan}${part.blocked_by.plan.part ? `#${part.blocked_by.plan.part}` : ""}`
+        : undefined;
+    if (target) lines.push(`- **Blocked By**: ${target}`);
+  }
   if (part.source_artifacts.length > 0) {
     lines.push(`- **Source Artifacts**: ${part.source_artifacts.join(", ")}`);
   } else {

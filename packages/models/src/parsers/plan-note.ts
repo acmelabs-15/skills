@@ -235,6 +235,24 @@ function parsePart(partHeading: string, children: RootContent[]): Part {
   const atEvent = optNum(fields.get("transitioned at event"));
   if (atEvent !== undefined) part.transitioned_at_event = atEvent;
 
+  // `Blocked By` reads as either an intra-plan part id, or `plan-permalink#part` for
+  // work in another plan. One field with two shapes rather than two fields, because
+  // an author writing it should not have to know which kind of block they have.
+  const blockedBy = fields.get("blocked by");
+  if (blockedBy && blockedBy !== "—" && blockedBy !== "(none)") {
+    const id = stripRefDescriptor(blockedBy);
+    if (id) {
+      if (id.includes("/")) {
+        const [planRef, partRef] = id.split("#", 2);
+        const plan: { plan: string; part?: string } = { plan: planRef ?? id };
+        if (partRef) plan.part = partRef;
+        part.blocked_by = { plan };
+      } else {
+        part.blocked_by = { part: id };
+      }
+    }
+  }
+
   // DoD list is the SECOND list in the part body (first list is the bullet fields)
   const lists = children.filter((n) => n.type === "list");
   if (lists.length >= 2) {
