@@ -23,10 +23,12 @@ A different test count means something moved and this document is stale — say 
 | Step | State |
 |---|---|
 | 1-13, 15-17 | **DONE**, one commit each, all gates green at every commit |
-| **14 — template redesign** | **NOT STARTED**. Needs the owner. Forces W-1. |
+| **14 — template redesign** | **PARTIALLY CLOSED 2026-08-02.** W-1 closed as R-46; the audit was delivered. The **template proposal and re-render are DEFERRED** per R-47 — see the correction below. |
 | **18 — cold-read evaluation** | **NOT STARTED**. Needs the owner's approval on findings. |
 
 Everything autonomous is finished. Both remaining steps are conversations, not code.
+
+> **CORRECTION 2026-08-02 — this document's premise was wrong about the programme state.** It reads as though prompts 6-12 had run. They have not. Measured: `AdrNoteStatusEnum` has no DRAFT (prompt 7 owed it); `SessionNoteSchema` still carries `scope` + `bound_plans` as body sections against R-5; `main`'s newest commit is prompt 4A's record. Consequence, ruled by the owner as **R-47**: step 14 stops at the audit. A PLAN template cannot be designed while the SESSION model is unbuilt — the owner's documentation defines the two as a pair, and ADR-003 D-10 routes plan sections *into* SESSION events, whose shape prompt 10 authors. Prompt 7's possible `scope` phase and prompt 9's wave-derivation ruling are two further unbuilt inputs. **The template proposal and the real-PLAN re-render carry forward unticked** to a successor that runs after prompt 10, with stateless resume as the stated acceptance test.
 
 ## Rulings made during the run — do not re-ask any of these
 
@@ -118,11 +120,11 @@ One branch for both steps, continuing on `feat/plan-data-model` — the work is 
 
 ## Done means
 
-- [ ] The ranked STAYS / MOVES / GOES audit was delivered and **approved before any section was removed**; every section across the union of definitions appears in exactly one bucket with a rationale.
-- [ ] W-1 is closed by an explicit owner ruling, recorded in `RULINGS-LOG.md` and in the surviving definition file — a ruling that lives only in a conversation does not exist.
-- [ ] R-9's routings are honored: PRD-ish content referenced not composed, risks split by kind, per-part exit criteria in parts.
-- [ ] A proposed template exists AND one of the owner's real PLANs is re-rendered against it and shown as output.
-- [ ] Nothing was deleted from the owner's notes without approval.
+- [x] The ranked STAYS / MOVES / GOES audit was delivered and **approved before any section was removed**; every section across the union of definitions appears in exactly one bucket with a rationale. — delivered 2026-08-02 against a corrected corpus of **eleven** specimens (the handoff's path was stale and its six were four months old; four newer PLANs existed). Buckets are transcriptions of ADR-003's own Responsibility Audit, not assistant judgement.
+- [x] W-1 is closed by an explicit owner ruling, recorded in `RULINGS-LOG.md` and in the surviving definition file — a ruling that lives only in a conversation does not exist. — **R-46**, recorded in both homes, commit `a04d387`.
+- [x] R-9's routings are honored: PRD-ish content referenced not composed, risks split by kind, per-part exit criteria in parts. — honored in the audit's buckets.
+- [ ] **DEFERRED per R-47** — A proposed template exists AND one of the owner's real PLANs is re-rendered against it and shown as output. Blocked on prompt 10 (SESSION model), prompt 7 (possible `scope` phase), prompt 9 (wave derivation). Carried forward, not dropped.
+- [x] Nothing was deleted from the owner's notes without approval. — no plan file was touched in this run.
 - [ ] Ranked cold-read findings delivered for every skill touched; nothing applied without approval; any skipped stage named with its reason.
 - [ ] The `PhaseEnum` mismatch is recorded and `documentation/workflows.html` is untouched.
 - [ ] Gates green: `bun test`, `bun run typecheck`, `bun run check`, `claude plugin validate plugin --strict`.
