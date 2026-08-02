@@ -96,18 +96,31 @@ The PLAN body holds derived views + per-part rich state. SESSION notes reference
 
 1. `## Scope` — one-paragraph workflow description + Workflow Type + Agent Sequence + complexity + risk
 2. `## Objectives` — checklist of plan-level acceptance signals (all `[ ]` at draft)
-3. `## Phase Progression` — per-part H3s, or a phase-status summary with the parts under phase H2s
-4. Phase H2s (`## Research`, `## Decisions`, `## Build`, …) — each contains per-part H3s
-5. `## Tasks` — session-scoped work items, partitioned `Active` / `Archive`
-6. `## Pending User Decisions` — open questions awaiting an answer
-7. `## Blockers` — open blockers (none if clean)
-8. `## Risks` — execution and sequencing risks from the pre-mortem run when the plan is created
-9. `## Observations` — penultimate; universal invariant
-10. `## Relations` — last; universal invariant
+3. `## Phase Status` — **generated**; one row per phase with parts-done-over-total and status
+4. `## Sequence` — **generated**; Mermaid graph computed from each part's `depends_on`
+5. `## Phase Progression` — per-part H3s, or a phase-status summary with the parts under phase H2s
+6. Phase H2s (`## Research`, `## Decisions`, `## Build`, …) — each contains per-part H3s
+7. `## Tasks` — session-scoped work items, partitioned `Active` / `Archive`
+8. `## Pending User Decisions` — open questions awaiting an answer
+9. `## Blockers` — open blockers (none if clean)
+10. `## Risks` — execution and sequencing risks from the pre-mortem run when the plan is created
+11. `## Observations` — penultimate; universal invariant
+12. `## Relations` — last; universal invariant
 
 Sections not in this list are preserved verbatim through a parse-render round trip rather than dropped, so a plan carrying `## Workflow Plan`, `## Decision Log`, `## Progress Log` or anything else keeps it.
 
-Two headings are the exception and are removed on render: `## Progress Dashboard` and `## Cross-Part Dependency Graph`. Both were derived rollups regenerated from `parts` on every render, and neither is part of a PLAN note any longer. A file still carrying one parses without error and loses the section on output.
+### Status and sequence are generated, never authored
+
+A PLAN's job is the status, the sequence, and the state of phases and their parts. Two sections carry that and **both are generated from `parts` on every render**:
+
+1. `## Phase Status` — one row per phase: the phase, its parts done over total, and its status. Answers "where is this" without reading the parts.
+2. `## Sequence` — a Mermaid graph computed from each part's `depends_on`. Answers "what runs next to what".
+
+Neither is hand-authored, and neither is hand-maintained. Plain styling, computed from the parts, nothing to maintain by hand — so neither can drift from the state below it. Do not hand-write either one: the next render replaces it.
+
+Two older headings are removed on render and do not come back: `## Progress Dashboard` and `## Cross-Part Dependency Graph`. Both were hand-maintained rollups of the same information the two generated sections now carry. A file still carrying one parses without error and loses the section on output.
+
+Why generated rather than preserved: a hand-maintained summary drifts from the parts it summarises, and a summary that disagrees with the state below it is worse than no summary — a reader cannot tell which is true. Generation makes the summary a view of the state rather than a second copy of it.
 
 ### Per-part H3 structure
 
@@ -175,9 +188,8 @@ Bi-directional rule (CONVENTIONS Section 4.4): when PLAN `contains [[SESSION-X]]
 |---|---|
 | Part substatus change | `edit_note` with `find_replace` on the `**Substatus**:` line |
 | Add new part | `edit_note` with `append` at the appropriate phase H2 |
-| Update Progress Dashboard | `edit_note` with `replace_section` on `## Progress Dashboard` |
+| Phase Status / Sequence | Never edited — both are generated from `parts` on every render |
 | Append Decision Log entry | `edit_note` with `append` to `## Decision Log` |
-| Update Cross-Part Deps Graph | `edit_note` with `replace_section` on `## Cross-Part Dependency Graph` |
 | Add `Observations` | `edit_note` with `append` to `## Observations` |
 | Add `Relations` | `edit_note` with `append` to `## Relations` (apply bi-directional inverse to target note in same pass) |
 
