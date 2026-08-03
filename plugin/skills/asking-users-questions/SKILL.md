@@ -1,20 +1,21 @@
 ---
 name: asking-users-questions
 description: |
-  Composes an AskUserQuestion call a human can answer on sight: what the
-  question text has to carry, how an option label and description divide the
-  work, why every call states a recommendation, which of the three layouts a
-  decision's shape calls for, and how to read the answer that comes back. Use
-  when the call itself is the deliverable — wording a question before asking
-  it, repairing one that reads badly, weighing whether to ask at all instead
-  of picking a default, or handling a reply that arrived as free text rather
-  than a choice. Do not use when running a workflow that happens to ask
-  something along the way: implementing a spec, adjudicating decisions,
-  interviewing for requirements, reviewing a diff or closing out a session
-  are those skills' work and they carry their own prompts. Do not use to
-  build a host UI that renders the dialog, to debug why the tool hangs or
-  errors, or to page through many items, which is enumerating rather than
-  deciding.
+  Composes an AskUserQuestion call a human can answer on sight: drafting
+  the question text, dividing the work between an option's label and its
+  description, marking the one you recommend, choosing between the list,
+  multiSelect and preview layouts, and reading what comes back — free
+  text, notes, silence, timeouts. Use when the call itself is the
+  deliverable, including whether to take the default instead, and
+  rewriting a question someone could not answer, yours or one human's to
+  another. Do not use when the artifact wanted is prose about questioning
+  rather than a question: guides, cheat sheets, house conventions,
+  checklists, training. Do not use when a broader workflow merely pauses
+  to ask along the way — implementing a spec, adjudicating decisions,
+  interviewing for requirements, reviewing a diff or closing a session
+  carry their own prompts. Do not use to render the dialog, debug schema
+  errors or hangs, build surveys and forms, or page through many items,
+  which is enumerating rather than deciding.
 ---
 
 # asking-users-questions
